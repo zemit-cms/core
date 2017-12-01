@@ -1,0 +1,58 @@
+{
+  "name": "zemit-official/cms-core",
+  "type": "library",
+  "description": "Pilot your content with golden wings. Zemit, a content-management system built on top of PhalconPHP and AngularJS.",
+  "keywords": ["framework", "phalcon", "cms", "cms-core", "zemit", "zemit-official"],
+  "homepage": "https://www.zemit.com",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Zemit Team",
+      "email": "contact@zemit.com",
+      "homepage": "https://www.zemit.com/team"
+    },
+    {
+      "name": "Julien Turbide",
+      "email": "contact@jturbide.com",
+      "homepage": "https://www.jturbide.com/"
+    },
+    {
+      "name": "Danny Coulombe",
+      "email": "contact@dannycoulombe.com",
+      "homepage": "https://www.dannycoulombe.com/"
+    },
+    {
+      "name": "Contributors",
+      "homepage": "https://github.com/zemit-official/cms/graphs/contributors"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/zemit-official/cms/issues",
+    "source": "https://github.com/zemit-official/cms",
+    "forum": "https://forum.zemit.com/"
+  },
+  "require": {
+    "php": ">=7.0",
+    "ext-phalcon": "~3.2",
+    "phalcon/incubator": "^3.2",
+    "preferans/prest": "^3.6",
+    "m1ome/phalcon-datatables": "^1.1"
+  },
+  "require-dev": {
+    "phalcon/ide-stubs": "^3.2",
+    "phalcon/devtools": "^3.2",
+    "fabfuel/prophiler": "^1.6",
+    "snowair/phalcon-debugbar": "^1.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "Zemit\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Zemit\\Test\\": "tests/unit"
+    }
+  },
+  "bin": ["phalcon.php"]
+}
