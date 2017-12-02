@@ -53,6 +53,5 @@
     "psr-4": {
       "Zemit\\Test\\": "tests/unit"
     }
-  },
-  "bin": ["phalcon.php"]
+  }
 }
