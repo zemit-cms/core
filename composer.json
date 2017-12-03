@@ -50,5 +50,4 @@
       "Zemit\\Core\\Test\\": "tests/unit"
     }
   }
-//  "bin": ["zemit.php"]
 }
