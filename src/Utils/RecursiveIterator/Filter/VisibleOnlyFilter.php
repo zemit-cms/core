@@ -1,6 +1,6 @@
 <?php
 
-namespace Zemit\Plugins\Utils\RecursiveIterator\Filter;
+namespace Zemit\Core\Plugins\Utils\RecursiveIterator\Filter;
 
 class VisibleOnlyFilter extends \RecursiveFilterIterator {
 

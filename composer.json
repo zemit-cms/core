@@ -17,23 +17,19 @@
       "homepage": "https://www.jturbide.com/"
     },
     {
-      "name": "Danny Coulombe",
-      "email": "contact@dannycoulombe.com",
-      "homepage": "https://www.dannycoulombe.com/"
-    },
-    {
       "name": "Contributors",
-      "homepage": "https://github.com/zemit-official/cms/graphs/contributors"
+      "homepage": "https://github.com/zemit-official/cms-core/graphs/contributors"
     }
   ],
   "support": {
-    "issues": "https://github.com/zemit-official/cms/issues",
-    "source": "https://github.com/zemit-official/cms",
+    "issues": "https://github.com/zemit-official/cms-core/issues",
+    "source": "https://github.com/zemit-official/cms-core",
     "forum": "https://forum.zemit.com/"
   },
   "require": {
     "php": ">=7.0",
     "ext-phalcon": "~3.2",
+    "phalcon/dd": "^1.1",
     "phalcon/incubator": "^3.2",
     "preferans/prest": "^3.6",
     "m1ome/phalcon-datatables": "^1.1"
@@ -46,12 +42,13 @@
   },
   "autoload": {
     "psr-4": {
-      "Zemit\\": "src/"
+      "Zemit\\Core\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Zemit\\Test\\": "tests/unit"
+      "Zemit\\Core\\Test\\": "tests/unit"
     }
   }
+//  "bin": ["zemit.php"]
 }

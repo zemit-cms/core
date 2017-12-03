@@ -1,6 +1,6 @@
 <?php
 
-namespace Zemit\Db;
+namespace Zemit\Core\Db;
 
 use Phalcon\Logger\Adapter\File as LoggerAdapter;
 

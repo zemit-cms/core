@@ -1,6 +1,6 @@
 <?php
 
-namespace Zemit\Mvc\Dispatcher;
+namespace Zemit\Core\Mvc\Dispatcher;
 
 use Phalcon\Events\Event;
 use Phalcon\Mvc\Dispatcher;

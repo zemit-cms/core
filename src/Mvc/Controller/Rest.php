@@ -1,6 +1,6 @@
 <?php
 
-namespace Zemit\Mvc\Controller;
+namespace Zemit\Core\Mvc\Controller;
 
 /**
  * @author Julien Turbide <Zemit@nuagerie.com>

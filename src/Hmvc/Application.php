@@ -1,5 +1,5 @@
 <?php
-namespace Zemit\Hmvc;
+namespace Zemit\Core\Hmvc;
 
 use Phalcon\DiInterface;
 use Phalcon\Http\ResponseInterface;

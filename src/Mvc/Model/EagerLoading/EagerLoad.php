@@ -1,4 +1,4 @@
-<?php namespace Zemit\Mvc\Model\EagerLoading;
+<?php namespace Zemit\Core\Mvc\Model\EagerLoading;
 
 use Phalcon\Mvc\Model\Relation;
 use Phalcon\Mvc\Model\Resultset;

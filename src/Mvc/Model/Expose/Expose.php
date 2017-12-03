@@ -1,8 +1,8 @@
 <?php
 
-namespace Zemit\Mvc\Model\Expose;
+namespace Zemit\Core\Mvc\Model\Expose;
 
-use Zemit\Utils\Multibyte;
+use Zemit\Core\Utils\Multibyte;
 use Phalcon\Text;
 
 /**
@@ -24,7 +24,7 @@ use Phalcon\Text;
  * Complexe
  *
  *
- * @package Zemit\Mvc\Model\Expose
+ * @package Zemit\Core\Mvc\Model\Expose
  */
 trait Expose {
     

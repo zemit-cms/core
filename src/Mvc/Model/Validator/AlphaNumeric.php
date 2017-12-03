@@ -1,6 +1,6 @@
 <?php
 
-namespace Zemit\Validation\Validator;
+namespace Zemit\Core\Validation\Validator;
 
 use Phalcon\Validation\Validator;
 use Phalcon\Validation\ValidatorInterface;

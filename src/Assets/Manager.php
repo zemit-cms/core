@@ -1,6 +1,6 @@
 <?php
 
-namespace Zemit\Assets;
+namespace Zemit\Core\Assets;
 
 use Phalcon\Assets\Manager as AssetsManager;
 

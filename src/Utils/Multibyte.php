@@ -1,6 +1,6 @@
 <?php
 
-namespace Zemit\Utils;
+namespace Zemit\Core\Utils;
 
 //@TODO test & use
 class Multibyte

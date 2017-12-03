@@ -1,4 +1,4 @@
-<?php namespace Zemit\Mvc\Model\EagerLoading;
+<?php namespace Zemit\Core\Mvc\Model\EagerLoading;
 
 use Phalcon\Di;
 use Phalcon\Mvc\ModelInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Zemit\Mvc\Model;
+namespace Zemit\Core\Mvc\Model;
 
 trait FindIn {
     

@@ -1,6 +1,6 @@
-<?php namespace Zemit\Mvc\Model;
+<?php namespace Zemit\Core\Mvc\Model;
 
-//use Zemit\Mvc\Model\EagerLoading\Loader;
+//use Zemit\Core\Mvc\Model\EagerLoading\Loader;
 
 trait EagerLoadingTrait
 {
@@ -53,7 +53,7 @@ trait EagerLoadingTrait
         if ($ret->count()) {
             array_unshift($arguments, $ret);
 
-            $ret = call_user_func_array('Zemit\Mvc\Model\EagerLoading\Loader::fromResultset', $arguments);
+            $ret = call_user_func_array('Zemit\Core\Mvc\Model\EagerLoading\Loader::fromResultset', $arguments);
         }
 
         return $ret;
@@ -90,7 +90,7 @@ trait EagerLoadingTrait
         if ($ret = static::findFirst($parameters)) {
             array_unshift($arguments, $ret);
 
-            $ret = call_user_func_array('Zemit\Mvc\Model\EagerLoading\Loader::fromModel', $arguments);
+            $ret = call_user_func_array('Zemit\Core\Mvc\Model\EagerLoading\Loader::fromModel', $arguments);
         }
 
         return $ret;
@@ -118,6 +118,6 @@ trait EagerLoadingTrait
 
         array_unshift($arguments, $this);
 
-        return call_user_func_array('Zemit\Mvc\Model\EagerLoading\Loader::fromModel', $arguments);
+        return call_user_func_array('Zemit\Core\Mvc\Model\EagerLoading\Loader::fromModel', $arguments);
     }
 }

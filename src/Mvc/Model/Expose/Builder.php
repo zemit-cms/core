@@ -1,6 +1,6 @@
 <?php 
 
-namespace Zemit\Mvc\Model\Expose;
+namespace Zemit\Core\Mvc\Model\Expose;
 
 class Builder implements BuilderInterface {
     

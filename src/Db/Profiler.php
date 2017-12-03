@@ -1,6 +1,6 @@
 <?php
 
-namespace Zemit\Db;
+namespace Zemit\Core\Db;
 
 use Phalcon\Di\Injectable;
 use Phalcon\Events\EventInterface;

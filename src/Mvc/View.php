@@ -1,6 +1,6 @@
 <?php
 
-namespace Zemit\Mvc;
+namespace Zemit\Core\Mvc;
 
 use Phalcon\Mvc\View as MvcView;
 use Phalcon\Text;
