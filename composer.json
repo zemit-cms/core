@@ -29,6 +29,7 @@
   "require": {
     "php": ">=7.0",
     "ext-phalcon": "~3.2",
+    "vlucas/phpdotenv": "^2.4",
     "phalcon/dd": "^1.1",
     "phalcon/incubator": "^3.2",
     "preferans/prest": "^3.6",

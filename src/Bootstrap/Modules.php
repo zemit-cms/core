@@ -9,7 +9,7 @@ use Phalcon\Application;
  * Config : [modules => ['api', 'backend', 'frontend']]
  *
  * Class Modules
- * @package Zemit\Core\Bootstrap
+ * @package Zemit\Bootstrap
  */
 class Modules {
     
@@ -23,7 +23,7 @@ class Modules {
             $registerModules = array();
             foreach ($config->modules as $module) {
                 $registerModules[$module] = array(
-                    'className' => 'Zemit\Core\\' . ucfirst($module) . '\\Module',
+                    'className' => $config->namespace . '\\' . ucfirst($module) . '\\Module',
                     'path' => __DIR__ . '/../modules/' . $module . '/Module.php'
                 );
             }
