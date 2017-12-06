@@ -4,9 +4,9 @@ namespace Zemit\Core\Backend\Controllers;
 
 use Zemit\Core\Backend\Controller;
 
-abstract class AbstractController extends Controller
+class MenuController extends Controller
 {
-    public function initialize() {
+    public function indexAction() {
     
     }
 }

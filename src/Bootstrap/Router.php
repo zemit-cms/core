@@ -8,12 +8,29 @@ use Phalcon\Text;
 
 class Router extends PhalconRouter
 {
+    public $defaults = [
+        'namespace' => 'Zemit\\Core\\Frontend\\Controllers',
+        'module' => 'frontend',
+        'controller' => 'index',
+        'action' => 'index'
+    ];
+    
+    public $notFound = [
+        'controller' => 'error',
+        'action' => 'notFound'
+    ];
+    
+    public $config;
+    
     /**
      * Router constructor.
      */
     public function __construct($defaultRoutes = true, Application $application = null)
     {
         parent::__construct($defaultRoutes);
+        if (isset($application)) {
+            $this->config = $application->getDI()->get('config');
+        }
         $this->defaultRoutes();
         $this->frontendRoutes();
         if (isset($application)) {
@@ -32,32 +49,22 @@ class Router extends PhalconRouter
     public function defaultRoutes()
     {
         $this->removeExtraSlashes(true);
-        $this->setDefaultModule('frontend');
-        $this->setDefaultNamespace('Zemit\\Frontend\\Controllers');
-        $this->setDefaultController('index');
-        $this->setDefaultAction('index');
-        $this->setDefaults(array(
-            'namespace' => 'Zemit\\Frontend\\Controllers',
-            'module' => 'frontend',
-            'controller' => 'index',
-            'action' => 'index'
-        ));
-        $this->notFound(array(
-            'controller' => 'error',
-            'action' => 'notFound'
-        ));
+        $this->setDefaults($this->config->router->defaults->toArray()?: $this->defaults);
+        $this->notFound($this->config->router->notFound->toArray()?: $this->notFound);
     }
     
     public function frontendRoutes() {
+        $defaults = $this->getDefaults();
+        
         $this->add('/:params', array(
-            'controller' => 'index',
-            'action' => 'index',
+            'controller' => $defaults['controller'],
+            'action' => $defaults['action'],
             'params' => 1
         ))->setName('default');
     
         $this->add('/:controller/:params', array(
             'controller' => 1,
-            'action' => 'index',
+            'action' => $defaults['action'],
             'params' => 2
         ))->setName('controller');
     
@@ -80,6 +87,8 @@ class Router extends PhalconRouter
      */
     public function modulesRoutes(Application $application)
     {
+        $defaults = $this->getDefaults();
+        
         foreach ($application->getModules() as $key => $module) {
             
             $namespace = str_replace('Module', 'Controllers', $module['className']);
@@ -87,8 +96,8 @@ class Router extends PhalconRouter
             $this->add('/' . $key . '/:params', array(
                 'namespace' => $namespace,
                 'module' => $key,
-                'controller' => 'index',
-                'action' => 'index',
+                'controller' => $defaults['controller'],
+                'action' => $defaults['action'],
                 'params' => 1
             ))->setName($key);
             
@@ -96,7 +105,7 @@ class Router extends PhalconRouter
                 'namespace' => $namespace,
                 'module' => $key,
                 'controller' => 1,
-                'action' => 'index',
+                'action' => $defaults['action'],
                 'params' => 2
             ))->setName($key . '-controller');
 //                ->convert('controller', function($controller) {

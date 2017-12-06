@@ -3,8 +3,14 @@
 namespace Zemit\Core\Utils;
 
 //@TODO test & use
-class Multibyte
+class Sprintf
 {
+    public static function implodeArrayMapSprintf($array = array(), $implode = ' ', $sprintf = '%s') {
+        return implode($implode, array_map(function ($value, $key) use ($sprintf) {
+            return self::mb_sprintf($sprintf, $value, $key);
+        }, $array, array_keys($array)));
+    }
+    
     /**
      * version of sprintf for cases where named arguments are desired (php syntax)
      *
@@ -26,7 +32,10 @@ class Multibyte
             }
         }
         // map of argument names to their corresponding sprintf numeric argument value
-        $arg_nums = array_slice(array_flip(array_keys(array(0 => 0) + $args)), 1);
+//        $arg_nums = array_slice(array_flip(array_keys(array(0 => 0) + $args)), 1);
+        $arg_nums = array_keys($args);
+        array_unshift($arg_nums, 0);
+        $arg_nums = array_flip(array_slice($arg_nums, 1, NULL, true));
         
         // find the next named argument. each search starts at the end of the previous replacement.
         for ($pos = 0; preg_match('/(?<=%)([a-zA-Z_]\w*)(?=\$)/', $format, $match, PREG_OFFSET_CAPTURE, $pos);) {

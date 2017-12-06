@@ -13,6 +13,8 @@ use Phalcon\Application;
  */
 class Modules {
     
+    public $modulesDir;
+    
     public function __construct(Application $application)
     {
         /**
@@ -21,10 +23,10 @@ class Modules {
         $config = $application->getDI()->get('config');
         if (!empty($config)) {
             $registerModules = array();
-            foreach ($config->modules as $module) {
+            foreach ($config->modules as $module => $namespace) {
                 $registerModules[$module] = array(
-                    'className' => $config->namespace . '\\' . ucfirst($module) . '\\Module',
-                    'path' => __DIR__ . '/../modules/' . $module . '/Module.php'
+                    'className' => $namespace . '\\Module',
+                    'path' => $config->application->modulesDir . $module . '/Module.php'
                 );
             }
             if (!empty($registerModules)) {

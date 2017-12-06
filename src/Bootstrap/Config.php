@@ -29,9 +29,21 @@ class Config extends PhalconConfig
             ),
             'namespace' => 'Zemit',
             'modules' => array(
-                'api',
-                'frontend',
-                'backend'
+                'api' => 'Zemit\\Api',
+                'frontend' => 'Zemit\\Frontend',
+                'backend' => 'Zemit\\Backend',
+            ),
+            'router' => array(
+                'defaults' => array(
+                    'namespace' => 'Zemit\\Core\\Frontend\\Controllers',
+                    'module' => 'frontend',
+                    'controller' => 'index',
+                    'action' => 'index'
+                ),
+                'notFound' => array(
+                    'controller' => 'error',
+                    'action' => 'notFound'
+                )
             ),
             'application' => array(
                 

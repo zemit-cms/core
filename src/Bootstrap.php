@@ -1,5 +1,5 @@
 <?php
-namespace Zemit;
+namespace Zemit\Core;
 
 use Phalcon\Di;
 use Phalcon\Di\FactoryDefault;
@@ -19,13 +19,14 @@ use Dotenv\Dotenv;
 class Bootstrap
 {
     public $mode;
-    public $dotenv;
     public $di;
+    public $dotenv;
     public $app;
     public $config;
-    public $application;
     public $services;
+    public $application;
     public $modules;
+    public $router;
     
     public function __construct($mode = 'normal')
     {
@@ -56,9 +57,9 @@ class Bootstrap
      */
     public function dotenv() {
         try {
-            $this->dotenv = new Dotenv\Dotenv(dirname(__DIR__));
+            $this->dotenv = new Dotenv(dirname(__DIR__));
             $this->dotenv->load();
-        } catch (Dotenv\Exception\InvalidPathException $e) {
+        } catch (\Dotenv\Exception\InvalidPathException $e) {
             // Skip
         }
         return $this->dotenv;

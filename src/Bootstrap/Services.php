@@ -25,16 +25,14 @@ use Zemit\Core\Mvc\Dispatcher\Error as DispatchError;
 use Zemit\Core\Mvc\Dispatcher\Security as DispatchSecurity;
 use Zemit\Core\Mvc\Dispatcher\Camelize as DispatchCamelize;
 use Zemit\Core\Mvc\Dispatcher\Rest as DispatchRest;
-//use Zemit\Core\Filter;
-//use Zemit\Core\Tag;
-//use Zemit\Core\Zemit;
+use Zemit\Core\Filter;
+use Zemit\Core\Tag;
+use Zemit\Core\Zemit;
 
 class Services extends Injectable {
     
     public function __construct(FactoryDefault $di, Config $config = null)
     {
-        parent::__construct();
-        
         /**
          * Configuration objet pour récupérer certaines configuration
          * @var \Phalcon\Config

@@ -1,8 +1,8 @@
 <?php
 
-namespace Zemit\Core\Backend\Controllers;
+namespace Zemit\Core\Frontend\Controllers;
 
-use Zemit\Core\Backend\Controller;
+use Zemit\Core\Frontend\Controller;
 
 abstract class AbstractController extends Controller
 {

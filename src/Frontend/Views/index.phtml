@@ -1,0 +1,19 @@
+<?= $this->tag->getDoctype() ?>
+<html<?= $this->tag->getParams('html');?>>
+    <head>
+        <?= $this->tag->title();?>
+        <?= $this->tag->meta();?>
+        <?= $this->tag->css();?>
+        <?= $this->tag->js();?>
+    </head>
+    <body<?= $this->tag->getParams('body');?>>
+        
+    
+    
+        <?= $this->partial('layout/header');?>
+        <?= $this->getContent();?>
+        <?= $this->partial('layout/footer');?>
+        <?= $this->tag->css('footer');?>
+        <?= $this->tag->js('footer');?>
+    </body>
+</html>
