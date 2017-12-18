@@ -27,6 +27,7 @@ use Zemit\Core\Mvc\Dispatcher\Camelize as DispatchCamelize;
 use Zemit\Core\Mvc\Dispatcher\Rest as DispatchRest;
 use Zemit\Core\Filter;
 use Zemit\Core\Tag;
+use Zemit\Core\Escaper;
 use Zemit\Core\Zemit;
 
 class Services extends Injectable {
@@ -71,12 +72,16 @@ class Services extends Injectable {
             
             $error = new ViewError($di);
             $eventsManager->attach('view', $error);
-            
+    
             $view = new View();
             $view->setMinify(true);
             $view->setViewsDir($config->application->viewsDir);
             $view->registerEngines(array(
                 '.phtml' => 'Phalcon\Mvc\View\Engine\Php',
+                '.volt' => 'Phalcon\Mvc\View\Engine\Volt',
+                '.mhtml' => 'Phalcon\Mvc\View\Engine\Mustache',
+                '.twig' => 'Phalcon\Mvc\View\Engine\Twig',
+                '.tpl' => 'Phalcon\Mvc\View\Engine\Smarty'
             ));
             
             $view->setEventsManager($eventsManager);
@@ -201,10 +206,18 @@ class Services extends Injectable {
         
         /**
          * Enregistrer le service de tags
-         * @var \Zemit\Tag
+         * @var \Zemit\Core\Escaper
          */
         $di->setShared('tag', function() {
             return new Tag();
+        });
+        
+        /**
+         * Register Escaper Service
+         * @var \Zemit\Core\Escaper
+         */
+        $di->setShared('escaper', function() {
+            return new Escaper();
         });
         
         /**
@@ -267,13 +280,13 @@ class Services extends Injectable {
         
         });
         
-//        /**
-//         * Zemit service
-//         */
-//        $di->setShared('zemit', function () {
-//            $zemit = new Zemit();
-//            return $zemit;
-//        });
+        /**
+         * Zemit service
+         */
+        $di->setShared('zemit', function () {
+            $zemit = new Zemit();
+            return $zemit;
+        });
         
         
         /**

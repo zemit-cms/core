@@ -74,7 +74,7 @@ class Tag extends PhalconTag
      *
      * @return null|string|array
      */
-    public static function escapeParam($value = null, $key = null)
+    public static function escapeParam($value = null, $key = null, $glue =  ' ')
     {
         $escaper = self::getEscaperService();
         $key = $escaper->escapeHtmlAttr($key);
@@ -93,29 +93,26 @@ class Tag extends PhalconTag
                 break;
             default:
                 // array escaper
-                if (is_array($value) || is_object($value)) {
+                
+                if (is_array($value) || $value instanceof \Traversable) {
+    
+                    if (isset($value[0]) && is_string($value[0])) {
+                        foreach ($value as &$v) {
+                            $v = $escaper->escapeHtmlAttr($v);
+                        }
+                        $value = implode($glue, $value);
+                    }
+                    // deep array escaper
+                    else {
+                        $value = $escaper->escapeJson(json_encode($value));
+                    }
                     
-//                    $values = [];
-//                    foreach ($value as $key => $v) {
-//                        if (is_int($key)) {
-//                            $values []= self::escapeParam($value, $key);
-//                        }
-//                        else {
-//                            $values [$key]= self::escapeParam($value, $key);
-//                        }
-//
-//                    }
-//                    $value = implode(' ', $values);
-                    
-                    // escape each fields manually
-//                    array_walk_recursive($value, function(&$item, &$key) use ($escaper) {
-//                        $key = $escaper->escapeHtmlAttr($key);
-//                        $item = $escaper->escapeHtmlAttr($item);
-//                    });
-                    
-                    // @todo review this or escape fields manually
-                    $value = json_encode($value);
-                } // default escaper
+                }
+                // other object escaper
+                else if (is_object($value)) {
+                    $value = $escaper->escapeJson(json_encode($value));
+                }
+                // default escaper
                 else {
                     $value = $escaper->escapeHtmlAttr($value);
                 }
@@ -287,6 +284,9 @@ class Tag extends PhalconTag
         if ($merge) {
             $retMerge = [];
             foreach ($ret as $key => $val) {
+                if (is_object($val)) {
+                    $val = (array)$val;
+                }
                 if (isset($val)) {
                     $retMerge = array_merge_recursive($retMerge, $val);
                 }
@@ -335,6 +335,9 @@ class Tag extends PhalconTag
      */
     public static function setAttrs($attrs = array(), $merge = false)
     {
+        if (is_object($attrs)) {
+            $attrs = (array)$attrs;
+        }
         if (is_string($attrs)) {
             if (!$merge || empty(self::$_attr[$attrs])) {
                 $ret = self::$_attr[$attrs] = [];
@@ -342,7 +345,9 @@ class Tag extends PhalconTag
         } else {
             $ret = array();
             foreach ($attrs as $attrsKey => $attrsValue) {
-                
+                if (is_object($attrsValue)) {
+                    $attrsValue = (array)$attrsValue;
+                }
                 if (!$merge || empty(self::$_attr[$attrsKey])) {
                     $ret [$attrsKey] = self::$_attr[$attrsKey] = $attrsValue;
                 } else {

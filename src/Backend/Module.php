@@ -25,6 +25,9 @@ class Module implements ModuleDefinitionInterface {
      */
     public function registerAutoloaders(DiInterface $di = null) {
         $loader = new Loader();
+        $loader->registerNamespaces([
+            'Zemit\\Backend\\Controllers' => $di['config']->application->modulesDir . 'backend/controllers/',
+        ], true);
         $loader->register();
         $di['loader'] = $loader;
     }
@@ -38,13 +41,13 @@ class Module implements ModuleDefinitionInterface {
         $config = $di['config'];
         
         $di['url']->setBaseUri('/');
-        $di['url']->setStaticBaseUri('/backend/');
+        $di['url']->setStaticBaseUri('/');
         
         $di['view'] = function () use ($config) {
             $view = new View();
             $view->setViewsDir(array(
                 $config->application->vendorDir . 'zemit-official/cms-core/src/Backend/Views/',
-                $config->application->moduleDir . 'views/',
+                $config->application->modulesDir . 'Backend/views/',
             ));
             return $view;
         };

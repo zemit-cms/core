@@ -4,10 +4,12 @@ namespace Zemit\Core\Frontend;
 
 use Phalcon\DiInterface;
 use Phalcon\Loader;
+use Phalcon\Mvc\Url;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\ModuleDefinitionInterface;
+use Phalcon\Text;
 use Zemit\Core\Bootstrap\Config;
-use Zemit\Core\Exception;
+use Zemit\Core\Bootstrap\Router;
 
 /**
  * @author Julien Turbide <jturbide@nuagerie.com>
@@ -15,11 +17,11 @@ use Zemit\Core\Exception;
  */
 class Module implements ModuleDefinitionInterface
 {
-    
     /**
-     * @var Loader
+     * Module name to register
+     * @var string Module name
      */
-    public $loader;
+    public $moduleName = 'Frontend';
     
     /**
      * @var Config
@@ -27,34 +29,44 @@ class Module implements ModuleDefinitionInterface
     public $config;
     
     /**
-     * Registers an autoloader related to the module
-     *
-     * @throws \Exception if $this->loader is not an instance of \Phalcon\Loader
-     *
+     * @var Loader
+     */
+    public $loader;
+    
+    /**
+     * @var Router
+     */
+    public $router;
+    
+    /**
+     * @var View
+     */
+    public $view;
+    
+    /**
+     * @var Url
+     */
+    public $url;
+    
+    /**
+     * Registers an autoloader related to the frontend module
      * @param DiInterface $di
      */
     public function registerAutoloaders(DiInterface $di = null)
     {
-        $this->config = $di['config'] ?? null;
-        $this->loader = $di['loader'] ?? null;
+        //get services
+        $this->getServices($di);
         
-        // Make sure the loader is an instance of the phalcon loader class
-        if (!($this->loader instanceof Loader)) {
-            if (empty($this->loader)) {
-                $this->loader = new Loader();
-            } else {
-                throw new Exception("\$this->\$loader must be an instance of Phalcon\\Loader, instance of \"" . get_class($this->loader) . "\" given.");
-            }
-        }
-        
-        // Register frontend namespaces
+        // register namespaces
         $this->loader->registerNamespaces([
-            'Zemit\\Frontend\\Controllers' => $this->config->application->modulesDir . 'frontend/controllers/',
+            'Zemit\\'.$this->moduleName.'\\Controllers' => $this->config->application->moduleDir . '/controllers/',
         ], true);
         
-        // Register the loader and inject into the DI
+        // register autoloader
         $this->loader->register();
-        $di['loader'] = $this->loader;
+        
+        // save services
+        $this->setServices($di);
     }
     
     /**
@@ -64,25 +76,46 @@ class Module implements ModuleDefinitionInterface
      */
     public function registerServices(DiInterface $di)
     {
-        $config = $di['config'];
+        // get services
+        $this->getServices($di);
         
-        $di['url']->setBaseUri('/');
-        $di['url']->setStaticBaseUri('/backend/');
+        // view settings
+        $this->view = new View();
+        $this->view->setViewsDir([
+            $this->config->application->vendorDir . 'zemit-official/cms-core/src/' . $this->config->application->moduleName . '/Views/',
+            $this->config->application->moduleDir . 'views/',
+        ]);
         
-        $di['view'] = function() use ($config) {
-            $view = new View();
-            $view->setViewsDir(array(
-                $config->application->vendorDir . 'zemit-official/cms-core/src/Frontend/Views/',
-//                $config->application->moduleDir . 'views/',
-            ));
-            return $view;
-        };
+        // url settings
+        $this->url->setBasePath('/' . Text::uncamelize($this->moduleName) . '/');
+        $this->url->setStaticBaseUri('/' . Text::uncamelize($this->moduleName) . '/');
         
-        $router = $di['router'];
-        $router->setDefaults(array('namespace' => 'Zemit\\Frontend\\Controllers', 'controller' => 'index', 'action' => 'index'));
-        $router->notFound(array('controller' => 'errors', 'action' => 'notFound'));
-        $router->removeExtraSlashes(true);
-        $di['router'] = $router;
+        // router settings
+        $this->router->setDefaults(array('namespace' => 'Zemit\\' . $this->config->application->moduleName . '\\Controllers', 'controller' => 'index', 'action' => 'index'));
+        $this->router->notFound(array('controller' => 'errors', 'action' => 'notFound'));
+        $this->router->removeExtraSlashes(true);
+        
+        // save services
+        $this->setServices($di);
+    }
+    
+    public function getServices(DiInterface $di) {
+        // Config
+        $this->config = $this->config ?? $di['config'] ?? new Config();
+        $this->config->application->moduleName = $this->moduleName;
+        $this->config->application->moduleDir = $this->config->application->modulesDir . $this->moduleName . '/';
+        $this->loader = $this->loader ?? $di['loader'] ?? new Loader();
+        $this->router = $this->router ?? $di['router'] ?? new Router();
+        $this->view = $this->view ?? $di['view'] ?? new View();
+        $this->url = $this->url ?? $di['url'] ?? new Url();
+    }
+    
+    public function setServices(DiInterface $di) {
+        $di['config'] = $this->config;
+        $di['loader'] = $this->loader;
+        $di['router'] = $this->router;
+        $di['view'] = $this->view;
+        $di['url'] = $this->url;
     }
     
 }

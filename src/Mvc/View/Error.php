@@ -1,6 +1,6 @@
 <?php
 
-namespace Omniscient\Mvc\View;
+namespace Zemit\Core\Mvc\View;
 
 use Phalcon\Di\Injectable;
 use Phalcon\Events\Event;
