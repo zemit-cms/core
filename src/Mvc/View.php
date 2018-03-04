@@ -44,7 +44,7 @@ class View extends MvcView
             $controllerName = Slug::generate(Text::uncamelize($controllerName));
             $actionName = Slug::generate(Text::uncamelize($actionName));
         }
-        parent::getRender($controllerName, $actionName, $params);
+        return parent::getRender($controllerName, $actionName, $params);
     }
     
     /**

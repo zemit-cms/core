@@ -26,7 +26,7 @@ class Modules {
             foreach ($config->modules as $module => $namespace) {
                 $registerModules[$module] = array(
                     'className' => $namespace . '\\Module',
-                    'path' => $config->application->modulesDir . $module . '/Module.php'
+                    'path' => $config->app->dir->modules . $module . '/Module.php'
                 );
             }
             if (!empty($registerModules)) {

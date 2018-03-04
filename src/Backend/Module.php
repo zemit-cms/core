@@ -46,8 +46,7 @@ class Module implements ModuleDefinitionInterface {
         $di['view'] = function () use ($config) {
             $view = new View();
             $view->setViewsDir(array(
-                $config->application->vendorDir . 'zemit-official/cms-core/src/Backend/Views/',
-                $config->application->modulesDir . 'Backend/views/',
+                $config->core->dir->base . '/Backend/Views/',
             ));
             return $view;
         };

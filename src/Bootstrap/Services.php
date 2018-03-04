@@ -8,12 +8,18 @@ use Phalcon\Di\Injectable;
 use Phalcon\Mvc\View\Simple;
 use Phalcon\Security;
 use Phalcon\Mvc\Url;
-use Phalcon\Mvc\Dispatcher;
+use Phalcon\Mvc\Dispatcher as MvcDispatcher;
+use Phalcon\Cli\Dispatcher as CliDispatcher;
 use Phalcon\Http\Response\Cookies;
 use Phalcon\Mailer\Manager as MailerManager;
 use Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
 use Phalcon\Session\Adapter\Files as SessionAdapter;
 use Phalcon\Flash\Session as FlashSession;
+use Phalcon\Translate\Adapter\NativeArray;
+use Phalcon\Translate\Factory as Translate;
+
+// vendor
+use ModDev\PhalconLocale\PhalconLocale;
 
 // zemit
 use Zemit\Core\Assets\Manager as AssetsManager;
@@ -30,7 +36,8 @@ use Zemit\Core\Tag;
 use Zemit\Core\Escaper;
 use Zemit\Core\Zemit;
 
-class Services extends Injectable {
+class Services extends Injectable
+{
     
     public function __construct(FactoryDefault $di, Config $config = null)
     {
@@ -39,11 +46,11 @@ class Services extends Injectable {
          * @var \Phalcon\Config
          */
         $di->setShared('config', $config);
-    
+        
         /**
          * Registering a router
          */
-        $di->setShared('router', function () {
+        $di->setShared('router', function() {
             $router = new Router();
             $router->setDefaultModule('frontend');
             $router->setDefaultNamespace('Zemit\\Frontend\\Controllers');
@@ -56,9 +63,9 @@ class Services extends Injectable {
          * (au cas ou l'application serait dans un path spécifique /zemit/sports/)
          * @var \Phalcon\Mvc\Url
          */
-        $di->setShared('url', function () use ($config) {
+        $di->setShared('url', function() use ($config) {
             $url = new Url();
-            $url->setBaseUri($config->application->baseUri);
+            $url->setBaseUri($config->app->baseUri);
             return $url;
         });
         
@@ -66,16 +73,14 @@ class Services extends Injectable {
          * View component utilisé pour générer les vues dans l'application avec un engin spécifique
          * @var \Phalcon\Mvc\View
          */
-        $di->setShared('view', function () use ($di, $config) {
+        $di->setShared('view', function() use ($di, $config) {
             // Get the events manager
             $eventsManager = $di->getShared('eventsManager');
             
             $error = new ViewError($di);
             $eventsManager->attach('view', $error);
-    
+            
             $view = new View();
-            $view->setMinify(true);
-            $view->setViewsDir($config->application->viewsDir);
             $view->registerEngines(array(
                 '.phtml' => 'Phalcon\Mvc\View\Engine\Php',
                 '.volt' => 'Phalcon\Mvc\View\Engine\Volt',
@@ -128,13 +133,19 @@ class Services extends Injectable {
 //            $eventsManager->attach('dispatch', $error);
             
             // Setup the dispatcher
-            $dispatcher = new Dispatcher();
+            if (isset($config->mode) && $config->mode === 'console') {
+                $dispatcher = new CliDispatcher();
+            }
+            else {
+                $dispatcher = new MvcDispatcher();
+            }
+            
             
             // Attach the events manager
             $dispatcher->setEventsManager($eventsManager);
             
             // Setup the default namespace
-            $dispatcher->setDefaultNamespace('Zemit\\Controllers');
+            $dispatcher->setDefaultNamespace('Zemit\\Frontend\\Controllers');
             
             return $dispatcher;
         });
@@ -177,8 +188,8 @@ class Services extends Injectable {
             
             return $connection;
         });
-    
-        $di->setShared('cookies', function () {
+        
+        $di->setShared('cookies', function() {
             $cookies = new Cookies();
             $cookies->useEncryption(true);
             return $cookies;
@@ -188,7 +199,7 @@ class Services extends Injectable {
          * Session component pour gérer les sessions à partir de l'adapteur de session par fichier
          * @var \Phalcon\Session\Adapter\Files
          */
-        $di->setShared('session', function () {
+        $di->setShared('session', function() {
             $session = new SessionAdapter();
             if (!$session->isStarted()) {
                 $session->start();
@@ -224,7 +235,7 @@ class Services extends Injectable {
          * Enregistre le service d'assets
          * @var \Zemit\Assets\Manager
          */
-        $di->setShared('assets', function () {
+        $di->setShared('assets', function() {
             return new AssetsManager();
         });
         
@@ -240,24 +251,24 @@ class Services extends Injectable {
         /**
          * Security service
          */
-        $di->setShared('security', function () use ($config) {
+        $di->setShared('security', function() use ($config) {
             $security = new Security();
             if (!empty($config->security->workfactor)) {
                 $security->setWorkFactor($config->security->workfactor);
             }
             return $security;
         });
-    
+        
         /**
          * Cache service
          */
-        $di->setShared('cache', function () {
-        
+        $di->setShared('cache', function() {
+            
             // cache for 2 days
             $frontCache = new \Phalcon\Cache\Frontend\Data(array(
                 'lifetime' => 172800
             ));
-        
+            
             if (class_exists('\Memcached')) {
                 return new \Phalcon\Cache\Backend\Libmemcached($frontCache, [
                     'servers' => [[
@@ -267,23 +278,20 @@ class Services extends Injectable {
                     ]],
                     "statsKey" => "_PHCM"
                 ]);
-            }
-            elseif (class_exists('\Memcache')) {
+            } elseif (class_exists('\Memcache')) {
                 return new \Phalcon\Cache\Backend\Memcache($frontCache, ["statsKey" => "_PHCM"]);
-            }
-            elseif (class_exists('\APCIterator')) {
+            } elseif (class_exists('\APCIterator')) {
                 return new \Phalcon\Cache\Backend\Apc($frontCache);
-            }
-            elseif (class_exists('\APCUIterator')) {
+            } elseif (class_exists('\APCUIterator')) {
                 //@TODO APCU Phalcon Cache Backend
             }
-        
+            
         });
         
         /**
          * Zemit service
          */
-        $di->setShared('zemit', function () {
+        $di->setShared('zemit', function() {
             $zemit = new Zemit();
             return $zemit;
         });
@@ -292,13 +300,30 @@ class Services extends Injectable {
         /**
          * SimplePie service
          */
-        $di->setShared('rss', function () use ($config) {
+        $di->setShared('rss', function() use ($config) {
             $rss = new \SimplePie();
 //            $rss->set_cache_location($config->application->cacheDir);
             $rss->enable_cache(false);
             return $rss;
         });
         
+        /**
+         * Local service
+         */
+        $di->setShared('locale', function() use ($di, $config) {
+            return new PhalconLocale($di, $config);
+        });
         
+        /**
+         * Translate service
+         */
+        $di->setShared('translate', function() use ($di, $config) {
+            $options = $config->translate;
+            $options['locale'] = $di->get('locale')->getLocale();
+            $options['content'] = ['test' => 'test'];
+            dd($options['locale']);
+            
+            return Translate::load($options);
+        });
     }
 }

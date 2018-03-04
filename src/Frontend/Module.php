@@ -4,12 +4,14 @@ namespace Zemit\Core\Frontend;
 
 use Phalcon\DiInterface;
 use Phalcon\Loader;
+use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\Url;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\ModuleDefinitionInterface;
 use Phalcon\Text;
 use Zemit\Core\Bootstrap\Config;
 use Zemit\Core\Bootstrap\Router;
+use Zemit\Core\Utils;
 
 /**
  * @author Julien Turbide <jturbide@nuagerie.com>
@@ -27,6 +29,11 @@ class Module implements ModuleDefinitionInterface
      * @var Config
      */
     public $config;
+    
+    /**
+     * @var Dispatcher
+     */
+    public $dispatcher;
     
     /**
      * @var Loader
@@ -57,10 +64,19 @@ class Module implements ModuleDefinitionInterface
         //get services
         $this->getServices($di);
         
+        // get current instance namespace
+        $namespace = Utils::getNamespace($this);
+        
+        // register the app module controllers first if possible
+        if ($namespace !== __NAMESPACE__) {
+            $namespaces[$namespace . '\\Controllers'] = $this->config->app->dir->module . '/controllers/';
+        }
+        
+        // register the vendor module controllers
+        $namespaces[__NAMESPACE__ . '\\Controllers'] = $this->config->core->dir->base . '/controllers/';
+        
         // register namespaces
-        $this->loader->registerNamespaces([
-            'Zemit\\'.$this->moduleName.'\\Controllers' => $this->config->application->moduleDir . '/controllers/',
-        ], true);
+        $this->loader->registerNamespaces($namespaces, true);
         
         // register autoloader
         $this->loader->register();
@@ -79,11 +95,13 @@ class Module implements ModuleDefinitionInterface
         // get services
         $this->getServices($di);
         
+        // dispatcher settings
+        $this->dispatcher->setDefaultNamespace('Zemit\\' . $this->moduleName . '\\Controllers');
+        
         // view settings
-        $this->view = new View();
         $this->view->setViewsDir([
-            $this->config->application->vendorDir . 'zemit-official/cms-core/src/' . $this->config->application->moduleName . '/Views/',
-            $this->config->application->moduleDir . 'views/',
+            $this->config->app->dir->module . 'views/',
+            $this->config->core->dir->base. $this->moduleName . '/Views/',
         ]);
         
         // url settings
@@ -91,7 +109,7 @@ class Module implements ModuleDefinitionInterface
         $this->url->setStaticBaseUri('/' . Text::uncamelize($this->moduleName) . '/');
         
         // router settings
-        $this->router->setDefaults(array('namespace' => 'Zemit\\' . $this->config->application->moduleName . '\\Controllers', 'controller' => 'index', 'action' => 'index'));
+        $this->router->setDefaults(array('namespace' => $this->dispatcher->getDefaultNamespace(), 'controller' => 'index', 'action' => 'index'));
         $this->router->notFound(array('controller' => 'errors', 'action' => 'notFound'));
         $this->router->removeExtraSlashes(true);
         
@@ -102,16 +120,18 @@ class Module implements ModuleDefinitionInterface
     public function getServices(DiInterface $di) {
         // Config
         $this->config = $this->config ?? $di['config'] ?? new Config();
-        $this->config->application->moduleName = $this->moduleName;
-        $this->config->application->moduleDir = $this->config->application->modulesDir . $this->moduleName . '/';
+        $this->config->app->module = mb_strtolower($this->moduleName);
+        $this->config->app->dir->module = $this->config->app->dir->modules . strtolower($this->moduleName) . '/';
         $this->loader = $this->loader ?? $di['loader'] ?? new Loader();
         $this->router = $this->router ?? $di['router'] ?? new Router();
+        $this->dispatcher = $this->dispatcher ?? $di['dispatcher'] ?? new Dispatcher();
         $this->view = $this->view ?? $di['view'] ?? new View();
         $this->url = $this->url ?? $di['url'] ?? new Url();
     }
     
     public function setServices(DiInterface $di) {
         $di['config'] = $this->config;
+        $di['dispatcher'] = $this->dispatcher;
         $di['loader'] = $this->loader;
         $di['router'] = $this->router;
         $di['view'] = $this->view;

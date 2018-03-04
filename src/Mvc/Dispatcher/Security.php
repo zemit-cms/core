@@ -1,6 +1,6 @@
 <?php
 
-namespace Omniscient\Mvc\Dispatcher;
+namespace Zemit\Core\Mvc\Dispatcher;
 
 use Phalcon\Acl as PhalconAcl;
 use Phalcon\Acl\Role;
@@ -84,7 +84,7 @@ class Security extends Plugin
             $acl->addRole(new Role('public', 'Public'));
             
             // Get db roles
-            $roles = \Omniscient\Api\Models\Role::findByDeleted(0);
+            $roles = \Zemit\Core\Api\Models\Role::findByDeleted(0);
     
             // Register roles
             foreach ($roles as $role) {
@@ -140,12 +140,12 @@ class Security extends Plugin
      */
     public function beforeDispatch(Event $event, Dispatcher $dispatcher)
     {
-        $user = $this->omniscient->getUser();
+        $user = $this->zemit->getUser();
         if ($user) {
             $roles = $user->getRoles();
         }
         if (empty($roles)) {
-            $roles = array(new \Omniscient\Api\Models\Role(array('name' => 'Public', 'slug' => 'public')));
+            $roles = array(new \Zemit\Core\Api\Models\Role(array('name' => 'Public', 'slug' => 'public')));
         }
         
         // get controller and action

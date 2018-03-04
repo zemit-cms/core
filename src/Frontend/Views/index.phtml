@@ -5,6 +5,7 @@
         <?= $this->tag->meta();?>
         <?= $this->tag->css();?>
         <?= $this->tag->js();?>
+        <?= $this->partial('layout/head');?>
     </head>
     <body<?= $this->tag->getParams('body');?>>
         <?= $this->partial('layout/header');?>

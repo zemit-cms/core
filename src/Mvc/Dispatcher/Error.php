@@ -1,6 +1,6 @@
 <?php
 
-namespace Omniscient\Mvc\Dispatcher;
+namespace Zemit\Core\Mvc\Dispatcher;
 
 use Phalcon\Di\Injectable;
 use Phalcon\Mvc\DispatcherInterface;
