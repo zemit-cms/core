@@ -6,45 +6,63 @@ use Phalcon\Mvc\Router\Group as RouterGroup;
 
 class ModuleRoute extends RouterGroup
 {
+    public $locale = true;
     public $default = false;
+    public $params = false;
     
-    public function __construct($paths = null, $default = false)
+    public function __construct($paths = null, $default = false, $locale = true, $params = false)
     {
         $this->default = $default;
+        $this->params = $params;
+        $this->locale = $locale;
         parent::__construct($paths);
     }
     
     public function initialize()
     {
         $path = $this->getPaths();
-        $routeKey = '/' . $path['module'];
-        $this->setPrefix('/{locale:([a-z]{2,3}([\_\-][[:alnum:]]{1,8})?)}' . ($this->default ? null : $routeKey));
-        $this->add( '/:params', array(
-            'namespace' => $path['namespace'],
-            'module' => $path['module'],
-            'controller' => $path['controller'],
-            'action' => $path['action'],
-            'params' => 3
-        ))->setName('LocaleAwareRoute');
-        $this->add( '/:controller/:params', array(
-            'namespace' => $path['namespace'],
-            'module' => $path['module'],
-            'controller' => 3,
-            'action' => $path['action'],
-            'params' => 4
-        ))->setName('LocaleAwareRoute');
-        $this->add( '/:controller/([a-zA-Z0-9\_\-]+)/:params', array(
-            'namespace' => $path['namespace'],
-            'module' => $path['module'],
-            'controller' => 3,
-            'action' => 4,
-            'params' => 5
-        ))->setName('LocaleAwareRoute');
-        $this->add( '/:controller/:int', array(
-            'namespace' => $path['namespace'],
-            'module' => $path['module'],
-            'controller' => 3,
-            'id' => 4,
-        ))->setName('LocaleAwareRoute');
+        $module = $path['module'];
+        $params = $this->params ? '/:params' : null;
+        
+        /**
+         * /backend/
+         * /fr/backend/
+         * /fr-FR/backend/
+         * /fr_FR/backend/
+         */
+        $this->setPrefix(($this->locale? '(/)?{locale:([a-z]{2,3}([\_\-][[:alnum:]]{1,8})?)?}' : null) . ($this->default ? null : '/' . $module));
+        $prefixPos = $this->locale? 3 : 0;
+        
+//        if ($this->default) {
+//            $module = 'zemit';
+//        }
+        
+        // /backend
+        $this->add( '' . $params, [
+        ])->setName($module);
+
+        // /backend/users
+        $this->add('/:controller' . $params, [
+            'controller' => $prefixPos + 1,
+        ])->setName($module);
+
+        // /backend/user/list
+        $this->add('/:controller/:action' . $params, [
+            'controller' => $prefixPos + 1,
+            'action' => $prefixPos + 2,
+        ])->setName($module);
+
+        // /backend/user/profile/jturbide
+        $this->add( '/:controller/:action/{slug:([a-zA-Z0-9\_\-]+)}' . $params, [
+            'controller' => $prefixPos + 1,
+            'action' => $prefixPos + 2,
+        ])->setName($module);
+        
+        // backend/user/edit/1
+        $this->add( '/:controller/:action/:int' . $params, [
+            'controller' => $prefixPos + 1,
+            'action' => $prefixPos + 2,
+            'int' => $prefixPos + 3,
+        ])->setName($module);
     }
 }

@@ -2,9 +2,9 @@
 
 namespace Zemit\Core\Frontend\Controllers;
 
-class IndexController extends AbstractController
+class TestController extends AbstractController
 {
     public function indexAction() {
-    
+        dd('test');
     }
 }

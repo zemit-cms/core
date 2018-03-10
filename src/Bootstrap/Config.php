@@ -2,6 +2,7 @@
 
 namespace Zemit\Core\Bootstrap;
 
+use Zemit\Core\Utils\Locale;
 use Zemit\Core\Utils\Env;
 use Phalcon\Config as PhalconConfig;
 use PDO;
@@ -17,12 +18,19 @@ class Config extends PhalconConfig
         
         parent::__construct(array(
             /**
+             * Default namespace
+             */
+            'namespace' => 'Zemit',
+            
+            /**
              * Default general settings
              */
             'version' => Env::get('APP_VERSION', date('Ymd')), // allow to set and force a specific version
             'maintenance' => Env::get('APP_MAINTENANCE', false), // Set true to force the maintenance page
             'env' => Env::get('APP_ENV', APPLICATION_ENV), // Set the current environnement
             'cache' => Env::get('APP_CACHE', false), // Set true to activate the cache
+            'minify' => Env::get('APP_MINIFY', false), // Set true to activate the cache
+            'copyright' => Env::get('APP_COPYRIGHT', false), // Set true to activate the cache
             'debug' => Env::get('APP_DEBUG', false), // Set true to display php debug
             'profiler' => Env::get('APP_PROFILER', false), // Set true to return the profiler
             'logger' => Env::get('APP_LOGGER', false), // Set true to log database transactions
@@ -39,42 +47,43 @@ class Config extends PhalconConfig
              * Default local settings
              */
             'locale' => array(
-                'localeBasedRedirect' => true,
-                'defaultLocale' => 'en_US',
+                'default' => 'en',
                 'sessionKey' => 'zemit-locale',
-                'doubleCheckBrowserDefaultLangs' => true,
-                'useGeoIP' => true,
-                'geoIPEdition' => GEOIP_COUNTRY_EDITION,
-                'availableLocales' => array(
-                    'en',
-                    'fr',
-                    'en_US',
-                    'fr_CA'
-                )
+                'mode' => Locale::MODE_SESSION_GEOIP,
+                'list' => [
+                    'en', 'en_US',
+                    'fr', 'fr_FR',
+                ]
             ),
     
             /**
              * Default translater settings
              */
             'translate' => [
-                'locale' => 'en_US.UTF-8',
-                'defaultDomain' => 'zemit',
+                'locale' => 'en_US.utf8',
+                'defaultDomain' => 'messages',
                 'category' => LC_MESSAGES,
-                'adapter' => 'nativearray',
+                'directory' => [
+                    'messages' => $corePath . 'Lang'
+                ],
             ],
-    
-            /**
-             * Default namespace
-             */
-            'namespace' => 'Zemit',
     
             /**
              * Default modules
              */
             'modules' => array(
-                'frontend' => 'Zemit\\Core\\Frontend',
-                'backend' => 'Zemit\\Core\\Backend',
-                'api' => 'Zemit\\Core\\Api',
+                'frontend' => [
+                    'className' => 'Zemit\\Core\\Frontend\\Module',
+                    'path' => $corePath . 'Frontend/Module.php'
+                ],
+                'backend' => [
+                    'className' => 'Zemit\\Core\\Backend\\Module',
+                    'path' => $corePath . 'Backend/Module.php'
+                ],
+                'api' => [
+                    'className' => 'Zemit\\Core\\Api\\Module',
+                    'path' => $corePath . 'Api/Module.php'
+                ],
             ),
     
             /**
@@ -100,13 +109,13 @@ class Config extends PhalconConfig
                 'version' => '0.1.0',
                 'package' => $corePackage,
                 'modules' => [
-                    'api' => 'Zemit\\Core\\Api',
-                    'frontend' => 'Zemit\\Core\\Frontend',
-                    'backend' => 'Zemit\\Core\\Backend',
+                    'Api' => 'Zemit\\Core\\Api',
+                    'Frontend' => 'Zemit\\Core\\Frontend',
+                    'Backend' => 'Zemit\\Core\\Backend',
                 ],
                 'dir' => [
                     'base' => $corePath,
-                    'locales' => $corePath . 'locales/',
+                    'locales' => $corePath . 'Lang',
                 ],
             ],
     
@@ -142,7 +151,6 @@ class Config extends PhalconConfig
              */
             'app' => array(
                 'baseUri' => '',
-                'defaultModule' => 'frontend',
                 'dir' => [
                     // default
                     'modules' => APPLICATION_PATH . '/modules/',

@@ -15,11 +15,9 @@ use Phalcon\Mailer\Manager as MailerManager;
 use Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
 use Phalcon\Session\Adapter\Files as SessionAdapter;
 use Phalcon\Flash\Session as FlashSession;
+use Phalcon\Translate\Adapter\Gettext;
 use Phalcon\Translate\Adapter\NativeArray;
 use Phalcon\Translate\Factory as Translate;
-
-// vendor
-use ModDev\PhalconLocale\PhalconLocale;
 
 // zemit
 use Zemit\Core\Assets\Manager as AssetsManager;
@@ -31,6 +29,7 @@ use Zemit\Core\Mvc\Dispatcher\Error as DispatchError;
 use Zemit\Core\Mvc\Dispatcher\Security as DispatchSecurity;
 use Zemit\Core\Mvc\Dispatcher\Camelize as DispatchCamelize;
 use Zemit\Core\Mvc\Dispatcher\Rest as DispatchRest;
+use Zemit\Core\Utils\Locale;
 use Zemit\Core\Filter;
 use Zemit\Core\Tag;
 use Zemit\Core\Escaper;
@@ -129,8 +128,8 @@ class Services extends Injectable
             /**
              * Error dispatcher
              */
-//            $error = new DispatchError($di);
-//            $eventsManager->attach('dispatch', $error);
+            $error = new DispatchError($di);
+            $eventsManager->attach('dispatch', $error);
             
             // Setup the dispatcher
             if (isset($config->mode) && $config->mode === 'console') {
@@ -311,7 +310,7 @@ class Services extends Injectable
          * Local service
          */
         $di->setShared('locale', function() use ($di, $config) {
-            return new PhalconLocale($di, $config);
+            return new Locale($config->locale->toArray());
         });
         
         /**
@@ -319,11 +318,11 @@ class Services extends Injectable
          */
         $di->setShared('translate', function() use ($di, $config) {
             $options = $config->translate;
-            $options['locale'] = $di->get('locale')->getLocale();
-            $options['content'] = ['test' => 'test'];
-            dd($options['locale']);
-            
-            return Translate::load($options);
+            $translate = new Gettext($options->toArray());
+//            dd($di->get('router')->getParams());
+//            dd($di->get('locale')->getFromRoute());
+            $translate->setLocale(LC_MESSAGES, $di->get('locale')->get() . '.utf8');
+            return $translate;
         });
     }
 }

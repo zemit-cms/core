@@ -37,6 +37,7 @@
     "phalcon/incubator": "^3.2",
     "phalcon/ide-stubs": "~3.2",
     "phalcon/breadcrumbs":  "^1.3",
+    "moderndeveloperllc/phalconlocale" : "1.0.*",
     "m1ome/phalcon-datatables": "^1.1",
     "preferans/prest": "^3.6",
 

@@ -1,4 +1,4 @@
 <footer class="app-footer">
-    <span><a href="https://www.zemit.com">Zemit Official</a> &copy; 2017 Zemit.</span>
-    <span class="ml-auto">Powered by <a href="https://www.zemit.com">Zemit</a></span>
+    <span><a href="https://www.zemit.com">Zemit Official</a> <?= ucfirst($this->dispatcher->getModuleName());?> &copy; 2017 Zemit.</span>
+    <span class="ml-auto"><?= $this->translate->t('Powered by %zemit%', ['zemit' => '<a href="https://www.zemit.com">Zemit CMS</a>']);?></span>
 </footer>

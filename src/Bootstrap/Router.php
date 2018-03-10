@@ -29,12 +29,11 @@ class Router extends PhalconRouter
      */
     public function __construct($defaultRoutes = true, Application $application = null)
     {
-        parent::__construct($defaultRoutes);
+        parent::__construct(false);
         if (isset($application)) {
             $this->config = $application->getDI()->get('config');
         }
         $this->defaultRoutes();
-        $this->frontendRoutes();
         if (isset($application)) {
             $this->modulesRoutes($application);
         }
@@ -53,9 +52,6 @@ class Router extends PhalconRouter
         $this->removeExtraSlashes(true);
         $this->setDefaults($this->config->router->defaults->toArray()?: $this->defaults);
         $this->notFound($this->config->router->notFound->toArray()?: $this->notFound);
-    }
-    
-    public function frontendRoutes() {
         $this->mount(new ModuleRoute($this->getDefaults(), true));
     }
     

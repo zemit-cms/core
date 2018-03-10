@@ -21,25 +21,7 @@ class Modules {
          * Register application modules
          */
         $config = $application->getDI()->get('config');
-        if (!empty($config)) {
-            $registerModules = array();
-            foreach ($config->modules as $module => $namespace) {
-                $registerModules[$module] = array(
-                    'className' => $namespace . '\\Module',
-                    'path' => $config->app->dir->modules . $module . '/Module.php'
-                );
-            }
-            if (!empty($registerModules)) {
-                $application->registerModules($registerModules);
-            }
-            else {
-                // @TODO maybe throw an error
-            }
-        }
-        else {
-            // @TODO maybe throw an error
-        }
-        
+        $application->registerModules($config->modules->toArray());
     }
     
 }
