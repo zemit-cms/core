@@ -2,7 +2,7 @@
 
 namespace Zemit\Core\Filters;
 
-class Json
+class JsonDecode
 {
     /**
      * @param $value
@@ -11,12 +11,12 @@ class Json
     public function filter($value)
     {
         try {
-            $before = json_decode($value);
+            $before = json_decode($value, true);
             $valid = empty($before)? false : true;
         } catch(\Exception $e) {
             $valid = false;
         }
-        return $valid? $value : null;
+        return $valid? $before : null;
     }
     
 }

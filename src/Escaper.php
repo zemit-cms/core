@@ -10,21 +10,30 @@ class Escaper extends PhalconEscaper
     /**
      * Execute the rawurlencode function on the json string
      * Will also encode the parameter in json format if the passed
-     * parameter is not a string
+     * parameter is not a valid json
      *
-     * @TODO validate if its a valid json string instead
+     * Frontend JS side must:
+     * JSON.parse(decodeURIComponent('<?= $this->escaper->escapeJson([]);?>'));
      *
-     * @param $json
+     * @param mixed|string $json Json string or anything else
      * @return string
      */
     public function escapeJson($json = null) {
-        $ret = null;
-        if (!empty($json)) {
-            if (!is_string($json)) {
-                $ret = json_encode($json);
-            }
-            $ret = rawurlencode($ret);
+        
+        // if it's a not empty string
+        if (is_string($json) && !empty($json)) {
+            // check if it's a valid json
+            $ret = (new Filters\Json())->filter($json);
         }
+    
+        // not a valid json, encode it, yolo
+        if (empty($ret)) {
+            $ret = json_encode($json);
+        }
+    
+        // rawurlencode trick
+        $ret = rawurlencode($ret);
+        
         return $ret;
     }
 }

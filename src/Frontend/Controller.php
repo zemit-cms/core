@@ -2,9 +2,9 @@
 
 namespace Zemit\Core\Frontend;
 
-use Zemit\Core\Tag;
+use Zemit\Core\Mvc\Controller as CoreController;
 
-class Controller extends \Phalcon\Mvc\Controller
+class Controller extends CoreController
 {
 
 }

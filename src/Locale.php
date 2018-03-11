@@ -1,31 +1,37 @@
 <?php
 
-namespace Zemit\Core\Utils;
+namespace Zemit\Core;
 
 use Phalcon\Di\Injectable;
 
 class Locale extends Injectable
 {
     /**
+     * Router, http
      */
     const MODE_DEFAULT = 'default';
     
     /**
+     * Router, session, http
      */
     const MODE_SESSION = 'session';
     
     /**
+     * Router, geoip, http
      */
     const MODE_GEOIP = 'geoip';
     
     /**
+     * Router, session, geoip, http
      */
     const MODE_SESSION_GEOIP = 'session_geoip';
     
     /**
-     * Locale mode
-     * Locale::MODE_DEFAULT
-     * Locale::MODE_SESSION
+     * Locale mode for the prepare fonction
+     * Locale::MODE_DEFAULT 'default' (Router, http)
+     * Locale::MODE_SESSION 'session' (Router, session, http)
+     * Locale::MODE_GEOIP 'geoip' (Router, geoip, http)
+     * Locale::MODE_SESSION_GEOIP 'session_geoip' (Router, session, geoip, http)
      * @var int
      */
     public $mode = self::MODE_DEFAULT;
@@ -36,7 +42,9 @@ class Locale extends Injectable
      */
     public $locale = null;
     
-    
+    /**
+     * @var mixed|null|string
+     */
     public $sessionKey = 'zemit-locale';
     
     /**
@@ -49,7 +57,7 @@ class Locale extends Injectable
      * List of possible locale for your app
      * @var array
      */
-    public $list = ['en'];
+    public $allowed = ['en'];
     
     /**
      * List of possible locale for your app
@@ -61,7 +69,7 @@ class Locale extends Injectable
     {
         $this->setOptions($options);
         $this->sessionKey = $this->getOption('sessionKey', $this->sessionKey);
-        $this->setList($this->getOption('list', $this->list));
+        $this->setAllowed($this->getOption('allowed', $this->allowed));
         $this->setDefault($this->getOption('default', $this->default));
         $this->setMode($this->getOption('mode', $this->mode)); // @TODO
         $this->prepare($this->getDefault());
@@ -69,7 +77,7 @@ class Locale extends Injectable
     
     public function setOptions($options = [])
     {
-        return $this->options = $options;
+        $this->options = $options;
     }
     
     public function getOption($key, $default = null)
@@ -97,11 +105,11 @@ class Locale extends Injectable
     /**
      * Set the current locale value
      * @param null|string $locale
-     * @return null|string Return the locale itself
+     * @return void
      */
     public function setLocale($locale = null)
     {
-        return $this->locale = $this->lookup($locale);
+        $this->locale = $this->lookup($locale);
     }
     
     /**
@@ -116,43 +124,43 @@ class Locale extends Injectable
     /**
      * Set the default locale value
      * @param null|string $locale
-     * @return null|string Return the default locale
+     * @return void
      */
     public function setDefault($locale = null)
     {
-        return $this->default = $locale;
+        $this->default = $locale;
     }
     
     /**
      * Get the list of possible locale
      * @return array
      */
-    public function getList()
+    public function getAllowed()
     {
-        return $this->list;
+        return $this->allowed;
     }
     
     /**
-     * Set the list of possible locale
-     *
-     * @param $list
-     *
-     * @return array
+     * Set the allowed of possible locale
+     * @param null|string|array $allowed List of allowed locale
+     * @return void
      */
-    public function setList($list)
+    public function setAllowed($allowed)
     {
-        if (!is_array($list)) {
-            $list = array($list);
-        }
-        return $this->list = $list;
+        $this->allowed = is_array($allowed)? $allowed : [$allowed];
     }
     
     public function getMode() {
         return $this->mode;
     }
     
+    /**
+     * Set the mode for the prepare function
+     * @see $this->mode
+     * @param mixed|string $mode
+     */
     public function setMode($mode) {
-        return $this->mode = $mode;
+        $this->mode = $mode;
     }
     
     /**
@@ -258,22 +266,22 @@ class Locale extends Injectable
      * Parse a locale to see if its allowed, return null if not
      *
      * @param null|string $locale Current locale to compare
-     * @param null|array $list List of allowed locale
+     * @param null|array $allowed List of allowed locale
      *
      * @return null|string Return null if locale isn't allowed
      */
-    public function lookup($locale, $list = null, $canonicalize = false, $default = null)
+    public function lookup($locale, $allowed = null, $canonicalize = false, $default = null)
     {
         if (empty($locale)) {
             return $default;
         }
         
-        if (!isset($list)) {
-            $list = $this->getList();
+        if (!isset($allowed)) {
+            $allowed = $this->getAllowed();
         }
         
         // lookup first
-        $lookup = \Locale::lookup($list, $locale, $canonicalize, null);
+        $lookup = \Locale::lookup($allowed, $locale, $canonicalize, null);
     
         // base locale found without the region
         $refetch = false;
@@ -286,7 +294,7 @@ class Locale extends Injectable
         if (empty($lookup) || $refetch) {
             
             // matches all the possible regions from thie locale
-            $matches = array_filter($list, function ($haystack) use ($locale) {
+            $matches = array_filter($allowed, function ($haystack) use ($locale) {
                 $needle = $locale . '_';
                 return stripos($haystack, $needle) === 0;
             });

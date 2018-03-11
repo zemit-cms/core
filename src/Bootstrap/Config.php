@@ -2,7 +2,7 @@
 
 namespace Zemit\Core\Bootstrap;
 
-use Zemit\Core\Utils\Locale;
+use Zemit\Core\Locale;
 use Zemit\Core\Utils\Env;
 use Phalcon\Config as PhalconConfig;
 use PDO;
@@ -12,110 +12,137 @@ class Config extends PhalconConfig
     
     public function __construct($config = array())
     {
-        defined('APPLICATION_ENV') || define('APPLICATION_ENV', (getEnv::get('APPLICATION_ENV') ? getEnv::get('APPLICATION_ENV') : 'development'));
-        $corePackage = 'zemit-official/cms-core';
-        $corePath = VENDOR_PATH . '/' . $corePackage . '/src/';
+        defined('APPLICATION_ENV') || define('APPLICATION_ENV', Env::get('APPLICATION_ENV', 'development'));
+        defined('CORE_PATH') || define('CORE_PATH', Env::get('CORE_PATH', mb_substr(__DIR__, 0, mb_strlen(basename(__DIR__))*-1)));
+        defined('PRIVATE_PATH') || define('PRIVATE_PATH', Env::get('APP_PRIVATE_PATH', APP_PATH . '/private/'));
         
-        parent::__construct(array(
-            /**
-             * Default namespace
-             */
-            'namespace' => 'Zemit',
-            
-            /**
-             * Default general settings
-             */
-            'version' => Env::get('APP_VERSION', date('Ymd')), // allow to set and force a specific version
-            'maintenance' => Env::get('APP_MAINTENANCE', false), // Set true to force the maintenance page
-            'env' => Env::get('APP_ENV', APPLICATION_ENV), // Set the current environnement
-            'cache' => Env::get('APP_CACHE', false), // Set true to activate the cache
-            'minify' => Env::get('APP_MINIFY', false), // Set true to activate the cache
-            'copyright' => Env::get('APP_COPYRIGHT', false), // Set true to activate the cache
-            'debug' => Env::get('APP_DEBUG', false), // Set true to display php debug
-            'profiler' => Env::get('APP_PROFILER', false), // Set true to return the profiler
-            'logger' => Env::get('APP_LOGGER', false), // Set true to log database transactions
+        parent::__construct([
     
+            /**
+             * Core only settings
+             */
+            'core' => [
+                'version' => '0.1.1',
+                'package' => 'zemit-official',
+                'modules' => [
+                    'frontend' => [
+                        'className' => 'Zemit\\Core\\Frontend\\Module',
+                        'path' => CORE_PATH . 'Frontend/Module.php'
+                    ],
+                    'backend' => [
+                        'className' => 'Zemit\\Core\\Backend\\Module',
+                        'path' => CORE_PATH . 'Backend/Module.php'
+                    ],
+                    'api' => [
+                        'className' => 'Zemit\\Core\\Api\\Module',
+                        'path' => CORE_PATH . 'Api/Module.php'
+                    ],
+                ],
+                'dir' => [
+                    'base' => CORE_PATH,
+                    'locales' => CORE_PATH . 'Locales',
+                ],
+            ],
+    
+            /**
+             * Application configuration
+             */
+            'app' => [
+                'namespace' => Env::get('APP_NAMESPACE', 'Zemit'),
+                'version' => Env::get('APP_VERSION', date('Ymd')), // allow to set and force a specific version
+                'maintenance' => Env::get('APP_MAINTENANCE', false), // Set true to force the maintenance page
+                'env' => Env::get('APP_ENV', Env::get('APPLICATION_ENV', null)), // Set the current environnement
+                'debug' => Env::get('APP_DEBUG', false), // Set true to display debug
+                'cache' => Env::get('APP_CACHE', false), // Set true to activate the cache
+                'minify' => Env::get('APP_MINIFY', false), // Set true to activate minifying
+                'copyright' => Env::get('APP_COPYRIGHT', false), // Set true to activate the cache
+                'profiler' => Env::get('APP_PROFILER', false), // Set true to return the profiler
+                'logger' => Env::get('APP_LOGGER', false), // Set true to log database transactions
+                'uri' => Env::get('APP_URI', ''),
+                'dir' => [
+                    // project
+                    'root' => Env::get('APP_ROOT_PATH', defined('ROOT_PATH')? ROOT_PATH : getcwd()),
+                    'vendor' => Env::get('APP_VENDOR_PATH', VENDOR_PATH),
+                    'app' => Env::get('APP_PATH', APP_PATH . '/'),
+                    'public' => Env::get('APP_PUBLIC_PATH', getcwd()),
+            
+                    // app
+                    'bootstrap' => Env::get('APP_BOOTSTRAP_PATH', APP_PATH . '/bootstrap/'),
+                    'config' => Env::get('APP_CONFIG_PATH', APP_PATH . '/config/'),
+                    'modules' => Env::get('APP_MODULE_PATH', APP_PATH . '/modules/'),
+                    'plugins' => Env::get('APP_PLUGINS_PATH', APP_PATH . '/plugins/'),
+                    'private' => PRIVATE_PATH,
+            
+                    // private
+                    'cache' => Env::get('APP_CACHE_PATH', PRIVATE_PATH . '/cache/'),
+                    'log' => Env::get('APP_LOG_PATH', PRIVATE_PATH . '/log/'),
+                    'files' => Env::get('APP_FILE_PATH', PRIVATE_PATH . '/files/'),
+                    'trash' => Env::get('APP_TRASH_PATH', PRIVATE_PATH . '/trash/'),
+                    'migrations' => Env::get('APP_MIGRATION_PATH', PRIVATE_PATH . '/migrations/'),
+                ]
+            ],
+            
             /**
              * Default security settings
              */
-            'security' => array( // phalcon security config
+            'security' => [ // phalcon security config
                 'workfactor' => Env::get('SECURITY_WORKFACTOR', 12), // workfactor for the phalcon security service
                 'salt' => Env::get('SECURITY_SALT', 'ZEMIT_CORE_DEFAULT_SALT') // salt for the phalcon security service
-            ),
+            ],
+            
+            /**
+             * Default modules
+             */
+            'modules' => [
+                'frontend' => [
+                    'className' => 'Zemit\\Core\\Frontend\\Module',
+                    'path' => CORE_PATH . 'Frontend/Module.php'
+                ],
+                'backend' => [
+                    'className' => 'Zemit\\Core\\Backend\\Module',
+                    'path' => CORE_PATH . 'Backend/Module.php'
+                ],
+                'api' => [
+                    'className' => 'Zemit\\Core\\Api\\Module',
+                    'path' => CORE_PATH . 'Api/Module.php'
+                ],
+            ],
+    
+            /**
+             * Default router settings
+             */
+            'router' => [
+                'defaults' => [
+                    'namespace' => 'Zemit\\Core\\Frontend\\Controllers',
+                    'module' => 'frontend',
+                    'controller' => 'index',
+                    'action' => 'index'
+                ],
+                'notFound' => [
+                    'controller' => 'errors',
+                    'action' => 'notFound'
+                ]
+            ],
     
             /**
              * Default local settings
              */
-            'locale' => array(
-                'default' => 'en',
-                'sessionKey' => 'zemit-locale',
-                'mode' => Locale::MODE_SESSION_GEOIP,
-                'list' => [
-                    'en', 'en_US',
-                    'fr', 'fr_FR',
-                ]
-            ),
+            'locale' => [
+                'default' => Env::get('LOCALE_DEFAULT', 'en'),
+                'sessionKey' => Env::get('LOCALE_SESSION_KEY', 'zemit-locale'),
+                'mode' => Env::get('LOCALE_MODE', Locale::MODE_SESSION_GEOIP),
+                'allowed' => explode(',', Env::get('LOCALE_ALLOWED', 'en,en_US'))
+            ],
     
             /**
              * Default translater settings
              */
             'translate' => [
-                'locale' => 'en_US.utf8',
-                'defaultDomain' => 'messages',
-                'category' => LC_MESSAGES,
+                'locale' => Env::get('TRANSLATE_LOCALE', 'en_US.utf8'),
+                'defaultDomain' => Env::get('TRANSLATE_DEFAULT_DOMAIN', 'messages'),
+                'category' => Env::get('TRANSLATE_CATEGORY', LC_MESSAGES),
                 'directory' => [
-                    'messages' => $corePath . 'Lang'
-                ],
-            ],
-    
-            /**
-             * Default modules
-             */
-            'modules' => array(
-                'frontend' => [
-                    'className' => 'Zemit\\Core\\Frontend\\Module',
-                    'path' => $corePath . 'Frontend/Module.php'
-                ],
-                'backend' => [
-                    'className' => 'Zemit\\Core\\Backend\\Module',
-                    'path' => $corePath . 'Backend/Module.php'
-                ],
-                'api' => [
-                    'className' => 'Zemit\\Core\\Api\\Module',
-                    'path' => $corePath . 'Api/Module.php'
-                ],
-            ),
-    
-            /**
-             * Default router settings
-             */
-            'router' => array(
-                'defaults' => array(
-                    'namespace' => 'Zemit\\Core\\Frontend\\Controllers',
-                    'module' => 'frontend',
-                    'controller' => 'index',
-                    'action' => 'index'
-                ),
-                'notFound' => array(
-                    'controller' => 'errors',
-                    'action' => 'notFound'
-                )
-            ),
-    
-            /**
-             * Core specific settings
-             */
-            'core' => [
-                'version' => '0.1.0',
-                'package' => $corePackage,
-                'modules' => [
-                    'Api' => 'Zemit\\Core\\Api',
-                    'Frontend' => 'Zemit\\Core\\Frontend',
-                    'Backend' => 'Zemit\\Core\\Backend',
-                ],
-                'dir' => [
-                    'base' => $corePath,
-                    'locales' => $corePath . 'Lang',
+                    Env::get('TRANSLATE_DEFAULT_DOMAIN', 'messages') => Env::get('TRANSLATE_DEFAULT_PATH', CORE_PATH . 'Locales')
                 ],
             ],
     
@@ -134,7 +161,7 @@ class Config extends PhalconConfig
                     'bootstrap' => 'bootstrap/',
                     'locales' => 'locales/',
                     'config' => 'config/',
-                    
+            
                     // private
                     'migrations' => 'private/migrations/',
                     'cache' => 'private/cache/',
@@ -147,72 +174,55 @@ class Config extends PhalconConfig
             ],
     
             /**
-             * Application configuration
-             */
-            'app' => array(
-                'baseUri' => '',
-                'dir' => [
-                    // default
-                    'modules' => APPLICATION_PATH . '/modules/',
-                    'config' => APPLICATION_PATH . '/config/',
-                    'bootstrap' => APPLICATION_PATH . '/bootstrap/',
-    
-                    // private
-                    'cache' => PRIVATE_PATH . '/cache/',
-                    'logs' => PRIVATE_PATH . '/logs/',
-                    'backups' => PRIVATE_PATH . '/backups/',
-                    'files' => PRIVATE_PATH . '/files/',
-                    'trash' => PRIVATE_PATH . '/trash/',
-                    'sql' => PRIVATE_PATH . '/sql/',
-                    'migrations' => APPLICATION_PATH . '/migrations/',
-                    'vendor' => VENDOR_PATH,
-    
-                    // project
-                    'base' => APPLICATION_PATH,
-                    'project' => ROOT_PATH,
-                ],
-            ),
-    
-            /**
              * Database configuration
              */
-            'database' => array(
+            'database' => [
                 'adapter' => 'Mysql',
                 'host' => 'localhost',
                 'username' => 'root',
                 'password' => '',
                 'dbname' => '',
                 'charset' => 'utf8',
-                'options' => array(
+                'options' => [
                     PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
-                )
-            ),
+                ]
+            ],
     
             /**
              * Mailer configuration
              */
-            'mail' => array(
+            'mail' => [
                 'driver' => 'sendmail',
                 'sendmail' => '/usr/sbin/sendmail -bs',
-                'from' => array(
+                'from' => [
                     'email' => 'no-reply@zemit.com',
                     'name' => 'Zemit'
-                ),
-                'bcc' => array(
+                ],
+                'bcc' => [
                     'contat@zemit.com' => 'Zemit',
-                ),
-                'viewsDir' => APPLICATION_PATH . '/modules/frontend/views/',
-            ),
-            'client' => array(),
-        ));
+                ],
+                'viewsDir' => APP_PATH . '/modules/frontend/views/',
+            ],
+    
+            /**
+             * Client config to passe to front-end
+             */
+            'client' => [],
+        ]);
         if (!empty($config)) {
             $this->merge(new PhalconConfig($config));
         }
     }
     
-    public function mergeEnvConfig($env = APPLICATION_ENV)
+    /**
+     * Merge the specified environment config with this one
+     * This should be used to overwrite specific values only
+     * @param null|string $env If null, will fetch the current environement from $this->app->env
+     * @return Config $this Return the merged current config
+     */
+    public function mergeEnvConfig($env = null)
     {
-        $configFile = $this->app->dir->config . 'env/config.' . $env . '.php';
+        $configFile = $this->app->dir->config . 'env/config.' . (isset($env)? $env : $this->app->env) . '.php';
         if (file_exists($configFile)) {
             $envConfig = require_once $configFile;
             if (!empty($envConfig)) {

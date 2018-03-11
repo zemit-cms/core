@@ -72,23 +72,25 @@ class Env
     {
         $ret = self::getDotenv()->getEnvironmentVariable($key);
         
-        if ($ret === false) {
+        if ($ret === null) {
             $ret = ($default instanceof Closure) ? $default() : $default;
         }
         
-        switch(strtolower($ret)) {
-            case 'true':
-                $ret = true;
-                break;
-            case 'false':
-                $ret = false;
-                break;
-            case 'empty':
-                $ret = '';
-                break;
-            case 'null':
-                $ret = null;
-                break;
+        if (is_string($ret)) {
+            switch(strtolower($ret)) {
+                case 'true':
+                    $ret = true;
+                    break;
+                case 'false':
+                    $ret = false;
+                    break;
+                case 'empty':
+                    $ret = '';
+                    break;
+                case 'null':
+                    $ret = null;
+                    break;
+            }
         }
     
         return $ret;

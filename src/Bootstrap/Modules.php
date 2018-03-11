@@ -22,6 +22,7 @@ class Modules {
          */
         $config = $application->getDI()->get('config');
         $application->registerModules($config->modules->toArray());
+        $application->setDefaultModule($config->router->defaults->module);
     }
     
 }

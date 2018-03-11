@@ -3,7 +3,7 @@ namespace Zemit\Core;
 
 use Phalcon\Di;
 use Phalcon\Di\FactoryDefault;
-use Phalcon\Mvc\Application;
+use Zemit\Core\Mvc\Application;
 use Phalcon\Cli\Console;
 
 use Phalcon\Text;

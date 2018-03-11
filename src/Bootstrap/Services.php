@@ -5,7 +5,7 @@ namespace Zemit\Core\Bootstrap;
 // phalcon
 use Phalcon\DI\FactoryDefault;
 use Phalcon\Di\Injectable;
-use Phalcon\Mvc\View\Simple;
+
 use Phalcon\Security;
 use Phalcon\Mvc\Url;
 use Phalcon\Mvc\Dispatcher as MvcDispatcher;
@@ -29,7 +29,7 @@ use Zemit\Core\Mvc\Dispatcher\Error as DispatchError;
 use Zemit\Core\Mvc\Dispatcher\Security as DispatchSecurity;
 use Zemit\Core\Mvc\Dispatcher\Camelize as DispatchCamelize;
 use Zemit\Core\Mvc\Dispatcher\Rest as DispatchRest;
-use Zemit\Core\Utils\Locale;
+use Zemit\Core\Locale;
 use Zemit\Core\Filter;
 use Zemit\Core\Tag;
 use Zemit\Core\Escaper;
@@ -64,7 +64,7 @@ class Services extends Injectable
          */
         $di->setShared('url', function() use ($config) {
             $url = new Url();
-            $url->setBaseUri($config->app->baseUri);
+            $url->setBaseUri($config->app->uri);
             return $url;
         });
         
