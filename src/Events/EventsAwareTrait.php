@@ -83,4 +83,35 @@ trait EventsAwareTrait
     {
         $this->fireSource($this->getEventsSlug() . ':' . $task, $this, $data, $cancelable);
     }
+    
+    public function fireSet(&$holder, $class = null, $params = [], $callback = null)
+    {
+        $event = basename(str_replace('\\', '//', $class));
+        $this->fire('before' . $event, $holder);
+        if (!isset($holder)) {
+            if (class_exists($class)) {
+                $holder = new $class(...$params);
+            } else if (is_callable($class)) {
+                $holder = $class(...$params);
+            } else if (is_object($class)) {
+                $holder = $class;
+            } else if (is_string($class)) {
+//                throw new \Exception('Class "' . $class . '" not found');
+            } else {
+//                throw new \Exception('Unknown type "' . $class . '" for "$class"');
+            }
+        } else if (is_string($holder)) {
+            if (class_exists($holder)) {
+                $holder = new $holder(...$params);
+            } else if (is_callable($holder)) {
+                $holder = $holder(...$params);
+            } else {
+//                throw new \Exception('Class "' . $class . '" not found');
+            }
+        }
+        if (isset($callback) && is_callable($callback)) {
+            $callback($this);
+        }
+        $this->fire('after' . $event, $holder);
+    }
 }

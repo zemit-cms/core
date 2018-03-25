@@ -24,6 +24,7 @@ use Docopt;
 use Zemit\Core\Mvc\Dispatcher\Module;
 
 /**
+ * @TODO change cli $this->application (console) to $this->console instead
  * Class Bootstrap
  * Zemit Core's Bootstrap for the MVC Application & CLI Console mode
  *
@@ -154,37 +155,6 @@ DOC;
     
     }
     
-    public function fireSet(&$holder, $class = null, $params = [], $callback = null)
-    {
-        $event = basename(str_replace('\\', '//', $class));
-        $this->fire('before' . $event, $holder);
-        if (!isset($holder)) {
-            if (class_exists($class)) {
-                $holder = new $class(...$params);
-            } else if (is_callable($class)) {
-                $holder = $class(...$params);
-            } else if (is_object($class)) {
-                $holder = $class;
-            } else if (is_string($class)) {
-//                throw new \Exception('Class "' . $class . '" not found');
-            } else {
-//                throw new \Exception('Unknown type "' . $class . '" for "$class"');
-            }
-        } else if (is_string($holder)) {
-            if (class_exists($holder)) {
-                $holder = new $holder(...$params);
-            } else if (is_callable($holder)) {
-                $holder = $holder(...$params);
-            } else {
-//                throw new \Exception('Class "' . $class . '" not found');
-            }
-        }
-        if (isset($callback) && is_callable($callback)) {
-            $callback($this);
-        }
-        $this->fire('after' . $event, $holder);
-    }
-    
     /**
      * @TODO redefine docopt to console param or args or something
      */
@@ -207,7 +177,7 @@ DOC;
         $this->fireSet($this->di, $this->mode === 'console' ?
             FactoryDefault\Cli::class :
             FactoryDefault::class
-        , [], function ($bootstrap) {
+        , [], function (Bootstrap $bootstrap) {
             $bootstrap->di->setShared('bootstrap', $bootstrap);
             Di::setDefault($this->di);
         });
@@ -220,7 +190,7 @@ DOC;
     public function dotenv()
     {
         try {
-            $this->fireSet($this->dotenv, Dotenv::class, [dirname(__DIR__)], function ($bootstrap) {
+            $this->fireSet($this->dotenv, Dotenv::class, [dirname(__DIR__)], function (Bootstrap $bootstrap) {
                 $bootstrap->dotenv->load();
             });
         } catch(\Dotenv\Exception\InvalidPathException $e) {
@@ -245,7 +215,7 @@ DOC;
      */
     public function config()
     {
-        $this->fireSet($this->config, Config::class, [], function ($bootstrap) {
+        $this->fireSet($this->config, Config::class, [], function (Bootstrap $bootstrap) {
             $bootstrap->config->mode = $bootstrap->mode;
             $bootstrap->config->mergeEnvConfig();
         });
@@ -288,7 +258,7 @@ DOC;
             $this->mode === 'console' ?
                 [true] :
                 [true, $this->application],
-            function ($bootstrap) {
+            function (Bootstrap $bootstrap) {
             $bootstrap->di['router'] = $this->router;
         });
         return $this->router;

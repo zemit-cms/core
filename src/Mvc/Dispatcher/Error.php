@@ -27,7 +27,7 @@ class Error extends Injectable
         }
     
         // If debug is false, forward forward to fatal error 500
-        if (!$this->config->debug) {
+        if (!$this->config->app->debug) {
             $dispatcher->forward(array(
                 'controller' => 'errors',
                 'action' => 'fatal',
