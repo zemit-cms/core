@@ -2,6 +2,7 @@
 
 namespace Zemit\Core;
 
+//use Phalcon\Debug;
 use Phalcon\Di;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Http\Response;
@@ -10,6 +11,7 @@ use Phalcon\Text;
 use Phalcon\Events;
 
 
+use Zemit\Core\Debug;
 use Zemit\Core\Bootstrap\App;
 use Zemit\Core\Bootstrap\Config;
 use Zemit\Core\Bootstrap\Services;
@@ -24,7 +26,6 @@ use Docopt;
 use Zemit\Core\Mvc\Dispatcher\Module;
 
 /**
- * @TODO change cli $this->application (console) to $this->console instead
  * Class Bootstrap
  * Zemit Core's Bootstrap for the MVC Application & CLI Console mode
  *
@@ -89,6 +90,11 @@ class Bootstrap
     public $router;
     
     /**
+     * @var Debug
+     */
+    public $debug;
+    
+    /**
      * @var Response
      */
     public $response;
@@ -144,6 +150,7 @@ DOC;
         $this->args();
         $this->app();
         $this->config();
+        $this->debug();
         $this->services();
         $this->application();
         $this->modules();
@@ -177,10 +184,10 @@ DOC;
         $this->fireSet($this->di, $this->mode === 'console' ?
             FactoryDefault\Cli::class :
             FactoryDefault::class
-        , [], function (Bootstrap $bootstrap) {
-            $bootstrap->di->setShared('bootstrap', $bootstrap);
-            Di::setDefault($this->di);
-        });
+            , [], function (Bootstrap $bootstrap) {
+                $bootstrap->di->setShared('bootstrap', $bootstrap);
+                Di::setDefault($this->di);
+            });
         return $this->di;
     }
     
@@ -207,6 +214,20 @@ DOC;
     {
         $this->app = new App();
         return $this->app;
+    }
+    
+    /**
+     * Phalcon debug listener
+     * @return Debug
+     */
+    public function debug()
+    {
+        $this->fireSet($this->debug, Debug::class, [], function (Bootstrap $bootstrap) {
+            if ($bootstrap->config->app->debug) {
+                $bootstrap->debug->listen();
+            }
+        });
+        return $this->debug;
     }
     
     /**
@@ -259,8 +280,8 @@ DOC;
                 [true] :
                 [true, $this->application],
             function (Bootstrap $bootstrap) {
-            $bootstrap->di['router'] = $this->router;
-        });
+                $bootstrap->di['router'] = $this->router;
+            });
         return $this->router;
     }
     
