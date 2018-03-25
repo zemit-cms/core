@@ -1,20 +1,27 @@
 <?php
+
 namespace Zemit\Core;
 
 use Phalcon\Di;
 use Phalcon\Di\FactoryDefault;
-use Zemit\Core\Mvc\Application;
-use Phalcon\Cli\Console;
-
+use Phalcon\Http\Response;
+use Phalcon\Cli\Router as CliRouter;
 use Phalcon\Text;
+use Phalcon\Events;
+
+
 use Zemit\Core\Bootstrap\App;
 use Zemit\Core\Bootstrap\Config;
 use Zemit\Core\Bootstrap\Services;
 use Zemit\Core\Bootstrap\Modules;
 use Zemit\Core\Bootstrap\Router;
+use Zemit\Core\Events\EventsAwareTrait;
+use Zemit\Core\Mvc\Application;
+use Zemit\Core\Cli\Console;
 
 use Dotenv\Dotenv;
 use Docopt;
+use Zemit\Core\Mvc\Dispatcher\Module;
 
 /**
  * Class Bootstrap
@@ -24,22 +31,80 @@ use Docopt;
  */
 class Bootstrap
 {
+    use EventsAwareTrait;
+    
+    /**
+     * Bootstrap mode
+     * @var string
+     */
     public $mode;
-    public $di;
-    public $dotenv;
-    public $app;
-    public $config;
-    public $services;
-    public $application;
-    public $modules;
-    public $router;
+    
+    /**
+     * Bootstrap console args
+     * @var array|object
+     */
     public $args;
+    
+    /**
+     * Dependencies
+     * @var FactoryDefault
+     */
+    public $di;
+    
+    /**
+     * @var Dotenv
+     */
+    public $dotenv;
+    
+    /**
+     * @TODO change this and its purpose
+     * @var App
+     */
+    public $app;
+    
+    /**
+     * @var Config
+     */
+    public $config;
+    
+    /**
+     * @var Services
+     */
+    public $services;
+    
+    /**
+     * @var Application|\Phalcon\Cli\Console
+     */
+    public $application;
+    
+    /**
+     * @var Modules
+     */
+    public $modules;
+    
+    /**
+     * @var Router
+     */
+    public $router;
+    
+    /**
+     * @var Response
+     */
+    public $response;
+    
+    /**
+     * @var Docopt
+     */
     public $docopt;
-    public $doc = <<<DOC
+    
+    /**
+     * @var string
+     */
+    public $consoleDoc = <<<DOC
 Zemit Console
 
 Usage:
-  zemit <module> <task> <action> [<params> ...]  [--env=<env>] [--debug=<debug>] [--plugin=<plugin>] [--log-file=<file>]
+  zemit <module> <task> [<action>] [<params> ...]  [--env=<env>] [--debug=<debug>] [--plugin=<plugin>] [--log-file=<file>]
   zemit (-h | --help)
   zemit (-v | --version)
   zemit (-i | --info)
@@ -71,9 +136,11 @@ DOC;
     public function __construct($mode = 'normal')
     {
         $this->mode = $mode;
+        $this->setEventsManager(new Events\Manager());
+        $this->initialize();
         $this->di();
         $this->dotenv();
-        $this->docopt();
+        $this->args();
         $this->app();
         $this->config();
         $this->services();
@@ -82,10 +149,50 @@ DOC;
         $this->router();
     }
     
-    public function docopt() {
+    public function initialize()
+    {
+    
+    }
+    
+    public function fireSet(&$holder, $class = null, $params = [], $callback = null)
+    {
+        $event = basename(str_replace('\\', '//', $class));
+        $this->fire('before' . $event, $holder);
+        if (!isset($holder)) {
+            if (class_exists($class)) {
+                $holder = new $class(...$params);
+            } else if (is_callable($class)) {
+                $holder = $class(...$params);
+            } else if (is_object($class)) {
+                $holder = $class;
+            } else if (is_string($class)) {
+//                throw new \Exception('Class "' . $class . '" not found');
+            } else {
+//                throw new \Exception('Unknown type "' . $class . '" for "$class"');
+            }
+        } else if (is_string($holder)) {
+            if (class_exists($holder)) {
+                $holder = new $holder(...$params);
+            } else if (is_callable($holder)) {
+                $holder = $holder(...$params);
+            } else {
+//                throw new \Exception('Class "' . $class . '" not found');
+            }
+        }
+        if (isset($callback) && is_callable($callback)) {
+            $callback($this);
+        }
+        $this->fire('after' . $event, $holder);
+    }
+    
+    /**
+     * @TODO redefine docopt to console param or args or something
+     */
+    public function args()
+    {
         if ($this->mode === 'console') {
-            $this->docopt = new Docopt();
-            $this->args = $this->docopt->handle($this->doc);
+            $this->fireSet($this->docopt, Docopt::class);
+            $this->args = $this->docopt->handle($this->consoleDoc);
         }
     }
     
@@ -94,27 +201,29 @@ DOC;
      * Also use the cli factory default for console mode
      * @return mixed|FactoryDefault|FactoryDefault\Cli Return a factory default DI
      */
-    public function di() {
+    public function di()
+    {
         // Use the phalcon cli factory default for console mode
-        if ($this->mode === 'console') {
-            $this->di = new FactoryDefault\Cli();
-        }
-        else {
-            $this->di = new FactoryDefault();
-        }
-        $this->di->setShared('bootstrap', $this);
-        Di::setDefault($this->di);
+        $this->fireSet($this->di, $this->mode === 'console' ?
+            FactoryDefault\Cli::class :
+            FactoryDefault::class
+        , [], function ($bootstrap) {
+            $bootstrap->di->setShared('bootstrap', $bootstrap);
+            Di::setDefault($this->di);
+        });
         return $this->di;
     }
     
     /**
-     * @return Dotenv\Dotenv
+     * @return \Dotenv\Dotenv
      */
-    public function dotenv() {
+    public function dotenv()
+    {
         try {
-            $this->dotenv = new Dotenv(dirname(__DIR__));
-            $this->dotenv->load();
-        } catch (\Dotenv\Exception\InvalidPathException $e) {
+            $this->fireSet($this->dotenv, Dotenv::class, [dirname(__DIR__)], function ($bootstrap) {
+                $bootstrap->dotenv->load();
+            });
+        } catch(\Dotenv\Exception\InvalidPathException $e) {
             // just ignore and run the application anyway
         }
         return $this->dotenv;
@@ -124,7 +233,8 @@ DOC;
      * Instantiate the default app settings
      * @return App
      */
-    public function app() {
+    public function app()
+    {
         $this->app = new App();
         return $this->app;
     }
@@ -133,10 +243,12 @@ DOC;
      * Instantiate the configuration
      * @return Config
      */
-    public function config() {
-        $this->config = new Config();
-        $this->config->mergeEnvConfig();
-        $this->config->mode = $this->mode;
+    public function config()
+    {
+        $this->fireSet($this->config, Config::class, [], function ($bootstrap) {
+            $bootstrap->config->mode = $bootstrap->mode;
+            $bootstrap->config->mergeEnvConfig();
+        });
         return $this->config;
     }
     
@@ -144,38 +256,49 @@ DOC;
      * Instantiate the services
      * @return Services
      */
-    public function services() {
-        $this->services = new Services($this->di, $this->config);
+    public function services()
+    {
+        $this->fireSet($this->services, Services::class, [$this->di, $this->config]);
         return $this->services;
     }
     
-    public function application() {
-        if ($this->mode === 'console') {
-            $this->application = new Console($this->di);
-        }
-        else {
-            $this->application = new Application($this->di);
-        }
+    public function application()
+    {
+        $this->fireSet($this->application,
+            $this->mode === 'console' ?
+                Console::class :
+                Application::class,
+            [$this->di]
+        );
         return $this->application;
     }
     
-    public function modules() {
-        $this->modules = new Modules($this->application);
+    public function modules()
+    {
+        $this->fireSet($this->modules, Modules::class, [$this->application]);
         return $this->modules;
     }
     
-    public function router() {
-        $this->router = new Router(true, $this->application);
-        $this->di['router'] = $this->router;
+    public function router()
+    {
+        $this->fireSet($this->router,
+            $this->mode === 'console' ?
+                CliRouter::class :
+                Router::class,
+            $this->mode === 'console' ?
+                [true] :
+                [true, $this->application],
+            function ($bootstrap) {
+            $bootstrap->di['router'] = $this->router;
+        });
         return $this->router;
     }
     
-    public function getArguments() {
+    public function getArguments()
+    {
         $arguments = [];
-        foreach($this->args as $key => $value)
-        {
-            if (preg_match('/(<(.*?)>|\-\-(.*))/', $key, $match))
-            {
+        foreach ($this->args as $key => $value) {
+            if (preg_match('/(<(.*?)>|\-\-(.*))/', $key, $match)) {
                 $key = lcfirst(Text::camelize(Text::uncamelize(array_pop($match))));
                 $arguments[$key] = $value;
             }
@@ -183,33 +306,37 @@ DOC;
         return $arguments;
     }
     
-    public function run() {
+    public function run()
+    {
+        $this->fire('beforeRun');
+        
         // cli console mode, get the arguments from the doctlib
-        if ($this->mode === 'console') {
+        if ($this->mode === 'console' || $this->application instanceof Console) {
             try {
                 $this->application->handle($this->getArguments());
-            } catch (\Zemit\Core\Exception $e) {
+                $this->fire('afterRun');
+            } catch(\Zemit\Core\Exception $e) {
                 new Cli\ExceptionHandler($e);
                 // do zemit related stuff here
                 exit(1);
-            } catch (\Phalcon\Exception $e) {
+            } catch(\Phalcon\Exception $e) {
                 new Cli\ExceptionHandler($e);
                 // do phalcon related stuff here
                 exit(1);
-            } catch (\Throwable $throwable) {
-                new Cli\ExceptionHandler($throwable);
-                exit(1);
-            } catch (\Exception $exception) {
+            } catch(\Exception $exception) {
                 new Cli\ExceptionHandler($exception);
                 exit(1);
+            } catch(\Throwable $throwable) {
+                new Cli\ExceptionHandler($throwable);
+                exit(1);
             }
-        }
-        else  if (isset($this->application)) {
+        } else if (isset($this->application) && $this->application instanceof \Phalcon\Application) {
             // we don't need a try catch here, its handled by the application
             // or the user can wrap it with try catch into the public/index.php instead
-            return $this->application->handle()->getContent();
-        }
-        else {
+            $this->response = $this->application->handle();
+            $this->fire('afterRun');
+            return $this->response->getContent();
+        } else {
             throw new \Exception('Application not found', 404);
         }
     }

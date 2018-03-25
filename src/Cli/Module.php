@@ -1,16 +1,13 @@
 <?php
 
-namespace Zemit\Core\Mvc;
+namespace Zemit\Core\Cli;
 
 use Phalcon\DiInterface;
 use Phalcon\Loader;
-use Phalcon\Mvc\Dispatcher;
-use Phalcon\Mvc\Url;
-use Phalcon\Mvc\View;
+use Phalcon\Cli\Dispatcher;
+use Phalcon\Cli\Router;
 use Phalcon\Mvc\ModuleDefinitionInterface;
-use Phalcon\Text;
 use Zemit\Core\Bootstrap\Config;
-use Zemit\Core\Bootstrap\Router;
 use Zemit\Core\Utils;
 
 /**
@@ -19,9 +16,7 @@ use Zemit\Core\Utils;
  */
 class Module implements ModuleDefinitionInterface
 {
-    const NAME_FRONTEND = 'Frontend';
-    const NAME_BACKEND = 'Backend';
-    const NAME_API = 'Api';
+    const NAME_CLI = 'Cli';
     
     public $namespace = __NAMESPACE__;
     
@@ -29,7 +24,7 @@ class Module implements ModuleDefinitionInterface
      * Module name to register
      * @var string Module name
      */
-    public $name;
+    public $name = self::NAME_CLI;
     
     /**
      * @var Config
@@ -51,15 +46,6 @@ class Module implements ModuleDefinitionInterface
      */
     public $router;
     
-    /**
-     * @var View
-     */
-    public $view;
-    
-    /**
-     * @var Url
-     */
-    public $url;
     
     /**
      * Registers an autoloader related to the frontend module
@@ -95,29 +81,15 @@ class Module implements ModuleDefinitionInterface
         $namespace = Utils::getNamespace($this);
         
         // dispatcher settings
-        $this->dispatcher->setDefaultNamespace($namespace . '\\Controllers');
-        
-        // view settings
-        $this->view->setViewsDir([
-//            $this->config->app->dir->module . 'views/',
-            $this->config->core->dir->base . $this->name . '/Views/',
-        ]);
-        
-        // url settings
-        $this->url->setBasePath('/' . Text::uncamelize($this->name) . '/');
-        $this->url->setStaticBaseUri('/' . Text::uncamelize($this->name) . '/');
+        $this->dispatcher->setDefaultNamespace($namespace . '\\Tasks');
+        $this->dispatcher->setNamespaceName($namespace . '\\Tasks');
         
         // router settings
-        $this->router->removeExtraSlashes(true);
         $this->router->setDefaults([
             'namespace' => $this->dispatcher->getDefaultNamespace(),
             'module' => strtolower($this->name),
-            'controller' => 'index',
-            'action' => 'index'
-        ]);
-        $this->router->notFound([
-            'controller' => 'errors',
-            'action' => 'notFound'
+            'controller' => 'help',
+            'action' => 'main'
         ]);
         
         // save services
@@ -127,14 +99,14 @@ class Module implements ModuleDefinitionInterface
     public function getNamespaces()
     {
         $namespaces = [];
-    
+        
         // Caller namespace
         $namespace = Utils::getNamespace($this);
         
         // register the vendor module controllers
-        $namespaces[$namespace . '\\Controllers'] = $this->config->core->dir->base . $this->name . '/Controllers/';
+        $namespaces[$namespace . '\\Tasks'] = $this->config->core->dir->base . $this->name . '/Tasks/';
         $namespaces[$namespace . '\\Models'] = $this->config->core->dir->base . $this->name . '/Models/';
-        
+
         return $namespaces;
     }
     
@@ -147,8 +119,6 @@ class Module implements ModuleDefinitionInterface
         $this->loader = $this->loader ?? $di['loader'] ?? new Loader();
         $this->router = $this->router ?? $di['router'] ?? new Router();
         $this->dispatcher = $this->dispatcher ?? $di['dispatcher'] ?? new Dispatcher();
-        $this->view = $this->view ?? $di['view'] ?? new View();
-        $this->url = $this->url ?? $di['url'] ?? new Url();
     }
     
     public function setServices(DiInterface $di = null)
@@ -157,8 +127,6 @@ class Module implements ModuleDefinitionInterface
         $di['dispatcher'] = $this->dispatcher;
         $di['loader'] = $this->loader;
         $di['router'] = $this->router;
-        $di['view'] = $this->view;
-        $di['url'] = $this->url;
     }
     
 }

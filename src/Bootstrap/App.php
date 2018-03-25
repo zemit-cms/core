@@ -44,8 +44,8 @@ class App {
         ini_set('display_errors', 1);
         
         // Prepare the phalcon debug listener
-        $this->debug = new Debug();
-        $this->debug->listen();
+//        $this->debug = new Debug();
+//        $this->debug->listen();
     }
     
     protected function _formatApp() {

@@ -119,23 +119,23 @@ class Services extends Injectable
 //            $security = new DispatchSecurity($di);
 //            $eventsManager->attach('dispatch', $security);
             
-            /**
-             * Rest dispatcher
-             */
-            $rest = new DispatchRest($di);
-            $eventsManager->attach('dispatch', $rest);
-            
-            /**
-             * Error dispatcher
-             */
-            $error = new DispatchError($di);
-            $eventsManager->attach('dispatch', $error);
-            
             // Setup the dispatcher
             if (isset($config->mode) && $config->mode === 'console') {
                 $dispatcher = new CliDispatcher();
             }
             else {
+                /**
+                 * Rest dispatcher
+                 */
+                $rest = new DispatchRest($di);
+                $eventsManager->attach('dispatch', $rest);
+    
+                /**
+                 * Error dispatcher
+                 */
+                $error = new DispatchError($di);
+                $eventsManager->attach('dispatch', $error);
+                
                 $dispatcher = new MvcDispatcher();
             }
             

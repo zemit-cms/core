@@ -331,6 +331,9 @@ class Router extends PhalconRouter
     {
         $defaults = $this->getDefaults();
         foreach ($application->getModules() as $key => $module) {
+            if (!isset($module['className'])) {
+                throw new \InvalidArgumentException('Module parameter "className" must be a string under "' . $key . '"');
+            }
             $namespace = str_replace('Module', 'Controllers', $module['className']);
             $this->mount(new ModuleRoute(array_merge($defaults, ['namespace' => $namespace, 'module' => $key])));
         }

@@ -2,7 +2,7 @@
 
 namespace Zemit\Core\Mvc\Dispatcher;
 
-use Phalcon\Mvc\DispatcherInterface;
+use Phalcon\DispatcherInterface;
 use Phalcon\Events\Event;
 use Phalcon\Text;
 

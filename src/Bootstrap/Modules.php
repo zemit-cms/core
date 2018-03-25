@@ -15,7 +15,7 @@ class Modules {
     
     public $modulesDir;
     
-    public function __construct(Application $application)
+    public function __construct(Application $application = null)
     {
         /**
          * Register application modules

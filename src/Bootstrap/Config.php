@@ -9,12 +9,15 @@ use PDO;
 
 class Config extends PhalconConfig
 {
+    public function defineConst() {
+        defined('APPLICATION_ENV') || define('APPLICATION_ENV', Env::get('APPLICATION_ENV', 'development'));
+        defined('CORE_PATH') || define('CORE_PATH', Env::get('CORE_PATH', mb_substr(__DIR__, 0, mb_strlen(basename(__DIR__))*-1)));
+        defined('PRIVATE_PATH') || define('PRIVATE_PATH', Env::get('APP_PRIVATE_PATH', APP_PATH . '/Private/'));
+    }
     
     public function __construct($config = array())
     {
-        defined('APPLICATION_ENV') || define('APPLICATION_ENV', Env::get('APPLICATION_ENV', 'development'));
-        defined('CORE_PATH') || define('CORE_PATH', Env::get('CORE_PATH', mb_substr(__DIR__, 0, mb_strlen(basename(__DIR__))*-1)));
-        defined('PRIVATE_PATH') || define('PRIVATE_PATH', Env::get('APP_PRIVATE_PATH', APP_PATH . '/private/'));
+        $this->defineConst();
         
         parent::__construct([
     
@@ -22,7 +25,7 @@ class Config extends PhalconConfig
              * Core only settings
              */
             'core' => [
-                'version' => '0.1.1',
+                'version' => '0.1.2',
                 'package' => 'zemit-official',
                 'modules' => [
                     'frontend' => [
@@ -67,10 +70,10 @@ class Config extends PhalconConfig
                     'public' => Env::get('APP_PUBLIC_PATH', getcwd()),
             
                     // app
-                    'bootstrap' => Env::get('APP_BOOTSTRAP_PATH', APP_PATH . '/bootstrap/'),
-                    'config' => Env::get('APP_CONFIG_PATH', APP_PATH . '/config/'),
-                    'modules' => Env::get('APP_MODULE_PATH', APP_PATH . '/modules/'),
-                    'plugins' => Env::get('APP_PLUGINS_PATH', APP_PATH . '/plugins/'),
+                    'bootstrap' => Env::get('APP_BOOTSTRAP_PATH', APP_PATH . '/Bootstrap/'),
+                    'config' => Env::get('APP_CONFIG_PATH', APP_PATH . '/Config/'),
+                    'modules' => Env::get('APP_MODULES_PATH', APP_PATH . '/Modules/'),
+                    'plugins' => Env::get('APP_PLUGINS_PATH', APP_PATH . '/Plugins/'),
                     'private' => PRIVATE_PATH,
             
                     // private
@@ -106,6 +109,10 @@ class Config extends PhalconConfig
                     'className' => 'Zemit\\Core\\Api\\Module',
                     'path' => CORE_PATH . 'Api/Module.php'
                 ],
+                'console' => [
+                    'className' => 'Zemit\\Core\\Cli\\Module',
+                    'path' => CORE_PATH . 'Cli/Module.php'
+                ],
             ],
     
             /**
@@ -113,14 +120,14 @@ class Config extends PhalconConfig
              */
             'router' => [
                 'defaults' => [
-                    'namespace' => 'Zemit\\Core\\Frontend\\Controllers',
-                    'module' => 'frontend',
-                    'controller' => 'index',
-                    'action' => 'index'
+                    'namespace' => Env::get('ROUTER_DEFAULT_NAMESPACE', 'Zemit\\Core\\Frontend\\Controllers'),
+                    'module' => Env::get('ROUTER_DEFAULT_MODULE', 'frontend'),
+                    'controller' => Env::get('ROUTER_DEFAULT_CONTROLLER', 'index'),
+                    'action' => Env::get('ROUTER_DEFAULT_ACTION', 'index'),
                 ],
                 'notFound' => [
-                    'controller' => 'errors',
-                    'action' => 'notFound'
+                    'controller' => Env::get('ROUTER_NOTFOUND_CONTROLLER', 'errors'),
+                    'action' => Env::get('ROUTER_NOTFOUND_ACTION', 'notFound'),
                 ]
             ],
     
@@ -131,7 +138,7 @@ class Config extends PhalconConfig
                 'default' => Env::get('LOCALE_DEFAULT', 'en'),
                 'sessionKey' => Env::get('LOCALE_SESSION_KEY', 'zemit-locale'),
                 'mode' => Env::get('LOCALE_MODE', Locale::MODE_SESSION_GEOIP),
-                'allowed' => explode(',', Env::get('LOCALE_ALLOWED', 'en,en_US'))
+                'allowed' => explode(',', Env::get('LOCALE_ALLOWED', 'en,en_US,fr,fr_FR,fr_CA'))
             ],
     
             /**
@@ -152,24 +159,22 @@ class Config extends PhalconConfig
             'module' => [
                 'dir' => [
                     // default
-                    'modules' => 'modules/',
-                    'controllers' => 'controllers/',
-                    'tasks' => 'tasks/',
-                    'models' => 'models/',
-                    'views' => 'views/',
-                    'helpers' => 'helpers/',
-                    'bootstrap' => 'bootstrap/',
-                    'locales' => 'locales/',
-                    'config' => 'config/',
-            
+                    'modules' => Env::get('MODULE_DIR_MODULES', 'Modules/'),
+                    'controllers' => Env::get('MODULE_DIR_CONTROLLER', 'Controllers/'),
+                    'tasks' => Env::get('MODULE_DIR_TASKS', 'Tasks/'),
+                    'models' => Env::get('MODULE_DIR_MODELS', 'Models/'),
+                    'views' => Env::get('MODULE_DIR_VIEWS', 'Views/'),
+                    'bootstrap' => Env::get('MODULE_DIR_BOOTSTRAP', 'Bootstrap/'),
+                    'locales' => Env::get('MODULE_DIR_LOCALES', 'Locales/'),
+                    'config' => Env::get('MODULE_DIR_CONFIG', 'Config/'),
+                    
                     // private
-                    'migrations' => 'private/migrations/',
-                    'cache' => 'private/cache/',
-                    'logs' => 'private/logs/',
-                    'backup' => 'private/backup/',
-                    'files' => 'private/files/',
-                    'trash' => 'private/trash/',
-                    'sql' => 'private/sql/',
+                    'migrations' => Env::get('MODULE_DIR_MIGRATION', 'Private/migrations/'),
+                    'cache' => Env::get('MODULE_DIR_MIGRATION', 'Private/migrations/'),
+                    'logs' => Env::get('MODULE_DIR_LOGS', 'Private/migrations/'),
+                    'backups' => Env::get('MODULE_DIR_BACKUPS', 'Private/backups/'),
+                    'files' => Env::get('MODULE_DIR_FILES', 'Private/files/'),
+                    'trash' => Env::get('MODULE_DIR_TRASH', 'Private/trash/'),
                 ],
             ],
     
@@ -222,7 +227,7 @@ class Config extends PhalconConfig
      */
     public function mergeEnvConfig($env = null)
     {
-        $configFile = $this->app->dir->config . 'env/config.' . (isset($env)? $env : $this->app->env) . '.php';
+        $configFile = $this->app->dir->config . (isset($env)? $env : $this->app->env) . '.php';
         if (file_exists($configFile)) {
             $envConfig = require_once $configFile;
             if (!empty($envConfig)) {
