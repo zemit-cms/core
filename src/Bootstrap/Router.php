@@ -188,14 +188,14 @@ class Router extends PhalconRouter
             'params' => ['int' => '1', 'locale' => 'fr']
         ],
         // out of range routes (for now)
-        '/frontrller/action/slug/params' => false,
-        '/frontrller/action/1/params' => false,
-        '/controller/action/slug/params' => false,
-        '/controller/action/1/params' => false,
-        '/frfrontend/controller/action/1' => false,
-        '/enbackend/controller/action/1' => false,
-        '/en/backend/controller/action/1/not-found' => false,
-        '/backend/controller/action/1/not-found' => false,
+//        '/frontroller/action/slug/params' => false,
+//        '/frontroller/action/1/params' => false,
+//        '/controller/action/slug/params' => false,
+//        '/controller/action/1/params' => false,
+//        '/frfrontend/controller/action/1' => false,
+//        '/enbackend/controller/action/1' => false,
+//        '/en/backend/controller/action/1/not-found' => false,
+//        '/backend/controller/action/1/not-found' => false,
     ];
     
     /**
@@ -268,7 +268,7 @@ class Router extends PhalconRouter
             $this->modulesRoutes($application);
         }
         
-//        $this->testRoutes($this->test);
+        $this->testRoutes($this->test);
     }
     
     public function testRoutes($routes = []) {
@@ -286,6 +286,7 @@ class Router extends PhalconRouter
                     if (json_encode($matchedResult) !== json_encode($result)) {
                         print_r([
                             'route' => 'WRONG MATCH - ' . $test . $end,
+                            'matchedRouteName' => $this->getMatchedRoute()->getName(),
                             'matched' => $matchedResult,
                             'expected' => $result
                         ]);

@@ -6,9 +6,9 @@ use Phalcon\Mvc\Router\Group as RouterGroup;
 
 class ModuleRoute extends RouterGroup
 {
-    public $locale = true;
-    public $default = false;
-    public $params = false;
+    public $locale;
+    public $default;
+    public $params;
     
     /**
      * ModuleRoute constructor.
@@ -20,7 +20,7 @@ class ModuleRoute extends RouterGroup
      * @param bool $locale
      * @param bool $params
      */
-    public function __construct($paths = null, $default = false, $locale = false, $params = false)
+    public function __construct($paths = null, $default = false, $locale = false, $params = true)
     {
         $this->default = $default;
         $this->params = $params;
@@ -50,7 +50,7 @@ class ModuleRoute extends RouterGroup
         $prefixPos = $this->locale? 1 : 0;
         
         // /backend
-        $this->add('', [
+        $this->add('' . $params, [
             'params' => $prefixPos + 1
         ])->setName($prefixName);
 

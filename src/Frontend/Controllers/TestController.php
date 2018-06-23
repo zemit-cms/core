@@ -12,6 +12,36 @@ class TestController extends AbstractController
             'for' => 'backend-controller',
             'controller' => 'dashboard',
         ],
+        '/backend/user/edit' => [
+            'for' => 'backend-controller-action',
+            'controller' => 'user',
+            'action' => 'edit',
+        ],
+        '/backend/user/edit/1' => [
+            'for' => 'backend-controller-action',
+            'controller' => 'user',
+            'action' => 'edit',
+            'params' => 1,
+        ],
+        '/backend/user/view/1' => [
+            'for' => 'backend-controller-action-int',
+            'controller' => 'user',
+            'action' => 'view',
+            'int' => 1,
+        ],
+        '/backend/user/edit/jturbide' => [
+            'for' => 'backend-controller-action',
+            'controller' => 'user',
+            'action' => 'edit',
+            'params' => 'jturbide',
+        ],
+        '/backend/user/view/jturbide' => [
+            'for' => 'backend-controller-action-slug',
+            'controller' => 'user',
+            'action' => 'view',
+            'slug' => 'jturbide',
+        ],
+        
         '/fr/backend/dashboard' => [
             'for' => 'locale-backend-controller',
             'controller' => 'dashboard',
