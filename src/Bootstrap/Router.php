@@ -268,7 +268,7 @@ class Router extends PhalconRouter
             $this->modulesRoutes($application);
         }
         
-        $this->testRoutes($this->test);
+//        $this->testRoutes($this->test);
     }
     
     public function testRoutes($routes = []) {
