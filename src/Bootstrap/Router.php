@@ -56,7 +56,7 @@ class Router extends PhalconRouter
             'module' => 'frontend',
             'controller' => 'controller',
             'action' => 'action',
-            'params' => ['slug' => 'slug', 'locale' => '']
+            'params' => ['slug' => 'slug']
         ],
         // /:controller/:action/:int
         '/controller/action/1' => [
@@ -80,7 +80,7 @@ class Router extends PhalconRouter
             'module' => 'backend',
             'controller' => 'controller',
             'action' => 'index',
-            'params' => ['locale' => '']
+            'params' => []
         ],
         // /:module/:controller/:action
         '/backend/controller/action' => [
@@ -88,7 +88,7 @@ class Router extends PhalconRouter
             'module' => 'backend',
             'controller' => 'controller',
             'action' => 'action',
-            'params' => ['locale' => '']
+            'params' => []
         ],
         // /:module/:controller/:action/:slug
         '/backend/controller/action/slug' => [
@@ -96,7 +96,7 @@ class Router extends PhalconRouter
             'module' => 'backend',
             'controller' => 'controller',
             'action' => 'action',
-            'params' => ['slug' => 'slug', 'locale' => '']
+            'params' => ['slug' => 'slug']
         ],
         // /:module/:controller/:action/:int
         '/backend/controller/action/1' => [
@@ -104,7 +104,7 @@ class Router extends PhalconRouter
             'module' => 'backend',
             'controller' => 'controller',
             'action' => 'action',
-            'params' => ['int' => '1', 'locale' => '']
+            'params' => ['int' => '1']
         ],
         // ----------------------------------------------------
         // /:locale
@@ -209,29 +209,32 @@ class Router extends PhalconRouter
         }
         $this->defaultRoutes();
     
+        $this->add('/', [
+        ])->setName('default');
+        
         $this->add('/:controller', [
             'controller' => 1
-        ])->setName('default');
+        ])->setName('default-controller');
         
         $this->add('/:controller/:action', [
             'controller' => 1,
             'action' => 2,
-        ])->setName('default');
+        ])->setName('default-controller-action');
     
         $this->add('/:controller/:action/:slug', [
             'controller' => 1,
             'action' => 2,
             'slug' => 3,
-        ])->setName('default');
+        ])->setName('default-controller-action-slug');
         
         $this->add('/:controller/:action/:int', [
             'controller' => 1,
             'action' => 2,
             'int' => 3,
-        ])->setName('default');
+        ])->setName('default-controller-action-int');
         
         foreach ($this->config->locale->allowed as $locale) {
-            $this->add('/' . $locale . '[/]{0,1}', [
+            $this->add('/' . $locale, [
                 'locale' => $locale
             ])->setName($locale);
             
@@ -304,7 +307,6 @@ class Router extends PhalconRouter
                 }
             }
         }
-        die();
     }
     
     /**
@@ -321,6 +323,7 @@ class Router extends PhalconRouter
         $this->setDefaults($this->config->router->defaults->toArray()?: $this->defaults);
         $this->notFound($this->config->router->notFound->toArray()?: $this->notFound);
         $this->mount(new ModuleRoute($this->getDefaults(), true));
+        $this->mount(new ModuleRoute($this->getDefaults(), true, true));
     }
     
     /**
@@ -336,6 +339,7 @@ class Router extends PhalconRouter
             }
             $namespace = str_replace('Module', 'Controllers', $module['className']);
             $this->mount(new ModuleRoute(array_merge($defaults, ['namespace' => $namespace, 'module' => $key])));
+            $this->mount(new ModuleRoute(array_merge($defaults, ['namespace' => $namespace, 'module' => $key]), false, true));
         }
     }
     

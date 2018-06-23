@@ -7,7 +7,6 @@ use Phalcon\DI\FactoryDefault;
 use Phalcon\Di\Injectable;
 
 use Phalcon\Security;
-use Phalcon\Mvc\Url;
 use Phalcon\Mvc\Dispatcher as MvcDispatcher;
 use Phalcon\Cli\Dispatcher as CliDispatcher;
 use Phalcon\Http\Response\Cookies;
@@ -23,6 +22,7 @@ use Phalcon\Translate\Factory as Translate;
 use Zemit\Core\Assets\Manager as AssetsManager;
 use Zemit\Core\Db\Profiler as DbProfiler;
 use Zemit\Core\Db\Logger as DbLogger;
+use Zemit\Core\Mvc\Url;
 use Zemit\Core\Mvc\View;
 use Zemit\Core\Mvc\View\Error as ViewError;
 use Zemit\Core\Mvc\Dispatcher\Error as DispatchError;

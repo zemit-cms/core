@@ -20,7 +20,7 @@ class ModuleRoute extends RouterGroup
      * @param bool $locale
      * @param bool $params
      */
-    public function __construct($paths = null, $default = false, $locale = true, $params = false)
+    public function __construct($paths = null, $default = false, $locale = false, $params = false)
     {
         $this->default = $default;
         $this->params = $params;
@@ -33,6 +33,10 @@ class ModuleRoute extends RouterGroup
         $path = $this->getPaths();
         $module = $path['module'];
         $params = $this->params ? '/:params' : null;
+    
+        if ($this->default) {
+            $module = 'zemit';
+        }
         
         /**
          * /backend/
@@ -40,41 +44,44 @@ class ModuleRoute extends RouterGroup
          * /fr-FR/backend/
          * /fr_FR/backend/
          */
-        $this->locale = true;
-        $this->setPrefix(($this->locale? '(/)?{locale:([a-z]{2,3}([\_\-][[:alnum:]]{1,8})?)?}' : null) . ($this->default ? null : '/' . $module));
-        $prefixPos = $this->locale? 3 : 0;
-        
-        if ($this->default) {
-            $module = 'zemit';
-        }
+        $prefix = ($this->locale? '/{locale:([a-z]{2,3})}' : null) . ($this->default ? null : '/' . $module);
+        $this->setPrefix($prefix);
+        $prefixName = ($this->locale? 'locale-' : null) . $module;
+        $prefixPos = $this->locale? 1 : 0;
         
         // /backend
-        $this->add( '' . $params, [
-        ])->setName($module);
+        $this->add('', [
+            'params' => $prefixPos + 1
+        ])->setName($prefixName);
 
         // /backend/users
         $this->add('/:controller' . $params, [
             'controller' => $prefixPos + 1,
-        ])->setName($module);
+            'params' => $prefixPos + 2
+        ])->setName($prefixName . '-controller');
 
         // /backend/user/list
         $this->add('/:controller/:action' . $params, [
             'controller' => $prefixPos + 1,
             'action' => $prefixPos + 2,
-        ])->setName($module);
+            'params' => $prefixPos + 3
+        ])->setName($prefixName . '-controller-action');
 
         // /backend/user/profile/jturbide
         $this->add( '/:controller/:action/([a-zA-Z0-9\_\-]+)' . $params, [
             'controller' => $prefixPos + 1,
             'action' => $prefixPos + 2,
             'slug' => $prefixPos + 3,
-        ])->setName($module);
+            'params' => $prefixPos + 4
+        ])->setName($prefixName . '-controller-action-slug');
 
         // backend/user/edit/1
         $this->add( '/:controller/:action/:int' . $params, [
             'controller' => $prefixPos + 1,
             'action' => $prefixPos + 2,
             'int' => $prefixPos + 3,
-        ])->setName($module);
+            'params' => $prefixPos + 4
+        ])->setName($prefixName . '-controller-action-int');
+        
     }
 }
