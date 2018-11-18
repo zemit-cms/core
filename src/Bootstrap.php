@@ -197,7 +197,7 @@ DOC;
     public function dotenv()
     {
         try {
-            $this->fireSet($this->dotenv, Dotenv::class, [dirname(__DIR__)], function (Bootstrap $bootstrap) {
+            $this->fireSet($this->dotenv, Dotenv::class, [dirname(APP_PATH)], function (Bootstrap $bootstrap) {
                 $bootstrap->dotenv->load();
             });
         } catch(\Dotenv\Exception\InvalidPathException $e) {
