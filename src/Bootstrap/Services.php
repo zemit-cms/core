@@ -85,7 +85,7 @@ class Services extends Injectable
                 '.phtml' => 'Phalcon\Mvc\View\Engine\Php',
                 '.volt' => 'Phalcon\Mvc\View\Engine\Volt',
                 '.mhtml' => 'Phalcon\Mvc\View\Engine\Mustache',
-                '.twig' => 'Phalcon\Mvc\View\Engine\Twig', // @TODO fix for non-existing viewdir
+//                '.twig' => 'Phalcon\Mvc\View\Engine\Twig', // @TODO fix for non-existing viewdir
                 '.tpl' => 'Phalcon\Mvc\View\Engine\Smarty'
             ));
             
