@@ -15,31 +15,14 @@ class Modules {
     
     public $modulesDir;
     
-    public function __construct(Application $application)
+    public function __construct(Application $application = null)
     {
         /**
          * Register application modules
          */
         $config = $application->getDI()->get('config');
-        if (!empty($config)) {
-            $registerModules = array();
-            foreach ($config->modules as $module => $namespace) {
-                $registerModules[$module] = array(
-                    'className' => $namespace . '\\Module',
-                    'path' => $config->app->dir->modules . $module . '/Module.php'
-                );
-            }
-            if (!empty($registerModules)) {
-                $application->registerModules($registerModules);
-            }
-            else {
-                // @TODO maybe throw an error
-            }
-        }
-        else {
-            // @TODO maybe throw an error
-        }
-        
+        $application->registerModules($config->modules->toArray());
+        $application->setDefaultModule($config->router->defaults->module);
     }
     
 }

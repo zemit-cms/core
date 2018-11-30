@@ -5,9 +5,8 @@ namespace Zemit\Core\Bootstrap;
 // phalcon
 use Phalcon\DI\FactoryDefault;
 use Phalcon\Di\Injectable;
-use Phalcon\Mvc\View\Simple;
+
 use Phalcon\Security;
-use Phalcon\Mvc\Url;
 use Phalcon\Mvc\Dispatcher as MvcDispatcher;
 use Phalcon\Cli\Dispatcher as CliDispatcher;
 use Phalcon\Http\Response\Cookies;
@@ -15,22 +14,22 @@ use Phalcon\Mailer\Manager as MailerManager;
 use Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
 use Phalcon\Session\Adapter\Files as SessionAdapter;
 use Phalcon\Flash\Session as FlashSession;
+use Phalcon\Translate\Adapter\Gettext;
 use Phalcon\Translate\Adapter\NativeArray;
 use Phalcon\Translate\Factory as Translate;
-
-// vendor
-use ModDev\PhalconLocale\PhalconLocale;
 
 // zemit
 use Zemit\Core\Assets\Manager as AssetsManager;
 use Zemit\Core\Db\Profiler as DbProfiler;
 use Zemit\Core\Db\Logger as DbLogger;
+use Zemit\Core\Mvc\Url;
 use Zemit\Core\Mvc\View;
 use Zemit\Core\Mvc\View\Error as ViewError;
 use Zemit\Core\Mvc\Dispatcher\Error as DispatchError;
 use Zemit\Core\Mvc\Dispatcher\Security as DispatchSecurity;
 use Zemit\Core\Mvc\Dispatcher\Camelize as DispatchCamelize;
 use Zemit\Core\Mvc\Dispatcher\Rest as DispatchRest;
+use Zemit\Core\Locale;
 use Zemit\Core\Filter;
 use Zemit\Core\Tag;
 use Zemit\Core\Escaper;
@@ -65,7 +64,7 @@ class Services extends Injectable
          */
         $di->setShared('url', function() use ($config) {
             $url = new Url();
-            $url->setBaseUri($config->app->baseUri);
+            $url->setBaseUri($config->app->uri);
             return $url;
         });
         
@@ -81,11 +80,12 @@ class Services extends Injectable
             $eventsManager->attach('view', $error);
             
             $view = new View();
+            $view->setMinify($config->app->minify);
             $view->registerEngines(array(
                 '.phtml' => 'Phalcon\Mvc\View\Engine\Php',
                 '.volt' => 'Phalcon\Mvc\View\Engine\Volt',
                 '.mhtml' => 'Phalcon\Mvc\View\Engine\Mustache',
-                '.twig' => 'Phalcon\Mvc\View\Engine\Twig',
+                '.twig' => 'Phalcon\Mvc\View\Engine\Twig', // @TODO fix for non-existing viewdir
                 '.tpl' => 'Phalcon\Mvc\View\Engine\Smarty'
             ));
             
@@ -120,23 +120,23 @@ class Services extends Injectable
 //            $security = new DispatchSecurity($di);
 //            $eventsManager->attach('dispatch', $security);
             
-            /**
-             * Rest dispatcher
-             */
-            $rest = new DispatchRest($di);
-            $eventsManager->attach('dispatch', $rest);
-            
-            /**
-             * Error dispatcher
-             */
-//            $error = new DispatchError($di);
-//            $eventsManager->attach('dispatch', $error);
-            
             // Setup the dispatcher
             if (isset($config->mode) && $config->mode === 'console') {
                 $dispatcher = new CliDispatcher();
             }
             else {
+                /**
+                 * Rest dispatcher
+                 */
+                $rest = new DispatchRest($di);
+                $eventsManager->attach('dispatch', $rest);
+    
+                /**
+                 * Error dispatcher
+                 */
+                $error = new DispatchError($di);
+                $eventsManager->attach('dispatch', $error);
+                
                 $dispatcher = new MvcDispatcher();
             }
             
@@ -311,7 +311,7 @@ class Services extends Injectable
          * Local service
          */
         $di->setShared('locale', function() use ($di, $config) {
-            return new PhalconLocale($di, $config);
+            return new Locale($config->locale->toArray());
         });
         
         /**
@@ -319,11 +319,11 @@ class Services extends Injectable
          */
         $di->setShared('translate', function() use ($di, $config) {
             $options = $config->translate;
-            $options['locale'] = $di->get('locale')->getLocale();
-            $options['content'] = ['test' => 'test'];
-            dd($options['locale']);
-            
-            return Translate::load($options);
+            $translate = new Gettext($options->toArray());
+//            dd($di->get('router')->getParams());
+//            dd($di->get('locale')->getFromRoute());
+            $translate->setLocale(LC_MESSAGES, $di->get('locale')->get() . '.utf8');
+            return $translate;
         });
     }
 }

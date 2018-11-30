@@ -44,8 +44,8 @@ class App {
         ini_set('display_errors', 1);
         
         // Prepare the phalcon debug listener
-        $this->debug = new Debug();
-        $this->debug->listen();
+//        $this->debug = new Debug();
+//        $this->debug->listen();
     }
     
     protected function _formatApp() {
@@ -58,7 +58,7 @@ class App {
         date_default_timezone_set('America/Montreal');
         mb_internal_encoding('UTF-8');
         mb_http_output('UTF-8');
-        setlocale(LC_ALL, 'fr_CA.UTF-8', 'French_Canada.1252');
+//        setlocale(LC_ALL, 'fr_CA.UTF-8', 'French_Canada.1252');
     }
     
     protected function _phpIni() {

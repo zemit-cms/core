@@ -2,7 +2,7 @@
 
 namespace Zemit\Core\Utils;
 
-use Dotenv\Loader;
+use Dotenv\Loader as DotenvLoader;
 
 /**
  * Class Env
@@ -17,16 +17,16 @@ class Env
 {
     /**
      * Dotenv loader to manage the environment varialbe
-     * @var Loader
+     * @var DotenvLoader
      */
     public static $dotenv;
     
     /**
      * Get the dotenv loader
-     * @return Loader
+     * @return DotenvLoader
      */
     public static function getDotenv() {
-        return isset(self::$dotenv)? self::$dotenv : self::$dotenv = new Loader(null);
+        return isset(self::$dotenv)? self::$dotenv : self::$dotenv = new DotenvLoader(null);
     }
     
     /**
@@ -37,8 +37,8 @@ class Env
      * Ex. (GET): $this->GET_APPLICATION_ENV('development');
      * Ex. (GET): self::GET_APPLICATION_ENV('development');
      * Ex. (GET): Env::GET_APPLICATION_ENV('development');
-     * @param $name Key to get/set
-     * @param $arguments Default fallback value for get, or value to set for set
+     * @param string $name key to get/set
+     * @param mixed $arguments Default fallback value for get, or value to set for set
      * @return mixed Return void for set, and return the environment variable value, or default value for get
      */
     public static function call($name, $arguments)
@@ -72,23 +72,25 @@ class Env
     {
         $ret = self::getDotenv()->getEnvironmentVariable($key);
         
-        if ($ret === false) {
+        if ($ret === null) {
             $ret = ($default instanceof Closure) ? $default() : $default;
         }
         
-        switch(strtolower($ret)) {
-            case 'true':
-                $ret = true;
-                break;
-            case 'false':
-                $ret = false;
-                break;
-            case 'empty':
-                $ret = '';
-                break;
-            case 'null':
-                $ret = null;
-                break;
+        if (is_string($ret)) {
+            switch(strtolower($ret)) {
+                case 'true':
+                    $ret = true;
+                    break;
+                case 'false':
+                    $ret = false;
+                    break;
+                case 'empty':
+                    $ret = '';
+                    break;
+                case 'null':
+                    $ret = null;
+                    break;
+            }
         }
     
         return $ret;

@@ -34,7 +34,7 @@ class View extends MvcView
             $controllerName = Slug::generate(Text::uncamelize($controllerName));
             $actionName = Slug::generate(Text::uncamelize($actionName));
         }
-        parent::render($controllerName, $actionName, $params);
+        return parent::render($controllerName, $actionName, $params);
     }
     
     public function getRender($controllerName, $actionName, $params = null, $configCallback = null)
@@ -55,7 +55,6 @@ class View extends MvcView
     {
         // Don't worry
         $content = parent::getContent();
-        
         if ($this->getMinify()) {
             
             // Clean comments

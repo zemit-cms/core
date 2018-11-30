@@ -4,9 +4,12 @@ namespace Zemit\Core\Filters;
 
 class Json
 {
+    /**
+     * @param $value
+     * @return null or the valid json string
+     */
     public function filter($value)
     {
-        $valid = false;
         try {
             $before = json_decode($value);
             $valid = empty($before)? false : true;

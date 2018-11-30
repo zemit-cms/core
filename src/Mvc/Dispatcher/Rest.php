@@ -148,7 +148,7 @@ class Rest extends Component {
         $ret = false;
         
         // activate the profiler by default if not config
-        if (!isset($this->config->current->profiler) || $this->config->current->profiler) {
+        if (!isset($this->config->app->profiler) || $this->config->app->profiler) {
             
             // prepare our profiles response as the profiler is activated
             $profiles = array();
