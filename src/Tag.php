@@ -95,7 +95,7 @@ class Tag extends PhalconTag
                 // array escaper
                 
                 if (is_array($value) || $value instanceof \Traversable) {
-    
+                    
                     if (isset($value[0]) && is_string($value[0])) {
                         foreach ($value as &$v) {
                             $v = $escaper->escapeHtmlAttr($v);
@@ -163,7 +163,7 @@ class Tag extends PhalconTag
      */
     public static function get($tag = null, $params = array(), $html = null, $htmlGlue = null)
     {
-        $tagParams = self::getParams($params, $tag);
+        $tagParams = self::getParams($tag, $params);
         
         // Tag field is mandatory
         if (empty($tag)) {
@@ -234,7 +234,6 @@ class Tag extends PhalconTag
      */
     public static function getParams($name = null, $params = array(), $sprintf = ' %2$s="%1$s"', $glue = null)
     {
-        
         // get by name if params is string, and params becomes empty
         if (is_string($params) && is_null($name)) {
             $name = $params;
@@ -394,6 +393,12 @@ class Tag extends PhalconTag
     {
         self::removeMeta('charset');
         return self::addMeta('charset', $charset);
+    }
+    
+    public static function setMetaProperty($property, $content)
+    {
+        self::removeMeta('property', $property);
+        return self::addMeta('property', $property, $content);
     }
     
     public static function setMetaName($name, $content)
