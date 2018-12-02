@@ -85,16 +85,16 @@ trait Eagerload
                 $entity->load(array_pop($arguments));
             }
             return $entity;
-        } elseif (strpos('findWith', $method) === 0) {
+        } elseif (strpos($method, 'findWith') === 0) {
             $oriMethod = str_replace('findWith', 'find', $method);
-            $entity = parent::__callStatic($method, self::_getParameters($arguments));
+            $entity = parent::__callStatic($oriMethod, self::_getParameters($arguments));
             if ($entity) {
                 $entity->load($arguments);
             }
             return $entity;
-        } elseif (strpos('withBy', $method) === 0) {
+        } elseif (strpos($method, 'withBy') === 0) {
             $oriMethod = str_replace('withBy', 'findBy', $method);
-            $entity = parent::__callStatic($method, self::_getParameters($arguments));
+            $entity = parent::__callStatic($oriMethod, self::_getParameters($arguments));
             if ($entity) {
                 $entity->load($arguments);
             }
