@@ -71,10 +71,10 @@ trait Eagerload
     /**
      * Call magic method to make the with works in an implicit way
      *
-     * @param type $method
-     * @param type $arguments
+     * @param string $method
+     * @param object|array $arguments
      *
-     * @return type
+     * @return
      */
     public static function __callStatic($method, $arguments = array())
     {
