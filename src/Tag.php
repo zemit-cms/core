@@ -78,7 +78,7 @@ class Tag extends PhalconTag
      * @param null|string $value Value to be escaped
      * @param null|string $attr Attribute to be escaped
      *
-     * @return array[$value, $attr] Return the escaped value and attribute
+     * @return array Return the escaped value and attribute [$value, $attr]
      */
     public static function escapeParam($value = null, $attr = null, $glue =  ' ')
     {
