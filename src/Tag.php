@@ -66,18 +66,18 @@ class Tag extends PhalconTag
     }
     
     /**
-     * Escape CSS, JS, URL, and HTML Attrs from a value
+     * Escape CSS, JS, URL, ATTR for HTML from a value depending on the HTML attribute passed
      *
-     * @param null $value
-     * @param null $key
+     * @param null|string $value Value to be escaped
+     * @param null|string $attr Attribute to be escaped
      *
-     * @return null|string|array
+     * @return array[$value, $attr] Return the escaped value and attribute
      */
-    public static function escapeParam($value = null, $key = null, $glue =  ' ')
+    public static function escapeParam($value = null, $attr = null, $glue =  ' ')
     {
         $escaper = self::getEscaperService();
-        $key = $escaper->escapeHtmlAttr($key);
-        switch($key) {
+        $attr = $escaper->escapeHtmlAttr($attr);
+        switch($attr) {
             case 'css':
             case 'style':
                 $value = $escaper->escapeCss($value);
@@ -117,7 +117,7 @@ class Tag extends PhalconTag
                 }
                 break;
         }
-        return [$value, $key];
+        return [$value, $attr];
     }
     
     /**
