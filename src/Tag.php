@@ -536,7 +536,7 @@ class Tag extends PhalconTag
     
     /**
      * Echo of the CSS implicit output of that collection
-     * @param null $collection CSS Collection string
+     * @param string $collection CSS Collection string
      * @return void
      */
     public static function css($collection = null)
@@ -558,7 +558,7 @@ class Tag extends PhalconTag
     
     /**
      * Echo of the JS implicit output of that collection
-     * @param null $collection JS Collection string
+     * @param string $collection JS Collection string
      * @return void
      */
     public static function js($collection = null)
