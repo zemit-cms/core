@@ -20,6 +20,13 @@ class Tag extends PhalconTag
     static protected $_attr = [];
     
     /**
+     * @return \Zemit\Core\Escaper
+     */
+    public static function getEscaperService() {
+        return parent::getEscaperService();
+    }
+    
+    /**
      * Get the assets service from the default di
      * @return Manager
      */
@@ -93,7 +100,7 @@ class Tag extends PhalconTag
             default:
                 // array escaper
                 
-                if (is_array($value) || $value instanceof \Traversable) {
+                if (is_array($value)) {
                     
                     if (isset($value[0]) && is_string($value[0])) {
                         foreach ($value as &$v) {
