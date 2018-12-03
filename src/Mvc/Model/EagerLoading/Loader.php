@@ -72,7 +72,7 @@ MSG;
 
                 if (empty($from)) {
                     $from = null;
-                } else {
+                } elseif (!empty($record)) {
                     $className = get_class($record);
                 }
             }
