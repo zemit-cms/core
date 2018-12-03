@@ -75,7 +75,7 @@ class Tag extends PhalconTag
     /**
      * Escape CSS, JS, URL, ATTR for HTML from a value depending on the HTML attribute passed
      *
-     * @param null|string $value Value to be escaped
+     * @param null|string|array|object $value Value to be escaped
      * @param null|string $attr Attribute to be escaped
      *
      * @return array Return the escaped value and attribute [$value, $attr]
