@@ -59,8 +59,7 @@ class Tag extends PhalconTag
     public static function implodeSprintf($array, $sprintf = '%s', $implode = null)
     {
         $array = array_filter($array);
-        $escaper = self::getEscaperService();
-        return implode($implode, array_map(function($value, $key) use ($sprintf, $escaper) {
+        return implode($implode, array_map(function($value, $key) use ($sprintf) {
             list ($value, $key) = self::escapeParam($value, $key);
             return sprintf($sprintf, $value, $key);
         }, $array, array_keys($array)));
