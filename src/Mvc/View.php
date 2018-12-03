@@ -55,6 +55,7 @@ class View extends MvcView
     {
         // Don't worry
         $content = parent::getContent();
+        
         if ($this->getMinify()) {
             
             // Clean comments

@@ -138,7 +138,7 @@ class Config extends PhalconConfig
                 'default' => Env::get('LOCALE_DEFAULT', 'en'),
                 'sessionKey' => Env::get('LOCALE_SESSION_KEY', 'zemit-locale'),
                 'mode' => Env::get('LOCALE_MODE', Locale::MODE_SESSION_GEOIP),
-                'allowed' => explode(',', Env::get('LOCALE_ALLOWED', 'en,en_US,fr,fr_FR,fr_CA'))
+                'allowed' => explode(',', Env::get('LOCALE_ALLOWED', 'en,fr'))
             ],
     
             /**
