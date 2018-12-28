@@ -55,7 +55,7 @@ trait Eagerload
         try {
             $retval = forward_static_call_array('self::incubatorFindFirstWith', $arguments);
         } catch(\BadMethodCallException $e) {
-        
+            
             // overriding the bad method call exception to work anyway
             $parameters = self::_prepareParameters($arguments);
             if ($retval = static::findFirst($parameters)) {
@@ -71,34 +71,30 @@ trait Eagerload
     /**
      * Call magic method to make the with works in an implicit way
      *
-     * @param type $method
-     * @param type $arguments
+     * @param string $method
+     * @param object|array $arguments
      *
-     * @return type
+     * @return Phalcon\Mvc\Model\Resultset
      */
     public static function __callStatic($method, $arguments = array())
     {
         if (strpos($method, 'findFirstWith') === 0) {
             $oriMethod = str_replace('findFirstWith', 'findFirst', $method);
-            $entity = parent::__callStatic($oriMethod, array(self::_getParameters($arguments)));
+            $entity = parent::__callStatic($oriMethod, [self::_getParameters($arguments)]);
             if ($entity) {
                 $entity->load(array_pop($arguments));
             }
             return $entity;
-        } elseif (strpos('findWith', $method) === 0) {
-            $oriMethod = str_replace('findWith', 'find', $method);
-            $entity = parent::__callStatic($method, self::_getParameters($arguments));
-            if ($entity) {
-                $entity->load($arguments);
+        } elseif (strpos($method, 'findWith') === 0 || strpos($method, 'withBy') === 0) {
+            $oriMethod = str_replace(['findWith', 'withBy'], ['find', 'findBy'], $method);
+            $retval = parent::__callStatic($oriMethod, [self::_getParameters($arguments)]);
+            if (isset($retval[0]) && count($retval)) {
+                array_unshift($arguments, $retval);
+                $retval = call_user_func_array('Zemit\Core\Mvc\Model\EagerLoading\Loader::fromResultset', $arguments);
+            } else {
+                $retval = array();
             }
-            return $entity;
-        } elseif (strpos('withBy', $method) === 0) {
-            $oriMethod = str_replace('withBy', 'findBy', $method);
-            $entity = parent::__callStatic($method, self::_getParameters($arguments));
-            if ($entity) {
-                $entity->load($arguments);
-            }
-            return $entity;
+            return $retval;
         } else {
             return parent::__callStatic($method, $arguments);
         }

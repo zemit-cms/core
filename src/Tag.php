@@ -20,6 +20,13 @@ class Tag extends PhalconTag
     static protected $_attr = [];
     
     /**
+     * @return \Zemit\Core\Escaper
+     */
+    public static function getEscaperService() {
+        return parent::getEscaperService();
+    }
+    
+    /**
      * Get the assets service from the default di
      * @return Manager
      */
@@ -59,26 +66,25 @@ class Tag extends PhalconTag
     public static function implodeSprintf($array, $sprintf = '%s', $implode = null)
     {
         $array = array_filter($array);
-        $escaper = self::getEscaperService();
-        return implode($implode, array_map(function($value, $key) use ($sprintf, $escaper) {
+        return implode($implode, array_map(function($value, $key) use ($sprintf) {
             list ($value, $key) = self::escapeParam($value, $key);
             return sprintf($sprintf, $value, $key);
         }, $array, array_keys($array)));
     }
     
     /**
-     * Escape CSS, JS, URL, and HTML Attrs from a value
+     * Escape CSS, JS, URL, ATTR for HTML from a value depending on the HTML attribute passed
      *
-     * @param null $value
-     * @param null $key
+     * @param null|string|array|object $value Value to be escaped
+     * @param null|string $attr Attribute to be escaped
      *
-     * @return null|string|array
+     * @return array Return the escaped value and attribute [$value, $attr]
      */
-    public static function escapeParam($value = null, $key = null, $glue =  ' ')
+    public static function escapeParam($value = null, $attr = null, $glue =  ' ')
     {
         $escaper = self::getEscaperService();
-        $key = $escaper->escapeHtmlAttr($key);
-        switch($key) {
+        $attr = $escaper->escapeHtmlAttr($attr);
+        switch($attr) {
             case 'css':
             case 'style':
                 $value = $escaper->escapeCss($value);
@@ -94,7 +100,7 @@ class Tag extends PhalconTag
             default:
                 // array escaper
                 
-                if (is_array($value) || $value instanceof \Traversable) {
+                if (is_array($value)) {
                     
                     if (isset($value[0]) && is_string($value[0])) {
                         foreach ($value as &$v) {
@@ -118,7 +124,7 @@ class Tag extends PhalconTag
                 }
                 break;
         }
-        return [$value, $key];
+        return [$value, $attr];
     }
     
     /**
@@ -154,23 +160,19 @@ class Tag extends PhalconTag
      * </div>
      *
      * @param string $tag Tag name to generate
-     * @param string|array $param Array of attrs, values and options to add into the tag html markup
+     * @param string|array $params Array of attrs, values and options to add into the tag html markup
      * @param mixed|string $html Anonymous function or string to generate the html markup inside the tag
      * @param string $htmlGlue Glue between the html markups
      *
      * @return string Return the html ready for output
-     * @throws Exception Throw an exception if the tag is empty
      */
-    public static function get($tag = null, $params = array(), $html = null, $htmlGlue = null)
+    public static function get($tag, $params = [], $html = null, $htmlGlue = null)
     {
         $tagParams = self::getParams($tag, $params);
         
         // Tag field is mandatory
-        if (empty($tag)) {
-            throw new Exception('The $tag must be set');
-        }
         if (is_array($html)) {
-            $html = implode(null, $html);
+            $html = implode('', $html);
         }
         
         $beforeHtml = '<' . $tag . $tagParams . ($html === false ? '/' : null) . '>';
@@ -195,20 +197,20 @@ class Tag extends PhalconTag
     }
     
     /**
-     * @param $html
-     * @param null $htmlGlue
+     * @param callable|array $html
+     * @param null|string $htmlGlue
      *
      * @return string
      */
     public static function getHtml($html, $htmlGlue = null)
     {
         ob_start();
-        $html = is_callable($html) ? $html->call(self) : $html;
+        $html = is_callable($html) ? $html() : $html;
         $output = ob_get_clean();
-        if (is_array($html)) {
-            $html = implode($htmlGlue, $html);
-        }
         $html = $html ?? $output;
+        if (is_array($html)) {
+            $html = implode($htmlGlue ?? '', $html);
+        }
         return $html;
     }
     
@@ -232,7 +234,7 @@ class Tag extends PhalconTag
      *
      * @return string Return the imploded sprintf "%2$s="%1$s" from an array
      */
-    public static function getParams($name = null, $params = array(), $sprintf = ' %2$s="%1$s"', $glue = null)
+    public static function getParams($name = null, $params = [], $sprintf = ' %2$s="%1$s"', $glue = null)
     {
         // get by name if params is string, and params becomes empty
         if (is_string($params) && is_null($name)) {
@@ -253,7 +255,7 @@ class Tag extends PhalconTag
         return self::implodeSprintf($params, $sprintf, $glue);
     }
     
-    public static function params($params = array(), $name = null, $sprintf = ' %2$s="%1$s"', $glue = null)
+    public static function params($params = [], $name = null, $sprintf = ' %2$s="%1$s"', $glue = null)
     {
         echo forward_static_call_array(__CLASS__ . '::' . 'get' . ucfirst(__FUNCTION__), func_get_args());
     }
@@ -264,14 +266,15 @@ class Tag extends PhalconTag
      *
      * @param string|array $name Name or array of names of the tag attr(s) to retrieve
      *
-     * @return mixed|null Return the attrs from the tag(s)
+     * @return array Return the attrs from the tag(s)
      */
     public static function getAttr($name = null, $merge = true)
     {
+        $ret = [];
+        
         if (is_null($name)) {
             $ret = self::$_attr;
         } else if (is_array($name)) {
-            $ret = [];
             foreach ($name as $n) {
                 $ret [] = isset(self::$_attr[$n]) ? self::$_attr[$n] : null;
             }
@@ -310,16 +313,16 @@ class Tag extends PhalconTag
      *
      * @return array
      */
-    public static function setAttr($name, $attrs = array(), $merge = true)
+    public static function setAttr($name, $attrs = [], $merge = true)
     {
         $ret = null;
         if (is_array($name)) {
-            $ret = array();
+            $ret = [];
             foreach ($name as $n) {
-                $ret [] = self::setAttrs([$n => $attrs], true);
+                $ret [] = self::setAttrs([$n => $attrs], $merge);
             }
         } else {
-            $ret = self::setAttrs([$name => $attrs], true);
+            $ret = self::setAttrs([$name => $attrs], $merge);
         }
         return $ret;
     }
@@ -327,13 +330,14 @@ class Tag extends PhalconTag
     /**
      * Allow to pass a multi-dimentional array to set the default attrs
      *
-     * @param array $attrs Must be a multi-dimentional array Ex: ['body' => ['class' => 'class1']]
+     * @param array|object|string $attrs Must be a multi-dimentional array Ex: ['body' => ['class' => 'class1']]
      * @param bool $merge Set true to not overwrite existing key
      *
      * @return array Return an array of the set tagsAttrs
      */
-    public static function setAttrs($attrs = array(), $merge = false)
+    public static function setAttrs($attrs = [], $merge = false)
     {
+        $ret = [];
         if (is_object($attrs)) {
             $attrs = (array)$attrs;
         }
@@ -342,7 +346,7 @@ class Tag extends PhalconTag
                 $ret = self::$_attr[$attrs] = [];
             }
         } else {
-            $ret = array();
+            $ret = [];
             foreach ($attrs as $attrsKey => $attrsValue) {
                 if (is_object($attrsValue)) {
                     $attrsValue = (array)$attrsValue;
@@ -437,13 +441,9 @@ class Tag extends PhalconTag
      * @param string $value Link tag attr value
      * @param array $options Link tag attrs and values
      */
-    public static function addLink($attr, $value, $options = array())
+    public static function addLink($attr, $value, $options = [])
     {
-        if (!is_array($options)) {
-            throw new Exception('The "$options" parameter must be an array in order to.');
-        } else {
-            self::addRawLink(array_merge($options, [$attr => $value]));
-        }
+        self::addRawLink(array_merge($options, [$attr => $value]));
     }
     
     public static function addRawLink($link)
@@ -476,9 +476,7 @@ class Tag extends PhalconTag
     
     /**
      * Get an html output of the head meta tags
-     *
-     * @param null $glue Glue between each tag metas
-     *
+     * @param string $glue Glue between each tag metas
      * @return string Html output of the head meta tags
      */
     public static function getMeta($glue = null)
@@ -487,9 +485,14 @@ class Tag extends PhalconTag
         foreach (self::$_meta as $meta) {
             $ret [] = self::get('meta', $meta, false);
         }
-        return implode($glue, $ret);
+        return implode($glue ?? '', $ret);
     }
     
+    /**
+     * Echo html output of the head meta tags
+     * @param string $glue Glue between each tag metas
+     * @return void
+     */
     public static function meta($glue = null)
     {
         echo forward_static_call_array(__CLASS__ . '::' . 'get' . ucfirst(__FUNCTION__), func_get_args());
@@ -497,9 +500,7 @@ class Tag extends PhalconTag
     
     /**
      * Get an html output of the head link tags
-     *
-     * @param null $glue Glue between each tag links
-     *
+     * @param string $glue Glue between each tag links
      * @return string Html output of the head link tags
      */
     public static function getLink($glue = null)
@@ -508,47 +509,58 @@ class Tag extends PhalconTag
         foreach (self::$_link as $link) {
             $ret [] = self::get('link', $link, false);
         }
-        return implode($glue, $ret);
+        return implode($glue ?? '', $ret);
     }
     
+    /**
+     * Echo of the link meta
+     * @param string $glue Glue between each tag links
+     * @return void
+     */
     public static function link($glue = null)
     {
         echo forward_static_call_array(__CLASS__ . '::' . 'get' . ucfirst(__FUNCTION__), func_get_args());
     }
     
     /**
-     * Output the CSS collection, if it exists
-     *
-     * @param null $collection
-     *
-     * @return string
+     * Return the CSS implicit output of that collection
+     * @param string $collection CSS Collection string
+     * @return string Return the CSS implicit output of that collection
      */
-    public static function getCss($collection = null)
+    public static function getCss($collection)
     {
         $assets = self::getAssetsService();
         $assets->useImplicitOutput(false);
         return $assets->outputCss($collection);
     }
     
+    /**
+     * Echo of the CSS implicit output of that collection
+     * @param string $collection CSS Collection string
+     * @return void
+     */
     public static function css($collection = null)
     {
         echo forward_static_call_array(__CLASS__ . '::' . 'get' . ucfirst(__FUNCTION__), func_get_args());
     }
     
     /**
-     * Output the JS collection, if it exists
-     *
-     * @param null $collection
-     *
-     * @return string
+     * Return the JS implicit output of that collection
+     * @param string $collection JS Collection string
+     * @return string Return the JS implicit output of that collection
      */
-    public static function getJs($collection = null)
+    public static function getJs($collection)
     {
         $assets = self::getAssetsService();
         $assets->useImplicitOutput(false);
         return $assets->outputJs($collection);
     }
     
+    /**
+     * Echo of the JS implicit output of that collection
+     * @param string $collection JS Collection string
+     * @return void
+     */
     public static function js($collection = null)
     {
         echo forward_static_call_array(__CLASS__ . '::' . 'get' . ucfirst(__FUNCTION__), func_get_args());

@@ -1,6 +1,6 @@
 <?php
 
-namespace Zemit\Core\Plugins\Utils\RecursiveIterator\Filter;
+namespace Zemit\Core\Utils\RecursiveIterator\Filter;
 
 class FoldersOnlyFilter extends \RecursiveFilterIterator {
 
