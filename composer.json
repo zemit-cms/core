@@ -27,26 +27,19 @@
     "forum": "https://forum.zemit.com/"
   },
   "require": {
-    "php": ">=7.0",
-    "ext-phalcon": "~3.2",
+    "php": ">=7.2",
+    "ext-phalcon": "~4.0",
 
     "vlucas/phpdotenv": "^2.4",
     "docopt/docopt": "~1.0",
-
-    "phalcon/dd": "^1.1",
-    "phalcon/incubator": "^3.2",
-    "phalcon/ide-stubs": "~3.2",
-    "phalcon/breadcrumbs":  "^1.3",
-    "moderndeveloperllc/phalconlocale" : "1.0.*",
-    "m1ome/phalcon-datatables": "^1.1",
+    "filp/whoops": "^2.3",
 
     "mustache/mustache": "^2.12",
     "smarty/smarty": "^3.1",
     "twig/twig": "^2.4"
   },
   "require-dev": {
-    "phalcon/ide-stubs": "^3.2",
-    "phalcon/devtools": "^3.2",
+    "phalcon/ide-stubs": "dev-master",
 
     "phpunit/phpunit": "^4.8",
     "phpspec/phpspec": "~2.1",
@@ -59,12 +52,15 @@
   },
   "autoload": {
     "psr-4": {
-      "Zemit\\Core\\": "src/"
-    }
+      "Zemit\\": "src/"
+    },
+    "files": [
+      "src/Helper.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {
-      "Zemit\\Core\\Test\\": "tests/unit"
+      "Zemit\\Test\\": "tests/unit"
     }
   }
 }

@@ -1,6 +1,13 @@
 <?php
-
-namespace Zemit\Core\Mvc;
+/**
+ * This file is part of the Zemit Framework.
+ *
+ * (c) Zemit Team <contact@zemit.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
+namespace Zemit\Mvc;
 
 use Phalcon\DiInterface;
 use Phalcon\Loader;
@@ -9,9 +16,9 @@ use Phalcon\Mvc\Url;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\ModuleDefinitionInterface;
 use Phalcon\Text;
-use Zemit\Core\Bootstrap\Config;
-use Zemit\Core\Bootstrap\Router;
-use Zemit\Core\Utils;
+use Zemit\Bootstrap\Config;
+use Zemit\Bootstrap\Router;
+use Zemit\Utils;
 
 /**
  * @author Julien Turbide <jturbide@nuagerie.com>
@@ -22,6 +29,7 @@ class Module implements ModuleDefinitionInterface
     const NAME_FRONTEND = 'Frontend';
     const NAME_BACKEND = 'Backend';
     const NAME_API = 'Api';
+    const NAME_CLI = 'Cli';
     
     public $namespace = __NAMESPACE__;
     

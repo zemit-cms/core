@@ -1,6 +1,14 @@
 <?php
+/**
+ * This file is part of the Zemit Framework.
+ *
+ * (c) Zemit Team <contact@zemit.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
 
-namespace Zemit\Core\Mvc\Dispatcher;
+namespace Zemit\Mvc\Dispatcher;
 
 use Phalcon\Acl as PhalconAcl;
 use Phalcon\Acl\Role;
@@ -84,7 +92,7 @@ class Security extends Plugin
             $acl->addRole(new Role('public', 'Public'));
             
             // Get db roles
-            $roles = \Zemit\Core\Api\Models\Role::findByDeleted(0);
+            $roles = \Zemit\Api\Models\Role::findByDeleted(0);
     
             // Register roles
             foreach ($roles as $role) {
@@ -145,7 +153,7 @@ class Security extends Plugin
             $roles = $user->getRoles();
         }
         if (empty($roles)) {
-            $roles = array(new \Zemit\Core\Api\Models\Role(array('name' => 'Public', 'slug' => 'public')));
+            $roles = array(new \Zemit\Api\Models\Role(array('name' => 'Public', 'slug' => 'public')));
         }
         
         // get controller and action

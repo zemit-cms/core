@@ -1,6 +1,14 @@
 <?php
+/**
+ * This file is part of the Zemit Framework.
+ *
+ * (c) Zemit Team <contact@zemit.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
 
-namespace Zemit\Core\Mvc;
+namespace Zemit\Mvc;
 
 use Phalcon\Mvc\View as MvcView;
 use Phalcon\Text;
@@ -27,7 +35,7 @@ class View extends MvcView
         return $this->_minify ? true : false;
     }
     
-    public function render($controllerName, $actionName, $params = null)
+    public function render($controllerName, $actionName, $params = [])
     {
         // Aucune vue trouver, tente le uncamelize, slug
         if (!$this->exists($controllerName . (empty($actionName)? null : '/' . $actionName))) {
@@ -37,7 +45,7 @@ class View extends MvcView
         return parent::render($controllerName, $actionName, $params);
     }
     
-    public function getRender($controllerName, $actionName, $params = null, $configCallback = null)
+    public function getRender($controllerName, $actionName, $params = null, $configCallback = null) : String
     {
         // Aucune vue trouver, tente le uncamelize, slug
         if (!$this->exists($controllerName . (empty($actionName)? null : '/' . $actionName))) {
@@ -51,7 +59,7 @@ class View extends MvcView
      * Minify everything on production ENV only
      * @return String
      */
-    public function getContent()
+    public function getContent() : String
     {
         // Don't worry
         $content = parent::getContent();

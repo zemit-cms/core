@@ -1,6 +1,14 @@
 <?php
+/**
+ * This file is part of the Zemit Framework.
+ *
+ * (c) Zemit Team <contact@zemit.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
 
-namespace Zemit\Core;
+namespace Zemit;
 
 use Phalcon\Di\Injectable;
 
@@ -202,7 +210,7 @@ class Locale extends Injectable
                 break;
         }
         $this->setLocale($locale, $this->locale);
-        $this->session->set($this->sessionKey, $this->getLocale());
+//        $this->session->set($this->sessionKey, $this->getLocale());
         return $this->getLocale();
     }
     
@@ -235,6 +243,7 @@ class Locale extends Injectable
      */
     public function getFromSession($default = null)
     {
+        return $this->lookup($default);
         return $this->lookup($this->session->get($this->sessionKey, $default));
     }
     

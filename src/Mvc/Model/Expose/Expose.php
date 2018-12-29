@@ -1,8 +1,16 @@
 <?php
+/**
+ * This file is part of the Zemit Framework.
+ *
+ * (c) Zemit Team <contact@zemit.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
 
-namespace Zemit\Core\Mvc\Model\Expose;
+namespace Zemit\Mvc\Model\Expose;
 
-use Zemit\Core\Utils\Multibyte;
+use Zemit\Utils\Multibyte;
 use Phalcon\Text;
 
 /**
@@ -24,7 +32,7 @@ use Phalcon\Text;
  * Complexe
  *
  *
- * @package Zemit\Core\Mvc\Model\Expose
+ * @package Zemit\Mvc\Model\Expose
  */
 trait Expose {
     

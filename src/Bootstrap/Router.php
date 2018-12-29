@@ -1,17 +1,24 @@
 <?php
-
-namespace Zemit\Core\Bootstrap;
+/**
+ * This file is part of the Zemit Framework.
+ *
+ * (c) Zemit Team <contact@zemit.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
+namespace Zemit\Bootstrap;
 
 use Phalcon\Mvc\Router as PhalconRouter;
 use Phalcon\Application;
 use Phalcon\Text;
-use Zemit\Core\Mvc\Router\ModuleRoute;
-use Zemit\Core\Zemit;
+use Zemit\Mvc\Router\ModuleRoute;
+use Zemit\Zemit;
 
 class Router extends PhalconRouter
 {
     public $defaults = [
-        'namespace' => 'Zemit\\Core\\Frontend\\Controllers',
+        'namespace' => 'Zemit\\Modules\\Frontend\\Controllers',
         'module' => 'frontend',
         'controller' => 'index',
         'action' => 'index'
@@ -28,7 +35,7 @@ class Router extends PhalconRouter
         // ----------------------------------------------------
         // default routing
         '/' => [
-            'namespace' => 'Zemit\\Core\\Frontend\\Controllers',
+            'namespace' => 'Zemit\\Modules\\Frontend\\Controllers',
             'module' => 'frontend',
             'controller' => 'index',
             'action' => 'index',
@@ -36,7 +43,7 @@ class Router extends PhalconRouter
         ],
         // /:controller
         '/controller' => [
-            'namespace' => 'Zemit\\Core\\Frontend\\Controllers',
+            'namespace' => 'Zemit\\Modules\\Frontend\\Controllers',
             'module' => 'frontend',
             'controller' => 'controller',
             'action' => 'index',
@@ -44,7 +51,7 @@ class Router extends PhalconRouter
         ],
         // /:controller/:action
         '/controller/action' => [
-            'namespace' => 'Zemit\\Core\\Frontend\\Controllers',
+            'namespace' => 'Zemit\\Modules\\Frontend\\Controllers',
             'module' => 'frontend',
             'controller' => 'controller',
             'action' => 'action',
@@ -52,7 +59,7 @@ class Router extends PhalconRouter
         ],
         // /:controller/:action/:slug
         '/controller/action/slug' => [
-            'namespace' => 'Zemit\\Core\\Frontend\\Controllers',
+            'namespace' => 'Zemit\\Modules\\Frontend\\Controllers',
             'module' => 'frontend',
             'controller' => 'controller',
             'action' => 'action',
@@ -60,7 +67,7 @@ class Router extends PhalconRouter
         ],
         // /:controller/:action/:int
         '/controller/action/1' => [
-            'namespace' => 'Zemit\\Core\\Frontend\\Controllers',
+            'namespace' => 'Zemit\\Modules\\Frontend\\Controllers',
             'module' => 'frontend',
             'controller' => 'controller',
             'action' => 'action',
@@ -68,7 +75,7 @@ class Router extends PhalconRouter
         ],
         // /:module
         '/backend' => [
-            'namespace' => 'Zemit\\Core\\Backend\\Controllers',
+            'namespace' => 'Zemit\\Modules\\Backend\\Controllers',
             'module' => 'backend',
             'controller' => 'index',
             'action' => 'index',
@@ -76,7 +83,7 @@ class Router extends PhalconRouter
         ],
         // /:module/:controller
         '/backend/controller' => [
-            'namespace' => 'Zemit\\Core\\Backend\\Controllers',
+            'namespace' => 'Zemit\\Modules\\Backend\\Controllers',
             'module' => 'backend',
             'controller' => 'controller',
             'action' => 'index',
@@ -84,7 +91,7 @@ class Router extends PhalconRouter
         ],
         // /:module/:controller/:action
         '/backend/controller/action' => [
-            'namespace' => 'Zemit\\Core\\Backend\\Controllers',
+            'namespace' => 'Zemit\\Modules\\Backend\\Controllers',
             'module' => 'backend',
             'controller' => 'controller',
             'action' => 'action',
@@ -92,7 +99,7 @@ class Router extends PhalconRouter
         ],
         // /:module/:controller/:action/:slug
         '/backend/controller/action/slug' => [
-            'namespace' => 'Zemit\\Core\\Backend\\Controllers',
+            'namespace' => 'Zemit\\Modules\\Backend\\Controllers',
             'module' => 'backend',
             'controller' => 'controller',
             'action' => 'action',
@@ -100,7 +107,7 @@ class Router extends PhalconRouter
         ],
         // /:module/:controller/:action/:int
         '/backend/controller/action/1' => [
-            'namespace' => 'Zemit\\Core\\Backend\\Controllers',
+            'namespace' => 'Zemit\\Modules\\Backend\\Controllers',
             'module' => 'backend',
             'controller' => 'controller',
             'action' => 'action',
@@ -109,7 +116,7 @@ class Router extends PhalconRouter
         // ----------------------------------------------------
         // /:locale
         '/fr' => [
-            'namespace' => 'Zemit\\Core\\Frontend\\Controllers',
+            'namespace' => 'Zemit\\Modules\\Frontend\\Controllers',
             'module' => 'frontend',
             'controller' => 'index',
             'action' => 'index',
@@ -117,7 +124,7 @@ class Router extends PhalconRouter
         ],
         // /:locale/:controller
         '/fr/controller' => [
-            'namespace' => 'Zemit\\Core\\Frontend\\Controllers',
+            'namespace' => 'Zemit\\Modules\\Frontend\\Controllers',
             'module' => 'frontend',
             'controller' => 'controller',
             'action' => 'index',
@@ -125,7 +132,7 @@ class Router extends PhalconRouter
         ],
         // /:locale/:controller/:action
         '/fr/controller/action' => [
-            'namespace' => 'Zemit\\Core\\Frontend\\Controllers',
+            'namespace' => 'Zemit\\Modules\\Frontend\\Controllers',
             'module' => 'frontend',
             'controller' => 'controller',
             'action' => 'action',
@@ -133,7 +140,7 @@ class Router extends PhalconRouter
         ],
         // /:locale/:controller/:action/:slug
         '/fr/controller/action/slug' => [
-            'namespace' => 'Zemit\\Core\\Frontend\\Controllers',
+            'namespace' => 'Zemit\\Modules\\Frontend\\Controllers',
             'module' => 'frontend',
             'controller' => 'controller',
             'action' => 'action',
@@ -141,7 +148,7 @@ class Router extends PhalconRouter
         ],
         // /:locale/:controller/:action/:int
         '/fr/controller/action/1' => [
-            'namespace' => 'Zemit\\Core\\Frontend\\Controllers',
+            'namespace' => 'Zemit\\Modules\\Frontend\\Controllers',
             'module' => 'frontend',
             'controller' => 'controller',
             'action' => 'action',
@@ -149,7 +156,7 @@ class Router extends PhalconRouter
         ],
         // /:locale/:module
         '/fr/backend' => [
-            'namespace' => 'Zemit\\Core\\Backend\\Controllers',
+            'namespace' => 'Zemit\\Modules\\Backend\\Controllers',
             'module' => 'backend',
             'controller' => 'index',
             'action' => 'index',
@@ -157,7 +164,7 @@ class Router extends PhalconRouter
         ],
         // /:locale/:module/:controller
         '/fr/backend/controller' => [
-            'namespace' => 'Zemit\\Core\\Backend\\Controllers',
+            'namespace' => 'Zemit\\Modules\\Backend\\Controllers',
             'module' => 'backend',
             'controller' => 'controller',
             'action' => 'index',
@@ -165,7 +172,7 @@ class Router extends PhalconRouter
         ],
         // /:locale/:module/:controller/:action
         '/fr/backend/controller/action' => [
-            'namespace' => 'Zemit\\Core\\Backend\\Controllers',
+            'namespace' => 'Zemit\\Modules\\Backend\\Controllers',
             'module' => 'backend',
             'controller' => 'controller',
             'action' => 'action',
@@ -173,7 +180,7 @@ class Router extends PhalconRouter
         ],
         // /:locale/:module/:controller/:action/:slug
         '/fr/backend/controller/action/slug' => [
-            'namespace' => 'Zemit\\Core\\Backend\\Controllers',
+            'namespace' => 'Zemit\\Modules\\Backend\\Controllers',
             'module' => 'backend',
             'controller' => 'controller',
             'action' => 'action',
@@ -181,7 +188,7 @@ class Router extends PhalconRouter
         ],
         // /:locale/:module/:controller/:action/:int
         '/fr/backend/controller/action/1' => [
-            'namespace' => 'Zemit\\Core\\Backend\\Controllers',
+            'namespace' => 'Zemit\\Modules\\Backend\\Controllers',
             'module' => 'backend',
             'controller' => 'controller',
             'action' => 'action',

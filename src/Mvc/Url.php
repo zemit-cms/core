@@ -1,11 +1,18 @@
 <?php
+/**
+ * This file is part of the Zemit Framework.
+ *
+ * (c) Zemit Team <contact@zemit.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
 
-namespace Zemit\Core\Mvc;
+namespace Zemit\Mvc;
 
 class Url extends \Phalcon\Mvc\Url
 {
-    public function get($uri = null, $args = null, $local = null, $baseUri = null)
-    {
+    public function get($uri = null, $args = null, $local = null, $baseUri = null) : String {
         return self::getAbsolutePath(parent::get($uri, $args, $local, $baseUri));
     }
     

@@ -1,6 +1,14 @@
 <?php
+/**
+ * This file is part of the Zemit Framework.
+ *
+ * (c) Zemit Team <contact@zemit.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
 
-namespace Zemit\Core;
+namespace Zemit;
 
 //use Phalcon\Debug;
 use Phalcon\Di;
@@ -11,25 +19,26 @@ use Phalcon\Text;
 use Phalcon\Events;
 
 
-use Zemit\Core\Debug;
-use Zemit\Core\Bootstrap\App;
-use Zemit\Core\Bootstrap\Config;
-use Zemit\Core\Bootstrap\Services;
-use Zemit\Core\Bootstrap\Modules;
-use Zemit\Core\Bootstrap\Router;
-use Zemit\Core\Events\EventsAwareTrait;
-use Zemit\Core\Mvc\Application;
-use Zemit\Core\Cli\Console;
+use Zemit\Debug;
+use Zemit\Bootstrap\App;
+use Zemit\Bootstrap\Config;
+use Zemit\Bootstrap\Services;
+use Zemit\Bootstrap\Modules;
+use Zemit\Bootstrap\Router;
+use Zemit\Events\EventsAwareTrait;
+use Zemit\Mvc\Application;
+use Zemit\Cli\Console;
 
 use Dotenv\Dotenv;
 use Docopt;
-use Zemit\Core\Mvc\Dispatcher\Module;
+use Zemit\Mvc\Dispatcher\Module;
+use Zemit\Providers\ErrorHandler\ServiceProvider;
 
 /**
  * Class Bootstrap
  * Zemit Core's Bootstrap for the MVC Application & CLI Console mode
  *
- * @package Zemit\Core
+ * @package Zemit
  */
 class Bootstrap
 {
@@ -186,6 +195,7 @@ DOC;
             FactoryDefault::class
             , [], function (Bootstrap $bootstrap) {
                 $bootstrap->di->setShared('bootstrap', $bootstrap);
+                $bootstrap->di->register(new ServiceProvider());
                 Di::setDefault($this->di);
             });
         return $this->di;
@@ -306,7 +316,7 @@ DOC;
             try {
                 $this->application->handle($this->getArguments());
                 $this->fire('afterRun');
-            } catch(\Zemit\Core\Exception $e) {
+            } catch(\Zemit\Exception $e) {
                 new Cli\ExceptionHandler($e);
                 // do zemit related stuff here
                 exit(1);
@@ -324,11 +334,15 @@ DOC;
         } else if (isset($this->application) && $this->application instanceof \Phalcon\Application) {
             // we don't need a try catch here, its handled by the application
             // or the user can wrap it with try catch into the public/index.php instead
-            $this->response = $this->application->handle();
+            $this->response = $this->application->handle($_SERVER['REQUEST_URI'] ?? '/');
             $this->fire('afterRun');
             return $this->response->getContent();
         } else {
             throw new \Exception('Application not found', 404);
         }
+    }
+    
+    public function getMode() : string {
+        return $this->mode;
     }
 }

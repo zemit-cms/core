@@ -1,6 +1,6 @@
 <?php
 
-namespace Zemit\Core\Mvc\Model;
+namespace Zemit\Mvc\Model;
 
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Db\RawValue;

@@ -1,10 +1,18 @@
 <?php
+/**
+ * This file is part of the Zemit Framework.
+ *
+ * (c) Zemit Team <contact@zemit.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
 
-namespace Zemit\Core;
+namespace Zemit;
 
 use Phalcon\Tag as PhalconTag;
 use Phalcon\Text;
-use Zemit\Core\Assets\Manager;
+use Zemit\Assets\Manager;
 
 class Tag extends PhalconTag
 {
@@ -20,9 +28,10 @@ class Tag extends PhalconTag
     static protected $_attr = [];
     
     /**
-     * @return \Zemit\Core\Escaper
+     * @return \Zemit\Escaper
      */
-    public static function getEscaperService() {
+    public static function getEscaperService() : \Phalcon\EscaperInterface
+    {
         return parent::getEscaperService();
     }
     
@@ -527,7 +536,7 @@ class Tag extends PhalconTag
      * @param string $collection CSS Collection string
      * @return string Return the CSS implicit output of that collection
      */
-    public static function getCss($collection)
+    public static function getCss(String $collection = null) : String
     {
         $assets = self::getAssetsService();
         $assets->useImplicitOutput(false);
@@ -539,7 +548,7 @@ class Tag extends PhalconTag
      * @param string $collection CSS Collection string
      * @return void
      */
-    public static function css($collection = null)
+    public static function css(String $collection = null) : Void
     {
         echo forward_static_call_array(__CLASS__ . '::' . 'get' . ucfirst(__FUNCTION__), func_get_args());
     }
@@ -549,7 +558,7 @@ class Tag extends PhalconTag
      * @param string $collection JS Collection string
      * @return string Return the JS implicit output of that collection
      */
-    public static function getJs($collection)
+    public static function getJs(String $collection = null) : String
     {
         $assets = self::getAssetsService();
         $assets->useImplicitOutput(false);
@@ -561,7 +570,7 @@ class Tag extends PhalconTag
      * @param string $collection JS Collection string
      * @return void
      */
-    public static function js($collection = null)
+    public static function js(String $collection = null) : Void
     {
         echo forward_static_call_array(__CLASS__ . '::' . 'get' . ucfirst(__FUNCTION__), func_get_args());
     }

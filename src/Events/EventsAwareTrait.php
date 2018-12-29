@@ -1,6 +1,6 @@
 <?php
 
-namespace Zemit\Core\Events;
+namespace Zemit\Events;
 
 use Phalcon\Traits\EventManagerAwareTrait;
 use Phalcon\Utils\Slug;
@@ -88,6 +88,8 @@ trait EventsAwareTrait
     {
         $event = basename(str_replace('\\', '//', $class));
         $this->fire('before' . $event, $holder);
+        
+        
         if (!isset($holder)) {
             if (class_exists($class)) {
                 $holder = new $class(...$params);
@@ -101,6 +103,9 @@ trait EventsAwareTrait
 //                throw new \Exception('Unknown type "' . $class . '" for "$class"');
             }
         } else if (is_string($holder)) {
+//            if ($event === 'Config') {
+//                dd(class_exists($holder));
+//            }
             if (class_exists($holder)) {
                 $holder = new $holder(...$params);
             } else if (is_callable($holder)) {

@@ -1,6 +1,13 @@
 <?php
-
-namespace Zemit\Core\Bootstrap;
+/**
+ * This file is part of the Zemit Framework.
+ *
+ * (c) Zemit Team <contact@zemit.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
+namespace Zemit\Bootstrap;
 
 // phalcon
 use Phalcon\DI\FactoryDefault;
@@ -12,28 +19,30 @@ use Phalcon\Cli\Dispatcher as CliDispatcher;
 use Phalcon\Http\Response\Cookies;
 use Phalcon\Mailer\Manager as MailerManager;
 use Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
-use Phalcon\Session\Adapter\Files as SessionAdapter;
+use Phalcon\Session\Manager as SessionManager;
+use Phalcon\Session\Adapter\Noop as SessionAdapter;
 use Phalcon\Flash\Session as FlashSession;
 use Phalcon\Translate\Adapter\Gettext;
 use Phalcon\Translate\Adapter\NativeArray;
 use Phalcon\Translate\Factory as Translate;
 
 // zemit
-use Zemit\Core\Assets\Manager as AssetsManager;
-use Zemit\Core\Db\Profiler as DbProfiler;
-use Zemit\Core\Db\Logger as DbLogger;
-use Zemit\Core\Mvc\Url;
-use Zemit\Core\Mvc\View;
-use Zemit\Core\Mvc\View\Error as ViewError;
-use Zemit\Core\Mvc\Dispatcher\Error as DispatchError;
-use Zemit\Core\Mvc\Dispatcher\Security as DispatchSecurity;
-use Zemit\Core\Mvc\Dispatcher\Camelize as DispatchCamelize;
-use Zemit\Core\Mvc\Dispatcher\Rest as DispatchRest;
-use Zemit\Core\Locale;
-use Zemit\Core\Filter;
-use Zemit\Core\Tag;
-use Zemit\Core\Escaper;
-use Zemit\Core\Zemit;
+use Zemit\Assets\Manager as AssetsManager;
+use Zemit\Db\Profiler as DbProfiler;
+use Zemit\Db\Logger as DbLogger;
+use Zemit\Helper;
+use Zemit\Mvc\Url;
+use Zemit\Mvc\View;
+use Zemit\Mvc\View\Error as ViewError;
+use Zemit\Mvc\Dispatcher\Error as DispatchError;
+use Zemit\Mvc\Dispatcher\Security as DispatchSecurity;
+use Zemit\Mvc\Dispatcher\Camelize as DispatchCamelize;
+use Zemit\Mvc\Dispatcher\Rest as DispatchRest;
+use Zemit\Locale;
+use Zemit\Filter;
+use Zemit\Tag;
+use Zemit\Escaper;
+use Zemit\Zemit;
 
 class Services extends Injectable
 {
@@ -47,12 +56,19 @@ class Services extends Injectable
         $di->setShared('config', $config);
         
         /**
+         * Registering helper
+         */
+        $di->setShared('helper', function() {
+            return new Helper();
+        });
+        
+        /**
          * Registering a router
          */
         $di->setShared('router', function() {
             $router = new Router();
             $router->setDefaultModule('frontend');
-            $router->setDefaultNamespace('Zemit\\Frontend\\Controllers');
+            $router->setDefaultNamespace('Zemit\\Modules\\Frontend\\Controllers');
             return $router;
         });
         
@@ -76,7 +92,8 @@ class Services extends Injectable
             // Get the events manager
             $eventsManager = $di->getShared('eventsManager');
             
-            $error = new ViewError($di);
+            $error = new ViewError();
+            $error->setDI($di);
             $eventsManager->attach('view', $error);
             
             $view = new View();
@@ -85,7 +102,7 @@ class Services extends Injectable
                 '.phtml' => 'Phalcon\Mvc\View\Engine\Php',
                 '.volt' => 'Phalcon\Mvc\View\Engine\Volt',
                 '.mhtml' => 'Phalcon\Mvc\View\Engine\Mustache',
-                '.twig' => 'Phalcon\Mvc\View\Engine\Twig', // @TODO fix for non-existing viewdir
+//                '.twig' => 'Phalcon\Mvc\View\Engine\Twig', // @TODO fix for non-existing viewdir
                 '.tpl' => 'Phalcon\Mvc\View\Engine\Smarty'
             ));
             
@@ -111,7 +128,8 @@ class Services extends Injectable
             /**
              * Camelize dispatcher
              */
-            $camelize = new DispatchCamelize($di);
+            $camelize = new DispatchCamelize();
+            $camelize->setDI($di);
             $eventsManager->attach('dispatch', $camelize);
             
             /**
@@ -128,13 +146,15 @@ class Services extends Injectable
                 /**
                  * Rest dispatcher
                  */
-                $rest = new DispatchRest($di);
+                $rest = new DispatchRest();
+                $rest->setDI($di);
                 $eventsManager->attach('dispatch', $rest);
     
                 /**
                  * Error dispatcher
                  */
-                $error = new DispatchError($di);
+                $error = new DispatchError();
+                $error->setDI($di);
                 $eventsManager->attach('dispatch', $error);
                 
                 $dispatcher = new MvcDispatcher();
@@ -145,7 +165,7 @@ class Services extends Injectable
             $dispatcher->setEventsManager($eventsManager);
             
             // Setup the default namespace
-            $dispatcher->setDefaultNamespace('Zemit\\Frontend\\Controllers');
+            $dispatcher->setDefaultNamespace('Zemit\\Modules\\Frontend\\Controllers');
             
             return $dispatcher;
         });
@@ -200,8 +220,10 @@ class Services extends Injectable
          * @var \Phalcon\Session\Adapter\Files
          */
         $di->setShared('session', function() {
-            $session = new SessionAdapter();
-            if (!$session->isStarted()) {
+            $session = new SessionManager();
+            $handler = new SessionAdapter();
+            $session->setHandler($handler);
+            if (!$session->exists()) {
                 $session->start();
             }
             return $session;
@@ -209,7 +231,7 @@ class Services extends Injectable
         
         /**
          * Enregistrer le service de filtres
-         * @var \Zemit\FilterBase
+         * @var \Zemit\Filter
          */
         $di->setShared('filter', function() {
             return new Filter();
@@ -217,7 +239,7 @@ class Services extends Injectable
         
         /**
          * Enregistrer le service de tags
-         * @var \Zemit\Core\Escaper
+         * @var \Zemit\Escaper
          */
         $di->setShared('tag', function() {
             return new Tag();
@@ -225,7 +247,7 @@ class Services extends Injectable
         
         /**
          * Register Escaper Service
-         * @var \Zemit\Core\Escaper
+         * @var \Zemit\Escaper
          */
         $di->setShared('escaper', function() {
             return new Escaper();

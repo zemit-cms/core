@@ -1,6 +1,6 @@
 <?php
 
-namespace Zemit\Core\Assets;
+namespace Zemit\Assets;
 
 use Phalcon\Assets\Manager as AssetsManager;
 
@@ -87,44 +87,49 @@ class Manager extends AssetsManager
      *
      * @return string
      */
-    public function outputJs($collectionName = 'js')
+    public function outputJs(?String $collectionName = 'js') : String
     {
-        $collection = $this->exists($collectionName) ? $this->get($collectionName) : false;
-        if ($collection) {
-            $resources = $this->get($collectionName)->getResources();
-            if ($resources) {
-                foreach ($resources as $resource) {
-                    
-                    // Add version and filetime to the local resources only
-                    if ($resource->getLocal()) {
-                        $resource->setPath(self::_addVersionToPath($resource->getPath(), $this->getVersion(), $this->getFileTime()));
+        if (!is_null($collectionName)) {
+            $collection = $this->exists($collectionName) ? $this->get($collectionName) : false;
+            if ($collection) {
+                $resources = $this->get($collectionName)->getResources();
+                if ($resources) {
+                    foreach ($resources as $resource) {
+                
+                        // Add version and filetime to the local resources only
+                        if ($resource->getLocal()) {
+                            $resource->setPath(self::_addVersionToPath($resource->getPath(), $this->getVersion(), $this->getFileTime()));
+                        }
                     }
                 }
+                return parent::outputJs($collectionName);
             }
-            return parent::outputJs($collectionName);
         }
+        return '';
     }
     
     /**
      * @param null $collectionName
      *
-     * @return string
+     * @return string|null
      */
-    public function outputCss($collectionName = 'css')
+    public function outputCss(?String $collectionName = 'css') : String
     {
-        $collection = $this->exists($collectionName) ? $this->get($collectionName) : false;
-        if ($collection) {
-            $ressources = $collection->getResources();
-            if ($ressources) {
-                foreach ($ressources as $ressource) {
-                    if ($ressource->getLocal()) {
-                        $ressource->setPath(self::_addVersionToPath($ressource->getPath(), $this->getVersion(), $this->getFileTime()));
+        if (!is_null($collectionName)) {
+            $collection = $this->exists($collectionName) ? $this->get($collectionName) : false;
+            if ($collection) {
+                $ressources = $collection->getResources();
+                if ($ressources) {
+                    foreach ($ressources as $ressource) {
+                        if ($ressource->getLocal()) {
+                            $ressource->setPath(self::_addVersionToPath($ressource->getPath(), $this->getVersion(), $this->getFileTime()));
+                        }
                     }
                 }
+                return parent::outputCss($collectionName);
             }
-            return parent::outputCss($collectionName);
         }
-        
+        return '';
     }
     
     private static function _addVersionToPath($path, $version, $addFileMTimeToPath = false)

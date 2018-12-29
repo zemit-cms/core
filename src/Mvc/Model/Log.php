@@ -1,6 +1,6 @@
 <?php
 
-namespace Zemit\Core\Mvc\Model;
+namespace Zemit\Mvc\Model;
 
 use Phalcon\Text;
 use Phalcon\Db\Column;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Zemit\Core\Mvc\Model;
+namespace Zemit\Mvc\Model;
 
 //use Phalcon\Db\Column;
 
@@ -15,13 +15,13 @@ namespace Zemit\Core\Mvc\Model;
  *  - every other magic call statics that may exists
  *
  * @author Zemit@nuagerie.com
- * @package Zemit\Core\Mvc\Model
+ * @package Zemit\Mvc\Model
  */
 trait Eagerload
 {
     
     // forked from the phalcon incubator
-    use \Zemit\Core\Mvc\Model\EagerLoadingTrait {
+    use \Zemit\Mvc\Model\EagerLoadingTrait {
         with as incubatorWith;
         findFirstWith as incubatorFindFirstWith;
     }
@@ -42,7 +42,7 @@ trait Eagerload
             if (isset($retval[0]) && count($retval)) {
                 array_unshift($arguments, $retval);
 //                $retval = call_user_func_array('Phalcon\Mvc\Model\EagerLoading\Loader::fromResultset', $arguments);
-                $retval = call_user_func_array('Zemit\Core\Mvc\Model\EagerLoading\Loader::fromResultset', $arguments);
+                $retval = call_user_func_array('Zemit\Mvc\Model\EagerLoading\Loader::fromResultset', $arguments);
             } else {
                 $retval = array();
             }
@@ -61,7 +61,7 @@ trait Eagerload
             if ($retval = static::findFirst($parameters)) {
                 array_unshift($arguments, $retval);
 //                $retval = call_user_func_array('Phalcon\Mvc\Model\EagerLoading\Loader::fromModel', $arguments);
-                $retval = call_user_func_array('Zemit\Core\Mvc\Model\EagerLoading\Loader::fromModel', $arguments);
+                $retval = call_user_func_array('Zemit\Mvc\Model\EagerLoading\Loader::fromModel', $arguments);
             }
         }
         return $retval;
@@ -90,7 +90,7 @@ trait Eagerload
             $retval = parent::__callStatic($oriMethod, [self::_getParameters($arguments)]);
             if (isset($retval[0]) && count($retval)) {
                 array_unshift($arguments, $retval);
-                $retval = call_user_func_array('Zemit\Core\Mvc\Model\EagerLoading\Loader::fromResultset', $arguments);
+                $retval = call_user_func_array('Zemit\Mvc\Model\EagerLoading\Loader::fromResultset', $arguments);
             } else {
                 $retval = array();
             }

@@ -1,11 +1,20 @@
 <?php
+/**
+ * This file is part of the Zemit Framework.
+ *
+ * (c) Zemit Team <contact@zemit.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
 
-namespace Zemit\Core\Bootstrap;
+namespace Zemit\Bootstrap;
 
-use Zemit\Core\Locale;
-use Zemit\Core\Utils\Env;
+use Zemit\Locale;
+use Zemit\Utils\Env;
 use Phalcon\Config as PhalconConfig;
 use PDO;
+use Zemit\Version;
 
 class Config extends PhalconConfig
 {
@@ -25,20 +34,24 @@ class Config extends PhalconConfig
              * Core only settings
              */
             'core' => [
-                'version' => '0.1.2',
+                'version' => Version::get(),
                 'package' => 'zemit-official',
                 'modules' => [
                     'frontend' => [
-                        'className' => 'Zemit\\Core\\Frontend\\Module',
-                        'path' => CORE_PATH . 'Frontend/Module.php'
+                        'className' => 'Zemit\\Modules\\Frontend\\Module',
+                        'path' => CORE_PATH . 'Modules/Frontend/Module.php'
                     ],
                     'backend' => [
-                        'className' => 'Zemit\\Core\\Backend\\Module',
-                        'path' => CORE_PATH . 'Backend/Module.php'
+                        'className' => 'Zemit\\Modules\\Backend\\Module',
+                        'path' => CORE_PATH . 'Modules/Backend/Module.php'
                     ],
                     'api' => [
-                        'className' => 'Zemit\\Core\\Api\\Module',
-                        'path' => CORE_PATH . 'Api/Module.php'
+                        'className' => 'Zemit\\Modules\\Api\\Module',
+                        'path' => CORE_PATH . 'Modules/Api/Module.php'
+                    ],
+                    'cli' => [
+                        'className' => 'Zemit\\Modules\\Cli\\Module',
+                        'path' => CORE_PATH . 'Modules/Cli/Module.php'
                     ],
                 ],
                 'dir' => [
@@ -98,19 +111,19 @@ class Config extends PhalconConfig
              */
             'modules' => [
                 'frontend' => [
-                    'className' => 'Zemit\\Core\\Frontend\\Module',
+                    'className' => 'Zemit\\Modules\\Frontend\\Module',
                     'path' => CORE_PATH . 'Frontend/Module.php'
                 ],
                 'backend' => [
-                    'className' => 'Zemit\\Core\\Backend\\Module',
+                    'className' => 'Zemit\\Modules\\Backend\\Module',
                     'path' => CORE_PATH . 'Backend/Module.php'
                 ],
                 'api' => [
-                    'className' => 'Zemit\\Core\\Api\\Module',
+                    'className' => 'Zemit\\Modules\\Api\\Module',
                     'path' => CORE_PATH . 'Api/Module.php'
                 ],
                 'console' => [
-                    'className' => 'Zemit\\Core\\Cli\\Module',
+                    'className' => 'Zemit\\Modules\\Cli\\Module',
                     'path' => CORE_PATH . 'Cli/Module.php'
                 ],
             ],
@@ -120,7 +133,7 @@ class Config extends PhalconConfig
              */
             'router' => [
                 'defaults' => [
-                    'namespace' => Env::get('ROUTER_DEFAULT_NAMESPACE', 'Zemit\\Core\\Frontend\\Controllers'),
+                    'namespace' => Env::get('ROUTER_DEFAULT_NAMESPACE', 'Zemit\\Modules\\Frontend\\Controllers'),
                     'module' => Env::get('ROUTER_DEFAULT_MODULE', 'frontend'),
                     'controller' => Env::get('ROUTER_DEFAULT_CONTROLLER', 'index'),
                     'action' => Env::get('ROUTER_DEFAULT_ACTION', 'index'),

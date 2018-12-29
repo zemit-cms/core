@@ -1,6 +1,14 @@
 <?php
+/**
+ * This file is part of the Zemit Framework.
+ *
+ * (c) Zemit Team <contact@zemit.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
 
-namespace Zemit\Core\Mvc;
+namespace Zemit\Mvc;
 
 use Phalcon\DiInterface;
 use Phalcon\Http\ResponseInterface;
@@ -14,7 +22,7 @@ use Phalcon\Mvc\Application as MvcApplication;
  *
  * @TODO Console / Cli / Task ?
  * @TODO setup with real default values from configs
- * @package Zemit\Core\Mvc
+ * @package Zemit\Mvc
  */
 class Application extends MvcApplication
 {

@@ -1,6 +1,14 @@
 <?php
+/**
+ * This file is part of the Zemit Framework.
+ *
+ * (c) Zemit Team <contact@zemit.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
 
-namespace Zemit\Core\Utils;
+namespace Zemit\Utils;
 
 use Dotenv\Loader as DotenvLoader;
 
@@ -11,7 +19,7 @@ use Dotenv\Loader as DotenvLoader;
  * Ex. (SET): self::SET_APPLICATION_ENV('production');
  * Ex. (GET): $this->GET_APPLICATION_ENV('development');
  * Ex. (GET): self::GET_APPLICATION_ENV('development');
- * @package Zemit\Core\Utils
+ * @package Zemit\Utils
  */
 class Env
 {
