@@ -8,13 +8,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Frontend;
+namespace Zemit\Modules\Api;
 
 /**
- * Class Controller
- * @package Zemit\Modules\Frontend
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @version 1.0.0
  */
-class Controller extends \Zemit\Mvc\Controller
+class Module extends \Zemit\Mvc\Module
 {
-
+    public $name = self::NAME_API;
 }

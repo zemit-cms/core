@@ -8,13 +8,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Frontend;
+namespace Zemit\Modules\Api;
 
 /**
  * Class Controller
- * @package Zemit\Modules\Frontend
+ * @package Zemit\Modules\Api
  */
-class Controller extends \Zemit\Mvc\Controller
+class Controller extends \Phalcon\Mvc\Controller
 {
-
+    
 }

@@ -10,18 +10,21 @@
 
 namespace Zemit;
 
-use Phalcon\Tag as PhalconTag;
-use Phalcon\Text;
 use Zemit\Assets\Manager;
 
-class Tag extends PhalconTag
+/**
+ * Class Tag
+ * @inheritdoc
+ * @package Zemit
+ */
+class Tag extends \Phalcon\Tag
 {
     static protected $_assetsService = null;
     
     static protected $_meta = [
         [
             'name' => 'generator',
-            'content' => 'Zemit CMS'
+            'content' => 'Zemit'
         ]
     ];
     static protected $_link = [];

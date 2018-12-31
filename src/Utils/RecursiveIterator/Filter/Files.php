@@ -10,7 +10,7 @@
 
 namespace Zemit\Utils\RecursiveIterator\Filter;
 
-class FilesOnlyFilter extends \RecursiveFilterIterator {
+class Files extends \RecursiveFilterIterator {
 
     public function accept() {
         $iterator = $this->getInnerIterator();

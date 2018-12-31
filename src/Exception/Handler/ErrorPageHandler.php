@@ -80,7 +80,7 @@ class ErrorPageHandler extends Handler
         
         $controller = $config('error.controller', 'error');
         $defaultAction = $config('error.action', 'show500');
-        
+
         switch($this->getException()->getCode()) {
             case 404:
                 $action = 'show404';

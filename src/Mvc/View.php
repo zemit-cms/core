@@ -12,7 +12,7 @@ namespace Zemit\Mvc;
 
 use Phalcon\Mvc\View as MvcView;
 use Phalcon\Text;
-use Phalcon\Utils\Slug;
+use Zemit\Utils\Slug;
 
 /**
  * Class View

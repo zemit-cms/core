@@ -10,9 +10,14 @@
 
 namespace Zemit;
 
-use Phalcon\Filter as PhalconFilter;
+use Phalcon\Di;
 
-class Filter extends PhalconFilter
+/**
+ * Zemit\Filter
+ * @inheritdoc
+ * @package Zemit
+ */
+class Filter extends \Phalcon\Filter
 {
     const FILTER_MD5 = 'md5';
     const FILTER_JSON = 'json';
@@ -21,10 +26,16 @@ class Filter extends PhalconFilter
     
     public function __construct()
     {
+        // Adding Zemit Filters
         $this->add(self::FILTER_MD5, new Filters\Md5());
         $this->add(self::FILTER_JSON, new Filters\Json());
         $this->add(self::FILTER_IPV4, new Filters\IPv4());
         $this->add(self::FILTER_IPV6, new Filters\IPv6());
+        
+        // Adding App Filters defined from the user config
+        foreach (Di::getDefault()->get('config')->filters as $key => $filter) {
+            $this->add($key, new $filter());
+        }
     }
     
 }

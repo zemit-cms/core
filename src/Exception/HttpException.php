@@ -10,18 +10,14 @@
 
 namespace Zemit\Exception;
 
-use Exception;
-use Throwable;
+use Zemit\Exception;
 
 /**
  * Zemit\Exception\HttpException
  *
  * @package Zemit\Exception
  */
-class HttpException extends Exception
+class CliException extends Exception
 {
-    public function __construct(string $message, int $code, Throwable $exception = null)
-    {
-        parent::__construct($message, $code, $exception);
-    }
+
 }

@@ -13,9 +13,9 @@ namespace Zemit;
 use Phalcon\Di\InjectionAwareInterface;
 
 /**
- * Phosphorum\Provider\ServiceProviderInterface
+ * Zemit\Provider\ServiceProviderInterface
  *
- * @package Phosphorum\Provider
+ * @package Zemit\Provider
  */
 interface ServiceProviderInterface extends InjectionAwareInterface
 {

@@ -8,13 +8,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Frontend;
+namespace Zemit\Modules\Api\Controllers;
+
+use Zemit\Modules\Api\Controller;
 
 /**
- * Class Controller
- * @package Zemit\Modules\Frontend
+ * Class AbstractController
+ * @package Zemit\Modules\Api\Controllers
  */
-class Controller extends \Zemit\Mvc\Controller
+abstract class AbstractController extends Controller
 {
-
+    public function initialize() {
+    
+    }
 }

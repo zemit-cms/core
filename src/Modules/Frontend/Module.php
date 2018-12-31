@@ -1,14 +1,20 @@
 <?php
+/**
+ * This file is part of the Zemit Framework.
+ *
+ * (c) Zemit Team <contact@zemit.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
 
 namespace Zemit\Modules\Frontend;
 
-use Zemit\Mvc\Module as CoreModule;
-
 /**
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @version 1.0.0
+ * Class Module
+ * @package Zemit\Modules\Frontend
  */
-class Module extends CoreModule
+class Module extends \Zemit\Mvc\Module
 {
     public $name = self::NAME_FRONTEND;
 }

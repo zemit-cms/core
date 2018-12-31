@@ -195,7 +195,8 @@ DOC;
             FactoryDefault::class
             , [], function (Bootstrap $bootstrap) {
                 $bootstrap->di->setShared('bootstrap', $bootstrap);
-                $bootstrap->di->register(new ServiceProvider());
+//                $bootstrap->di->register(new \Zemit\Providers\EventsManager\ServiceProvider());
+                $bootstrap->di->register(new \Zemit\Providers\ErrorHandler\ServiceProvider());
                 Di::setDefault($this->di);
             });
         return $this->di;
@@ -232,12 +233,12 @@ DOC;
      */
     public function debug()
     {
-        $this->fireSet($this->debug, Debug::class, [], function (Bootstrap $bootstrap) {
-            if ($bootstrap->config->app->debug) {
-                $bootstrap->debug->listen();
-            }
-        });
-        return $this->debug;
+//        $this->fireSet($this->debug, Debug::class, [], function (Bootstrap $bootstrap) {
+//            if ($bootstrap->config->app->debug) {
+//                $bootstrap->debug->listen();
+//            }
+//        });
+//        return $this->debug;
     }
     
     /**

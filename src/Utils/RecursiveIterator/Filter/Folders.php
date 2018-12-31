@@ -10,12 +10,17 @@
 
 namespace Zemit\Utils\RecursiveIterator\Filter;
 
-class VisibleOnlyFilter extends \RecursiveFilterIterator {
+class Folders extends \RecursiveFilterIterator {
 
     public function accept() {
-        $fileName = $this->getInnerIterator()->current()->getFileName();
-        $firstChar = $fileName[0];
-        return $firstChar !== '.';
-    }
+        $iterator = $this->getInnerIterator();
 
+        // allow traversal
+        if ($iterator->hasChildren()) {
+            return true;
+        }
+
+        // filter entries, only allow true folders
+        return !$iterator->current()->isFile();
+    }
 }

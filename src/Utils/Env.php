@@ -11,6 +11,7 @@
 namespace Zemit\Utils;
 
 use Dotenv\Loader as DotenvLoader;
+use phpDocumentor\Reflection\Types\Mixed_;
 
 /**
  * Class Env
@@ -72,8 +73,8 @@ class Env
     
     /**
      * Gets the value of an environment variable. Passe the $default for fallback value.
-     * @param  string $key Key to get
-     * @param  mixed $default Value to fallback if the key can't be found
+     * @param string $key Key to get
+     * @param mixed $default Value to fallback if the key can't be found
      * @return mixed Return the environment variable value or the default value
      */
     public static function get($key, $default = null)
@@ -106,8 +107,8 @@ class Env
     
     /**
      * Set an environment variable
-     * @param $key Key to set
-     * @param $value Value to set
+     * @param $key string Key to set
+     * @param $value mixed Value to set
      */
     public static function set($key, $value)
     {
@@ -126,10 +127,11 @@ class Env
     
     /**
      * Set the environnement variable
-     * @param $name Env key to fetch
+     * @param $name string Env key to set
+     * @param $value mixed Value to set
      * @return mixed Env value
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value)
     {
         return self::set($name, $value);
     }
@@ -140,11 +142,11 @@ class Env
      * Ex. (SET): Env::SET_APPLICATION_ENV('production');
      * Ex. (GET): self::GET_APPLICATION_ENV('development');
      * Ex. (GET): Env::GET_APPLICATION_ENV('development');
-     * @param $name Key to get/set
-     * @param $arguments Default fallback value for get, or value to set for set
+     * @param $name string Key to get/set
+     * @param $arguments array Default fallback value for get, or value to set for set
      * @return mixed Return void for set, and return the environment variable value, or default value for get
      */
-    public static function __callStatic($name, $arguments)
+    public static function __callStatic(string $name, array $arguments)
     {
         return self::call($name, $arguments);
     }
@@ -153,11 +155,11 @@ class Env
      * Get or set the environment variable
      * Ex. (SET): $this->SET_APPLICATION_ENV('production');
      * Ex. (GET): $this->GET_APPLICATION_ENV('development');
-     * @param $name Key to get/set
-     * @param $arguments Default fallback value for get, or value to set for set
+     * @param $name string Key to get/set
+     * @param $arguments array Default fallback value for get, or value to set for set
      * @return mixed Return void for set, and return the environment variable value, or default value for get
      */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments)
     {
         return self::call($name, $arguments);
     }

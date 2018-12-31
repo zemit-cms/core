@@ -10,10 +10,9 @@
 
 namespace Zemit\Exception\Handler;
 
+use Phalcon\Di;
 use Whoops\Exception\Frame;
 use Whoops\Handler\Handler;
-use function Zemit\Functions\app_path;
-use function Zemit\Functions\container;
 
 /**
  * Zemit\Exception\Handler\LoggerHandler
@@ -105,7 +104,7 @@ class LoggerHandler extends Handler
                 $line,
                 $class,
                 $frame->getFunction(),
-                '..' . DIRECTORY_SEPARATOR . trim(substr($frame->getFile(), strlen(app_path())), '\\/'),
+                '..' . DIRECTORY_SEPARATOR . trim(substr($frame->getFile(), strlen(APP_PATH)), '\\/'),
                 $frame->getLine(),
                 $this->getFrameArgsOutput($frame, $line)
             );
@@ -206,8 +205,8 @@ class LoggerHandler extends Handler
 
     private function getLogger()
     {
-        if (container()->has('logger')) {
-            return container('logger');
+        if (Di::getDefault()->has('logger')) {
+            return DI::getDefault()->get('logger');
         }
 
         return null;

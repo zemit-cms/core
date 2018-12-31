@@ -55,7 +55,7 @@
       "Zemit\\": "src/"
     },
     "files": [
-      "src/Helper.php"
+      "src/Utils.php"
     ]
   },
   "autoload-dev": {

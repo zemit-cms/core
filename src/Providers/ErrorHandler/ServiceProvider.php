@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Zemit\Providers\ErrorHandler;
 
 use Phalcon\Di;
@@ -21,9 +20,9 @@ use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
 /**
- * Docs\Providers\ErrorHandler\ServiceProvider
+ * Zemit\Providers\ErrorHandler\ServiceProvider
  *
- * @package Docs\Providers\ErrorHandler
+ * @package Zemit\Providers\ErrorHandler
  */
 class ServiceProvider implements ServiceProviderInterface
 {
@@ -37,40 +36,36 @@ class ServiceProvider implements ServiceProviderInterface
         $container->setShared('errorHandler::loggerHandler', LoggerHandler::class);
         $container->setShared('errorHandler::prettyPageHandler', PrettyPageHandler::class);
         $container->setShared('errorHandler::errorPageHandler', ErrorPageHandler::class);
-
-        $container->setShared(
-            'errorHandler',
-            function () use ($container) {
-                $run = new Run();
-
-                $mode = $container->bootstrap->getMode();
-
-                switch ($mode) {
-                    case 'normal':
-                        if ($container->config->app->debug) {
-                            $run->pushHandler($container->get('errorHandler::prettyPageHandler'));
-                        } else {
-                            $run->pushHandler($container->get('errorHandler::errorPageHandler'));
-                        }
-                        break;
-                    case 'cli':
-                        // @todo
-                        break;
-                    default:
-                        throw new InvalidArgumentException(
-                            sprintf(
-                                'Invalid application mode. Expected either "normal" or "cli". Got "%s".',
-                                is_scalar($mode) ? $mode : var_export($mode, true)
-                            )
-                        );
-                }
-
-                $run->pushHandler($container->get('errorHandler::loggerHandler'));
-
-                return $run;
+        
+        $container->setShared('errorHandler', function() {
+            $run = new Run();
+            
+            $mode = Di::getDefault()->get('bootstrap')->getMode();
+            
+            switch($mode) {
+                case 'normal':
+                    if (true) { //@TODO fetch from config
+                        $run->pushHandler(Di::getDefault()->get('errorHandler::prettyPageHandler'));
+                    } else {
+                        $run->pushHandler(Di::getDefault()->get('errorHandler::errorPageHandler'));
+                    }
+                    break;
+                case 'cli':
+                    // @todo
+                    break;
+                default:
+                    throw new InvalidArgumentException(
+                        sprintf(
+                            'Invalid application mode. Expected either "normal" or "cli". Got "%s".',
+                            is_scalar($mode) ? $mode : var_export($mode, true)
+                        )
+                    );
             }
-        );
-    
-        $container->get('errorHandler')->register();
+            
+            $run->pushHandler(Di::getDefault()->get('errorHandler::loggerHandler'));
+            return $run;
+        });
+        
+        Di::getDefault()->get('errorHandler')->register();
     }
 }

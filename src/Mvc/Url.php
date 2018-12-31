@@ -10,13 +10,17 @@
 
 namespace Zemit\Mvc;
 
+/**
+ * Class Url
+ * @package Zemit\Mvc
+ */
 class Url extends \Phalcon\Mvc\Url
 {
-    public function get($uri = null, $args = null, $local = null, $baseUri = null) : String {
+    public function get($uri = null, $args = null, bool $local = null, $baseUri = null): string {
         return self::getAbsolutePath(parent::get($uri, $args, $local, $baseUri));
     }
     
-    public static function getAbsolutePath($path) {
+    public static function getAbsolutePath(string $path) : string {
         $path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
         $parts = array_filter(explode(DIRECTORY_SEPARATOR, $path), 'mb_strlen');
         $absolutes = array();

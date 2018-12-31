@@ -10,14 +10,12 @@
 
 namespace Zemit;
 
-use Phalcon\Version as PhalconVersion;
-
 /**
  * Zemit\Version
  *
  * This class allows to get the installed version of the framework
  */
-class Version extends PhalconVersion
+class Version extends \Phalcon\Version
 {
     /**
      * Area where the version number is set. The format is as follows:
@@ -31,6 +29,6 @@ class Version extends PhalconVersion
      */
     protected static function _getVersion() : array
 	{
-		return [0, 4, 0, 1, 0];
+		return [0, 4, 1, 1, 0];
 	}
 }

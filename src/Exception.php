@@ -10,6 +10,10 @@
 
 namespace Zemit;
 
+/**
+ * Class Exception
+ * @package Zemit
+ */
 class Exception extends \Exception
 {
     

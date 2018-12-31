@@ -19,6 +19,7 @@ use Phalcon\Text;
 use Zemit\Bootstrap\Config;
 use Zemit\Bootstrap\Router;
 use Zemit\Utils;
+use function dd;
 
 /**
  * @author Julien Turbide <jturbide@nuagerie.com>
@@ -26,10 +27,10 @@ use Zemit\Utils;
  */
 class Module implements ModuleDefinitionInterface
 {
-    const NAME_FRONTEND = 'Frontend';
-    const NAME_BACKEND = 'Backend';
-    const NAME_API = 'Api';
-    const NAME_CLI = 'Cli';
+    const NAME_FRONTEND = 'frontend';
+    const NAME_BACKEND = 'backend';
+    const NAME_API = 'api';
+    const NAME_CLI = 'cli';
     
     public $namespace = __NAMESPACE__;
     
@@ -108,7 +109,7 @@ class Module implements ModuleDefinitionInterface
         // view settings
         $this->view->setViewsDir([
 //            $this->config->app->dir->module . 'views/',
-            $this->config->core->dir->base . $this->name . '/Views/',
+            $this->config->core->dir->base . 'Modules/' . $this->name . '/Views/',
         ]);
         
         // url settings

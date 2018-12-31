@@ -10,9 +10,7 @@
 
 namespace Zemit;
 
-use Phalcon\Escaper as PhalconEscaper;
-
-class Escaper extends PhalconEscaper
+class Escaper extends \Phalcon\Escaper
 {
     
     /**

@@ -8,13 +8,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Frontend;
+namespace Zemit\Exception;
+
+use Zemit\Exception;
 
 /**
- * Class Controller
- * @package Zemit\Modules\Frontend
+ * Zemit\Exception\CliException
+ *
+ * @package Zemit\Exception
  */
-class Controller extends \Zemit\Mvc\Controller
+class CliException extends Exception
 {
 
 }

@@ -2,7 +2,7 @@
 
 namespace Zemit\Mvc\Model;
 
-use Phalcon\Utils\Slug as PhalconSlug;
+use Zemit\Utils\Slug as PhalconSlug;
 
 trait Slug {
     

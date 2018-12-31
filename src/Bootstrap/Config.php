@@ -10,6 +10,8 @@
 
 namespace Zemit\Bootstrap;
 
+use Zemit\Filter;
+use Zemit\Filters;
 use Zemit\Locale;
 use Zemit\Utils\Env;
 use Phalcon\Config as PhalconConfig;
@@ -37,20 +39,20 @@ class Config extends PhalconConfig
                 'version' => Version::get(),
                 'package' => 'zemit-official',
                 'modules' => [
-                    'frontend' => [
-                        'className' => 'Zemit\\Modules\\Frontend\\Module',
+                    \Zemit\Mvc\Module::NAME_FRONTEND => [
+                        'className' => \Zemit\Modules\Frontend\Module::class,
                         'path' => CORE_PATH . 'Modules/Frontend/Module.php'
                     ],
-                    'backend' => [
-                        'className' => 'Zemit\\Modules\\Backend\\Module',
+                    \Zemit\Mvc\Module::NAME_BACKEND => [
+                        'className' => \Zemit\Modules\Backend\Module::class,
                         'path' => CORE_PATH . 'Modules/Backend/Module.php'
                     ],
-                    'api' => [
-                        'className' => 'Zemit\\Modules\\Api\\Module',
+                    \Zemit\Mvc\Module::NAME_API => [
+                        'className' => \Zemit\Modules\Api\Module::class,
                         'path' => CORE_PATH . 'Modules/Api/Module.php'
                     ],
-                    'cli' => [
-                        'className' => 'Zemit\\Modules\\Cli\\Module',
+                    \Zemit\Mvc\Module::NAME_CLI => [
+                        'className' => \Zemit\Modules\Cli\Module::class,
                         'path' => CORE_PATH . 'Modules/Cli/Module.php'
                     ],
                 ],
@@ -95,37 +97,46 @@ class Config extends PhalconConfig
                     'files' => Env::get('APP_FILE_PATH', PRIVATE_PATH . '/files/'),
                     'trash' => Env::get('APP_TRASH_PATH', PRIVATE_PATH . '/trash/'),
                     'migrations' => Env::get('APP_MIGRATION_PATH', PRIVATE_PATH . '/migrations/'),
-                ]
+                ],
             ],
-            
+    
             /**
-             * Default security settings
+             * Default filters
              */
-            'security' => [ // phalcon security config
-                'workfactor' => Env::get('SECURITY_WORKFACTOR', 12), // workfactor for the phalcon security service
-                'salt' => Env::get('SECURITY_SALT', 'ZEMIT_CORE_DEFAULT_SALT') // salt for the phalcon security service
+            'filters' => [
+                Filter::FILTER_MD5 => Filters\Md5::class,
+                Filter::FILTER_JSON => Filters\Json::class,
+                Filter::FILTER_IPV4 => Filters\IPv4::class,
+                Filter::FILTER_IPV6 => Filters\IPv6::class,
             ],
             
             /**
              * Default modules
              */
             'modules' => [
-                'frontend' => [
-                    'className' => 'Zemit\\Modules\\Frontend\\Module',
-                    'path' => CORE_PATH . 'Frontend/Module.php'
+                \Zemit\Mvc\Module::NAME_FRONTEND => [
+                    'className' => \Zemit\Modules\Frontend\Module::class,
+                    'path' => CORE_PATH . 'Modules/Frontend/Module.php'
                 ],
-                'backend' => [
-                    'className' => 'Zemit\\Modules\\Backend\\Module',
-                    'path' => CORE_PATH . 'Backend/Module.php'
+                \Zemit\Mvc\Module::NAME_BACKEND => [
+                    'className' => \Zemit\Modules\Backend\Module::class,
+                    'path' => CORE_PATH . 'Modules/Backend/Module.php'
                 ],
-                'api' => [
-                    'className' => 'Zemit\\Modules\\Api\\Module',
-                    'path' => CORE_PATH . 'Api/Module.php'
+                \Zemit\Mvc\Module::NAME_API => [
+                    'className' => \Zemit\Modules\Api\Module::class,
+                    'path' => CORE_PATH . 'Modules/Api/Module.php'
                 ],
-                'console' => [
-                    'className' => 'Zemit\\Modules\\Cli\\Module',
-                    'path' => CORE_PATH . 'Cli/Module.php'
+                \Zemit\Mvc\Module::NAME_CLI => [
+                    'className' => \Zemit\Modules\Cli\Module::class,
+                    'path' => CORE_PATH . 'Modules/Cli/Module.php'
                 ],
+                /**
+                 * @TODO support this way too
+                 */
+//                \Zemit\Mvc\Module::NAME_FRONTEND => \Zemit\Modules\Frontend\Module::class,
+//                \Zemit\Mvc\Module::NAME_BACKEND => \Zemit\Modules\Backend\Module::class,
+//                \Zemit\Mvc\Module::NAME_API => \Zemit\Modules\Api\Module::class,
+//                \Zemit\Mvc\Module::NAME_CLI => \Zemit\Modules\Cli\Module::class,
             ],
     
             /**
@@ -192,6 +203,14 @@ class Config extends PhalconConfig
             ],
     
             /**
+             * Default security settings
+             */
+            'security' => [ // phalcon security config
+                'workfactor' => Env::get('SECURITY_WORKFACTOR', 12), // workfactor for the phalcon security service
+                'salt' => Env::get('SECURITY_SALT', 'ZEMIT_CORE_DEFAULT_SALT') // salt for the phalcon security service
+            ],
+    
+            /**
              * Database configuration
              */
             'database' => [
@@ -219,7 +238,7 @@ class Config extends PhalconConfig
                 'bcc' => [
                     'contat@zemit.com' => 'Zemit',
                 ],
-                'viewsDir' => APP_PATH . '/modules/frontend/views/',
+                'viewsDir' => APP_PATH . '/Modules/Frontend/Views/',
             ],
     
             /**
