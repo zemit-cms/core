@@ -1,5 +1,5 @@
 {
-  "name": "zemit-official/cms-core",
+  "name": "zemit-official/core",
   "type": "library",
   "description": "Pilot your content with golden wings. Zemit, a content-management system built on top of PhalconPHP and AngularJS.",
   "keywords": ["framework", "phalcon", "cms", "cms-core", "zemit", "zemit-official"],
