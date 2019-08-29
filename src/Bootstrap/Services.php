@@ -244,7 +244,7 @@ class Services extends Injectable
          * @link http://swiftmailer.org/
          */
         $di->setShared('mailer', function() use ($config) {
-            new SwiftLoader();
+//            new SwiftLoader();
             return new MailerManager($config->mail->toArray());
         });
         
