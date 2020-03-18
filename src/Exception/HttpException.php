@@ -17,7 +17,7 @@ use Zemit\Exception;
  *
  * @package Zemit\Exception
  */
-class CliException extends Exception
+class HttpException extends Exception
 {
 
 }

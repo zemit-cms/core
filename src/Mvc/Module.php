@@ -9,7 +9,7 @@
  */
 namespace Zemit\Mvc;
 
-use Phalcon\DiInterface;
+use Phalcon\Di\DiInterface;
 use Phalcon\Loader;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\Url;
@@ -19,7 +19,6 @@ use Phalcon\Text;
 use Zemit\Bootstrap\Config;
 use Zemit\Bootstrap\Router;
 use Zemit\Utils;
-use function dd;
 
 /**
  * @author Julien Turbide <jturbide@nuagerie.com>
@@ -109,18 +108,18 @@ class Module implements ModuleDefinitionInterface
         // view settings
         $this->view->setViewsDir([
 //            $this->config->app->dir->module . 'views/',
-            $this->config->core->dir->base . 'Modules/' . $this->name . '/Views/',
+            $this->config->core->dir->base . 'Modules/' . Text::camelize($this->name) . '/Views/',
         ]);
         
         // url settings
-        $this->url->setBasePath('/' . Text::uncamelize($this->name) . '/');
-        $this->url->setStaticBaseUri('/' . Text::uncamelize($this->name) . '/');
+        $this->url->setBasePath('/' . $this->name . '/');
+        $this->url->setStaticBaseUri('/' . $this->name . '/');
         
         // router settings
         $this->router->removeExtraSlashes(true);
         $this->router->setDefaults([
             'namespace' => $this->dispatcher->getDefaultNamespace(),
-            'module' => strtolower($this->name),
+            'module' => $this->name,
             'controller' => 'index',
             'action' => 'index'
         ]);
@@ -141,9 +140,8 @@ class Module implements ModuleDefinitionInterface
         $namespace = Utils::getNamespace($this);
         
         // register the vendor module controllers
-        $namespaces[$namespace . '\\Controllers'] = $this->config->core->dir->base . $this->name . '/Controllers/';
-        $namespaces[$namespace . '\\Models'] = $this->config->core->dir->base . $this->name . '/Models/';
-        
+        $namespaces[$namespace . '\\Controllers'] = $this->config->core->dir->modules . '/' . Text::camelize($this->name) . '/Controllers/';
+        $namespaces[$namespace . '\\Models'] = $this->config->core->dir->modules . '/' . Text::camelize($this->name) . '/Models/';
         return $namespaces;
     }
     

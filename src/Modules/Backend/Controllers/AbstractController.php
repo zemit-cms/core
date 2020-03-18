@@ -12,6 +12,10 @@ namespace Zemit\Modules\Backend\Controllers;
 
 use Zemit\Modules\Backend\Controller;
 
+/**
+ * Class AbstractController
+ * @package Zemit\Modules\Backend\Controllers
+ */
 abstract class AbstractController extends Controller
 {
     public function initialize() {

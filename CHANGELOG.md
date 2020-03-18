@@ -1,6 +1,35 @@
 ## ZEMIT CORE CHANGELOG
 
-### TODO
+### @TODO 1.0.0
+- Native Database Manager
+- Virtual API Manager
+  - MDB (Multidemensional Database) version
+  - Version handling
+  - Endpoints
+  - Channels
+  - Fields
+  - Rows
+  - Values
+  - Users
+  - Roles
+  - Permissions
+  - Javascript Custom Business Rules
+    - Validations
+    - Filters
+    - Events
+
+### @TODO 0.6.0
+- Mailer system
+- Swoole support
+- Allow queued CLI Task system
+- Single Service Provider of the application accessible (itself)
+- Frontend Module using Phalcon MVC application
+- Backend Module using Phalcon MVC application
+- Task Module using Phalcon CLI application
+- API Module using [jsonapi.org](https://jsonapi.org/) specs
+
+### @TODO Current
+- Use [Sami](https://github.com/FriendsOfPHP/Sami) to automatically generate doc
 - Adding @property in comments for injected services
 - Adding multi-module support
 - Stop relying on the Incubator or embracing it
@@ -23,6 +52,19 @@
 - CLI Module
   - Default parameters and methods
   - Adding compatibility for phalcon 4+
+
+### 0.5.0
+- Provider examples
+- Single Bootstrap entry point for a new the application
+- Have a working Web MVC & CLI application
+- Provider system integrated with Phalcon DI
+- Modules system integrated with Phalcon Module
+- Composer
+- PHP Unit
+- Codeception
+- Debug
+- Environment
+- Generated documentation
 
 ### 0.4.0
 - Changing library name to `Zemit Core`

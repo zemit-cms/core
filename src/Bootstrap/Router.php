@@ -9,16 +9,18 @@
  */
 namespace Zemit\Bootstrap;
 
-use Phalcon\Mvc\Router as PhalconRouter;
-use Phalcon\Application;
-use Phalcon\Text;
+use Zemit\Modules\Frontend\Controller;
+use Zemit\Mvc\Application;
 use Zemit\Mvc\Router\ModuleRoute;
-use Zemit\Zemit;
 
-class Router extends PhalconRouter
+/**
+ * Class Router
+ * @package Zemit\Bootstrap
+ */
+class Router extends \Phalcon\Mvc\Router
 {
     public $defaults = [
-        'namespace' => 'Zemit\\Modules\\Frontend\\Controllers',
+        'namespace' => Controller::class,
         'module' => 'frontend',
         'controller' => 'index',
         'action' => 'index'
@@ -345,14 +347,9 @@ class Router extends PhalconRouter
             if (!isset($module['className'])) {
                 throw new \InvalidArgumentException('Module parameter "className" must be a string under "' . $key . '"');
             }
-            $namespace = str_replace('Module', 'Controllers', $module['className']);
+            $namespace = rtrim($module['className'], 'Module') . 'Controllers';
             $this->mount(new ModuleRoute(array_merge($defaults, ['namespace' => $namespace, 'module' => $key])));
             $this->mount(new ModuleRoute(array_merge($defaults, ['namespace' => $namespace, 'module' => $key]), false, true));
         }
-    }
-    
-    public function camelize($string)
-    {
-        return lcfirst(Text::camelize(Text::uncamelize($string)));
     }
 }

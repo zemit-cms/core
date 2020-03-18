@@ -10,6 +10,7 @@
 
 namespace Zemit;
 
+use Phalcon\Escaper\EscaperInterface;
 use Zemit\Assets\Manager;
 
 /**
@@ -33,7 +34,7 @@ class Tag extends \Phalcon\Tag
     /**
      * @return \Zemit\Escaper
      */
-    public static function getEscaperService() : \Phalcon\EscaperInterface
+    public static function getEscaperService() : EscaperInterface
     {
         return parent::getEscaperService();
     }
@@ -42,7 +43,7 @@ class Tag extends \Phalcon\Tag
      * Get the assets service from the default di
      * @return Manager
      */
-    public static function getAssetsService()
+    public static function getAssetsService() : \Phalcon\Assets\Manager
     {
         if (empty(self::$_assetsService)) {
             self::$_assetsService = self::getDI()->get('assets');
@@ -79,7 +80,7 @@ class Tag extends \Phalcon\Tag
     {
         $array = array_filter($array);
         return implode($implode, array_map(function($value, $key) use ($sprintf) {
-            list ($value, $key) = self::escapeParam($value, $key);
+            [$value, $key] = self::escapeParam($value, $key);
             return sprintf($sprintf, $value, $key);
         }, $array, array_keys($array)));
     }

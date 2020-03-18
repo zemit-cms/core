@@ -29,6 +29,6 @@ class Version extends \Phalcon\Version
      */
     protected static function _getVersion() : array
 	{
-		return [0, 4, 1, 1, 0];
+		return [0, 4, 0, 2, 0];
 	}
 }

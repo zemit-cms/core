@@ -12,6 +12,10 @@ namespace Zemit\Modules\Backend\Controllers;
 
 use Zemit\Modules\Backend\Controller;
 
+/**
+ * Class IndexController
+ * @package Zemit\Modules\Backend\Controllers
+ */
 class IndexController extends Controller
 {
     public function indexAction()

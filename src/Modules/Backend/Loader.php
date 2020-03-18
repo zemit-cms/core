@@ -10,9 +10,11 @@
 
 namespace Zemit\Modules\Backend;
 
-use Phalcon\Loader as PhalconLoader;
-
-class Loader extends PhalconLoader
+/**
+ * Class Loader
+ * @package Zemit\Modules\Backend
+ */
+class Loader extends \Phalcon\Loader
 {
 
 }

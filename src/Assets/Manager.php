@@ -1,10 +1,22 @@
 <?php
+/**
+ * This file is part of the Zemit Framework.
+ *
+ * (c) Zemit Team <contact@zemit.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
 
 namespace Zemit\Assets;
 
-use Phalcon\Assets\Manager as AssetsManager;
-
-class Manager extends AssetsManager
+/**
+ * {@inheritDoc}
+ *
+ * Class Manager
+ * @package Zemit\Assets
+ */
+class Manager extends \Phalcon\Assets\Manager
 {
     
     /**
@@ -87,7 +99,7 @@ class Manager extends AssetsManager
      *
      * @return string
      */
-    public function outputJs(?String $collectionName = 'js') : String
+    public function outputJs($collectionName = 'js') : String
     {
         if (!is_null($collectionName)) {
             $collection = $this->exists($collectionName) ? $this->get($collectionName) : false;
@@ -113,7 +125,7 @@ class Manager extends AssetsManager
      *
      * @return string|null
      */
-    public function outputCss(?String $collectionName = 'css') : String
+    public function outputCss($collectionName = 'css') : String
     {
         if (!is_null($collectionName)) {
             $collection = $this->exists($collectionName) ? $this->get($collectionName) : false;

@@ -1,9 +1,20 @@
 <?php
-
+/**
+ * This file is part of the Zemit Framework.
+ *
+ * (c) Zemit Team <contact@zemit.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
 namespace Zemit\Modules\Cli\Tasks;
 
 use Zemit\Modules\Cli\Task;
 
+/**
+ * Class HelpTask
+ * @package Zemit\Modules\Cli\Tasks
+ */
 class HelpTask extends Task
 {
     /**
@@ -11,7 +22,7 @@ class HelpTask extends Task
      */
     public $consoleDoc = <<<DOC
 Usage:
-  zemit console <task> [<action>] [<params> ...]
+  php zemit cli <task> [<action>] [<params> ...]
 
 Options:
   task: build,cron

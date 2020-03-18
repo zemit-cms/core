@@ -12,6 +12,7 @@ namespace Zemit\Events;
 
 use Phalcon\Di;
 use Phalcon\Events\Manager;
+use Phalcon\Events\ManagerInterface;
 use Zemit\Exception;
 use Zemit\Utils\Slug;
 
@@ -30,11 +31,11 @@ trait EventsAwareTrait
     protected $eventsManager = null;
     
     /**
-     * set event manager
+     * Set Event Manager Service Provider
      *
      * @param Manager $eventsManager
      */
-    public function setEventsManager(Manager $manager)
+    public function setEventsManager(ManagerInterface $manager)
     {
         $this->eventsManager = $manager;
     }
@@ -44,7 +45,7 @@ trait EventsAwareTrait
      *
      * @return Manager | null
      */
-    public function getEventsManager()
+    public function getEventsManager() : ManagerInterface
     {
         if (!empty($this->eventsManager)) {
             $manager = $this->eventsManager;
@@ -94,24 +95,6 @@ trait EventsAwareTrait
         self::$_eventsSlug = $eventSlug;
     }
     
-    public function setHolderClass(&$holder, $class, $callable)
-    {
-        $this->fire('before' . $class, $holder);
-        if (!isset($holder)) {
-            $holder = new $class;
-        } else if (is_string($holder)) {
-            if (is_callable($holder)) {
-                $holder = new $holder;
-            } else {
-//                throw new \Exception('Class "' . $class . '" not found');
-            }
-        }
-        if (isset($callable) && is_callable($callable)) {
-            $callable($this);
-        }
-        $this->fire('after' . $class, $holder);
-    }
-    
     
     /**
      * Checking if event manager is defined - fire event
@@ -126,47 +109,76 @@ trait EventsAwareTrait
     {
         if ($manager = $this->getEventsManager()) {
             $manager->fire($this->getEventsSlug() . ':' . $task, $this, $data, $cancelable);
+        } else {
+            throw new Exception('Events Manager Service Provider \'eventsManager\' does not exists in DI of \'' . get_class($this) . '\'');
         }
     }
     
     /**
+     * Add possibility to parse an holder and run a callback after
+     *
      * @param $holder
      * @param null $class
      * @param array $params
      * @param null $callback
      *
+     * @return mixed|null
      * @throws Exception
      */
-    public function fireSet(&$holder, $class = null, $params = [], $callback = null)
+    public function fireSet(&$holder, $class = null, array $params = [], $callback = null)
     {
+        // prepare event name
         $event = basename(str_replace('\\', '//', $class));
-        $this->fire('before' . $event, $holder);
         
+        // fire before event with the holder
+        $this->fire('before' . $event, func_get_args());
         
+        // holder not set, apply class to it
         if (!isset($holder)) {
+            
+            // can be a class path
             if (class_exists($class)) {
                 $holder = new $class(...$params);
-            } else if (is_callable($class)) {
+            }
+            // can be a callable
+            else if (is_callable($class)) {
                 $holder = $class(...$params);
-            } else if (is_object($class)) {
+            }
+            // can be the object
+            else if (is_object($class)) {
                 $holder = $class;
-            } else if (is_string($class)) {
+            }
+            // class not found
+            else if (is_string($class)) {
                 throw new Exception('Class "' . $class . '" not found');
-            } else {
+            }
+            // other error
+            else {
                 throw new Exception('Unknown type "' . $class . '" for "$class"');
             }
-        } else if (is_string($holder)) {
+        }
+        
+        else if (is_string($holder)) {
+            
+            // can be a class path
             if (class_exists($holder)) {
                 $holder = new $holder(...$params);
-            } else if (is_callable($holder)) {
-                $holder = $holder(...$params);
-            } else {
+            }
+            // class not founmd
+            else {
                 throw new Exception('Class "' . $class . '" not found');
             }
         }
+        
+        // run the callback if isset
         if (isset($callback) && is_callable($callback)) {
             $callback($this);
         }
-        $this->fire('after' . $event, $holder);
+        
+        // fire after event
+        $this->fire('after' . $event, func_get_args());
+        
+        // return the holder
+        return $holder;
     }
 }

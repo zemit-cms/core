@@ -1,17 +1,27 @@
 <?php
+/**
+ * This file is part of the Zemit Framework.
+ *
+ * (c) Zemit Team <contact@zemit.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
 
 namespace Zemit\Modules\Cli;
 
-use Phalcon\Cli\Task as PhalconTask;
-
-class Task extends PhalconTask
+/**
+ * Class Task
+ * @package Zemit\Modules\Cli
+ */
+class Task extends \Phalcon\Cli\Task
 {
     /**
      * @var string
      */
     public $consoleDoc = <<<DOC
 Usage:
-  zemit console <task> <action> [<params> ...]
+  php zemit cli <task> <action> [<params> ...]
 
 Options:
   task: build,cron

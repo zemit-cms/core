@@ -34,8 +34,8 @@ class Env
      * Get the dotenv loader
      * @return DotenvLoader
      */
-    public static function getDotenv() {
-        return isset(self::$dotenv)? self::$dotenv : self::$dotenv = new DotenvLoader(null);
+    public static function getDotenv($filePath = null) {
+        return isset(self::$dotenv)? self::$dotenv : self::$dotenv = new DotenvLoader($filePath);
     }
     
     /**

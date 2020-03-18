@@ -30,7 +30,8 @@ trait Eagerload
     use Expose\Expose;
     
     
-    public static function with() {
+    public static function with()
+    {
         $arguments = func_get_args();
         try {
             $retval = forward_static_call_array('self::incubatorWith', $arguments);
@@ -44,13 +45,15 @@ trait Eagerload
 //                $retval = call_user_func_array('Phalcon\Mvc\Model\EagerLoading\Loader::fromResultset', $arguments);
                 $retval = call_user_func_array('Zemit\Mvc\Model\EagerLoading\Loader::fromResultset', $arguments);
             } else {
-                $retval = array();
+                $retval = [];
             }
         }
+        
         return $retval;
     }
     
-    public static function findFirstWith() {
+    public static function findFirstWith()
+    {
         $arguments = func_get_args();
         try {
             $retval = forward_static_call_array('self::incubatorFindFirstWith', $arguments);
@@ -64,6 +67,7 @@ trait Eagerload
                 $retval = call_user_func_array('Zemit\Mvc\Model\EagerLoading\Loader::fromModel', $arguments);
             }
         }
+        
         return $retval;
     }
     
@@ -76,7 +80,7 @@ trait Eagerload
      *
      * @return Phalcon\Mvc\Model\Resultset
      */
-    public static function __callStatic($method, $arguments = array())
+    public static function __callStatic($method, $arguments = [])
     {
         if (strpos($method, 'findFirstWith') === 0) {
             $oriMethod = str_replace('findFirstWith', 'findFirst', $method);
@@ -84,16 +88,18 @@ trait Eagerload
             if ($entity) {
                 $entity->load(array_pop($arguments));
             }
+            
             return $entity;
-        } elseif (strpos($method, 'findWith') === 0 || strpos($method, 'withBy') === 0) {
+        } else if (strpos($method, 'findWith') === 0 || strpos($method, 'withBy') === 0) {
             $oriMethod = str_replace(['findWith', 'withBy'], ['find', 'findBy'], $method);
             $retval = parent::__callStatic($oriMethod, [self::_getParameters($arguments)]);
             if (isset($retval[0]) && count($retval)) {
                 array_unshift($arguments, $retval);
                 $retval = call_user_func_array('Zemit\Mvc\Model\EagerLoading\Loader::fromResultset', $arguments);
             } else {
-                $retval = array();
+                $retval = [];
             }
+            
             return $retval;
         } else {
             return parent::__callStatic($method, $arguments);
@@ -105,7 +111,8 @@ trait Eagerload
         return array_pop($arguments);
     }
     
-    private static function _prepareParameters(&$arguments) {
+    private static function _prepareParameters(&$arguments)
+    {
         
         $parameters = null;
         if (!empty($arguments)) {

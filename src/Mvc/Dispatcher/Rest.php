@@ -10,14 +10,14 @@
 
 namespace Zemit\Mvc\Dispatcher;
 
+use Phalcon\Di\Injectable;
 use Phalcon\Events\Event;
 use Phalcon\Mvc\Dispatcher;
-use Phalcon\Mvc\User\Component;
 use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Model\Resultset;
 use Phalcon\Mvc\View;
 
-class Rest extends Component {
+class Rest extends Injectable {
 
     private $_response = array();
     

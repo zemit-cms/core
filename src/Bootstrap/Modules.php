@@ -10,7 +10,7 @@
 
 namespace Zemit\Bootstrap;
 
-use Phalcon\Application;
+use Phalcon\Application\AbstractApplication;
 
 /**
  * Require a config from the DI
@@ -23,7 +23,7 @@ class Modules {
     
     public $modulesDir;
     
-    public function __construct(Application $application = null)
+    public function __construct(AbstractApplication $application = null)
     {
         /**
          * Register application modules

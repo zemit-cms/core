@@ -11,10 +11,12 @@
 namespace Zemit\Mvc;
 
 use Zemit\Bootstrap\Config;
+use Zemit\Utils;
 
 /**
  * @author Julien Turbide <jturbide@nuagerie.com>
  * @property Application $application
+ * @property Utils $utils
  * @property Config $config
  */
 class Controller extends \Phalcon\Mvc\Controller

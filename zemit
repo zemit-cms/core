@@ -1,0 +1,32 @@
+#!/usr/bin/env php
+<?php
+/**
+ * This file is part of the Zemit Framework.
+ *
+ * (c) Zemit Team <contact@zemit.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
+
+use Zemit\Bootstrap;
+
+/*
+ * Uncomment this part if you want to force those path manually
+ */
+//define('APP_NAMESPACE', 'App');
+//define('APP_PATH', ROOT_PATH . '/app');
+//define('VENDOR_PATH', 'vendor');
+
+// (DO NOT TOUCH THIS PART)
+// Get the fallback root, vendor, app path and default app namespace
+defined('VENDOR_PATH') || define('VENDOR_PATH', (getenv('VENDOR_PATH') ? getenv('VENDOR_PATH') : __DIR__ . '/vendor'));
+defined('APP_NAMESPACE') || define('APP_NAMESPACE', (getenv('APP_NAMESPACE') ? getenv('APP_NAMESPACE') : 'Zemit'));
+defined('APP_PATH') || define('APP_PATH', (getenv('APP_PATH') ? getenv('APP_PATH') : dirname(__DIR__) . '/app'));
+
+// Register Composer Autoloader
+$composer = require_once VENDOR_PATH . '/autoload.php';
+
+// Run Zemit CMS
+$bootstrap = new Bootstrap('console');
+echo $bootstrap->run();

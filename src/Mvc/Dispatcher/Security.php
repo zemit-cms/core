@@ -13,8 +13,9 @@ namespace Zemit\Mvc\Dispatcher;
 use Phalcon\Acl as PhalconAcl;
 use Phalcon\Acl\Role;
 use Phalcon\Acl\Resource;
+use Phalcon\Di\Injectable;
+use Phalcon\Dispatcher\AbstractDispatcher;
 use Phalcon\Events\Event;
-use Phalcon\Mvc\User\Plugin;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Acl\Adapter\Memory as AclList;
 use Phalcon\Text;
@@ -24,9 +25,9 @@ use Phalcon\Text;
  *
  * This is the security plugin which controls that users only have access to the modules they're assigned to
  */
-class Security extends Plugin
+class Security extends Injectable
 {
-    // Everyone
+    // Public
     public $publicResources = array(
         'index' => array('index'),
         'errors' => array('*'),
@@ -34,42 +35,16 @@ class Security extends Plugin
         'google' => array('auth'),
     );
     
-    // User desjardins
+    // User
     public $userResources = array(
-        'index' => array('index'),
-        'user' => array('*'),
-        'logout' => array('*'),
-        'dashboard' => array('*'),
-        'contact' => array('*'),
-        'group' => array('*'),
-        'sector' => array('*'),
-        'business' => array('*'),
-        'incident' => array('*'),
-        'google' => array('*'),
-        'device' => array('*'),
-        'data' => array('index', 'get', 'get-all'),
-        'import' => array('index', 'get', 'get-all'),
-        'jwt' => array('*'),
     );
     
-    // Admin desjardins
+    // Admin
     public $adminResources = array(
-        'data' => array('*'),
-        'import' => array('*'),
-        'file' => array('*'),
-        'log' => array('index', 'get', 'get-all'),
     );
     
-    // Dev & penega
+    // Dev
     public $devResources = array(
-        'role' => array('*'),
-        'file' => array('*'),
-        'log' => array('*'),
-        'backup' => array('*'),
-        'email' => array('*'),
-        'stats' => array('*'),
-        'template' => array('*'),
-        'cache' => array('*'),
     );
     
     /**
@@ -146,8 +121,9 @@ class Security extends Plugin
      *
      * @return bool
      */
-    public function beforeDispatch(Event $event, Dispatcher $dispatcher)
+    public function beforeDispatch(Event $event, AbstractDispatcher $dispatcher)
     {
+        return;
         $user = $this->zemit->getUser();
         if ($user) {
             $roles = $user->getRoles();
@@ -209,15 +185,15 @@ class Security extends Plugin
     
     /**
      *
-     * Ajoute le format hyphen au resources
+     * Add hyphen to resources
      * Dirty fix
      *
-     * Exemple:
+     * Example:
      * 'monProfil' => array('getAll');
      * 'errors' => array('notFound');
      *
-     * Devient:
-     * 'monProfil' => array('get-all', 'getAll');
+     * Becomes:
+     * 'monProfil' => array('get-all', 'getAll', 'getall');
      * 'mon-profil' => array('get-all', 'getAll', 'getall');
      * 'errors' => array('not-found', 'notFound', 'notfound');
      *

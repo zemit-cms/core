@@ -10,7 +10,6 @@
 
 namespace Zemit;
 
-//use Phalcon\Debug;
 use Phalcon\Di;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Http\Response;
@@ -19,8 +18,7 @@ use Phalcon\Text;
 use Phalcon\Events;
 
 
-use Zemit\Debug;
-use Zemit\Bootstrap\App;
+use Zemit\Bootstrap\Prepare;
 use Zemit\Bootstrap\Config;
 use Zemit\Bootstrap\Services;
 use Zemit\Bootstrap\Modules;
@@ -45,6 +43,22 @@ class Bootstrap
     use EventsAwareTrait;
     
     /**
+     * Bootstrap modes
+     */
+    const MODE_CLI = 'console';
+    const MODE_NORMAL = 'normal';
+    const MODE_CONSOLE = self::MODE_CLI;
+    
+    /**
+     * Ideally, only the config service provider should be added here, then it will load other service from itself
+     * You can also add new Service Providers here if it's absolutely required to be loaded earlier before
+     * @var array
+     */
+    public $providers = [
+        Provider\Config\ServiceProvider::class,
+    ];
+    
+    /**
      * Bootstrap mode
      * @var string
      */
@@ -58,7 +72,7 @@ class Bootstrap
     
     /**
      * Dependencies
-     * @var FactoryDefault
+     * @var FactoryDefault|FactoryDefault\Cli
      */
     public $di;
     
@@ -68,10 +82,9 @@ class Bootstrap
     public $dotenv;
     
     /**
-     * @TODO change this and its purpose
-     * @var App
+     * @var Prepare
      */
-    public $app;
+    public $prepare;
     
     /**
      * @var Config
@@ -148,8 +161,10 @@ DOC;
      * Setup the di, env, app, config, services, applications, modules and then the router
      *
      * @param string $mode Mode for the application 'normal' 'console'
+     *
+     * @throws Exception
      */
-    public function __construct($mode = 'normal')
+    public function __construct($mode = self::MODE_NORMAL)
     {
         $this->mode = $mode;
         $this->setEventsManager(new Events\Manager());
@@ -157,7 +172,7 @@ DOC;
         $this->di();
         $this->dotenv();
         $this->args();
-        $this->app();
+        $this->prepare();
         $this->config();
         $this->debug();
         $this->services();
@@ -166,44 +181,62 @@ DOC;
         $this->router();
     }
     
-    public function initialize()
-    {
-    
-    }
+    /**
+     * Initialisation
+     */
+    public function initialize() {}
     
     /**
-     * @TODO redefine docopt to console param or args or something
+     * Get args for console
+     * @throws Exception
      */
     public function args()
     {
-        if ($this->mode === 'console') {
-            $this->fireSet($this->docopt, Docopt::class);
-            $this->args = $this->docopt->handle($this->consoleDoc);
-        }
+        $this->fireSet($this->docopt, Docopt::class, [], function (Bootstrap $bootstrap) {
+            if ($this->isConsole()) {
+                $args = $bootstrap->docopt->handle($bootstrap->consoleDoc);
+                $bootstrap->args = is_null($bootstrap->args)? $args : array_merge($bootstrap->args, $args);
+            }
+        });
     }
     
     /**
      * Prepare the DI including itself (Bootstrap) and setup as default DI
      * Also use the cli factory default for console mode
-     * @return mixed|FactoryDefault|FactoryDefault\Cli Return a factory default DI
+     * @return FactoryDefault|FactoryDefault\Cli Return a factory default DI
+     * @throws Exception
      */
     public function di()
     {
         // Use the phalcon cli factory default for console mode
-        $this->fireSet($this->di, $this->mode === 'console' ?
+        $this->fireSet($this->di, $this->isConsole() ?
             FactoryDefault\Cli::class :
             FactoryDefault::class
             , [], function (Bootstrap $bootstrap) {
-                $bootstrap->di->setShared('bootstrap', $bootstrap);
-//                $bootstrap->di->register(new \Zemit\Providers\EventsManager\ServiceProvider());
-                $bootstrap->di->register(new \Zemit\Providers\ErrorHandler\ServiceProvider());
+                // Register bootstrap itself
+                $this->di->setShared('bootstrap', $bootstrap);
+                
+                // Register the ServiceProviders
+                foreach ($bootstrap->providers as $provider) {
+                    $this->di->register(new $provider($this->di));
+                }
+                
+                // force resolving the config service
+                if ($this->di->has('config')) {
+                    $this->config = $this->di->get('config');
+                    $this->config->mode = $bootstrap->mode;
+                }
+                
+                // Set as the default DI
                 Di::setDefault($this->di);
             });
+        
         return $this->di;
     }
     
     /**
-     * @return \Dotenv\Dotenv
+     * @return Dotenv
+     * @throws Exception
      */
     public function dotenv()
     {
@@ -211,39 +244,43 @@ DOC;
             $this->fireSet($this->dotenv, Dotenv::class, [dirname(APP_PATH)], function (Bootstrap $bootstrap) {
                 $bootstrap->dotenv->load();
             });
-        } catch(\Dotenv\Exception\InvalidPathException $e) {
+        } catch(\Dotenv\Exception\InvalidPathException|\Dotenv\Exception\InvalidFileException $e) {
             // just ignore and run the application anyway
         }
         return $this->dotenv;
     }
     
     /**
-     * Instantiate the default app settings
-     * @return App
+     * @return Prepare
+     * @throws Exception
      */
-    public function app()
+    public function prepare()
     {
-        $this->app = new App();
-        return $this->app;
+        $this->fireSet($this->prepare, Prepare::class, []);
+        return $this->prepare;
     }
     
     /**
-     * Phalcon debug listener
      * @return Debug
+     * @throws Exception
      */
     public function debug()
     {
-//        $this->fireSet($this->debug, Debug::class, [], function (Bootstrap $bootstrap) {
-//            if ($bootstrap->config->app->debug) {
-//                $bootstrap->debug->listen();
-//            }
-//        });
-//        return $this->debug;
+        $this->fireSet($this->debug, Debug::class, [], function (Bootstrap $bootstrap) {
+            if ($bootstrap->config->app->debug) {
+                $bootstrap->debug->listen();
+            }
+        });
+        return $this->debug;
     }
     
     /**
-     * Instantiate the configuration
+     * Prepare the config service
+     * - Fire events (before & after)
+     * - Apply current bootstrap mode ('normal', 'console')
+     * - Merge with current environment config
      * @return Config
+     * @throws Exception
      */
     public function config()
     {
@@ -255,8 +292,11 @@ DOC;
     }
     
     /**
-     * Instantiate the services
+     * Prepare procedural services way
+     * - Fire events (before & after)
+     * - Pass the current Di object as well as the current Config object
      * @return Services
+     * @throws Exception
      */
     public function services()
     {
@@ -264,10 +304,18 @@ DOC;
         return $this->services;
     }
     
+    /**
+     * Prepare the application
+     * - Fire events (before & after)
+     * - Pass the current Di object
+     * - Depends on the current bootstrap mode ('normal', 'console')
+     * @return \Phalcon\Cli\Console|Application
+     * @throws Exception
+     */
     public function application()
     {
         $this->fireSet($this->application,
-            $this->mode === 'console' ?
+            $this->isConsole() ?
                 Console::class :
                 Application::class,
             [$this->di]
@@ -275,19 +323,35 @@ DOC;
         return $this->application;
     }
     
+    /**
+     * Prepare the application for modules
+     * - Fire events (before & after)
+     * - Pass the current Application object
+     * @return Modules
+     * @throws Exception
+     */
     public function modules()
     {
         $this->fireSet($this->modules, Modules::class, [$this->application]);
         return $this->modules;
     }
     
+    /**
+     * Prepare the router
+     * - Fire events (before & after router)
+     * - Pass the current application for normal mode
+     * - Depends on the bootstrap mode ('console', 'normal')
+     * - Force Re-inject router in the bootstrap DI @TODO is it still necessary
+     * @return Router
+     * @throws Exception
+     */
     public function router()
     {
         $this->fireSet($this->router,
-            $this->mode === 'console' ?
+            $this->isConsole() ?
                 CliRouter::class :
                 Router::class,
-            $this->mode === 'console' ?
+            $this->isConsole() ?
                 [true] :
                 [true, $this->application],
             function (Bootstrap $bootstrap) {
@@ -296,6 +360,10 @@ DOC;
         return $this->router;
     }
     
+    /**
+     * Get & format arguments from the $this->args property
+     * @return array Key value pair, human readable
+     */
     public function getArguments()
     {
         $arguments = [];
@@ -308,15 +376,26 @@ DOC;
         return $arguments;
     }
     
+    /**
+     * Run Zemit App
+     * - Fire events (before run & after run)
+     * - Handle both console and normal application
+     * - Return response string
+     * @return string
+     * @throws Exception If the application can't be found
+     */
     public function run()
     {
         $this->fire('beforeRun');
         
         // cli console mode, get the arguments from the doctlib
-        if ($this->mode === 'console' || $this->application instanceof Console) {
+        if ($this->isConsole() || $this->application instanceof Console) {
             try {
+                ob_start();
                 $this->application->handle($this->getArguments());
+                $responseString = ob_get_clean();
                 $this->fire('afterRun');
+                return $responseString;
             } catch(\Zemit\Exception $e) {
                 new Cli\ExceptionHandler($e);
                 // do zemit related stuff here
@@ -332,17 +411,35 @@ DOC;
                 new Cli\ExceptionHandler($throwable);
                 exit(1);
             }
-        } else if (isset($this->application) && $this->application instanceof \Phalcon\Application) {
+        } else if (isset($this->application) && ($this->application instanceof \Phalcon\Mvc\Application)) {
             // we don't need a try catch here, its handled by the application
             // or the user can wrap it with try catch into the public/index.php instead
             $this->response = $this->application->handle($_SERVER['REQUEST_URI'] ?? '/');
             $this->fire('afterRun');
             return $this->response->getContent();
         } else {
-            throw new \Exception('Application not found', 404);
+            if (empty($this->application)) {
+                throw new \Exception('Application not found', 404);
+            }
+            else {
+                throw new \Exception('Application not supported', 400);
+            }
+            
         }
     }
     
+    /**
+     * Return True if the bootstrap mode is set to 'console'
+     * @return bool Console mode
+     */
+    public function isConsole() : bool {
+        return $this->getMode() === self::MODE_CONSOLE;
+    }
+    
+    /**
+     * Return the raw bootstrap mode, should be either 'console' or 'normal'
+     * @return string Bootstrap mode
+     */
     public function getMode() : string {
         return $this->mode;
     }

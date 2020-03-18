@@ -11,8 +11,8 @@
 namespace Zemit\Modules\Backend;
 
 /**
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @version 1.0.0
+ * Class Module
+ * @package Zemit\Modules\Backend
  */
 class Module extends \Zemit\Mvc\Module
 {

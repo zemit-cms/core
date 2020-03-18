@@ -10,7 +10,12 @@
 
 namespace Zemit\Modules\Backend;
 
-class Controller extends \Phalcon\Mvc\Controller
+/**
+ * Class Controller
+ * @package Zemit\Modules\Backend
+ */
+class Controller extends \Zemit\Mvc\Controller
 {
-    
+    public function initialize() {
+    }
 }

@@ -1,8 +1,16 @@
 <?php
+/**
+ * This file is part of the Zemit Framework.
+ *
+ * (c) Zemit Team <contact@zemit.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
 
 namespace Zemit\Modules\Cli;
 
-use Phalcon\DiInterface;
+use Phalcon\Di\DiInterface;
 use Phalcon\Loader;
 use Phalcon\Cli\Dispatcher;
 use Phalcon\Cli\Router;
@@ -11,8 +19,8 @@ use Zemit\Bootstrap\Config;
 use Zemit\Utils;
 
 /**
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @version 1.0.0
+ * Class Module
+ * @package Zemit\Modules\Cli
  */
 class Module implements ModuleDefinitionInterface
 {

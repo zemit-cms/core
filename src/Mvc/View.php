@@ -10,34 +10,50 @@
 
 namespace Zemit\Mvc;
 
-use Phalcon\Mvc\View as MvcView;
 use Phalcon\Text;
+use phpDocumentor\Reflection\Types\Boolean;
 use Zemit\Utils\Slug;
 
 /**
  * Class View
- * - Ajoute la possibilité de minifier son HTML
- * - Ajoute la possibiltié de rechercher la bonne view à render si elle n'existe pas
- * -- ViewToSearch -> view_to_search -> view-to-search
- * @package GSS\Plugins\Mvc
+ * {@inheritdoc}
+ * @package Zemit\Mvc
  */
-class View extends MvcView
+class View extends \Phalcon\Mvc\View
 {
+    /**
+     * @var bool Minify view
+     */
     private $_minify;
     
+    /**
+     * @param $minify bool Set true to minify
+     */
     public function setMinify($minify)
     {
         $this->_minify = $minify ? true : false;
     }
     
+    /**
+     * @return bool Minify
+     */
     public function getMinify()
     {
         return $this->_minify ? true : false;
     }
     
+    /**
+     * {@inheritdoc}
+     * @param string $controllerName
+     * @param string $actionName
+     * @param array $params
+     *
+     * @return bool|\Phalcon\Mvc\View
+     * @throws \Zemit\Exception
+     */
     public function render($controllerName, $actionName, $params = [])
     {
-        // Aucune vue trouver, tente le uncamelize, slug
+        // fix @todo check if we still have this issue
         if (!$this->exists($controllerName . (empty($actionName)? null : '/' . $actionName))) {
             $controllerName = Slug::generate(Text::uncamelize($controllerName));
             $actionName = Slug::generate(Text::uncamelize($actionName));
@@ -45,9 +61,19 @@ class View extends MvcView
         return parent::render($controllerName, $actionName, $params);
     }
     
+    /**
+     * {@inheritdoc}
+     * @param string $controllerName
+     * @param string $actionName
+     * @param null $params
+     * @param null $configCallback
+     *
+     * @return String
+     * @throws \Zemit\Exception
+     */
     public function getRender($controllerName, $actionName, $params = null, $configCallback = null) : String
     {
-        // Aucune vue trouver, tente le uncamelize, slug
+        // fix @todo check if we still have this issue
         if (!$this->exists($controllerName . (empty($actionName)? null : '/' . $actionName))) {
             $controllerName = Slug::generate(Text::uncamelize($controllerName));
             $actionName = Slug::generate(Text::uncamelize($actionName));
@@ -56,13 +82,15 @@ class View extends MvcView
     }
     
     /**
-     * Minify everything on production ENV only
-     * @return String
+     * {@inheritdoc}
+     * Also automatically minify content
+     * @return string
      */
-    public function getContent() : String
+    public function getContent() : string
     {
         // Don't worry
         $content = parent::getContent();
+        
         if ($this->getMinify()) {
             
             // Clean comments
@@ -77,5 +105,4 @@ class View extends MvcView
         // Be happy
         return $content;
     }
-    
 }
