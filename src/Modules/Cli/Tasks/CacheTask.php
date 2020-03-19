@@ -11,7 +11,7 @@ namespace Zemit\Modules\Cli\Tasks;
 
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
-use Zemit\Console\AbstractTask;
+use Zemit\Modules\Cli\Tasks\AbstractTask;
 
 /**
  * Zemit\Modules\Cli\Tasks\Cache
