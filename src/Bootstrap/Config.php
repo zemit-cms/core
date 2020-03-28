@@ -18,6 +18,7 @@ use Zemit\Utils\Env;
 use Phalcon\Config as PhalconConfig;
 use PDO;
 use Zemit\Version;
+use Zemit\Provider;
 
 class Config extends PhalconConfig
 {
@@ -25,10 +26,10 @@ class Config extends PhalconConfig
     {
         defined('APPLICATION_ENV') || define('APPLICATION_ENV', Env::get('APPLICATION_ENV', 'development'));
         defined('CORE_PATH') || define('CORE_PATH', Env::get('CORE_PATH', mb_substr(__DIR__, 0, mb_strlen(basename(__DIR__)) * -1)));
-        defined('PRIVATE_PATH') || define('PRIVATE_PATH', Env::get('APP_PRIVATE_PATH', APP_PATH . '/Private/'));
+        defined('PRIVATE_PATH') || define('PRIVATE_PATH', Env::get('APP_PRIVATE_PATH', APP_PATH . '/private/'));
     }
     
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         $this->defineConst();
         
@@ -43,19 +44,19 @@ class Config extends PhalconConfig
                 'modules' => [
                     \Zemit\Mvc\Module::NAME_FRONTEND => [
                         'className' => \Zemit\Modules\Frontend\Module::class,
-                        'path' => CORE_PATH . 'Modules/Frontend/Module.php'
+                        'path' => CORE_PATH . 'Modules/Frontend/Module.php',
                     ],
                     \Zemit\Mvc\Module::NAME_BACKEND => [
                         'className' => \Zemit\Modules\Backend\Module::class,
-                        'path' => CORE_PATH . 'Modules/Backend/Module.php'
+                        'path' => CORE_PATH . 'Modules/Backend/Module.php',
                     ],
                     \Zemit\Mvc\Module::NAME_API => [
                         'className' => \Zemit\Modules\Api\Module::class,
-                        'path' => CORE_PATH . 'Modules/Api/Module.php'
+                        'path' => CORE_PATH . 'Modules/Api/Module.php',
                     ],
                     \Zemit\Mvc\Module::NAME_CLI => [
                         'className' => \Zemit\Modules\Cli\Module::class,
-                        'path' => CORE_PATH . 'Modules/Cli/Module.php'
+                        'path' => CORE_PATH . 'Modules/Cli/Module.php',
                     ],
                 ],
                 'dir' => [
@@ -109,51 +110,55 @@ class Config extends PhalconConfig
                     'migrations' => Env::get('APP_MIGRATION_PATH', PRIVATE_PATH . '/migrations/'),
                 ],
             ],
-            
-            'providers' => [
-                \Zemit\Provider\Environment\ServiceProvider::class,
-                \Zemit\Provider\Security\ServiceProvider::class,
-                \Zemit\Provider\Session\ServiceProvider::class,
-                \Zemit\Provider\Cookies\ServiceProvider::class,
-                
-                \Zemit\Provider\Locale\ServiceProvider::class,
-                \Zemit\Provider\Translate\ServiceProvider::class,
-                \Zemit\Provider\Url\ServiceProvider::class,
-//                \Zemit\Provider\Router\ServiceProvider::class,
-                \Zemit\Provider\Dispatcher\ServiceProvider::class,
-                \Zemit\Provider\VoltTemplate\ServiceProvider::class,
-                \Zemit\Provider\View\ServiceProvider::class,
-                
-                \Zemit\Provider\Profiler\ServiceProvider::class,
-                \Zemit\Provider\Database\ServiceProvider::class,
-                \Zemit\Provider\Annotations\ServiceProvider::class,
-                \Zemit\Provider\ModelsManager\ServiceProvider::class,
-                \Zemit\Provider\ModelsMetadata\ServiceProvider::class,
-                \Zemit\Provider\ModelsCache\ServiceProvider::class,
-                \Zemit\Provider\ViewCache\ServiceProvider::class,
-                \Zemit\Provider\Mailer\ServiceProvider::class,
-                \Zemit\Provider\Logger\ServiceProvider::class,
-                \Zemit\Provider\FileSystem\ServiceProvider::class,
-                
-                \Zemit\Provider\Assets\ServiceProvider::class,
-                \Zemit\Provider\Tag\ServiceProvider::class,
-                \Zemit\Provider\Filter\ServiceProvider::class,
-                \Zemit\Provider\Flash\ServiceProvider::class,
-                \Zemit\Provider\Escaper\ServiceProvider::class,
-                \Zemit\Provider\Markdown\ServiceProvider::class,
-                \Zemit\Provider\Utils\ServiceProvider::class,
     
-                // libs
-                \Zemit\Provider\V8js\ServiceProvider::class,
-                \Zemit\Provider\Captcha\ServiceProvider::class,
-                \Zemit\Provider\Gravatar\ServiceProvider::class,
-//                \Snowair\Debugbar\ServiceProvider::class,
+            /**
+             * Service Provider Configurations
+             */
+            'providers' => [
+                // abstract => concrete
+                Provider\Environment\ServiceProvider::class => Provider\Environment\ServiceProvider::class,
+                Provider\Security\ServiceProvider::class => Provider\Security\ServiceProvider::class,
+                Provider\Session\ServiceProvider::class => Provider\Session\ServiceProvider::class,
+                Provider\Cookies\ServiceProvider::class => Provider\Cookies\ServiceProvider::class,
+                
+                Provider\Locale\ServiceProvider::class => Provider\Locale\ServiceProvider::class,
+                Provider\Translate\ServiceProvider::class => Provider\Translate\ServiceProvider::class,
+                Provider\Url\ServiceProvider::class => Provider\Url\ServiceProvider::class,
+                Provider\Router\ServiceProvider::class => Provider\Router\ServiceProvider::class,
+                Provider\Dispatcher\ServiceProvider::class => Provider\Dispatcher\ServiceProvider::class,
+                Provider\VoltTemplate\ServiceProvider::class => Provider\VoltTemplate\ServiceProvider::class,
+                Provider\View\ServiceProvider::class => Provider\View\ServiceProvider::class,
+
+                Provider\Profiler\ServiceProvider::class => Provider\Profiler\ServiceProvider::class,
+                Provider\Database\ServiceProvider::class => Provider\Database\ServiceProvider::class,
+                Provider\Annotations\ServiceProvider::class => Provider\Annotations\ServiceProvider::class,
+                Provider\ModelsManager\ServiceProvider::class => Provider\ModelsManager\ServiceProvider::class,
+                Provider\ModelsMetadata\ServiceProvider::class => Provider\ModelsMetadata\ServiceProvider::class,
+                Provider\ModelsCache\ServiceProvider::class => Provider\ModelsCache\ServiceProvider::class,
+                Provider\ViewCache\ServiceProvider::class => Provider\ViewCache\ServiceProvider::class,
+                Provider\Mailer\ServiceProvider::class => Provider\Mailer\ServiceProvider::class,
+                Provider\Logger\ServiceProvider::class => Provider\Logger\ServiceProvider::class,
+                Provider\FileSystem\ServiceProvider::class => Provider\FileSystem\ServiceProvider::class,
+                
+                Provider\Assets\ServiceProvider::class => Provider\Assets\ServiceProvider::class,
+                Provider\Tag\ServiceProvider::class => Provider\Tag\ServiceProvider::class,
+                Provider\Filter\ServiceProvider::class => Provider\Filter\ServiceProvider::class,
+                Provider\Flash\ServiceProvider::class => Provider\Flash\ServiceProvider::class,
+                Provider\Escaper\ServiceProvider::class => Provider\Escaper\ServiceProvider::class,
+                Provider\Markdown\ServiceProvider::class => Provider\Markdown\ServiceProvider::class,
+                Provider\Utils\ServiceProvider::class => Provider\Utils\ServiceProvider::class,
+                
+                // lib
+                Provider\V8js\ServiceProvider::class => Provider\V8js\ServiceProvider::class,
+                Provider\Captcha\ServiceProvider::class => Provider\Captcha\ServiceProvider::class,
+                Provider\Gravatar\ServiceProvider::class => Provider\Gravatar\ServiceProvider::class,
+//                Snowair\Debugbar\ServiceProvider::class => \Snowair\Debugbar\ServiceProvider::class,
             ],
             
             'logger' => [
                 'path' => Env::get('APP_LOGGER_PATH', PRIVATE_PATH . '/log/'),
                 'format' => Env::get('APP_LOGGER_FORMAT', '[%date%][%type%] %message%'),
-                'date' => 'd-M-Y H:i:s',
+                'date' => 'Y-m-d H:i:s',
                 'level' => Env::get('APP_LOGGER_LEVEL', 'info'),
                 'filename' => Env::get('APP_LOGGER_DEFAULT_FILENAME', 'application'),
             ],
@@ -174,19 +179,19 @@ class Config extends PhalconConfig
             'modules' => [
                 \Zemit\Mvc\Module::NAME_FRONTEND => [
                     'className' => \Zemit\Modules\Frontend\Module::class,
-                    'path' => CORE_PATH . 'Modules/Frontend/Module.php'
+                    'path' => CORE_PATH . 'Modules/Frontend/Module.php',
                 ],
                 \Zemit\Mvc\Module::NAME_BACKEND => [
                     'className' => \Zemit\Modules\Backend\Module::class,
-                    'path' => CORE_PATH . 'Modules/Backend/Module.php'
+                    'path' => CORE_PATH . 'Modules/Backend/Module.php',
                 ],
                 \Zemit\Mvc\Module::NAME_API => [
                     'className' => \Zemit\Modules\Api\Module::class,
-                    'path' => CORE_PATH . 'Modules/Api/Module.php'
+                    'path' => CORE_PATH . 'Modules/Api/Module.php',
                 ],
                 \Zemit\Mvc\Module::NAME_CLI => [
                     'className' => \Zemit\Modules\Cli\Module::class,
-                    'path' => CORE_PATH . 'Modules/Cli/Module.php'
+                    'path' => CORE_PATH . 'Modules/Cli/Module.php',
                 ],
                 /**
                  * @TODO support this way too
@@ -210,7 +215,7 @@ class Config extends PhalconConfig
                 'notFound' => [
                     'controller' => Env::get('ROUTER_NOTFOUND_CONTROLLER', 'errors'),
                     'action' => Env::get('ROUTER_NOTFOUND_ACTION', 'notFound'),
-                ]
+                ],
             ],
             
             'gravatar' => [
@@ -232,7 +237,41 @@ class Config extends PhalconConfig
                 'default' => Env::get('LOCALE_DEFAULT', 'en'),
                 'sessionKey' => Env::get('LOCALE_SESSION_KEY', 'zemit-locale'),
                 'mode' => Env::get('LOCALE_MODE', Locale::MODE_SESSION_GEOIP),
-                'allowed' => explode(',', Env::get('LOCALE_ALLOWED', 'en,en_US,fr,fr_FR,fr_CA'))
+                'allowed' => explode(',', Env::get('LOCALE_ALLOWED', 'en,en_US,fr,fr_FR,fr_CA')),
+            ],
+            
+            /**
+             * Default Session Configuration
+             */
+            'session' => [
+                'default' => Env::get('SESSION_DRIVER'),
+                'drivers' => [
+                    'memcached' => [
+                        'adapter' => 'Libmemcached',
+                        'servers' => [
+                            [
+                                'host' => Env::get('MEMCACHED_HOST', '127.0.0.1'),
+                                'port' => Env::get('MEMCACHED_PORT', 11211),
+                                'weight' => Env::get('MEMCACHED_WEIGHT', 100),
+                            ],
+                        ],
+                        // Client options must be instance of array
+                        'client' => [],
+                    ],
+                    'redis' => [
+                        'adapter' => 'Redis',
+                        'host' => Env::get('REDIS_HOST', '127.0.0.1'),
+                        'port' => Env::get('REDIS_PORT', 6379),
+                        'index' => Env::get('REDIS_INDEX', 0),
+                        'persistent' => true,
+                    ],
+                    'file' => [
+                        'adapter' => 'Files',
+                    ],
+                ],
+                'prefix' => Env::get('SESSION_PREFIX', 'zemit_session_'),
+                'uniqueId' => Env::get('SESSION_UNIQUE_ID', 'zemit_'),
+                'lifetime' => Env::get('SESSION_LIFETIME', 3600),
             ],
             
             /**
@@ -243,7 +282,7 @@ class Config extends PhalconConfig
                 'defaultDomain' => Env::get('TRANSLATE_DEFAULT_DOMAIN', 'messages'),
                 'category' => Env::get('TRANSLATE_CATEGORY', LC_MESSAGES),
                 'directory' => [
-                    Env::get('TRANSLATE_DEFAULT_DOMAIN', 'messages') => Env::get('TRANSLATE_DEFAULT_PATH', CORE_PATH . 'Locales')
+                    Env::get('TRANSLATE_DEFAULT_DOMAIN', 'messages') => Env::get('TRANSLATE_DEFAULT_PATH', CORE_PATH . 'Locales'),
                 ],
             ],
             
@@ -300,7 +339,7 @@ class Config extends PhalconConfig
                                 'host' => Env::get('MEMCACHED_HOST', '127.0.0.1'),
                                 'port' => Env::get('MEMCACHED_PORT', 11211),
                                 'weight' => Env::get('MEMCACHED_WEIGHT', 100),
-                            ]
+                            ],
                         ],
                     ],
                     'redis' => [
@@ -311,17 +350,60 @@ class Config extends PhalconConfig
                     ],
                     'file' => [
                         'adapter' => 'File',
-                        'cacheDir' => PRIVATE_PATH . '/cache/data/'
+                        'cacheDir' => PRIVATE_PATH . '/cache/data/',
                     ],
                     'views' => [
                         'adapter' => 'File',
-                        'cacheDir' => PRIVATE_PATH . '/cache/views/'
+                        'cacheDir' => PRIVATE_PATH . '/cache/views/',
                     ],
                 ],
                 'prefix' => Env::get('CACHE_PREFIX', 'zemit_cache_'),
                 'lifetime' => Env::get('CACHE_LIFETIME', 86400),
             ],
             
+            /**
+             * Metadata Configuration
+             */
+            'metadata' => [
+                'default' => Env::get('METADATA_DRIVER', 'memory'),
+                'drivers' => [
+                    'apc' => [
+                        'adapter' => 'Apc',
+                    ],
+                    'memcached' => [
+                        'adapter' => 'Libmemcached',
+                        'servers' => [
+                            [
+                                'host' => Env::get('MEMCACHED_HOST', '127.0.0.1'),
+                                'port' => Env::get('MEMCACHED_PORT', 11211),
+                                'weight' => Env::get('MEMCACHED_WEIGHT', 100),
+                            ],
+                        ],
+                    ],
+                    'file' => [
+                        'adapter' => 'Files',
+                        'metaDataDir' => PRIVATE_PATH . '/cache/metadata/',
+                    ],
+                    'redis' => [
+                        'adapter' => 'Redis',
+                        'host' => Env::get('REDIS_HOST', '127.0.0.1'),
+                        'port' => Env::get('REDIS_PORT', 6379),
+                        'index' => Env::get('REDIS_INDEX', 0),
+                    ],
+                    'memory' => [
+                        'adapter' => 'Memory',
+                    ],
+                    'session' => [
+                        'adapter' => 'Session',
+                    ],
+                ],
+                'prefix' => Env::get('METADATA_PREFIX', 'zemit_metadata_'),
+                'lifetime' => Env::get('METADATA_LIFETIME', 172800),
+            ],
+            
+            /**
+             * Annotations Configuration
+             */
             'annotations' => [
                 'default' => Env::get('ANNOTATIONS_DRIVER', 'memory'),
                 'drivers' => [
@@ -330,7 +412,7 @@ class Config extends PhalconConfig
                     ],
                     'file' => [
                         'adapter' => 'Files',
-                        'annotationsDir' => PRIVATE_PATH . '/cache/annotations'
+                        'annotationsDir' => PRIVATE_PATH . '/cache/annotations',
                     ],
                     'memory' => [
                         'adapter' => 'Memory',
@@ -352,7 +434,7 @@ class Config extends PhalconConfig
                 'charset' => Env::get('DATABASE_CHARSET', 'utf8'),
                 'options' => [
                     PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . Env::get('DATABASE_CHARSET', 'utf8'),
-                ]
+                ],
             ],
             
             /**
@@ -363,14 +445,14 @@ class Config extends PhalconConfig
                 'sendmail' => '/usr/sbin/sendmail -bs',
                 'from' => [
                     'email' => 'no-reply@zemit.com',
-                    'name' => 'Zemit'
+                    'name' => 'Zemit',
                 ],
                 'bcc' => [
                     'contat@zemit.com' => 'Zemit',
                 ],
                 'viewsDir' => APP_PATH . '/Modules/Frontend/Views/',
             ],
-    
+            
             /**
              * Cookies
              */
@@ -378,12 +460,12 @@ class Config extends PhalconConfig
                 'useEncryption' => Env::get('COOKIES_USE_ENCRYPTION', true),
                 'signKey' => Env::get('COOKIES_SIGN_KEY', ''),
             ],
-    
+            
             /**
              * Dotenv
              */
             'dotenv' => [
-                'filePath' => ''
+                'filePath' => '',
             ],
             
             /**
@@ -407,6 +489,7 @@ class Config extends PhalconConfig
     public function mergeEnvConfig($env = null)
     {
         $configFile = $this->app->dir->config . (isset($env) ? $env : $this->app->env) . '.php';
+        
         if (file_exists($configFile)) {
             $envConfig = require_once $configFile;
             if (!empty($envConfig)) {
@@ -416,6 +499,7 @@ class Config extends PhalconConfig
                 }
             }
         }
+        
         return $this;
     }
 }

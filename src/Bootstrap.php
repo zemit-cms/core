@@ -17,7 +17,6 @@ use Phalcon\Cli\Router as CliRouter;
 use Phalcon\Text;
 use Phalcon\Events;
 
-
 use Zemit\Bootstrap\Prepare;
 use Zemit\Bootstrap\Config;
 use Zemit\Bootstrap\Services;
@@ -29,8 +28,6 @@ use Zemit\Cli\Console;
 
 use Dotenv\Dotenv;
 use Docopt;
-use Zemit\Mvc\Dispatcher\Module;
-use Zemit\Providers\ErrorHandler\ServiceProvider;
 
 /**
  * Class Bootstrap
@@ -46,16 +43,21 @@ class Bootstrap
      * Bootstrap modes
      */
     const MODE_CLI = 'console';
-    const MODE_NORMAL = 'normal';
+    const MODE_DEFAULT = 'default';
     const MODE_CONSOLE = self::MODE_CLI;
+    
+    /**
+     * @deprecated Use MODE_DEFAULT instead
+     */
+    const MODE_NORMAL = self::MODE_DEFAULT;
     
     /**
      * Ideally, only the config service provider should be added here, then it will load other service from itself
      * You can also add new Service Providers here if it's absolutely required to be loaded earlier before
-     * @var array
+     * @var array abstract => concrete
      */
     public $providers = [
-        Provider\Config\ServiceProvider::class,
+        Provider\Config\ServiceProvider::class => Provider\Config\ServiceProvider::class,
     ];
     
     /**
@@ -160,11 +162,11 @@ DOC;
      * Bootstrap constructor.
      * Setup the di, env, app, config, services, applications, modules and then the router
      *
-     * @param string $mode Mode for the application 'normal' 'console'
+     * @param string $mode Mode for the application 'default' 'console'
      *
      * @throws Exception
      */
-    public function __construct($mode = self::MODE_NORMAL)
+    public function __construct($mode = self::MODE_DEFAULT)
     {
         $this->mode = $mode;
         $this->setEventsManager(new Events\Manager());
@@ -224,7 +226,6 @@ DOC;
                 // force resolving the config service
                 if ($this->di->has('config')) {
                     $this->config = $this->di->get('config');
-                    $this->config->mode = $bootstrap->mode;
                 }
                 
                 // Set as the default DI
@@ -256,8 +257,7 @@ DOC;
      */
     public function prepare()
     {
-        $this->fireSet($this->prepare, Prepare::class, []);
-        return $this->prepare;
+        return $this->fireSet($this->prepare, Prepare::class);
     }
     
     /**
@@ -277,17 +277,14 @@ DOC;
     /**
      * Prepare the config service
      * - Fire events (before & after)
-     * - Apply current bootstrap mode ('normal', 'console')
+     * - Apply current bootstrap mode ('default', 'console')
      * - Merge with current environment config
      * @return Config
      * @throws Exception
      */
     public function config()
     {
-        $this->fireSet($this->config, Config::class, [], function (Bootstrap $bootstrap) {
-            $bootstrap->config->mode = $bootstrap->mode;
-            $bootstrap->config->mergeEnvConfig();
-        });
+        $this->fireSet($this->config, Config::class);
         return $this->config;
     }
     
@@ -308,7 +305,7 @@ DOC;
      * Prepare the application
      * - Fire events (before & after)
      * - Pass the current Di object
-     * - Depends on the current bootstrap mode ('normal', 'console')
+     * - Depends on the current bootstrap mode ('default', 'console')
      * @return \Phalcon\Cli\Console|Application
      * @throws Exception
      */
@@ -339,8 +336,8 @@ DOC;
     /**
      * Prepare the router
      * - Fire events (before & after router)
-     * - Pass the current application for normal mode
-     * - Depends on the bootstrap mode ('console', 'normal')
+     * - Pass the current application for default mode
+     * - Depends on the bootstrap mode ('default', 'default')
      * - Force Re-inject router in the bootstrap DI @TODO is it still necessary
      * @return Router
      * @throws Exception
@@ -379,7 +376,7 @@ DOC;
     /**
      * Run Zemit App
      * - Fire events (before run & after run)
-     * - Handle both console and normal application
+     * - Handle both console and default application
      * - Return response string
      * @return string
      * @throws Exception If the application can't be found
@@ -437,7 +434,7 @@ DOC;
     }
     
     /**
-     * Return the raw bootstrap mode, should be either 'console' or 'normal'
+     * Return the raw bootstrap mode, should be either 'console' or 'default'
      * @return string Bootstrap mode
      */
     public function getMode() : string {

@@ -26,40 +26,35 @@ class ServiceProvider extends AbstractServiceProvider
      * @var string
      */
     protected $serviceName = 'mailer';
-
+    
     /**
      * {@inheritdoc}
      *
      * @return void
      */
-    public function register(\Phalcon\Di\DiInterface $di) : void
+    public function register(\Phalcon\Di\DiInterface $di): void
     {
-        $di->setShared(
-            $this->getName(),
-            function () use ($di) {
-                /** @var \Phalcon\Config $config */
-                $config = $di->get('config')->mailer;
-                $driver = $config->get('driver');
-
-                switch ($driver) {
-                    case 'smtp':
-                    case 'mail':
-                    case 'sendmail':
-                        $mailerConfig = $config->toArray();
-
-                        $manager = new Manager($mailerConfig);
-                        $manager->setDI($di);
-
-                        return $manager;
-                }
-
-                throw new InvalidArgumentException(
-                    sprintf(
-                        'Invalid mail driver. Expected either "smtp" or "mail" or "sendmail". Got "%s".',
-                        is_scalar($driver) ? $driver : var_export($driver, true)
-                    )
-                );
+        $di->setShared($this->getName(), function() use ($di) {
+            /** @var \Phalcon\Config $config */
+            $config = $di->get('config')->mailer;
+            $driver = $config->get('driver');
+            
+            switch($driver) {
+                case 'smtp':
+                case 'mail':
+                case 'sendmail':
+                    $manager = new Manager($config->toArray());
+                    $manager->setDI($di);
+                    
+                    return $manager;
             }
-        );
+            
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Invalid mail driver. Expected either "smtp" or "mail" or "sendmail". Got "%s".',
+                    is_scalar($driver) ? $driver : var_export($driver, true)
+                )
+            );
+        });
     }
 }

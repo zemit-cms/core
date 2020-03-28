@@ -28,26 +28,27 @@ class ServiceProvider extends AbstractServiceProvider
      *
      * @param DiInterface $di
      */
-    public function register(DiInterface $container = null) : void
+    public function register(DiInterface $di = null) : void
     {
         // Set shared service in DI
-        $container->setShared($this->getName(), function () use ($container) {
+        $di->setShared($this->getName(), function () use ($di) {
+            $bootstrap = $di->get('bootstrap');
+    
             // Launch the config
             $config = new Config();
 
             // Inject some dynamic variables
-            $config->mode = $container->get('bootstrap')->getMode();
+            $config->mode = $di->get('bootstrap')->getMode();
 
             // Merge config with current environment
             $config->mergeEnvConfig();
-
             // Launch bootstrap prepare raw php configs
-//            $di->get('bootstrap')->prepare()->php();
+            $bootstrap->prepare()->php($config->app ?? null);
 
             // Register other providers
-//            foreach ($config->providers as $provider) {
-//                $container->register(new $provider($container));
-//            }
+            foreach ($config->providers as $provider) {
+                $di->register(new $provider($di));
+            }
 
             // Set the config
             return $config;

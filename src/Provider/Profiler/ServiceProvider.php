@@ -11,7 +11,7 @@
 namespace Zemit\Provider\Profiler;
 
 use Phalcon\Di\DiInterface;
-use Zemit\Db\Profiler;
+use Phalcon\Db\Profiler;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
@@ -28,7 +28,7 @@ class ServiceProvider extends AbstractServiceProvider
      *
      * @param DiInterface $di
      */
-    public function register(\Phalcon\Di\DiInterface $di) : void
+    public function register(DiInterface $di) : void
     {
         $di->setShared($this->getName(), Profiler::class);
     }

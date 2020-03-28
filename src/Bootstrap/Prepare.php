@@ -21,7 +21,6 @@ use Zemit\Events\EventsAwareTrait;
  */
 class Prepare extends Injectable
 {
-    
     use EventsAwareTrait;
     
     public $debug;
@@ -38,7 +37,7 @@ class Prepare extends Injectable
         $this->initialize();
         $this->forwarded();
         $this->define();
-        $this->debug();
+//        $this->debug();
 //        $this->php();
     }
     
@@ -60,7 +59,6 @@ class Prepare extends Injectable
     
     /**
      * Prepare application environment variables
-     * @TODO centralize everything inside "ENV"
      * - APPLICATION_ENV
      * - APP_ENV
      * - ENV
@@ -75,32 +73,44 @@ class Prepare extends Injectable
      * Prepare debugging
      * - Prepare error reporting and display errors natively with PHP
      * - Listen with phalcon debugger
-     * @TODO prevent this if in production, please ;)
      */
     protected function debug() {
-        // Enable error reporting and display
-        error_reporting(E_ALL);
-        ini_set('display_errors', 1);
-        
-        // Prepare the phalcon debug listener
-        $this->debug = new Debug();
-        $this->debug->listen();
+    
     }
     
     /**
      * Prepare some PHP config
      */
     public function php($config = null) {
-        $config = $config ?? $this->getDI()->get('config');
+        $config ??= $this->config->app;
         
-//        setlocale(LC_ALL, 'fr_CA.' . $encoding, 'French_Canada.1252');
-        date_default_timezone_set($config->app->timezone ?? 'America/Montreal');
-        mb_internal_encoding($config->app->encoding ?? 'UTF-8');
-        mb_http_output($config->app->encoding ?? 'UTF-8');
-        ini_set('memory_limit', $config->app->memoryLimit ?? '256M');
-        ini_set('post_max_size', $config->app->postLimit ?? '20M');
-        ini_set('upload_max_filesize', $config->app->postLimit ?? '20M');
-        ini_set('max_execution_time', $config->app->timeoutLimit ?? '60');
-        set_time_limit($config->app->timeoutLimit ?? '60');
+        if ($config) {
+            setlocale(LC_ALL, 'fr_CA.' . $config->encoding, 'French_Canada.1252');
+            date_default_timezone_set($config->timezone ?? 'America/Montreal');
+            mb_internal_encoding($config->encoding ?? 'UTF-8');
+            mb_http_output($config->encoding ?? 'UTF-8');
+            ini_set('memory_limit', $config->memoryLimit ?? '256M');
+            ini_set('post_max_size', $config->postLimit ?? '20M');
+            ini_set('upload_max_filesize', $config->postLimit ?? '20M');
+            ini_set('max_execution_time', $config->timeoutLimit ?? '60');
+            set_time_limit($config->timeoutLimit ?? '60');
+            ini_set('html_errors', -1);
+            
+            if ($config->debug) {
+                // Enabling error reporting and display
+                error_reporting(E_ALL);
+                ini_set('display_errors', 1);
+    
+                // Preparing phalcon debug listener
+                $this->debug = new Debug();
+                $this->debug->listen();
+            }
+            else {
+                // Disabling error reporting and display
+                error_reporting(-1);
+                ini_set('display_errors', -1);
+            }
+        }
+        
     }
 }

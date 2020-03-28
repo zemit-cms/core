@@ -10,8 +10,9 @@
 
 namespace Zemit\Provider\Database;
 
-use Zemit\Db\Logger as DbLogger;
-use Zemit\Db\Profiler as DbProfiler;
+use Phalcon\Di\DiInterface;
+use Zemit\Db\Events\Logger;
+use Zemit\Db\Events\Profiler;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
@@ -33,7 +34,7 @@ class ServiceProvider extends AbstractServiceProvider
      *
      * @return void
      */
-    public function register(\Phalcon\Di\DiInterface $di): void
+    public function register(DiInterface $di): void
     {
         $di->setShared($this->getName(), function() use ($di) {
             $config = $di->get('config')->database;
@@ -50,8 +51,8 @@ class ServiceProvider extends AbstractServiceProvider
             /** @var \Phalcon\Db\Adapter\Pdo $connection */
             $connection = new $adapter($config);
     
-            $eventsManager->attach('db', $profiler ?? new DbProfiler());
-            $eventsManager->attach('db', $logger ?? new DbLogger());
+            $eventsManager->attach('db', $profiler ?? new Logger());
+            $eventsManager->attach('db', $logger ?? new Profiler());
             
             $connection->setEventsManager($eventsManager);
             $connection->setDi($di);

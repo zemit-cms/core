@@ -83,6 +83,7 @@
     "codeception/specify": "~1.1",
     "codeception/mockery-module": "^0.2"
   },
+  "minimum-stability": "dev",
   "autoload": {
     "psr-4": {
       "Zemit\\": "src/"
