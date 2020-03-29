@@ -39,8 +39,6 @@ class ServiceProvider extends AbstractServiceProvider
         $di->setShared($this->getName(), function() use ($di) {
             $config = $di->get('config')->database;
             $eventsManager = $di->get('eventsManager');
-            $profiler = $di->get('profiler');
-            $logger = $di->get('logger');
             
             $driver = $config->drivers->{$config->default};
             $adapter = '\Phalcon\Db\Adapter\Pdo\\' . $driver->adapter;
@@ -51,11 +49,11 @@ class ServiceProvider extends AbstractServiceProvider
             /** @var \Phalcon\Db\Adapter\Pdo $connection */
             $connection = new $adapter($config);
     
-            $eventsManager->attach('db', $profiler ?? new Logger());
-            $eventsManager->attach('db', $logger ?? new Profiler());
+            $eventsManager->attach('db', new Logger());
+            $eventsManager->attach('db', new Profiler());
             
             $connection->setEventsManager($eventsManager);
-            $connection->setDi($di);
+//            $connection->setDi($di);
             
             return $connection;
         });

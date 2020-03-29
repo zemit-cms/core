@@ -2,9 +2,9 @@
 
 namespace Zemit\Mvc\Model;
 
-trait UpdatedDate {
+trait UpdatedAt {
 
-    protected function _setUpdatedDate($field = 'updated_date', $format = 'Y-m-d H:i:s') {
+    protected function _setUpdatedAt($field = 'updated_at', $format = 'Y-m-d H:i:s') {
         
         if (property_exists($this, $field)) {
             $this->getEventsManager()->attach('model', function($event, $entity) use ($field, $format) {

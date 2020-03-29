@@ -26,24 +26,22 @@ trait Eagerload
         findFirstWith as incubatorFindFirstWith;
     }
     
-    // expose @todo check why i put it here...
-    use Expose\Expose;
-    
-    
     public static function with()
     {
+    
         $arguments = func_get_args();
+    
         try {
             $retval = forward_static_call_array('self::incubatorWith', $arguments);
+    
         } catch(\BadMethodCallException $e) {
-            
             // overriding the bad method call exception to work anyway
             $parameters = self::_prepareParameters($arguments);
             $retval = static::find($parameters);
             if (isset($retval[0]) && count($retval)) {
                 array_unshift($arguments, $retval);
-//                $retval = call_user_func_array('Phalcon\Mvc\Model\EagerLoading\Loader::fromResultset', $arguments);
-                $retval = call_user_func_array('Zemit\Mvc\Model\EagerLoading\Loader::fromResultset', $arguments);
+                $retval = call_user_func_array('Phalcon\Mvc\Model\EagerLoading\Loader::fromResultset', $arguments);
+//                $retval = call_user_func_array(\Zemit\Mvc\Model\EagerLoading\Loader::class . '::fromResultset', $arguments);
             } else {
                 $retval = [];
             }

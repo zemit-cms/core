@@ -1,0 +1,24 @@
+<?php
+
+namespace Zemit\Mvc\Model;
+
+trait CreatedBy {
+    
+    protected function _setCreatedBy($field = 'created_by') {
+    
+        if (property_exists($this, $field)) {
+            $this->getEventsManager()->attach('model', function($event, $entity) use ($field) {
+                switch ($event->getType()) {
+                    case 'beforeValidationOnCreate':
+                        /** @var ResultSet\Simple $user */
+                        $user = $this->_getUser();
+                        if (property_exists($entity, $field) && empty($entity->$field) && $user) {
+                            $entity->$field = $user->id;
+                        }
+                        break;
+                }
+                return true;
+            });
+        }
+    }
+}

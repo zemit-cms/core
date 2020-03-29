@@ -178,7 +178,7 @@ MSG;
     public function get()
     {
         $ret = $this->subject;
-
+        
         if (null !== $ret && $this->mustReturnAModel) {
             $ret = $ret[0];
         }
