@@ -171,10 +171,11 @@ DOC;
         $this->mode = $mode;
         $this->setEventsManager(new Events\Manager());
         $this->initialize();
-        $this->di();
         $this->dotenv();
-        $this->args();
+        $this->docopt();
+        $this->di();
         $this->prepare();
+        $this->register();
         $this->config();
         $this->debug();
         $this->services();
@@ -187,20 +188,6 @@ DOC;
      * Initialisation
      */
     public function initialize() {}
-    
-    /**
-     * Get args for console
-     * @throws Exception
-     */
-    public function args()
-    {
-        $this->fireSet($this->docopt, Docopt::class, [], function (Bootstrap $bootstrap) {
-            if ($this->isConsole()) {
-                $args = $bootstrap->docopt->handle($bootstrap->consoleDoc);
-                $bootstrap->args = is_null($bootstrap->args)? $args : array_merge($bootstrap->args, $args);
-            }
-        });
-    }
     
     /**
      * Prepare the DI including itself (Bootstrap) and setup as default DI
@@ -218,16 +205,6 @@ DOC;
                 // Register bootstrap itself
                 $this->di->setShared('bootstrap', $bootstrap);
                 
-                // Register the ServiceProviders
-                foreach ($bootstrap->providers as $provider) {
-                    $this->di->register(new $provider($this->di));
-                }
-                
-                // force resolving the config service
-                if ($this->di->has('config')) {
-                    $this->config = $this->di->get('config');
-                }
-                
                 // Set as the default DI
                 Di::setDefault($this->di);
             });
@@ -236,6 +213,7 @@ DOC;
     }
     
     /**
+     * Reading .env file
      * @return Dotenv
      * @throws Exception
      */
@@ -252,6 +230,22 @@ DOC;
     }
     
     /**
+     * Get arguments from command line interface (cli / console)
+     * @return Docopt
+     * @throws Exception
+     */
+    public function docopt()
+    {
+        return $this->fireSet($this->docopt, Docopt::class, [], function (Bootstrap $bootstrap) {
+            if ($this->isConsole()) {
+                $args = $bootstrap->docopt->handle($bootstrap->consoleDoc);
+                $bootstrap->args = is_null($bootstrap->args)? $args : array_merge($bootstrap->args, $args);
+            }
+        });
+    }
+    
+    /**
+     * Preparing some native PHP related stuff
      * @return Prepare
      * @throws Exception
      */
@@ -261,17 +255,22 @@ DOC;
     }
     
     /**
-     * @return Debug
-     * @throws Exception
+     * Registering bootstrap providers
      */
-    public function debug()
-    {
-        $this->fireSet($this->debug, Debug::class, [], function (Bootstrap $bootstrap) {
-            if ($bootstrap->config->app->debug) {
-                $bootstrap->debug->listen();
+    public function register(array &$providers = null) {
+        $providers ??= $this->providers;
+        
+        foreach ($providers as $key => $provider) {
+            if (is_string($provider) && class_exists($provider)) {
+                $provider = new $provider($this->di);
+                $this->di->register($provider);
+                if ($this->di->has($provider->getName())) {
+                    $this->providers[$key] = $this->di->get($provider->getName());
+                }
             }
-        });
-        return $this->debug;
+        }
+        
+        return $this->providers;
     }
     
     /**
@@ -284,8 +283,37 @@ DOC;
      */
     public function config()
     {
-        $this->fireSet($this->config, Config::class);
-        return $this->config;
+        if ($this->di->has('config')) {
+            $this->config = $this->di->get('config');
+        }
+        return $this->fireSet($this->config, Config::class, [], function (Bootstrap $bootstrap) {
+            $bootstrap->config->mode = $bootstrap->getMode();
+            $bootstrap->config->mergeEnvConfig();
+            $bootstrap->prepare->php();
+        });
+    }
+    
+    /**
+     * @return Debug
+     * @throws Exception
+     */
+    public function debug()
+    {
+        return $this->fireSet($this->debug, Debug::class, [], function (Bootstrap $bootstrap) {
+            $config = $bootstrap->config->debug;
+            $bootstrap->prepare()->debug($bootstrap->config);
+            
+            if ($bootstrap->config->app->debug || $bootstrap->config->debug->enable) {
+                $bootstrap->debug->listen($config->exception ?? true, $config->lowSeverity ?? true);
+                $bootstrap->debug->setBlacklist($config->blacklist->toArray() ?? []);
+                $bootstrap->debug->setShowFiles($config->showFiles ?? true);
+                $bootstrap->debug->setShowBackTrace($config->showBackTrace ?? true);
+                $bootstrap->debug->setShowFileFragment($config->showFileFragment ?? true);
+                if (is_string($config->uri)) {
+                    $bootstrap->debug->setUri($config->uri);;
+                }
+            }
+        });
     }
     
     /**
@@ -297,8 +325,7 @@ DOC;
      */
     public function services()
     {
-        $this->fireSet($this->services, Services::class, [$this->di, $this->config]);
-        return $this->services;
+        return $this->fireSet($this->services, Services::class, [$this->di, $this->config]);;
     }
     
     /**
@@ -311,13 +338,12 @@ DOC;
      */
     public function application()
     {
-        $this->fireSet($this->application,
+        return $this->fireSet($this->application,
             $this->isConsole() ?
                 Console::class :
                 Application::class,
             [$this->di]
         );
-        return $this->application;
     }
     
     /**
@@ -329,8 +355,7 @@ DOC;
      */
     public function modules()
     {
-        $this->fireSet($this->modules, Modules::class, [$this->application]);
-        return $this->modules;
+        return $this->fireSet($this->modules, Modules::class, [$this->application]);
     }
     
     /**
@@ -344,7 +369,7 @@ DOC;
      */
     public function router()
     {
-        $this->fireSet($this->router,
+        return $this->fireSet($this->router,
             $this->isConsole() ?
                 CliRouter::class :
                 Router::class,
@@ -354,23 +379,6 @@ DOC;
             function (Bootstrap $bootstrap) {
                 $bootstrap->di['router'] = $this->router;
             });
-        return $this->router;
-    }
-    
-    /**
-     * Get & format arguments from the $this->args property
-     * @return array Key value pair, human readable
-     */
-    public function getArguments()
-    {
-        $arguments = [];
-        foreach ($this->args as $key => $value) {
-            if (preg_match('/(<(.*?)>|\-\-(.*))/', $key, $match)) {
-                $key = lcfirst(Text::camelize(Text::uncamelize(array_pop($match))));
-                $arguments[$key] = $value;
-            }
-        }
-        return $arguments;
     }
     
     /**
@@ -416,13 +424,30 @@ DOC;
             return $this->response->getContent();
         } else {
             if (empty($this->application)) {
-                throw new \Exception('Application not found', 404);
+                throw new \Exception('Application \'\' not found', 404);
             }
             else {
-                throw new \Exception('Application not supported', 400);
+                throw new \Exception('Application \''.get_class($this->application).'\' not supported', 400);
             }
-            
         }
+    }
+    
+    /**
+     * Get & format arguments from the $this->args property
+     * @return array Key value pair, human readable
+     */
+    public function getArguments()
+    {
+        $arguments = [];
+        if ($this->args) {
+            foreach ($this->args as $key => $value) {
+                if (preg_match('/(<(.*?)>|\-\-(.*))/', $key, $match)) {
+                    $key = lcfirst(Text::camelize(Text::uncamelize(array_pop($match))));
+                    $arguments[$key] = $value;
+                }
+            }
+        }
+        return $arguments;
     }
     
     /**

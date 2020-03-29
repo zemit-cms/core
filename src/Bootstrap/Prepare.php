@@ -74,14 +74,25 @@ class Prepare extends Injectable
      * - Prepare error reporting and display errors natively with PHP
      * - Listen with phalcon debugger
      */
-    protected function debug() {
-    
+    public function debug(Config $config = null) {
+        $config ??= $this->config;
+        
+        if ($config->app->debug || $config->debug->enable) {
+            // Enabling error reporting and display
+            error_reporting(E_ALL);
+            ini_set('display_errors', 1);
+        }
+        else {
+            // Disabling error reporting and display
+            error_reporting(-1);
+            ini_set('display_errors', 0);
+        }
     }
     
     /**
      * Prepare some PHP config
      */
-    public function php($config = null) {
+    public function php(Config $config = null) {
         $config ??= $this->config->app;
         
         if ($config) {
@@ -93,24 +104,8 @@ class Prepare extends Injectable
             ini_set('post_max_size', $config->postLimit ?? '20M');
             ini_set('upload_max_filesize', $config->postLimit ?? '20M');
             ini_set('max_execution_time', $config->timeoutLimit ?? '60');
+            ini_set('html_errors', $config->htmlErrors ?? 0);
             set_time_limit($config->timeoutLimit ?? '60');
-            ini_set('html_errors', -1);
-            
-            if ($config->debug) {
-                // Enabling error reporting and display
-                error_reporting(E_ALL);
-                ini_set('display_errors', 1);
-    
-                // Preparing phalcon debug listener
-                $this->debug = new Debug();
-                $this->debug->listen();
-            }
-            else {
-                // Disabling error reporting and display
-                error_reporting(-1);
-                ini_set('display_errors', -1);
-            }
         }
-        
     }
 }

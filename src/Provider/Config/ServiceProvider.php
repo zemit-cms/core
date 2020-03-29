@@ -11,6 +11,7 @@
 namespace Zemit\Provider\Config;
 
 use Phalcon\Di\DiInterface;
+use Zemit\Bootstrap;
 use Zemit\Bootstrap\Config;
 use Zemit\Provider\AbstractServiceProvider;
 
@@ -32,6 +33,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         // Set shared service in DI
         $di->setShared($this->getName(), function () use ($di) {
+            /** @var Bootstrap $bootstrap */
             $bootstrap = $di->get('bootstrap');
     
             // Launch the config
@@ -42,13 +44,14 @@ class ServiceProvider extends AbstractServiceProvider
 
             // Merge config with current environment
             $config->mergeEnvConfig();
+            
             // Launch bootstrap prepare raw php configs
-            $bootstrap->prepare()->php($config->app ?? null);
+            $bootstrap->prepare()->php($config);
 
             // Register other providers
-            foreach ($config->providers as $provider) {
-                $di->register(new $provider($di));
-            }
+//            foreach ($config->providers as $provider) {
+//                $di->register(new $provider($di));
+//            }
 
             // Set the config
             return $config;

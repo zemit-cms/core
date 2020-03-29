@@ -110,6 +110,22 @@ class Config extends PhalconConfig
                     'migrations' => Env::get('APP_MIGRATION_PATH', PRIVATE_PATH . '/migrations/'),
                 ],
             ],
+            
+            'debug' => [
+                'enable' => Env::get('DEBUG_ENABLE', false),
+                'exception' => Env::get('DEBUG_EXCEPTION', true),
+                'lowSeverity' => Env::get('DEBUG_LOW_SEVERITY', true),
+                'showFiles' => Env::get('DEBUG_SHOW_FILES', true),
+                'showBackTrace' => Env::get('DEBUG_SHOW_BACKTRACE', true),
+                'showFileFragment' => Env::get('DEBUG_SHOW_FRAGMENT', true),
+                'uri' => Env::get('DEBUG_URI'),
+                'blacklist' => [
+                    'server' => [
+                        'SECURITY_WORKFACTOR',
+                        'SECURITY_SALT',
+                    ]
+                ],
+            ],
     
             /**
              * Service Provider Configurations
@@ -175,6 +191,7 @@ class Config extends PhalconConfig
             
             /**
              * Default modules
+             * @todo change this to class => [class => '', path => '']
              */
             'modules' => [
                 \Zemit\Mvc\Module::NAME_FRONTEND => [
@@ -196,10 +213,10 @@ class Config extends PhalconConfig
                 /**
                  * @TODO support this way too
                  */
-//                \Zemit\Mvc\Module::NAME_FRONTEND => \Zemit\Modules\Frontend\Module::class,
-//                \Zemit\Mvc\Module::NAME_BACKEND => \Zemit\Modules\Backend\Module::class,
-//                \Zemit\Mvc\Module::NAME_API => \Zemit\Modules\Api\Module::class,
-//                \Zemit\Mvc\Module::NAME_CLI => \Zemit\Modules\Cli\Module::class,
+//                \Zemit\Modules\Frontend\Module::class => \Zemit\Modules\Frontend\Module::class,
+//                \Zemit\Modules\Backend\Module::class => \Zemit\Modules\Backend\Module::class,
+//                \Zemit\Modules\Api\Module::class => \Zemit\Modules\Api\Module::class,
+//                \Zemit\Modules\Cli\Module::class => \Zemit\Modules\Cli\Module::class,
             ],
             
             /**
@@ -217,14 +234,20 @@ class Config extends PhalconConfig
                     'action' => Env::get('ROUTER_NOTFOUND_ACTION', 'notFound'),
                 ],
             ],
-            
+    
+            /**
+             * Gravatar Configuration
+             */
             'gravatar' => [
                 'default_image' => Env::get('GRAVATAR_DEFAULT_IMAGE', 'identicon'),
                 'size' => Env::get('GRAVATAR_SIZE', 24),
                 'rating' => Env::get('GRAVATAR_RATING', 'pg'),
                 'use_https' => Env::get('GRAVATAR_HTPPS', true),
             ],
-            
+    
+            /**
+             * reCaptcha Configuration
+             */
             'reCaptcha' => [
                 'siteKey' => Env::get('RECAPTCHA_KEY'),
                 'secret' => Env::get('RECAPTCHA_SECRET'),
