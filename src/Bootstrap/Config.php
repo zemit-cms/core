@@ -449,14 +449,22 @@ class Config extends PhalconConfig
              * Database configuration
              */
             'database' => [
-                'adapter' => Env::get('DATABASE_ADAPTER', 'Mysql'),
-                'host' => Env::get('DATABASE_HOST', 'localhost'),
-                'username' => Env::get('DATABASE_USERNAME', 'root'),
-                'password' => Env::get('DATABASE_PASSWORD', ''),
-                'dbname' => Env::get('DATABASE_DBNAME', ''),
-                'charset' => Env::get('DATABASE_CHARSET', 'utf8'),
-                'options' => [
-                    PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . Env::get('DATABASE_CHARSET', 'utf8'),
+                'default' => Env::get('DATABASE_ADAPTER', 'mysql'),
+                'drivers' => [
+                    'mysql' => [
+                        'adapter' => 'Mysql',
+                        'host' => Env::get('DATABASE_HOST', 'localhost'),
+                        'port' => Env::get('DATABASE_PORT', 3306),
+                        'dbname' => Env::get('DATABASE_DBNAME', ''),
+                        'username' => Env::get('DATABASE_USERNAME', 'root'),
+                        'password' => Env::get('DATABASE_PASSWORD', ''),
+                        'charset' => Env::get('DATABASE_CHARSET', 'utf8'),
+                        'options' => [
+                            \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . Env::get('DATABASE_CHARSET', 'utf8'),
+                            \PDO::ATTR_EMULATE_PREPARES => Env::get('DATABASE_PDO_EMULATE_PREPARES', false), // https://stackoverflow.com/questions/10113562/pdo-mysql-use-pdoattr-emulate-prepares-or-not
+                            \PDO::ATTR_STRINGIFY_FETCHES => Env::get('DATABASE_PDO_STRINGIFY_FETCHES', false),
+                        ],
+                    ],
                 ],
             ],
             
@@ -464,7 +472,7 @@ class Config extends PhalconConfig
              * Mailer configuration
              */
             'mailer' => [
-                'driver' => 'sendmail',
+                'driver' => Env::get('MAILER_DEFAULT_DRIVER', 'sendmail'),
                 'sendmail' => '/usr/sbin/sendmail -bs',
                 'from' => [
                     'email' => 'no-reply@zemit.com',
