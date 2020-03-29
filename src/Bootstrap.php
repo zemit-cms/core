@@ -304,13 +304,17 @@ DOC;
             $bootstrap->prepare()->debug($bootstrap->config);
             
             if ($bootstrap->config->app->debug || $bootstrap->config->debug->enable) {
-                $bootstrap->debug->listen($config->exception ?? true, $config->lowSeverity ?? true);
-                $bootstrap->debug->setBlacklist($config->blacklist->toArray() ?? []);
-                $bootstrap->debug->setShowFiles($config->showFiles ?? true);
-                $bootstrap->debug->setShowBackTrace($config->showBackTrace ?? true);
-                $bootstrap->debug->setShowFileFragment($config->showFileFragment ?? true);
-                if (is_string($config->uri)) {
-                    $bootstrap->debug->setUri($config->uri);;
+                if (is_bool($config)) {
+                    $bootstrap->debug->listen();
+                } else {
+                    $bootstrap->debug->listen($config->exception ?? true, $config->lowSeverity ?? true);
+                    $bootstrap->debug->setBlacklist($config->has('blacklist')? $config->blacklist->toArray() : []);
+                    $bootstrap->debug->setShowFiles($config->showFiles ?? true);
+                    $bootstrap->debug->setShowBackTrace($config->showBackTrace ?? true);
+                    $bootstrap->debug->setShowFileFragment($config->showFileFragment ?? true);
+                    if (is_string($config->uri)) {
+                        $bootstrap->debug->setUri($config->uri);;
+                    }
                 }
             }
         });
