@@ -106,6 +106,9 @@ class Prepare extends Injectable
             ini_set('max_execution_time', $config->timeoutLimit ?? '60');
             ini_set('html_errors', $config->htmlErrors ?? 0);
             set_time_limit($config->timeoutLimit ?? '60');
+            
+            // Phalcon Config
+            ini_set('phalcon.orm.disable_assign_setters', false);
         }
     }
 }
