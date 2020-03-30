@@ -10,6 +10,8 @@
 
 namespace Zemit\Db;
 
+use Phalcon\Di;
+
 /**
  * Class Profiler
  * {@inheritdoc} \Phalcon\Db\Profiler
@@ -22,8 +24,12 @@ class Profiler extends \Phalcon\Db\Profiler
      */
     public function toArray() {
     
+        $config = Di::getDefault()->get('config');
+        if (!$config->app->profiler) {
+            return false;
+        }
+    
         $profiles = [];
-        
         $profilerProfiles = $this->getProfiles();
         if ($profilerProfiles) {
             foreach ($profilerProfiles as $profile) {

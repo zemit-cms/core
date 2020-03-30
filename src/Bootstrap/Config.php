@@ -140,6 +140,7 @@ class Config extends PhalconConfig
                 Provider\Locale\ServiceProvider::class => Provider\Locale\ServiceProvider::class,
                 Provider\Translate\ServiceProvider::class => Provider\Translate\ServiceProvider::class,
                 Provider\Url\ServiceProvider::class => Provider\Url\ServiceProvider::class,
+                Provider\Request\ServiceProvider::class => Provider\Request\ServiceProvider::class,
                 Provider\Router\ServiceProvider::class => Provider\Router\ServiceProvider::class,
                 Provider\Dispatcher\ServiceProvider::class => Provider\Dispatcher\ServiceProvider::class,
                 Provider\VoltTemplate\ServiceProvider::class => Provider\VoltTemplate\ServiceProvider::class,
