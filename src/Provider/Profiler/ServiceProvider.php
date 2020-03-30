@@ -11,7 +11,7 @@
 namespace Zemit\Provider\Profiler;
 
 use Phalcon\Di\DiInterface;
-use Phalcon\Db\Profiler;
+use Zemit\Db\Profiler;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**

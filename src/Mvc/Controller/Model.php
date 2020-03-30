@@ -24,7 +24,7 @@ trait Model
         $model = empty($model) ? $this->_getModelName() : $model;
         
         // Get the possible post
-        $post = empty($post) ? $this->_getPost() : $post;
+        $post = empty($post) ? $this->getParams() : $post;
         
         // Get the possible whitelist
         $whitelist = empty($whitelist) ? $this->_getWhitelist() : $whitelist;
@@ -124,7 +124,7 @@ trait Model
     public function _getModelIdFromPostOrParam($post = array(), $param = 'id', $defautId = null)
     {
         if (isset($this->_model) && !isset($this->_model['id'])) {
-            $post = empty($post) ? $this->_getPost() : $post;
+            $post = empty($post) ? $this->getParams() : $post;
             if (!isset($this->_model['id']) || is_null($this->_model['id'])) {
                 $this->_model['id'] = isset($post[$param]) ? $post[$param] : $defautId;
             }
@@ -169,23 +169,6 @@ trait Model
         return $error;
     }
     
-    protected function _getPost()
-    {
-        
-        // Get assoc array from json raw body
-        $post = $this->request->getJsonRawBody(true);
-        
-        // Get array from $_POST
-        if (empty($post)) {
-            $post = $this->request->getPost();
-        }
-        
-        // Get array from $_REQUEST
-        if (empty($post)) {
-            $post = $this->request->get();
-        }
-        
-        return $post;
-    }
+    
     
 }

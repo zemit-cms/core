@@ -94,7 +94,7 @@ class Prepare extends Injectable
      */
     public function php(Config $config = null) {
         $config ??= $this->config->app;
-        
+
         if ($config) {
             setlocale(LC_ALL, 'fr_CA.' . $config->encoding, 'French_Canada.1252');
             date_default_timezone_set($config->timezone ?? 'America/Montreal');

@@ -51,7 +51,7 @@ final class QueryBuilder extends Builder implements BuilderInterface, InjectionA
         /**
          * Nest the condition to current ones or set as unique
          */
-        if ($this->conditions) {
+        if (!empty($this->conditions)) {
             $conditions = "(" . $this->conditions . ") AND (" . $conditions . ")";
         }
         

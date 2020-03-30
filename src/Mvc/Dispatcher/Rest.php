@@ -127,82 +127,43 @@ class Rest extends Injectable
     
     public function afterDispatch(Event $event, Dispatcher $dispatcher)
     {
-        $controller = $dispatcher->getActiveController();
-        $defaultContent = isset($this->_response) ? $this->_response : [];
-        $response = array_merge_recursive($defaultContent, [
-            'response' => $dispatcher->getReturnedValue(),
-        ]);
-        
-        $response['profiler'] = $this->_getSQLProfiles();
-        if ($response['response']) {
-            $this->_response = $response;
-        }
-        
-        // Si error, forcer le code 400 Bad request
-        if (is_array($response['response']) && !empty($response['response']['error'])) {
-            $controller->response->setStatusCode(400, 'Bad request');
-        }
-        
-        if (isset($response['response'])) {
-            
-            $controller->view->disable();
-            $controller->view->disableLevel([
-                View::LEVEL_ACTION_VIEW => true,
-                View::LEVEL_LAYOUT => true,
-                View::LEVEL_MAIN_LAYOUT => true,
-                View::LEVEL_AFTER_TEMPLATE => true,
-                View::LEVEL_BEFORE_TEMPLATE => true,
-            ]);
-            $controller->response->setContentType('application/json', 'UTF-8')->setJsonContent($response);
-            if ($response['response'] !== false) {
-                $controller->response->send();
-                return false;
-            }
-        }
+//        $controller = $dispatcher->getActiveController();
+//        $defaultContent = isset($this->_response) ? $this->_response : [];
+////        $response = array_merge_recursive($defaultContent, [
+////            'response' => $dispatcher->getReturnedValue(),
+////        ]);
+//
+//        $response = [];
+//        $response['payload'] = [];
+////        $response['profiler'] = $this->_getSQLProfiles();
+////        if ($response['response']) {
+////            $this->_response = $response;
+////        }
+//
+//        // Si error, forcer le code 400 Bad request
+////        if (is_array($response['response']) && !empty($response['response']['error'])) {
+////            $controller->response->setStatusCode(400, 'Bad request');
+////        }
+//
+//        if (isset($response['payload'])) {
+//
+//            $controller->view->disable();
+//            $controller->view->disableLevel([
+//                View::LEVEL_ACTION_VIEW => true,
+//                View::LEVEL_LAYOUT => true,
+//                View::LEVEL_MAIN_LAYOUT => true,
+//                View::LEVEL_AFTER_TEMPLATE => true,
+//                View::LEVEL_BEFORE_TEMPLATE => true,
+//            ]);
+//            $controller->response->setContentType('application/json', 'UTF-8')->setJsonContent($response);
+//            if ($response['response'] !== false) {
+//                $controller->response->send();
+//                return false;
+//            }
+//        }
         
     }
     
-    private function _getSQLProfiles()
-    {
-        $ret = false;
-        
-        // activate the profiler by default if not config
-        if (!isset($this->config->app->profiler) || $this->config->app->profiler) {
-            
-            // prepare our profiles response as the profiler is activated
-            $profiles = [];
-            
-            // make sure the profile is active
-            if ($this->profiler) {
-                
-                // get our profiles
-                /** @var Profiler $profilerProfiles */
-                $profilerProfiles = $this->profiler->getProfiles();
-                if ($profilerProfiles) {
-                    /** @var Profiler\Item $profile */
-                    foreach ($profilerProfiles as $profile) {
-                        $profiles [] = [
-                            'sqlStatement' => $profile->getSqlStatement(),
-                            'sqlVariables' => $profile->getSqlVariables(),
-                            'sqlBindTypes' => $profile->getSqlBindTypes(),
-                            'initialTime' => $profile->getInitialTime(),
-                            'finalTime' => $profile->getFinalTime(),
-                            'elapsedSeconds' => $profile->getTotalElapsedSeconds(),
-                        ];
-                    }
-                }
-                
-                // setup the profiler object to return
-                $ret = [
-                    'profiles' => $profiles,
-                    'numberTotalStatements' => $this->profiler->getNumberTotalStatements(),
-                    'totalElapsedSeconds' => $this->profiler->getTotalElapsedSeconds(),
-                ];
-            }
-        }
-        
-        // return false, profiler config off
-        return $ret;
-    }
+    
     
 }
