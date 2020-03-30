@@ -10,6 +10,9 @@
 
 namespace Zemit\Mvc\Controller;
 
+use Phalcon\Http\Response;
+use Phalcon\Mvc\Dispatcher;
+
 /**
  * Class Rest
  * @package Zemit\Mvc\Controller
@@ -31,45 +34,30 @@ class Rest extends \Phalcon\Mvc\Controller
      *
      * @return \Phalcon\Http\ResponseInterface
      */
-    protected function restForwarding()
+    protected function restForwarding($id = null)
     {
-        $id = $this->getModelIdFromPostOrParam();
+        $id ??= $this->getParam('id');
         
-        // Ajoute ou met à jour une entité
         if ($this->request->isPost() || $this->request->isPut()) {
             
-            $this->dispatcher->forward([
-                'action' => 'save',
-            ]);
-        }
-        
-        // Supprime une entité
-        else if ($this->request->isDelete()) {
+            $this->dispatcher->forward(['action' => 'save']);
             
-            $this->dispatcher->forward([
-                'action' => 'delete',
-            ]);
-        }
-        
-        // Récupère une ou toute les entités
-        else if ($this->request->isGet()) {
+        } else if ($this->request->isDelete()) {
+            
+            $this->dispatcher->forward(['action' => 'delete']);
+            
+        } else if ($this->request->isGet()) {
             
             if (is_null($id)) {
-                
-                $this->dispatcher->forward([
-                    'action' => 'getAll',
-                ]);
+                $this->dispatcher->forward(['action' => 'getAll']);
             } else {
-                
-                $this->dispatcher->forward([
-                    'action' => 'get',
-                ]);
+                $this->dispatcher->forward(['action' => 'get']);
             }
-        }
-        
-        // @TODO voir quoi faire avec les request options
+            
+        } // @TODO handle this correctly
         else if ($this->request->isOptions()) {
-            return $this->sendRest(['result' => 'OK']);
+            
+            return $this->setRestResponse(['result' => 'OK']);
         }
     }
     
@@ -78,34 +66,29 @@ class Rest extends \Phalcon\Mvc\Controller
      *
      * @param null $id
      *
-     * @return \Phalcon\Http\ResponseInterface
+     * @return bool
      */
     public function getAction($id = null)
     {
-        $single = $this->getEntity($id);
+        $single = $this->getSingle($id);
+        $this->view->single = $single;
+        $this->view->model = $single ? get_class($single) : false;
+        $this->view->source = $single ? $single->getSource() : false;
         
         if (!$single) {
             $this->response->setStatusCode(404, 'Not Found');
+            return false;
         }
-        
-        return $this->sendRest(['single' => $single]);
     }
     
     /**
      * Retrieving a record list
-     *
-     * @return \Phalcon\Http\ResponseInterface
      */
     public function getAllAction()
     {
         $model = $this->getModelNameFromController();
-        $records = $model::find();
-        
-        if (empty($records)) {
-            $this->response->setStatusCode(404, 'Not Found');
-        }
-        
-        return $this->sendRest(['list' => $records]);
+        $this->view->list = $model::find();
+        $this->view->listCount = count($this->view->list);
     }
     
     /**
@@ -115,11 +98,11 @@ class Rest extends \Phalcon\Mvc\Controller
      *
      * @param null $id
      *
-     * @return \Phalcon\Http\ResponseInterface
+     * @return array
      */
     public function saveAction($id = null)
     {
-        return $this->sendRest($this->saveModel($id));
+        return $this->saveModel($id);
     }
     
     /**
@@ -127,20 +110,20 @@ class Rest extends \Phalcon\Mvc\Controller
      *
      * @param null $id
      *
-     * @return \Phalcon\Http\ResponseInterface
+     * @return bool
      */
     public function deleteAction($id = null)
     {
-        $entity = $this->getEntity($id);
-        if (!$entity) {
-            $this->response->setStatusCode(404, 'Not Found');
-        }
+        $single = $this->getSingle($id);
         
-        return $this->sendRest([
-            'deleted' => $entity->delete(),
-            'record' => $entity,
-            'error' => $this->getMessagesFromEntity($entity),
-        ]);
+        $this->view->single = $single;
+        $this->view->deleted = $single ? $single->delete() : false;
+        $this->view->messages = $single ? $this->getRestMessages($single) : false;
+        
+        if (!$single) {
+            $this->response->setStatusCode(404, 'Not Found');
+            return false;
+        }
     }
     
     /**
@@ -151,15 +134,9 @@ class Rest extends \Phalcon\Mvc\Controller
      *
      * @return \Phalcon\Http\ResponseInterface
      */
-    public function sendError($code = null, $status = null, $response = null)
+    public function setRestErrorResponse($code = 400, $status = 'Bad Request', $response = null)
     {
-        // keep forced status code or set our own
-        $responseStatusCode = $this->response->getStatusCode();
-        $reasonPhrase = $this->response->getReasonPhrase();
-        $status ??= $reasonPhrase ?: 'Bad Request';
-        $code ??= (int)$responseStatusCode ?: 400;
-        
-        return $this->sendRest($response, $code, $status);
+        return $this->setRestResponse($response, $code, $status);
     }
     
     /**
@@ -173,32 +150,47 @@ class Rest extends \Phalcon\Mvc\Controller
      *
      * @return \Phalcon\Http\ResponseInterface
      */
-    public function sendRest(array $response = null, $code = null, $status = null, $jsonOptions = 0, $depth = 512)
+    public function setRestResponse($response = null, $code = null, $status = null, $jsonOptions = 0, $depth = 512)
     {
         // keep forced status code or set our own
         $responseStatusCode = $this->response->getStatusCode();
         $reasonPhrase = $this->response->getReasonPhrase();
-        $status ??= $reasonPhrase ?: 'OK';
-        $code ??= (int)$responseStatusCode ?: 200;
-        
-        // default response object
-        $response['deleted'] ??= false;
-        $response['saved'] ??= false;
-        $response['single'] ??= false;
-        $response['list'] ??= false;
-        $response['relations'] ??= false;
-        $response['errors'] ??= false;
-        $response['offset'] ??= 0;
-        $response['limit'] ??= 0;
+        $status ??= $reasonPhrase ? : 'OK';
+        $code ??= (int)$responseStatusCode ? : 200;
         
         $this->response->setStatusCode($code, $code . ' ' . $status);
+        
         return $this->response->setJsonContent([
             'status' => $status,
             'statusCode' => $code . ' ' . $status,
             'code' => $code,
             'response' => $response,
+            'view' => $this->view->getParamsToView(),
             'request' => $this->request->toArray(),
             'profiler' => $this->profiler ? $this->profiler->toArray() : false,
         ], $jsonOptions, $depth);
+    }
+    
+    /**
+     * Handle rest response automagically
+     *
+     * @param Dispatcher $dispatcher
+     */
+    public function afterExecuteRoute(Dispatcher $dispatcher)
+    {
+        $response = $dispatcher->getReturnedValue();
+        
+        // Avoid breaking default phalcon behaviour
+        if ($response instanceof Response) {
+            return;
+        }
+        
+        // Merge response into view variables
+        if (is_array($response)) {
+            $this->view->setVars($response, true);
+        }
+        
+        // Return our Rest normalized response
+        $dispatcher->setReturnedValue($this->setRestResponse(is_array($response) ? null : $response));
     }
 }

@@ -10,185 +10,197 @@
 
 namespace Zemit\Mvc\Controller;
 
+use Phalcon\Mvc\Model\Resultset;
+use Phalcon\Text;
+use Zemit\Http\Request;
+
 trait Model
 {
-    protected $_model = array();
+    protected $_model = [];
     
-    protected function getParams()
+    public function getModelName()
     {
-        // Get assoc array from json raw body
-        if (!empty($this->request->getRawBody())) {
-            $post = $this->request->getJsonRawBody(true);
-        }
-        
-        // Get array from $_POST
-        if (empty($post)) {
-            $post = $this->request->getPost();
-        }
-        
-        // Get array from $_REQUEST
-        if (empty($post)) {
-            $post = $this->request->get();
-        }
-        
-        return $post;
+        return $this->getModelNameFromController();
     }
     
-    protected function saveModel($id, $entity = null, $post = array(), $model = null)
+    protected function getWhitelist()
+    {
+        return null;
+    }
+    
+    protected function getColumnMap()
+    {
+        return null;
+    }
+    
+    /**
+     * @param string $key
+     * @param string|null $default
+     * @param array|null $params
+     *
+     * @return string|null
+     */
+    public function getParam(string $key, string $filters = null, string $default = null, array $params = null)
+    {
+        $params ??= $this->getParams();
+        return $this->filter->sanitize($params[$key] ?? $this->dispatcher->getParam($key, $filters, $default), $filters);
+    }
+    
+    /**
+     * Get parameters from
+     * - JsonRawBody, post, put or get
+     * @return mixed
+     */
+    protected function getParams()
+    {
+        /** @var Request $request */
+        $request = $this->request;
+        $params = empty($request->getRawBody())? [] : $request->getJsonRawBody(true);
+        $params = array_merge_recursive(
+            $request->get(),
+            $request->getPut(),
+            $request->getPost(),
+            $params,
+        );
+        return $params;
+    }
+    
+    /**
+     * Get Single from ID and Model Name
+     *
+     * @param null $id
+     * @param null $modelName
+     *
+     * @return bool|Resultset
+     */
+    public function getSingle($id = null, $modelName = null)
+    {
+        $id ??= $this->getParam('id', 'int');
+        $modelName ??= $this->getModelName();
+        return $id? $modelName::findFirstById((int)$id) : false;
+    }
+    
+    /**
+     * Saving model automagically
+     *
+     * @param null $id
+     * @param null $entity
+     * @param null $post
+     * @param null $model
+     * @param null $whitelist
+     * @param null $columnMap
+     *
+     * @return array
+     */
+    protected function saveModel($id = null, $entity = null, $post = null, $model = null, $whitelist = null, $columnMap = null)
     {
         $single = false;
-        $reponse = array();
+        $ret = [];
         
         // Get the model name to play with
-        $model = empty($model) ? $this->getModelName() : $model;
-        
-        // Get the possible post
-        $post = empty($post) ? $this->getParams() : $post;
-        
-        // Get the possible whitelist
-        $whitelist = empty($whitelist) ? $this->getWhitelist() : $whitelist;
+        $model ??= $this->getModelName();
+        $post ??= $this->getParams();
+        $whitelist ??= $this->getWhitelist();
+        $columnMap ??= $this->getColumnMap();
         
         // Check if multi-d post
         if (!empty($id) || !isset($post[0]) || !is_array($post[0])) {
             $single = true;
-            $post = array($post);
+            $post = [$post];
         }
         
         // Save each posts
         foreach ($post as $key => $singlePost) {
             
-            $singlePostEntity = $entity;
+            $singlePostId = (!$single || empty($id)) ? $this->getParam('id', 'int', null, $singlePost) : $id;
+            $singlePostEntity = (!$single || !isset($entity)) ? $this->getSingle($singlePostId, $model) : $entity;
             
-            // Get the id
-            $singlePostId = (!$single || empty($id)) ? $this->getModelIdFromPostOrParam($singlePost) : $id;
-            
-            // Get the entity
-            $singlePostEntity = (!$single || !isset($entity)) ? $this->getEntity($singlePostId, $model) : $entity;
-            
-            // Aucune entité trouvée, créer une nouvelle entité
+            // Create entity if not exists
             if (!$singlePostEntity) {
                 $singlePostEntity = new $model();
             }
             
-            // Save the entity
-            $reponse['saved'][$key] = $singlePostEntity->save($singlePost, $whitelist);
+            $singlePostEntity->assign($singlePost, $whitelist, $columnMap);
+            $ret['saved'][$key] = $singlePostEntity->save();
+            $ret['messages'][$key] = $this->getRestMessages($singlePostEntity);
+            $ret['model'][$key] = get_class($singlePostEntity);
+            $ret['source'][$key] = $singlePostEntity->getSource();
+            $ret[$single ? 'single' : 'list'][$key] = $singlePostEntity;
             
-            // Get the messages from the save request
-            $reponse['errors'][$key] = $this->getMessagesFromEntity($singlePostEntity);
-            if (!empty($reponse['errors'][$key]) && !$reponse['saved'][$key]) {
-                $this->response->setStatusCode(400, 'Bad request');
-            }
-            
-            // Return the saved entity
-            $reponse['model'][$key] = get_class($singlePostEntity);
-            $reponse['source'][$key] = $singlePostEntity->getSource();
-            $reponse[$single? 'single' : 'list'][$key] = $singlePostEntity;
-            
-            // Réponse directement
             if ($single) {
-                foreach ($reponse as &$reponseCategorie) {
-                    $reponseCategorie = array_pop($reponseCategorie);
+                foreach ($ret as &$retCat) {
+                    $retCat = array_pop($retCat);
                 }
             }
         }
         
-        // Retourne au format JSON
-        return $reponse;
+        return $ret;
     }
     
-    public function getWhitelist()
+    /**
+     * Try to find the appropriate model from the current controller name
+     *
+     * @param string $controllerName
+     * @param array $namespaces
+     * @param string $needle
+     *
+     * @return string|null
+     */
+    public function getModelNameFromController(string $controllerName = null, array $namespaces = null, string $needle = 'Models') : ?string
     {
-        return null;
-    }
-    
-    public function getEntity($id = null, $name = null)
-    {
+        $controllerName ??= $this->dispatcher->getControllerName();
+        $namespaces ??= $this->loader->getNamespaces();
         
-        $id = empty($id) ? $this->getModelIdFromPostOrParam() : $id;
-        $name = empty($name) ? $this->getModelName() : $name;
-        
-        if (!empty($id)) {
-            $entity = $name::findFirstById((int)$id);
-        } else {
-            $entity = false;
-        }
-        return $entity;
-    }
-    
-    public function getModelName()
-    {
-        if (!isset($this->_model['name'])) {
-            $this->_model['name'] = $this->getModelNameFromController();
-        }
-        return $this->_model['name'];
-    }
-    
-    public function _setModelName($name)
-    {
-        $this->_model['name'] = $name;
-    }
-    
-    public function getModelNameFromController($controller = null)
-    {
-        $namespaces = $this->loader->getNamespaces();
-        $model = ucfirst(\Phalcon\Text::camelize(\Phalcon\Text::uncamelize((empty($controller) ? $this->dispatcher->getControllerName() : $controller))));
+        $model = ucfirst(Text::camelize(Text::uncamelize($controllerName)));
         if (!class_exists($model)) {
             foreach ($namespaces as $namespace => $path) {
                 $possibleModel = $namespace . '\\' . $model;
-                if (strpos($namespace, 'Models') !== false && class_exists($possibleModel)) {
+                if (strpos($namespace, $needle) !== false && class_exists($possibleModel)) {
                     $model = $possibleModel;
                 }
             }
         }
-        return $model;
+        
+        return class_exists($model)? $model : null;
     }
     
-    public function getModelIdFromPostOrParam($post = array(), $param = 'id', $defautId = null)
+    /**
+     * Get message from list of entities
+     *
+     * @param $list Resultset|\Phalcon\Mvc\Model
+     *
+     * @return array|bool
+     */
+    public function getRestMessages($list = null)
     {
-        if (isset($this->_model) && !isset($this->_model['id'])) {
-            $post = empty($post) ? $this->getParams() : $post;
-            if (!isset($this->_model['id']) || is_null($this->_model['id'])) {
-                $this->_model['id'] = isset($post[$param]) ? $post[$param] : $defautId;
-            }
-            $this->_model['id'] = $this->dispatcher->getParam($param, 'int', $this->_model['id']);
+        if (!is_array($list)) {
+            $list = [$list];
         }
         
-        return isset($this->_model, $this->_model['id']) ? (int)$this->_model['id'] : null;
-    }
-    
-    public function getMessagesFromEntity($entity)
-    {
-        $error = array();
+        $ret = [];
         
-        // Récupère les messages du model
-        $validations = $entity->getMessages();
-        
-        // Prépare le tableau de retour incluant aussi le type du message
-        if ($validations && is_array($validations)) {
-            foreach ($validations as $validation) {
-                $validationFields = $validation->getField();
-                if (!is_array($validationFields)) {
-                    $validationFields = array($validationFields);
-                }
-                foreach ($validationFields as $validationField) {
-                    if (empty($error[$validationField])) {
-                        $error[$validationField] = array();
+        foreach ($list as $single) {
+            $validations = $single->getMessages();
+            if ($validations && is_array($validations)) {
+                foreach ($validations as $validation) {
+                    $validationFields = $validation->getField();
+                    if (!is_array($validationFields)) {
+                        $validationFields = [$validationFields];
                     }
-                    $error[$validationField][] = array(
-                        'type' => $validation->getType(),
-                        'message' => $validation->getMessage()
-                    );
+                    foreach ($validationFields as $validationField) {
+                        if (empty($ret[$validationField])) {
+                            $ret[$validationField] = [];
+                        }
+                        $ret[$validationField][] = [
+                            'type' => $validation->getType(),
+                            'message' => $validation->getMessage(),
+                        ];
+                    }
                 }
             }
         }
         
-        // Si au moins une erreur, force un "400 Bad request" dans la réponse HTTP
-        if (count($error)) {
-            $this->response->setStatusCode(400, 'Bad request');
-        }
-        
-        // Retourne le tableau des messages
-        return $error;
+        return $ret ?: false;
     }
     
 }

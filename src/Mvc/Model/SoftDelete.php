@@ -9,7 +9,7 @@ trait SoftDelete {
     
     protected $_softDeleteSettings;
     
-    protected function _setSoftDelete($field = 'deleted', $deletedValue = true, $notDeletedValue = false) {
+    protected function _setSoftDelete($field = 'deleted', $deletedValue = 1, $notDeletedValue = 0) {
         $this->_softDeleteSettings['field'] = $field;
         $this->_softDeleteSettings['deletedValue'] = $deletedValue;
         $this->_softDeleteSettings['notDeletedValue'] = $notDeletedValue;

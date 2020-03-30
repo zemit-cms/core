@@ -18,6 +18,7 @@ use Zemit\Mvc\Model\Eagerload;
 use Zemit\Mvc\Model\Expose\Expose;
 use Zemit\Mvc\Model\FindIn;
 use Zemit\Mvc\Model\RawValue;
+use Zemit\Mvc\Model\Relationship;
 use Zemit\Mvc\Model\Slug;
 use Zemit\Mvc\Model\SoftDelete;
 use Zemit\Mvc\Model\UpdatedAt;
@@ -49,6 +50,7 @@ class Model extends \Phalcon\Mvc\Model
     use UpdatedBy;
     use DeletedAt;
     use DeletedBy;
+    use Relationship;
     
     public function initialize()
     {
@@ -61,5 +63,7 @@ class Model extends \Phalcon\Mvc\Model
         $this->_setUpdatedBy();
         $this->_setDeletedAt();
         $this->_setDeletedBy();
+    
+        $this->useDynamicUpdate(true);
     }
 }
