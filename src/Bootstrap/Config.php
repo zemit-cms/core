@@ -121,6 +121,15 @@ class Config extends PhalconConfig
                 'uri' => Env::get('DEBUG_URI'),
                 'blacklist' => [
                     'server' => [
+                        'PASS',
+                        'PASSWD',
+                        'PASSWORD',
+                        'DB_PASS',
+                        'DB_PASSWD',
+                        'DB_PASSWORD',
+                        'DATABASE_PASS',
+                        'DATABASE_PASSWD',
+                        'DATABASE_PASSWORD',
                         'SECURITY_WORKFACTOR',
                         'SECURITY_SALT',
                     ]
