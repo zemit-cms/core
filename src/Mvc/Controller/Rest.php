@@ -118,6 +118,20 @@ class Rest extends \Phalcon\Mvc\Controller
     }
     
     /**
+     * Count a record list
+     *
+     * @return \Phalcon\Http\ResponseInterface
+     */
+    public function countAction()
+    {
+        /** @var \Zemit\Mvc\Model $model */
+        $model = $this->getModelNameFromController();
+        $this->view->totalCount = $model::count($this->getFindCount($this->getFind()));
+        
+        return $this->setRestResponse();
+    }
+    
+    /**
      * Saving a record
      * - Create
      * - Update
