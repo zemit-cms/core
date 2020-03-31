@@ -25,9 +25,9 @@ class Rest extends \Phalcon\Mvc\Controller
     /**
      * Rest Bootstrap
      */
-    public function indexAction()
+    public function indexAction($id = null)
     {
-        $this->restForwarding();
+        $this->restForwarding($id);
     }
     
     /**
@@ -55,7 +55,9 @@ class Rest extends \Phalcon\Mvc\Controller
                 $this->dispatcher->forward(['action' => 'get']);
             }
             
-        } // @TODO handle this correctly
+        }
+        
+        // @TODO handle this correctly
         else if ($this->request->isOptions()) {
             
             return $this->setRestResponse(['result' => 'OK']);
@@ -113,6 +115,7 @@ class Rest extends \Phalcon\Mvc\Controller
         $this->view->totalCount = $model::count($this->getFindCount($find));
         $this->view->limit = $find['limit'] ?? false;
         $this->view->offset = $find['offset'] ?? false;
+        $this->view->find = ($this->config->app->debug || $this->config->debug->enable)? $find : false;
         
         return $this->setRestResponse();
     }
@@ -194,7 +197,8 @@ class Rest extends \Phalcon\Mvc\Controller
      */
     public function saveAction($id = null)
     {
-        return $this->setRestResponse($this->saveModel($id));
+        $this->view->setVars($this->saveModel($id));
+        return $this->setRestResponse($this->view->saved);
     }
     
     /**
@@ -208,8 +212,8 @@ class Rest extends \Phalcon\Mvc\Controller
     {
         $single = $this->getSingle($id);
         
-        $this->view->single = $single;
         $this->view->deleted = $single ? $single->delete() : false;
+        $this->view->single = $single->expose($this->getExpose());
         $this->view->messages = $single ? $this->getRestMessages($single) : false;
         
         if (!$single) {
@@ -217,7 +221,30 @@ class Rest extends \Phalcon\Mvc\Controller
             return false;
         }
         
-        return $this->setRestResponse();
+        return $this->setRestResponse($this->view->deleted);
+    }
+    
+    /**
+     * Restoring record
+     *
+     * @param null $id
+     *
+     * @return bool
+     */
+    public function restoreAction($id = null)
+    {
+        $single = $this->getSingle($id);
+        
+        $this->view->restored = $single ? $single->restore() : false;
+        $this->view->single = $single->expose($this->getExpose());
+        $this->view->messages = $single ? $this->getRestMessages($single) : false;
+        
+        if (!$single) {
+            $this->response->setStatusCode(404, 'Not Found');
+            return false;
+        }
+        
+        return $this->setRestResponse($this->view->restored);
     }
     
     /**

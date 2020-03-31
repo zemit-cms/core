@@ -69,12 +69,42 @@ trait Model
     }
     
     /**
+     * Get the order definition
+     *
+     * @return null|array
+     */
+    protected function getOrder()
+    {
+        return explode(',', $this->getParam('order', 'string', 'id'));
+    }
+    
+    /**
+     * Get the current limit value
+     *
+     * @return null|int Default: 1000
+     */
+    protected function getLimit()
+    {
+        return (int)$this->getParam('limit', 'int', 1000);
+    }
+    
+    /**
+     * Get the current offset value
+     *
+     * @return null|int Default: 0
+     */
+    protected function getOffset()
+    {
+        return (int)$this->getParam('offset', 'int', 0);
+    }
+    
+    /**
      * Get Soft delete condition
      *
-     * @return string
+     * @return string Default: deleted = 0
      */
     protected function getSoftDeleteCondition() {
-        return 'deleted <> 1';
+        return 'deleted = 0';
     }
     
     public function setBind($bind) {
@@ -148,9 +178,9 @@ trait Model
         $find['conditions'] = $this->getConditions();
         $find['bind'] = $this->getBind();
         $find['bindTypes'] = $this->getBindTypes();
-        $find['limit'] = (int)$this->getParam('limit', 'int', 1000);
-        $find['offset'] = (int)$this->getParam('offset', 'int', 0);
-        $find['order'] = explode(',', $this->getParam('order', 'string', 'id'));
+        $find['limit'] = $this->getLimit();
+        $find['offset'] = $this->getOffset();
+        $find['order'] = $this->getOrder();
         return $find;
     }
     

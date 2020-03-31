@@ -14,7 +14,6 @@ trait SoftDelete {
         $this->_softDeleteSettings['deletedValue'] = $deletedValue;
         $this->_softDeleteSettings['notDeletedValue'] = $notDeletedValue;
         
-        
         // make sure the property exists before to add the feature to the model
         if (property_exists($this, $field)) {
             
@@ -61,6 +60,13 @@ trait SoftDelete {
         }
         
         return false;
+    }
+    
+    public function restore($field = null, $notDeletedValue = null) {
+        $field ??= $this->_softDeleteSettings['field'];
+        $notDeletedValue ??= $this->_softDeleteSettings['notDeletedValue'];
+        $this->assign([$field => $notDeletedValue], [$field]);
+        return $this->save();
     }
 
 }

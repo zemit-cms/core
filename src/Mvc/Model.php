@@ -10,6 +10,7 @@
 
 namespace Zemit\Mvc;
 
+use Phalcon\Events\Manager;
 use Zemit\Mvc\Model\CreatedAt;
 use Zemit\Mvc\Model\CreatedBy;
 use Zemit\Mvc\Model\DeletedAt;
@@ -20,6 +21,7 @@ use Zemit\Mvc\Model\FindIn;
 use Zemit\Mvc\Model\RawValue;
 use Zemit\Mvc\Model\Relationship;
 use Zemit\Mvc\Model\Slug;
+use Zemit\Mvc\Model\Snapshots;
 use Zemit\Mvc\Model\SoftDelete;
 use Zemit\Mvc\Model\UpdatedAt;
 use Zemit\Mvc\Model\UpdatedBy;
@@ -51,9 +53,12 @@ class Model extends \Phalcon\Mvc\Model
     use DeletedAt;
     use DeletedBy;
     use Relationship;
+    use Snapshots;
     
     public function initialize()
     {
+        $this->setEventsManager(new Manager());
+        
         $this->_setSlug();
         $this->_setUser();
         $this->_setSoftDelete();
@@ -63,6 +68,7 @@ class Model extends \Phalcon\Mvc\Model
         $this->_setUpdatedBy();
         $this->_setDeletedAt();
         $this->_setDeletedBy();
+        $this->_setSnapshots();
     
         $this->useDynamicUpdate(true);
     }
