@@ -184,14 +184,18 @@ trait Expose {
         
         
         if (is_array($value) || is_object($value)) {
-            if (method_exists($value, 'toArray')) {
+            $toParse = [];
+            if (is_array($value)) {
+                $toParse = $value;
+            }
+            else if (method_exists($value, 'toArray')) {
                 $toParse = $value->toArray();
             }
-            foreach ($value->dirtyRelated as $dirtyRelatedKey => $dirtyRelated) {
-                $toParse[$dirtyRelatedKey] = $dirtyRelated ?? false;
+            if (isset($value->dirtyRelated)) {
+                foreach ($value->dirtyRelated as $dirtyRelatedKey => $dirtyRelated) {
+                    $toParse[$dirtyRelatedKey] = $dirtyRelated ?? false;
+                }
             }
-            // @ todo fix this
-            return $toParse;
             
             // si aucune column demandé et que l'expose est à false
             if (is_null($columns) && !$builder->getExpose()) {

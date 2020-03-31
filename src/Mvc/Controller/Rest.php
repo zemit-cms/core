@@ -12,6 +12,7 @@ namespace Zemit\Mvc\Controller;
 
 use Phalcon\Http\Response;
 use Phalcon\Mvc\Dispatcher;
+use Phalcon\Mvc\Model\Resultset;
 
 /**
  * Class Rest
@@ -66,12 +67,13 @@ class Rest extends \Phalcon\Mvc\Controller
      *
      * @param null $id
      *
-     * @return bool
+     * @return bool|\Phalcon\Http\ResponseInterface
      */
     public function getAction($id = null)
     {
         $single = $this->getSingle($id);
-        $this->view->single = $single;
+        
+        $this->view->single = $single ? $single->expose($this->getExpose()) : false;
         $this->view->model = $single ? get_class($single) : false;
         $this->view->source = $single ? $single->getSource() : false;
         
@@ -79,16 +81,40 @@ class Rest extends \Phalcon\Mvc\Controller
             $this->response->setStatusCode(404, 'Not Found');
             return false;
         }
+        
+        return $this->setRestResponse();
     }
     
     /**
      * Retrieving a record list
+     *
+     * @return \Phalcon\Http\ResponseInterface
      */
     public function getAllAction()
     {
+        /** @var \Zemit\Mvc\Model $model */
         $model = $this->getModelNameFromController();
-        $this->view->list = $model::find();
-        $this->view->listCount = count($this->view->list);
+
+        /** @var Resultset $list */
+        $find = $this->getFind();
+        $list = $model::with($this->getWith() ?: [], $find ?: []);
+        
+        /**
+         * @var int $key
+         * @var \Zemit\Mvc\Model $item
+         */
+        foreach ($list as $key => $item) {
+            $list[$key] = $item->expose($this->getExpose());
+        }
+        
+        $list = is_array($list)? array_values(array_filter($list)) : $list;
+        $this->view->list = $list;
+        $this->view->listCount = count($list);
+        $this->view->totalCount = $model::count($this->getFindCount($find));
+        $this->view->limit = $find['limit'] ?? false;
+        $this->view->offset = $find['offset'] ?? false;
+        
+        return $this->setRestResponse();
     }
     
     /**
@@ -102,7 +128,7 @@ class Rest extends \Phalcon\Mvc\Controller
      */
     public function saveAction($id = null)
     {
-        return $this->saveModel($id);
+        return $this->setRestResponse($this->saveModel($id));
     }
     
     /**
@@ -124,6 +150,8 @@ class Rest extends \Phalcon\Mvc\Controller
             $this->response->setStatusCode(404, 'Not Found');
             return false;
         }
+        
+        return $this->setRestResponse();
     }
     
     /**

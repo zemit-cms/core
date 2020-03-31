@@ -40,7 +40,6 @@ trait Eagerload
             $retval = static::find($parameters);
             if (isset($retval[0]) && count($retval)) {
                 array_unshift($arguments, $retval);
-//                $retval = call_user_func_array('Phalcon\Mvc\Model\EagerLoading\Loader::fromResultset', $arguments);
                 $retval = call_user_func_array(\Zemit\Mvc\Model\EagerLoading\Loader::class . '::fromResultset', $arguments);
             } else {
                 $retval = [];
@@ -61,7 +60,6 @@ trait Eagerload
             $parameters = self::_prepareParameters($arguments);
             if ($retval = static::findFirst($parameters)) {
                 array_unshift($arguments, $retval);
-//                $retval = call_user_func_array('Phalcon\Mvc\Model\EagerLoading\Loader::fromModel', $arguments);
                 $retval = call_user_func_array('Zemit\Mvc\Model\EagerLoading\Loader::fromModel', $arguments);
             }
         }

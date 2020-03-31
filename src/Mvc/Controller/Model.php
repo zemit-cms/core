@@ -18,19 +18,86 @@ trait Model
 {
     protected $_model = [];
     
+    /**
+     * Get the current Model Name
+     *
+     * @return string|null
+     */
     public function getModelName()
     {
         return $this->getModelNameFromController();
     }
     
+    /**
+     * Get the Whitelist parameters for crud
+     *
+     * @return null|array
+     */
     protected function getWhitelist()
     {
         return null;
     }
     
+    /**
+     * Get the column mapping for crud
+     *
+     * @return null|array
+     */
     protected function getColumnMap()
     {
         return null;
+    }
+    
+    /**
+     * Get relationship eager loading definition
+     *
+     * @return null|array
+     */
+    protected function getWith()
+    {
+        return null;
+    }
+    
+    /**
+     * Get expose definition
+     *
+     * @return null|array
+     */
+    protected function getExpose()
+    {
+        return null;
+    }
+    
+    /**
+     * Get expose definition
+     *
+     * @return array|string
+     */
+    protected function getFind()
+    {
+        $find = [];
+        $find['conditions'] = 'deleted <> 1';
+        $find['limit'] = (int)$this->getParam('limit', 'int', 1000);
+        $find['offset'] = (int)$this->getParam('offset', 'int', 0);
+        $find['order'] = explode(',', $this->getParam('order', 'string', 'id'));
+        return $find;
+    }
+    
+    /**
+     * Return find lazy loading config for count
+     * @return array|string
+     */
+    protected function getFindCount($find = null)
+    {
+        $find ??= $this->getFind();
+        if (isset($find['limit'])) {
+            unset($find['limit']);
+        }
+        if (isset($find['offset'])) {
+            unset($find['offset']);
+        }
+        
+        return $find;
     }
     
     /**
@@ -43,6 +110,7 @@ trait Model
     public function getParam(string $key, string $filters = null, string $default = null, array $params = null)
     {
         $params ??= $this->getParams();
+        
         return $this->filter->sanitize($params[$key] ?? $this->dispatcher->getParam($key, $filters, $default), $filters);
     }
     
@@ -55,29 +123,35 @@ trait Model
     {
         /** @var Request $request */
         $request = $this->request;
-        $params = empty($request->getRawBody())? [] : $request->getJsonRawBody(true);
+        $params = empty($request->getRawBody()) ? [] : $request->getJsonRawBody(true);
         $params = array_merge_recursive(
             $request->get(),
             $request->getPut(),
             $request->getPost(),
             $params,
         );
+        
         return $params;
     }
     
     /**
      * Get Single from ID and Model Name
      *
-     * @param null $id
-     * @param null $modelName
+     * @param string|int|null $id
+     * @param string|null $modelName
+     * @param string|array|null $with
      *
      * @return bool|Resultset
      */
-    public function getSingle($id = null, $modelName = null)
+    public function getSingle($id = null, $modelName = null, $with = null, $find = null)
     {
-        $id ??= $this->getParam('id', 'int');
+        $id ??= (int)$this->getParam('id', 'int');
         $modelName ??= $this->getModelName();
-        return $id? $modelName::findFirstById((int)$id) : false;
+        $with ??= $this->getWith();
+        $find ??= $this->getFind();
+//        $find['conditions'] .= (empty($find['conditions'])? null : ' and ') . 'id = ' . (int)$id;
+        $find['conditions'] = 'id = ' . (int)$id; // @TODO see if we should support conditions appending here or not
+        return $id ? $modelName::findFirstWith($with ?? [], $find ?? []) : false;
     }
     
     /**
@@ -86,19 +160,19 @@ trait Model
      * @param null $id
      * @param null $entity
      * @param null $post
-     * @param null $model
+     * @param null $modelName
      * @param null $whitelist
      * @param null $columnMap
      *
      * @return array
      */
-    protected function saveModel($id = null, $entity = null, $post = null, $model = null, $whitelist = null, $columnMap = null)
+    protected function saveModel($id = null, $entity = null, $post = null, $modelName = null, $whitelist = null, $columnMap = null)
     {
         $single = false;
         $ret = [];
         
         // Get the model name to play with
-        $model ??= $this->getModelName();
+        $modelName ??= $this->getModelName();
         $post ??= $this->getParams();
         $whitelist ??= $this->getWhitelist();
         $columnMap ??= $this->getColumnMap();
@@ -113,11 +187,11 @@ trait Model
         foreach ($post as $key => $singlePost) {
             
             $singlePostId = (!$single || empty($id)) ? $this->getParam('id', 'int', null, $singlePost) : $id;
-            $singlePostEntity = (!$single || !isset($entity)) ? $this->getSingle($singlePostId, $model) : $entity;
+            $singlePostEntity = (!$single || !isset($entity)) ? $this->getSingle($singlePostId, $modelName) : $entity;
             
             // Create entity if not exists
             if (!$singlePostEntity) {
-                $singlePostEntity = new $model();
+                $singlePostEntity = new $modelName();
             }
             
             $singlePostEntity->assign($singlePost, $whitelist, $columnMap);
@@ -125,7 +199,7 @@ trait Model
             $ret['messages'][$key] = $this->getRestMessages($singlePostEntity);
             $ret['model'][$key] = get_class($singlePostEntity);
             $ret['source'][$key] = $singlePostEntity->getSource();
-            $ret[$single ? 'single' : 'list'][$key] = $singlePostEntity;
+            $ret[$single ? 'single' : 'list'][$key] = $this->getSingle($singlePostEntity->id, $modelName);
             
             if ($single) {
                 foreach ($ret as &$retCat) {
@@ -146,7 +220,7 @@ trait Model
      *
      * @return string|null
      */
-    public function getModelNameFromController(string $controllerName = null, array $namespaces = null, string $needle = 'Models') : ?string
+    public function getModelNameFromController(string $controllerName = null, array $namespaces = null, string $needle = 'Models'): ?string
     {
         $controllerName ??= $this->dispatcher->getControllerName();
         $namespaces ??= $this->loader->getNamespaces();
@@ -161,7 +235,7 @@ trait Model
             }
         }
         
-        return class_exists($model)? $model : null;
+        return class_exists($model) ? $model : null;
     }
     
     /**
@@ -200,7 +274,7 @@ trait Model
             }
         }
         
-        return $ret ?: false;
+        return $ret ? : false;
     }
     
 }
