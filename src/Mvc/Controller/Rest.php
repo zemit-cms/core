@@ -126,7 +126,59 @@ class Rest extends \Phalcon\Mvc\Controller
     {
         /** @var \Zemit\Mvc\Model $model */
         $model = $this->getModelNameFromController();
+        $instance = new $model();
         $this->view->totalCount = $model::count($this->getFindCount($this->getFind()));
+        $this->view->model = get_class($instance);
+        $this->view->source = $instance->getSource();
+        
+        return $this->setRestResponse();
+    }
+    
+    /**
+     * Prepare a new model for the frontend
+     *
+     * @return \Phalcon\Http\ResponseInterface
+     */
+    public function newAction()
+    {
+        /** @var \Zemit\Mvc\Model $model */
+        $model = $this->getModelNameFromController();
+        $instance = new $model();
+        $instance->assign($this->getParams(), $this->getWhitelist(), $this->getColumnMap());
+        
+        $this->view->model = get_class($instance);
+        $this->view->source = $instance->getSource();
+        $this->view->single = $instance->expose($this->getExpose());
+        
+        return $this->setRestResponse();
+    }
+    
+    /**
+     * Prepare a new model for the frontend
+     *
+     * @return \Phalcon\Http\ResponseInterface
+     */
+    public function validateAction()
+    {
+        /** @var \Zemit\Mvc\Model $model */
+        $model = $this->getModelNameFromController();
+        
+        /** @var \Zemit\Mvc\Model $instance */
+        $instance = new $model();
+        $instance->assign($this->getParams(), $this->getWhitelist(), $this->getColumnMap());
+        foreach ([ // https://docs.phalcon.io/4.0/en/db-models-events
+            'prepareSave',
+            'validation',
+         ] as $methodName) {
+            if (method_exists($instance, $methodName)) {
+                $instance->$methodName();
+            }
+        }
+        
+        $this->view->model = get_class($instance);
+        $this->view->source = $instance->getSource();
+        $this->view->single = $instance->expose($this->getExpose());
+        $this->view->messages = $this->getRestMessages($instance);
         
         return $this->setRestResponse();
     }
