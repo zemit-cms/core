@@ -69,6 +69,75 @@ trait Model
     }
     
     /**
+     * Get Soft delete condition
+     *
+     * @return string
+     */
+    protected function getSoftDeleteCondition() {
+        return 'deleted <> 1';
+    }
+    
+    public function setBind($bind) {
+        $this->bind = $bind;
+    }
+    
+    public function getBind() {
+        return $this->bind ?? null;
+    }
+    
+    public function setBindTypes($bindTypes) {
+        $this->bindTypes = $bindTypes;
+    }
+    public function getBindTypes() {
+        return $this->bindTypes ?? null;
+    }
+    
+    /**
+     * Get Created By Condition
+     *
+     * @return null
+     */
+    protected function getIdentityCondition($identityColumn = 'createdBy', $identity = null) {
+        $identity ??= $this->identity ?? false;
+        if ($identity) {
+            $this->setBind([
+                'identityColumn' => $identityColumn,
+                'identityIds' => [$identity->userId],
+            ]);
+            return ':identityColumn: in ({identityIds:array})';
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Get Filter Condition
+     *
+     * @return null
+     */
+    protected function getFilterCondition($filter = null) {
+        return null;
+    }
+    
+    /**
+     * Get Filter Condition
+     *
+     * @return null
+     */
+    protected function getHasAccess($type = null, $identity = null) {
+        return null;
+    }
+    
+    protected function getConditions() {
+        return implode(' and ', array_values(array_unique(array_filter([
+            $this->getSoftDeleteCondition(),
+            $this->getIdentityCondition(),
+            $this->getFilterCondition(),
+            $this->getHasAccess(),
+        ]))));
+    }
+    
+    /**
      * Get expose definition
      *
      * @return array|string
@@ -76,7 +145,9 @@ trait Model
     protected function getFind()
     {
         $find = [];
-        $find['conditions'] = 'deleted <> 1';
+        $find['conditions'] = $this->getConditions();
+        $find['bind'] = $this->getBind();
+        $find['bindTypes'] = $this->getBindTypes();
         $find['limit'] = (int)$this->getParam('limit', 'int', 1000);
         $find['offset'] = (int)$this->getParam('offset', 'int', 0);
         $find['order'] = explode(',', $this->getParam('order', 'string', 'id'));
