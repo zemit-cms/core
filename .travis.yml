@@ -3,9 +3,8 @@ language: php
 sudo: false
 dist: trusty
 
-# TODO: Add 7.3 after Phalcon 4.0.0 release
 php:
-  - 7.2
+  - 7.4
 
 git:
   depth: 1

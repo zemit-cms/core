@@ -59,6 +59,9 @@ class Model extends \Phalcon\Mvc\Model
     {
         $this->setEventsManager(new Manager());
         
+        // @TODO change those setter into behaviour if possible
+        // @TODO add merge behaviour (to merge entities together)
+        
         $this->_setSlug();
         $this->_setUser();
         $this->_setSoftDelete();
