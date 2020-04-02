@@ -40,7 +40,7 @@ class Config extends PhalconConfig
              */
             'core' => [
                 'version' => Version::get(),
-                'package' => 'zemit-official',
+                'package' => 'zemit-cms',
                 'modules' => [
                     \Zemit\Mvc\Module::NAME_FRONTEND => [
                         'className' => \Zemit\Modules\Frontend\Module::class,
