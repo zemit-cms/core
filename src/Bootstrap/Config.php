@@ -40,7 +40,7 @@ class Config extends PhalconConfig
              */
             'core' => [
                 'version' => Version::get(),
-                'package' => 'zemit-official',
+                'package' => 'zemit-cms',
                 'modules' => [
                     \Zemit\Mvc\Module::NAME_FRONTEND => [
                         'className' => \Zemit\Modules\Frontend\Module::class,
@@ -473,15 +473,13 @@ class Config extends PhalconConfig
              */
             'mailer' => [
                 'driver' => Env::get('MAILER_DEFAULT_DRIVER', 'sendmail'),
-                'sendmail' => '/usr/sbin/sendmail -bs',
+                'sendmail' => Env::get('MAILER_SENDMAIL', '/usr/sbin/sendmail -bs'),
                 'from' => [
-                    'email' => 'no-reply@zemit.com',
-                    'name' => 'Zemit',
+                    'email' => Env::get('MAILER_FROM_EMAIL', 'zemit@localhost'),
+                    'name' => Env::get('MAILER_FROM_NAME', 'Zemit'),
                 ],
-                'bcc' => [
-                    'contat@zemit.com' => 'Zemit',
-                ],
-                'viewsDir' => APP_PATH . '/Modules/Frontend/Views/',
+                'bcc' => [],
+                'viewsDir' => Env::get('MAILER_VIEWS_DIR', APP_PATH . '/Modules/Frontend/Views/'),
             ],
             
             /**

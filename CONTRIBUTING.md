@@ -31,7 +31,7 @@ in our documents to find what you are looking for. If your question is still not
 * There is a less active but still functioning community on [Slack](https://zemit.link/slack)
 * Our social network accounts are: [Twitter](https://twitter.zemit.com) and [Facebook](https://facebook.zemit.com)
 * If you still believe that what you found is a bug, please
-  [open an issue](https://github.com/zemit-official/cms-core/issues/new)
+  [open an issue](https://github.com/zemit-cms/cms-core/issues/new)
 
 Please report bugs when you've exhausted all of the above options.
 
@@ -89,4 +89,4 @@ To send a NFR you don't need to provide PHP, Zephir or C code or develop the fea
 All NFRs should be posted as a new issue on [Github][github-issues].
 
 [SRP]: http://en.wikipedia.org/wiki/Single_responsibility_principle
-[github-issues]: https://github.com/zemit-official/cms-core/issues
+[github-issues]: https://github.com/zemit-cms/cms-core/issues
