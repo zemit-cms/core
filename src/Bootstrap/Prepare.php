@@ -94,7 +94,7 @@ class Prepare extends Injectable
      */
     public function php(Config $config = null) {
         $config ??= $this->config->app;
-        
+
         if ($config) {
             setlocale(LC_ALL, 'fr_CA.' . $config->encoding, 'French_Canada.1252');
             date_default_timezone_set($config->timezone ?? 'America/Montreal');
@@ -106,6 +106,9 @@ class Prepare extends Injectable
             ini_set('max_execution_time', $config->timeoutLimit ?? '60');
             ini_set('html_errors', $config->htmlErrors ?? 0);
             set_time_limit($config->timeoutLimit ?? '60');
+            
+            // Phalcon Config
+            ini_set('phalcon.orm.disable_assign_setters', false);
         }
     }
 }

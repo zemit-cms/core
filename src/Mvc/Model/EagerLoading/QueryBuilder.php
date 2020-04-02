@@ -10,31 +10,49 @@
 
 namespace Zemit\Mvc\Model\EagerLoading;
 
+use Phalcon\Di\InjectionAwareInterface;
 use Phalcon\Mvc\Model\Query\Builder;
+use Phalcon\Mvc\Model\Query\BuilderInterface;
 
-final class QueryBuilder extends Builder
+final class QueryBuilder extends Builder implements BuilderInterface, InjectionAwareInterface
 {
     const E_NOT_ALLOWED_METHOD_CALL = 'When eager loading relations queries must return full entities';
     
-    public function distinct($distinct)
+    /**
+     * @param mixed $distinct
+     * @throws \LogicException
+     * @return BuilderInterface
+     */
+    public function distinct($distinct) : BuilderInterface
     {
         throw new \LogicException(static::E_NOT_ALLOWED_METHOD_CALL);
     }
     
-    public function columns($columns)
+    /**
+     * @param array|mixed|string $columns
+     * @throws \LogicException
+     * @return BuilderInterface
+     */
+    public function columns($columns) : BuilderInterface
     {
         throw new \LogicException(static::E_NOT_ALLOWED_METHOD_CALL);
     }
     
-    public function where($conditions, $bindParams = null, $bindTypes = null)
+    /**
+     * @inheritDoc Builder
+     * @param string $conditions
+     * @param null $bindParams
+     * @param null $bindTypes
+     *
+     * @return BuilderInterface
+     */
+    public function where(string $conditions, array $bindParams = [], array $bindTypes = []) : BuilderInterface
     {
-        $currentConditions = $this->_conditions;
-        
         /**
          * Nest the condition to current ones or set as unique
          */
-        if ($currentConditions) {
-            $conditions = "(" . $currentConditions . ") AND (" . $conditions . ")";
+        if (!empty($this->conditions)) {
+            $conditions = "(" . $this->conditions . ") AND (" . $conditions . ")";
         }
         
         return parent::where($conditions, $bindParams, $bindTypes);

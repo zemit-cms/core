@@ -15,14 +15,14 @@ trait Relationship {
      * @param Phalcon\Mvc\Model\ResultSetInterface $property
      * @param type $value
      */
-    public function __set($property, $value) {
-        if ($value instanceof \Phalcon\Mvc\Model\ResultSetInterface) {
-            $value = $value->filter(function($result) {
-                return $result;
-            });
-        }
-        parent::__set($property, $value);
-    }
+//    public function __set($property, $value) {
+//        if ($value instanceof \Phalcon\Mvc\Model\ResultSetInterface) {
+//            $value = $value->filter(function($result) {
+//                return $result;
+//            });
+//        }
+//        parent::__set($property, $value);
+//    }
 
     public function _setDatas($datas) {
         foreach ($datas as $key => $value) {
@@ -32,8 +32,10 @@ trait Relationship {
         }
     }
 
-    public function save($data = null, $whiteList = null) {
-
+    public function save($data = null, $whiteList = null): bool
+    {
+//        $this->_setDatas($data);
+        
         //@TODO edit whitelist to welcome the relations and their whitelists
         // get the current model manager
         $modelManager = $this->getModelsManager();

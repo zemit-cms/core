@@ -6,8 +6,13 @@ use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Db\RawValue;
 
 trait SoftDelete {
-
-    protected function _setSoftDelete($field = 'deleted', $deletedValue = '1', $notDeletedValue = '0') {
+    
+    protected $_softDeleteSettings;
+    
+    protected function _setSoftDelete($field = 'deleted', $deletedValue = 1, $notDeletedValue = 0) {
+        $this->_softDeleteSettings['field'] = $field;
+        $this->_softDeleteSettings['deletedValue'] = $deletedValue;
+        $this->_softDeleteSettings['notDeletedValue'] = $notDeletedValue;
         
         // make sure the property exists before to add the feature to the model
         if (property_exists($this, $field)) {
@@ -28,6 +33,40 @@ trait SoftDelete {
                 return true;
             });
         }
+    }
+    
+    /**
+     * Helper method to check if the row is soft deleted
+     * @param null $field
+     * @param null $deletedValue
+     * @param null $notDeletedValue
+     *
+     * @return bool|null Bool if we know for sure, null if abnormal
+     */
+    public function _isDeleted($field = null, $deletedValue = null, $notDeletedValue = null) {
+        $field ??= $this->_softDeleteSettings['field'];
+        $deletedValue ??= $this->_softDeleteSettings['deletedValue'];
+        $notDeletedValue ??= $this->_softDeleteSettings['notDeletedValue'];
+        
+        if (property_exists($this, $field)) {
+            if ($this->$field === $deletedValue) {
+                return true;
+            }
+            if ($this->$field === $notDeletedValue) {
+                return false;
+            }
+            
+            return null;
+        }
+        
+        return false;
+    }
+    
+    public function restore($field = null, $notDeletedValue = null) {
+        $field ??= $this->_softDeleteSettings['field'];
+        $notDeletedValue ??= $this->_softDeleteSettings['notDeletedValue'];
+        $this->assign([$field => $notDeletedValue], [$field]);
+        return $this->save();
     }
 
 }

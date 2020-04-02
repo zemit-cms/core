@@ -10,6 +10,7 @@
 
 namespace Zemit\Mvc\Model\Expose;
 
+use Zemit\Mvc\Model;
 use Zemit\Utils\Multibyte;
 use Phalcon\Text;
 
@@ -177,9 +178,24 @@ trait Expose {
     private static function _expose(Builder $builder) {
         $builder = clone $builder;
         $columns = $builder->getColumns();
+        
+        /** @var Model $value */
         $value = $builder->getValue();
         
+        
         if (is_array($value) || is_object($value)) {
+            $toParse = [];
+            if (is_array($value)) {
+                $toParse = $value;
+            }
+            else if (method_exists($value, 'toArray')) {
+                $toParse = $value->toArray();
+            }
+            if (isset($value->dirtyRelated)) {
+                foreach ($value->dirtyRelated as $dirtyRelatedKey => $dirtyRelated) {
+                    $toParse[$dirtyRelatedKey] = $dirtyRelated ?? false;
+                }
+            }
             
             // si aucune column demandé et que l'expose est à false
             if (is_null($columns) && !$builder->getExpose()) {
@@ -189,7 +205,7 @@ trait Expose {
             // Prépare l'array de retour des fields de l'instance
             $ret = array();
             $builder->setContextKey($builder->getFullKey());
-            foreach ($value as $fieldKey => $fieldValue) {
+            foreach ($toParse as $fieldKey => $fieldValue) {
                 $builder->setParent($value);
                 $builder->setKey($fieldKey);
                 $builder->setValue($fieldValue);
@@ -204,7 +220,7 @@ trait Expose {
         }
         return $ret;
     }
-
+    
     /**
      * Here to parse the columns parameter into some kind of flattern array with
      * the key path saperated by dot "my.path" and the value true, false or a callback function

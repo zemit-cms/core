@@ -121,6 +121,15 @@ class Config extends PhalconConfig
                 'uri' => Env::get('DEBUG_URI'),
                 'blacklist' => [
                     'server' => [
+                        'PASS',
+                        'PASSWD',
+                        'PASSWORD',
+                        'DB_PASS',
+                        'DB_PASSWD',
+                        'DB_PASSWORD',
+                        'DATABASE_PASS',
+                        'DATABASE_PASSWD',
+                        'DATABASE_PASSWORD',
                         'SECURITY_WORKFACTOR',
                         'SECURITY_SALT',
                     ]
@@ -140,6 +149,7 @@ class Config extends PhalconConfig
                 Provider\Locale\ServiceProvider::class => Provider\Locale\ServiceProvider::class,
                 Provider\Translate\ServiceProvider::class => Provider\Translate\ServiceProvider::class,
                 Provider\Url\ServiceProvider::class => Provider\Url\ServiceProvider::class,
+                Provider\Request\ServiceProvider::class => Provider\Request\ServiceProvider::class,
                 Provider\Router\ServiceProvider::class => Provider\Router\ServiceProvider::class,
                 Provider\Dispatcher\ServiceProvider::class => Provider\Dispatcher\ServiceProvider::class,
                 Provider\VoltTemplate\ServiceProvider::class => Provider\VoltTemplate\ServiceProvider::class,

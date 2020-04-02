@@ -9,9 +9,9 @@
  */
 namespace Zemit\Db\Events;
 
+use Phalcon\Db\Adapter\AbstractAdapter;
 use Phalcon\Di\Injectable;
 use Phalcon\Events\EventInterface;
-use Phalcon\Db\AdapterInterface;
 
 class Profiler extends Injectable
 {
@@ -20,15 +20,19 @@ class Profiler extends Injectable
      */
     protected $_profiler;
     
-    public function __construct(Phalcon\Db\Profiler $profiler = null) {
+    public function __construct(\Phalcon\Db\Profiler $profiler = null) {
         $this->_profiler = $profiler ?? $this->profiler ?? new \Phalcon\Db\Profiler();
     }
     
-    public function beforeQuery(EventInterface $event, AdapterInterface $connection) {
-        $this->_profiler->startProfile($connection->getSQLStatement());
+    public function beforeQuery(EventInterface $event, AbstractAdapter $connection) {
+        $this->_profiler->startProfile(
+            $connection->getSQLStatement(),
+            $connection->getSqlVariables(),
+            $connection->getSQLBindTypes(),
+        );
     }
     
-    public function afterQuery(EventInterface $event, AdapterInterface $connection) {
+    public function afterQuery(EventInterface $event, AbstractAdapter $connection) {
         $this->_profiler->stopProfile();
     }
     

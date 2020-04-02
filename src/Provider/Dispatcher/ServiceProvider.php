@@ -62,18 +62,18 @@ class ServiceProvider extends AbstractServiceProvider
                 $dispatcher = new CliDispatcher();
             } else {
                 /**
-                 * Rest dispatcher
-                 */
-                $rest = new DispatchRest();
-                $rest->setDI($di);
-                $eventsManager->attach('dispatch', $rest);
-                
-                /**
                  * Error dispatcher
                  */
                 $error = new DispatchError();
                 $error->setDI($di);
                 $eventsManager->attach('dispatch', $error);
+    
+                /**
+                 * Rest dispatcher
+                 */
+                $rest = new DispatchRest();
+                $rest->setDI($di);
+                $eventsManager->attach('dispatch', $rest);
                 
                 $dispatcher = new MvcDispatcher();
             }

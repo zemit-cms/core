@@ -10,182 +10,372 @@
 
 namespace Zemit\Mvc\Controller;
 
+use Phalcon\Mvc\Model\Resultset;
+use Phalcon\Text;
+use Zemit\Http\Request;
+
 trait Model
 {
+    protected $_model = [];
     
-    protected $_model = array();
+    /**
+     * Get the current Model Name
+     *
+     * @return string|null
+     */
+    public function getModelName()
+    {
+        return $this->getModelNameFromController();
+    }
     
-    protected function _modelSave($id, $entity = null, $post = array(), $model = null)
+    /**
+     * Get the Whitelist parameters for crud
+     *
+     * @return null|array
+     */
+    protected function getWhitelist()
+    {
+        return null;
+    }
+    
+    /**
+     * Get the column mapping for crud
+     *
+     * @return null|array
+     */
+    protected function getColumnMap()
+    {
+        return null;
+    }
+    
+    /**
+     * Get relationship eager loading definition
+     *
+     * @return null|array
+     */
+    protected function getWith()
+    {
+        return null;
+    }
+    
+    /**
+     * Get expose definition
+     *
+     * @return null|array
+     */
+    protected function getExpose()
+    {
+        return null;
+    }
+    
+    /**
+     * Get the order definition
+     *
+     * @return null|array
+     */
+    protected function getOrder()
+    {
+        return explode(',', $this->getParam('order', 'string', 'id'));
+    }
+    
+    /**
+     * Get the current limit value
+     *
+     * @return null|int Default: 1000
+     */
+    protected function getLimit()
+    {
+        return (int)$this->getParam('limit', 'int', 1000);
+    }
+    
+    /**
+     * Get the current offset value
+     *
+     * @return null|int Default: 0
+     */
+    protected function getOffset()
+    {
+        return (int)$this->getParam('offset', 'int', 0);
+    }
+    
+    /**
+     * Get Soft delete condition
+     *
+     * @return string Default: deleted = 0
+     */
+    protected function getSoftDeleteCondition() {
+        return 'deleted = 0';
+    }
+    
+    public function setBind($bind) {
+        $this->bind = $bind;
+    }
+    
+    public function getBind() {
+        return $this->bind ?? null;
+    }
+    
+    public function setBindTypes($bindTypes) {
+        $this->bindTypes = $bindTypes;
+    }
+    public function getBindTypes() {
+        return $this->bindTypes ?? null;
+    }
+    
+    /**
+     * Get Created By Condition
+     *
+     * @return null
+     */
+    protected function getIdentityCondition($identityColumn = 'createdBy', $identity = null) {
+        $identity ??= $this->identity ?? false;
+        if ($identity) {
+            $this->setBind([
+                'identityColumn' => $identityColumn,
+                'identityIds' => [$identity->userId],
+            ]);
+            return ':identityColumn: in ({identityIds:array})';
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Get Filter Condition
+     *
+     * @return null
+     */
+    protected function getFilterCondition($filter = null) {
+        return null;
+    }
+    
+    /**
+     * Get Filter Condition
+     *
+     * @return null
+     */
+    protected function getHasAccess($type = null, $identity = null) {
+        return null;
+    }
+    
+    protected function getConditions() {
+        return implode(' and ', array_values(array_unique(array_filter([
+            $this->getSoftDeleteCondition(),
+            $this->getIdentityCondition(),
+            $this->getFilterCondition(),
+            $this->getHasAccess(),
+        ]))));
+    }
+    
+    /**
+     * Get expose definition
+     *
+     * @return array|string
+     */
+    protected function getFind()
+    {
+        $find = [];
+        $find['conditions'] = $this->getConditions();
+        $find['bind'] = $this->getBind();
+        $find['bindTypes'] = $this->getBindTypes();
+        $find['limit'] = $this->getLimit();
+        $find['offset'] = $this->getOffset();
+        $find['order'] = $this->getOrder();
+        return $find;
+    }
+    
+    /**
+     * Return find lazy loading config for count
+     * @return array|string
+     */
+    protected function getFindCount($find = null)
+    {
+        $find ??= $this->getFind();
+        if (isset($find['limit'])) {
+            unset($find['limit']);
+        }
+        if (isset($find['offset'])) {
+            unset($find['offset']);
+        }
+        
+        return $find;
+    }
+    
+    /**
+     * @param string $key
+     * @param string|null $default
+     * @param array|null $params
+     *
+     * @return string|null
+     */
+    public function getParam(string $key, string $filters = null, string $default = null, array $params = null)
+    {
+        $params ??= $this->getParams();
+        
+        return $this->filter->sanitize($params[$key] ?? $this->dispatcher->getParam($key, $filters, $default), $filters);
+    }
+    
+    /**
+     * Get parameters from
+     * - JsonRawBody, post, put or get
+     * @return mixed
+     */
+    protected function getParams()
+    {
+        /** @var Request $request */
+        $request = $this->request;
+        $params = empty($request->getRawBody()) ? [] : $request->getJsonRawBody(true);
+        $params = array_merge_recursive(
+            $request->get(),
+            $request->getPut(),
+            $request->getPost(),
+            $params,
+        );
+        
+        return $params;
+    }
+    
+    /**
+     * Get Single from ID and Model Name
+     *
+     * @param string|int|null $id
+     * @param string|null $modelName
+     * @param string|array|null $with
+     *
+     * @return bool|Resultset
+     */
+    public function getSingle($id = null, $modelName = null, $with = null, $find = null)
+    {
+        $id ??= (int)$this->getParam('id', 'int');
+        $modelName ??= $this->getModelName();
+        $with ??= $this->getWith();
+        $find ??= $this->getFind();
+//        $find['conditions'] .= (empty($find['conditions'])? null : ' and ') . 'id = ' . (int)$id;
+        $find['conditions'] = 'id = ' . (int)$id; // @TODO see if we should support conditions appending here or not
+        return $id ? $modelName::findFirstWith($with ?? [], $find ?? []) : false;
+    }
+    
+    /**
+     * Saving model automagically
+     *
+     * @param null $id
+     * @param null $entity
+     * @param null $post
+     * @param null $modelName
+     * @param null $whitelist
+     * @param null $columnMap
+     *
+     * @return array
+     */
+    protected function saveModel($id = null, $entity = null, $post = null, $modelName = null, $whitelist = null, $columnMap = null)
     {
         $single = false;
-        $reponse = array();
+        $ret = [];
         
         // Get the model name to play with
-        $model = empty($model) ? $this->_getModelName() : $model;
-        
-        // Get the possible post
-        $post = empty($post) ? $this->_getPost() : $post;
-        
-        // Get the possible whitelist
-        $whitelist = empty($whitelist) ? $this->_getWhitelist() : $whitelist;
+        $modelName ??= $this->getModelName();
+        $post ??= $this->getParams();
+        $whitelist ??= $this->getWhitelist();
+        $columnMap ??= $this->getColumnMap();
         
         // Check if multi-d post
         if (!empty($id) || !isset($post[0]) || !is_array($post[0])) {
             $single = true;
-            $post = array($post);
+            $post = [$post];
         }
         
         // Save each posts
         foreach ($post as $key => $singlePost) {
             
-            $singlePostEntity = $entity;
+            $singlePostId = (!$single || empty($id)) ? $this->getParam('id', 'int', null, $singlePost) : $id;
+            $singlePostEntity = (!$single || !isset($entity)) ? $this->getSingle($singlePostId, $modelName) : $entity;
             
-            // Get the id
-            $singlePostId = (!$single || empty($id)) ? $this->_getModelIdFromPostOrParam($singlePost) : $id;
-            
-            // Get the entity
-            $singlePostEntity = (!$single || !isset($entity)) ? $this->_getEntity($singlePostId, $model) : $entity;
-            
-            // Aucune entité trouvée, créer une nouvelle entité
+            // Create entity if not exists
             if (!$singlePostEntity) {
-                $singlePostEntity = new $model();
+                $singlePostEntity = new $modelName();
             }
             
-            // Save the entity
-            $reponse['save'][$key] = $singlePostEntity->save($singlePost, $whitelist);
+            $singlePostEntity->assign($singlePost, $whitelist, $columnMap);
+            $ret['saved'][$key] = $singlePostEntity->save();
+            $ret['messages'][$key] = $this->getRestMessages($singlePostEntity);
+            $ret['model'][$key] = get_class($singlePostEntity);
+            $ret['source'][$key] = $singlePostEntity->getSource();
+            $ret[$single ? 'single' : 'list'][$key] = $this->getSingle($singlePostEntity->id, $modelName);
             
-            // Get the messages from the save request
-            $reponse['error'][$key] = $this->_getMessagesFromEntity($singlePostEntity);
-            
-            // Return the saved entity
-            $reponse['model'][$key] = get_class($singlePostEntity);
-            $reponse['source'][$key] = $singlePostEntity->getSource();
-            $reponse[$singlePostEntity->getSource()][$key] = $singlePostEntity;
-            
-            // Réponse directement
             if ($single) {
-                foreach ($reponse as &$reponseCategorie) {
-                    $reponseCategorie = array_pop($reponseCategorie);
+                foreach ($ret as &$retCat) {
+                    $retCat = array_pop($retCat);
                 }
             }
         }
         
-        // Retourne au format JSON
-        return $reponse;
+        return $ret;
     }
     
-    public function _getWhitelist()
+    /**
+     * Try to find the appropriate model from the current controller name
+     *
+     * @param string $controllerName
+     * @param array $namespaces
+     * @param string $needle
+     *
+     * @return string|null
+     */
+    public function getModelNameFromController(string $controllerName = null, array $namespaces = null, string $needle = 'Models'): ?string
     {
-        return null;
-    }
-    
-    public function _getEntity($id = null, $name = null)
-    {
+        $controllerName ??= $this->dispatcher->getControllerName();
+        $namespaces ??= $this->loader->getNamespaces();
         
-        $id = empty($id) ? $this->_getModelIdFromPostOrParam() : $id;
-        $name = empty($name) ? $this->_getModelName() : $name;
-        
-        if (!empty($id)) {
-            $entity = $name::findFirstById((int)$id);
-        } else {
-            $entity = false;
-        }
-        return $entity;
-    }
-    
-    public function _getModelName()
-    {
-        if (!isset($this->_model['name'])) {
-            $this->_model['name'] = $this->_getModelNameFromController();
-        }
-        return $this->_model['name'];
-    }
-    
-    public function _setModelName($name)
-    {
-        $this->_model['name'] = $name;
-    }
-    
-    public function _getModelNameFromController($controller = null)
-    {
-        $namespaces = $this->loader->getNamespaces();
-        $model = ucfirst(\Phalcon\Text::camelize(\Phalcon\Text::uncamelize((empty($controller) ? $this->dispatcher->getControllerName() : $controller))));
+        $model = ucfirst(Text::camelize(Text::uncamelize($controllerName)));
         if (!class_exists($model)) {
             foreach ($namespaces as $namespace => $path) {
                 $possibleModel = $namespace . '\\' . $model;
-                if (strpos($namespace, 'Models') !== false && class_exists($possibleModel)) {
+                if (strpos($namespace, $needle) !== false && class_exists($possibleModel)) {
                     $model = $possibleModel;
                 }
             }
         }
-        return $model;
+        
+        return class_exists($model) ? $model : null;
     }
     
-    public function _getModelIdFromPostOrParam($post = array(), $param = 'id', $defautId = null)
+    /**
+     * Get message from list of entities
+     *
+     * @param $list Resultset|\Phalcon\Mvc\Model
+     *
+     * @return array|bool
+     */
+    public function getRestMessages($list = null)
     {
-        if (isset($this->_model) && !isset($this->_model['id'])) {
-            $post = empty($post) ? $this->_getPost() : $post;
-            if (!isset($this->_model['id']) || is_null($this->_model['id'])) {
-                $this->_model['id'] = isset($post[$param]) ? $post[$param] : $defautId;
-            }
-            $this->_model['id'] = $this->dispatcher->getParam($param, 'int', $this->_model['id']);
+        if (!is_array($list)) {
+            $list = [$list];
         }
         
-        return isset($this->_model, $this->_model['id']) ? (int)$this->_model['id'] : null;
-    }
-    
-    public function _getMessagesFromEntity($entity)
-    {
-        $error = array();
+        $ret = [];
         
-        // Récupère les messages du model
-        $validations = $entity->getMessages();
-        
-        // Prépare le tableau de retour incluant aussi le type du message
-        if ($validations && is_array($validations)) {
-            foreach ($validations as $validation) {
-                $validationFields = $validation->getField();
-                if (!is_array($validationFields)) {
-                    $validationFields = array($validationFields);
-                }
-                foreach ($validationFields as $validationField) {
-                    if (empty($error[$validationField])) {
-                        $error[$validationField] = array();
+        foreach ($list as $single) {
+            $validations = $single->getMessages();
+            if ($validations && is_array($validations)) {
+                foreach ($validations as $validation) {
+                    $validationFields = $validation->getField();
+                    if (!is_array($validationFields)) {
+                        $validationFields = [$validationFields];
                     }
-                    $error[$validationField][] = array(
-                        'type' => $validation->getType(),
-                        'message' => $validation->getMessage()
-                    );
+                    foreach ($validationFields as $validationField) {
+                        if (empty($ret[$validationField])) {
+                            $ret[$validationField] = [];
+                        }
+                        $ret[$validationField][] = [
+                            'type' => $validation->getType(),
+                            'message' => $validation->getMessage(),
+                        ];
+                    }
                 }
             }
         }
         
-        // Si au moins une erreur, force un "400 Bad request" dans la réponse HTTP
-        if (count($error)) {
-            $this->response->setStatusCode(400, 'Bad request');
-        }
-        
-        // Retourne le tableau des messages
-        return $error;
-    }
-    
-    protected function _getPost()
-    {
-        
-        // Get assoc array from json raw body
-        $post = $this->request->getJsonRawBody(true);
-        
-        // Get array from $_POST
-        if (empty($post)) {
-            $post = $this->request->getPost();
-        }
-        
-        // Get array from $_REQUEST
-        if (empty($post)) {
-            $post = $this->request->get();
-        }
-        
-        return $post;
+        return $ret ? : false;
     }
     
 }
