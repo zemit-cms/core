@@ -4,14 +4,15 @@
 [![Build Status](https://scrutinizer-ci.com/g/zemit-cms/core/badges/build.png?b=master)](https://scrutinizer-ci.com/g/zemit-cms/core/build-status/master)
 [![Code Intelligence Status](https://scrutinizer-ci.com/g/zemit-cms/core/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
 
+[![Daily Downloads](https://poser.pugx.org/zemit-cms/core/d/daily)](https://packagist.org/packages/zemit-cms/core)
+[![Monthly Downloads](https://poser.pugx.org/zemit-cms/core/d/monthly)](https://packagist.org/packages/zemit-cms/core)
+[![Total Downloads](https://poser.pugx.org/zemit-cms/core/downloads)](https://packagist.org/packages/zemit-cms/core)
+
 [![License](https://poser.pugx.org/zemit-cms/core/license)](https://packagist.org/packages/zemit-cms/core)
 [![Latest Stable Version](https://poser.pugx.org/zemit-cms/core/v/stable)](https://packagist.org/packages/zemit-cms/core)
 [![Latest Unstable Version](https://poser.pugx.org/zemit-cms/core/v/unstable)](https://packagist.org/packages/zemit-cms/core)
 [![composer.lock](https://poser.pugx.org/zemit-cms/core/composerlock)](https://packagist.org/packages/zemit-cms/core)
 
-[![Daily Downloads](https://poser.pugx.org/zemit-cms/core/d/daily)](https://packagist.org/packages/zemit-cms/core)
-[![Monthly Downloads](https://poser.pugx.org/zemit-cms/core/d/monthly)](https://packagist.org/packages/zemit-cms/core)
-[![Total Downloads](https://poser.pugx.org/zemit-cms/core/downloads)](https://packagist.org/packages/zemit-cms/core)
 
 Core library of the Zemit application that mostly handle the backend part.
 This library is using modules and a generic routing system but also allows the application to be highly customized.
@@ -24,9 +25,9 @@ This library is using modules and a generic routing system but also allows the a
 - [License](#license)
   
 ## Getting Started
-Zemit is using the [Phalcon Framework](https://phalconphp.com). You can use [composer](https://getcomposer.org/) in order to add Zemit core to an existing project. If you want to create a new project from srtach, we invite you to visit the [Zemit App](https://github.com/zemit-cms/cms) repository for more informations.
+Zemit is using the [Phalcon Framework](https://phalconphp.com). You can use [composer](https://getcomposer.org/) in order to add Zemit core to an existing project. If you want to create a new project from srtach, we invite you to visit the [Zemit App](https://github.com/zemit-cms/app) repository for more informations.
 
-    composer require zemit-cms/cms-core
+    composer require zemit-cms/core
 
 
 ## Requirements
