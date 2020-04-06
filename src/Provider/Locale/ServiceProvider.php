@@ -21,10 +21,15 @@ use Zemit\Provider\AbstractServiceProvider;
  */
 class ServiceProvider extends AbstractServiceProvider
 {
-    
-    // @todo
-    const DEFAULT_OPTIONS = [
-    
+    /**
+     * Default values if nothing is provided from the config
+     * Reference: $config->locale
+     */
+    const DEFAULT_LOCALE_OPTIONS = [
+        'default' => 'en',
+        'sessionKey' => 'zemit-locale',
+        'mode' => Locale::MODE_SESSION_GEOIP,
+        'allowed' => ['en']
     ];
     
     /**
@@ -50,7 +55,7 @@ class ServiceProvider extends AbstractServiceProvider
                 $options = $config->locale->toArray();
             }
     
-            return new Locale($options ?? self::DEFAULT_OPTIONS);
+            return new Locale($options ?? self::DEFAULT_LOCALE_OPTIONS);
         });
     }
 }
