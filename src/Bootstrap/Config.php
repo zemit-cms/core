@@ -240,8 +240,19 @@ class Config extends PhalconConfig
                     'action' => Env::get('ROUTER_DEFAULT_ACTION', 'index'),
                 ],
                 'notFound' => [
-                    'controller' => Env::get('ROUTER_NOTFOUND_CONTROLLER', 'errors'),
+                    'module' => Env::get('ROUTER_NOTFOUND_MODULE', null),
+                    'controller' => Env::get('ROUTER_NOTFOUND_CONTROLLER', 'error'),
                     'action' => Env::get('ROUTER_NOTFOUND_ACTION', 'notFound'),
+                ],
+                'error' => [
+                    'module' => Env::get('ROUTER_ERROR_MODULE', null),
+                    'controller' => Env::get('ROUTER_ERROR_CONTROLLER', 'error'),
+                    'action' => Env::get('ROUTER_ERROR_ACTION', 'fatal'),
+                ],
+                'maintenance' => [
+                    'module' => Env::get('ROUTER_MAINTENANCE_MODULE', null),
+                    'controller' => Env::get('ROUTER_MAINTENANCE_CONTROLLER', 'error'),
+                    'action' => Env::get('ROUTER_MAINTENANCE_ACTION', 'maintenance'),
                 ],
             ],
     

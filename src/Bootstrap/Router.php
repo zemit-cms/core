@@ -27,7 +27,7 @@ class Router extends \Phalcon\Mvc\Router
     ];
     
     public $notFound = [
-        'controller' => 'errors',
+        'controller' => 'error',
         'action' => 'notFound'
     ];
     

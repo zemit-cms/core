@@ -1,27 +1,30 @@
 <?php
-/**
- * This file is part of the Zemit Framework.
- *
- * (c) Zemit Team <contact@zemit.com>
- *
- * For the full copyright and license information, please view the LICENSE.txt
- * file that was distributed with this source code.
- */
 
-namespace Zemit\Modules\Cli\Tasks;
-
-use Zemit\Modules\Cli\Task;
+namespace Zemit\Modules\Frontend\Controllers;
 
 /**
- * Class ErrorsTask
- * @package Zemit\Modules\Cli\Tasks
+ * Contrôleur pour les pages d'erreurs ou de codes http spécifiques
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @version 1.0.0
  */
-class ErrorsTask extends Task
+class ErrorController extends AbstractController
 {
+    
+    /**
+     * Initilisation du contrôleur Errors
+     * Prépare la vue et le layout pour les actions de ce contrôleur
+     * Prépare les assets pour ce layout
+     */
+    public function initialize()
+    {
+        parent::initialize();
+        $this->view->pick('errors/index');
+    }
+    
     /**
      * Par défaut, on forward vers ErrorsController::fatalAction()
      * Page d'erreur fatale - 500 Internal Server Error
-     * @see ErrorsController::fatalAction();
+     * @see ErrorController::fatalAction();
      */
     public function indexAction()
     {
@@ -35,7 +38,7 @@ class ErrorsTask extends Task
      */
     public function fatalAction()
     {
-        $this->codeAction([500, 'Internal Server Error']);
+        $this->response->setStatusCode(500, 'Internal Server Error');
     }
     
     /**
@@ -43,7 +46,7 @@ class ErrorsTask extends Task
      */
     public function notFoundAction()
     {
-        $this->codeAction([404, 'Not Found']);
+        $this->response->setStatusCode(404, 'Not Found');
     }
     
     /**
@@ -51,7 +54,7 @@ class ErrorsTask extends Task
      */
     public function forbiddenAction()
     {
-        $this->codeAction([403, 'Forbidden']);
+        $this->response->setStatusCode(403, 'Forbidden');
     }
     
     /**
@@ -59,7 +62,7 @@ class ErrorsTask extends Task
      */
     public function unauthorizedAction()
     {
-        $this->codeAction([401, 'Unauthorized']);
+        $this->response->setStatusCode(401, 'Unauthorized');
     }
     
     /**
@@ -67,7 +70,7 @@ class ErrorsTask extends Task
      */
     public function badRequestAction()
     {
-        $this->codeAction([400, 'Bad Request']);
+        $this->response->setStatusCode(400, 'Bad Request');
     }
     
     /**
@@ -75,16 +78,6 @@ class ErrorsTask extends Task
      */
     public function maintenanceAction()
     {
-        $this->codeAction([503, 'Service Unavailable']);
-    }
-    
-    public function codeAction($params = []) {
-        $ret = [];
-        foreach ($params as $key => $param) {
-            if (is_numeric($key)) {
-                $ret []= $param;
-            }
-        }
-        echo implode(' - ', $ret);
+        $this->response->setStatusCode(503, 'Service Unavailable');
     }
 }

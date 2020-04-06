@@ -20,7 +20,7 @@ use Zemit\Mvc\View;
 class PartialsController extends AbstractController
 {
     public $notFound = [
-        'controller' => 'errors',
+        'controller' => 'error',
         'action' => 'notFound',
     ];
     

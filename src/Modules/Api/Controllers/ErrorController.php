@@ -14,12 +14,12 @@ namespace Zemit\Modules\Api\Controllers;
  * Contrôleur pour les pages d'erreurs ou de codes http spécifiques
  * @author Julien Turbide <jturbide@nuagerie.com>
  */
-class ErrorsController extends AbstractController
+class ErrorController extends AbstractController
 {
     /**
      * Par défaut, on forward vers ErrorsController::fatalAction()
      * Page d'erreur fatale - 500 Internal Server Error
-     * @see ErrorsController::fatalAction();
+     * @see ErrorController::fatalAction();
      */
     public function indexAction()
     {

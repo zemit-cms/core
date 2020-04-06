@@ -15,7 +15,7 @@ namespace Zemit\Modules\Backend\Controllers;
  * @author Julien Turbide <jturbide@nuagerie.com>
  * @version 1.0.0
  */
-class ErrorsController extends AbstractController
+class ErrorController extends AbstractController
 {
     
     /**
@@ -32,7 +32,7 @@ class ErrorsController extends AbstractController
     /**
      * Par défaut, on forward vers ErrorsController::fatalAction()
      * Page d'erreur fatale - 500 Internal Server Error
-     * @see ErrorsController::fatalAction();
+     * @see ErrorController::fatalAction();
      */
     public function indexAction()
     {

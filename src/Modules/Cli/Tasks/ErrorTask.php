@@ -1,30 +1,27 @@
 <?php
+/**
+ * This file is part of the Zemit Framework.
+ *
+ * (c) Zemit Team <contact@zemit.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
 
-namespace Zemit\Modules\Frontend\Controllers;
+namespace Zemit\Modules\Cli\Tasks;
+
+use Zemit\Modules\Cli\Task;
 
 /**
- * Contrôleur pour les pages d'erreurs ou de codes http spécifiques
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @version 1.0.0
+ * Class ErrorsTask
+ * @package Zemit\Modules\Cli\Tasks
  */
-class ErrorsController extends AbstractController
+class ErrorTask extends Task
 {
-    
-    /**
-     * Initilisation du contrôleur Errors
-     * Prépare la vue et le layout pour les actions de ce contrôleur
-     * Prépare les assets pour ce layout
-     */
-    public function initialize()
-    {
-        parent::initialize();
-        $this->view->pick('errors/index');
-    }
-    
     /**
      * Par défaut, on forward vers ErrorsController::fatalAction()
      * Page d'erreur fatale - 500 Internal Server Error
-     * @see ErrorsController::fatalAction();
+     * @see ErrorController::fatalAction();
      */
     public function indexAction()
     {
@@ -38,7 +35,7 @@ class ErrorsController extends AbstractController
      */
     public function fatalAction()
     {
-        $this->response->setStatusCode(500, 'Internal Server Error');
+        $this->codeAction([500, 'Internal Server Error']);
     }
     
     /**
@@ -46,7 +43,7 @@ class ErrorsController extends AbstractController
      */
     public function notFoundAction()
     {
-        $this->response->setStatusCode(404, 'Not Found');
+        $this->codeAction([404, 'Not Found']);
     }
     
     /**
@@ -54,7 +51,7 @@ class ErrorsController extends AbstractController
      */
     public function forbiddenAction()
     {
-        $this->response->setStatusCode(403, 'Forbidden');
+        $this->codeAction([403, 'Forbidden']);
     }
     
     /**
@@ -62,7 +59,7 @@ class ErrorsController extends AbstractController
      */
     public function unauthorizedAction()
     {
-        $this->response->setStatusCode(401, 'Unauthorized');
+        $this->codeAction([401, 'Unauthorized']);
     }
     
     /**
@@ -70,7 +67,7 @@ class ErrorsController extends AbstractController
      */
     public function badRequestAction()
     {
-        $this->response->setStatusCode(400, 'Bad Request');
+        $this->codeAction([400, 'Bad Request']);
     }
     
     /**
@@ -78,6 +75,16 @@ class ErrorsController extends AbstractController
      */
     public function maintenanceAction()
     {
-        $this->response->setStatusCode(503, 'Service Unavailable');
+        $this->codeAction([503, 'Service Unavailable']);
+    }
+    
+    public function codeAction($params = []) {
+        $ret = [];
+        foreach ($params as $key => $param) {
+            if (is_numeric($key)) {
+                $ret []= $param;
+            }
+        }
+        echo implode(' - ', $ret);
     }
 }
