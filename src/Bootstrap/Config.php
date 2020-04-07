@@ -132,10 +132,10 @@ class Config extends PhalconConfig
                         'DATABASE_PASSWORD',
                         'SECURITY_WORKFACTOR',
                         'SECURITY_SALT',
-                    ]
+                    ],
                 ],
             ],
-    
+            
             /**
              * Service Provider Configurations
              */
@@ -154,7 +154,7 @@ class Config extends PhalconConfig
                 Provider\Dispatcher\ServiceProvider::class => Provider\Dispatcher\ServiceProvider::class,
                 Provider\VoltTemplate\ServiceProvider::class => Provider\VoltTemplate\ServiceProvider::class,
                 Provider\View\ServiceProvider::class => Provider\View\ServiceProvider::class,
-
+                
                 Provider\Profiler\ServiceProvider::class => Provider\Profiler\ServiceProvider::class,
                 Provider\Database\ServiceProvider::class => Provider\Database\ServiceProvider::class,
                 Provider\Annotations\ServiceProvider::class => Provider\Annotations\ServiceProvider::class,
@@ -173,6 +173,10 @@ class Config extends PhalconConfig
                 Provider\Escaper\ServiceProvider::class => Provider\Escaper\ServiceProvider::class,
                 Provider\Markdown\ServiceProvider::class => Provider\Markdown\ServiceProvider::class,
                 Provider\Utils\ServiceProvider::class => Provider\Utils\ServiceProvider::class,
+                
+                // oauth2
+                Provider\Oauth2Facebook\ServiceProvider::class => Provider\Oauth2Facebook\ServiceProvider::class,
+                Provider\Oauth2Google\ServiceProvider::class => Provider\Oauth2Google\ServiceProvider::class,
                 
                 // lib
                 Provider\V8js\ServiceProvider::class => Provider\V8js\ServiceProvider::class,
@@ -220,6 +224,10 @@ class Config extends PhalconConfig
                     'className' => \Zemit\Modules\Cli\Module::class,
                     'path' => CORE_PATH . 'Modules/Cli/Module.php',
                 ],
+                \Zemit\Mvc\Module::NAME_OAUTH2 => [
+                    'className' => \Zemit\Modules\Oauth2\Module::class,
+                    'path' => CORE_PATH . 'Modules/OAuth2/Module.php',
+                ],
                 /**
                  * @TODO support this way too
                  */
@@ -255,7 +263,7 @@ class Config extends PhalconConfig
                     'action' => Env::get('ROUTER_MAINTENANCE_ACTION', 'maintenance'),
                 ],
             ],
-    
+            
             /**
              * Gravatar Configuration
              */
@@ -265,7 +273,7 @@ class Config extends PhalconConfig
                 'rating' => Env::get('GRAVATAR_RATING', 'pg'),
                 'use_https' => Env::get('GRAVATAR_HTPPS', true),
             ],
-    
+            
             /**
              * reCaptcha Configuration
              */
@@ -275,21 +283,37 @@ class Config extends PhalconConfig
             ],
             
             /**
-             * Default local settings
+             * Locale Service Settings
              */
             'locale' => [
                 'default' => Env::get('LOCALE_DEFAULT', 'en'),
                 'sessionKey' => Env::get('LOCALE_SESSION_KEY', 'zemit-locale'),
                 'mode' => Env::get('LOCALE_MODE', Locale::MODE_SESSION_GEOIP),
-                'allowed' => explode(',', Env::get('LOCALE_ALLOWED', 'en,en_US,fr,fr_FR,fr_CA')),
+                'allowed' => explode(',', Env::get('LOCALE_ALLOWED', 'en')),
+            ],
+            
+            /**
+             * Translate Service Settings
+             */
+            'translate' => [
+                'locale' => Env::get('TRANSLATE_LOCALE', 'en_US.utf8'),
+                'defaultDomain' => Env::get('TRANSLATE_DEFAULT_DOMAIN', 'messages'),
+                'category' => Env::get('TRANSLATE_CATEGORY', LC_MESSAGES),
+                'directory' => [
+                    Env::get('TRANSLATE_DEFAULT_DOMAIN', 'messages') => Env::get('TRANSLATE_DEFAULT_PATH', CORE_PATH . 'Locales'),
+                ],
             ],
             
             /**
              * Default Session Configuration
              */
             'session' => [
-                'default' => Env::get('SESSION_DRIVER'),
+                'default' => Env::get('SESSION_DRIVER', 'stream'),
                 'drivers' => [
+                    'stream' => [
+                        'adapter' => 'Stream',
+                        'savePath' => Env::get('SESSION_STREAM_SAVE_PATH', '/tmp')
+                    ],
                     'memcached' => [
                         'adapter' => 'Libmemcached',
                         'servers' => [
@@ -316,18 +340,6 @@ class Config extends PhalconConfig
                 'prefix' => Env::get('SESSION_PREFIX', 'zemit_session_'),
                 'uniqueId' => Env::get('SESSION_UNIQUE_ID', 'zemit_'),
                 'lifetime' => Env::get('SESSION_LIFETIME', 3600),
-            ],
-            
-            /**
-             * Default translater settings
-             */
-            'translate' => [
-                'locale' => Env::get('TRANSLATE_LOCALE', 'en_US.utf8'),
-                'defaultDomain' => Env::get('TRANSLATE_DEFAULT_DOMAIN', 'messages'),
-                'category' => Env::get('TRANSLATE_CATEGORY', LC_MESSAGES),
-                'directory' => [
-                    Env::get('TRANSLATE_DEFAULT_DOMAIN', 'messages') => Env::get('TRANSLATE_DEFAULT_PATH', CORE_PATH . 'Locales'),
-                ],
             ],
             
             /**
@@ -509,6 +521,39 @@ class Config extends PhalconConfig
             'cookies' => [
                 'useEncryption' => Env::get('COOKIES_USE_ENCRYPTION', true),
                 'signKey' => Env::get('COOKIES_SIGN_KEY', ''),
+            ],
+            
+            /**
+             * Oauth2
+             */
+            'oauth2' => [
+                'facebook' => [
+                    'clientId' => Env::get('OAUTH2_FACEBOOK_CLIENT_ID'),
+                    'clientSecret' => Env::get('OAUTH2_FACEBOOK_CLIENT_SECRET'),
+                    'redirectUri' => Env::get('OAUTH2_FACEBOOK_CLIENT_REDIRECT_URI', '/oauth2/facebook/callback'),
+                    'graphApiVersion' => Env::get('OAUTH2_FACEBOOK_GRAPH_API_VERSION', 'v2.10'),
+                ],
+                'google' => [
+                    'clientId' => Env::get('OAUTH2_GOOGLE_CLIENT_ID'),
+                    'clientSecret' => Env::get('OAUTH2_GOOGLE_CLIENT_SECRET'),
+                    'redirectUri' => Env::get('OAUTH2_FACEBOOK_CLIENT_REDIRECT_URI', '/oauth2/google/callback'),
+                    'hostedDomain' => Env::get('OAUTH2_FACEBOOK_CLIENT_HOSTED_DOMAIN', null), // optional; used to restrict access to users on your G Suite/Google Apps for Business accounts
+                ],
+                'instagram' => [
+                
+                ],
+                'linked' => [
+                
+                ],
+                'twitter' => [
+                
+                ],
+                'github' => [
+                
+                ],
+                'apple' => [
+                
+                ],
             ],
             
             /**

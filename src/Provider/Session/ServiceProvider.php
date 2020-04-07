@@ -12,6 +12,7 @@
 namespace Zemit\Provider\Session;
 
 use Phalcon\Di\DiInterface;
+use Phalcon\Session\Manager;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
@@ -36,19 +37,26 @@ class ServiceProvider extends AbstractServiceProvider
     {
         $di->setShared($this->getName(), function() use ($di) {
             $config = $di->get('config')->session;
-            
-            $driver = $config->drivers->{$config->default};
-            $adapter = '\Phalcon\Session\Adapter\\' . $driver->adapter;
+    
             $defaults = [
                 'prefix' => $config->prefix,
                 'uniqueId' => $config->uniqueId,
                 'lifetime' => $config->lifetime,
             ];
+    
+            $session = new Manager();
             
-            /** @var \Phalcon\Session\AdapterInterface $session */
-            $session = new $adapter(array_merge($driver->toArray(), $defaults));
+            if (!empty($config->default)) {
+                $driver = $config->drivers->{$config->default};
+                $adapter = '\Phalcon\Session\Adapter\\' . $driver->adapter;
+                if (class_exists($adapter)) {
+                    $session->setAdapter(new $adapter(array_merge($driver ? $driver->toArray() : [], $defaults)));
+                }
+//                /** @var \Phalcon\Session\AdapterInterface $session */
+//                $session = new $adapter(array_merge($driver->toArray(), $defaults));
+            }
+            
             $session->start();
-            
             return $session;
         });
     }

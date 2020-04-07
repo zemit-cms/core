@@ -54,12 +54,9 @@ class Rest extends \Phalcon\Mvc\Controller
             } else {
                 $this->dispatcher->forward(['action' => 'get']);
             }
+        } else if ($this->request->isOptions()) {
             
-        }
-        
-        // @TODO handle this correctly
-        else if ($this->request->isOptions()) {
-            
+            // @TODO handle this correctly
             return $this->setRestResponse(['result' => 'OK']);
         }
     }
@@ -81,6 +78,7 @@ class Rest extends \Phalcon\Mvc\Controller
         
         if (!$single) {
             $this->response->setStatusCode(404, 'Not Found');
+            
             return false;
         }
         
@@ -96,10 +94,10 @@ class Rest extends \Phalcon\Mvc\Controller
     {
         /** @var \Zemit\Mvc\Model $model */
         $model = $this->getModelNameFromController();
-
+        
         /** @var Resultset $list */
         $find = $this->getFind();
-        $list = $model::with($this->getWith() ?: [], $find ?: []);
+        $list = $model::with($this->getWith() ? : [], $find ? : []);
         
         /**
          * @var int $key
@@ -109,13 +107,13 @@ class Rest extends \Phalcon\Mvc\Controller
             $list[$key] = $item->expose($this->getExpose());
         }
         
-        $list = is_array($list)? array_values(array_filter($list)) : $list;
+        $list = is_array($list) ? array_values(array_filter($list)) : $list;
         $this->view->list = $list;
         $this->view->listCount = count($list);
         $this->view->totalCount = $model::count($this->getFindCount($find));
         $this->view->limit = $find['limit'] ?? false;
         $this->view->offset = $find['offset'] ?? false;
-        $this->view->find = ($this->config->app->debug || $this->config->debug->enable)? $find : false;
+        $this->view->find = ($this->config->app->debug || $this->config->debug->enable) ? $find : false;
         
         return $this->setRestResponse();
     }
@@ -169,10 +167,10 @@ class Rest extends \Phalcon\Mvc\Controller
         /** @var \Zemit\Mvc\Model $instance */
         $instance = new $model();
         $instance->assign($this->getParams(), $this->getWhitelist(), $this->getColumnMap());
-        foreach ([ // https://docs.phalcon.io/4.0/en/db-models-events
-            'prepareSave',
-            'validation',
-         ] as $methodName) {
+        foreach ([ // @see https://docs.phalcon.io/4.0/en/db-models-events
+                     'prepareSave',
+                     'validation',
+                 ] as $methodName) {
             if (method_exists($instance, $methodName)) {
                 $instance->$methodName();
             }
@@ -182,8 +180,9 @@ class Rest extends \Phalcon\Mvc\Controller
         $this->view->source = $instance->getSource();
         $this->view->single = $instance->expose($this->getExpose());
         $this->view->messages = $this->getRestMessages($instance);
+        $this->view->validated = empty($this->view->messages);
         
-        return $this->setRestResponse();
+        return $this->setRestResponse($this->view->validated);
     }
     
     /**
@@ -198,6 +197,7 @@ class Rest extends \Phalcon\Mvc\Controller
     public function saveAction($id = null)
     {
         $this->view->setVars($this->saveModel($id));
+        
         return $this->setRestResponse($this->view->saved);
     }
     
@@ -218,6 +218,7 @@ class Rest extends \Phalcon\Mvc\Controller
         
         if (!$single) {
             $this->response->setStatusCode(404, 'Not Found');
+            
             return false;
         }
         
@@ -241,6 +242,7 @@ class Rest extends \Phalcon\Mvc\Controller
         
         if (!$single) {
             $this->response->setStatusCode(404, 'Not Found');
+            
             return false;
         }
         

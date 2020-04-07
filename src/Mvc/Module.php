@@ -30,6 +30,7 @@ class Module implements ModuleDefinitionInterface
     const NAME_BACKEND = 'backend';
     const NAME_API = 'api';
     const NAME_CLI = 'cli';
+    const NAME_OAUTH2 = 'oauth2';
     
     public $namespace = __NAMESPACE__;
     

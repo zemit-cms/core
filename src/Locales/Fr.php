@@ -13,7 +13,7 @@ namespace Zemit\Locale;
 use Phalcon\Translate\Adapter\NativeArray;
 use Phalcon\Translate\InterpolatorFactory;
 
-class En extends NativeArray
+class Fr extends NativeArray
 {
     public function __construct(InterpolatorFactory $interpolator, array $options)
     {
@@ -22,11 +22,11 @@ class En extends NativeArray
         ]);
         
         parent::__construct($interpolator, array_merge_recursive([
-            'locale' => 'en_US.UTF-8',
+            'locale' => 'fr_CA.UTF-8',
             'defaultDomain' => 'zemit',
             'category' => LC_MESSAGES,
             'content' => [
-                'powered-by' => 'Powered by %zemit%.',
+                'powered-by' => 'Propulsé par %zemit%.',
                 'copyright' => '%zemit% &copy; 2017 Zemit.',
             ],
         ], $options));
