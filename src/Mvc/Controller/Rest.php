@@ -10,9 +10,12 @@
 
 namespace Zemit\Mvc\Controller;
 
+use Hamcrest\Util;
 use Phalcon\Http\Response;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\Model\Resultset;
+use League\Csv\Writer;
+use Zemit\Utils\Slug;
 
 /**
  * Class Rest
@@ -116,6 +119,28 @@ class Rest extends \Phalcon\Mvc\Controller
         $this->view->find = ($this->config->app->debug || $this->config->debug->enable) ? $find : false;
         
         return $this->setRestResponse();
+    }
+    
+    /**
+     * Exporting a record list into a CSV stream
+     *
+     * @return \Phalcon\Http\ResponseInterface
+     * @throws \League\Csv\CannotInsertRecord
+     * @throws \Zemit\Exception
+     */
+    public function exportAction()
+    {
+        $response = $this->getAllAction();
+        $list = $this->view->list ?? null;
+        if (isset($list[0])) {
+            $csv = Writer::createFromFileObject(new \SplTempFileObject());
+            $csv->setOutputBOM(Writer::BOM_UTF8);
+            $csv->insertOne(array_keys($list[0]));
+            $csv->insertAll($list);
+            $csv->output(ucfirst(Slug::generate(basename(str_replace('\\', '/', $this->getModelName())))) . ' List ('.date('Y-m-d').').csv');
+            die;
+        }
+        return $response;
     }
     
     /**

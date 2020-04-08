@@ -16,6 +16,7 @@ namespace Zemit;
  */
 class Url extends \Phalcon\Url
 {
+    
     /**
      * {@inheritdoc}
      *
@@ -26,7 +27,7 @@ class Url extends \Phalcon\Url
      *
      * @return string
      */
-    public function get($uri = null, $args = null, $local = null, $baseUri = null) : String {
+    public function get($uri = null, $args = null, bool $local = null, $baseUri = null): string {
         return self::getAbsolutePath(parent::get($uri, $args, $local, $baseUri));
     }
     
