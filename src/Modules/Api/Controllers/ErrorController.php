@@ -28,49 +28,31 @@ class ErrorController extends AbstractController
         ));
     }
     
-    /**
-     * Page d'erreur fatale - 500 Internal Server Error
-     */
     public function fatalAction()
     {
         $this->response->setStatusCode(500, 'Internal Server Error');
     }
     
-    /**
-     * Page introuvable - 404 Not Found
-     */
     public function notFoundAction()
     {
         $this->response->setStatusCode(404, 'Not Found');
     }
     
-    /**
-     * Page inaccessible - 403 Forbidden
-     */
     public function forbiddenAction()
     {
         $this->response->setStatusCode(403, 'Forbidden');
     }
     
-    /**
-     * Accès non autorisé - 401 Unauthorized
-     */
     public function unauthorizedAction()
     {
         $this->response->setStatusCode(401, 'Unauthorized');
     }
     
-    /**
-     * Mauvaise requête - 400 Bad Request
-     */
     public function badRequestAction()
     {
         $this->response->setStatusCode(400, 'Bad Request');
     }
     
-    /**
-     * Service indisponible ou maintnance en cours - 503 Service Unavailable
-     */
     public function maintenanceAction()
     {
         $this->response->setStatusCode(503, 'Service Unavailable');

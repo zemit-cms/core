@@ -11,6 +11,8 @@
 namespace Zemit\Provider\Filter;
 
 use Phalcon\Di\DiInterface;
+
+use Phalcon\Filter\FilterFactory;
 use Zemit\Filter;
 use Zemit\Provider\AbstractServiceProvider;
 
@@ -28,12 +30,11 @@ class ServiceProvider extends AbstractServiceProvider
      *
      * @param DiInterface $di
      */
-    public function register(\Phalcon\Di\DiInterface $di): void
+    public function register(DiInterface $di): void
     {
         $di->setShared($this->getName(), function() use ($di) {
-            $filter = new Filter();
-            
-            return $filter;
+            $factory = new FilterFactory();
+            return $factory->newInstance();
         });
     }
 }

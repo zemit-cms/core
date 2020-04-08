@@ -10,6 +10,7 @@
 
 namespace Zemit\Mvc\Controller;
 
+use Phalcon\Db\Column;
 use Phalcon\Mvc\Model\Resultset;
 use Phalcon\Text;
 use Zemit\Http\Request;
@@ -75,7 +76,10 @@ trait Model
      */
     protected function getOrder()
     {
-        return explode(',', $this->getParam('order', 'string', 'id'));
+        $filter = $this->filter;
+        return array_map(function ($e) use ($filter) {
+            return trim($filter->sanitize($e, 'string'));
+        }, explode(',', $this->getParam('order', 'string', 'id')));
     }
     
     /**
@@ -103,22 +107,28 @@ trait Model
      *
      * @return string Default: deleted = 0
      */
-    protected function getSoftDeleteCondition() {
+    protected function getSoftDeleteCondition()
+    {
         return 'deleted = 0';
     }
     
-    public function setBind($bind) {
+    public function setBind($bind)
+    {
         $this->bind = $bind;
     }
     
-    public function getBind() {
+    public function getBind()
+    {
         return $this->bind ?? null;
     }
     
-    public function setBindTypes($bindTypes) {
+    public function setBindTypes($bindTypes)
+    {
         $this->bindTypes = $bindTypes;
     }
-    public function getBindTypes() {
+    
+    public function getBindTypes()
+    {
         return $this->bindTypes ?? null;
     }
     
@@ -127,13 +137,15 @@ trait Model
      *
      * @return null
      */
-    protected function getIdentityCondition($identityColumn = 'createdBy', $identity = null) {
+    protected function getIdentityCondition($identityColumn = 'createdBy', $identity = null)
+    {
         $identity ??= $this->identity ?? false;
         if ($identity) {
             $this->setBind([
                 'identityColumn' => $identityColumn,
                 'identityIds' => [$identity->userId],
             ]);
+            
             return ':identityColumn: in ({identityIds:array})';
         }
         
@@ -142,11 +154,103 @@ trait Model
     
     /**
      * Get Filter Condition
+     * @todo ask phalcon people what is the proper way to escape fields
+     * @todo support betweens and order PHQL stuff
+     * @todo whitelist fields to allow
      *
-     * @return null
+     * @param array|null $filters
+     * @param bool $or
+     *
+     * @return string Return the generated query
+     * @throws \Exception Throw an exception if the field property is not valid
      */
-    protected function getFilterCondition($filter = null) {
-        return null;
+    protected function getFilterCondition(array $filters = null, $or = false)
+    {
+        $filters ??= $this->getParam('filters');
+        
+        // No filter, no query
+        if (empty($filters)) {
+            return null;
+        }
+    
+        $query = [];
+        foreach ($filters as $filter) {
+            $field = $this->filter->sanitize($filter['field'] ?? null, ['string', 'alnum', 'trim']);
+            if (!empty($field)) {
+                $uniqid = substr(md5(json_encode($filter)), 0, 6);
+//                $queryField = '_' . uniqid($uniqid . '_field_') . '_';
+                $queryValue = '_' . uniqid($uniqid . '_value_') . '_';
+                $queryOperator = strtolower($filter['operator']);
+                switch ($queryOperator) {
+                    case '=':
+                    case '!=':
+                    case '<>':
+                    case '>':
+                    case '<':
+                    case '>=':
+                    case '<=':
+                    case 'in':
+                    case 'not in':
+                    case 'is null':
+                    case 'is not null':
+                    case 'is false':
+                    case 'is not false':
+                    case 'is true':
+                    case 'is not true':
+                        break;
+                    default:
+                        $queryOperator = '=';
+                        break;
+                }
+                
+//                $bind[$queryField] = $filter['field'];
+//                $bindType[$queryField] = Column::BIND_PARAM_STR;
+//                $queryFieldBinder = ':' . $queryField . ':';
+//                $queryFieldBinder = '{' . $queryField . '}';
+                $queryFieldBinder = '[' . $field . ']';
+                $queryValueBinder = ':' . $queryValue . ':';
+                if (isset($filter['value'])) {
+                    $bind[$queryValue] = $filter['value'];
+                    if (is_string($filter['value'])) {
+                        $bindType[$queryValue] = Column::BIND_PARAM_STR;
+                    }
+                    else if (is_int($filter['value'])) {
+                        $bindType[$queryValue] = Column::BIND_PARAM_INT;
+                    }
+                    else if (is_bool($filter['value'])) {
+                        $bindType[$queryValue] = Column::BIND_PARAM_BOOL;
+                    }
+                    else if (is_float($filter['value'])) {
+                        $bindType[$queryValue] = Column::BIND_PARAM_DECIMAL;
+                    }
+                    else if (is_double($filter['value'])) {
+                        $bindType[$queryValue] = Column::BIND_PARAM_DECIMAL;
+                    }
+                    else if (is_array($filter['value'])) {
+                        $queryValueBinder = '({'.$queryValue.':array})';
+                        $bindType[$queryValue] = Column::BIND_PARAM_STR;
+                    }
+                    else {
+                        $bindType[$queryValue] = Column::BIND_PARAM_NULL;
+                    }
+                    $query []= "$queryFieldBinder $queryOperator $queryValueBinder";
+                }
+                else {
+                    $query []= "$queryFieldBinder $queryOperator";
+                }
+    
+                $this->setBind($bind);
+                $this->setBindTypes($bindType);
+            } else {
+                if (is_array($filter) || $filter instanceof \Traversable) {
+                    $query []= $this->getFilterCondition($filter, !$or);
+                } else {
+                    throw new \Exception('A valid field property is required.', 400);
+                }
+            }
+        }
+
+        return empty($query)? null : '(' . implode($or? ' or ' : ' and ' , $query) . ')';
     }
     
     /**
@@ -154,11 +258,19 @@ trait Model
      *
      * @return null
      */
-    protected function getHasAccess($type = null, $identity = null) {
+    protected function getHasAccess($type = null, $identity = null)
+    {
         return null;
     }
     
-    protected function getConditions() {
+    /**
+     * Get all conditions
+     *
+     * @return string
+     * @throws \Exception
+     */
+    protected function getConditions()
+    {
         return implode(' and ', array_values(array_unique(array_filter([
             $this->getSoftDeleteCondition(),
             $this->getIdentityCondition(),
@@ -168,9 +280,10 @@ trait Model
     }
     
     /**
-     * Get expose definition
+     * Get find definition
      *
-     * @return array|string
+     * @return array
+     * @throws \Exception
      */
     protected function getFind()
     {
@@ -181,6 +294,7 @@ trait Model
         $find['limit'] = $this->getLimit();
         $find['offset'] = $this->getOffset();
         $find['order'] = $this->getOrder();
+        
         return $find;
     }
     
@@ -252,6 +366,7 @@ trait Model
         $find ??= $this->getFind();
 //        $find['conditions'] .= (empty($find['conditions'])? null : ' and ') . 'id = ' . (int)$id;
         $find['conditions'] = 'id = ' . (int)$id; // @TODO see if we should support conditions appending here or not
+        
         return $id ? $modelName::findFirstWith($with ?? [], $find ?? []) : false;
     }
     
@@ -377,5 +492,4 @@ trait Model
         
         return $ret ? : false;
     }
-    
 }

@@ -285,7 +285,6 @@ class Rest extends \Phalcon\Mvc\Controller
         
         return $this->response->setJsonContent([
             'status' => $status,
-            'statusCode' => $code . ' ' . $status,
             'code' => $code,
             'response' => $response,
             'view' => $this->view->getParamsToView(),
