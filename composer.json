@@ -45,6 +45,9 @@
     "facebook/php-sdk": "^3.2",
 
     "egulias/email-validator": "~2.1",
+
+    "league/csv": "^9.0@dev",
+
     "league/oauth2-server": "~7.3",
     "league/oauth2-client": "~2.4",
     "league/oauth2-google": "~3.0",
@@ -80,8 +83,7 @@
     "codeception/codeception": "^2.5",
     "codeception/verify": "~1.0",
     "codeception/specify": "~1.1",
-    "codeception/mockery-module": "^0.2",
-    "league/csv": "^9.0@dev"
+    "codeception/mockery-module": "^0.2"
   },
   "minimum-stability": "dev",
   "autoload": {

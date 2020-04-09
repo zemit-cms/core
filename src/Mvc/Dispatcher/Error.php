@@ -76,7 +76,7 @@ class Error extends Injectable
                     $dispatcher->forward($route, true);
                     return false;
                 } else {
-                    throw new \Exception($exception->getMessage(), $exception->getCode(), $exception);
+                    throw $exception;
                 }
                 break;
         }

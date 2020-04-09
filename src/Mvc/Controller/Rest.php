@@ -238,7 +238,7 @@ class Rest extends \Phalcon\Mvc\Controller
         $single = $this->getSingle($id);
         
         $this->view->deleted = $single ? $single->delete() : false;
-        $this->view->single = $single->expose($this->getExpose());
+        $this->view->single = $single ? $single->expose($this->getExpose()) : false;
         $this->view->messages = $single ? $this->getRestMessages($single) : false;
         
         if (!$single) {
@@ -262,16 +262,40 @@ class Rest extends \Phalcon\Mvc\Controller
         $single = $this->getSingle($id);
         
         $this->view->restored = $single ? $single->restore() : false;
-        $this->view->single = $single->expose($this->getExpose());
+        $this->view->single = $single ? $single->expose($this->getExpose()) : false;
         $this->view->messages = $single ? $this->getRestMessages($single) : false;
         
         if (!$single) {
             $this->response->setStatusCode(404, 'Not Found');
-            
             return false;
         }
         
         return $this->setRestResponse($this->view->restored);
+    }
+    
+    /**
+     * Re-ordering a position
+     *
+     * @param null $id
+     * @param null $position
+     *
+     * @return bool|\Phalcon\Http\ResponseInterface
+     */
+    public function reorderAction($id = null) {
+        $single = $this->getSingle($id);
+        
+        $position = $this->getParam('position', 'int');
+        
+        $this->view->reordered = $single ? $single->reorder($position) : false;
+        $this->view->single = $single ? $single->expose($this->getExpose()) : false;
+        $this->view->messages = $single ? $this->getRestMessages($single) : false;
+    
+        if (!$single) {
+            $this->response->setStatusCode(404, 'Not Found');
+            return false;
+        }
+    
+        return $this->setRestResponse($this->view->reordered);
     }
     
     /**

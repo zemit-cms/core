@@ -63,10 +63,10 @@ trait SoftDelete {
     }
     
     public function restore($field = null, $notDeletedValue = null) {
-        $field ??= $this->_softDeleteSettings['field'];
-        $notDeletedValue ??= $this->_softDeleteSettings['notDeletedValue'];
+        $field ??= $this->_softDeleteSettings['field'] ?? 'deleted';
+        $notDeletedValue ??= $this->_softDeleteSettings['notDeletedValue'] ?? 0;
         $this->assign([$field => $notDeletedValue], [$field]);
-        return $this->save();
+        return $this->save() && (!$this->hasSnapshotData() || $this->hasUpdated($field));
     }
 
 }

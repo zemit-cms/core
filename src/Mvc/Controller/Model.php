@@ -18,6 +18,8 @@ use Zemit\Http\Request;
 trait Model
 {
     protected $_model = [];
+    protected $_bind = [];
+    protected $_bindTypes = [];
     
     /**
      * Get the current Model Name
@@ -112,24 +114,47 @@ trait Model
         return 'deleted = 0';
     }
     
-    public function setBind($bind)
+    /**
+     * Set the variables to bind
+     *
+     * @param array $bind Variable bind to merge or replace
+     * @param bool $replace Pass true to replace the entire bind set
+     */
+    public function setBind(array $bind = [], bool $replace = false)
     {
-        $this->bind = $bind;
+        $this->_bind = $replace? $bind : array_merge($this->getBind(), $bind);
     }
     
+    /**
+     * Get the current bind
+     * key => value
+     *
+     * @return array|null
+     */
     public function getBind()
     {
-        return $this->bind ?? null;
+        return $this->_bind ?? null;
     }
     
-    public function setBindTypes($bindTypes)
+    /**
+     * Set the variables types to bind
+     *
+     * @param array $bindTypes Variable bind types to merge or replace
+     * @param bool $replace Pass true to replace the entire bind type set
+     */
+    public function setBindTypes(array $bindTypes = [], bool $replace = false)
     {
-        $this->bindTypes = $bindTypes;
+        $this->_bindTypes = $replace? $bindTypes : array_merge($this->getBindTypes(), $bindTypes);
     }
     
+    /**
+     * Get the current bind types
+     *
+     * @return array|null
+     */
     public function getBindTypes()
     {
-        return $this->bindTypes ?? null;
+        return $this->_bindTypes ?? null;
     }
     
     /**
@@ -202,6 +227,8 @@ trait Model
                         $queryOperator = '=';
                         break;
                 }
+                $bind = [];
+                $bindType = [];
                 
 //                $bind[$queryField] = $filter['field'];
 //                $bindType[$queryField] = Column::BIND_PARAM_STR;
@@ -271,12 +298,13 @@ trait Model
      */
     protected function getConditions()
     {
-        return implode(' and ', array_values(array_unique(array_filter([
+        $conditions = array_values(array_unique(array_filter([
             $this->getSoftDeleteCondition(),
             $this->getIdentityCondition(),
             $this->getFilterCondition(),
             $this->getHasAccess(),
-        ]))));
+        ])));
+        return '(' . implode(') and (', $conditions) . ')';
     }
     
     /**

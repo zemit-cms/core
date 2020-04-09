@@ -25,6 +25,7 @@ use Zemit\Mvc\Model\Snapshots;
 use Zemit\Mvc\Model\SoftDelete;
 use Zemit\Mvc\Model\UpdatedAt;
 use Zemit\Mvc\Model\UpdatedBy;
+use Zemit\Mvc\Model\Position;
 use Zemit\Mvc\Model\User;
 use Zemit\Mvc\Model\Utils;
 
@@ -52,12 +53,14 @@ class Model extends \Phalcon\Mvc\Model
     use UpdatedBy;
     use DeletedAt;
     use DeletedBy;
+    use Position;
     use Relationship;
     use Snapshots;
     
     public function initialize()
     {
         $this->setEventsManager(new Manager());
+        $this->_setSnapshots();
         
         // @TODO change those setter into behaviour if possible
         // @TODO add merge behaviour (to merge entities together)
@@ -71,7 +74,7 @@ class Model extends \Phalcon\Mvc\Model
         $this->_setUpdatedBy();
         $this->_setDeletedAt();
         $this->_setDeletedBy();
-        $this->_setSnapshots();
+        $this->_setPosition('orderId', 'id');
     
         $this->useDynamicUpdate(true);
     }
