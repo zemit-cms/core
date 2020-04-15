@@ -59,11 +59,11 @@ trait Position {
      * - Update position+1 done using afterSave event
      *
      * @param int|null $position
-     * @param null $field
+     * @param string|null $field
      *
      * @return mixed
      */
-    public function reorder(int $position = null, $field = null) {
+    public function reorder(int $position = null, string $field = null) {
         $field ??= $this->_positionSettings['field'] ?? 'position';
         $this->assign([$field => $position], [$field]);
         return $this->save() && (!$this->hasSnapshotData() || $this->hasUpdated($field));

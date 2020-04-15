@@ -281,11 +281,11 @@ trait Model
     }
     
     /**
-     * Get Filter Condition
+     * Get Permission Condition
      *
      * @return null
      */
-    protected function getHasAccess($type = null, $identity = null)
+    protected function getPermissionCondition($type = null, $identity = null)
     {
         return null;
     }
@@ -302,7 +302,7 @@ trait Model
             $this->getSoftDeleteCondition(),
             $this->getIdentityCondition(),
             $this->getFilterCondition(),
-            $this->getHasAccess(),
+            $this->getPermissionCondition(),
         ])));
         return '(' . implode(') and (', $conditions) . ')';
     }

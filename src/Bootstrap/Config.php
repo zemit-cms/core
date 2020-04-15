@@ -10,15 +10,15 @@
 
 namespace Zemit\Bootstrap;
 
+use PDO;
 use Zemit\Filter;
 use Zemit\Filters;
 use Zemit\Locale;
 use Zemit\Providers;
 use Zemit\Utils\Env;
-use Phalcon\Config as PhalconConfig;
-use PDO;
 use Zemit\Version;
 use Zemit\Provider;
+use Phalcon\Config as PhalconConfig;
 
 class Config extends PhalconConfig
 {
@@ -97,6 +97,7 @@ class Config extends PhalconConfig
                     
                     // app
                     'bootstrap' => Env::get('APP_BOOTSTRAP_PATH', APP_PATH . '/Bootstrap/'),
+                    'common' => Env::get('APP_COMMON_PATH', APP_PATH . '/Common/'),
                     'config' => Env::get('APP_CONFIG_PATH', APP_PATH . '/Config/'),
                     'modules' => Env::get('APP_MODULES_PATH', APP_PATH . '/Modules/'),
                     'plugins' => Env::get('APP_PLUGINS_PATH', APP_PATH . '/Plugins/'),
@@ -493,9 +494,9 @@ class Config extends PhalconConfig
                         'password' => Env::get('DATABASE_PASSWORD', ''),
                         'charset' => Env::get('DATABASE_CHARSET', 'utf8'),
                         'options' => [
-                            \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . Env::get('DATABASE_CHARSET', 'utf8'),
-                            \PDO::ATTR_EMULATE_PREPARES => Env::get('DATABASE_PDO_EMULATE_PREPARES', false), // https://stackoverflow.com/questions/10113562/pdo-mysql-use-pdoattr-emulate-prepares-or-not
-                            \PDO::ATTR_STRINGIFY_FETCHES => Env::get('DATABASE_PDO_STRINGIFY_FETCHES', false),
+                            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . Env::get('DATABASE_CHARSET', 'utf8'),
+                            PDO::ATTR_EMULATE_PREPARES => Env::get('DATABASE_PDO_EMULATE_PREPARES', false), // https://stackoverflow.com/questions/10113562/pdo-mysql-use-pdoattr-emulate-prepares-or-not
+                            PDO::ATTR_STRINGIFY_FETCHES => Env::get('DATABASE_PDO_STRINGIFY_FETCHES', false),
                         ],
                     ],
                 ],
