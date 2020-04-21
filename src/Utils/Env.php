@@ -10,8 +10,7 @@
 
 namespace Zemit\Utils;
 
-use Dotenv\Loader as DotenvLoader;
-use phpDocumentor\Reflection\Types\Mixed_;
+use Dotenv\Dotenv;
 
 /**
  * Class Env
@@ -25,17 +24,25 @@ use phpDocumentor\Reflection\Types\Mixed_;
 class Env
 {
     /**
+     * @var array
+     */
+    public static $vars;
+    
+    /**
      * Dotenv loader to manage the environment varialbe
-     * @var DotenvLoader
+     * @var \Dotenv\Loader
      */
     public static $dotenv;
     
     /**
      * Get the dotenv loader
-     * @return DotenvLoader
+     * @return \Dotenv\Loader
      */
-    public static function getDotenv($filePath = null) {
-        return isset(self::$dotenv)? self::$dotenv : self::$dotenv = new DotenvLoader($filePath);
+    public static function getDotenv(array $filePath = null) {
+        $filePath ??= dirname($_SERVER['DOCUMENT_ROOT']);
+        self::$dotenv ??= Dotenv::create($filePath);
+        self::$vars ??= self::$dotenv->load();
+        return self::$dotenv;
     }
     
     /**
@@ -79,7 +86,8 @@ class Env
      */
     public static function get($key, $default = null)
     {
-        $ret = self::getDotenv()->getEnvironmentVariable($key);
+        self::$vars ??= self::getDotenv();
+        $ret = self::$vars[$key] ?? null;
         
         if ($ret === null) {
             $ret = ($default instanceof Closure) ? $default() : $default;

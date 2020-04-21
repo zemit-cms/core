@@ -220,9 +220,11 @@ DOC;
     public function dotenv()
     {
         try {
-            $this->fireSet($this->dotenv, Dotenv::class, [dirname(APP_PATH)], function (Bootstrap $bootstrap) {
-                $bootstrap->dotenv->load();
-            });
+            $this->dotenv = Dotenv::create(dirname(APP_PATH)); // @todo fix this to handle fireset instead, using a new class extending dotenv
+            $this->dotenv->load();
+//            $this->fireSet($this->dotenv, Dotenv::class, [dirname(APP_PATH)], function (Bootstrap $bootstrap) {
+//                $bootstrap->dotenv->load();
+//            });
         } catch(\Dotenv\Exception\InvalidPathException|\Dotenv\Exception\InvalidFileException $e) {
             // just ignore and run the application anyway
         }
