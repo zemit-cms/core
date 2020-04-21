@@ -86,7 +86,7 @@ class Env
      */
     public static function get($key, $default = null)
     {
-        self::$vars ??= self::getDotenv();
+        self::$vars ??= self::getDotenv()->load();
         $ret = self::$vars[$key] ?? null;
         
         if ($ret === null) {
