@@ -4,7 +4,7 @@
   "description": "Zemit CMS Core",
   "keywords": ["framework", "phalcon", "cms", "core", "zemit", "zemit-cms", "zemit cms", "zemit cms core"],
   "homepage": "https://www.zemit.com",
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "authors": [
     {
       "name": "Zemit Team",
