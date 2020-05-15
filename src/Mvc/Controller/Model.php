@@ -362,19 +362,23 @@ trait Model
      * - JsonRawBody, post, put or get
      * @return mixed
      */
-    protected function getParams()
+    protected function getParams(array $filters = null)
     {
         /** @var Request $request */
         $request = $this->request;
-        $params = empty($request->getRawBody()) ? [] : $request->getJsonRawBody(true);
-        $params = array_merge_recursive(
-            $request->get(),
-            $request->getPut(),
-            $request->getPost(),
-            $params,
-        );
         
-        return $params;
+        if (!empty($filters)) {
+            foreach ($filters as $filter) {
+                $request->setParameterFilters($filter['name'], $filter['filters'], $filter['scope']);
+            }
+        }
+        
+//        $params = empty($request->getRawBody()) ? [] : $request->getJsonRawBody(true); // @TODO handle this differently
+        return array_merge_recursive(
+            $request->getFilteredQuery(), // $_GET
+            $request->getFilteredPut(), // $_PUT
+            $request->getFilteredPost(), // $_POST
+        );
     }
     
     /**

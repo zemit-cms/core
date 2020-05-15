@@ -18,11 +18,13 @@ trait Position {
             $this->getEventsManager()->attach('model', function($event, Model $entity) use ($field, $idField) {
                 switch ($event->getType()) {
                     case 'beforeValidation':
-                        // @todo if position field is empty, force current max(position)+1
+                        // if position field is empty, force current max(position)+1
+                        $lastPosition = self::findFirst(['order' => $field . ' DESC']);
+                        $this->$field = $lastPosition ? $lastPosition->$field + 1 : 1;
                         break;
                     case 'afterSave':
                         if ($entity->hasSnapshotData() && $entity->hasUpdated($field)) {
-                            $snapshot = $entity->getOldSnapshotData();
+                            $snapshot = $entity->getOldSnapshotData() ?: $entity->getSnapshotData();
                             $entityPosition = $entity->{'get' . ucfirst($field)}();
                             $entityId = $entity->{'get' . ucfirst($idField)}();
                             
@@ -40,11 +42,13 @@ trait Position {
                                     $updatePositionRaw = 'UPDATE `' . $entity->getSource() . '` SET `'.$uField.'` = `'.$uField.'`-1 WHERE `'.$uField.'` > :oldPosition and `'.$uField.'` <= :position and `'.$idField.'` <> :id';
                                 }
 //                                $entity->getModelsManager()->executeQuery($updatePositionQuery, [$entityId, $entityPosition, $snapshot[$field]]);
-                                $entity->getWriteConnection()->query($updatePositionRaw, [
-                                    'id' => $entityId,
-                                    'position' => $entityPosition,
-                                    'oldPosition' => $snapshot[$field],
-                                ]);
+                                if (!empty($updatePositionRaw)) {
+                                    $entity->getWriteConnection()->query($updatePositionRaw, [
+                                        'id' => $entityId,
+                                        'position' => $entityPosition,
+                                        'oldPosition' => $snapshot[$field],
+                                    ]);
+                                }
                             }
                         }
                         break;
