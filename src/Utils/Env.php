@@ -39,7 +39,7 @@ class Env
      * @return \Dotenv\Loader
      */
     public static function getDotenv(array $filePath = null) {
-        $filePath ??= dirname($_SERVER['DOCUMENT_ROOT']);
+        $filePath ??= dirname($_SERVER['DOCUMENT_ROOT'] ?: APP_PATH) ?: getcwd();
         self::$dotenv ??= Dotenv::create($filePath);
         self::$vars ??= self::$dotenv->load();
         return self::$dotenv;
