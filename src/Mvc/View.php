@@ -103,6 +103,6 @@ class View extends \Phalcon\Mvc\View
         }
         
         // Be happy
-        return $content;
+        return $content ?? '';
     }
 }
