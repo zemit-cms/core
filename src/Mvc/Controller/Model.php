@@ -89,7 +89,7 @@ trait Model
      *
      * @return null|int Default: 1000
      */
-    protected function getLimit()
+    protected function getLimit() : int
     {
         return (int)$this->getParam('limit', 'int', 1000);
     }
@@ -99,9 +99,41 @@ trait Model
      *
      * @return null|int Default: 0
      */
-    protected function getOffset()
+    protected function getOffset() : int
     {
         return (int)$this->getParam('offset', 'int', 0);
+    }
+    
+    /**
+     * Get group
+     *
+     * @return array[string]|string|null
+     */
+    protected function getGroup()
+    {
+        return $this->getParam('group', 'string');
+    }
+    
+    /**
+     * Get distinct
+     * @TODO see how to implement this, maybe an action itself
+     *
+     * @return array[string]|string|null
+     */
+    protected function getDistinct()
+    {
+        return $this->getParam('distinct', 'string');
+    }
+    
+    /**
+     * Get columns
+     * @TODO see how to implement this
+     *
+     * @return array[string]|string|null
+     */
+    protected function getColumns()
+    {
+        return $this->getParam('columns', 'string');
     }
     
     /**
@@ -323,8 +355,11 @@ trait Model
         $find['limit'] = $this->getLimit();
         $find['offset'] = $this->getOffset();
         $find['order'] = $this->getOrder();
+        $find['columns'] = $this->getColumns();
+        $find['distinct'] = $this->getDistinct();
+        $find['group'] = $this->getGroup();
         
-        return $find;
+        return array_filter($find);
     }
     
     /**
@@ -341,7 +376,7 @@ trait Model
             unset($find['offset']);
         }
         
-        return $find;
+        return array_filter($find);
     }
     
     /**
@@ -375,11 +410,11 @@ trait Model
         }
         
 //        $params = empty($request->getRawBody()) ? [] : $request->getJsonRawBody(true); // @TODO handle this differently
-        return array_values(array_filter(array_merge_recursive(
+        return array_filter(array_merge_recursive(
             $request->getFilteredQuery(), // $_GET
             $request->getFilteredPut(), // $_PUT
             $request->getFilteredPost(), // $_POST
-        )));
+        ));
     }
     
     /**
