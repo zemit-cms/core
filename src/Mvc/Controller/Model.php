@@ -215,6 +215,7 @@ trait Model
                     case '>=':
                     case '<=':
                     case 'in':
+                    case 'between':
                     case 'not in':
                     case 'is null':
                     case 'is not null':
@@ -374,11 +375,11 @@ trait Model
         }
         
 //        $params = empty($request->getRawBody()) ? [] : $request->getJsonRawBody(true); // @TODO handle this differently
-        return array_merge_recursive(
+        return array_values(array_filter(array_merge_recursive(
             $request->getFilteredQuery(), // $_GET
             $request->getFilteredPut(), // $_PUT
             $request->getFilteredPost(), // $_POST
-        );
+        )));
     }
     
     /**
