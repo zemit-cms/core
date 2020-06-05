@@ -182,7 +182,6 @@ trait Expose {
         /** @var Model $value */
         $value = $builder->getValue();
         
-        
         if (is_array($value) || is_object($value)) {
             $toParse = [];
             if (is_array($value)) {
@@ -191,12 +190,14 @@ trait Expose {
             else if (method_exists($value, 'toArray')) {
                 $toParse = $value->toArray();
             }
+            
+            // @TODO fix / refactor this
             if (isset($value->dirtyRelated)) {
                 foreach ($value->dirtyRelated as $dirtyRelatedKey => $dirtyRelated) {
                     $toParse[$dirtyRelatedKey] = $dirtyRelated ?? false;
                 }
             }
-            
+    
             // si aucune column demandé et que l'expose est à false
             if (is_null($columns) && !$builder->getExpose()) {
                 return array();

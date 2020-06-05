@@ -100,13 +100,15 @@ class Rest extends \Phalcon\Mvc\Controller
         
         /** @var Resultset $list */
         $find = $this->getFind();
-        $list = $model::with($this->getWith() ? : [], $find ? : []);
+        $with = $model::with($this->getWith() ? : [], $find ? : []);
+//        $list = $model::find($find ? : []);
         
         /**
          * @var int $key
          * @var \Zemit\Mvc\Model $item
          */
-        foreach ($list as $key => $item) {
+        $list = [];
+        foreach ($with as $key => $item) {
             $list[$key] = $item->expose($this->getExpose());
         }
         
