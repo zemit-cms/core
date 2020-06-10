@@ -94,15 +94,10 @@ class Model extends \Phalcon\Mvc\Model
     
     public function initialize()
     {
+        // Default model setup
         self::setup();
-        
-        // Prepare a new model manager
         $this->setEventsManager(new Manager());
-        
-        // Keep Snapshot
         $this->keepSnapshots(true);
-        
-        // Dynamic Update
         $this->useDynamicUpdate(true);
         
         // Timestamp Behaviors
@@ -118,6 +113,7 @@ class Model extends \Phalcon\Mvc\Model
         $this->addRestoredByBehavior();
 
         // Other Behaviors
+        $this->addSlugBehavior();
         $this->addSoftDeleteBehavior();
         $this->addBlameableBehavior();
         $this->addPositionBehavior();
