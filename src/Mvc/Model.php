@@ -237,7 +237,7 @@ class Model extends \Phalcon\Mvc\Model
     public function addUpdatedByBehavior() : void {
         $this->addBehavior(new Transformable([
             'beforeValidationOnUpdate' => [
-                'createdBy' => $this->getCurrentUser(),
+                'updatedBy' => $this->getCurrentUser(),
             ],
         ]));
     }
@@ -248,7 +248,7 @@ class Model extends \Phalcon\Mvc\Model
     public function addDeletedByBehavior() : void {
         $this->addBehavior(new Transformable([
             'beforeDelete' => [
-                'createdBy' => $this->getCurrentUser(),
+                'deletedBy' => $this->getCurrentUser(),
             ],
         ]));
     }
@@ -259,7 +259,7 @@ class Model extends \Phalcon\Mvc\Model
     public function addRestoredByBehavior() : void {
         $this->addBehavior(new Transformable([
             'beforeRestore' => [
-                'createdBy' => $this->getCurrentUser(),
+                'restoredBy' => $this->getCurrentUser(),
             ],
         ]));
     }
