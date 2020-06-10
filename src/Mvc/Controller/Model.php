@@ -426,7 +426,7 @@ trait Model
      *
      * @return bool|Resultset
      */
-    public function getSingle($id = null, $modelName = null, $with = null, $find = null)
+    public function getSingle($id = null, $modelName = null, $with = [], $find = null)
     {
         $id ??= (int)$this->getParam('id', 'int');
         $modelName ??= $this->getModelName();
@@ -440,17 +440,19 @@ trait Model
     
     /**
      * Saving model automagically
+     * @TODO Support Composite Primary Key
      *
-     * @param null $id
-     * @param null $entity
-     * @param null $post
-     * @param null $modelName
-     * @param null $whitelist
-     * @param null $columnMap
+     * @param null|int|string $id
+     * @param null|\Zemit\Mvc\Model $entity
+     * @param null|mixed $post
+     * @param null|string $modelName
+     * @param null|array $whitelist
+     * @param null|array $columnMap
+     * @param null|array $with
      *
      * @return array
      */
-    protected function saveModel($id = null, $entity = null, $post = null, $modelName = null, $whitelist = null, $columnMap = null)
+    protected function save($id = null, $entity = null, $post = null, $modelName = null, $whitelist = null, $columnMap = null, $with = null)
     {
         $single = false;
         $retList = [];
@@ -460,6 +462,7 @@ trait Model
         $post ??= $this->getParams();
         $whitelist ??= $this->getWhitelist();
         $columnMap ??= $this->getColumnMap();
+        $with ??= $this->getWith();
         
         // Check if multi-d post
         if (!empty($id) || !isset($post[0]) || !is_array($post[0])) {
@@ -481,14 +484,12 @@ trait Model
                 $singlePostEntity = new $modelName();
             }
             
-            // begin
             $singlePostEntity->assign($singlePost, $whitelist, $columnMap);
             $ret['saved'] = $singlePostEntity->save();
             $ret['messages'] = $this->getRestMessages($singlePostEntity);
             $ret['model'] = get_class($singlePostEntity);
             $ret['source'] = $singlePostEntity->getSource();
-            $ret[$single ? 'single' : 'list'] = $this->getSingle($singlePostEntity->getId(), $modelName);
-            // rollback
+            $ret[$single ? 'single' : 'list'] = $this->getSingle($singlePostEntity->getId(), $modelName, $with);
             
             $retList []= $ret;
         }

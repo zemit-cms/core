@@ -46,18 +46,22 @@ class Rest extends \Phalcon\Mvc\Controller
             
             $this->dispatcher->forward(['action' => 'save']);
             
-        } else if ($this->request->isDelete()) {
+        }
+        else if ($this->request->isDelete()) {
             
             $this->dispatcher->forward(['action' => 'delete']);
             
-        } else if ($this->request->isGet()) {
+        }
+        else if ($this->request->isGet()) {
             
             if (is_null($id)) {
                 $this->dispatcher->forward(['action' => 'getAll']);
-            } else {
+            }
+            else {
                 $this->dispatcher->forward(['action' => 'get']);
             }
-        } else if ($this->request->isOptions()) {
+        }
+        else if ($this->request->isOptions()) {
             
             // @TODO handle this correctly
             return $this->setRestResponse(['result' => 'OK']);
@@ -139,14 +143,16 @@ class Rest extends \Phalcon\Mvc\Controller
             $csv->setOutputBOM(Writer::BOM_UTF8);
             $csv->insertOne(array_keys($list[0]));
             $csv->insertAll($list);
-            $csv->output(ucfirst(Slug::generate(basename(str_replace('\\', '/', $this->getModelName())))) . ' List ('.date('Y-m-d').').csv');
+            $csv->output(ucfirst(Slug::generate(basename(str_replace('\\', '/', $this->getModelName())))) . ' List (' . date('Y-m-d') . ').csv');
             die;
         }
+        
         return $response;
     }
     
     /**
      * Count a record list
+     * @TODO add total count / deleted count / active count
      *
      * @return \Phalcon\Http\ResponseInterface
      */
@@ -171,12 +177,13 @@ class Rest extends \Phalcon\Mvc\Controller
     {
         /** @var \Zemit\Mvc\Model $model */
         $model = $this->getModelNameFromController();
-        $instance = new $model();
-        $instance->assign($this->getParams(), $this->getWhitelist(), $this->getColumnMap());
         
-        $this->view->model = get_class($instance);
-        $this->view->source = $instance->getSource();
-        $this->view->single = $instance->expose($this->getExpose());
+        $entity = new $model();
+        $entity->assign($this->getParams(), $this->getWhitelist(), $this->getColumnMap());
+        
+        $this->view->model = get_class($entity);
+        $this->view->source = $entity->getSource();
+        $this->view->single = $entity->expose($this->getExpose());
         
         return $this->setRestResponse();
     }
@@ -186,27 +193,68 @@ class Rest extends \Phalcon\Mvc\Controller
      *
      * @return \Phalcon\Http\ResponseInterface
      */
-    public function validateAction()
+    public function validateAction($id = null)
     {
         /** @var \Zemit\Mvc\Model $model */
         $model = $this->getModelNameFromController();
         
         /** @var \Zemit\Mvc\Model $instance */
-        $instance = new $model();
-        $instance->assign($this->getParams(), $this->getWhitelist(), $this->getColumnMap());
-        foreach ([ // @see https://docs.phalcon.io/4.0/en/db-models-events
-                     'prepareSave',
-                     'validation',
-                 ] as $methodName) {
-            if (method_exists($instance, $methodName)) {
-                $instance->$methodName();
+        $entity = $this->getSingle($id);
+        $new = !$entity;
+        
+        if ($new) {
+            $entity = new $model();
+        }
+    
+        $entity->assign($this->getParams(), $this->getWhitelist(), $this->getColumnMap());
+    
+        /**
+         * Event to run
+         * @see https://docs.phalcon.io/4.0/en/db-models-events
+         */
+        $events = [
+            'beforeCreate' => null,
+            'beforeUpdate' => null,
+            'beforeSave' => null,
+            'beforeValidationOnCreate' => null,
+            'beforeValidationOnUpdate' => null,
+            'beforeValidation' => null,
+            'prepareSave' => null,
+            'validation' => null,
+            'afterValidationOnCreate' => null,
+            'afterValidationOnUpdate' => null,
+            'afterValidation' => null,
+        ];
+        
+        // run events, as it would normally
+        foreach ($events as $event => $state) {
+            
+            $this->skipped = false;
+            
+            // skip depending wether it's a create or update
+            if (str_contains($event, $new? 'Update' : 'Create')) {
+                continue;
+            }
+            
+            // fire the event, allowing to fail or skip
+            $events[$event] = $entity->fireEventCancel($event);
+            if ($events[$event] === false) {
+                
+                // event failed
+                break;
+            }
+            
+            // event was skipped, just for consistencies purpose
+            if ($this->skipped) {
+                continue;
             }
         }
         
-        $this->view->model = get_class($instance);
-        $this->view->source = $instance->getSource();
-        $this->view->single = $instance->expose($this->getExpose());
-        $this->view->messages = $this->getRestMessages($instance);
+        $this->view->model = get_class($entity);
+        $this->view->source = $entity->getSource();
+        $this->view->single = $entity->expose($this->getExpose());
+        $this->view->messages = $this->getRestMessages($entity);
+        $this->view->events = $events;
         $this->view->validated = empty($this->view->messages);
         
         return $this->setRestResponse($this->view->validated);
@@ -223,7 +271,7 @@ class Rest extends \Phalcon\Mvc\Controller
      */
     public function saveAction($id = null)
     {
-        $this->view->setVars($this->saveModel($id));
+        $this->view->setVars($this->save($id));
         
         return $this->setRestResponse($this->view->saved);
     }
@@ -269,6 +317,7 @@ class Rest extends \Phalcon\Mvc\Controller
         
         if (!$single) {
             $this->response->setStatusCode(404, 'Not Found');
+            
             return false;
         }
         
@@ -283,7 +332,8 @@ class Rest extends \Phalcon\Mvc\Controller
      *
      * @return bool|\Phalcon\Http\ResponseInterface
      */
-    public function reorderAction($id = null) {
+    public function reorderAction($id = null)
+    {
         $single = $this->getSingle($id);
         
         $position = $this->getParam('position', 'int');
@@ -291,12 +341,13 @@ class Rest extends \Phalcon\Mvc\Controller
         $this->view->reordered = $single ? $single->reorder($position) : false;
         $this->view->single = $single ? $single->expose($this->getExpose()) : false;
         $this->view->messages = $single ? $this->getRestMessages($single) : false;
-    
+        
         if (!$single) {
             $this->response->setStatusCode(404, 'Not Found');
+            
             return false;
         }
-    
+        
         return $this->setRestResponse($this->view->reordered);
     }
     
