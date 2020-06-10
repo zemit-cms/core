@@ -106,7 +106,7 @@ final class EagerLoad
                             $relReferencedField
                         )
                     )
-                    ->where('['.$relIrModel.'].[deleted] = 0') // @todo do this correctly
+                    ->where('['.$relIrModel.'].[deleted] <> 1') // @todo do this correctly
                     ->inWhere("[{$relIrModel}].[{$relIrField}]", $bindValues)
                 ;
             } else {
@@ -117,7 +117,7 @@ final class EagerLoad
                 $relIrValues = new QueryBuilder;
                 $relIrValues = $relIrValues
                     ->from($relIrModel)
-                    ->where('['.$relIrModel.'].[deleted] = 0') // @todo do this correctly
+                    ->where('['.$relIrModel.'].[deleted] <> 1') // @todo do this correctly
                     ->inWhere("[{$relIrModel}].[{$relIrField}]", $bindValues)
                     ->getQuery()
                     ->execute()
