@@ -170,7 +170,6 @@ class Model extends \Phalcon\Mvc\Model
      * Created At Timestamp
      */
     public function addCreatedAtBehavior() : void {
-        // Created Timestamp
         $this->addBehavior(new Timestampable([
             'beforeValidationOnCreate' => [
                 'field' => 'createdAt',
@@ -183,7 +182,6 @@ class Model extends \Phalcon\Mvc\Model
      * Updated At Timestamp
      */
     public function addUpdatedAtBehavior() : void {
-        // Updated Timestamp
         $this->addBehavior(new Timestampable([
             'beforeValidationOnUpdate' => [
                 'field' => 'updatedAt',
@@ -270,7 +268,7 @@ class Model extends \Phalcon\Mvc\Model
                     $model = $builder->getModel();
                     $value = $builder->getValue();
                     if (!isset($value)) {
-                        $value = $model->getLabel() ?? $model->toJson();
+                        $value = $model->getLabel() ?? $model->toJson() ?? json_encode($model->toArray() ?? $model);
                     }
                     return \Zemit\Utils\Slug::generate($value);
                 },
