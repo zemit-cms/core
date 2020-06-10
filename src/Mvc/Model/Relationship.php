@@ -253,8 +253,8 @@ trait Relationship
                         if (!($this->_keepMissingRelated[$alias] ?? true) && count($intermediatePrimaryKey) === 1) {
 
                             // handle if we empty the related
-                            if (empty($idListToKeep)) {
-                                $idListToKeep = [0];
+                            if (empty($nodeIdListToKeep)) {
+                                $nodeIdListToKeep = [0];
                             }
                             
                             /** @var ModelInterface $nodeEntity */
