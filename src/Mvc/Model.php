@@ -11,71 +11,315 @@
 namespace Zemit\Mvc;
 
 use Phalcon\Events\Manager;
-use Zemit\Mvc\Model\CreatedAt;
-use Zemit\Mvc\Model\CreatedBy;
-use Zemit\Mvc\Model\DeletedAt;
-use Zemit\Mvc\Model\DeletedBy;
+use Phalcon\Mvc\Model\Behavior\Timestampable;
+
+use Zemit\Mvc\Model\Behavior\Blameable;
+use Zemit\Mvc\Model\Behavior\Conditional;
+use Zemit\Mvc\Model\Behavior\Position;
+use Zemit\Mvc\Model\Behavior\SoftDelete;
+
+use Zemit\Mvc\Model\Behavior\Transformable;
 use Zemit\Mvc\Model\Eagerload;
 use Zemit\Mvc\Model\Expose\Expose;
 use Zemit\Mvc\Model\FindIn;
+use Zemit\Mvc\Model\Log;
 use Zemit\Mvc\Model\RawValue;
 use Zemit\Mvc\Model\Relationship;
 use Zemit\Mvc\Model\Slug;
 use Zemit\Mvc\Model\Snapshots;
-use Zemit\Mvc\Model\SoftDelete;
-use Zemit\Mvc\Model\UpdatedAt;
-use Zemit\Mvc\Model\UpdatedBy;
-use Zemit\Mvc\Model\Position;
 use Zemit\Mvc\Model\User;
-use Zemit\Mvc\Model\Utils;
+//use Zemit\Mvc\Model\Utils;
 
 /**
  * Class
  * Switches default Phalcon MVC into a simple HMVC to allow requests
  * between different namespaces and modules
+ *
+ * Terminology - Update vs Modify vs Change - Create vs Add - Delete vs Remove
+ * You create something from scratch. Like create a new report.
+ * Once in existence, you add something to a container. Like adding a person to the managers group.
+ * By modifying something you change its properties. Like modifying a design.
+ * By updating something you change the data, but not the design. Like updating someone's phone number.
+ * By changing something you replace one existing thing with another. Like changing your profile photo.
+ * By removing something you take it out of a container. Like removing something from the fridge - the thing still exist.
+ * By destroying something you do the opposite from creating - gone forever. Like destroying a toy.
+ * By deleting something you wipe if off, so it is no longer retrievable. This is said with the obvious exception
+ * that nowadays people are accustomed to the 'undelete' feature. So somewhat of an ambiguity here, but it is a standard
+ * in interfaces to use the term for permanent delation.
+ * @link https://ux.stackexchange.com/questions/43174/update-vs-modify-vs-change-create-vs-add-delete-vs-remove
+ *
+ * Events
+ * - afterCreate
+ * - afterDelete
+ * - afterFetch
+ * - afterSave
+ * - afterUpdate
+ * - afterValidation
+ * - afterValidationOnCreate
+ * - afterValidationOnUpdate
+ * - beforeDelete
+ * - beforeCreate
+ * - beforeSave
+ * - beforeUpdate
+ * - beforeValidation
+ * - beforeValidationOnCreate
+ * - beforeValidationOnUpdate
+ * - notDeleted
+ * - notSaved
+ * - onValidationFails
+ * - prepareSave
+ * - validation
+ * @link https://docs.phalcon.io/4.0/en/db-models#events
+ *
  * {@inheritdoc} \Phalcon\Mvc\Model
  * @package Zemit\Mvc
  */
 class Model extends \Phalcon\Mvc\Model
 {
-    use RawValue;
-    use Eagerload;
-    use Expose;
-    use FindIn;
-    use Utils;
+    const DELETED_FIELD = 'deleted';
+    const POSITION_FIELD = 'position';
     
-    use Slug;
-    use User;
-    use SoftDelete;
-    use CreatedAt;
-    use CreatedBy;
-    use UpdatedAt;
-    use UpdatedBy;
-    use DeletedAt;
-    use DeletedBy;
-    use Position;
-    use Relationship;
-    use Snapshots;
+    const YES = 1;
+    const NO = 0;
+    
+    const DATETIME_FORMAT = 'Y-m-d H:i:s';
+    const DATE_FORMAT = 'Y-m-d';
+    
+    use \Zemit\Mvc\Model\Eagerload;
+    use \Zemit\Mvc\Model\Relationship;
+    use \Zemit\Mvc\Model\Expose\Expose;
+    use \Zemit\Mvc\Model\FindIn;
+    use \Zemit\Mvc\Model\SoftDelete;
+//    use \Zemit\Mvc\Model\Utils;
     
     public function initialize()
     {
+        self::setup();
+        
+        // Prepare a new model manager
         $this->setEventsManager(new Manager());
-        $this->_setSnapshots();
         
-        // @TODO change those setter into behaviour if possible
-        // @TODO add merge behaviour (to merge entities together)
+        // Keep Snapshot
+        $this->keepSnapshots(true);
         
-        $this->_setSlug();
-        $this->_setUser();
-        $this->_setSoftDelete();
-        $this->_setCreatedAt();
-        $this->_setCreatedBy();
-        $this->_setUpdatedAt();
-        $this->_setUpdatedBy();
-        $this->_setDeletedAt();
-        $this->_setDeletedBy();
-        $this->_setPosition('orderId', 'id');
-    
+        // Dynamic Update
         $this->useDynamicUpdate(true);
+        
+        // Timestamp Behaviors
+        $this->addCreatedAtBehavior();
+        $this->addUpdatedAtBehavior();
+        $this->addDeletedAtBehavior();
+        $this->addRestoredAtBehavior();
+        
+        // Current User Behaviors
+        $this->addCreatedByBehavior();
+        $this->addUpdatedByBehavior();
+        $this->addDeletedByBehavior();
+        $this->addRestoredByBehavior();
+
+        // Other Behaviors
+        $this->addSoftDeleteBehavior();
+        $this->addBlameableBehavior();
+        $this->addPositionBehavior();
+    }
+    
+    /**
+     * Enables/disables options in the ORM
+     * - We do this here in order to keep behaviour consistencies between different environments
+     * --------------------------------
+     *  caseInsensitiveColumnMap - false - Case insensitive column map
+     *  castLastInsertIdToInt - false - Casts the lastInsertId to an integer
+     *  castOnHydrate - false - Automatic cast to original types on hydration
+     *  columnRenaming - true - Column renaming
+     *  disableAssignSetters - false - Disable setters
+     *  enableImplicitJoins - true - Enable implicit joins
+     *  events - true - Callbacks, hooks and event notifications from all the models
+     *  exceptionOnFailedMetaDataSave - false - Throw an exception when there is a failed meta-data save
+     *  exceptionOnFailedSave - false - Throw an exception when there is a failed save()
+     *  ignoreUnknownColumns - false - Ignore unknown columns on the model
+     *  lateStateBinding - false - Late state binding of the Phalcon\Mvc\Model::cloneResultMap() method
+     *  notNullValidations - true - Automatically validate the not null columns present
+     *  phqlLiterals - true - Literals in the PHQL parser
+     *  prefetchRecords - 0 - The number of records to prefetch when getting data from the ORM
+     *  updateSnapshotOnSave - true - Update snapshots on save()
+     *  virtualForeignKeys - true - Virtual foreign keys
+     * --------------------------------
+     * @link https://docs.phalcon.io/4.0/en/db-models#model-features
+     *
+     * @param array|null $options
+     */
+    public static function setup(array $options = null) : void
+    {
+        parent::setup(array_merge([
+            'caseInsensitiveColumnMap' => false,
+            'castLastInsertIdToInt' => true, // changed from default
+            'castOnHydrate' => true, // changed from default
+            'columnRenaming' => true,
+            'disableAssignSetters' => false,
+            'enableImplicitJoins' => true,
+            'events' => true,
+            'exceptionOnFailedMetaDataSave' => false,
+            'exceptionOnFailedSave' => false,
+            'ignoreUnknownColumns' => false,
+            'lateStateBinding' => false,
+            'notNullValidations' => true,
+            'phqlLiterals' => true,
+            'prefetchRecords' => 0,
+            'updateSnapshotOnSave' => true,
+            'virtualForeignKeys' => true,
+        ], $options ?? []));
+    }
+    
+    /**
+     * Created At Timestamp
+     */
+    public function addCreatedAtBehavior() : void {
+        // Created Timestamp
+        $this->addBehavior(new Timestampable([
+            'beforeValidationOnCreate' => [
+                'field' => 'createdAt',
+                'format' => 'Y-m-d H:i:s',
+            ],
+        ]));
+    }
+    
+    /**
+     * Updated At Timestamp
+     */
+    public function addUpdatedAtBehavior() : void {
+        // Updated Timestamp
+        $this->addBehavior(new Timestampable([
+            'beforeValidationOnUpdate' => [
+                'field' => 'updatedAt',
+                'format' => 'Y-m-d H:i:s',
+            ],
+        ]));
+    }
+    
+    /**
+     * Deleted At Timestamp
+     */
+    public function addDeletedAtBehavior() : void {
+        $this->addBehavior(new Timestampable([
+            'beforeDelete' => [
+                'field' => 'deletedAt',
+                'format' => 'Y-m-d H:i:s',
+            ],
+        ]));
+    }
+    
+    /**
+     * Restored At Timestamp
+     */
+    public function addRestoredAtBehavior() : void {
+        $this->addBehavior(new Timestampable([
+            'beforeRestore' => [
+                'field' => 'restoredAt',
+                'format' => 'Y-m-d H:i:s',
+            ],
+        ]));
+    }
+    
+    /**
+     * Created By
+     */
+    public function addCreatedByBehavior() : void {
+        $this->addBehavior(new Transformable([
+            'beforeValidationOnCreate' => [
+                'createdBy' => $this->getCurrentUser(),
+            ],
+        ]));
+    }
+    
+    /**
+     * Updated By
+     */
+    public function addUpdatedByBehavior() : void {
+        $this->addBehavior(new Transformable([
+            'beforeValidationOnUpdate' => [
+                'createdBy' => $this->getCurrentUser(),
+            ],
+        ]));
+    }
+    
+    /**
+     * Deleted By
+     */
+    public function addDeletedByBehavior() : void {
+        $this->addBehavior(new Transformable([
+            'beforeDelete' => [
+                'createdBy' => $this->getCurrentUser(),
+            ],
+        ]));
+    }
+    
+    /**
+     * Deleted By
+     */
+    public function addRestoredByBehavior() : void {
+        $this->addBehavior(new Transformable([
+            'beforeRestore' => [
+                'createdBy' => $this->getCurrentUser(),
+            ],
+        ]));
+    }
+    
+    /**
+     * Slug
+     */
+    public function addSlugBehavior() : void {
+        $this->addBehavior(new Transformable([
+            'beforeValidation' => [
+                'index' => function($builder) {
+                    $model = $builder->getModel();
+                    $value = $builder->getValue();
+                    if (!isset($value)) {
+                        $value = $model->getLabel() ?? $model->toJson();
+                    }
+                    return \Zemit\Utils\Slug::generate($value);
+                },
+            ],
+        ]));
+    }
+    
+    /**
+     * Soft Delete
+     */
+    public function addSoftDeleteBehavior() : void {
+        $this->addBehavior(new SoftDelete([
+            'field' => self::DELETED_FIELD,
+            'value' => self::YES,
+        ]));
+    }
+    
+    /**
+     * Blameable Audit User
+     */
+    public function addBlameableBehavior() : void {
+        $this->addBehavior(new Blameable([
+            'auditClass' => Audit::class,
+            'auditDetailClass' => AuditDetail::class,
+            'userClass' => User::class,
+        ]));
+    }
+    
+    /**
+     * Position
+     */
+    public function addPositionBehavior() : void {
+        $this->addBehavior(new Position([
+            'field' => self::POSITION_FIELD,
+        ]));
+    }
+    
+    protected function _postSaveRelatedRecords(\Phalcon\Db\Adapter\AdapterInterface $connection, $related): bool
+    {
+        [$success, $connection, $related] = $this->_prePostSaveRelatedRecords($connection, $related);
+        
+        return $success ? parent::_postSaveRelatedRecords($connection, $related) : false;
+    }
+    
+    public function getCurrentUser() {
+        return 1;
     }
 }

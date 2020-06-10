@@ -453,7 +453,7 @@ trait Model
     protected function saveModel($id = null, $entity = null, $post = null, $modelName = null, $whitelist = null, $columnMap = null)
     {
         $single = false;
-        $ret = [];
+        $retList = [];
         
         // Get the model name to play with
         $modelName ??= $this->getModelName();
@@ -469,8 +469,11 @@ trait Model
         
         // Save each posts
         foreach ($post as $key => $singlePost) {
+            $ret = [];
             
             $singlePostId = (!$single || empty($id)) ? $this->getParam('id', 'int', null, $singlePost) : $id;
+            
+            /** @var \Zemit\Mvc\Model $singlePostEntity */
             $singlePostEntity = (!$single || !isset($entity)) ? $this->getSingle($singlePostId, $modelName) : $entity;
             
             // Create entity if not exists
@@ -478,21 +481,19 @@ trait Model
                 $singlePostEntity = new $modelName();
             }
             
+            // begin
             $singlePostEntity->assign($singlePost, $whitelist, $columnMap);
-            $ret['saved'][$key] = $singlePostEntity->save();
-            $ret['messages'][$key] = $this->getRestMessages($singlePostEntity);
-            $ret['model'][$key] = get_class($singlePostEntity);
-            $ret['source'][$key] = $singlePostEntity->getSource();
-            $ret[$single ? 'single' : 'list'][$key] = $this->getSingle($singlePostEntity->id, $modelName);
+            $ret['saved'] = $singlePostEntity->save();
+            $ret['messages'] = $this->getRestMessages($singlePostEntity);
+            $ret['model'] = get_class($singlePostEntity);
+            $ret['source'] = $singlePostEntity->getSource();
+            $ret[$single ? 'single' : 'list'] = $this->getSingle($singlePostEntity->getId(), $modelName);
+            // rollback
             
-            if ($single) {
-                foreach ($ret as &$retCat) {
-                    $retCat = array_pop($retCat);
-                }
-            }
+            $retList []= $ret;
         }
         
-        return $ret;
+        return $single? $retList[0] : $retList;
     }
     
     /**

@@ -7,34 +7,6 @@ use Phalcon\Db\RawValue;
 
 trait SoftDelete {
     
-    protected $_softDeleteSettings;
-    
-    protected function _setSoftDelete($field = 'deleted', $deletedValue = 1, $notDeletedValue = 0) {
-        $this->_softDeleteSettings['field'] = $field;
-        $this->_softDeleteSettings['deletedValue'] = $deletedValue;
-        $this->_softDeleteSettings['notDeletedValue'] = $notDeletedValue;
-        
-        // make sure the property exists before to add the feature to the model
-        if (property_exists($this, $field)) {
-            
-            // add the SoftDelete behavior
-            $this->addBehavior(new Behavior\SoftDelete(array(
-                'field' => $field,
-                'value' => $deletedValue
-            )));
-
-            // attach the event to escape validation error and set the notDeletedValue or the default raw sql value
-            $this->getEventsManager()->attach('model', function($event, $entity) use($field, $notDeletedValue) {
-                if ($event->getType() === 'beforeValidationOnCreate') {
-                    if (property_exists($entity, $field) && empty($entity->$field)) {
-                        $entity->$field = is_null($notDeletedValue) ? new RawValue('default') : $notDeletedValue;
-                    }
-                }
-                return true;
-            });
-        }
-    }
-    
     /**
      * Helper method to check if the row is soft deleted
      * @param null $field
@@ -43,10 +15,10 @@ trait SoftDelete {
      *
      * @return bool|null Bool if we know for sure, null if abnormal
      */
-    public function _isDeleted($field = null, $deletedValue = null, $notDeletedValue = null) {
-        $field ??= $this->_softDeleteSettings['field'];
-        $deletedValue ??= $this->_softDeleteSettings['deletedValue'];
-        $notDeletedValue ??= $this->_softDeleteSettings['notDeletedValue'];
+    public function isDeleted($field = null, $deletedValue = null, $notDeletedValue = null) {
+        $field ??= self::DELETED_FIELD;
+        $deletedValue ??= self::YES;
+        $notDeletedValue ??= self::NO;
         
         if (property_exists($this, $field)) {
             if ($this->$field === $deletedValue) {
@@ -62,11 +34,56 @@ trait SoftDelete {
         return false;
     }
     
+    /**
+     * Restore a previously Soft-deleted entry
+     * @todo add a check from orm.events setup state
+     * Events:
+     * - beforeRestore
+     * - notRestored
+     * - afterRestore
+     *
+     * @param null $field
+     * @param null $notDeletedValue
+     *
+     * @return bool
+     */
     public function restore($field = null, $notDeletedValue = null) {
-        $field ??= $this->_softDeleteSettings['field'] ?? 'deleted';
-        $notDeletedValue ??= $this->_softDeleteSettings['notDeletedValue'] ?? 0;
+        if (true || ini_get('orm.events')) {
+            $this->skipped = false;
+            
+            // fire event, allowing to stop options or skip the current operation
+            if ($this->fireEventCancel('beforeRestore') === false) {
+                return false;
+            }
+            
+            if ($this->skipped) {
+                return true;
+            }
+        }
+        
+        // get settings
+        $field ??= self::DELETED_FIELD;
+        $notDeletedValue ??= self::NO;
+        
+        // restore
         $this->assign([$field => $notDeletedValue], [$field]);
-        return $this->save() && (!$this->hasSnapshotData() || $this->hasUpdated($field));
+        $save = $this->save();
+        
+        // check if the entity was really restored
+        $value = $this->{'get' . ucfirst($field)}() ?? $this->$field;
+        $restored = $save && $value === $notDeletedValue;
+    
+        // fire events
+        if (true || ini_get('orm.events')) {
+            if (!$restored) {
+                $this->fireEvent('notRestored');
+            }
+            else {
+                $this->fireEvent('afterRestore');
+            }
+        }
+        
+        return $restored;
     }
 
 }

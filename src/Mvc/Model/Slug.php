@@ -12,7 +12,7 @@ trait Slug {
             $this->getEventsManager()->attach('model', function($event, $entity) use ($slugField, $fromField) {
                 switch ($event->getType()) {
                     case 'beforeValidation':
-                        if (property_exists($entity, $slugField) && property_exists($entity, $fromField) && !empty($entity->$fromField)) {
+                        if (property_exists($entity, $slugField) && property_exists($entity, $fromField) && !empty($entity->$fromField) && is_null($entity->$slugField)) {
                             $entity->$slugField = PhalconSlug::generate($entity->$fromField);
                         }
                         break;
