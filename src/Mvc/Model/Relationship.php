@@ -75,60 +75,65 @@ trait Relationship
                 else if (is_array($relationData) || $relationData instanceof \Traversable) {
                     $assign = [];
                     
-                    foreach ($relationData as $traversedKey => $traversedData) {
-                        
-                        // Array of things
-                        if (is_int($traversedKey)) {
-                            $entity = null;
-                            
-                            // Using bool as behaviour to delete missing relationship or keep them
-                            // @TODO find a better way... :(
-                            // if [alias => [true, ...]
-                            switch ($traversedData) {
-                                case 'false':
-                                    $traversedData = false;
-                                    break;
-                                case 'true':
-                                    $traversedData = true;
-                                    break;
-                            }
-                            if (is_bool($traversedData)) {
-                                $this->_keepMissingRelated[$alias] = $traversedData;
-                                continue;
-                            }
-                            
-                            // if [alias => [1, 2, 3, ...]]
-                            if (is_int($traversedData) || is_string($traversedData)) {
-                                $traversedData = [$referencedFields[0] => $traversedData];
-                            }
-                            
-                            // if [alias => AliasModel]
-                            if ($traversedData instanceof ModelInterface) {
-                                
-                                if ($traversedData instanceof $referencedModel) {
-                                    $entity = $traversedData;
+                    if (empty($relationData)) {
+                        $assign = $this->_getEntityFromData($relationData, $referencedFields, $referencedModel);
+                    }
+                    else {
+                        foreach ($relationData as $traversedKey => $traversedData) {
+        
+                            // Array of things
+                            if (is_int($traversedKey)) {
+                                $entity = null;
+            
+                                // Using bool as behaviour to delete missing relationship or keep them
+                                // @TODO find a better way... :(
+                                // if [alias => [true, ...]
+                                switch ($traversedData) {
+                                    case 'false':
+                                        $traversedData = false;
+                                        break;
+                                    case 'true':
+                                        $traversedData = true;
+                                        break;
                                 }
-                                else {
-                                    throw new Exception('Instance of `' . get_class($traversedData) . '` received on model `' . $modelClass . '` in alias `' . $alias . ', expected instance of `' . $referencedModel . '`', 400);
+                                if (is_bool($traversedData)) {
+                                    $this->_keepMissingRelated[$alias] = $traversedData;
+                                    continue;
+                                }
+            
+                                // if [alias => [1, 2, 3, ...]]
+                                if (is_int($traversedData) || is_string($traversedData)) {
+                                    $traversedData = [$referencedFields[0] => $traversedData];
+                                }
+            
+                                // if [alias => AliasModel]
+                                if ($traversedData instanceof ModelInterface) {
+                
+                                    if ($traversedData instanceof $referencedModel) {
+                                        $entity = $traversedData;
+                                    }
+                                    else {
+                                        throw new Exception('Instance of `' . get_class($traversedData) . '` received on model `' . $modelClass . '` in alias `' . $alias . ', expected instance of `' . $referencedModel . '`', 400);
+                                    }
+                                }
+            
+                                // if [alias => [[id => 1], [id => 2], [id => 3], ....]]
+                                else if (is_array($traversedData) || is_object($traversedData)) {
+                
+                                    $entity = $this->_getEntityFromData($traversedData, $referencedFields, $referencedModel);
+                                }
+            
+                                if ($entity) {
+                                    $assign [] = $entity;
                                 }
                             }
-                            
-                            // if [alias => [[id => 1], [id => 2], [id => 3], ....]]
-                            else if (is_array($traversedData) || is_object($traversedData)) {
-                                
-                                $entity = $this->_getEntityFromData($traversedData, $referencedFields, $referencedModel);
+        
+                            // if [alias => [id => 1]]
+                            else {
+            
+                                $assign = $this->_getEntityFromData($relationData, $referencedFields, $referencedModel);
+                                break;
                             }
-                            
-                            if ($entity) {
-                                $assign [] = $entity;
-                            }
-                        }
-                        
-                        // if [alias => [id => 1]]
-                        else {
-                            
-                            $assign = $this->_getEntityFromData($relationData, $referencedFields, $referencedModel);
-                            break;
                         }
                     }
                 }

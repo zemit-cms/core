@@ -158,7 +158,7 @@ class Model extends \Phalcon\Mvc\Model
             'exceptionOnFailedSave' => false,
             'ignoreUnknownColumns' => false,
             'lateStateBinding' => false,
-            'notNullValidations' => true,
+            'notNullValidations' => false, // changed from default @todo see if we can
             'phqlLiterals' => true,
             'prefetchRecords' => 0,
             'updateSnapshotOnSave' => true,

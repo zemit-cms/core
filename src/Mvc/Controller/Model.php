@@ -11,6 +11,7 @@
 namespace Zemit\Mvc\Controller;
 
 use Phalcon\Db\Column;
+use Phalcon\Messages\Message;
 use Phalcon\Mvc\Model\Resultset;
 use Phalcon\Text;
 use Zemit\Http\Request;
@@ -410,11 +411,11 @@ trait Model
         }
         
 //        $params = empty($request->getRawBody()) ? [] : $request->getJsonRawBody(true); // @TODO handle this differently
-        return array_filter(array_merge_recursive(
+        return array_merge_recursive(
             $request->getFilteredQuery(), // $_GET
             $request->getFilteredPut(), // $_PUT
             $request->getFilteredPost(), // $_POST
-        ));
+        );
     }
     
     /**
@@ -540,10 +541,11 @@ trait Model
         $ret = [];
         
         foreach ($list as $single) {
-            $validations = $single->getMessages();
-            if ($validations && is_array($validations)) {
-                foreach ($validations as $validation) {
-                    $validationFields = $validation->getField();
+            /** @var Messages $validations */
+            $messages = $single->getMessages();
+            if ($messages && is_array($messages)) {
+                foreach ($messages as $message) {
+                    $validationFields = $message->getField();
                     if (!is_array($validationFields)) {
                         $validationFields = [$validationFields];
                     }
@@ -552,8 +554,11 @@ trait Model
                             $ret[$validationField] = [];
                         }
                         $ret[$validationField][] = [
-                            'type' => $validation->getType(),
-                            'message' => $validation->getMessage(),
+                            'field' => $message->getField(),
+                            'code' => $message->getCode(),
+                            'type' => $message->getType(),
+                            'message' => $message->getMessage(),
+                            'metaData' => $message->getMetaData(),
                         ];
                     }
                 }
