@@ -10,15 +10,15 @@
 
 namespace Zemit\Mvc\Dispatcher;
 
-use Phalcon\Acl as PhalconAcl;
+use Phalcon\Acl;
 use Phalcon\Acl\Role;
 use Phalcon\Acl\Resource;
-use Phalcon\Di\Injectable;
 use Phalcon\Dispatcher\AbstractDispatcher;
 use Phalcon\Events\Event;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Acl\Adapter\Memory as AclList;
 use Phalcon\Text;
+use Zemit\Di\Injectable;
 
 /**
  * SecurityPlugin
@@ -27,90 +27,48 @@ use Phalcon\Text;
  */
 class Security extends Injectable
 {
-    // Public
-    public $publicResources = array(
-        'index' => array('index'),
-        'errors' => array('*'),
-        'login' => array('*'),
-        'google' => array('auth'),
-    );
+    public $permissions;
     
-    // User
-    public $userResources = array(
-    );
-    
-    // Admin
-    public $adminResources = array(
-    );
-    
-    // Dev
-    public $devResources = array(
-    );
+    public function __construct()
+    {
+        $this->permissions ??= $this->config->get('permissions');
+    }
     
     /**
      * Returns an existing or new access control list
      *
      * @returns AclList
      */
-    public function getAcl()
+    public function getAcl(string $permission = 'controllers')
     {
-        $resources = array(
-            'public' => $this->publicResources,
-            'user' => $this->userResources,
-            'admin' => array_merge_recursive($this->userResources, $this->adminResources),
-            'dev' => array_merge_recursive($this->userResources, $this->adminResources, $this->devResources),
-        );
+        $acl = new Acl\Adapter\Memory();
         
-        if (!isset($this->persistent->acl) || $this->config->debug) {
-            $acl = new AclList();
-            $acl->setDefaultAction(PhalconAcl::DENY);
-            $acl->addRole(new Role('public', 'Public'));
+        $roles = $this->permissions->roles->toArray() ?? [];
+        foreach ($roles as $role => $permissions) {
             
-            // Get db roles
-            $roles = \Zemit\Api\Models\Role::findByDeleted(0);
-    
-            // Register roles
-            foreach ($roles as $role) {
-                $acl->addRole(new Role($role->slug, $role->name));
-            }
+            $role = $role === '*' ? 'everyone' : $role;
+            $aclRole = new Acl\Role($role);
+            $acl->addRole($aclRole);
             
-            //Public area resources
-            $this->_fixCamelcaseHyphenResources($this->publicResources);
-            foreach ($this->publicResources as $resource => $actions) {
-                $acl->addResource(new Resource($resource), $actions);
-                foreach ($actions as $action) {
-                    $acl->allow('public', $resource, $action);
-                }
-            }
-            
-            // For each role, setup the Resources
-            foreach ($roles as $role) {
-    
-                //Public area resources
-                foreach ($this->publicResources as $resource => $actions) {
-                    foreach ($actions as $action) {
-                        $acl->allow($role->slug, $resource, $action);
-                    }
+            $components = $permissions[$permission] ?? [];
+            $components = is_array($components) ? $components : [$components];
+            foreach ($components as $component => $accessList) {
+                
+                if (empty($component)) {
+                    $component = $accessList;
+                    $accessList = '*';
                 }
                 
-                // Setup the Resources
-                if (isset($resources[$role->slug])) {
-                    
-                    $this->_fixCamelcaseHyphenResources($resources[$role->slug]);
-                    foreach ($resources[$role->slug] as $resource => $actions) {
-                        $acl->addResource(new Resource($resource), $actions);
-                        foreach ($actions as $action) {
-                            $acl->allow($role->slug, $resource, $action);
-                        }
-                    }
+                if ($component !== '*') {
+                    $aclComponent = new Acl\Component($component);
+                    $acl->addComponent($aclComponent, $accessList);
+                    $acl->allow($aclRole, $aclComponent, $accessList);
                 }
+                
             }
-    
-            //The acl is stored in session, APC would be useful here too
-            $this->persistent->acl = $acl;
         }
-        
-        return $this->persistent->acl;
+    
+        return $acl;
     }
     
     /**
@@ -121,99 +79,56 @@ class Security extends Injectable
      *
      * @return bool
      */
-    public function beforeDispatch(Event $event, AbstractDispatcher $dispatcher)
+    public function beforeDispatchLoop(Event $event, AbstractDispatcher $dispatcher)
     {
-        return;
-        $user = $this->zemit->getUser();
-        if ($user) {
-            $roles = $user->getRoles();
-        }
-        if (empty($roles)) {
-            $roles = array(new \Zemit\Api\Models\Role(array('name' => 'Public', 'slug' => 'public')));
-        }
-        
         // get controller and action
+        $module = $dispatcher->getModuleName();
+        $namespace = $dispatcher->getNamespaceName();
         $controller = $dispatcher->getControllerName();
+        $controllerClass = $dispatcher->getControllerClass();
         $action = $dispatcher->getActionName();
         
         $acl = $this->getAcl();
-        if (!$acl->isResource($controller)) {
-            $dispatcher->forward([
-                'controller' => 'errors',
-                'action' => 'notFound'
-            ]);
+        
+        // Security not found
+        if (!$acl->isComponent($controllerClass)) {
+            $dispatcher->forward($this->config->router->notFound->toArray());
             return false;
         }
-    
+        
         $allowed = false;
+        
+        $roles = $this->identity->getAclRoles();
         foreach ($roles as $role) {
-            $allowed = $acl->isAllowed($role->slug, $controller, $action);
+            $allowed = $acl->isAllowed($role, $controllerClass, $action);
             if ($allowed) {
                 break;
             }
         }
+        
         if (!$allowed) {
-            $role = $roles[0];
-            if ($role && $role->slug === 'public') {
-                
-                // Si pas connecté, redirige vers la page de connexion avec le ?redirect
-//                $uri = '/' . str_replace($this->url->getBaseUri(), null, $this->request->getURI());
-//                header('Location:' . $this->url->get(array(
-//                        'for' => 'backend-controller',
-//                        'controller' => 'login'
-//                    )) . (empty($uri)? null : '?redirect=' . rawurlencode($uri)));
-//                exit(0);
-                
-                //@TODO why, just why /allowedController/not-found
-                //dead pages = /backend/login/fndjsnfjkdsnjfds
-                $this->response->redirect(trim($this->url->get(array(
-                        'for' => 'backend-controller',
-                        'controller' => 'login'
-                    )) . (empty($uri)? null : '?redirect=' . rawurlencode($uri)), $this->url->getBaseUri()));
+            if (count($roles) > 1) {
+                if (
+                    $this->config->router->unauthorized->namespace === $namespace &&
+                    $this->config->router->unauthorized->module === $module &&
+                    $this->config->router->unauthorized->controller === $controller &&
+                    $this->config->router->unauthorized->action === $action
+                ) {
+                    return true;
+                }
+                $dispatcher->forward($this->config->router->unauthorized->toArray());
             }
             else {
-                
-                // Si connecté, ça veut dire qu'il n'est pas autorisé à voir la page en question
-                $dispatcher->forward(array(
-                    'controller' => 'errors',
-                    'action' => 'unauthorized'
-                ));
+                if (
+                    $this->config->router->forbidden->namespace === $namespace &&
+                    $this->config->router->forbidden->module === $module &&
+                    $this->config->router->forbidden->controller === $controller &&
+                    $this->config->router->forbidden->action === $action) {
+                    return true;
+                }
+                $dispatcher->forward($this->config->router->forbidden->toArray());
             }
             return false;
         }
-    }
-    
-    /**
-     *
-     * Add hyphen to resources
-     * Dirty fix
-     *
-     * Example:
-     * 'monProfil' => array('getAll');
-     * 'errors' => array('notFound');
-     *
-     * Becomes:
-     * 'monProfil' => array('get-all', 'getAll', 'getall');
-     * 'mon-profil' => array('get-all', 'getAll', 'getall');
-     * 'errors' => array('not-found', 'notFound', 'notfound');
-     *
-     * @param $resources
-     */
-    private function _fixCamelcaseHyphenResources(&$resources) {
-        if (!empty($resources)) {
-            foreach ($resources as $resourcesController => $resourcesActions) {
-                $hyphenResourcesActions = array();
-                foreach ($resourcesActions as $resourcesAction) {
-                    $hyphenResourcesActions []= $this->_fixCamelcaseHyphen($resourcesAction);
-                    $hyphenResourcesActions []= mb_strtolower($resourcesAction);
-                }
-                $resourcesActions = array_unique(array_merge($resourcesActions, $hyphenResourcesActions));
-                $resources[$resourcesController] = $resourcesActions;
-                $resources[$this->_fixCamelcaseHyphen($resourcesController)] = $resourcesActions;
-            }
-        }
-    }
-    private function _fixCamelcaseHyphen($string) {
-        return mb_strtolower(str_replace('_', '-', Text::uncamelize($string)));
     }
 }

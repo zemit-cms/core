@@ -13,6 +13,7 @@ namespace Zemit;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Ecdsa\Sha512;
+use Phalcon\Acl\Role;
 use Phalcon\Di\Injectable;
 use Phalcon\Messages\Message;
 use Phalcon\Validation\Validator\PresenceOf;
@@ -90,35 +91,40 @@ class Identity extends Injectable
     /**
      * @return string
      */
-    public function getSessionClass() {
+    public function getSessionClass()
+    {
         return $this->getOption('sessionClass') ?? \Zemit\Models\Session::class;
     }
     
     /**
      * @return string
      */
-    public function getUserClass() {
+    public function getUserClass()
+    {
         return $this->getOption('userClass') ?? \Zemit\Models\User::class;
     }
     
     /**
      * @return string
      */
-    public function getGroupClass() {
+    public function getGroupClass()
+    {
         return $this->getOption('groupClass') ?? \Zemit\Models\Group::class;
     }
     
     /**
      * @return string
      */
-    public function getRoleClass() {
+    public function getRoleClass()
+    {
         return $this->getOption('roleClass') ?? \Zemit\Models\Role::class;
     }
     
     /**
      * @return string
      */
-    public function getTypeClass() {
+    public function getTypeClass()
+    {
         return $this->getOption('roleClass') ?? \Zemit\Models\Type::class;
     }
     
@@ -218,7 +224,8 @@ class Identity extends Injectable
      *
      * @return bool
      */
-    public function hasRole($roles = null, $or = false) {
+    public function hasRole($roles = null, $or = false)
+    {
         return $this->has($roles, $this->getUser()->getSlugs(), $or);
     }
     
@@ -227,7 +234,8 @@ class Identity extends Injectable
      *
      * @return string|int|bool
      */
-    public function getUserId() {
+    public function getUserId()
+    {
         return false;
     }
     
@@ -254,7 +262,8 @@ class Identity extends Injectable
         foreach ([...$needles] as $needle) {
             if (is_array($needle)) {
                 $result [] = $this->has($needle, $haystack, !$or);
-            } else {
+            }
+            else {
                 $result [] = in_array($needle, $haystack, true);
             }
         }
@@ -279,7 +288,7 @@ class Identity extends Injectable
         $token ??= $this->security->getRandom()->hex(512);
         
         $sessionClass = $this->getSessionClass();
-        $session = $this->getSession($key, $token) ?: new $sessionClass();
+        $session = $this->getSession($key, $token) ? : new $sessionClass();
         
         if ($session && $refresh) {
             $token = $this->security->getRandom()->hex(512);
@@ -290,17 +299,16 @@ class Identity extends Injectable
         $session->setDate(date('Y-m-d H:i:s'));
         $store = ['key' => $session->getKey(), 'token' => $token];
         
-        ($save = $session->save())?
+        ($save = $session->save()) ?
             $this->session->set($this->sessionKey, $store) :
-            $this->session->remove($this->sessionKey)
-        ;
-    
+            $this->session->remove($this->sessionKey);
+        
         return [
             'saved' => $save,
-            'stored' =>  $this->session->has($this->sessionKey),
-            'refreshed' =>  $save && $refresh,
+            'stored' => $this->session->has($this->sessionKey),
+            'refreshed' => $save && $refresh,
             'validated' => $session->checkHash($session->getToken(), $session->getKey() . $token),
-            'messages' => $session? $session->getMessages() : [],
+            'messages' => $session ? $session->getMessages() : [],
             'jwt' => $this->getJwtToken($this->sessionKey, $store),
         ];
     }
@@ -309,7 +317,8 @@ class Identity extends Injectable
      * Return true if the user is currently logged in
      * @return bool
      */
-    public function isLoggedIn() {
+    public function isLoggedIn()
+    {
         return !!$this->getUser();
     }
     
@@ -318,10 +327,68 @@ class Identity extends Injectable
      *
      * @return User|bool
      */
-    public function getUser() {
+    public function getUser()
+    {
         $session = $this->getSession(...$this->getKeyToken());
         $user = $session ? $session->getRelated('User') : false;
+        
         return $user ?? false;
+    }
+    
+    /**
+     * Get the Roles related to the current session
+     * @return array
+     */
+    public function getRoles()
+    {
+        $user = $this->getUser();
+        $userClass = $this->getUserClass();
+        
+        $user = $userClass::findFirstWithById([
+            'RoleList',
+            'GroupList.RoleList',
+            'TypeList.GroupList.RoleList',
+        ], $user->getId());
+        
+        $roles = [];
+        if ($user) {
+            foreach ($user->rolelist as $role) {
+                $roles [$role->getIndex()] = $role;
+            }
+            
+            foreach ($user->groupList as $group) {
+                foreach ($group->roleList as $role) {
+                    $roles [$role->getIndex()] = $role;
+                }
+            }
+            
+            foreach ($user->typeList as $type) {
+                foreach ($type->groupList as $group) {
+                    foreach ($group->roleList as $role) {
+                        $roles [$role->getIndex()] = $role;
+                    }
+                }
+            }
+        }
+        
+        return $roles;
+    }
+    
+    /**
+     * @param array|null $roles
+     *
+     * @return array
+     */
+    public function getAclRoles(array $roles = null) {
+        $roles ??= $this->getRoles();
+    
+        $aclRoles = [];
+        $aclRoles['everyone'] = new Role('everyone');
+        foreach ($roles as $role) {
+            $aclRoles[$role->getIndex()] ??= new Role($role->getIndex());
+        }
+        
+        return array_values($aclRoles);
     }
     
     /**
@@ -362,12 +429,12 @@ class Identity extends Injectable
                 // password disabled, login failed
                 $validation->appendMessage(new Message('Password Login Disabled', 'password', 'LoginFailed', 401));
             }
-
+            
             else if (!$user->checkPassword($params['password'])) {
                 // password failed, login failed
                 $validation->appendMessage(new Message('Login Failed', ['email', 'password'], 'LoginFailed', 401));
             }
-
+            
             else if ($user->isDeleted()) {
                 // access forbidden, login failed
                 $validation->appendMessage(new Message('Login Forbidden', 'password', 'LoginForbidden', 403));
@@ -379,9 +446,9 @@ class Identity extends Injectable
                 $loggedInUser = $user;
             }
         }
-    
+        
         if ($session) {
-            $saved = $session->setUserId($loggedInUser? $loggedInUser->getId() : null)->save();
+            $saved = $session->setUserId($loggedInUser ? $loggedInUser->getId() : null)->save();
             foreach ($session->getMessages() as $message) {
                 $validation->appendMessage($message);
             }
@@ -399,7 +466,8 @@ class Identity extends Injectable
      *
      * @return bool|mixed|null
      */
-    public function logout() {
+    public function logout()
+    {
         $saved = false;
         
         $session = $this->getSession(...$this->getKeyToken());
@@ -417,7 +485,7 @@ class Identity extends Injectable
                 $validation->appendMessage($message);
             }
         }
-    
+        
         return [
             'saved' => $saved,
             'loggedIn' => $this->isLoggedIn(),
@@ -430,7 +498,8 @@ class Identity extends Injectable
      *
      * @return array
      */
-    public function getKeyToken() {
+    public function getKeyToken()
+    {
         $basicAuth = $this->request->getBasicAuth();
         $authorization = array_filter(explode(' ', $this->request->getHeader('Authorization') ? : ''));
         
@@ -498,7 +567,7 @@ class Identity extends Injectable
     /**
      * Get a claim
      * @TODO generate private & public keys
-     
+     *
      * @param string $token
      * @param string|null $claim
      *
@@ -507,6 +576,7 @@ class Identity extends Injectable
     public function getClaim(string $token, string $claim = null)
     {
         $jwt = (new Parser())->parse((string)$token);
+        
         return $claim ? $jwt->getClaim($claim) : $jwt->getClaims();
     }
     
