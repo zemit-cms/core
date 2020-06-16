@@ -181,7 +181,7 @@ DOC;
         $this->services();
         $this->application();
         $this->modules();
-        $this->router();
+//        $this->router(); // using serviceProvider now
     }
     
     /**
@@ -375,16 +375,7 @@ DOC;
      */
     public function router()
     {
-        return $this->fireSet($this->router,
-            $this->isConsole() ?
-                CliRouter::class :
-                Router::class,
-            $this->isConsole() ?
-                [true] :
-                [true, $this->application],
-            function (Bootstrap $bootstrap) {
-                $bootstrap->di['router'] = $this->router;
-            });
+        return $this->fireSet($this->router, $this->isConsole() ? CliRouter::class : Router::class, [true, $this->application]);
     }
     
     /**

@@ -8,11 +8,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Provider\Gravatar;
+namespace Zemit\Provider\Jwt;
 
-use Lcobucci\JWT\Configuration;
-use Lcobucci\JWT\FunctionalTests\UnsignedTokenTest;
-use Phalcon\Avatar\Gravatar;
+use Lcobucci\JWT\Builder;
 use Phalcon\Di\DiInterface;
 use Zemit\Provider\AbstractServiceProvider;
 
@@ -37,6 +35,7 @@ class ServiceProvider extends AbstractServiceProvider
     public function register(DiInterface $di) : void
     {
         $di->setShared($this->getName(), function () use ($di) {
+            return; //@todo
         });
     }
 }

@@ -10,9 +10,11 @@
 
 namespace Zemit\Mvc;
 
+use Phalcon\Config;
 use Phalcon\Events\Manager;
 use Phalcon\Mvc\Model\Behavior\Timestampable;
 
+use Phalcon\Security;
 use Zemit\Mvc\Model\Behavior\Blameable;
 use Zemit\Mvc\Model\Behavior\Conditional;
 use Zemit\Mvc\Model\Behavior\Position;
@@ -185,7 +187,7 @@ class Model extends \Phalcon\Mvc\Model
         $this->addBehavior(new Timestampable([
             'beforeValidationOnUpdate' => [
                 'field' => 'updatedAt',
-                'format' => 'Y-m-d H:i:s',
+                'format' => self::DATETIME_FORMAT,
             ],
         ]));
     }
@@ -197,7 +199,7 @@ class Model extends \Phalcon\Mvc\Model
         $this->addBehavior(new Timestampable([
             'beforeDelete' => [
                 'field' => 'deletedAt',
-                'format' => 'Y-m-d H:i:s',
+                'format' => self::DATETIME_FORMAT,
             ],
         ]));
     }
@@ -209,7 +211,7 @@ class Model extends \Phalcon\Mvc\Model
         $this->addBehavior(new Timestampable([
             'beforeRestore' => [
                 'field' => 'restoredAt',
-                'format' => 'Y-m-d H:i:s',
+                'format' => self::DATETIME_FORMAT,
             ],
         ]));
     }
@@ -316,4 +318,54 @@ class Model extends \Phalcon\Mvc\Model
     public function getCurrentUser() {
         return 1;
     }
+    
+    
+    /**
+     * Hash method using security salt
+     *
+     * @param string|null $string
+     *
+     * @return string
+     */
+    public function hash(string $string = null)
+    {
+        /** @var Config $config */
+        $config = $this->getDI()->get('config');
+        
+        /** @var Security $security */
+        $security = $this->getDI()->get('security');
+        
+        // Get the salt
+        $salt = $config->security->salt ?? null;
+        
+        return $security->hash($salt . $string);
+    }
+    
+    /**
+     * @param string $password
+     *
+     * @return bool If the hash is valid or not
+     */
+    public function checkHash(string $hash = null, string $string = null)
+    {
+        if (empty($hash)) {
+            return false;
+        }
+        
+        if (empty($string)) {
+            return false;
+        }
+        
+        /** @var Config $config */
+        $config = $this->getDI()->get('config');
+        
+        /** @var Security $security */
+        $security = $this->getDI()->get('security');
+        
+        // Get salt
+        $salt = $config->security->salt ?? null;
+        
+        return $security->checkHash($salt . $string, $hash);
+    }
+    
 }

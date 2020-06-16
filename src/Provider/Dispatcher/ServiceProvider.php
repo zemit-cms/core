@@ -13,11 +13,11 @@ namespace Zemit\Provider\Dispatcher;
 use Phalcon\Cli\Dispatcher as CliDispatcher;
 use Phalcon\Di\DiInterface;
 use Zemit\Mvc\Dispatcher as MvcDispatcher;
-use Zemit\Mvc\Dispatcher\Camelize as DispatchCamelize;
-use Zemit\Mvc\Dispatcher\Error as DispatchError;
-use Zemit\Mvc\Dispatcher\Rest as DispatchRest;
-use Zemit\Mvc\Dispatcher\Security as DispatchSecurity;
-use Zemit\Mvc\Dispatcher\Maintenance as DispatchMaintenance;
+use Zemit\Mvc\Dispatcher\Camelize;
+use Zemit\Mvc\Dispatcher\Error;
+use Zemit\Mvc\Dispatcher\Rest;
+use Zemit\Mvc\Dispatcher\Security;
+use Zemit\Mvc\Dispatcher\Maintenance;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
@@ -47,21 +47,21 @@ class ServiceProvider extends AbstractServiceProvider
             /**
              * Camelize
              */
-            $camelize = new DispatchCamelize();
+            $camelize = new Camelize();
             $camelize->setDI($di);
             $eventsManager->attach('dispatch', $camelize);
             
             /**
              * Security
              */
-            $security = new DispatchSecurity();
+            $security = new Security();
             $security->setDI($di);
             $eventsManager->attach('dispatch', $security);
             
             /**
              * Maintenance
              */
-            $maintenance = new DispatchMaintenance();
+            $maintenance = new Maintenance();
             $maintenance->setDI($di);
             $eventsManager->attach('dispatch', $maintenance);
             
@@ -72,14 +72,14 @@ class ServiceProvider extends AbstractServiceProvider
                 /**
                  * Error
                  */
-                $error = new DispatchError();
+                $error = new Error();
                 $error->setDI($di);
                 $eventsManager->attach('dispatch', $error);
     
                 /**
                  * Rest
                  */
-                $rest = new DispatchRest();
+                $rest = new Rest();
                 $rest->setDI($di);
                 $eventsManager->attach('dispatch', $rest);
                 

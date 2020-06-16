@@ -14,6 +14,8 @@ use PDO;
 use Zemit\Filter;
 use Zemit\Filters;
 use Zemit\Locale;
+use Zemit\Models\Session;
+use Zemit\Models\User;
 use Zemit\Providers;
 use Zemit\Utils\Env;
 use Zemit\Version;
@@ -111,7 +113,10 @@ class Config extends PhalconConfig
                     'migrations' => Env::get('APP_MIGRATION_PATH', PRIVATE_PATH . '/migrations/'),
                 ],
             ],
-            
+    
+            /**
+             * Debug Configuration
+             */
             'debug' => [
                 'enable' => Env::get('DEBUG_ENABLE', false),
                 'exception' => Env::get('DEBUG_EXCEPTION', true),
@@ -136,9 +141,18 @@ class Config extends PhalconConfig
                     ],
                 ],
             ],
+    
+            /**
+             * Identity Provider Configuration
+             */
+            'identity' => [
+                'userClass' => Env::get('IDENTITY_USER_CLASS', User::class),
+                'sessionClass' => Env::get('IDENTITY_SESSION_CLASS', Session::class),
+                'sessionKey' => Env::get('IDENTITY_SESSION_KEY', 'zemit-identity'),
+            ],
             
             /**
-             * Service Provider Configurations
+             * Service Provider Configuration
              */
             'providers' => [
                 // abstract => concrete
@@ -176,16 +190,21 @@ class Config extends PhalconConfig
                 Provider\Utils\ServiceProvider::class => Provider\Utils\ServiceProvider::class,
                 
                 // oauth2
+                Provider\Identity\ServiceProvider::class => Provider\Identity\ServiceProvider::class,
                 Provider\Oauth2Facebook\ServiceProvider::class => Provider\Oauth2Facebook\ServiceProvider::class,
                 Provider\Oauth2Google\ServiceProvider::class => Provider\Oauth2Google\ServiceProvider::class,
                 
                 // lib
+                Provider\Jwt\ServiceProvider::class => Provider\Jwt\ServiceProvider::class,
                 Provider\V8js\ServiceProvider::class => Provider\V8js\ServiceProvider::class,
                 Provider\Captcha\ServiceProvider::class => Provider\Captcha\ServiceProvider::class,
                 Provider\Gravatar\ServiceProvider::class => Provider\Gravatar\ServiceProvider::class,
 //                Snowair\Debugbar\ServiceProvider::class => \Snowair\Debugbar\ServiceProvider::class,
             ],
-            
+    
+            /**
+             * Logger Configuration
+             */
             'logger' => [
                 'path' => Env::get('APP_LOGGER_PATH', PRIVATE_PATH . '/log/'),
                 'format' => Env::get('APP_LOGGER_FORMAT', '[%date%][%type%] %message%'),

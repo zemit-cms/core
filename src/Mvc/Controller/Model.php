@@ -12,9 +12,11 @@ namespace Zemit\Mvc\Controller;
 
 use Phalcon\Db\Column;
 use Phalcon\Messages\Message;
+use Phalcon\Messages\Messages;
 use Phalcon\Mvc\Model\Resultset;
 use Phalcon\Text;
 use Zemit\Http\Request;
+use Zemit\Identity;
 
 trait Model
 {
@@ -194,18 +196,23 @@ trait Model
      * Get Created By Condition
      *
      * @return null
+     *
+     * @param string $identityColumn
+     * @param Identity|null $identity
+     *
+     * @return string|null
      */
-    protected function getIdentityCondition($identityColumn = 'createdBy', $identity = null)
+    protected function getIdentityCondition($identityColumn = 'createdBy', Identity $identity = null)
     {
-        $identity ??= $this->identity ?? false;
-        if ($identity) {
-            $this->setBind([
-                'identityColumn' => $identityColumn,
-                'identityIds' => [$identity->userId],
-            ]);
-            
-            return ':identityColumn: in ({identityIds:array})';
-        }
+//        $identity ??= $this->identity ?? false;
+//        if ($identity) {
+//            $this->setBind([
+//                'identityColumn' => $identityColumn,
+//                'identityId' => [$identity->getUserId()],
+//            ]);
+//
+//            return ':identityColumn: in ({identityIds:array})';
+//        }
         
         return null;
     }
@@ -528,6 +535,8 @@ trait Model
     /**
      * Get message from list of entities
      *
+     * @deprecated
+     *
      * @param $list Resultset|\Phalcon\Mvc\Model
      *
      * @return array|bool
@@ -541,25 +550,27 @@ trait Model
         $ret = [];
         
         foreach ($list as $single) {
-            /** @var Messages $validations */
-            $messages = $single->getMessages();
-            if ($messages && is_array($messages)) {
-                foreach ($messages as $message) {
-                    $validationFields = $message->getField();
-                    if (!is_array($validationFields)) {
-                        $validationFields = [$validationFields];
-                    }
-                    foreach ($validationFields as $validationField) {
-                        if (empty($ret[$validationField])) {
-                            $ret[$validationField] = [];
+            if ($single) {
+                /** @var Messages $validations */
+                $messages = $single instanceof Message? $list : $single->getMessages();
+                if ($messages && (is_array($messages) || $messages instanceof \Traversable)) {
+                    foreach ($messages as $message) {
+                        $validationFields = $message->getField();
+                        if (!is_array($validationFields)) {
+                            $validationFields = [$validationFields];
                         }
-                        $ret[$validationField][] = [
-                            'field' => $message->getField(),
-                            'code' => $message->getCode(),
-                            'type' => $message->getType(),
-                            'message' => $message->getMessage(),
-                            'metaData' => $message->getMetaData(),
-                        ];
+                        foreach ($validationFields as $validationField) {
+                            if (empty($ret[$validationField])) {
+                                $ret[$validationField] = [];
+                            }
+                            $ret[$validationField][] = [
+                                'field' => $message->getField(),
+                                'code' => $message->getCode(),
+                                'type' => $message->getType(),
+                                'message' => $message->getMessage(),
+                                'metaData' => $message->getMetaData(),
+                            ];
+                        }
                     }
                 }
             }
