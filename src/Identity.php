@@ -300,7 +300,7 @@ class Identity extends Injectable
             'stored' =>  $this->session->has($this->sessionKey),
             'refreshed' =>  $save && $refresh,
             'validated' => $session->checkHash($session->getToken(), $session->getKey() . $token),
-            'messages' => $session? $session->getMessages() ?: false : false,
+            'messages' => $session? $session->getMessages() : [],
             'jwt' => $this->getJwtToken($this->sessionKey, $store),
         ];
     }
