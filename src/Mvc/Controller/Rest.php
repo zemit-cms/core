@@ -253,7 +253,7 @@ class Rest extends \Phalcon\Mvc\Controller
         $this->view->model = get_class($entity);
         $this->view->source = $entity->getSource();
         $this->view->single = $entity->expose($this->getExpose());
-        $this->view->messages = $this->getRestMessages($entity);
+        $this->view->messages = $entity->getMessages();
         $this->view->events = $events;
         $this->view->validated = empty($this->view->messages);
         

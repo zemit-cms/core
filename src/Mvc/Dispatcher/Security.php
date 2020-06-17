@@ -37,20 +37,30 @@ class Security extends Injectable
     /**
      * Returns an existing or new access control list
      *
-     * @returns AclList
+     * @param $permissions
+     * @param string $controllers
+     * @param string $models
+     * @param string $inherit
+     *
+     * @return AclList
      */
-    public function getAcl(string $permission = 'controllers')
+    public function getAcl($permissions = null, string $controllers = 'controllers', string $models = 'models', string $inherit = 'inherit')
     {
         $acl = new Acl\Adapter\Memory();
         
-        $roles = $this->permissions->roles->toArray() ?? [];
-        foreach ($roles as $role => $permissions) {
+        $aclRoleList = [];
+    
+        $permissions ??= $this->permissions->roles->toArray() ?? [];
+        foreach ($permissions as $role => $rolePermission) {
             
             $role = $role === '*' ? 'everyone' : $role;
             $aclRole = new Acl\Role($role);
-            $acl->addRole($aclRole);
             
-            $components = $permissions[$permission] ?? [];
+            $aclRoleList[$role] = $aclRole;
+            
+            $acl->addRole($aclRole);
+    
+            $components = $rolePermission[$controllers] ?? [];
             $components = is_array($components) ? $components : [$components];
             foreach ($components as $component => $accessList) {
                 
@@ -68,6 +78,18 @@ class Security extends Injectable
             }
         }
     
+        /**
+         * Add inheritance (role extends)
+         */
+        foreach ($aclRoleList as $role => $aclRole) {
+            $inheritList = $permissions[$role][$inherit] ?? [];
+            $inheritList = is_array($inheritList)? $inheritList : [$inheritList];
+            foreach ($inheritList as $inheritRole) {
+                $acl->addInherit($aclRoleList[$role], $aclRoleList[$inheritRole]);
+            }
+        }
+        
+        
         return $acl;
     }
     
@@ -104,6 +126,11 @@ class Security extends Injectable
             if ($allowed) {
                 break;
             }
+        }
+        
+        $permissions = $this->config->permissions->toArray() ?? [];
+        if (empty($permissions)) {
+            $allowed = true;
         }
         
         if (!$allowed) {
