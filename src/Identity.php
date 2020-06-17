@@ -53,6 +53,11 @@ class Identity extends Injectable
     public $options = [];
     
     /**
+     * @var User
+     */
+    public $user;
+    
+    /**
      * @var string|int|bool|null
      */
     public $identity;
@@ -303,14 +308,14 @@ class Identity extends Injectable
             $this->session->set($this->sessionKey, $store) :
             $this->session->remove($this->sessionKey);
         
-        return array_merge($this->getIdentity(), [
+        return [
             'saved' => $save,
             'stored' => $this->session->has($this->sessionKey),
             'refreshed' => $save && $refresh,
             'validated' => $session->checkHash($session->getToken(), $session->getKey() . $token),
             'messages' => $session ? $session->getMessages() : [],
             'jwt' => $this->getJwtToken($this->sessionKey, $store),
-        ]);
+        ];
     }
     
     /**
@@ -318,15 +323,45 @@ class Identity extends Injectable
      *
      * @return array
      */
-    public function getIdentity($expose = null) {
-        $expose ??= ['User' => [false, 'id', 'firstName', 'lastName', 'category']];
+    public function getIdentity() {
         $user = $this->getUser();
-        $roleList = $this->getRoles();
+    
+        $roleList = [];
+        $groupList = [];
+        $typeList = [];
+        
+        if ($user) {
+            foreach ($user->rolelist as $role) {
+                $roleList [$role->getIndex()] = $role;
+            }
+        
+            foreach ($user->groupList as $group) {
+                $groupList [$group->getIndex()] = $group;
+                
+                foreach ($group->roleList as $role) {
+                    $roleList [$role->getIndex()] = $role;
+                }
+            }
+        
+            foreach ($user->typeList as $type) {
+                $typeList [$type->getIndex()] = $type;
+                
+                foreach ($type->groupList as $group) {
+                    $groupList [$group->getIndex()] = $group;
+                    
+                    foreach ($group->roleList as $role) {
+                        $roleList [$role->getIndex()] = $role;
+                    }
+                }
+            }
+        }
         
         return [
             'loggedIn' => $this->isLoggedIn(),
-            'user' => $user? $user->expose($expose) : false,
-            'roles' => array_keys($roleList),
+            'user' => $user,
+            'roleList' => $roleList,
+            'typeList' => $typeList,
+            'groupList' => $groupList,
         ];
     }
     
@@ -346,51 +381,52 @@ class Identity extends Injectable
      */
     public function getUser()
     {
-        $session = $this->getSession(...$this->getKeyToken());
-        $user = $session ? $session->getRelated('User') : false;
-        
-        return $user ?? false;
-    }
+        if (is_null($this->user)) {
+            
+            $session = $this->getSession(...$this->getKeyToken());
     
-    /**
-     * Get the Roles related to the current session
-     * @return array
-     */
-    public function getRoles()
-    {
-        $user = $this->getUser();
-        $userClass = $this->getUserClass();
-        
-        if ($user) {
-            $user = $userClass::findFirstWithById([
+            $userClass = $this->getUserClass();
+            $user = !$session? false : $userClass::findFirstWithById([
                 'RoleList',
                 'GroupList.RoleList',
                 'TypeList.GroupList.RoleList',
-            ], $user->getId());
-        }
-        
-        $roles = [];
-        if ($user) {
-            foreach ($user->rolelist as $role) {
-                $roles [$role->getIndex()] = $role;
-            }
-            
-            foreach ($user->groupList as $group) {
-                foreach ($group->roleList as $role) {
-                    $roles [$role->getIndex()] = $role;
-                }
-            }
-            
-            foreach ($user->typeList as $type) {
-                foreach ($type->groupList as $group) {
-                    foreach ($group->roleList as $role) {
-                        $roles [$role->getIndex()] = $role;
-                    }
-                }
+//            'GroupList.TypeList.RoleList', // @TODO do it
+//            'TypeList.RoleList', // @TODO do it
+            ], $session->getUserId());
+    
+            if ($user) {
+                $this->user = $user;
             }
         }
         
-        return $roles;
+        return $this->user;
+    }
+    
+    /**
+     * Get the "Roles" related to the current session
+     * @return array
+     */
+    public function getRoleList()
+    {
+        return $this->getIdentity()['roleList'] ?? [];
+    }
+    
+    /**
+     * Get the "Groups" related to the current session
+     * @return array
+     */
+    public function getGroupList()
+    {
+        return $this->getIdentity()['groupList'] ?? [];
+    }
+    
+    /**
+     * Get the "Types" related to the current session
+     * @return array
+     */
+    public function getTypeList()
+    {
+        return $this->getIdentity()['typeList'] ?? [];
     }
     
     /**
@@ -398,12 +434,12 @@ class Identity extends Injectable
      *
      * @return array
      */
-    public function getAclRoles(array $roles = null) {
-        $roles ??= $this->getRoles();
+    public function getAclRoles(array $roleList = null) {
+        $roleList ??= $this->getRoleList();
     
         $aclRoles = [];
         $aclRoles['everyone'] = new Role('everyone');
-        foreach ($roles as $role) {
+        foreach ($roleList as $role) {
             $aclRoles[$role->getIndex()] ??= new Role($role->getIndex());
         }
         
