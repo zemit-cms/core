@@ -303,13 +303,30 @@ class Identity extends Injectable
             $this->session->set($this->sessionKey, $store) :
             $this->session->remove($this->sessionKey);
         
-        return [
+        return array_merge($this->getIdentity(), [
             'saved' => $save,
             'stored' => $this->session->has($this->sessionKey),
             'refreshed' => $save && $refresh,
             'validated' => $session->checkHash($session->getToken(), $session->getKey() . $token),
             'messages' => $session ? $session->getMessages() : [],
             'jwt' => $this->getJwtToken($this->sessionKey, $store),
+        ]);
+    }
+    
+    /**
+     * Get basic Identity information
+     *
+     * @return array
+     */
+    public function getIdentity($expose = null) {
+        $expose ??= ['User' => [false, 'id', 'firstName', 'lastName', 'category']];
+        $user = $this->getUser();
+        $roleList = $this->getRoles();
+        
+        return [
+            'loggedIn' => $this->isLoggedIn(),
+            'user' => $user? $user->expose($expose) : false,
+            'roles' => array_keys($roleList),
         ];
     }
     

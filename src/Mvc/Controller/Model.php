@@ -494,7 +494,7 @@ trait Model
             
             $singlePostEntity->assign($singlePost, $whitelist, $columnMap);
             $ret['saved'] = $singlePostEntity->save();
-            $ret['messages'] = $this->getRestMessages($singlePostEntity);
+            $ret['messages'] = $singlePostEntity->getMessages();
             $ret['model'] = get_class($singlePostEntity);
             $ret['source'] = $singlePostEntity->getSource();
             $ret[$single ? 'single' : 'list'] = $this->getSingle($singlePostEntity->getId(), $modelName, $with);
