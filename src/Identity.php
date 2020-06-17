@@ -407,7 +407,7 @@ class Identity extends Injectable
         
         $validation = new Validation();
         $validation->add('email', new PresenceOf(['message' => 'email is required']));
-        $validation->add('password', new PresenceOf(['message' => 'username is required']));
+        $validation->add('password', new PresenceOf(['message' => 'password is required']));
         $validation->validate($params);
         
         if (!$session) {
