@@ -420,7 +420,6 @@ class Identity extends Injectable
             
             $userClass = $this->getUserClass();
             $user = $userClass::findFirstByEmail($this->filter->sanitize($params['email'] ?? '', 'string'));
-            $user = $userClass::findFirst();
             
             if (!$user) {
                 // user not found, login failed
