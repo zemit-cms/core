@@ -344,11 +344,13 @@ class Identity extends Injectable
         $user = $this->getUser();
         $userClass = $this->getUserClass();
         
-        $user = $userClass::findFirstWithById([
-            'RoleList',
-            'GroupList.RoleList',
-            'TypeList.GroupList.RoleList',
-        ], $user->getId());
+        if ($user) {
+            $user = $userClass::findFirstWithById([
+                'RoleList',
+                'GroupList.RoleList',
+                'TypeList.GroupList.RoleList',
+            ], $user->getId());
+        }
         
         $roles = [];
         if ($user) {
