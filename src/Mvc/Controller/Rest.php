@@ -77,10 +77,11 @@ class Rest extends \Phalcon\Mvc\Controller
      */
     public function getAction($id = null)
     {
-        $single = $this->getSingle($id);
+        $modelName = $this->getModelName();
+        $single = $this->getSingle($id, $modelName, null);
         
         $this->view->single = $single ? $single->expose($this->getExpose()) : false;
-        $this->view->model = $single ? get_class($single) : false;
+        $this->view->model = $modelName;
         $this->view->source = $single ? $single->getSource() : false;
         
         if (!$single) {
@@ -403,17 +404,17 @@ class Rest extends \Phalcon\Mvc\Controller
     public function afterExecuteRoute(Dispatcher $dispatcher)
     {
         $response = $dispatcher->getReturnedValue();
-        
+
         // Avoid breaking default phalcon behaviour
         if ($response instanceof Response) {
             return;
         }
-        
+
         // Merge response into view variables
         if (is_array($response)) {
             $this->view->setVars($response, true);
         }
-        
+
         // Return our Rest normalized response
         $dispatcher->setReturnedValue($this->setRestResponse(is_array($response) ? null : $response));
     }

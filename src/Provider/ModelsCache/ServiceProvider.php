@@ -10,7 +10,9 @@
 
 namespace Zemit\Provider\ModelsCache;
 
+use Phalcon\Cache\AdapterFactory;
 use Phalcon\Cache\Frontend\Data;
+use Phalcon\Storage\SerializerFactory;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
@@ -25,30 +27,42 @@ class ServiceProvider extends AbstractServiceProvider
      * @var string
      */
     protected $serviceName = 'modelsCache';
-
+    
     /**
      * {@inheritdoc}
      *
      * @return void
      */
-    public function register(\Phalcon\Di\DiInterface $di) : void
+    public function register(\Phalcon\Di\DiInterface $di): void
     {
         $di->setShared(
             $this->getName(),
-            function () use ($di) {
+            function() use ($di) {
                 $config = $di->get('config')->cache;
-
-                $driver  = $config->drivers->{$config->default};
-                $adapter = '\Phalcon\Cache\Backend\\' . $driver->adapter;
-                $default = [
-                    'statsKey' => 'SMC:'.substr(md5($config->prefix), 0, 16).'_',
-                    'prefix'   => 'PMC_'.$config->prefix,
+                
+                $serializerFactory = new SerializerFactory();
+                $adapterFactory = new AdapterFactory($serializerFactory);
+                
+                $options = [
+                    'defaultSerializer' => 'Php',
+                    'lifetime' => 7200,
                 ];
+                
+                $adapter = $adapterFactory->newInstance('apcu', $options);
+                
+                return new Cache($adapter);
 
-                return new $adapter(
-                    new Data(['lifetime' => $config->lifetime]),
-                    array_merge($driver->toArray(), $default)
-                );
+//                $driver  = $config->drivers->{$config->default};
+//                $adapter = '\Phalcon\Cache\Backend\\' . $driver->adapter;
+//                $default = [
+//                    'statsKey' => 'SMC:'.substr(md5($config->prefix), 0, 16).'_',
+//                    'prefix'   => 'PMC_'.$config->prefix,
+//                ];
+//
+//                return new $adapter(
+//                    new Data(['lifetime' => $config->lifetime]),
+//                    array_merge($driver->toArray(), $default)
+//                );
             }
         );
     }

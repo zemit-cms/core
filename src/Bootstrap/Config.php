@@ -402,11 +402,11 @@ class Config extends PhalconConfig
                 'default' => Env::get('CACHE_DRIVER', 'file'),
                 'views' => Env::get('VIEW_CACHE_DRIVER', 'views'),
                 'drivers' => [
-                    'apc' => [
-                        'adapter' => 'Apc',
+                    'apcu' => [
+                        'adapter' => \Phalcon\Cache\Adapter\Apcu::class,
                     ],
                     'memory' => [
-                        'adapter' => 'Memory',
+                        'adapter' => \Phalcon\Cache\Adapter\Memory::class,
                     ],
                     'memcached' => [
                         'adapter' => 'Libmemcached',
@@ -441,13 +441,16 @@ class Config extends PhalconConfig
              * Metadata Configuration
              */
             'metadata' => [
-                'default' => Env::get('METADATA_DRIVER', 'memory'),
+                'driver' => Env::get('METADATA_DRIVER', 'apcu'),
                 'drivers' => [
-                    'apc' => [
-                        'adapter' => 'Apc',
+                    'apcu' => [
+                        'adapter' => \Phalcon\Mvc\Model\MetaData\Apcu::class,
+                    ],
+                    'memory' => [
+                        'adapter' => \Phalcon\Mvc\Model\MetaData\Memory::class,
                     ],
                     'memcached' => [
-                        'adapter' => 'Libmemcached',
+                        'adapter' => \Phalcon\Mvc\Model\MetaData\Libmemcached::class,
                         'servers' => [
                             [
                                 'host' => Env::get('MEMCACHED_HOST', '127.0.0.1'),
@@ -456,25 +459,24 @@ class Config extends PhalconConfig
                             ],
                         ],
                     ],
-                    'file' => [
-                        'adapter' => 'Files',
+                    'stream' => [
+                        'adapter' => \Phalcon\Mvc\Model\MetaData\Stream::class,
                         'metaDataDir' => PRIVATE_PATH . '/cache/metadata/',
                     ],
                     'redis' => [
-                        'adapter' => 'Redis',
+                        'adapter' => \Phalcon\Mvc\Model\MetaData\Redis::class,
                         'host' => Env::get('REDIS_HOST', '127.0.0.1'),
                         'port' => Env::get('REDIS_PORT', 6379),
                         'index' => Env::get('REDIS_INDEX', 0),
                     ],
-                    'memory' => [
-                        'adapter' => 'Memory',
-                    ],
-                    'session' => [
-                        'adapter' => 'Session',
+                    'wincache' => [
+                        'adapter' => \Phalcon\Mvc\Model\MetaData\Wincache::class,
                     ],
                 ],
-                'prefix' => Env::get('METADATA_PREFIX', 'zemit_metadata_'),
-                'lifetime' => Env::get('METADATA_LIFETIME', 172800),
+                'default' => [
+                    'lifetime' => Env::get('METADATA_LIFETIME', 172800),
+                    'prefix' => Env::get('METADATA_PREFIX', 'zemit_metadata_'),
+                ],
             ],
             
             /**
