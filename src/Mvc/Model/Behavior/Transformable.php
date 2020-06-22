@@ -41,31 +41,9 @@ class Transformable extends Behavior
         if (empty($options)) {
             return;
         }
-    
-        $field = $this->getOption('field', $options, [$type, $model]);
-        $condition = $this->getOption('condition', $options, [$type, $model, $field]);
-        if ($condition) {
-            $value = $this->getOption('value', $options, [$type, $model, $field]);
-            $transformedValue = $this->getOption('transform', $options, [$type, $model, $field, $value]);
-            $model->assign([$field => $transformedValue]);
-        }
-    }
-    
-    /**
-     * @param string $key
-     * @param array $options
-     * @param array|null $params
-     *
-     * @return mixed|null
-     */
-    public function getOption(string $key, array $options, array $params = null)
-    {
-        $ret = $options[$key] ?? null;
         
-        if (is_callable($ret)) {
-            $ret = $ret(...$params);
+        foreach ($options as $field => $value) {
+            $model->assign([$field => is_callable($value)? $value($model) : $value]);
         }
-        
-        return $ret;
     }
 }

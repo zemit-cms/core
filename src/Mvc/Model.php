@@ -14,6 +14,7 @@ use Phalcon\Config;
 use Phalcon\Events\Manager;
 use Phalcon\Mvc\Model\Behavior\Timestampable;
 
+use Phalcon\Mvc\ModelInterface;
 use Phalcon\Security;
 use Zemit\Models\Audit;
 use Zemit\Models\AuditDetail;
@@ -224,7 +225,7 @@ class Model extends \Phalcon\Mvc\Model
     public function addCreatedByBehavior() : void {
         $this->addBehavior(new Transformable([
             'beforeValidationOnCreate' => [
-                'createdBy' => $this->getCurrentUser(),
+                'createdBy' => $this->getCurrentUserIdCallback(),
             ],
         ]));
     }
@@ -235,7 +236,7 @@ class Model extends \Phalcon\Mvc\Model
     public function addUpdatedByBehavior() : void {
         $this->addBehavior(new Transformable([
             'beforeValidationOnUpdate' => [
-                'updatedBy' => $this->getCurrentUser(),
+                'updatedBy' => $this->getCurrentUserIdCallback(),
             ],
         ]));
     }
@@ -246,7 +247,7 @@ class Model extends \Phalcon\Mvc\Model
     public function addDeletedByBehavior() : void {
         $this->addBehavior(new Transformable([
             'beforeDelete' => [
-                'deletedBy' => $this->getCurrentUser(),
+                'deletedBy' => $this->getCurrentUserIdCallback(),
             ],
         ]));
     }
@@ -257,7 +258,7 @@ class Model extends \Phalcon\Mvc\Model
     public function addRestoredByBehavior() : void {
         $this->addBehavior(new Transformable([
             'beforeRestore' => [
-                'restoredBy' => $this->getCurrentUser(),
+                'restoredBy' => $this->getCurrentUserIdCallback(),
             ],
         ]));
     }
@@ -268,13 +269,14 @@ class Model extends \Phalcon\Mvc\Model
     public function addSlugBehavior() : void {
         $this->addBehavior(new Transformable([
             'beforeValidation' => [
-                'index' => function($builder) {
-                    $model = $builder->getModel();
-                    $value = $builder->getValue();
-                    if (!isset($value)) {
-                        $value = $model->getLabel() ?? $model->toJson() ?? json_encode($model->toArray() ?? $model);
+                'index' => function($model) {
+                    if (property_exists($model, 'index')) {
+                        $value = $model->getIndex();
+                        if (empty($value)) {
+                            $value = $model->getLabel() ?? $model->toJson() ?? json_encode($model->toArray() ?? $model);
+                        }
+                        return \Zemit\Utils\Slug::generate($value);
                     }
-                    return \Zemit\Utils\Slug::generate($value);
                 },
             ],
         ]));
@@ -324,6 +326,24 @@ class Model extends \Phalcon\Mvc\Model
      */
     public function getCurrentUser() {
         return $this->getDI()->get('identity')->getUser();
+    }
+    
+    /**
+     * Get the current user id
+     *
+     * @return int
+     */
+    public function getCurrentUserId() {
+        return $this->getCurrentUser()->getId();
+    }
+    
+    /**
+     * @return \Closure
+     */
+    public function getCurrentUserIdCallback() {
+        return function () {
+            return $this->getCurrentUserId();
+        };
     }
     
     
