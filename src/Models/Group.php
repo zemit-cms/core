@@ -11,7 +11,9 @@
 namespace Zemit\Models;
 
 
-class Group
+use Zemit\Mvc\Model;
+
+class Group extends Model
 {
     
 }

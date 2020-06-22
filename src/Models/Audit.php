@@ -11,7 +11,9 @@
 namespace Zemit\Models;
 
 
-class Audit
+use Zemit\Mvc\Model;
+
+class Audit extends Model
 {
     
 }

@@ -11,7 +11,9 @@
 namespace Zemit\Models;
 
 
-class User
+use Zemit\Mvc\Model;
+
+class User extends Model
 {
     
 }

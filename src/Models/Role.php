@@ -11,7 +11,9 @@
 namespace Zemit\Models;
 
 
-class Role
+use Zemit\Mvc\Model;
+
+class Role extends Model
 {
     
 }

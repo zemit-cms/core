@@ -11,7 +11,9 @@
 namespace Zemit\Models;
 
 
-class Session
+use Zemit\Mvc\Model;
+
+class Session extends Model
 {
     
 }

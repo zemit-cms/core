@@ -15,6 +15,8 @@ use Phalcon\Events\Manager;
 use Phalcon\Mvc\Model\Behavior\Timestampable;
 
 use Phalcon\Security;
+use Zemit\Models\Audit;
+use Zemit\Models\AuditDetail;
 use Zemit\Mvc\Model\Behavior\Blameable;
 use Zemit\Mvc\Model\Behavior\Conditional;
 use Zemit\Mvc\Model\Behavior\Position;
@@ -117,8 +119,8 @@ class Model extends \Phalcon\Mvc\Model
         // Other Behaviors
         $this->addSlugBehavior();
         $this->addSoftDeleteBehavior();
-        $this->addBlameableBehavior();
         $this->addPositionBehavior();
+        $this->addBlameableBehavior();
     }
     
     /**
@@ -289,6 +291,15 @@ class Model extends \Phalcon\Mvc\Model
     }
     
     /**
+     * Position
+     */
+    public function addPositionBehavior() : void {
+        $this->addBehavior(new Position([
+            'field' => self::POSITION_FIELD,
+        ]));
+    }
+    
+    /**
      * Blameable Audit User
      */
     public function addBlameableBehavior() : void {
@@ -299,15 +310,6 @@ class Model extends \Phalcon\Mvc\Model
         ]));
     }
     
-    /**
-     * Position
-     */
-    public function addPositionBehavior() : void {
-        $this->addBehavior(new Position([
-            'field' => self::POSITION_FIELD,
-        ]));
-    }
-    
     protected function _postSaveRelatedRecords(\Phalcon\Db\Adapter\AdapterInterface $connection, $related): bool
     {
         [$success, $connection, $related] = $this->_prePostSaveRelatedRecords($connection, $related);
@@ -315,8 +317,13 @@ class Model extends \Phalcon\Mvc\Model
         return $success ? parent::_postSaveRelatedRecords($connection, $related) : false;
     }
     
+    /**
+     * Get the current active user
+     *
+     * @return mixed
+     */
     public function getCurrentUser() {
-        return 1;
+        return $this->getDI()->get('identity')->getUser();
     }
     
     
@@ -368,4 +375,7 @@ class Model extends \Phalcon\Mvc\Model
         return $security->checkHash($salt . $string, $hash);
     }
     
+    public function hasDirtyRelated() {
+        return count($this->dirtyRelated)? true : false;
+    }
 }

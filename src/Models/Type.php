@@ -11,7 +11,9 @@
 namespace Zemit\Models;
 
 
-class Type
+use Zemit\Mvc\Model;
+
+class Type extends Model
 {
     
 }
