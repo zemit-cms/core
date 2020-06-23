@@ -105,6 +105,9 @@ class Model extends \Phalcon\Mvc\Model
         $this->keepSnapshots(true);
         $this->useDynamicUpdate(true);
         
+        // Security
+        $this->addSecurityBehavior();
+        
         // Timestamp Behaviors
         $this->addCreatedAtBehavior();
         $this->addUpdatedAtBehavior();
@@ -169,6 +172,15 @@ class Model extends \Phalcon\Mvc\Model
             'updateSnapshotOnSave' => true,
             'virtualForeignKeys' => true,
         ], $options ?? []));
+    }
+    
+    /**
+     * Blameable Audit User
+     */
+    public function addSecurityBehavior() : void {
+        $this->addBehavior(new \Zemit\Mvc\Model\Behavior\Security([
+            'userClass' => User::class,
+        ]));
     }
     
     /**
@@ -334,7 +346,8 @@ class Model extends \Phalcon\Mvc\Model
      * @return int
      */
     public function getCurrentUserId() {
-        return $this->getCurrentUser()->getId();
+        $user = $this->getCurrentUser();
+        return $user? $user->getId() : null;
     }
     
     /**

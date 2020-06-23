@@ -394,8 +394,6 @@ class Identity extends Injectable
 //            'TypeList.RoleList', // @TODO do it
             ], $session->getUserId());
     
-            $user = $user->findFirst();
-            
             if ($user) {
                 $this->user = $user;
             }

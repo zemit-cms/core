@@ -12,6 +12,7 @@
 namespace Zemit\Provider\Security;
 
 use Zemit\Provider\AbstractServiceProvider;
+use Zemit\Security;
 
 /**
  * Zemit\Provider\Security\ServiceProvider
