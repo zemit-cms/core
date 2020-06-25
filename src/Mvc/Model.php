@@ -199,10 +199,13 @@ class Model extends \Phalcon\Mvc\Model
      * Updated At Timestamp
      */
     public function addUpdatedAtBehavior() : void {
-        $this->addBehavior(new Timestampable([
+        $this->addBehavior(new Conditional([
             'beforeValidationOnUpdate' => [
                 'field' => 'updatedAt',
-                'format' => self::DATETIME_FORMAT,
+                'value' => date(self::DATETIME_FORMAT),
+                'condition' => function () {
+                    return !$this->hasSnapshotData() || $this->hasChanged();
+                }
             ],
         ]));
     }

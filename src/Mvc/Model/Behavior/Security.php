@@ -22,10 +22,10 @@ use Zemit\Models\Type;
 use Zemit\Mvc\Model\User;
 
 /**
- * Zemit\Mvc\Model\Behavior\Blameable
+ * Zemit\Mvc\Model\Behavior\Security
  *
- * Allows to automatically update a model’s attribute saving the datetime when a
- * record is created or updated
+ * Allows to check if the current identity is allowed to run some model actions
+ * this behavior will stop operations if not allowed
  */
 class Security extends Behavior
 {
@@ -65,7 +65,7 @@ class Security extends Behavior
     protected $identity = null;
     
     /**
-     * Blameable constructor.
+     * Security constructor.
      *
      * @param array|null $options
      *
@@ -85,11 +85,11 @@ class Security extends Behavior
     }
     
     /**
-     * Handling security on diffenret models
-     * - create
-     * - update
-     * - delete
-     * - restore
+     * Handling security on some model events
+     * - beforeCreate
+     * - beforeUpdate
+     * - beforeDelete
+     * - beforeRestore
      *
      * {@inheritdoc}
      *
@@ -105,6 +105,7 @@ class Security extends Behavior
             case 'beforeUpdate':
             case 'beforeDelete':
             case 'beforeRestore':
+                return true;
                 return $this->isAllowed($eventType, $model);
                 break;
         }

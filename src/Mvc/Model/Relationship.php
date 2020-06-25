@@ -6,6 +6,8 @@ use Exception;
 use Phalcon\Db\Column;
 use Phalcon\Mvc\Model\Manager;
 use Phalcon\Mvc\Model\Relation;
+use Phalcon\Mvc\Model\RelationInterface;
+use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\ModelInterface;
 use Zemit\Utils\Sprintf;
 
@@ -172,12 +174,13 @@ trait Relationship
                 /** @var Manager $modelManager */
                 $modelManager = $this->getModelsManager();
                 
-                /** @var Relation $relation */
+                /** @var RelationInterface $relation */
                 $relation = $modelManager->getRelationByAlias(get_class($this), $lowerCaseAlias);
-                $alias = $relation->getOption('alias');
                 
                 // only many to many
                 if ($relation) {
+                    $alias = $relation->getOption('alias');
+                    
                     if ($relation->getType() === Relation::HAS_MANY_THROUGH) {
                         
                         $nodeAssign = [];
@@ -196,6 +199,7 @@ trait Relationship
                         $referencedFields = is_array($referencedFields) ? $referencedFields : [$referencedFields];
                         
                         /** @var ModelInterface $intermediate */
+                        /** @var ModelInterface|string $intermediateModelClass */
                         $intermediate = new $intermediateModelClass();
                         $intermediatePrimaryKey = $intermediate->getModelsMetaData()->getPrimaryKeyAttributes($intermediate);
                         $intermediateBindTypes = $intermediate->getModelsMetaData()->getBindTypes($intermediate);
@@ -269,8 +273,8 @@ trait Relationship
                                 $nodeIdListToKeep = [0];
                             }
                             
-                            /** @var ModelInterface $nodeEntity */
                             // @TODO fix this to support combined primary keys
+                            /** @var ModelInterface|string $intermediateModelClass */
                             $nodeEntityToDeleteList = $intermediateModelClass::find([
                                 'conditions' => Sprintf::implodeArrayMapSprintf(array_merge($intermediateFields), ' and ', '[' . $intermediateModelClass . '].[%s] = ?%s')
                                     . ' and ['.$intermediateModelClass.'].[' . $intermediatePrimaryKey[0] . '] not in ({id:array})',
@@ -302,6 +306,15 @@ trait Relationship
         return [true, $connection, array_filter($related ?? [])];
     }
     
+    /**
+     * Get an entity from data
+     *
+     * @param array $data Data
+     * @param array $fields Columns
+     * @param string $modelClass Class the fetch
+     *
+     * @return ModelInterface
+     */
     public function _getEntityFromData(array $data, array $fields, string $modelClass): ModelInterface
     {
         $entity = null;
@@ -313,6 +326,7 @@ trait Relationship
         if (count($dataKeys) === count($fields)) {
             
             /** @var ModelInterface $entity */
+            /** @var ModelInterface|string $modelClass */
             $entity = $modelClass::findFirst([
                 'conditions' => Sprintf::implodeArrayMapSprintf($fields, ' and ', '[' . $modelClass . '].[%s] = ?%s'),
                 'bind' => array_values($dataKeys),
