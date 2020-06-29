@@ -527,13 +527,26 @@ class Config extends PhalconConfig
              * Mailer configuration
              */
             'mailer' => [
-                'driver' => Env::get('MAILER_DEFAULT_DRIVER', 'sendmail'),
-                'sendmail' => Env::get('MAILER_SENDMAIL', '/usr/sbin/sendmail -bs'),
+                'default' => Env::get('MAILER_DEFAULT_DRIVER', 'sendmail'),
+                'drivers' => [
+                    'mail' => null,
+                    'sendmail' => Env::get('MAILER_SENDMAIL', '/usr/sbin/sendmail -bs'),
+                    'smtp' => [
+                        'host' => Env::get('MAILER_SMTP_HOST', 'localhost'),
+                        'port' => Env::get('MAILER_SMTP_PORT', 25),
+                        'encryption' => Env::get('MAILER_SMTP_ENCRYPTION', ''),
+                        'username' => Env::get('MAILER_SMTP_USERNAME', ''),
+                        'password' => Env::get('MAILER_SMTP_PASSWORD', ''),
+                    ],
+                ],
                 'from' => [
                     'email' => Env::get('MAILER_FROM_EMAIL', 'zemit@localhost'),
                     'name' => Env::get('MAILER_FROM_NAME', 'Zemit'),
                 ],
-                'bcc' => [],
+                'to' => [...explode(',', Env::get('MAILER_TO_EMAIL', ''))],
+                'cc' => [...explode(',', Env::get('MAILER_CC_EMAIL', ''))],
+                'bcc' => [...explode(',', Env::get('MAILER_BCC_EMAIL', ''))],
+                'charset' => Env::get('MAILER_CHARSET', 'utf-8'),
                 'viewsDir' => Env::get('MAILER_VIEWS_DIR', APP_PATH . '/Modules/Frontend/Views/'),
             ],
             

@@ -105,7 +105,6 @@ class Security extends Behavior
             case 'beforeUpdate':
             case 'beforeDelete':
             case 'beforeRestore':
-                return true;
                 return $this->isAllowed($eventType, $model);
                 break;
         }
@@ -120,9 +119,9 @@ class Security extends Behavior
         $modelClass = get_class($model);
         
         // whitelisted models
-//        if ($modelClass instanceof $this->userClass) {
-//            return true;
-//        }
+        if ($modelClass instanceof $this->userClass) {
+            return true;
+        }
         
         // component not found
         if (!$acl->isComponent($modelClass)) {

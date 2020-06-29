@@ -17,6 +17,7 @@ use Phalcon\Acl\Role;
 use Phalcon\Di\Injectable;
 use Phalcon\Messages\Message;
 use Phalcon\Validation\Validator\PresenceOf;
+use Zemit\Models\Session;
 use Zemit\Models\User;
 
 class Identity extends Injectable
@@ -56,6 +57,11 @@ class Identity extends Injectable
      * @var User
      */
     public $user;
+    
+    /**
+     * @var User
+     */
+    public $userAs;
     
     /**
      * @var string|int|bool|null
@@ -231,7 +237,7 @@ class Identity extends Injectable
      */
     public function hasRole($roles = null, $or = false)
     {
-        return $this->has($roles, $this->getUser()->getSlugs(), $or);
+        return $this->has($roles, array_keys($this->getRoleList() ?: []), $or);
     }
     
     /**
@@ -239,9 +245,9 @@ class Identity extends Injectable
      *
      * @return string|int|bool
      */
-    public function getUserId()
+    public function getUserId($as = false)
     {
-        return false;
+        return $this->getUser($as)->getId() ?? false;
     }
     
     /**
@@ -375,13 +381,24 @@ class Identity extends Injectable
     }
     
     /**
+     * Return true if the user is currently logged in
+     * @return bool
+     */
+    public function isLoggedInAs($userId = null)
+    {
+        return !!$this->getUserAs();
+    }
+    
+    /**
      * Get the User related to the current session
      *
      * @return User|bool
      */
-    public function getUser()
+    public function getUser($as = false)
     {
-        if (is_null($this->user)) {
+        $property = $as? 'userAs' : 'user';
+        
+        if (is_null($this->$property)) {
             
             $session = $this->getSession(...$this->getKeyToken());
     
@@ -392,14 +409,23 @@ class Identity extends Injectable
                 'TypeList.GroupList.RoleList',
 //            'GroupList.TypeList.RoleList', // @TODO do it
 //            'TypeList.RoleList', // @TODO do it
-            ], $session->getUserId());
+            ], $as? $session->getAsUserId() : $session->getUserId());
     
             if ($user) {
-                $this->user = $user;
+                $this->$property = $user;
             }
         }
         
-        return $this->user;
+        return $this->$property;
+    }
+    
+    /**
+     * Get the User As related to the current session
+     *
+     * @return bool|User
+     */
+    public function getUserAs() {
+        return $this->getUser(true);
     }
     
     /**
@@ -444,6 +470,75 @@ class Identity extends Injectable
         }
         
         return array_values($aclRoles);
+    }
+    
+    /**
+     * @param $userId
+     *
+     * @return array
+     */
+    public function loginAs($params) {
+        /** @var Session $session */
+        $session = $this->getSession(...$this->getKeyToken());
+    
+        $validation = new Validation();
+        $validation->add('userId', new PresenceOf(['message' => 'userId is required']));
+        $validation->validate($params);
+        
+        $userId = $session->getUserId();
+        
+        if (!empty($userId) && !empty($params['userId'])) {
+            
+            if ((int)$params['userId'] === (int)$userId) {
+                return $this->logoutAs();
+            }
+            
+            $userClass = $this->getUserClass();
+            $asUser = $userClass::findFirstById((int)$params['userId']);
+
+            if ($asUser) {
+                if ($this->hasRole(['admin', 'dev'])) {
+                    $session->setAsUserId($userId);
+                    $session->setUserId($params['userId']);
+                }
+            }
+            else {
+                $validation->appendMessage(new Message('User Not Found', 'userId', 'PresenceOf', 404));
+            }
+        }
+        
+        $saved = $session? $session->save() : false;
+        foreach ($session->getMessages() as $message) {
+            $validation->appendMessage($message);
+        }
+        
+        return [
+            'saved' => $saved,
+            'loggedInAs' => $this->isLoggedInAs(),
+            'messages' => $validation->getMessages(),
+        ];
+    }
+    
+    /**
+     * @return array
+     */
+    public function logoutAs() {
+        /** @var Session $session */
+        $session = $this->getSession(...$this->getKeyToken());
+    
+        $asUserId = $session->getAsUserId();
+        $userId = $session->getUserId();
+        if (!empty($asUserId) && !empty($userId)) {
+            
+            $session->setUserId($asUserId);
+            $session->setAsUserId(null);
+        }
+        
+        return [
+            'saved' => $session? $session->save() : false,
+            'loggedInAs' => $this->isLoggedInAs(),
+            'messages' => $session->getMessages(),
+        ];
     }
     
     /**

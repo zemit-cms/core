@@ -59,6 +59,19 @@ trait Identity
     }
     
     /**
+     * Login As Action
+     * - Require an active session to bind the logged in userId
+     *
+     * @return bool
+     */
+    public function loginAsAction()
+    {
+        $this->view->setVars($this->identity->loginAs($this->getParams()));
+        
+        return $this->view->loggedInAs;
+    }
+    
+    /**
      * Log the user out from the database session
      *
      * @return bool
@@ -68,5 +81,18 @@ trait Identity
         $this->view->setVars($this->identity->logout());
         
         return !$this->view->loggedIn;
+    }
+    
+    /**
+     * Login Action
+     * - Require an active session to bind the logged in userId
+     *
+     * @return bool
+     */
+    public function logoutAsAction()
+    {
+        $this->view->setVars($this->identity->logoutAs());
+        
+        return $this->view->loggedInAs;
     }
 }

@@ -37,13 +37,13 @@ class ServiceProvider extends AbstractServiceProvider
         $di->setShared($this->getName(), function() use ($di) {
             /** @var \Phalcon\Config $config */
             $config = $di->get('config')->mailer;
-            $driver = $config->get('driver');
+            $driver = $config->get('default');
             
             switch($driver) {
                 case 'smtp':
                 case 'mail':
                 case 'sendmail':
-                    $manager = new Manager($config->toArray());
+                    $manager = new Manager($config->drivers->$driver->toArray());
                     $manager->setDI($di);
                     
                     return $manager;

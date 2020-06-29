@@ -16,6 +16,7 @@ use Phalcon\Mvc\Model\Behavior\Timestampable;
 
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Security;
+use Zemit\Identity;
 use Zemit\Models\Audit;
 use Zemit\Models\AuditDetail;
 use Zemit\Mvc\Model\Behavior\Blameable;
@@ -240,7 +241,8 @@ class Model extends \Phalcon\Mvc\Model
     public function addCreatedByBehavior() : void {
         $this->addBehavior(new Transformable([
             'beforeValidationOnCreate' => [
-                'createdBy' => $this->getCurrentUserIdCallback(),
+                'createdBy' => $this->getCurrentUserIdCallback(false),
+                'createdAs' => $this->getCurrentUserIdCallback(true),
             ],
         ]));
     }
@@ -251,7 +253,8 @@ class Model extends \Phalcon\Mvc\Model
     public function addUpdatedByBehavior() : void {
         $this->addBehavior(new Transformable([
             'beforeValidationOnUpdate' => [
-                'updatedBy' => $this->getCurrentUserIdCallback(),
+                'updatedBy' => $this->getCurrentUserIdCallback(false),
+                'updatedAs' => $this->getCurrentUserIdCallback(true),
             ],
         ]));
     }
@@ -262,7 +265,8 @@ class Model extends \Phalcon\Mvc\Model
     public function addDeletedByBehavior() : void {
         $this->addBehavior(new Transformable([
             'beforeDelete' => [
-                'deletedBy' => $this->getCurrentUserIdCallback(),
+                'deletedBy' => $this->getCurrentUserIdCallback(false),
+                'deletedAs' => $this->getCurrentUserIdCallback(true),
             ],
         ]));
     }
@@ -273,7 +277,8 @@ class Model extends \Phalcon\Mvc\Model
     public function addRestoredByBehavior() : void {
         $this->addBehavior(new Transformable([
             'beforeRestore' => [
-                'restoredBy' => $this->getCurrentUserIdCallback(),
+                'restoredBy' => $this->getCurrentUserIdCallback(false),
+                'restoredAs' => $this->getCurrentUserIdCallback(true),
             ],
         ]));
     }
@@ -339,8 +344,10 @@ class Model extends \Phalcon\Mvc\Model
      *
      * @return mixed
      */
-    public function getCurrentUser() {
-        return $this->getDI()->get('identity')->getUser();
+    public function getCurrentUser($as = false) {
+        /** @var Identity $identity */
+        $identity = $this->getDI()->get('identity');
+        return $identity->getUser($as);
     }
     
     /**
@@ -348,17 +355,17 @@ class Model extends \Phalcon\Mvc\Model
      *
      * @return int
      */
-    public function getCurrentUserId() {
-        $user = $this->getCurrentUser();
+    public function getCurrentUserId($as = false) {
+        $user = $this->getCurrentUser($as);
         return $user? $user->getId() : null;
     }
     
     /**
      * @return \Closure
      */
-    public function getCurrentUserIdCallback() {
-        return function () {
-            return $this->getCurrentUserId();
+    public function getCurrentUserIdCallback($as = false) {
+        return function () use ($as) {
+            return $this->getCurrentUserId($as);
         };
     }
     
@@ -411,6 +418,11 @@ class Model extends \Phalcon\Mvc\Model
         return $security->checkHash($salt . $string, $hash);
     }
     
+    /**
+     * Check wether the current entity has dirty related or not
+     *
+     * @return bool
+     */
     public function hasDirtyRelated() {
         return count($this->dirtyRelated)? true : false;
     }

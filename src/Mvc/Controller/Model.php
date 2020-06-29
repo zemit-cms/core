@@ -35,13 +35,23 @@ trait Model
     }
     
     /**
-     * Get the Whitelist parameters for crud
+     * Get the Whitelist parameters for saving
      *
      * @return null|array
      */
     protected function getWhitelist()
     {
         return null;
+    }
+    
+    /**
+     * Get the Whitelist parameters for filtering
+     *
+     * @return null|array
+     */
+    protected function getFilterWhitelist()
+    {
+        return $this->getWhitelist();
     }
     
     /**
@@ -75,6 +85,16 @@ trait Model
     }
     
     /**
+     * Get join definition
+     *
+     * @return null|array
+     */
+    protected function getJoins()
+    {
+        return null;
+    }
+    
+    /**
      * Get the order definition
      *
      * @return null|array
@@ -82,9 +102,10 @@ trait Model
     protected function getOrder()
     {
         $filter = $this->filter;
-        return array_map(function ($e) use ($filter) {
+        
+        return array_map(function($e) use ($filter) {
             return trim($filter->sanitize($e, 'string'));
-        }, explode(',', $this->getParam('order', 'string', 'id')));
+        }, explode(',', $this->getParam('order', 'string', '[' . $this->getModelName() . '].[id]')));
     }
     
     /**
@@ -92,7 +113,7 @@ trait Model
      *
      * @return null|int Default: 1000
      */
-    protected function getLimit() : int
+    protected function getLimit(): int
     {
         return (int)$this->getParam('limit', 'int', 1000);
     }
@@ -102,7 +123,7 @@ trait Model
      *
      * @return null|int Default: 0
      */
-    protected function getOffset() : int
+    protected function getOffset(): int
     {
         return (int)$this->getParam('offset', 'int', 0);
     }
@@ -146,7 +167,7 @@ trait Model
      */
     protected function getSoftDeleteCondition()
     {
-        return 'deleted = 0';
+        return '[' . $this->getModelName() . '].[deleted] = 0';
     }
     
     /**
@@ -157,7 +178,7 @@ trait Model
      */
     public function setBind(array $bind = [], bool $replace = false)
     {
-        $this->_bind = $replace? $bind : array_merge($this->getBind(), $bind);
+        $this->_bind = $replace ? $bind : array_merge($this->getBind(), $bind);
     }
     
     /**
@@ -179,7 +200,7 @@ trait Model
      */
     public function setBindTypes(array $bindTypes = [], bool $replace = false)
     {
-        $this->_bindTypes = $replace? $bindTypes : array_merge($this->getBindTypes(), $bindTypes);
+        $this->_bindTypes = $replace ? $bindTypes : array_merge($this->getBindTypes(), $bindTypes);
     }
     
     /**
@@ -195,74 +216,107 @@ trait Model
     /**
      * Get Created By Condition
      *
-     * @return null
-     *
      * @param string $identityColumn
      * @param Identity|null $identity
+     * @param string[]|null $roleList
+     *
+     * @return null
      *
      * @return string|null
      */
-    protected function getIdentityCondition($identityColumn = 'createdBy', Identity $identity = null)
+    protected function getIdentityCondition(array $columns = null, Identity $identity = null, $roleList = null)
     {
-//        $identity ??= $this->identity ?? false;
-//        if ($identity) {
-//            $this->setBind([
-//                'identityColumn' => $identityColumn,
-//                'identityId' => [$identity->getUserId()],
-//            ]);
-//
-//            return ':identityColumn: in ({identityIds:array})';
-//        }
+        $identity ??= $this->identity ?? false;
+        $roleList ??= ['dev', 'admin'];
+        $modelName = $this->getModelName();
+        
+        if ($identity && !$identity->hasRole($roleList)) {
+            $ret = [];
+            
+            $columns ??= [
+                'createdBy',
+                'ownedBy',
+                'userId',
+            ];
+            
+            foreach ($columns as $column) {
+                if (!property_exists($modelName, $column)) {
+                    continue;
+                }
+                
+                $field = str_contains($column, '.')? $column : $modelName . '.' . $column;
+                $field = '[' . str_replace('.', '].[', $field) . ']';
+    
+                $this->setBind([$column => (int)$identity->getUserId()]);
+                $this->setBindTypes([$column => Column::BIND_PARAM_INT]);
+                $ret []= $field . ' = :'.$column.':';
+            }
+            
+            return implode(' or ', $ret);
+        }
         
         return null;
     }
     
     /**
      * Get Filter Condition
-     * @todo ask phalcon people what is the proper way to escape fields
-     * @todo support betweens and order PHQL stuff
-     * @todo whitelist fields to allow
+     * @todo escape fields properly
      *
      * @param array|null $filters
+     * @param array|null $whitelist
      * @param bool $or
      *
-     * @return string Return the generated query
+     * @return string|null Return the generated query
      * @throws \Exception Throw an exception if the field property is not valid
      */
-    protected function getFilterCondition(array $filters = null, $or = false)
+    protected function getFilterCondition(array $filters = null, array $whitelist = null, $or = false)
     {
         $filters ??= $this->getParam('filters');
+        $whitelist ??= $this->getFilterWhitelist();
         
         // No filter, no query
         if (empty($filters)) {
             return null;
         }
-    
+        
         $query = [];
         foreach ($filters as $filter) {
-            $field = $this->filter->sanitize($filter['field'] ?? null, ['string', 'alnum', 'trim']);
+            $field = $this->filter->sanitize($filter['field'] ?? null, ['string', 'trim']);
+            
+            // whitelist on filter condition
+            if (is_null($whitelist) || !in_array($field, $whitelist, true)) {
+                throw new \Exception('Not allowed to filter using the following field: `'.$field.'`', 403);
+                continue;
+            }
+            
             if (!empty($field)) {
                 $uniqid = substr(md5(json_encode($filter)), 0, 6);
 //                $queryField = '_' . uniqid($uniqid . '_field_') . '_';
                 $queryValue = '_' . uniqid($uniqid . '_value_') . '_';
                 $queryOperator = strtolower($filter['operator']);
-                switch ($queryOperator) {
-                    case '=':
-                    case '!=':
-                    case '<>':
-                    case '>':
-                    case '<':
-                    case '>=':
-                    case '<=':
-                    case 'in':
-                    case 'between':
-                    case 'not in':
-                    case 'is null':
-                    case 'is not null':
-                    case 'is false':
-                    case 'is not false':
-                    case 'is true':
-                    case 'is not true':
+                switch($queryOperator) {
+                    case '=': // Equal operator
+                    case '!=': // Not equal operator
+                    case '<>': // Not equal operator
+                    case '>': // Greater than operator
+                    case '>=': // Greater than or equal operator
+                    case '<': // Less than or equal operator
+                    case '<=': // Less than or equal operator
+                    case '<=>': // NULL-safe equal to operator
+                    case 'in': // Whether a value is within a set of values
+                    case 'not in': // Whether a value is not within a set of values
+                    case 'like': // Simple pattern matching
+                    case 'not like': // Negation of simple pattern matching
+                    case 'between': // Whether a value is within a range of values
+                    case 'not between': // Whether a value is not within a range of values
+                    case 'is': // Test a value against a boolean
+                    case 'is not': // Test a value against a boolean
+                    case 'is null': // NULL value test
+                    case 'is not null': // NOT NULL value test
+                    case 'is false': // Test a value against a boolean
+                    case 'is not false': // // Test a value against a boolean
+                    case 'is true': // // Test a value against a boolean
+                    case 'is not true': // // Test a value against a boolean
                         break;
                     default:
                         $queryOperator = '=';
@@ -270,12 +324,18 @@ trait Model
                 }
                 $bind = [];
                 $bindType = [];
-                
+
 //                $bind[$queryField] = $filter['field'];
 //                $bindType[$queryField] = Column::BIND_PARAM_STR;
 //                $queryFieldBinder = ':' . $queryField . ':';
 //                $queryFieldBinder = '{' . $queryField . '}';
-                $queryFieldBinder = '[' . $field . ']';
+                
+                // Add the current model name by default
+                if (!str_contains($field, '.')) {
+                    $field = $this->getModelName() . '.' . $field;
+                }
+                
+                $queryFieldBinder = '[' . str_replace('.', '].[', $field) . ']';
                 $queryValueBinder = ':' . $queryValue . ':';
                 if (isset($filter['value'])) {
                     $bind[$queryValue] = $filter['value'];
@@ -295,30 +355,32 @@ trait Model
                         $bindType[$queryValue] = Column::BIND_PARAM_DECIMAL;
                     }
                     else if (is_array($filter['value'])) {
-                        $queryValueBinder = '({'.$queryValue.':array})';
+                        $queryValueBinder = '({' . $queryValue . ':array})';
                         $bindType[$queryValue] = Column::BIND_PARAM_STR;
                     }
                     else {
                         $bindType[$queryValue] = Column::BIND_PARAM_NULL;
                     }
-                    $query []= "$queryFieldBinder $queryOperator $queryValueBinder";
+                    $query [] = "$queryFieldBinder $queryOperator $queryValueBinder";
                 }
                 else {
-                    $query []= "$queryFieldBinder $queryOperator";
+                    $query [] = "$queryFieldBinder $queryOperator";
                 }
-    
+                
                 $this->setBind($bind);
                 $this->setBindTypes($bindType);
-            } else {
+            }
+            else {
                 if (is_array($filter) || $filter instanceof \Traversable) {
-                    $query []= $this->getFilterCondition($filter, !$or);
-                } else {
+                    $query [] = $this->getFilterCondition($filter, $whitelist, !$or);
+                }
+                else {
                     throw new \Exception('A valid field property is required.', 400);
                 }
             }
         }
-
-        return empty($query)? null : '(' . implode($or? ' or ' : ' and ' , $query) . ')';
+        
+        return empty($query) ? null : '(' . implode($or ? ' or ' : ' and ', $query) . ')';
     }
     
     /**
@@ -345,6 +407,7 @@ trait Model
             $this->getFilterCondition(),
             $this->getPermissionCondition(),
         ])));
+        
         return '(' . implode(') and (', $conditions) . ')';
     }
     
@@ -366,6 +429,7 @@ trait Model
         $find['columns'] = $this->getColumns();
         $find['distinct'] = $this->getDistinct();
         $find['group'] = $this->getGroup();
+        $find['joins'] = $this->getJoins();
         
         return array_filter($find);
     }
@@ -392,7 +456,7 @@ trait Model
      * @param string|null $default
      * @param array|null $params
      *
-     * @return string|null
+     * @return string[]|string|null
      */
     public function getParam(string $key, string $filters = null, string $default = null, array $params = null)
     {
@@ -416,7 +480,7 @@ trait Model
                 $request->setParameterFilters($filter['name'], $filter['filters'], $filter['scope']);
             }
         }
-        
+
 //        $params = empty($request->getRawBody()) ? [] : $request->getJsonRawBody(true); // @TODO handle this differently
         return array_merge_recursive(
             $request->getFilteredQuery(), // $_GET
@@ -434,14 +498,21 @@ trait Model
      *
      * @return bool|Resultset
      */
-    public function getSingle($id = null, $modelName = null, $with = [], $find = null)
+    public function getSingle($id = null, $modelName = null, $with = [], $find = null, $appendCondition = true)
     {
         $id ??= (int)$this->getParam('id', 'int');
         $modelName ??= $this->getModelName();
         $with ??= $this->getWith();
         $find ??= $this->getFind();
-//        $find['conditions'] .= (empty($find['conditions'])? null : ' and ') . 'id = ' . (int)$id;
-        $find['conditions'] = 'id = ' . (int)$id; // @TODO see if we should support conditions appending here or not
+        $condition = '[' . $modelName . '].[id] = ' . (int)$id;
+        if ($appendCondition) {
+            $find['conditions'] .= (empty($find['conditions'])? null : ' and ') . $condition;
+        } else {
+            $find['bind'] = [];
+            $find['bindTypes'] = [];
+            $find['conditions'] = $condition;
+        }
+        
         
         return $id ? $modelName::findFirstWith($with ?? [], $find ?? []) : false;
     }
@@ -483,26 +554,38 @@ trait Model
             $ret = [];
             
             $singlePostId = (!$single || empty($id)) ? $this->getParam('id', 'int', null, $singlePost) : $id;
+            unset($singlePost['id']);
             
             /** @var \Zemit\Mvc\Model $singlePostEntity */
             $singlePostEntity = (!$single || !isset($entity)) ? $this->getSingle($singlePostId, $modelName) : $entity;
             
             // Create entity if not exists
-            if (!$singlePostEntity) {
+            if (!$singlePostEntity && empty($singlePostId)) {
                 $singlePostEntity = new $modelName();
             }
             
-            $singlePostEntity->assign($singlePost, $whitelist, $columnMap);
-            $ret['saved'] = $singlePostEntity->save();
-            $ret['messages'] = $singlePostEntity->getMessages();
-            $ret['model'] = get_class($singlePostEntity);
-            $ret['source'] = $singlePostEntity->getSource();
-            $ret[$single ? 'single' : 'list'] = $this->getSingle($singlePostEntity->getId(), $modelName, $with);
+            if (!$singlePostEntity) {
+                $ret = [
+                    'saved' => false,
+                    'messages' => [new Message('Entity id `'.$singlePostId.'` not found.', $modelName, 'NotFound', 404)],
+                    'model' => $modelName,
+                    'source' => (new $modelName)->getSource(),
+                ];
+            }
+            else {
+                $singlePostEntity->assign($singlePost, $whitelist, $columnMap);
+                $ret['saved'] = $singlePostEntity->save();
+                $ret['messages'] = $singlePostEntity->getMessages();
+                $ret['model'] = get_class($singlePostEntity);
+                $ret['source'] = $singlePostEntity->getSource();
+                $fetch = $this->getSingle($singlePostEntity->getId(), $modelName, $with);
+                $ret[$single ? 'single' : 'list'] = $fetch? $fetch->expose($this->getExpose()) : false;
+            }
             
-            $retList []= $ret;
+            $retList [] = $ret;
         }
         
-        return $single? $retList[0] : $retList;
+        return $single ? $retList[0] : $retList;
     }
     
     /**
@@ -535,11 +618,11 @@ trait Model
     /**
      * Get message from list of entities
      *
-     * @deprecated
-     *
      * @param $list Resultset|\Phalcon\Mvc\Model
      *
      * @return array|bool
+     * @deprecated
+     *
      */
     public function getRestMessages($list = null)
     {
@@ -552,7 +635,7 @@ trait Model
         foreach ($list as $single) {
             if ($single) {
                 /** @var Messages $validations */
-                $messages = $single instanceof Message? $list : $single->getMessages();
+                $messages = $single instanceof Message ? $list : $single->getMessages();
                 if ($messages && (is_array($messages) || $messages instanceof \Traversable)) {
                     foreach ($messages as $message) {
                         $validationFields = $message->getField();

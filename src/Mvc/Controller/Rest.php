@@ -103,7 +103,7 @@ class Rest extends \Phalcon\Mvc\Controller
         /** @var \Zemit\Mvc\Model $model */
         $model = $this->getModelNameFromController();
         
-        /** @var Resultset $list */
+        /** @var Resultset $with */
         $find = $this->getFind();
         $with = $model::with($this->getWith() ? : [], $find ? : []);
 //        $list = $model::find($find ? : []);
