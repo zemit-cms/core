@@ -247,7 +247,10 @@ class Identity extends Injectable
      */
     public function getUserId($as = false)
     {
-        return $this->getUser($as)->getId() ?? false;
+        /** @var User $user */
+        $user = $this->getUser($as);
+        
+        return $user? $user->getId() : false;
     }
     
     /**

@@ -25,22 +25,19 @@ class ServiceProvider extends AbstractServiceProvider
      * @var string
      */
     protected $serviceName = 'modelsManager';
-
+    
     /**
      * {@inheritdoc}
      *
      * @return void
      */
-    public function register(\Phalcon\Di\DiInterface $di) : void
+    public function register(\Phalcon\Di\DiInterface $di): void
     {
-        $di->setShared(
-            $this->getName(),
-            function () use ($di) {
-                $modelsManager = new Manager();
-                $modelsManager->setEventsManager($di->get('eventsManager'));
-
-                return $modelsManager;
-            }
-        );
+        $di->setShared($this->getName(), function() use ($di) {
+            $modelsManager = new Manager();
+            $modelsManager->setEventsManager($di->get('eventsManager'));
+            
+            return $modelsManager;
+        });
     }
 }

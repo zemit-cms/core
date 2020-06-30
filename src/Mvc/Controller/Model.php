@@ -319,7 +319,7 @@ trait Model
                     case 'is not true': // // Test a value against a boolean
                         break;
                     default:
-                        $queryOperator = '=';
+                        throw new \Exception('Not allowed to filter using the following operator: `'.$queryOperator.'`', 403);
                         break;
                 }
                 $bind = [];
