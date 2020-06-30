@@ -293,8 +293,8 @@ trait Relationship
                             // delete missing related
                             if (!$nodeEntityToDeleteList->delete()) {
     
-                                foreach ($entity->getMessages() as $message) {
-                                    $message->setMetaData(['model' => get_class($entity)]);
+                                foreach ($nodeEntityToDeleteList->getMessages() as $message) {
+                                    $message->setMetaData(['model' => get_class($nodeEntityToDeleteList)]);
                                     $this->appendMessage($message);
                                 }
     

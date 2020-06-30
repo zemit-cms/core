@@ -412,6 +412,13 @@ trait Model
     }
     
     /**
+     * Get having conditions
+     */
+    public function getHaving() {
+        return null;
+    }
+    
+    /**
      * Get find definition
      *
      * @return array
@@ -428,8 +435,9 @@ trait Model
         $find['order'] = $this->getOrder();
         $find['columns'] = $this->getColumns();
         $find['distinct'] = $this->getDistinct();
-        $find['group'] = $this->getGroup();
         $find['joins'] = $this->getJoins();
+        $find['group'] = $this->getGroup();
+        $find['having'] = $this->getHaving();
         
         return array_filter($find);
     }

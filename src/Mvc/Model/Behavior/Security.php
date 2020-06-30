@@ -105,6 +105,7 @@ class Security extends Behavior
             case 'beforeUpdate':
             case 'beforeDelete':
             case 'beforeRestore':
+//            case 'beforeFetch':
                 return $this->isAllowed($eventType, $model);
                 break;
         }
