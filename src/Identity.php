@@ -334,6 +334,7 @@ class Identity extends Injectable
      */
     public function getIdentity() {
         $user = $this->getUser();
+        $userAs = $this->getUserAs();
     
         $roleList = [];
         $groupList = [];
@@ -368,6 +369,7 @@ class Identity extends Injectable
         return [
             'loggedIn' => $this->isLoggedIn(),
             'user' => $user,
+            'userAs' => $userAs,
             'roleList' => $roleList,
             'typeList' => $typeList,
             'groupList' => $groupList,
