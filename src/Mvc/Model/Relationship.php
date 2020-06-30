@@ -274,7 +274,7 @@ trait Relationship
                         }
     
                         // @todo do the logic if we have more than one primary key
-                        if (!($this->_keepMissingRelated[$alias] ?? true) && count($intermediatePrimaryKey) === 1) {
+                        if (!($this->_keepMissingRelated[$lowerCaseAlias] ?? true) && count($intermediatePrimaryKey) === 1) {
 
                             // handle if we empty the related
                             if (empty($nodeIdListToKeep)) {
