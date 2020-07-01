@@ -154,7 +154,7 @@ trait Relationship
                     $this->$alias = is_array($assign) ? array_values(array_filter($assign)) : $assign;
                     
                     // if is empty fix for actual save
-                    if (empty($assign) && empty($this->dirtyRelated[$alias])) {
+                    if (empty($assign)) {
                         $this->dirtyRelated[$alias] = [];
                     }
                     
