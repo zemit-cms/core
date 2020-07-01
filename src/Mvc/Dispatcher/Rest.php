@@ -116,7 +116,7 @@ class Rest extends Injectable
                 }
             }
         } catch(\Exception $e) {
-            $dispatcher->getEventsManager()->fire('dispatch:beforeException', $dispatcher, $e);
+//            $dispatcher->getEventsManager()->fire('dispatch:beforeException', $dispatcher, $e);
         }
     }
     
