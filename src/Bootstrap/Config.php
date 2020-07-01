@@ -199,6 +199,7 @@ class Config extends PhalconConfig
                 Provider\V8js\ServiceProvider::class => Provider\V8js\ServiceProvider::class,
                 Provider\Captcha\ServiceProvider::class => Provider\Captcha\ServiceProvider::class,
                 Provider\Gravatar\ServiceProvider::class => Provider\Gravatar\ServiceProvider::class,
+                Provider\Clamav\ServiceProvider::class => Provider\Clamav\ServiceProvider::class,
 //                Snowair\Debugbar\ServiceProvider::class => \Snowair\Debugbar\ServiceProvider::class,
             ],
     

@@ -15,6 +15,7 @@ use Phalcon\Di\DiInterface;
 use Zemit\Bootstrap;
 use Zemit\Bootstrap\Router;
 use Zemit\Mvc\Router\Identity;
+use Zemit\Mvc\Router\Security;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
@@ -45,16 +46,9 @@ class ServiceProvider extends AbstractServiceProvider
             $bootstrap = $di->get('bootstrap');
     
             /**
-             * Identity
-             */
-            $auth = new Identity();
-            $auth->setDI($di);
-            $eventsManager->attach('dispatch', $auth);
-    
-            /**
              * Router
              */
-            $router = $bootstrap->isConsole()? new \Phalcon\Cli\Router(true) :  new Router(true, $bootstrap->application);
+            $router = $bootstrap->isConsole()? new \Phalcon\Cli\Router(true) : new Router(true, $bootstrap->application);
             $router->setDI($di);
             $router->setDefaultModule($config->defaults->module);
             $router->setDefaultNamespace($config->defaults->namespace);

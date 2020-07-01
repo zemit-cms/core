@@ -13,8 +13,8 @@ namespace Zemit\Mvc\Dispatcher;
 use Phalcon\Acl\Resource;
 use Phalcon\Dispatcher\AbstractDispatcher;
 use Phalcon\Events\Event;
-use Phalcon\Mvc\Dispatcher;
 use Zemit\Di\Injectable;
+use Zemit\Events\Identity;
 
 /**
  * SecurityPlugin
@@ -23,18 +23,27 @@ use Zemit\Di\Injectable;
  */
 class Security extends Injectable
 {
-    
-    
     /**
      * This action is executed before execute any action in the application
      *
      * @param Event $event
-     * @param Dispatcher $dispatcher
+     * @param \Phalcon\Mvc\Dispatcher $dispatcher
      *
      * @return bool
      */
     public function beforeDispatchLoop(Event $event, AbstractDispatcher $dispatcher)
     {
+        return $this->checkAcl($event, $dispatcher);
+    }
+    
+    /**
+     * Check if the current identity is allowed from the dispatcher
+     *
+     * @return bool
+     */
+    public function checkAcl(Event $event, AbstractDispatcher $dispatcher) {
+        $dispatcher ??= $this->dispatcher;
+        
         // get controller and action
         $module = $dispatcher->getModuleName();
         $namespace = $dispatcher->getNamespaceName();

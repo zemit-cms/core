@@ -14,14 +14,17 @@ use Zemit\Bootstrap;
 use Zemit\Bootstrap\Config;
 use Zemit\Identity;
 use Zemit\Utils;
+use Xenolope\Quahog\Client as Clamav;
 
 /**
  * @author Julien Turbide <jturbide@nuagerie.com>
+ *
  * @property Application $application
  * @property Bootstrap $bootstrap
  * @property Utils $utils
  * @property Identity $identity
  * @property Config $config
+ * @property Clamav $clamav
  */
 class Controller extends \Phalcon\Mvc\Controller
 {

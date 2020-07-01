@@ -50,20 +50,22 @@ class Error extends Injectable
      */
     public function beforeException(Event $event, Dispatcher $dispatcher, Exception $exception) {
         switch ($exception->getCode()) {
-            case DispatchException::EXCEPTION_NO_DI:
-                // no di, calm down for now and see what happens after
-                // maybe if module can't be found
-                // @todo why?
-                break;
+//            case DispatchException::EXCEPTION_NO_DI:
+//                // no di, calm down for now and see what happens after
+//                // maybe if module can't be found
+//                // @todo why?
+//                break;
             case DispatchException::EXCEPTION_HANDLER_NOT_FOUND:
             case DispatchException::EXCEPTION_ACTION_NOT_FOUND:
-                $route = $this->config->router->notFound->toArray() ?? [];
-                $route['module'] ??= self::DEFAULT_404_MODULE;
-                $route['controller'] ??= self::DEFAULT_404_CONTROLLER;
-                $route['action'] ??= self::DEFAULT_404_ACTION;
-                $route['params']['exception'] = $exception;
-                $dispatcher->forward($route, true);
-                return false;
+                if ($exception instanceof \Phalcon\Dispatcher\Exception) {
+                    $route = $this->config->router->notFound->toArray() ?? [];
+                    $route['module'] ??= self::DEFAULT_404_MODULE;
+                    $route['controller'] ??= self::DEFAULT_404_CONTROLLER;
+                    $route['action'] ??= self::DEFAULT_404_ACTION;
+                    $route['params']['exception'] = $exception;
+                    $dispatcher->forward($route, true);
+                    return false;
+                }
                 break;
             default:
                 // Everything else, if debug is false, forward forward to fatal error 500
@@ -80,5 +82,6 @@ class Error extends Injectable
                 }
                 break;
         }
+        throw $exception;
     }
 }

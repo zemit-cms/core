@@ -149,8 +149,15 @@ trait Relationship
                 }
                 
                 // we got something to assign
-                if (!empty($assign)) {
+                if (!empty($assign) || $this->_keepMissingRelated[$alias] === false) {
+                    
                     $this->$alias = is_array($assign) ? array_values(array_filter($assign)) : $assign;
+                    
+                    // if is empty fix for actual save
+                    if (empty($assign) && empty($this->dirtyRelated[$alias])) {
+                        $this->dirtyRelated[$alias] = [];
+                    }
+                    
                 }
                 
             } // END RELATION

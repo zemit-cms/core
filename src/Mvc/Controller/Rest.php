@@ -21,7 +21,7 @@ use Zemit\Utils\Slug;
  * Class Rest
  * @package Zemit\Mvc\Controller
  */
-class Rest extends \Phalcon\Mvc\Controller
+class Rest extends \Zemit\Mvc\Controller
 {
     use Model;
     
