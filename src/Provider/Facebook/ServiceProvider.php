@@ -8,39 +8,30 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Provider\FileSystem;
+namespace Zemit\Provider\Facebook;
 
-use League\Flysystem\Filesystem;
-use League\Flysystem\Adapter\Local;
 use Phalcon\Di\DiInterface;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Zemit\Provider\FileSystem\ServiceProvider
+ * Zemit\Provider\Escaper\ServiceProvider
  *
- * @package Zemit\Provider\FileSystem
+ * @package Zemit\Provider\Config
  */
 class ServiceProvider extends AbstractServiceProvider
 {
-    /**
-     * The Service name.
-     * @var string
-     */
-    protected $serviceName = 'oauth2-github';
+    protected $serviceName = 'facebook';
     
     /**
      * {@inheritdoc}
      *
-     * @return void
+     * @param DiInterface $di
      */
-    public function register(DiInterface $di): void
+    public function register(\Phalcon\Di\DiInterface $di) : void
     {
-        $di->setShared($this->getName(), function($root = null) {
-            if ($root === null) {
-                $root = dirname(app_path());
-            }
-            
-            return new Filesystem(new Local($root));
+        $di->setShared($this->getName(), function () use ($di) {
+            $facebook = new Facebook();
+            return $facebook;
         });
     }
 }

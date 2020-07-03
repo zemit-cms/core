@@ -11,17 +11,36 @@
 namespace Zemit\Mvc\Model;
 
 use Exception;
+use Phalcon\Db\Adapter\AdapterInterface;
 use Phalcon\Db\Column;
+use Phalcon\Messages\Message;
 use Phalcon\Mvc\Model\Manager;
+use Phalcon\Mvc\Model\ManagerInterface;
 use Phalcon\Mvc\Model\Relation;
 use Phalcon\Mvc\Model\RelationInterface;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\ModelInterface;
+use Zemit\Mvc\Model;
 use Zemit\Utils\Sprintf;
 
 trait Relationship
 {
     protected array $_keepMissingRelated = [];
+    protected array $_relationshipContext = [];
+    
+    /**
+     * @return string
+     */
+    protected function _getRelationshipContext() {
+        return implode('.', $this->_relationshipContext);
+    }
+    
+    /**
+     * @param $context
+     */
+    protected function _setRelationshipContext($context) {
+        $this->_relationshipContext = array_filter(is_array($context)? $context : explode('.', $context));
+    }
     
     /**
      * Assign related
@@ -168,6 +187,102 @@ trait Relationship
     }
     
     /**
+     * Saves related records that must be stored prior to save the master record
+     * @todo support combined primary key
+     *
+     * @param \Phalcon\Db\Adapter\AdapterInterface $connection
+     * @param $related
+     *
+     * @return bool
+     * @throws Exception
+     */
+    protected function _preSaveRelatedRecords(\Phalcon\Db\Adapter\AdapterInterface $connection, $related) : Bool
+    {
+        $nesting = false;
+
+        /**
+         * Start an implicit transaction
+         */
+        $connection->begin($nesting);
+        
+        $className = get_class($this);
+        
+        /** @var ManagerInterface $manager */
+        $manager = $this->getModelsManager();
+
+        /**
+         * @var string $alias alias
+         * @var ModelInterface $record
+         */
+        foreach ($related as $alias => $record) {
+            /**
+             * Try to get a relation with the same name
+             */
+            $relation = $manager->getRelationByAlias($className, $alias);
+
+            if ($relation) {
+    
+                /**
+                 * Get the relation type
+                 */
+                $type = $relation->getType();
+
+                /**
+                 * Only belongsTo are stored before save the master record
+                 */
+                if ($type === Relation::BELONGS_TO) {
+                    
+                    if (!is_object($record)) {
+                        $connection->rollback($nesting);
+                        throw new Exception("Only objects can be stored as part of belongs-to relations");
+                    }
+
+                    $columns = $relation->getFields();
+                    $referencedModel = $relation->getReferencedModel();
+                    $referencedFields = $relation->getReferencedFields();
+
+                    if (is_array($columns)) {
+                        $connection->rollback($nesting);
+                        throw new Exception("Not implemented");
+                    }
+    
+                    /**
+                     * Set the relationship context
+                     */
+                    $record->_setRelationshipContext($this->_getRelationshipContext() . '.' . $alias);
+                    
+                    /**
+                     * If dynamic update is enabled, saving the record must not take any action
+                     * Only save if the model is dirty to prevent circular relations causing an infinite loop
+                     */
+                    if ($record->getDirtyState() !== Model::DIRTY_STATE_PERSISTENT && !$record->save()) {
+    
+                        /**
+                         * Append messages with context
+                         */
+                        $this->appendMessagesFromRecord($record, $alias);
+
+                        /**
+                         * Rollback the implicit transaction
+                         */
+                        $connection->rollback($nesting);
+
+                        return false;
+                    }
+
+                    /**
+                     * Read the attribute from the referenced model and assign
+                     * it to the current model
+                     */
+                    $this->{$columns} = $record->readAttribute($referencedFields);
+                }
+            }
+        }
+
+        return true;
+    }
+    
+    /**
      * NOTE: we need this, this behaviour only happens:
      * - in many to many nodes
      * Fix uniqueness on combined keys in node entities, and possibly more...
@@ -180,8 +295,9 @@ trait Relationship
      *
      * @return array|bool
      */
-    protected function _prePostSaveRelatedRecords(\Phalcon\Db\Adapter\AdapterInterface $connection, $related)
+    protected function _postSaveRelatedRecords(\Phalcon\Db\Adapter\AdapterInterface $connection, $related): bool
     {
+        $nesting = false;
         
         if ($related) {
             foreach ($related as $lowerCaseAlias => $assign) {
@@ -191,14 +307,29 @@ trait Relationship
                 
                 /** @var RelationInterface $relation */
                 $relation = $modelManager->getRelationByAlias(get_class($this), $lowerCaseAlias);
-                
+
                 // only many to many
                 if ($relation) {
                     $alias = $relation->getOption('alias');
-                    
+    
+                    /**
+                     * Discard belongsTo relations
+                     */
+                    if ($relation->getType() === Relation::BELONGS_TO) {
+                        continue;
+                    }
+    
+                    if (!is_array($assign) && !is_object($assign)) {
+                        $connection->rollback($nesting);
+                        throw new Exception("Only objects/arrays can be stored as part of has-many/has-one/has-one-through/has-many-to-many relations");
+                    }
+    
+                    /**
+                     * Custom logic for many-to-many relationships
+                     */
                     if ($relation->getType() === Relation::HAS_MANY_THROUGH) {
                         
-                        $nodeAssign = [];
+//                        $nodeAssign = [];
                         
                         $originFields = $relation->getFields();
                         $originFields = is_array($originFields) ? $originFields : [$originFields];
@@ -247,13 +378,16 @@ trait Relationship
                                 // Restoring node entities if previously soft deleted
                                 if (method_exists($nodeEntity, 'restore')) {
                                     if (!$nodeEntity->restore()) {
-                                        
-                                        foreach ($entity->getMessages() as $message) {
-                                            $message->setMetaData(['model' => get_class($entity)]);
-                                            $this->appendMessage($message);
-                                        }
-                                        
-                                        $connection->rollback(false);
+    
+                                        /**
+                                         * Append messages with context
+                                         */
+                                        $this->appendMessagesFromRecord($nodeEntity, $lowerCaseAlias);
+    
+                                        /**
+                                         * Rollback the implicit transaction
+                                         */
+                                        $connection->rollback($nesting);
                                         
                                         return false;
                                     }
@@ -261,22 +395,25 @@ trait Relationship
                                 
                                 // save edge record
                                 if (!$entity->save()) {
+    
+                                    /**
+                                     * Append messages with context
+                                     */
+                                    $this->appendMessagesFromRecord($entity, $lowerCaseAlias);
                                     
-                                    foreach ($entity->getMessages() as $message) {
-                                        $message->setMetaData(['model' => get_class($entity)]);
-                                        $this->appendMessage($message);
-                                    }
-                                    
-                                    $connection->rollback(false);
+                                    /**
+                                     * Rollback the implicit transaction
+                                     */
+                                    $connection->rollback($nesting);
                                     
                                     return false;
                                 }
                                 
-                                // remove it
-                                unset($related[$lowerCaseAlias][$key]);
+//                                // remove it
+//                                unset($related[$lowerCaseAlias][$key]);
                                 
-                                // add to assign
-                                $nodeAssign [] = $nodeEntity;
+//                                // add to assign
+//                                $nodeAssign [] = $nodeEntity;
                             }
                         }
     
@@ -300,25 +437,157 @@ trait Relationship
                             // delete missing related
                             if (!$nodeEntityToDeleteList->delete()) {
     
-                                foreach ($nodeEntityToDeleteList->getMessages() as $message) {
-                                    $message->setMetaData(['model' => get_class($nodeEntityToDeleteList)]);
-                                    $this->appendMessage($message);
-                                }
+                                /**
+                                 * Append messages with context
+                                 */
+                                $this->appendMessagesFromRecord($nodeEntityToDeleteList, $lowerCaseAlias);
     
-                                $connection->rollback(false);
+                                /**
+                                 * Rollback the implicit transaction
+                                 */
+                                $connection->rollback($nesting);
     
                                 return false;
                             }
                         }
-                        
+                    }
+
+                    // Default phalcon's logic
+                    else {
+                        $columns = $relation->getFields();
+                        $referencedModel = $relation->getReferencedModel();
+                        $referencedFields = $relation->getReferencedFields();
+    
+                        // @todo support combined keys
+                        if (is_array($columns)) {
+                            $connection->rollback($nesting);
+                            throw new Exception("Not implemented");
+                        }
+    
+                        /**
+                         * Create an implicit array for has-many/has-one records
+                         */
+                        $relatedRecords = is_object($assign)? [$assign] : $assign;
+    
+                        // @todo support combined keys
+                        if (isset($this->$columns)) {
+                            $connection->rollback($nesting);
+                            throw new Exception("The column '" . $columns . "' needs to be present in the model");
+                        }
+    
+                        /**
+                         * Get the value of the field from the current model
+                         * Check if the relation is a has-many-to-many
+                         */
+                        $isThrough = (bool) $relation->isThrough();
+    
+                        /**
+                         * Get the rest of intermediate model info
+                         */
+                        if ($isThrough) {
+                            $intermediateModelName = $relation->getIntermediateModel();
+                            $intermediateFields = $relation->getIntermediateFields();
+                            $intermediateReferencedFields = $relation->getIntermediateReferencedFields();
+                        }
+    
+                        foreach ($relatedRecords as $recordAfter) {
+        
+                            if (!$isThrough) {
+                                $recordAfter->writeAttribute($referencedFields, $this->$columns);
+                            }
+        
+                            /**
+                             * Save the record and get messages
+                             */
+                            if (!$recordAfter->save()) {
+            
+                                /**
+                                 * Append messages with context
+                                 */
+                                $this->appendMessagesFromRecord($recordAfter, $lowerCaseAlias);
+            
+                                /**
+                                 * Rollback the implicit transaction
+                                 */
+                                $connection->rollback($nesting);
+            
+                                return false;
+                            }
+        
+                            if ($isThrough) {
+                                /**
+                                 * Create a new instance of the intermediate model
+                                 */
+                                $intermediateModel = $modelManager->load($intermediateModelName);
+            
+                                /**
+                                 *  Has-one-through relations can only use one intermediate model.
+                                 *  If it already exist, it can be updated with the new referenced key.
+                                 */
+                                if ($relation->getType() === Relation::HAS_ONE_THROUGH) {
+                                    $existingIntermediateModel = $intermediateModel->findFirst([
+                                        "[" . $intermediateFields . "] = ?0",
+                                        "bind" => $this->$columns
+                                    ]);
+                
+                                    if ($existingIntermediateModel) {
+                                        $intermediateModel = $existingIntermediateModel;
+                                    }
+                                }
+            
+                                /**
+                                 * Write value in the intermediate model
+                                 */
+                                $intermediateModel->writeAttribute($intermediateFields, $this->$columns);
+            
+                                /**
+                                 * Get the value from the referenced model
+                                 */
+                                $intermediateValue = $recordAfter->readAttribute($referencedFields);
+            
+                                /**
+                                 * Write the intermediate value in the intermediate model
+                                 */
+                                $intermediateModel->writeAttribute($intermediateReferencedFields, $intermediateValue);
+            
+                                /**
+                                 * Save the record and get messages
+                                 */
+                                if ($intermediateModel->save()) {
+                
+                                    /**
+                                     * Append messages with context
+                                     */
+                                    $this->appendMessagesFromRecord($intermediateModel, $lowerCaseAlias);
+                
+                                    /**
+                                     * Rollback the implicit transaction
+                                     */
+                                    $connection->rollback($nesting);
+                
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    if (is_array($assign)) {
+                        $connection->rollback($nesting);
+                        throw new Exception("There are no defined relations for the model '" . get_class($this) . "' using alias '" . $lowerCaseAlias . "'");
                     }
                 }
             }
         }
+    
+        /**
+         * Commit the implicit transaction
+         */
+        $connection->commit($nesting);
+        return true;
         
-        // no commit here cuz parent::_postSaveRelatedRecords will fire it
-        
-        return [true, $connection, array_filter($related ?? [])];
+//        // no commit here cuz parent::_postSaveRelatedRecords will fire it
+//        return [true, $connection, array_filter($related ?? [])];
     }
     
     /**
@@ -367,5 +636,48 @@ trait Relationship
         $this->assignRelated(...func_get_args());
         
         return parent::assign(...func_get_args());
+    }
+    
+    /**
+     * Append a message to this model from another record,
+     * also prepend a context to the previous context
+     *
+     * @param ResultsetInterface|ModelInterface $record
+     * @param string|null $context
+     */
+    public function appendMessagesFromRecord($record, string $context = null) {
+        /**
+         * Get the validation messages generated by the
+         * referenced model
+         */
+        foreach ($record->getMessages() as $message) {
+            
+            /**
+             * Set the related model
+             */
+            $message->setMetaData([
+                'model' => $record,
+                'context' => $this->rebuildMessageContext($message, $context),
+            ]);
+        
+            /**
+             * Appends the messages to the current model
+             */
+            $this->appendMessage($message);
+        }
+    }
+    
+    /**
+     * Rebuilding context for meta data
+     *
+     * @param Message $message
+     * @param string $context
+     *
+     * @return string
+     */
+    public function rebuildMessageContext(Message $message, string $context) {
+        $metaData = $message->getMetaData();
+        $previousContext = $metaData['context'] ?? null;
+        return $context . (empty($previousContext)? null : '.' . $previousContext);
     }
 }

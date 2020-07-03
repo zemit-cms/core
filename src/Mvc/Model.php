@@ -332,12 +332,12 @@ class Model extends \Phalcon\Mvc\Model
         ]));
     }
     
-    protected function _postSaveRelatedRecords(\Phalcon\Db\Adapter\AdapterInterface $connection, $related): bool
-    {
-        [$success, $connection, $related] = $this->_prePostSaveRelatedRecords($connection, $related);
-        
-        return $success ? parent::_postSaveRelatedRecords($connection, $related) : false;
-    }
+//    protected function _postSaveRelatedRecords(\Phalcon\Db\Adapter\AdapterInterface $connection, $related): bool
+//    {
+//        [$success, $connection, $related] = $this->_prePostSaveRelatedRecords($connection, $related);
+//
+//        return $success ? parent::_postSaveRelatedRecords($connection, $related) : false;
+//    }
     
     /**
      * Get the current active user
