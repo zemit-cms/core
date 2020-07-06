@@ -618,6 +618,7 @@ trait Model
         $whitelist ??= $this->getWhitelist();
         $columnMap ??= $this->getColumnMap();
         $with ??= $this->getWith();
+        $id = (int)$id;
         
         // Check if multi-d post
         if (!empty($id) || !isset($post[0]) || !is_array($post[0])) {
@@ -629,7 +630,12 @@ trait Model
         foreach ($post as $key => $singlePost) {
             $ret = [];
             
-            $singlePostId = (!$single || empty($id)) ? $this->getParam('id', 'int', null, $singlePost) : $id;
+            // @todo see if we should remove this earlier
+            if (isset($singlePost['_url'])) {
+                unset($singlePost['_url']);
+            }
+            
+            $singlePostId = (!$single || empty($id)) ? $this->getParam('id', 'number', $this->getParam('int', 'number', null)) : $id;
             unset($singlePost['id']);
             
             /** @var \Zemit\Mvc\Model $singlePostEntity */
