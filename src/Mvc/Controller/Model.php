@@ -101,11 +101,7 @@ trait Model
      */
     protected function getOrder()
     {
-        $filter = $this->filter;
-        
-        return array_map(function($e) use ($filter) {
-            return trim($filter->sanitize($e, 'string'));
-        }, explode(',', $this->getParam('order', 'string', '[' . $this->getModelName() . '].[id]')));
+        return $this->getParamExplodeArrayMapFilter('order');
     }
     
     /**
@@ -135,7 +131,7 @@ trait Model
      */
     protected function getGroup()
     {
-        return $this->getParam('group', 'string');
+        return $this->getParamExplodeArrayMapFilter('group');
     }
     
     /**
@@ -146,7 +142,7 @@ trait Model
      */
     protected function getDistinct()
     {
-        return $this->getParam('distinct', 'string');
+        return $this->getParamExplodeArrayMapFilter('distinct');
     }
     
     /**
@@ -168,6 +164,21 @@ trait Model
     protected function getSoftDeleteCondition()
     {
         return '[' . $this->getModelName() . '].[deleted] = 0';
+    }
+    
+    /**
+     * @param $field
+     * @param string $sanitizer
+     * @param string $glue
+     *
+     * @return array|string[]
+     */
+    public function getParamExplodeArrayMapFilter($field, $sanitizer = 'string', $glue = ',') {
+        $filter = $this->filter;
+        $ret = array_filter(array_map(function($e) use ($filter, $sanitizer) {
+            return $this->appendModelName(trim($filter->sanitize($e, $sanitizer)));
+        }, explode($glue, $this->getParam($field, $sanitizer))));
+        return empty($ret)? null : $ret;
     }
     
     /**
@@ -273,6 +284,7 @@ trait Model
     {
         $filters ??= $this->getParam('filters');
         $whitelist ??= $this->getFilterWhitelist();
+        $lowercaseWhitelist = array_map('mb_strtolower', $whitelist);
         
         // No filter, no query
         if (empty($filters)) {
@@ -282,9 +294,10 @@ trait Model
         $query = [];
         foreach ($filters as $filter) {
             $field = $this->filter->sanitize($filter['field'] ?? null, ['string', 'trim']);
+            $lowercaseField = mb_strtolower($field);
             
             // whitelist on filter condition
-            if (is_null($whitelist) || !in_array($field, $whitelist, true)) {
+            if (is_null($whitelist) || !in_array($lowercaseField, $lowercaseWhitelist, true)) {
                 throw new \Exception('Not allowed to filter using the following field: `'.$field.'`', 403);
                 continue;
             }
@@ -331,37 +344,48 @@ trait Model
 //                $queryFieldBinder = '{' . $queryField . '}';
                 
                 // Add the current model name by default
-                if (!str_contains($field, '.')) {
-                    $field = $this->getModelName() . '.' . $field;
-                }
+                $field = $this->appendModelName($field);
                 
                 $queryFieldBinder = '[' . str_replace('.', '].[', $field) . ']';
                 $queryValueBinder = ':' . $queryValue . ':';
                 if (isset($filter['value'])) {
-                    $bind[$queryValue] = $filter['value'];
-                    if (is_string($filter['value'])) {
-                        $bindType[$queryValue] = Column::BIND_PARAM_STR;
-                    }
-                    else if (is_int($filter['value'])) {
-                        $bindType[$queryValue] = Column::BIND_PARAM_INT;
-                    }
-                    else if (is_bool($filter['value'])) {
-                        $bindType[$queryValue] = Column::BIND_PARAM_BOOL;
-                    }
-                    else if (is_float($filter['value'])) {
-                        $bindType[$queryValue] = Column::BIND_PARAM_DECIMAL;
-                    }
-                    else if (is_double($filter['value'])) {
-                        $bindType[$queryValue] = Column::BIND_PARAM_DECIMAL;
-                    }
-                    else if (is_array($filter['value'])) {
-                        $queryValueBinder = '({' . $queryValue . ':array})';
-                        $bindType[$queryValue] = Column::BIND_PARAM_STR;
+                    
+                    // special for between and not between
+                    if (in_array($queryOperator, ['between', 'not between'])) {
+                        $queryValue0 = '_' . uniqid($uniqid . '_value_') . '_';
+                        $queryValue1 = '_' . uniqid($uniqid . '_value_') . '_';
+                        $bind[$queryValue0] = $filter['value'][0];
+                        $bind[$queryValue1] = $filter['value'][1];
+                        $bindType[$queryValue0] = Column::BIND_PARAM_STR;
+                        $bindType[$queryValue1] = Column::BIND_PARAM_STR;
+                        $query []= "$queryFieldBinder $queryOperator :$queryValue0: and :$queryValue1:";
                     }
                     else {
-                        $bindType[$queryValue] = Column::BIND_PARAM_NULL;
+                        $bind[$queryValue] = $filter['value'];
+                        if (is_string($filter['value'])) {
+                            $bindType[$queryValue] = Column::BIND_PARAM_STR;
+                        }
+                        else if (is_int($filter['value'])) {
+                            $bindType[$queryValue] = Column::BIND_PARAM_INT;
+                        }
+                        else if (is_bool($filter['value'])) {
+                            $bindType[$queryValue] = Column::BIND_PARAM_BOOL;
+                        }
+                        else if (is_float($filter['value'])) {
+                            $bindType[$queryValue] = Column::BIND_PARAM_DECIMAL;
+                        }
+                        else if (is_double($filter['value'])) {
+                            $bindType[$queryValue] = Column::BIND_PARAM_DECIMAL;
+                        }
+                        else if (is_array($filter['value'])) {
+                            $queryValueBinder = '({' . $queryValue . ':array})';
+                            $bindType[$queryValue] = Column::BIND_PARAM_STR;
+                        }
+                        else {
+                            $bindType[$queryValue] = Column::BIND_PARAM_NULL;
+                        }
+                        $query [] = "$queryFieldBinder $queryOperator $queryValueBinder";
                     }
-                    $query [] = "$queryFieldBinder $queryOperator $queryValueBinder";
                 }
                 else {
                     $query [] = "$queryFieldBinder $queryOperator";
@@ -381,6 +405,40 @@ trait Model
         }
         
         return empty($query) ? null : '(' . implode($or ? ' or ' : ' and ', $query) . ')';
+    }
+    
+    /**
+     * Append the current model name alias to the field
+     * So: field -> [Alias].[field]
+     *
+     * @param string|array $field
+     * @param null $modelName
+     *
+     * @return array|string
+     */
+    public function appendModelName($field, $modelName = null) {
+        $modelName ??= $this->getModelName();
+        
+        if (empty($field)) {
+            return $field;
+        }
+        
+        if (is_string($field)) {
+            // Add the current model name by default
+            if (!str_contains($field, '.')) {
+                $explode = explode(' ', $field);
+                $field = trim('[' . $modelName . '].[' . array_shift($explode) . '] ' . implode(' ', $explode));
+            }
+        }
+        
+        else if (is_array($field)) {
+            foreach ($field as $fieldKey => $fieldValue) {
+                $field[$fieldKey] = $this->appendModelName($fieldValue, $modelName);
+            }
+        }
+        
+        
+        return $field;
     }
     
     /**
@@ -438,6 +496,13 @@ trait Model
         $find['joins'] = $this->getJoins();
         $find['group'] = $this->getGroup();
         $find['having'] = $this->getHaving();
+    
+        // fix for grouping by multiple fields, phalcon only allow string here
+        foreach (['distinct', 'group'] as $findKey) {
+            if (isset($find[$findKey]) && is_array($find[$findKey])) {
+                $find[$findKey] = implode(', ', $find[$findKey]);
+            }
+        }
         
         return array_filter($find);
     }
@@ -455,6 +520,9 @@ trait Model
         if (isset($find['offset'])) {
             unset($find['offset']);
         }
+//        if (isset($find['group'])) {
+//            unset($find['group']);
+//        }
         
         return array_filter($find);
     }

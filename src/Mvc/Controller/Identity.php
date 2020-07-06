@@ -95,4 +95,17 @@ trait Identity
         
         return $this->view->loggedInAs;
     }
+    
+    /**
+     * Reset Action
+     * - Require an active session to bind the logged in userId
+     *
+     * @return bool
+     */
+    public function resetAction()
+    {
+        $this->view->setVars($this->identity->resetPassword());
+        
+        return $this->view->reset;
+    }
 }

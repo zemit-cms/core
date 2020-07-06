@@ -43,6 +43,20 @@ trait Relationship
     }
     
     /**
+     * @param array $data
+     * @param null $whiteList
+     * @param null $dataColumnMap
+     *
+     * @return ModelInterface
+     * @throws Exception
+     */
+    public function assign(array $data, $whiteList = null, $dataColumnMap = null): ModelInterface
+    {
+        $this->assignRelated(...func_get_args());
+        return parent::assign(...func_get_args());
+    }
+    
+    /**
      * Assign related
      *
      * Single
@@ -629,13 +643,6 @@ trait Relationship
         }
         
         return $entity;
-    }
-    
-    public function assign(array $data, $whiteList = null, $dataColumnMap = null): ModelInterface
-    {
-        $this->assignRelated(...func_get_args());
-        
-        return parent::assign(...func_get_args());
     }
     
     /**
