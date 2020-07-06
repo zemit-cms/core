@@ -484,7 +484,7 @@ trait Relationship
                         $relatedRecords = is_object($assign)? [$assign] : $assign;
     
                         // @todo support combined keys
-                        if (!isset($this->$columns)) {
+                        if (!property_exists($this, $columns)) {
                             $connection->rollback($nesting);
                             throw new Exception("The column '" . $columns . "' needs to be present in the model");
                         }

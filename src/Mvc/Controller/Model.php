@@ -157,6 +157,39 @@ trait Model
     }
     
     /**
+     * Get Search condition
+     *
+     * @return string Default: deleted = 0
+     */
+    protected function getSearchCondition()
+    {
+        $conditions = [];
+        
+        $searchList = array_values(array_filter(array_unique(explode(' ', $this->getParam('search', 'string')))));
+        
+        foreach ($searchList as $searchTerm) {
+            
+            
+            $orConditions = [];
+            // @todo figure out why I can't use the same binding multiple time...
+            // temp fix, generating new binding for each condition
+            foreach ($this->getFilterWhitelist() as $filterWhitelist) {
+                $searchTermBinding = '_' . uniqid() . '_';
+                $orConditions []= $this->appendModelName($filterWhitelist) . " like :$searchTermBinding:";
+                $this->setBind([$searchTermBinding => '%' . $searchTerm . '%']);
+                $this->setBindTypes([$searchTermBinding => Column::BIND_PARAM_STR]);
+            }
+    
+            if (!empty($orConditions)) {
+                
+                $conditions []= '(' . implode(' or ', $orConditions) . ')';
+            }
+        }
+    
+        return empty($conditions)? null : '(' . implode(' and ', $conditions) . ')';
+    }
+    
+    /**
      * Get Soft delete condition
      *
      * @return string Default: deleted = 0
@@ -429,6 +462,9 @@ trait Model
                 $explode = explode(' ', $field);
                 $field = trim('[' . $modelName . '].[' . array_shift($explode) . '] ' . implode(' ', $explode));
             }
+            else if (!str_contains($field, ']') && !str_contains($field, '[')) {
+                $field = '[' . implode('].[', explode('.', $field)) . ']';
+            }
         }
         
         else if (is_array($field)) {
@@ -463,6 +499,7 @@ trait Model
             $this->getSoftDeleteCondition(),
             $this->getIdentityCondition(),
             $this->getFilterCondition(),
+            $this->getSearchCondition(),
             $this->getPermissionCondition(),
         ])));
         

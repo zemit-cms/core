@@ -105,9 +105,10 @@ class Rest extends \Zemit\Mvc\Controller
         
         /** @var Resultset $with */
         $find = $this->getFind();
+//        dd($find);
         $with = $model::with($this->getWith() ? : [], $find ? : []);
 //        $list = $model::find($find ? : []);
-        
+    
         /**
          * @var int $key
          * @var \Zemit\Mvc\Model $item
