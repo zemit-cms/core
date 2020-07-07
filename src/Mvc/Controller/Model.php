@@ -55,6 +55,16 @@ trait Model
     }
     
     /**
+     * Get the Whitelist parameters for filtering
+     *
+     * @return null|array
+     */
+    protected function getSearchWhitelist()
+    {
+        return $this->getFilterWhitelist();
+    }
+    
+    /**
      * Get the column mapping for crud
      *
      * @return null|array
@@ -169,13 +179,12 @@ trait Model
         
         foreach ($searchList as $searchTerm) {
             
-            
             $orConditions = [];
             // @todo figure out why I can't use the same binding multiple time...
             // temp fix, generating new binding for each condition
-            foreach ($this->getFilterWhitelist() as $filterWhitelist) {
+            foreach ($this->getSearchWhitelist() as $whitelist) {
                 $searchTermBinding = '_' . uniqid() . '_';
-                $orConditions []= $this->appendModelName($filterWhitelist) . " like :$searchTermBinding:";
+                $orConditions []= $this->appendModelName($whitelist) . " like :$searchTermBinding:";
                 $this->setBind([$searchTermBinding => '%' . $searchTerm . '%']);
                 $this->setBindTypes([$searchTermBinding => Column::BIND_PARAM_STR]);
             }
