@@ -388,7 +388,7 @@ trait Model
                 // Add the current model name by default
                 $field = $this->appendModelName($field);
                 
-                $queryFieldBinder = '[' . str_replace('.', '].[', $field) . ']';
+                $queryFieldBinder = $field;
                 $queryValueBinder = ':' . $queryValue . ':';
                 if (isset($filter['value'])) {
                     
