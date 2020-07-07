@@ -96,6 +96,7 @@ class Model extends \Phalcon\Mvc\Model
     use \Zemit\Mvc\Model\Expose\Expose;
     use \Zemit\Mvc\Model\FindIn;
     use \Zemit\Mvc\Model\SoftDelete;
+    use \Zemit\Mvc\Model\Identity;
 //    use \Zemit\Mvc\Model\Utils;
     
     public function initialize()
@@ -339,35 +340,7 @@ class Model extends \Phalcon\Mvc\Model
 //        return $success ? parent::_postSaveRelatedRecords($connection, $related) : false;
 //    }
     
-    /**
-     * Get the current active user
-     *
-     * @return mixed
-     */
-    public function getCurrentUser($as = false) {
-        /** @var Identity $identity */
-        $identity = $this->getDI()->get('identity');
-        return $identity->getUser($as);
-    }
     
-    /**
-     * Get the current user id
-     *
-     * @return int
-     */
-    public function getCurrentUserId($as = false) {
-        $user = $this->getCurrentUser($as);
-        return $user? $user->getId() : null;
-    }
-    
-    /**
-     * @return \Closure
-     */
-    public function getCurrentUserIdCallback($as = false) {
-        return function () use ($as) {
-            return $this->getCurrentUserId($as);
-        };
-    }
     
     
     /**
@@ -419,7 +392,7 @@ class Model extends \Phalcon\Mvc\Model
     }
     
     /**
-     * Check wether the current entity has dirty related or not
+     * Check whether the current entity has dirty related or not
      *
      * @return bool
      */

@@ -326,7 +326,7 @@ trait Model
     {
         $filters ??= $this->getParam('filters');
         $whitelist ??= $this->getFilterWhitelist();
-        $lowercaseWhitelist = array_map('mb_strtolower', $whitelist);
+        $lowercaseWhitelist = !is_null($whitelist)? array_map('mb_strtolower', $whitelist) : $whitelist;
         
         // No filter, no query
         if (empty($filters)) {
