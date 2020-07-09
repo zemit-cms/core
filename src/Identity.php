@@ -355,27 +355,42 @@ class Identity extends Injectable
         $typeList = [];
         
         if ($user) {
-            foreach ($user->rolelist as $role) {
-                $roleList [$role->getIndex()] = $role;
-            }
-            
-            foreach ($user->groupList as $group) {
-                $groupList [$group->getIndex()] = $group;
-                
-                foreach ($group->roleList as $role) {
+            if ($user->rolelist) {
+                foreach ($user->rolelist as $role) {
                     $roleList [$role->getIndex()] = $role;
                 }
             }
             
-            foreach ($user->typeList as $type) {
-                $typeList [$type->getIndex()] = $type;
-                
-                foreach ($type->groupList as $group) {
+            
+            if ($user->grouplist) {
+                foreach ($user->grouplist as $group) {
                     $groupList [$group->getIndex()] = $group;
-                    
-                    foreach ($group->roleList as $role) {
-                        $roleList [$role->getIndex()] = $role;
+        
+                    if ($group->rolelist) {
+                        foreach ($group->rolelist as $role) {
+                            $roleList [$role->getIndex()] = $role;
+                        }
                     }
+                }
+            }
+            
+            
+            if ($user->typeList) {
+                foreach ($user->typelist as $type) {
+                    $typeList [$type->getIndex()] = $type;
+        
+                    if ($type->grouplist) {
+                        foreach ($type->grouplist as $group) {
+                            $groupList [$group->getIndex()] = $group;
+        
+                            if ($group->rolelist) {
+                                foreach ($group->rolelist as $role) {
+                                    $roleList [$role->getIndex()] = $role;
+                                }
+                            }
+                        }
+                    }
+                    
                 }
             }
         }
