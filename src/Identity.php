@@ -437,7 +437,7 @@ class Identity extends Injectable
             $session = $this->getSession(...$this->getKeyToken());
             
             $userClass = $this->getUserClass();
-            $user = $userClass::findFirstWithById([
+            $user = !$session? false : $userClass::findFirstWithById([
                 'RoleList',
                 'GroupList.RoleList',
                 'TypeList.GroupList.RoleList',
