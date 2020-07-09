@@ -64,6 +64,11 @@ class Identity extends Injectable
     public $userAs;
     
     /**
+     * @var Session
+     */
+    public $currentSession;
+    
+    /**
      * @var string|int|bool|null
      */
     public $identity;
@@ -137,6 +142,14 @@ class Identity extends Injectable
     public function getTypeClass()
     {
         return $this->getOption('roleClass') ?? \Zemit\Models\Type::class;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getEmailClass()
+    {
+        return $this->getOption('emailClass') ?? \Zemit\Models\Email::class;
     }
     
     /**
@@ -237,7 +250,7 @@ class Identity extends Injectable
      */
     public function hasRole($roles = null, $or = false)
     {
-        return $this->has($roles, array_keys($this->getRoleList() ?: []), $or);
+        return $this->has($roles, array_keys($this->getRoleList() ? : []), $or);
     }
     
     /**
@@ -250,7 +263,7 @@ class Identity extends Injectable
         /** @var User $user */
         $user = $this->getUser($as);
         
-        return $user? $user->getId() : false;
+        return $user ? $user->getId() : false;
     }
     
     /**
@@ -300,10 +313,10 @@ class Identity extends Injectable
         
         $key ??= $this->security->getRandom()->uuid();
         $token ??= $this->security->getRandom()->hex(512);
-        
+    
         $sessionClass = $this->getSessionClass();
         $session = $this->getSession($key, $token) ? : new $sessionClass();
-        
+    
         if ($session && $refresh) {
             $token = $this->security->getRandom()->hex(512);
         }
@@ -332,10 +345,11 @@ class Identity extends Injectable
      *
      * @return array
      */
-    public function getIdentity() {
+    public function getIdentity()
+    {
         $user = $this->getUser();
         $userAs = $this->getUserAs();
-    
+        
         $roleList = [];
         $groupList = [];
         $typeList = [];
@@ -344,7 +358,7 @@ class Identity extends Injectable
             foreach ($user->rolelist as $role) {
                 $roleList [$role->getIndex()] = $role;
             }
-        
+            
             foreach ($user->groupList as $group) {
                 $groupList [$group->getIndex()] = $group;
                 
@@ -352,7 +366,7 @@ class Identity extends Injectable
                     $roleList [$role->getIndex()] = $role;
                 }
             }
-        
+            
             foreach ($user->typeList as $type) {
                 $typeList [$type->getIndex()] = $type;
                 
@@ -399,26 +413,24 @@ class Identity extends Injectable
      *
      * @return User|bool
      */
-    public function getUser($as = false)
+    public function getUser($as = false, $refetch = false)
     {
-        $property = $as? 'userAs' : 'user';
+        $property = $as ? 'userAs' : 'user';
         
-        if (is_null($this->$property)) {
+        if (is_null($this->$property) || $refetch) {
             
             $session = $this->getSession(...$this->getKeyToken());
-    
+            
             $userClass = $this->getUserClass();
-            $user = !$session? false : $userClass::findFirstWithById([
+            $user = $userClass::findFirstWithById([
                 'RoleList',
                 'GroupList.RoleList',
                 'TypeList.GroupList.RoleList',
 //            'GroupList.TypeList.RoleList', // @TODO do it
 //            'TypeList.RoleList', // @TODO do it
-            ], $as? $session->getAsUserId() : $session->getUserId());
-    
-            if ($user) {
-                $this->$property = $user;
-            }
+            ], $as ? $session->getAsUserId() : $session->getUserId());
+            
+            $this->$property = $user ? $user : false;
         }
         
         return $this->$property;
@@ -429,7 +441,8 @@ class Identity extends Injectable
      *
      * @return bool|User
      */
-    public function getUserAs() {
+    public function getUserAs()
+    {
         return $this->getUser(true);
     }
     
@@ -465,9 +478,10 @@ class Identity extends Injectable
      *
      * @return array
      */
-    public function getAclRoles(array $roleList = null) {
+    public function getAclRoles(array $roleList = null)
+    {
         $roleList ??= $this->getRoleList();
-    
+        
         $aclRoles = [];
         $aclRoles['everyone'] = new Role('everyone');
         foreach ($roleList as $role) {
@@ -482,10 +496,11 @@ class Identity extends Injectable
      *
      * @return array
      */
-    public function loginAs($params) {
+    public function loginAs($params)
+    {
         /** @var Session $session */
         $session = $this->getSession(...$this->getKeyToken());
-    
+        
         $validation = new Validation();
         $validation->add('userId', new PresenceOf(['message' => 'userId is required']));
         $validation->validate($params);
@@ -500,7 +515,7 @@ class Identity extends Injectable
             
             $userClass = $this->getUserClass();
             $asUser = $userClass::findFirstById((int)$params['userId']);
-
+            
             if ($asUser) {
                 if ($this->hasRole(['admin', 'dev'])) {
                     $session->setAsUserId($userId);
@@ -512,7 +527,7 @@ class Identity extends Injectable
             }
         }
         
-        $saved = $session? $session->save() : false;
+        $saved = $session ? $session->save() : false;
         foreach ($session->getMessages() as $message) {
             $validation->appendMessage($message);
         }
@@ -527,10 +542,11 @@ class Identity extends Injectable
     /**
      * @return array
      */
-    public function logoutAs() {
+    public function logoutAs()
+    {
         /** @var Session $session */
         $session = $this->getSession(...$this->getKeyToken());
-    
+        
         $asUserId = $session->getAsUserId();
         $userId = $session->getUserId();
         if (!empty($asUserId) && !empty($userId)) {
@@ -540,7 +556,7 @@ class Identity extends Injectable
         }
         
         return [
-            'saved' => $session? $session->save() : false,
+            'saved' => $session ? $session->save() : false,
             'loggedInAs' => $this->isLoggedInAs(),
             'messages' => $session->getMessages(),
         ];
@@ -648,6 +664,96 @@ class Identity extends Injectable
     }
     
     /**
+     * @param array|null $params
+     *
+     * @return array
+     */
+    public function reset(array $params = null)
+    {
+        $saved = false;
+        $sent = false;
+        $token = null;
+        
+        $session = $this->getSession(...$this->getKeyToken());
+        $validation = new Validation();
+        
+        $validation->add('email', new PresenceOf(['message' => 'email is required']));
+        $validation->validate($params);
+        
+        if (!$session) {
+            $validation->appendMessage(new Message('A session is required', 'session', 'PresenceOf', 403));
+        }
+        else {
+            if (isset($params['email'])) {
+                $userClass = $this->getUserClass();
+                $user = $userClass::findFirstByEmail($params['email']);
+            }
+            
+            // Reset
+            if ($user) {
+                
+                // Password reset request
+                if (empty($params['token'])) {
+                    
+                    // Generate a new token
+                    $token = $user->prepareToken();
+                    
+                    // Send it by email
+                    $emailClass = $this->getEmailClass();
+                    $email = new $emailClass();
+                    $email->setTemplateByIndex('password-reset');
+                    $email->setTo($user->getEmail());
+                    $email->setMeta(['user' => $user->expose(['User' => [
+                        false,
+                        'firstName',
+                        'lastName',
+                        'email',
+                        'token' => function($builder) use ($token) {
+                            $builder->setValue($token);
+                        },
+                    ]])]);
+                    $saved = $user->save();
+                    $sent = $saved ? $email->send() : false;
+    
+                    // Appending error messages
+                    foreach (['user', 'email'] as $e) {
+                        foreach ($$e->getMessages() as $message) {
+                            $validation->appendMessage($message);
+                        }
+                    }
+                }
+                
+                // Password reset
+                else {
+                    $validation->add('password', new PresenceOf(['message' => 'password is required']));
+                    $validation->add('passwordConfirm', new PresenceOf(['message' => 'password confirm is required']));
+                    $validation->validate($params);
+                    
+                    if ($user->checkToken($params['token']) && !empty($password) && !empty($passwordConfirm)) {
+                        $params['token'] = null;
+                        $user->assign($params, ['token', 'password', 'passwordConfirm']);
+                        $saved = $user->save();
+                    }
+                }
+                
+                // Appending error messages
+                foreach ($user->getMessages() as $message) {
+                    $validation->appendMessage($message);
+                }
+            }
+            else {
+                $validation->appendMessage(new Message('User not found', 'user', 'PresenceOf', 404));
+            }
+        }
+        
+        return [
+            'saved' => $saved,
+            'sent' => $sent,
+            'messages' => $validation->getMessages(),
+        ];
+    }
+    
+    /**
      * Get key / token fields to use for the session fetch & validation
      *
      * @return array
@@ -708,10 +814,10 @@ class Identity extends Injectable
         }
         
         $sessionClass = $this->getSessionClass();
-        $session = $sessionClass::findFirstByKey($this->filter->sanitize($key, 'string'));
+        $this->currentSession ??= $sessionClass::findFirstByKey($this->filter->sanitize($key, 'string'));
         
+        $session = $this->currentSession;
         if ($session && $session->checkHash($session->getToken(), $key . $token)) {
-            
             return $session;
         }
         

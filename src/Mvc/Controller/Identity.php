@@ -26,7 +26,7 @@ trait Identity
      * @return bool
      * @throws \Phalcon\Security\Exception
      */
-    public function getAction($request)
+    public function getAction($request = null)
     {
         $this->view->setVars($this->identity->getJwt($request === true));
         $this->view->setVars($this->identity->getIdentity());
@@ -104,7 +104,7 @@ trait Identity
      */
     public function resetAction()
     {
-        $this->view->setVars($this->identity->resetPassword());
+        $this->view->setVars($this->identity->reset($this->getParams()));
         
         return $this->view->reset;
     }

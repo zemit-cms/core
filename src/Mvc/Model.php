@@ -19,6 +19,8 @@ use Phalcon\Security;
 use Zemit\Identity;
 use Zemit\Models\Audit;
 use Zemit\Models\AuditDetail;
+use Zemit\Models\Session;
+use Zemit\Models\User;
 use Zemit\Mvc\Model\Behavior\Blameable;
 use Zemit\Mvc\Model\Behavior\Conditional;
 use Zemit\Mvc\Model\Behavior\Position;
@@ -33,7 +35,6 @@ use Zemit\Mvc\Model\RawValue;
 use Zemit\Mvc\Model\Relationship;
 use Zemit\Mvc\Model\Slug;
 use Zemit\Mvc\Model\Snapshots;
-use Zemit\Mvc\Model\User;
 //use Zemit\Mvc\Model\Utils;
 
 /**
@@ -180,9 +181,8 @@ class Model extends \Phalcon\Mvc\Model
      * Blameable Audit User
      */
     public function addSecurityBehavior() : void {
-        $this->addBehavior(new \Zemit\Mvc\Model\Behavior\Security([
-            'userClass' => User::class,
-        ]));
+        $config = $this->getDI()->get('config')->identity->toArray();
+        $this->addBehavior(new \Zemit\Mvc\Model\Behavior\Security($config));
     }
     
     /**
@@ -332,16 +332,6 @@ class Model extends \Phalcon\Mvc\Model
             'userClass' => User::class,
         ]));
     }
-    
-//    protected function _postSaveRelatedRecords(\Phalcon\Db\Adapter\AdapterInterface $connection, $related): bool
-//    {
-//        [$success, $connection, $related] = $this->_prePostSaveRelatedRecords($connection, $related);
-//
-//        return $success ? parent::_postSaveRelatedRecords($connection, $related) : false;
-//    }
-    
-    
-    
     
     /**
      * Hash method using security salt

@@ -98,6 +98,8 @@ class Security extends Behavior
      */
     public function notify($eventType, ModelInterface $model)
     {
+        return true;
+        
         $this->security->getAcl();
         
         switch($eventType) {
@@ -115,12 +117,14 @@ class Security extends Behavior
     
     public function isAllowed($eventType, $model)
     {
+        return true;
+        
         $acl = $this->security->getAcl('models');
         
         $modelClass = get_class($model);
         
         // whitelisted models
-        if ($modelClass instanceof $this->userClass) {
+        if ($modelClass instanceof $this->userClass || $modelClass instanceof $this->sessionClass) {
             return true;
         }
         

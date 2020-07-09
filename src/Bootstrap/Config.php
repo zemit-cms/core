@@ -130,6 +130,8 @@ class Config extends PhalconConfig
                         'PASS',
                         'PASSWD',
                         'PASSWORD',
+                        'TOKEN',
+                        'HASH',
                         'DB_PASS',
                         'DB_PASSWD',
                         'DB_PASSWORD',
@@ -530,9 +532,15 @@ class Config extends PhalconConfig
             'mailer' => [
                 'default' => Env::get('MAILER_DEFAULT_DRIVER', 'sendmail'),
                 'drivers' => [
-                    'mail' => null,
-                    'sendmail' => Env::get('MAILER_SENDMAIL', '/usr/sbin/sendmail -bs'),
+                    'mail' => [
+                        'driver' => 'mail',
+                    ],
+                    'sendmail' => [
+                        'driver' => 'sendmail',
+                        'sendmail' => Env::get('MAILER_SENDMAIL', '/usr/sbin/sendmail -bs'),
+                    ],
                     'smtp' => [
+                        'driver' => 'smtp',
                         'host' => Env::get('MAILER_SMTP_HOST', 'localhost'),
                         'port' => Env::get('MAILER_SMTP_PORT', 25),
                         'encryption' => Env::get('MAILER_SMTP_ENCRYPTION', ''),
