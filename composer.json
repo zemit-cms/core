@@ -62,7 +62,8 @@
 
     "erusev/parsedown-extra": "^0.7",
     "erusev/parsedown": "^1.6",
-    "xenolope/quahog": "^2.1"
+    "xenolope/quahog": "^2.1",
+    "ext-json": "*"
   },
   "require-dev": {
     "phpv8/v8js-stubs": "^1.4.1",

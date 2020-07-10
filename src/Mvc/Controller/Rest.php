@@ -15,6 +15,7 @@ use Phalcon\Http\Response;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\Model\Resultset;
 use League\Csv\Writer;
+use Phalcon\Version;
 use Zemit\Utils\Slug;
 
 /**
@@ -139,6 +140,7 @@ class Rest extends \Zemit\Mvc\Controller
     public function exportAction()
     {
         $response = $this->getAllAction();
+        dd($this->view->getVar('list'));
         $list = $this->view->list ?? null;
         if (isset($list[0])) {
             $csv = Writer::createFromFileObject(new \SplTempFileObject());
@@ -379,22 +381,86 @@ class Rest extends \Zemit\Mvc\Controller
      */
     public function setRestResponse($response = null, $code = null, $status = null, $jsonOptions = 0, $depth = 512)
     {
+        $debug = $this->config->app->debug ?? false;
+    
         // keep forced status code or set our own
         $responseStatusCode = $this->response->getStatusCode();
         $reasonPhrase = $this->response->getReasonPhrase();
         $status ??= $reasonPhrase ? : 'OK';
         $code ??= (int)$responseStatusCode ? : 200;
+        $view = $this->view->getParamsToView();
+        $hash = hash('sha512', json_encode($view));
+    
+        /**
+         * Debug section
+         * - Versions
+         * - Request
+         * - Identity
+         * - Profiler
+         * - Dispatcher
+         * - Router
+         */
+        $request = $debug? $this->request->toArray() : null;
+        $identity = $debug ? $this->identity->getIdentity() : null;
+        $profiler = $debug && $this->profiler? $this->profiler->toArray() : null;
+        
+        $api = $debug? [
+            'php' => phpversion(),
+            'phalcon' => Version::get(),
+            'zemit' => $this->config->core->version,
+            'core' => $this->config->core->name,
+            'app' => $this->config->app->version,
+            'name' => $this->config->app->name,
+        ] : [];
+        $api['version'] = '0.1';
+    
+        $dispatcher = $debug? [
+            'namespace' => $this->dispatcher->getNamespaceName(),
+            'module' => $this->dispatcher->getModuleName(),
+            'controller' => $this->dispatcher->getControllerName(),
+            'action' => $this->dispatcher->getActionName(),
+            'params' => $this->dispatcher->getParams(),
+            'previousNamespace' => $this->dispatcher->getPreviousNamespaceName(),
+            'previousController' => $this->dispatcher->getPreviousControllerName(),
+            'previousAction' => $this->dispatcher->getPreviousActionName(),
+        ] : null;
+    
+        $mathedRoute = $this->router->getMatchedRoute();
+        $router = $debug? [
+            'namespace' => $this->router->getNamespaceName(),
+            'module' => $this->router->getModuleName(),
+            'controller' => $this->router->getControllerName(),
+            'action' => $this->router->getActionName(),
+            'params' => $this->router->getParams(),
+            'defaults' => $this->router->getDefaults(),
+            'matches' => $this->router->getMatches(),
+            'matched' => [
+                'id' => $mathedRoute->getRouteId(),
+                'name' => $mathedRoute->getName(),
+                'hostname' => $mathedRoute->getHostname(),
+                'paths' => $mathedRoute->getPaths(),
+                'pattern' => $mathedRoute->getPattern(),
+                'httpMethod' => $mathedRoute->getHttpMethods(),
+                'reversedPaths' => $mathedRoute->getReversedPaths(),
+            ],
+        ] : null;
         
         $this->response->setStatusCode($code, $code . ' ' . $status);
-        
-        return $this->response->setJsonContent([
+        return $this->response->setJsonContent(array_merge([
+            'api' => $api,
+            'timestamp' => date('c'),
+            'hash' => $hash,
             'status' => $status,
             'code' => $code,
             'response' => $response,
-            'view' => $this->view->getParamsToView(),
-            'request' => $this->request->toArray(),
-            'profiler' => $this->profiler ? $this->profiler->toArray() : false,
-        ], $jsonOptions, $depth);
+            'view' => $view,
+        ], $debug? [
+            'identity' => $identity,
+            'profiler' => $profiler,
+            'request' => $request,
+            'dispatcher' => $dispatcher,
+            'router' => $router,
+        ] : []), $jsonOptions, $depth);
     }
     
     /**

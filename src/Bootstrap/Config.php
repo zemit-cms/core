@@ -41,6 +41,7 @@ class Config extends PhalconConfig
              * Core only settings
              */
             'core' => [
+                'name' => 'Zemit Core',
                 'version' => Version::get(),
                 'package' => 'zemit-cms',
                 'modules' => [
