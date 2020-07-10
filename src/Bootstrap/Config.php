@@ -474,7 +474,7 @@ class Config extends PhalconConfig
                         'port' => Env::get('REDIS_PORT', 6379),
                         'index' => Env::get('REDIS_INDEX', 0),
                         'auth' => Env::get('REDIS_AUTH', null),
-                        'persistent' => Env::get('REDIS_PERSISTENT_AUTH', null),
+                        'persistent' => Env::get('REDIS_PERSISTENT', null),
                         'socket' => Env::get('REDIS_PERSISTENT_SOCKET', null),
                     ],
                     'wincache' => [
