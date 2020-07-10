@@ -331,14 +331,14 @@ class Config extends PhalconConfig
              * Default Session Configuration
              */
             'session' => [
-                'default' => Env::get('SESSION_DRIVER', 'stream'),
+                'driver' => Env::get('SESSION_DRIVER', 'stream'),
                 'drivers' => [
                     'stream' => [
-                        'adapter' => 'Stream',
+                        'adapter' => \Phalcon\Session\Adapter\Stream::class,
                         'savePath' => Env::get('SESSION_STREAM_SAVE_PATH', '/tmp')
                     ],
                     'memcached' => [
-                        'adapter' => 'Libmemcached',
+                        'adapter' => \Phalcon\Session\Adapter\Libmemcached::class,
                         'servers' => [
                             [
                                 'host' => Env::get('MEMCACHED_HOST', '127.0.0.1'),
@@ -350,20 +350,26 @@ class Config extends PhalconConfig
                         'client' => [],
                     ],
                     'redis' => [
-                        'adapter' => 'Redis',
+                        'adapter' => \Phalcon\Session\Adapter\Redis::class,
                         'host' => Env::get('REDIS_HOST', '127.0.0.1'),
                         'port' => Env::get('REDIS_PORT', 6379),
-                        'auth' => Env::get('REDIS_AUTH', null),
                         'index' => Env::get('REDIS_INDEX', 0),
-                        'persistent' => true,
+                        'auth' => Env::get('REDIS_AUTH', null),
+                        'persistent' => Env::get('REDIS_PERSISTENT', null),
+                        'socket' => Env::get('REDIS_PERSISTENT_SOCKET', null),
+                    ],
+                    'noop' => [
+                        'adapter' => \Phalcon\Session\Adapter\Noop::class,
                     ],
                     'file' => [
                         'adapter' => 'Files',
                     ],
                 ],
-                'prefix' => Env::get('SESSION_PREFIX', 'zemit_session_'),
-                'uniqueId' => Env::get('SESSION_UNIQUE_ID', 'zemit_'),
-                'lifetime' => Env::get('SESSION_LIFETIME', 3600),
+                'default' => [
+                    'prefix' => Env::get('SESSION_PREFIX', 'zemit_session_'),
+                    'uniqueId' => Env::get('SESSION_UNIQUE_ID', 'zemit_'),
+                    'lifetime' => Env::get('SESSION_LIFETIME', 3600),
+                ],
             ],
             
             /**
@@ -403,7 +409,7 @@ class Config extends PhalconConfig
              * Cache drivers configs
              */
             'cache' => [
-                'default' => Env::get('CACHE_DRIVER', 'file'),
+                'driver' => Env::get('CACHE_DRIVER', 'file'),
                 'views' => Env::get('VIEW_CACHE_DRIVER', 'views'),
                 'drivers' => [
                     'apcu' => [
@@ -413,7 +419,7 @@ class Config extends PhalconConfig
                         'adapter' => \Phalcon\Cache\Adapter\Memory::class,
                     ],
                     'memcached' => [
-                        'adapter' => 'Libmemcached',
+                        'adapter' => \Phalcon\Cache\Adapter\Libmemcached::class,
                         'servers' => [
                             [
                                 'host' => Env::get('MEMCACHED_HOST', '127.0.0.1'),
@@ -423,11 +429,13 @@ class Config extends PhalconConfig
                         ],
                     ],
                     'redis' => [
-                        'adapter' => 'Redis',
+                        'adapter' => \Phalcon\Cache\Adapter\Redis::class,
                         'host' => Env::get('REDIS_HOST', '127.0.0.1'),
                         'port' => Env::get('REDIS_PORT', 6379),
-                        'auth' => Env::get('REDIS_AUTH', null),
                         'index' => Env::get('REDIS_INDEX', 0),
+                        'auth' => Env::get('REDIS_AUTH', null),
+                        'persistent' => Env::get('REDIS_PERSISTENT', null),
+                        'socket' => Env::get('REDIS_PERSISTENT_SOCKET', null),
                     ],
                     'file' => [
                         'adapter' => 'File',
@@ -438,8 +446,10 @@ class Config extends PhalconConfig
                         'cacheDir' => PRIVATE_PATH . '/cache/views/',
                     ],
                 ],
-                'prefix' => Env::get('CACHE_PREFIX', 'zemit_cache_'),
-                'lifetime' => Env::get('CACHE_LIFETIME', 86400),
+                'default' => [
+                    'prefix' => Env::get('CACHE_PREFIX', 'zemit_cache_'),
+                    'lifetime' => Env::get('CACHE_LIFETIME', 86400),
+                ],
             ],
             
             /**

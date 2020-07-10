@@ -13,6 +13,10 @@ namespace Zemit\Provider\Session;
 
 use Phalcon\Di\DiInterface;
 use Phalcon\Session\Manager;
+use Phalcon\Session\Adapter\Noop;
+use Phalcon\Session\Adapter\Stream;
+use Phalcon\Storage\AdapterFactory;
+use Phalcon\Storage\SerializerFactory;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
@@ -37,25 +41,26 @@ class ServiceProvider extends AbstractServiceProvider
     {
         $di->setShared($this->getName(), function() use ($di) {
             $config = $di->get('config')->session;
+            $driver = $config->drivers->{$config->driver};
+            $adapter = $driver->adapter;
     
-            $defaults = [
-                'prefix' => $config->prefix,
-                'uniqueId' => $config->uniqueId,
-                'lifetime' => $config->lifetime,
-            ];
+            // Merge default config with driver config
+            $options = array_merge($config->default->toArray(), $driver->toArray());
     
+            // Create the new session manager
             $session = new Manager();
             
-            if (!empty($config->default)) {
-                $driver = $config->drivers->{$config->default};
-                $adapter = '\Phalcon\Session\Adapter\\' . $driver->adapter;
-                if (class_exists($adapter)) {
-                    $session->setAdapter(new $adapter(array_merge($driver ? $driver->toArray() : [], $defaults)));
-                }
-//                /** @var \Phalcon\Session\AdapterInterface $session */
-//                $session = new $adapter(array_merge($driver->toArray(), $defaults));
+            // Set the storage adapter
+            if (in_array($adapter, [Noop::class, Stream::class])) {
+                $session->setAdapter(new $adapter($options));
+            }
+            else {
+                $serializerFactory = new SerializerFactory();
+                $adapterFactory = new AdapterFactory($serializerFactory);
+                $session->setAdapter(new $adapter($adapterFactory, $options));
             }
             
+            // Start and return the session
             $session->start();
             return $session;
         });
