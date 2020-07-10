@@ -353,6 +353,7 @@ class Config extends PhalconConfig
                         'adapter' => 'Redis',
                         'host' => Env::get('REDIS_HOST', '127.0.0.1'),
                         'port' => Env::get('REDIS_PORT', 6379),
+                        'auth' => Env::get('REDIS_AUTH', null),
                         'index' => Env::get('REDIS_INDEX', 0),
                         'persistent' => true,
                     ],
@@ -425,6 +426,7 @@ class Config extends PhalconConfig
                         'adapter' => 'Redis',
                         'host' => Env::get('REDIS_HOST', '127.0.0.1'),
                         'port' => Env::get('REDIS_PORT', 6379),
+                        'auth' => Env::get('REDIS_AUTH', null),
                         'index' => Env::get('REDIS_INDEX', 0),
                     ],
                     'file' => [
@@ -471,6 +473,9 @@ class Config extends PhalconConfig
                         'host' => Env::get('REDIS_HOST', '127.0.0.1'),
                         'port' => Env::get('REDIS_PORT', 6379),
                         'index' => Env::get('REDIS_INDEX', 0),
+                        'auth' => Env::get('REDIS_AUTH', null),
+                        'persistent' => Env::get('REDIS_PERSISTENT_AUTH', null),
+                        'socket' => Env::get('REDIS_PERSISTENT_SOCKET', null),
                     ],
                     'wincache' => [
                         'adapter' => \Phalcon\Mvc\Model\MetaData\Wincache::class,
