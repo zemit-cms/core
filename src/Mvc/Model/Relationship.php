@@ -556,7 +556,7 @@ trait Relationship
                                 
                                 // @todo why
                                 if ($relation->getType() === Relation::HAS_MANY_THROUGH) {
-    
+                                    
                                     $existingIntermediateModel = $intermediateModelClass::findFirst([
                                         'conditions' => Sprintf::implodeArrayMapSprintf(array_merge([$intermediateFields], [$intermediateReferencedFields]), ' and ', '[' . $intermediateModelClass . '].[%s] = ?%s'),
                                         'bind' => [...$originBind, ...$referencedBind],
