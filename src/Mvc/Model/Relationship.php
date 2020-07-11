@@ -240,7 +240,7 @@ trait Relationship
                  * Get the relation type
                  */
                 $type = $relation->getType();
-
+                
                 /**
                  * Only belongsTo are stored before save the master record
                  */
@@ -321,11 +321,11 @@ trait Relationship
                 
                 /** @var RelationInterface $relation */
                 $relation = $modelManager->getRelationByAlias(get_class($this), $lowerCaseAlias);
-
+    
                 // only many to many
                 if ($relation) {
                     $alias = $relation->getOption('alias');
-    
+                    
                     /**
                      * Discard belongsTo relations
                      */
@@ -423,6 +423,8 @@ trait Relationship
                                     return false;
                                 }
                                 
+                                
+                                
 //                                // remove it
 //                                unset($related[$lowerCaseAlias][$key]);
                                 
@@ -467,7 +469,7 @@ trait Relationship
                     }
 
                     // Default phalcon's logic
-                    else {
+//                    else {
                         $columns = $relation->getFields();
                         $referencedModel = $relation->getReferencedModel();
                         $referencedFields = $relation->getReferencedFields();
@@ -504,6 +506,7 @@ trait Relationship
                             $intermediateReferencedFields = $relation->getIntermediateReferencedFields();
                         }
     
+                        
                         foreach ($relatedRecords as $recordAfter) {
         
                             if (!$isThrough) {
@@ -529,6 +532,7 @@ trait Relationship
                             }
         
                             if ($isThrough) {
+    
                                 /**
                                  * Create a new instance of the intermediate model
                                  */
@@ -539,6 +543,7 @@ trait Relationship
                                  *  If it already exist, it can be updated with the new referenced key.
                                  */
                                 if ($relation->getType() === Relation::HAS_ONE_THROUGH) {
+                                    
                                     $existingIntermediateModel = $intermediateModel->findFirst([
                                         "[" . $intermediateFields . "] = ?0",
                                         "bind" => $this->$columns
@@ -548,12 +553,26 @@ trait Relationship
                                         $intermediateModel = $existingIntermediateModel;
                                     }
                                 }
-            
+                                
+                                // @todo why
+                                if ($relation->getType() === Relation::HAS_MANY_THROUGH) {
+    
+                                    $existingIntermediateModel = $intermediateModelClass::findFirst([
+                                        'conditions' => Sprintf::implodeArrayMapSprintf(array_merge([$intermediateFields], [$intermediateReferencedFields]), ' and ', '[' . $intermediateModelClass . '].[%s] = ?%s'),
+                                        'bind' => [...$originBind, ...$referencedBind],
+                                        'bindTypes' => array_fill(0, 1 + 1, Column::BIND_PARAM_STR),
+                                    ]);
+    
+                                    if ($existingIntermediateModel) {
+                                        $intermediateModel = $existingIntermediateModel;
+                                    }
+                                }
+    
                                 /**
                                  * Write value in the intermediate model
                                  */
                                 $intermediateModel->writeAttribute($intermediateFields, $this->$columns);
-            
+    
                                 /**
                                  * Get the value from the referenced model
                                  */
@@ -567,7 +586,7 @@ trait Relationship
                                 /**
                                  * Save the record and get messages
                                  */
-                                if ($intermediateModel->save()) {
+                                if (!$intermediateModel->save()) {
                 
                                     /**
                                      * Append messages with context
@@ -583,7 +602,7 @@ trait Relationship
                                 }
                             }
                         }
-                    }
+//                    }
                 }
                 else {
                     if (is_array($assign)) {

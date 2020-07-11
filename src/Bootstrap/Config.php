@@ -457,7 +457,7 @@ class Config extends PhalconConfig
              * Metadata Configuration
              */
             'metadata' => [
-                'driver' => Env::get('METADATA_DRIVER', 'apcu'),
+                'driver' => Env::get('METADATA_DRIVER', 'memory'),
                 'drivers' => [
                     'apcu' => [
                         'adapter' => \Phalcon\Mvc\Model\MetaData\Apcu::class,
