@@ -135,12 +135,22 @@ trait Model
     
     /**
      * Get group
+     * - Automatically group by ID by default if nothing else is provided
+     * - This will fix multiple single records being returned for the same model with joins
      *
      * @return array[string]|string|null
      */
     protected function getGroup()
     {
-        return $this->getParamExplodeArrayMapFilter('group');
+        $group = $this->getParamExplodeArrayMapFilter('group');
+        
+        // Fix for joins, automatically append grouping if none provided
+        $join = $this->getJoins();
+        if (empty($group) && !empty($join)) {
+            $group = $this->appendModelName('id');
+        }
+        
+        return $group;
     }
     
     /**
@@ -528,7 +538,7 @@ trait Model
         $find['joins'] = $this->getJoins();
         $find['group'] = $this->getGroup();
         $find['having'] = $this->getHaving();
-    
+        
         // fix for grouping by multiple fields, phalcon only allow string here
         foreach (['distinct', 'group'] as $findKey) {
             if (isset($find[$findKey]) && is_array($find[$findKey])) {

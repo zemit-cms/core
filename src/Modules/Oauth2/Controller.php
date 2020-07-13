@@ -12,6 +12,7 @@ namespace Zemit\Modules\Oauth2;
 
 /**
  * Class Controller
+ *
  * @package Zemit\Modules\Frontend
  */
 class Controller extends \Zemit\Mvc\Controller

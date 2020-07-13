@@ -22,6 +22,8 @@ use Zemit\Modules\Cli\Tasks\CronTask;
 use Zemit\Modules\Frontend\Controllers\ErrorController;
 use Zemit\Modules\Frontend\Controllers\IndexController;
 use Zemit\Modules\Frontend\Controllers\TestController;
+use Zemit\Modules\Oauth2\Controllers\FacebookController;
+use Zemit\Modules\Oauth2\Controllers\GoogleController;
 use Zemit\Providers;
 use Zemit\Utils\Env;
 use Zemit\Version;
@@ -73,6 +75,10 @@ class Config extends PhalconConfig
                     \Zemit\Mvc\Module::NAME_CLI => [
                         'className' => \Zemit\Modules\Cli\Module::class,
                         'path' => CORE_PATH . 'Modules/Cli/Module.php',
+                    ],
+                    \Zemit\Mvc\Module::NAME_OAUTH2 => [
+                        'className' => \Zemit\Modules\Oauth2\Module::class,
+                        'path' => CORE_PATH . 'Modules/Oauth2/Module.php',
                     ],
                 ],
                 'dir' => [
@@ -682,6 +688,8 @@ class Config extends PhalconConfig
                             UserController::class => ['*'],
                             CronTask::class => ['*'],
                             CacheTask::class => ['*'],
+                            FacebookController::class => ['*'],
+                            GoogleController::class => ['*'],
                         ]
                     ]
                 ]
