@@ -92,6 +92,7 @@ class Model extends \Phalcon\Mvc\Model
     
     const DATETIME_FORMAT = 'Y-m-d H:i:s';
     const DATE_FORMAT = 'Y-m-d';
+    const TIME_FORMAT = 'H:i:s';
     
     use \Zemit\Mvc\Model\Eagerload;
     use \Zemit\Mvc\Model\Relationship;
@@ -230,17 +231,17 @@ class Model extends \Phalcon\Mvc\Model
             ],
             'beforeValidationOnUpdate' => [
                 'deletedBy' => $this->hasChangedCallback(function($model, $field) {
-                    return ($model->isDeleted() && (!$model->hasSnapshotData() || $model->hasChanged('deleted')))
+                    return ($model->isDeleted())
                         ? $this->getCurrentUserIdCallback(false)()
                         : $model->readAttribute($field);
                 }),
                 'deletedAs' => $this->hasChangedCallback(function($model, $field) {
-                    return ($model->isDeleted() && (!$model->hasSnapshotData() || $model->hasChanged('deleted')))
+                    return ($model->isDeleted())
                         ? $this->getCurrentUserIdCallback(true)()
                         : $model->readAttribute($field);
                 }),
                 'deletedAt' => $this->hasChangedCallback(function($model, $field) {
-                    return ($model->isDeleted() && (!$model->hasSnapshotData() || $model->hasChanged('deleted')))
+                    return ($model->isDeleted())
                         ? date(self::DATETIME_FORMAT)
                         : $model->readAttribute($field);
                 }),
@@ -326,7 +327,7 @@ class Model extends \Phalcon\Mvc\Model
     public function hasChangedCallback($callback)
     {
         return function(ModelInterface $model, $field) use ($callback) {
-            return ($model->hasSnapshotData() && $model->hasChanged()) ?
+            return ($model->hasSnapshotData() && $model->hasChanged($field)) ?
                 $callback($model, $field) :
                 $model->readAttribute($field);
         };

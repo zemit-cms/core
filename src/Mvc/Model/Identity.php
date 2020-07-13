@@ -10,15 +10,43 @@
 
 namespace Zemit\Mvc\Model;
 
-use Phalcon\Mvc\Model\Behavior;
-use Phalcon\Db\RawValue;
-
 /**
  * Trait Identity
  * @package Zemit\Mvc\Model
  */
 trait Identity
 {
+    /**
+     * Get the current identity instance from the DI
+     *
+     * @return \Zemit\Identity
+     */
+    public function getIdentity() {
+        
+        /** @var \Zemit\Identity $identity */
+        $identity = $this->getDI()->get('identity');
+        
+        return $identity;
+    }
+    
+    /**
+     * Return true or false whether a user is logged in or not into the current session
+     *
+     * @return bool
+     */
+    public function isLoggedIn($as = false) {
+        return $this->getIdentity()->isLoggedIn($as);
+    }
+    
+    /**
+     * Return true or false whether a user is logged in as or not into the current session
+     *
+     * @return bool
+     */
+    public function isLoggedInAs() {
+        return $this->isLoggedIn(true);
+    }
+    
     /**
      * Get the current active user using the identity service
      *
@@ -28,10 +56,7 @@ trait Identity
      */
     public function getCurrentUser($as = false)
     {
-        /** @var \Zemit\Identity $identity */
-        $identity = $this->getDI()->get('identity');
-        
-        return $identity->getUser($as);
+        return $this->getIdentity()->getUser($as);
     }
     
     /**

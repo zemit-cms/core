@@ -408,18 +408,18 @@ class Identity extends Injectable
      * Return true if the user is currently logged in
      * @return bool
      */
-    public function isLoggedIn()
+    public function isLoggedIn($as = false)
     {
-        return !!$this->getUser();
+        return !!$this->getUser($as);
     }
     
     /**
      * Return true if the user is currently logged in
      * @return bool
      */
-    public function isLoggedInAs($userId = null)
+    public function isLoggedInAs()
     {
-        return !!$this->getUserAs();
+        return $this->isLoggedIn(true);
     }
     
     /**
