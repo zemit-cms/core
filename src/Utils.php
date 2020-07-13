@@ -24,7 +24,8 @@ class Utils
      *
      * @return bool|string
      */
-    public static function getNamespace(object $class) : string {
+    public static function getNamespace(object $class) : string
+    {
         return substr(get_class($class), 0, strrpos(get_class($class), "\\"));
     }
     
@@ -34,7 +35,8 @@ class Utils
      * @param  mixed
      * @return void
      */
-    public static function dd() {
+    public static function dd()
+    {
         call_user_func_array('dd', func_get_args());
     }
     
@@ -44,7 +46,8 @@ class Utils
      * @param  mixed
      * @return void
      */
-    public static function dump() {
+    public static function dump()
+    {
         call_user_func_array('dump', func_get_args());
     }
     
@@ -58,7 +61,8 @@ class Utils
      * @return mixed
      * @throws \Exception Throw exception if function name can't be found
      */
-    public function __call(string $name, array $arguments) {
+    public function __call(string $name, array $arguments)
+    {
         return self::__callStatic($name, $arguments);
     }
     

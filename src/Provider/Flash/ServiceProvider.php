@@ -45,7 +45,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         $bannerStyle = $this->bannerStyle;
         
-        $di->setShared($this->getName(), function() use ($bannerStyle, $di) {
+        $di->setShared($this->getName(), function () use ($bannerStyle, $di) {
             $flash = new Direct($bannerStyle);
             
             $flash->setAutoescape(true);
@@ -55,7 +55,7 @@ class ServiceProvider extends AbstractServiceProvider
             return $flash;
         });
         
-        $di->setShared('flashSession', function() use ($bannerStyle, $di) {
+        $di->setShared('flashSession', function () use ($bannerStyle, $di) {
             $flash = new Session($bannerStyle);
             
             $flash->setAutoescape(true);

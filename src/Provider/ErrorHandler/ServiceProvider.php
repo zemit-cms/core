@@ -41,12 +41,12 @@ class ServiceProvider extends AbstractServiceProvider
         $container->setShared($serviceName . '::prettyPageHandler', PrettyPageHandler::class);
         $container->setShared($serviceName . '::errorPageHandler', ErrorPageHandler::class);
         
-        $container->setShared($serviceName, function() use ($serviceName, $container) {
+        $container->setShared($serviceName, function () use ($serviceName, $container) {
             $run = new Run();
             
             $mode = $container->get('bootstrap')->getMode();
             
-            switch($mode) {
+            switch ($mode) {
                 case 'normal':
                     if (true) { //@TODO fetch from config
                         $run->pushHandler($container->get($serviceName . '::prettyPageHandler'));

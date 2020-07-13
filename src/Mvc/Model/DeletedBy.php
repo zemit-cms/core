@@ -10,13 +10,15 @@
 
 namespace Zemit\Mvc\Model;
 
-trait DeletedBy {
+trait DeletedBy
+{
     
-    protected function _setDeletedBy($field = 'deletedBy', $deletedField = null) {
+    protected function _setDeletedBy($field = 'deletedBy', $deletedField = null)
+    {
         $deletedField ??= $this->_softDeleteSettings['field'] ?? null;
         
         if (property_exists($this, $field)) {
-            $this->getEventsManager()->attach('model', function($event, $entity) use ($field, $deletedField) {
+            $this->getEventsManager()->attach('model', function ($event, $entity) use ($field, $deletedField) {
                 switch ($event->getType()) {
                     case 'beforeValidationOnSave':
                         /** @var ResultSet\Simple $user */

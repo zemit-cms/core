@@ -10,17 +10,17 @@
 
 namespace Zemit\Mvc\View;
 
-use Phalcon\Di\Injectable;
+use Zemit\Di\Injectable;
 use Phalcon\Events\Event;
 use Phalcon\Mvc\ViewInterface;
 
 class Error extends Injectable
 {
-    public function beforeRenderView(Event $event, ViewInterface $view, $currentView = null) {
-
+    public function beforeRenderView(Event $event, ViewInterface $view, $currentView = null)
+    {
     }
 
-    public function notFoundView(Event $event, ViewInterface $view, $currentView = null) {
-
+    public function notFoundView(Event $event, ViewInterface $view, $currentView = null)
+    {
     }
 }

@@ -11,13 +11,15 @@
 namespace Zemit\Http;
 
 /**
- * Class
+ * Class Request
  * {@inheritdoc} \Phalcon\Http\Request
+ *
  * @package Zemit\Http
  */
 class Request extends \Phalcon\Http\Request
 {
-    public function toArray() {
+    public function toArray()
+    {
         $config = $this->getDI()->get('config');
         if ($config->app->debug || $config->debug->enable) {
             return [

@@ -22,12 +22,13 @@ class Dispatcher extends \Phalcon\Mvc\Dispatcher
      * @param array $route
      * {@inheritDoc}
      */
-    public function forward(array $forward, $preventCycle = false): void {
+    public function forward(array $forward, $preventCycle = false): void
+    {
         if (!$preventCycle) {
             parent::forward($forward);
-        } else {
-            if (
-                (!isset($forward['namespace']) || $this->getNamespaceName() !== $forward['namespace']) &&
+        }
+        else {
+            if ((!isset($forward['namespace']) || $this->getNamespaceName() !== $forward['namespace']) &&
                 (!isset($forward['module']) || $this->getModuleName() !== $forward['module']) &&
                 (!isset($forward['controller']) || $this->getControllerName() !== $forward['controller']) &&
                 (!isset($forward['action']) || $this->getActionName() !== $forward['action']) &&
@@ -52,5 +53,22 @@ class Dispatcher extends \Phalcon\Mvc\Dispatcher
                 $this->forward($forward);
             }
         }
+    }
+    
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'namespace' => $this->getNamespaceName(),
+            'module' => $this->getModuleName(),
+            'controller' => $this->getControllerName(),
+            'action' => $this->getActionName(),
+            'params' => $this->getParams(),
+            'previousNamespace' => $this->getPreviousNamespaceName(),
+            'previousController' => $this->getPreviousControllerName(),
+            'previousAction' => $this->getPreviousActionName(),
+        ];
     }
 }

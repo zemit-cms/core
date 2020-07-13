@@ -10,12 +10,14 @@
 
 namespace Zemit\Mvc\Model;
 
-trait UpdatedAt {
+trait UpdatedAt
+{
 
-    protected function _setUpdatedAt($field = 'updatedAt', $format = 'Y-m-d H:i:s') {
+    protected function _setUpdatedAt($field = 'updatedAt', $format = 'Y-m-d H:i:s')
+    {
         
         if (property_exists($this, $field)) {
-            $this->getEventsManager()->attach('model', function($event, $entity) use ($field, $format) {
+            $this->getEventsManager()->attach('model', function ($event, $entity) use ($field, $format) {
                 switch ($event->getType()) {
                     case 'beforeValidationOnUpdate':
                         if (property_exists($entity, $field)) {
@@ -29,5 +31,4 @@ trait UpdatedAt {
             });
         }
     }
-
 }

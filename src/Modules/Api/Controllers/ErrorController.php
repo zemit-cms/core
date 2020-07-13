@@ -10,51 +10,14 @@
 
 namespace Zemit\Modules\Api\Controllers;
 
+use Zemit\Mvc\Controller\StatusCode;
+
 /**
- * Contrôleur pour les pages d'erreurs ou de codes http spécifiques
- * @author Julien Turbide <jturbide@nuagerie.com>
+ * Class ErrorController
+ *
+ * @package Zemit\Modules\Api\Controllers
  */
 class ErrorController extends AbstractController
 {
-    /**
-     * Par défaut, on forward vers ErrorsController::fatalAction()
-     * Page d'erreur fatale - 500 Internal Server Error
-     * @see ErrorController::fatalAction();
-     */
-    public function indexAction()
-    {
-        $this->dispatcher->forward(array(
-            'action' => 'notFound'
-        ));
-    }
-    
-    public function fatalAction()
-    {
-        $this->response->setStatusCode(500, 'Internal Server Error');
-    }
-    
-    public function notFoundAction()
-    {
-        $this->response->setStatusCode(404, 'Not Found');
-    }
-    
-    public function forbiddenAction()
-    {
-        $this->response->setStatusCode(403, 'Forbidden');
-    }
-    
-    public function unauthorizedAction()
-    {
-        $this->response->setStatusCode(401, 'Unauthorized');
-    }
-    
-    public function badRequestAction()
-    {
-        $this->response->setStatusCode(400, 'Bad Request');
-    }
-    
-    public function maintenanceAction()
-    {
-        $this->response->setStatusCode(503, 'Service Unavailable');
-    }
+    use StatusCode;
 }

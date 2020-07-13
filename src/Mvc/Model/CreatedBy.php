@@ -10,12 +10,14 @@
 
 namespace Zemit\Mvc\Model;
 
-trait CreatedBy {
+trait CreatedBy
+{
     
-    protected function _setCreatedBy($field = 'created_by') {
+    protected function _setCreatedBy($field = 'created_by')
+    {
     
         if (property_exists($this, $field)) {
-            $this->getEventsManager()->attach('model', function($event, $entity) use ($field) {
+            $this->getEventsManager()->attach('model', function ($event, $entity) use ($field) {
                 switch ($event->getType()) {
                     case 'beforeValidationOnCreate':
                         /** @var ResultSet\Simple $user */

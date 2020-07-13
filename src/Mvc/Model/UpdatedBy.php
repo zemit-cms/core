@@ -10,12 +10,14 @@
 
 namespace Zemit\Mvc\Model;
 
-trait UpdatedBy {
+trait UpdatedBy
+{
     
-    protected function _setUpdatedBy($field = 'updated_by') {
+    protected function _setUpdatedBy($field = 'updated_by')
+    {
     
         if (property_exists($this, $field)) {
-            $this->getEventsManager()->attach('model', function($event, $entity) use ($field) {
+            $this->getEventsManager()->attach('model', function ($event, $entity) use ($field) {
                 switch ($event->getType()) {
                     case 'beforeValidationOnUpdate':
                         /** @var ResultSet\Simple $user */

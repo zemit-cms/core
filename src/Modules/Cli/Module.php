@@ -136,5 +136,4 @@ class Module implements ModuleDefinitionInterface
         $di['loader'] = $this->loader;
         $di['router'] = $this->router;
     }
-    
 }

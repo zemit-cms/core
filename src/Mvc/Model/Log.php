@@ -13,14 +13,16 @@ namespace Zemit\Mvc\Model;
 use Phalcon\Text;
 use Phalcon\Db\Column;
 
-trait Log {
+trait Log
+{
     
     public static $_staticLog = array();
     
     /**
      * Log system init
      */
-    protected function _setLog($namespace = __NAMESPACE__, $table = 'log', $user_id_field = 'user_id') {
+    protected function _setLog($namespace = __NAMESPACE__, $table = 'log', $user_id_field = 'user_id')
+    {
         self::$_staticLog['namespace'] = $namespace;
         self::$_staticLog['table'] = $table;
         self::$_staticLog['user_id_field'] = $user_id_field;
@@ -28,7 +30,7 @@ trait Log {
             ucfirst(Text::camelize(Text::uncamelize(self::$_staticLog['table'])));
         
         if ($this->getSource() !== $table) {
-            $this->getEventsManager()->attach('model', function($event, $entity) use($namespace, $table) {
+            $this->getEventsManager()->attach('model', function ($event, $entity) use ($namespace, $table) {
                 if ($entity->getSource() !== $table) {
                     switch ($event->getType()) {
                         case 'beforeDelete':
@@ -39,16 +41,13 @@ trait Log {
                             }
                             break;
                         case 'afterValidation':
-                            
                             // fix for the "already" deleted related tables and nodes
                             // @TODO refaire le fix sans refaire de fetch à la BD
                             $classPath = $namespace . '\\' . ucfirst(Text::camelize(Text::uncamelize($entity->getSource())));
                             $refetched = $classPath::findFirstById($entity->id);
-//                            
+//
                             if ($refetched) {
-                                
                                 if ($entity->hasChanged()) {
-                                    
                                     // Ne pas changer le save pour un validate parce qu'on veut aussi les throw exception
                                     // si par exemple le not null validation est à true et qu'on a pas fait la validation du not null
                                     // dans le validateur, permet aussi de s'assurer que le log sera bien fait avant de sauvegarder l'entité
@@ -84,7 +83,8 @@ trait Log {
         }
     }
     
-    protected function _prepareLog(&$log = null) {
+    protected function _prepareLog(&$log = null)
+    {
         $logClass = self::$_staticLog['class'];
         if (class_exists($logClass)) {
             $log = $log? $log : new $logClass();
@@ -112,7 +112,8 @@ trait Log {
      *
      * @return Log
      */
-    protected function _getLog() {
+    protected function _getLog()
+    {
         if (!isset(self::$_staticLog['log'])) {
             return self::$_staticLog['log'] = $this->_prepareLog();
         } else {
@@ -120,24 +121,26 @@ trait Log {
         }
     }
     
-    protected function _setLogBefore() {
+    protected function _setLogBefore()
+    {
         $log = $this->_getLog();
         if ($this->hasSnapshotData()) {
             $log->before = $this->getSnapshotData();
-        }
-        else {
+        } else {
             $log->before = $this;
         }
         return $log;
     }
     
-    protected function _setLogAfter() {
+    protected function _setLogAfter()
+    {
         $log = $this->_getLog();
         $log->after = $this;
         return $log;
     }
     
-    public function getMessages($filter = null) {
+    public function getMessages($filter = null)
+    {
         if ($this->getSource() !== self::$_staticLog['table']) {
             $log = $this->_getLog();
             $logMessages = $log ? $log->getMessages($filter) : array();
@@ -150,7 +153,8 @@ trait Log {
         return parent::getMessages($filter);
     }
     
-    public function getLogsByTable($table = null, $arguments = null) {
+    public function getLogsByTable($table = null, $arguments = null)
+    {
         $defaultCondition = 'table = :table: and table_id = :tableId:';
         $argumentsArray = empty($arguments)? array() : (is_string($arguments)? array($defaultCondition . ' and (' . $arguments . ')') : $arguments);
         $logClass = self::$_staticLog['class'];
@@ -166,5 +170,4 @@ trait Log {
             ),
         ), $argumentsArray));
     }
-    
 }

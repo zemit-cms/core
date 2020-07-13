@@ -10,12 +10,14 @@
 
 namespace Zemit\Mvc\Model;
 
-trait FindIn {
+trait FindIn
+{
     
-    public static function findIn(array $keys) {
+    public static function findIn(array $keys)
+    {
         $keys = $keys ? $keys : array(null);
         
-        $intFilter = function($id) {
+        $intFilter = function ($id) {
             return (int) $id;
         };
         $query = self::query();
@@ -26,9 +28,10 @@ trait FindIn {
         return $query->execute();
     }
     
-    public static function findInById($ids) {
+    public static function findInById($ids)
+    {
         $ids = $ids ? $ids : array(null);
-        $intFilter = function($ids) {
+        $intFilter = function ($ids) {
             return (int) $ids;
         };
         $query = self::query();
@@ -36,7 +39,8 @@ trait FindIn {
         return $query->execute();
     }
 
-    private static function _findInParameters($parameters = null) {
+    private static function _findInParameters($parameters = null)
+    {
         // binding is allowed only in array
         if (!is_array($parameters)) {
             return $parameters;
@@ -78,5 +82,4 @@ trait FindIn {
         }
         return $parameters;
     }
-    
 }

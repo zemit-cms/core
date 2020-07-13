@@ -34,13 +34,13 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(\Phalcon\Di\DiInterface $di): void
     {
-        $di->setShared($this->getName(), function() use ($di) {
+        $di->setShared($this->getName(), function () use ($di) {
             
             /** @var \Phalcon\Config $config */
             $config = $di->get('config')->mailer;
             $driver = $config->get('default');
             
-            switch($driver) {
+            switch ($driver) {
                 case 'smtp':
                 case 'mail':
                 case 'sendmail':

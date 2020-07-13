@@ -33,11 +33,12 @@ class ServiceProvider extends AbstractServiceProvider
     {
         // Set shared service in DI
         $di->setShared($this->getName(), function () use ($di) {
+    
             /** @var Bootstrap $bootstrap */
             $bootstrap = $di->get('bootstrap');
-            
+    
             $config = $bootstrap->config ?? new Config();
-            if (is_string($config)) {
+            if (is_string($config) && class_exists($config)) {
                 $config = new $config();
             }
 

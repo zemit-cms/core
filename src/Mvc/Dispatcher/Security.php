@@ -13,6 +13,7 @@ namespace Zemit\Mvc\Dispatcher;
 use Phalcon\Acl\Resource;
 use Phalcon\Dispatcher\AbstractDispatcher;
 use Phalcon\Events\Event;
+use Phalcon\Mvc\Dispatcher;
 use Zemit\Di\Injectable;
 use Zemit\Events\Identity;
 
@@ -33,7 +34,6 @@ class Security extends Injectable
      */
     public function beforeDispatchLoop(Event $event, AbstractDispatcher $dispatcher)
     {
-        return true;
         return $this->checkAcl($event, $dispatcher);
     }
     
@@ -42,20 +42,31 @@ class Security extends Injectable
      *
      * @return bool
      */
-    public function checkAcl(Event $event, AbstractDispatcher $dispatcher) {
+    public function checkAcl(Event $event, AbstractDispatcher $dispatcher)
+    {
         $dispatcher ??= $this->dispatcher;
         
         // get controller and action
         $module = $dispatcher->getModuleName();
         $namespace = $dispatcher->getNamespaceName();
-        $controller = $dispatcher->getControllerName();
-        $controllerClass = $dispatcher->getControllerClass();
+        if ($dispatcher instanceof Dispatcher) {
+            $controller = $dispatcher->getControllerName();
+            $controllerClass = $dispatcher->getControllerClass();
+        }
+        if ($dispatcher instanceof \Phalcon\Cli\Dispatcher) {
+            $task = $dispatcher->getTaskName();
+            $taskSuffix = $dispatcher->getTaskSuffix();
+        }
+        $handlerClass = $dispatcher->getHandlerClass();
+        $handlerSuffix = $dispatcher->getHandlerSuffix();
+        
         $action = $dispatcher->getActionName();
+        $actionSuffix = $dispatcher->getActionSuffix();
         
         $acl = $this->security->getAcl('controllers');
         
         // Security not found
-        if (!$acl->isComponent($controllerClass)) {
+        if (!$acl->isComponent($handlerClass)) {
             $dispatcher->forward($this->config->router->notFound->toArray());
             return false;
         }
@@ -65,7 +76,7 @@ class Security extends Injectable
         $roles = $this->identity->getAclRoles();
         
         foreach ($roles as $role) {
-            $allowed = $acl->isAllowed($role, $controllerClass, $action);
+            $allowed = $acl->isAllowed($role, $handlerClass, $action);
             if ($allowed) {
                 break;
             }
@@ -78,8 +89,7 @@ class Security extends Injectable
         
         if (!$allowed) {
             if (count($roles) > 1) {
-                if (
-                    $this->config->router->unauthorized->namespace === $namespace &&
+                if ($this->config->router->unauthorized->namespace === $namespace &&
                     $this->config->router->unauthorized->module === $module &&
                     $this->config->router->unauthorized->controller === $controller &&
                     $this->config->router->unauthorized->action === $action
@@ -87,10 +97,8 @@ class Security extends Injectable
                     return true;
                 }
                 $dispatcher->forward($this->config->router->unauthorized->toArray());
-            }
-            else {
-                if (
-                    $this->config->router->forbidden->namespace === $namespace &&
+            } else {
+                if ($this->config->router->forbidden->namespace === $namespace &&
                     $this->config->router->forbidden->module === $module &&
                     $this->config->router->forbidden->controller === $controller &&
                     $this->config->router->forbidden->action === $action) {

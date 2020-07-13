@@ -24,7 +24,8 @@ class Escaper extends \Phalcon\Escaper
      * @param mixed|string $json Json string or anything else
      * @return string
      */
-    public function escapeJson($json = null) {
+    public function escapeJson($json = null)
+    {
         
         // if it's a not empty string
         if (is_string($json) && !empty($json)) {

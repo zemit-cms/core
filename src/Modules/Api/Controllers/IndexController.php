@@ -12,12 +12,15 @@ namespace Zemit\Modules\Api\Controllers;
 
 use Zemit\Modules\Api\Controller;
 
+/**
+ * Class IndexController
+ *
+ * @package Zemit\Modules\Api\Controllers
+ */
 class IndexController extends Controller
 {
     public function indexAction()
     {
-//        dd($this->router->getModuleName());
-//        dd($this->router->getActionName());
-//        dd($this->router->getMatchedRoute()->getPaths());
+    
     }
 }

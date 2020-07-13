@@ -11,7 +11,7 @@
 namespace Zemit\Mvc\Dispatcher;
 
 use Phalcon\Db\Profiler;
-use Phalcon\Di\Injectable;
+use Zemit\Di\Injectable;
 use Phalcon\Events\Event;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\Model;
@@ -22,6 +22,5 @@ class Rest extends Injectable
 {
     public function beforeDispatch(Event $event, Dispatcher $dispatcher, $exception)
     {
-    
     }
 }

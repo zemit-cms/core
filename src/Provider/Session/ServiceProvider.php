@@ -39,7 +39,7 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function() use ($di) {
+        $di->setShared($this->getName(), function () use ($di) {
             $config = $di->get('config')->session;
             $driver = $config->drivers->{$config->driver};
             $adapter = $driver->adapter;
@@ -53,8 +53,7 @@ class ServiceProvider extends AbstractServiceProvider
             // Set the storage adapter
             if (in_array($adapter, [Noop::class, Stream::class])) {
                 $session->setAdapter(new $adapter($options));
-            }
-            else {
+            } else {
                 $serializerFactory = new SerializerFactory();
                 $adapterFactory = new AdapterFactory($serializerFactory);
                 $session->setAdapter(new $adapter($adapterFactory, $options));

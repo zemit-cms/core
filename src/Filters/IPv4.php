@@ -10,11 +10,20 @@
 
 namespace Zemit\Filters;
 
+/**
+ * Class IPv4
+ *
+ * @package Zemit\Filters
+ */
 class IPv4
 {
+    /**
+     * @param $value
+     *
+     * @return mixed
+     */
     public function filter($value)
     {
         return filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
     }
-    
 }

@@ -13,7 +13,8 @@ namespace Zemit;
 class Debug extends \Phalcon\Debug
 {
     
-    public function getVersion() : String {
+    public function getVersion() : String
+    {
         $version = Version::get();
         return
             '<div class="version">'.

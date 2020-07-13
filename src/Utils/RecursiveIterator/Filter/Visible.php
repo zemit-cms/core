@@ -10,12 +10,13 @@
 
 namespace Zemit\Utils\RecursiveIterator\Filter;
 
-class Visible extends \RecursiveFilterIterator {
+class Visible extends \RecursiveFilterIterator
+{
 
-    public function accept() {
+    public function accept()
+    {
         $fileName = $this->getInnerIterator()->current()->getFileName();
         $firstChar = $fileName[0];
         return $firstChar !== '.';
     }
-
 }

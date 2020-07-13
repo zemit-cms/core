@@ -10,11 +10,13 @@
 
 namespace Zemit\Modules\Api;
 
+use Zemit\Mvc\Controller\Rest;
+
 /**
  * Class Controller
  * @package Zemit\Modules\Api
  */
-class Controller extends \Phalcon\Mvc\Controller
+class Controller extends Rest
 {
-    
+
 }

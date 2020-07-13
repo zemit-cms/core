@@ -13,7 +13,6 @@ namespace Zemit;
 use Phalcon\Di;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Http\Response;
-use Phalcon\Cli\Router as CliRouter;
 use Phalcon\Text;
 use Phalcon\Events;
 
@@ -25,6 +24,7 @@ use Zemit\Bootstrap\Router;
 use Zemit\Events\EventsAwareTrait;
 use Zemit\Mvc\Application;
 use Zemit\Cli\Console;
+use Zemit\Cli\Router as CliRouter;
 
 use Dotenv\Dotenv;
 use Docopt;
@@ -187,7 +187,9 @@ DOC;
     /**
      * Initialisation
      */
-    public function initialize() {}
+    public function initialize()
+    {
+    }
     
     /**
      * Prepare the DI including itself (Bootstrap) and setup as default DI
@@ -198,16 +200,20 @@ DOC;
     public function di()
     {
         // Use the phalcon cli factory default for console mode
-        $this->fireSet($this->di, $this->isConsole() ?
+        $this->fireSet(
+            $this->di,
+            $this->isConsole() ?
             FactoryDefault\Cli::class :
-            FactoryDefault::class
-            , [], function (Bootstrap $bootstrap) {
+            FactoryDefault::class,
+            [],
+            function (Bootstrap $bootstrap) {
                 // Register bootstrap itself
                 $this->di->setShared('bootstrap', $bootstrap);
                 
                 // Set as the default DI
                 Di::setDefault($this->di);
-            });
+            }
+        );
         
         return $this->di;
     }
@@ -219,15 +225,17 @@ DOC;
      */
     public function dotenv()
     {
+        
         try {
             $this->dotenv = Dotenv::create(dirname(APP_PATH)); // @todo fix this to handle fireset instead, using a new class extending dotenv
             $this->dotenv->load();
 //            $this->fireSet($this->dotenv, Dotenv::class, [dirname(APP_PATH)], function (Bootstrap $bootstrap) {
 //                $bootstrap->dotenv->load();
 //            });
-        } catch(\Dotenv\Exception\InvalidPathException|\Dotenv\Exception\InvalidFileException $e) {
+        } catch (\Dotenv\Exception\InvalidPathException|\Dotenv\Exception\InvalidFileException $e) {
             // just ignore and run the application anyway
         }
+        
         return $this->dotenv;
     }
     
@@ -259,7 +267,8 @@ DOC;
     /**
      * Registering bootstrap providers
      */
-    public function register(array &$providers = null) {
+    public function register(array &$providers = null)
+    {
         $providers ??= $this->providers;
         
         foreach ($providers as $key => $provider) {
@@ -315,7 +324,7 @@ DOC;
                     $bootstrap->debug->setShowBackTrace($config->showBackTrace ?? true);
                     $bootstrap->debug->setShowFileFragment($config->showFileFragment ?? true);
                     if (is_string($config->uri)) {
-                        $bootstrap->debug->setUri($config->uri);;
+                        $bootstrap->debug->setUri($config->uri);
                     }
                 }
             }
@@ -331,7 +340,8 @@ DOC;
      */
     public function services()
     {
-        return $this->fireSet($this->services, Services::class, [$this->di, $this->config]);;
+        return $this->fireSet($this->services, Services::class, [$this->di, $this->config]);
+        ;
     }
     
     /**
@@ -344,7 +354,8 @@ DOC;
      */
     public function application()
     {
-        return $this->fireSet($this->application,
+        return $this->fireSet(
+            $this->application,
             $this->isConsole() ?
                 Console::class :
                 Application::class,
@@ -398,22 +409,22 @@ DOC;
                 $responseString = ob_get_clean();
                 $this->fire('afterRun');
                 return $responseString;
-            } catch(\Zemit\Exception $e) {
+            } catch (\Zemit\Exception $e) {
                 new Cli\ExceptionHandler($e);
                 // do zemit related stuff here
                 exit(1);
-            } catch(\Phalcon\Exception $e) {
+            } catch (\Phalcon\Exception $e) {
                 new Cli\ExceptionHandler($e);
                 // do phalcon related stuff here
                 exit(1);
-            } catch(\Exception $exception) {
+            } catch (\Exception $exception) {
                 new Cli\ExceptionHandler($exception);
                 exit(1);
-            } catch(\Throwable $throwable) {
+            } catch (\Throwable $throwable) {
                 new Cli\ExceptionHandler($throwable);
                 exit(1);
             }
-        } else if (isset($this->application) && ($this->application instanceof \Phalcon\Mvc\Application)) {
+        } elseif (isset($this->application) && ($this->application instanceof \Phalcon\Mvc\Application)) {
             // we don't need a try catch here, its handled by the application
             // or the user can wrap it with try catch into the public/index.php instead
             $this->response = $this->application->handle($_SERVER['REQUEST_URI'] ?? '/');
@@ -422,8 +433,7 @@ DOC;
         } else {
             if (empty($this->application)) {
                 throw new \Exception('Application \'\' not found', 404);
-            }
-            else {
+            } else {
                 throw new \Exception('Application \''.get_class($this->application).'\' not supported', 400);
             }
         }
@@ -451,7 +461,8 @@ DOC;
      * Return True if the bootstrap mode is set to 'console'
      * @return bool Console mode
      */
-    public function isConsole() : bool {
+    public function isConsole() : bool
+    {
         return $this->getMode() === self::MODE_CONSOLE;
     }
     
@@ -459,7 +470,8 @@ DOC;
      * Return the raw bootstrap mode, should be either 'console' or 'default'
      * @return string Bootstrap mode
      */
-    public function getMode() : string {
+    public function getMode() : string
+    {
         return $this->mode;
     }
 }

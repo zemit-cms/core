@@ -14,7 +14,7 @@ use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Ecdsa\Sha512;
 use Phalcon\Acl\Role;
-use Phalcon\Di\Injectable;
+use Zemit\Di\Injectable;
 use Phalcon\Messages\Message;
 use Phalcon\Validation\Validator\PresenceOf;
 use Zemit\Models\Session;
@@ -170,7 +170,7 @@ class Identity extends Injectable
      */
     public function setMode($mode)
     {
-        switch($mode) {
+        switch ($mode) {
             case self::MODE_STRING:
             case self::MODE_JWT:
                 $this->mode = $mode;
@@ -189,7 +189,7 @@ class Identity extends Injectable
         $ret = $this->session->has($this->sessionKey) ? $ret = $this->session->get($this->sessionKey) : null;
         
         if ($ret) {
-            switch($this->mode) {
+            switch ($this->mode) {
                 case self::MODE_DEFAULT:
                     break;
                 case self::MODE_JWT:
@@ -212,7 +212,7 @@ class Identity extends Injectable
         $identity = json_encode($identity);
         
         $token = null;
-        switch($this->mode) {
+        switch ($this->mode) {
             case self::MODE_JWT:
                 $token = $this->jwt->getToken(['identity' => $identity]);
                 break;
@@ -390,7 +390,6 @@ class Identity extends Injectable
                             }
                         }
                     }
-                    
                 }
             }
         }
@@ -565,7 +564,6 @@ class Identity extends Injectable
         $asUserId = $session->getAsUserId();
         $userId = $session->getUserId();
         if (!empty($asUserId) && !empty($userId)) {
-            
             $session->setUserId($asUserId);
             $session->setAsUserId(null);
         }
@@ -601,7 +599,6 @@ class Identity extends Injectable
         $messages = $validation->getMessages();
         
         if (!$messages->count()) {
-            
             $userClass = $this->getUserClass();
             $user = $userClass::findFirstByEmail($this->filter->sanitize($params['email'] ?? '', 'string'));
             
@@ -723,7 +720,7 @@ class Identity extends Injectable
                         'firstName',
                         'lastName',
                         'email',
-                        'token' => function($builder) use ($token) {
+                        'token' => function ($builder) use ($token) {
                             $builder->setValue($token);
                         },
                     ]])]);
@@ -798,7 +795,6 @@ class Identity extends Injectable
             $authorizationToken = $authorization[1] ?? null;
             
             if (strtolower($authorizationType) === 'bearer') {
-                
                 $sessionClaim = $this->getClaim($authorizationToken, $this->sessionKey);
                 $key = $sessionClaim->key ?? null;
                 $token = $sessionClaim->token ?? null;

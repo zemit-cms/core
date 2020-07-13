@@ -107,7 +107,6 @@ class Manager extends \Phalcon\Assets\Manager
                 $resources = $this->get($collectionName)->getResources();
                 if ($resources) {
                     foreach ($resources as $resource) {
-                
                         // Add version and filetime to the local resources only
                         if ($resource->getLocal()) {
                             $resource->setPath(self::_addVersionToPath($resource->getPath(), $this->getVersion(), $this->getFileTime()));
@@ -167,5 +166,4 @@ class Manager extends \Phalcon\Assets\Manager
         }
         return $path;
     }
-    
 }

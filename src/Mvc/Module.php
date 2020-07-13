@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
+
 namespace Zemit\Mvc;
 
 use Phalcon\Di\DiInterface;
@@ -125,7 +126,7 @@ class Module implements ModuleDefinitionInterface
             'action' => 'index'
         ]);
         $this->router->notFound([
-            'controller' => 'errors',
+            'controller' => 'error',
             'action' => 'notFound'
         ]);
         
@@ -143,6 +144,7 @@ class Module implements ModuleDefinitionInterface
         // register the vendor module controllers
         $namespaces[$namespace . '\\Controllers'] = $this->config->core->dir->modules . '/' . Text::camelize($this->name) . '/Controllers/';
         $namespaces[$namespace . '\\Models'] = $this->config->core->dir->modules . '/' . Text::camelize($this->name) . '/Models/';
+        $namespaces['Zemit\\Models'] = $this->config->core->dir->base . '/Models/';
         return $namespaces;
     }
     
@@ -168,5 +170,4 @@ class Module implements ModuleDefinitionInterface
         $di['view'] = $this->view;
         $di['url'] = $this->url;
     }
-    
 }

@@ -11,7 +11,8 @@
 namespace Zemit\Mvc\Dispatcher;
 
 use Phalcon\Acl\Resource;
-use Phalcon\Di\Injectable;
+use Phalcon\Dispatcher\AbstractDispatcher;
+use Zemit\Di\Injectable;
 use Phalcon\Events\Event;
 use Zemit\Mvc\Dispatcher;
 
@@ -32,7 +33,7 @@ class Maintenance extends Injectable
      *
      * @throws \Exception Throw a maintenance in progress exception 503 if not maintenance router provided
      */
-    public function beforeDispatch(Event $event, Dispatcher $dispatcher)
+    public function beforeDispatch(Event $event, AbstractDispatcher $dispatcher)
     {
         $maintenance = $this->config->app->maintenance ?? false;
         if ($maintenance) {
@@ -47,6 +48,4 @@ class Maintenance extends Injectable
             }
         }
     }
-    
-    
 }

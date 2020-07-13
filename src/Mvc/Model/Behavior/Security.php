@@ -30,29 +30,9 @@ use Zemit\Mvc\Model\User;
 class Security extends Behavior
 {
     /**
-     * @var string
+     * @var \Zemit\Bootstrap\Config
      */
-    protected $sessionClass = Session::class;
-    
-    /**
-     * @var string
-     */
-    protected $userClass = User::class;
-    
-    /**
-     * @var string
-     */
-    protected $roleClass = Role::class;
-    
-    /**
-     * @var string
-     */
-    protected $groupClass = Group::class;
-    
-    /**
-     * @var string
-     */
-    protected $typeClass = Type::class;
+    protected $config = null;
     
     /**
      * @var \Zemit\Security
@@ -75,13 +55,9 @@ class Security extends Behavior
     {
         parent::__construct($options);
         
-        $this->sessionClass = $options['sessionClass'] ?? $this->sessionClass;
-        $this->userClass = $options['userClass'] ?? $this->userClass;
-        $this->groupClass = $options['groupClass'] ?? $this->groupClass;
-        $this->typeClass = $options['typeClass'] ?? $this->typeClass;
-        $this->roleClass = $options['roleClass'] ?? $this->roleClass;
-        $this->security ??= Di::getDefault()->get('security');;
-        $this->identity ??= Di::getDefault()->get('identity');;
+        $this->config ??= Di::getDefault()->get('config');
+        $this->security ??= Di::getDefault()->get('security');
+        $this->identity ??= Di::getDefault()->get('identity');
     }
     
     /**
@@ -98,16 +74,14 @@ class Security extends Behavior
      */
     public function notify($eventType, ModelInterface $model)
     {
-        return true;
-        
         $this->security->getAcl();
         
-        switch($eventType) {
+        switch ($eventType) {
             case 'beforeCreate':
             case 'beforeUpdate':
             case 'beforeDelete':
             case 'beforeRestore':
-//            case 'beforeFetch':
+            case 'beforeFetch':
                 return $this->isAllowed($eventType, $model);
                 break;
         }
@@ -117,16 +91,9 @@ class Security extends Behavior
     
     public function isAllowed($eventType, $model)
     {
-        return true;
-        
         $acl = $this->security->getAcl('models');
         
         $modelClass = get_class($model);
-        
-        // whitelisted models
-        if ($modelClass instanceof $this->userClass || $modelClass instanceof $this->sessionClass) {
-            return true;
-        }
         
         // component not found
         if (!$acl->isComponent($modelClass)) {

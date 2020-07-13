@@ -35,6 +35,7 @@ use Zemit\Mvc\Model\RawValue;
 use Zemit\Mvc\Model\Relationship;
 use Zemit\Mvc\Model\Slug;
 use Zemit\Mvc\Model\Snapshots;
+
 //use Zemit\Mvc\Model\Utils;
 
 /**
@@ -98,6 +99,7 @@ class Model extends \Phalcon\Mvc\Model
     use \Zemit\Mvc\Model\FindIn;
     use \Zemit\Mvc\Model\SoftDelete;
     use \Zemit\Mvc\Model\Identity;
+
 //    use \Zemit\Mvc\Model\Utils;
     
     public function initialize()
@@ -111,18 +113,12 @@ class Model extends \Phalcon\Mvc\Model
         // Security
         $this->addSecurityBehavior();
         
-        // Timestamp Behaviors
-        $this->addCreatedAtBehavior();
-        $this->addUpdatedAtBehavior();
-        $this->addDeletedAtBehavior();
-        $this->addRestoredAtBehavior();
+        // Create / Update / Delete / Restore
+        $this->addCreatedBehavior();
+        $this->addUpdatedBehavior();
+        $this->addDeletedBehavior();
+        $this->addRestoredBehavior();
         
-        // Current User Behaviors
-        $this->addCreatedByBehavior();
-        $this->addUpdatedByBehavior();
-        $this->addDeletedByBehavior();
-        $this->addRestoredByBehavior();
-
         // Other Behaviors
         $this->addSlugBehavior();
         $this->addSoftDeleteBehavior();
@@ -155,7 +151,7 @@ class Model extends \Phalcon\Mvc\Model
      *
      * @param array|null $options
      */
-    public static function setup(array $options = null) : void
+    public static function setup(array $options = null): void
     {
         parent::setup(array_merge([
             'caseInsensitiveColumnMap' => false,
@@ -180,70 +176,23 @@ class Model extends \Phalcon\Mvc\Model
     /**
      * Blameable Audit User
      */
-    public function addSecurityBehavior() : void {
+    public function addSecurityBehavior(): void
+    {
         $config = $this->getDI()->get('config')->identity->toArray();
         $this->addBehavior(new \Zemit\Mvc\Model\Behavior\Security($config));
     }
     
-    /**
-     * Created At Timestamp
-     */
-    public function addCreatedAtBehavior() : void {
-        $this->addBehavior(new Timestampable([
-            'beforeValidationOnCreate' => [
-                'field' => 'createdAt',
-                'format' => 'Y-m-d H:i:s',
-            ],
-        ]));
-    }
-    
-    /**
-     * Updated At Timestamp
-     */
-    public function addUpdatedAtBehavior() : void {
-        $this->addBehavior(new Conditional([
-            'beforeValidationOnUpdate' => [
-                'field' => 'updatedAt',
-                'value' => date(self::DATETIME_FORMAT),
-                'condition' => function () {
-                    return !$this->hasSnapshotData() || $this->hasChanged();
-                }
-            ],
-        ]));
-    }
-    
-    /**
-     * Deleted At Timestamp
-     */
-    public function addDeletedAtBehavior() : void {
-        $this->addBehavior(new Timestampable([
-            'beforeDelete' => [
-                'field' => 'deletedAt',
-                'format' => self::DATETIME_FORMAT,
-            ],
-        ]));
-    }
-    
-    /**
-     * Restored At Timestamp
-     */
-    public function addRestoredAtBehavior() : void {
-        $this->addBehavior(new Timestampable([
-            'beforeRestore' => [
-                'field' => 'restoredAt',
-                'format' => self::DATETIME_FORMAT,
-            ],
-        ]));
-    }
     
     /**
      * Created By
      */
-    public function addCreatedByBehavior() : void {
+    public function addCreatedBehavior(): void
+    {
         $this->addBehavior(new Transformable([
             'beforeValidationOnCreate' => [
                 'createdBy' => $this->getCurrentUserIdCallback(false),
                 'createdAs' => $this->getCurrentUserIdCallback(true),
+                'createdAt' => date(self::DATETIME_FORMAT),
             ],
         ]));
     }
@@ -251,11 +200,19 @@ class Model extends \Phalcon\Mvc\Model
     /**
      * Updated By
      */
-    public function addUpdatedByBehavior() : void {
+    public function addUpdatedBehavior(): void
+    {
         $this->addBehavior(new Transformable([
             'beforeValidationOnUpdate' => [
-                'updatedBy' => $this->getCurrentUserIdCallback(false),
-                'updatedAs' => $this->getCurrentUserIdCallback(true),
+                'updatedBy' => $this->hasChangedCallback(function() {
+                    return $this->getCurrentUserIdCallback(false)();
+                }),
+                'updatedAs' => $this->hasChangedCallback(function() {
+                    return $this->getCurrentUserIdCallback(true)();
+                }),
+                'updatedAt' => $this->hasChangedCallback(function() {
+                    return date(self::DATETIME_FORMAT);
+                }),
             ],
         ]));
     }
@@ -263,11 +220,30 @@ class Model extends \Phalcon\Mvc\Model
     /**
      * Deleted By
      */
-    public function addDeletedByBehavior() : void {
+    public function addDeletedBehavior(): void
+    {
         $this->addBehavior(new Transformable([
             'beforeDelete' => [
                 'deletedBy' => $this->getCurrentUserIdCallback(false),
                 'deletedAs' => $this->getCurrentUserIdCallback(true),
+                'deletedAt' => date(self::DATETIME_FORMAT),
+            ],
+            'beforeValidationOnUpdate' => [
+                'deletedBy' => $this->hasChangedCallback(function($model, $field) {
+                    return ($model->isDeleted() && (!$model->hasSnapshotData() || $model->hasChanged('deleted')))
+                        ? $this->getCurrentUserIdCallback(false)()
+                        : $model->readAttribute($field);
+                }),
+                'deletedAs' => $this->hasChangedCallback(function($model, $field) {
+                    return ($model->isDeleted() && (!$model->hasSnapshotData() || $model->hasChanged('deleted')))
+                        ? $this->getCurrentUserIdCallback(true)()
+                        : $model->readAttribute($field);
+                }),
+                'deletedAt' => $this->hasChangedCallback(function($model, $field) {
+                    return ($model->isDeleted() && (!$model->hasSnapshotData() || $model->hasChanged('deleted')))
+                        ? date(self::DATETIME_FORMAT)
+                        : $model->readAttribute($field);
+                }),
             ],
         ]));
     }
@@ -275,11 +251,13 @@ class Model extends \Phalcon\Mvc\Model
     /**
      * Deleted By
      */
-    public function addRestoredByBehavior() : void {
+    public function addRestoredBehavior(): void
+    {
         $this->addBehavior(new Transformable([
             'beforeRestore' => [
                 'restoredBy' => $this->getCurrentUserIdCallback(false),
                 'restoredAs' => $this->getCurrentUserIdCallback(true),
+                'restoredAt' => date(self::DATETIME_FORMAT),
             ],
         ]));
     }
@@ -287,7 +265,8 @@ class Model extends \Phalcon\Mvc\Model
     /**
      * Slug
      */
-    public function addSlugBehavior() : void {
+    public function addSlugBehavior(): void
+    {
         $this->addBehavior(new Transformable([
             'beforeValidation' => [
                 'index' => function($model) {
@@ -296,6 +275,7 @@ class Model extends \Phalcon\Mvc\Model
                         if (empty($value)) {
                             $value = $model->getLabel() ?? $model->toJson() ?? json_encode($model->toArray() ?? $model);
                         }
+                        
                         return \Zemit\Utils\Slug::generate($value);
                     }
                 },
@@ -306,7 +286,8 @@ class Model extends \Phalcon\Mvc\Model
     /**
      * Soft Delete
      */
-    public function addSoftDeleteBehavior() : void {
+    public function addSoftDeleteBehavior(): void
+    {
         $this->addBehavior(new SoftDelete([
             'field' => self::DELETED_FIELD,
             'value' => self::YES,
@@ -316,7 +297,8 @@ class Model extends \Phalcon\Mvc\Model
     /**
      * Position
      */
-    public function addPositionBehavior() : void {
+    public function addPositionBehavior(): void
+    {
         $this->addBehavior(new Position([
             'field' => self::POSITION_FIELD,
         ]));
@@ -325,12 +307,29 @@ class Model extends \Phalcon\Mvc\Model
     /**
      * Blameable Audit User
      */
-    public function addBlameableBehavior() : void {
+    public function addBlameableBehavior(): void
+    {
         $this->addBehavior(new Blameable([
             'auditClass' => Audit::class,
             'auditDetailClass' => AuditDetail::class,
             'userClass' => User::class,
         ]));
+    }
+    
+    /**
+     * Check if the model has changed and return null otherwise
+     *
+     * @param $callback
+     *
+     * @return \Closure
+     */
+    public function hasChangedCallback($callback)
+    {
+        return function(ModelInterface $model, $field) use ($callback) {
+            return ($model->hasSnapshotData() && $model->hasChanged()) ?
+                $callback($model, $field) :
+                $model->readAttribute($field);
+        };
     }
     
     /**
@@ -386,7 +385,8 @@ class Model extends \Phalcon\Mvc\Model
      *
      * @return bool
      */
-    public function hasDirtyRelated() {
-        return count($this->dirtyRelated)? true : false;
+    public function hasDirtyRelated()
+    {
+        return count($this->dirtyRelated) ? true : false;
     }
 }

@@ -44,17 +44,14 @@ class PartialsController extends AbstractController
         $viewPath = $pathinfo['dirname'] . $pathinfo['filename'];
         
         if ($this->view->exists($viewPath)) {
-            
             // Force the partial without layout
             $this->view->cleanTemplateAfter();
             $this->view->cleanTemplateBefore();
             $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
             $this->view->pick($viewPath);
         } else {
-            
             // Can't find the partial, forward to not found
             $this->dispatcher->forward($this->config->router->notFound ?? $this->notFound);
         }
     }
-    
 }

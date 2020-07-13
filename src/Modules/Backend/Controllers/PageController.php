@@ -14,7 +14,7 @@ use Zemit\Modules\Backend\Controller;
 
 class PageController extends Controller
 {
-    public function indexAction() {
-    
+    public function indexAction()
+    {
     }
 }

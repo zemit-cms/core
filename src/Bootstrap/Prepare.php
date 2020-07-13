@@ -11,7 +11,7 @@
 namespace Zemit\Bootstrap;
 
 use Phalcon\Debug;
-use Phalcon\Di\Injectable;
+use Zemit\Di\Injectable;
 use Zemit\Events\EventsAwareTrait;
 
 /**
@@ -33,7 +33,8 @@ class Prepare extends Injectable
      * - Force debug
      * - Force PHP settings
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->initialize();
         $this->forwarded();
         $this->define();
@@ -44,14 +45,15 @@ class Prepare extends Injectable
     /**
      * Initialisation
      */
-    public function initialize() {
-    
+    public function initialize()
+    {
     }
     
     /**
      * Fix for forwarded https
      */
-    protected function forwarded() {
+    protected function forwarded()
+    {
         if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
             $_SERVER['HTTPS'] = 'on';
         }
@@ -63,7 +65,8 @@ class Prepare extends Injectable
      * - APP_ENV
      * - ENV
      */
-    protected function define() {
+    protected function define()
+    {
         defined('APPLICATION_ENV') || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
         defined('APP_ENV') || define('APP_ENV', (getenv('APP_ENV') ? getenv('APP_ENV') : APPLICATION_ENV));
         defined('ENV') || define('ENV', (getenv('ENV') ? getenv('ENV') : APPLICATION_ENV));
@@ -74,15 +77,15 @@ class Prepare extends Injectable
      * - Prepare error reporting and display errors natively with PHP
      * - Listen with phalcon debugger
      */
-    public function debug(Config $config = null) {
+    public function debug(Config $config = null)
+    {
         $config ??= $this->config;
         
         if ($config->app->debug || $config->debug->enable) {
             // Enabling error reporting and display
             error_reporting(E_ALL);
             ini_set('display_errors', 1);
-        }
-        else {
+        } else {
             // Disabling error reporting and display
             error_reporting(-1);
             ini_set('display_errors', 0);
@@ -92,7 +95,8 @@ class Prepare extends Injectable
     /**
      * Prepare some PHP config
      */
-    public function php(Config $config = null) {
+    public function php(Config $config = null)
+    {
         $config ??= $this->config->app;
 
         if ($config) {

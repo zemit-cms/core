@@ -10,7 +10,7 @@
 
 namespace Zemit;
 
-use Phalcon\Di\Injectable;
+use Zemit\Di\Injectable;
 
 class Locale extends Injectable
 {
@@ -158,7 +158,8 @@ class Locale extends Injectable
         $this->allowed = is_array($allowed)? $allowed : [$allowed];
     }
     
-    public function getMode() {
+    public function getMode()
+    {
         return $this->mode;
     }
     
@@ -167,7 +168,8 @@ class Locale extends Injectable
      * @see $this->mode
      * @param mixed|string $mode
      */
-    public function setMode($mode) {
+    public function setMode($mode)
+    {
         $this->mode = $mode;
     }
     
@@ -178,7 +180,7 @@ class Locale extends Injectable
      */
     public function prepare($default = null)
     {
-        switch($this->mode) {
+        switch ($this->mode) {
             default:
             case self::MODE_DEFAULT:
                 $locale =
@@ -301,7 +303,6 @@ class Locale extends Injectable
         
         // lookup for the first configured region based on the locale without region
         if (empty($lookup) || $refetch) {
-            
             // matches all the possible regions from thie locale
             $matches = array_filter($allowed, function ($haystack) use ($locale) {
                 $needle = $locale . '_';

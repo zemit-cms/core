@@ -14,7 +14,8 @@ use Phalcon\Validation\Validator;
 use Phalcon\Validation\ValidatorInterface;
 use Phalcon\Validation\Message;
 
-class Digits extends Validator implements ValidatorInterface {
+class Digits extends Validator implements ValidatorInterface
+{
 
     /**
      * Executes the validation
@@ -23,7 +24,8 @@ class Digits extends Validator implements ValidatorInterface {
      * @param string $attribute
      * @return boolean
      */
-    public function validate(\Phalcon\Validation $validator, $attribute) {
+    public function validate(\Phalcon\Validation $validator, $attribute)
+    {
         $value = $validator->getValue($attribute);
 
         if (extension_loaded('mbstring')) {
@@ -37,7 +39,6 @@ class Digits extends Validator implements ValidatorInterface {
         $filtered = preg_replace($pattern, '', (string) $value);
 
         if ((!is_int($value) && !is_float($value)) || $value !== $filtered) {
-
             $message = $this->getOption('message');
             if (!$message) {
                 $message = 'Value contains non-numeric characters';
@@ -50,5 +51,4 @@ class Digits extends Validator implements ValidatorInterface {
 
         return true;
     }
-
 }

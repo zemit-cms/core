@@ -10,7 +10,7 @@
 namespace Zemit\Bootstrap;
 
 use Phalcon\DI\FactoryDefault;
-use Phalcon\Di\Injectable;
+use Zemit\Di\Injectable;
 
 /**
  * Class Services

@@ -16,6 +16,7 @@ namespace Zemit\Modules\Backend;
  */
 class Controller extends \Zemit\Mvc\Controller
 {
-    public function initialize() {
+    public function initialize()
+    {
     }
 }

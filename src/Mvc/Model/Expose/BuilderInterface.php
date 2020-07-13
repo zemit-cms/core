@@ -10,7 +10,8 @@
 
 namespace Zemit\Mvc\Model\Expose;
 
-interface BuilderInterface {
+interface BuilderInterface
+{
     
     public function getValue();
     public function setValue($value = null);

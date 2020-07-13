@@ -10,10 +10,12 @@
 
 namespace Zemit\Models;
 
-
-use Zemit\Mvc\Model;
-
-class Email extends Model
+/**
+ * Class Email
+ *
+ * @package Zemit\Models
+ */
+class Email extends Base\AbstractEmail
 {
-    
+
 }

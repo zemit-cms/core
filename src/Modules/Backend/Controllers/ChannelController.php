@@ -14,7 +14,7 @@ use Zemit\Modules\Backend\Controller;
 
 class ChannelController extends Controller
 {
-    public function indexAction() {
-    
+    public function indexAction()
+    {
     }
 }

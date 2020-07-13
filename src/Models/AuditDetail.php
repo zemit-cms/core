@@ -10,10 +10,12 @@
 
 namespace Zemit\Models;
 
-
-use Zemit\Mvc\Model;
-
-class AuditDetail extends Model
+/**
+ * Class AuditDetail
+ *
+ * @package Zemit\Models
+ */
+class AuditDetail extends Base\AbstractAuditDetail
 {
     
 }

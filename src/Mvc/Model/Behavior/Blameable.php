@@ -86,7 +86,7 @@ class Blameable extends Behavior
             return true;
         }
         
-        switch($eventType) {
+        switch ($eventType) {
             case 'afterCreate':
             case 'afterUpdate':
                 return $this->createAudit($eventType, $model);

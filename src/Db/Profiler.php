@@ -22,7 +22,8 @@ class Profiler extends \Phalcon\Db\Profiler
     /**
      * @return array
      */
-    public function toArray() {
+    public function toArray()
+    {
     
         $config = Di::getDefault()->get('config');
         if (!$config->app->profiler) {

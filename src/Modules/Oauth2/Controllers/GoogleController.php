@@ -17,7 +17,8 @@ class GoogleController extends AbstractController
      *
      * @return \Phalcon\Http\ResponseInterface
      */
-    public function authorizationUrlAction($scope = null) {
+    public function authorizationUrlAction($scope = null)
+    {
         $redirectUrl = $this->oauth2Google->getAuthorizationUrl([
             'scope' => explode(',', $scope ?: $this->request->get('scope', 'string', self::DEFAULT_SCOPE))
         ]);
@@ -32,7 +33,8 @@ class GoogleController extends AbstractController
      *
      * @return bool
      */
-    public function validateState($state = null) {
+    public function validateState($state = null)
+    {
         $state ??= $this->request->get('state', 'string');
         
         if (empty($state) || !$this->session->has($this->sessionKey)) {
@@ -49,7 +51,8 @@ class GoogleController extends AbstractController
      *
      * @return mixed
      */
-    public function getAccessToken($code = null) {
+    public function getAccessToken($code = null)
+    {
         $code ??= $this->request->get('code', 'string');
         return $this->oauth2Google->getAccessToken('authorization_code', ['code' => $code]);
     }
@@ -61,7 +64,8 @@ class GoogleController extends AbstractController
      *
      * @return mixed
      */
-    public function refreshToken($refreshToken = null) {
+    public function refreshToken($refreshToken = null)
+    {
         $refreshToken ??= $this->request->get('refreshToken', 'string');
         return $this->oauth2Facebook->getAccessToken(new RefreshToken(), ['code' => $refreshToken]);
     }
@@ -73,7 +77,8 @@ class GoogleController extends AbstractController
      *
      * @return mixed
      */
-    public function getToken($token) {
+    public function getToken($token)
+    {
         return $token->getToken();
     }
     
@@ -84,7 +89,8 @@ class GoogleController extends AbstractController
      *
      * @return mixed
      */
-    public function getRefreshToken($token) {
+    public function getRefreshToken($token)
+    {
         return $token->getRefreshToken();
     }
     
@@ -95,7 +101,8 @@ class GoogleController extends AbstractController
      *
      * @return mixed
      */
-    public function getExpires($token) {
+    public function getExpires($token)
+    {
         return $token->getExpires();
     }
     
@@ -104,7 +111,8 @@ class GoogleController extends AbstractController
      *
      * @return mixed
      */
-    public function getResourceOwner($token = null) {
+    public function getResourceOwner($token = null)
+    {
         $token ??= $this->getAccessToken();
         return $this->oauth2Google->getResourceOwner($token);
     }

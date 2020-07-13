@@ -38,11 +38,28 @@ class Env
      * Get the dotenv loader
      * @return \Dotenv\Loader
      */
-    public static function getDotenv(array $filePath = null) {
-        $filePath ??= dirname($_SERVER['DOCUMENT_ROOT'] ?: APP_PATH) ?: getcwd();
+    public static function getDotenv(array $filePath = null)
+    {
+        $filePath ??= self::getCurrentPath();
         self::$dotenv ??= Dotenv::create($filePath);
         self::$vars ??= self::$dotenv->load();
         return self::$dotenv;
+    }
+    
+    /**
+     * @return false|mixed|string
+     */
+    public static function getCurrentPath() {
+        
+        if (!empty($_SERVER['DOCUMENT_ROOT'])) {
+            return dirname($_SERVER['DOCUMENT_ROOT']);
+        }
+        
+        if (defined('APP_PATH')) {
+            return constant('APP_PATH');
+        }
+        
+        return getcwd();
     }
     
     /**
@@ -63,15 +80,12 @@ class Env
         $getSet = 'set';
         if (strpos($name, 'SET_') === 0) {
             $name = substr($name, 0, 4);
-        }
-        else if (strpos($name, 'set') === 0) {
+        } elseif (strpos($name, 'set') === 0) {
             $name = substr($name, 0, 3);
-        }
-        else if (strpos($name, 'GET_') === 0) {
+        } elseif (strpos($name, 'GET_') === 0) {
             $getSet = 'get';
             $name = substr($name, 0, 4);
-        }
-        else if (strpos($name, 'get') === 0) {
+        } elseif (strpos($name, 'get') === 0) {
             $getSet = 'get';
             $name = substr($name, 0, 3);
         }
@@ -94,7 +108,7 @@ class Env
         }
         
         if (is_string($ret)) {
-            switch(strtolower($ret)) {
+            switch (strtolower($ret)) {
                 case 'true':
                     $ret = true;
                     break;
@@ -171,5 +185,4 @@ class Env
     {
         return self::call($name, $arguments);
     }
-    
 }

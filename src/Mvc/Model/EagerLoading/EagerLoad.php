@@ -183,7 +183,6 @@ final class EagerLoad
             
             $records = array_values($records);
         } else {
-            
             // We expect a single object or a set of it
             $isSingle = !$isThrough && (
                     $relation->getType() === Relation::HAS_ONE ||
@@ -228,7 +227,6 @@ final class EagerLoad
                 }
                 
                 foreach ($parentSubject as $record) {
-                    
                     $referencedFieldValue = $record->readAttribute($relField);
                     
                     if (isset($indexedRecords[$referencedFieldValue])) {

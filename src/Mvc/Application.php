@@ -62,5 +62,4 @@ class Application extends \Phalcon\Mvc\Application
         }
         return $response;
     }
-    
 }

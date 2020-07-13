@@ -35,9 +35,11 @@ use Phalcon\Text;
  *
  * @package Zemit\Mvc\Model\Expose
  */
-trait Expose {
+trait Expose
+{
     
-    public function expose($columns = null, $expose = true, $protected = false) {
+    public function expose($columns = null, $expose = true, $protected = false)
+    {
         $builder = new Builder();
         $builder->setColumns(self::_parseColumnsRecursive($columns));
         $builder->setExpose($expose);
@@ -48,7 +50,8 @@ trait Expose {
         return self::_expose($builder);
     }
     
-    private static function _getValue($string, $value) {
+    private static function _getValue($string, $value)
+    {
         $ret = null;
         if (is_array($value) || is_object($value)) {
             $ret = Multibyte::sprintfn($string, $value);
@@ -58,7 +61,8 @@ trait Expose {
         return $ret;
     }
     
-    private static function _checkExpose(Builder $builder) {
+    private static function _checkExpose(Builder $builder)
+    {
         $ret = null;
         $columns = $builder->getColumns();
         $fullKey = $builder->getFullKey();
@@ -74,8 +78,7 @@ trait Expose {
             }
             
             // If callable, set the expose to true, and run the method and passes the builder as parameter
-            else if (is_callable($column)) {
-                
+            elseif (is_callable($column)) {
                 $builder->setExpose(true);
                 $callbackReturn = $column($builder);
                 
@@ -85,18 +88,18 @@ trait Expose {
                 }
                 
                 // If string is returned, set expose to true and parse with mb_sprintfn or mb_sprintf
-                else if (is_string($callbackReturn)) {
+                elseif (is_string($callbackReturn)) {
                     $builder->setExpose(true);
                     $builder->setValue(self::_getValue($callbackReturn, $value));
                 }
                 
                 // If bool is returned, set expose to boolean value
-                else if (is_bool($callbackReturn)) {
+                elseif (is_bool($callbackReturn)) {
                     $builder->setExpose($callbackReturn);
                 }
                 
                 // If array is returned, parse the columns from the current context key and merge it with the builder
-                else if (is_array($callbackReturn)) {
+                elseif (is_array($callbackReturn)) {
                     $columns = self::_parseColumnsRecursive($callbackReturn, $builder->getFullKey());
                     
                     // If not set, set expose to false by default
@@ -110,7 +113,7 @@ trait Expose {
             }
             
             // If string, set expose to true and parse with mb_sprintfn or mb_sprintf
-            else if (is_string($column)) {
+            elseif (is_string($column)) {
                 $builder->setExpose(true);
                 $builder->setValue(self::_getValue($column, $value));
             }
@@ -128,23 +131,20 @@ trait Expose {
                     
                     if (is_bool($column)) {
                         $builder->setExpose($column);
-                    }
-                    else if (is_callable($column)) {
+                    } elseif (is_callable($column)) {
                         $builder->setExpose(true);
                         $callbackReturn = $column($builder);
                         if ($callbackReturn instanceof BuilderInterface) {
                             $builder = $callbackReturn;
-                        } else if (is_string($callbackReturn)) {
+                        } elseif (is_string($callbackReturn)) {
                             $builder->setExpose(true);
                             $builder->setValue(self::_getValue($callbackReturn, $value));
-                        } else if (is_bool($callbackReturn)) {
+                        } elseif (is_bool($callbackReturn)) {
                             $builder->setExpose($callbackReturn);
-                        }
-                        else if (is_array($callbackReturn)) {
+                        } elseif (is_array($callbackReturn)) {
                             // Since its a parent, we're not supposed to re-re-merge the existings columns
                         }
-                    }
-                    else if (is_string($column)) {
+                    } elseif (is_string($column)) {
                         $builder->setExpose(false);
                         $builder->setValue(self::_getValue($column, $value));
                     }
@@ -156,7 +156,7 @@ trait Expose {
         // Try to find a subentity, or field that has the true value
         $value = $builder->getValue();
         if ((is_array($value) || is_object($value) || is_callable($value))) {
-            $subColumns = is_null($columns) ? $columns : array_filter($columns, function($columnValue, $columnKey) use ($builder) {
+            $subColumns = is_null($columns) ? $columns : array_filter($columns, function ($columnValue, $columnKey) use ($builder) {
                 $ret = strpos($columnKey, $builder->getFullKey()) === 0;
                 if ($ret && $columnValue === true) {
                     // expose the current instance (which is the parent of the subcolumn)
@@ -175,7 +175,8 @@ trait Expose {
         return $builder;
     }
     
-    private static function _expose(Builder $builder) {
+    private static function _expose(Builder $builder)
+    {
         $builder = clone $builder;
         $columns = $builder->getColumns();
         
@@ -186,8 +187,7 @@ trait Expose {
             $toParse = [];
             if (is_array($value)) {
                 $toParse = $value;
-            }
-            else if (method_exists($value, 'toArray')) {
+            } elseif (method_exists($value, 'toArray')) {
                 $toParse = $value->toArray();
             }
             
@@ -215,8 +215,7 @@ trait Expose {
                     $ret [$fieldKey]= self::_expose($builder);
                 }
             }
-        }
-        else {
+        } else {
             $ret = $builder->getExpose()? $value : false;
         }
         return $ret;
@@ -231,7 +230,8 @@ trait Expose {
      * @param String $context
      * @return Array
      */
-    private static function _parseColumnsRecursive($columns = null, $context = null) {
+    private static function _parseColumnsRecursive($columns = null, $context = null)
+    {
         if (!isset($columns)) {
             return null;
         }
@@ -240,7 +240,6 @@ trait Expose {
             $columns = array($columns);
         }
         foreach ($columns as $key => $value) {
-            
             if (is_bool($key)) {
                 $value = $key;
                 $key = null;
@@ -268,7 +267,6 @@ trait Expose {
                 if (is_callable($value)) {
                     $ret[$currentKey] = $value;
                 } else {
-                    
                     $subRet = self::_parseColumnsRecursive($value, $currentKey);
                     $ret = array_merge_recursive($ret, $subRet);
         
@@ -282,5 +280,4 @@ trait Expose {
         }
         return $ret;
     }
-
 }

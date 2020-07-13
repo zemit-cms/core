@@ -12,7 +12,7 @@ namespace Zemit\Provider;
 
 use LogicException;
 use Phalcon\Di\DiInterface;
-use Phalcon\Di\Injectable;
+use Zemit\Di\Injectable;
 
 /**
  * Zemit\Provider\AbstractServiceProvider

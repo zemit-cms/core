@@ -27,7 +27,8 @@ class Url extends \Phalcon\Url
      *
      * @return string
      */
-    public function get($uri = null, $args = null, bool $local = null, $baseUri = null): string {
+    public function get($uri = null, $args = null, bool $local = null, $baseUri = null): string
+    {
         return self::getAbsolutePath(parent::get($uri, $args, $local, $baseUri));
     }
     
@@ -36,7 +37,8 @@ class Url extends \Phalcon\Url
      *
      * @return string
      */
-    public static function getAbsolutePath(string $path) : string {
+    public static function getAbsolutePath(string $path) : string
+    {
         $path = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
         $parts = array_filter(explode(DIRECTORY_SEPARATOR, $path), 'mb_strlen');
         $absolutes = array();

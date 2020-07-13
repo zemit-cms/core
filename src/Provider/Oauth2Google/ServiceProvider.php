@@ -35,7 +35,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         $config = $di->get('config');
         $session = $di->get('session');
-        $di->setShared($this->getName(), function() use ($config, $session) {
+        $di->setShared($this->getName(), function () use ($config, $session) {
             $google = new Google($config->oauth2->google->toArray());
             return $google;
         });

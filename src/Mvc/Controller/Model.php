@@ -20,7 +20,6 @@ use Zemit\Identity;
 
 trait Model
 {
-    protected $_model = [];
     protected $_bind = [];
     protected $_bindTypes = [];
     
@@ -178,7 +177,6 @@ trait Model
         $searchList = array_values(array_filter(array_unique(explode(' ', $this->getParam('search', 'string')))));
         
         foreach ($searchList as $searchTerm) {
-            
             $orConditions = [];
             // @todo figure out why I can't use the same binding multiple time...
             // temp fix, generating new binding for each condition
@@ -190,7 +188,6 @@ trait Model
             }
     
             if (!empty($orConditions)) {
-                
                 $conditions []= '(' . implode(' or ', $orConditions) . ')';
             }
         }
@@ -215,9 +212,10 @@ trait Model
      *
      * @return array|string[]
      */
-    public function getParamExplodeArrayMapFilter($field, $sanitizer = 'string', $glue = ',') {
+    public function getParamExplodeArrayMapFilter($field, $sanitizer = 'string', $glue = ',')
+    {
         $filter = $this->filter;
-        $ret = array_filter(array_map(function($e) use ($filter, $sanitizer) {
+        $ret = array_filter(array_map(function ($e) use ($filter, $sanitizer) {
             return $this->appendModelName(trim($filter->sanitize($e, $sanitizer)));
         }, explode($glue, $this->getParam($field, $sanitizer))));
         return empty($ret)? null : $ret;
@@ -349,7 +347,7 @@ trait Model
 //                $queryField = '_' . uniqid($uniqid . '_field_') . '_';
                 $queryValue = '_' . uniqid($uniqid . '_value_') . '_';
                 $queryOperator = strtolower($filter['operator']);
-                switch($queryOperator) {
+                switch ($queryOperator) {
                     case '=': // Equal operator
                     case '!=': // Not equal operator
                     case '<>': // Not equal operator
@@ -391,7 +389,6 @@ trait Model
                 $queryFieldBinder = $field;
                 $queryValueBinder = ':' . $queryValue . ':';
                 if (isset($filter['value'])) {
-                    
                     // special for between and not between
                     if (in_array($queryOperator, ['between', 'not between'])) {
                         $queryValue0 = '_' . uniqid($uniqid . '_value_') . '_';
@@ -401,46 +398,36 @@ trait Model
                         $bindType[$queryValue0] = Column::BIND_PARAM_STR;
                         $bindType[$queryValue1] = Column::BIND_PARAM_STR;
                         $query []= "$queryFieldBinder $queryOperator :$queryValue0: and :$queryValue1:";
-                    }
-                    else {
+                    } else {
                         $bind[$queryValue] = $filter['value'];
                         if (is_string($filter['value'])) {
                             $bindType[$queryValue] = Column::BIND_PARAM_STR;
-                        }
-                        else if (is_int($filter['value'])) {
+                        } elseif (is_int($filter['value'])) {
                             $bindType[$queryValue] = Column::BIND_PARAM_INT;
-                        }
-                        else if (is_bool($filter['value'])) {
+                        } elseif (is_bool($filter['value'])) {
                             $bindType[$queryValue] = Column::BIND_PARAM_BOOL;
-                        }
-                        else if (is_float($filter['value'])) {
+                        } elseif (is_float($filter['value'])) {
                             $bindType[$queryValue] = Column::BIND_PARAM_DECIMAL;
-                        }
-                        else if (is_double($filter['value'])) {
+                        } elseif (is_double($filter['value'])) {
                             $bindType[$queryValue] = Column::BIND_PARAM_DECIMAL;
-                        }
-                        else if (is_array($filter['value'])) {
+                        } elseif (is_array($filter['value'])) {
                             $queryValueBinder = '({' . $queryValue . ':array})';
                             $bindType[$queryValue] = Column::BIND_PARAM_STR;
-                        }
-                        else {
+                        } else {
                             $bindType[$queryValue] = Column::BIND_PARAM_NULL;
                         }
                         $query [] = "$queryFieldBinder $queryOperator $queryValueBinder";
                     }
-                }
-                else {
+                } else {
                     $query [] = "$queryFieldBinder $queryOperator";
                 }
                 
                 $this->setBind($bind);
                 $this->setBindTypes($bindType);
-            }
-            else {
+            } else {
                 if (is_array($filter) || $filter instanceof \Traversable) {
                     $query [] = $this->getFilterCondition($filter, $whitelist, !$or);
-                }
-                else {
+                } else {
                     throw new \Exception('A valid field property is required.', 400);
                 }
             }
@@ -458,7 +445,8 @@ trait Model
      *
      * @return array|string
      */
-    public function appendModelName($field, $modelName = null) {
+    public function appendModelName($field, $modelName = null)
+    {
         $modelName ??= $this->getModelName();
         
         if (empty($field)) {
@@ -470,13 +458,10 @@ trait Model
             if (!str_contains($field, '.')) {
                 $explode = explode(' ', $field);
                 $field = trim('[' . $modelName . '].[' . array_shift($explode) . '] ' . implode(' ', $explode));
-            }
-            else if (!str_contains($field, ']') && !str_contains($field, '[')) {
+            } elseif (!str_contains($field, ']') && !str_contains($field, '[')) {
                 $field = '[' . implode('].[', explode('.', $field)) . ']';
             }
-        }
-        
-        else if (is_array($field)) {
+        } elseif (is_array($field)) {
             foreach ($field as $fieldKey => $fieldValue) {
                 $field[$fieldKey] = $this->appendModelName($fieldValue, $modelName);
             }
@@ -518,7 +503,8 @@ trait Model
     /**
      * Get having conditions
      */
-    public function getHaving() {
+    public function getHaving()
+    {
         return null;
     }
     
@@ -699,8 +685,7 @@ trait Model
                     'model' => $modelName,
                     'source' => (new $modelName)->getSource(),
                 ];
-            }
-            else {
+            } else {
                 $singlePostEntity->assign($singlePost, $whitelist, $columnMap);
                 $ret['saved'] = $singlePostEntity->save();
                 $ret['messages'] = $singlePostEntity->getMessages();

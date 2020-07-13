@@ -13,7 +13,8 @@ namespace Zemit\Mvc\Model;
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Db\RawValue;
 
-trait SoftDelete {
+trait SoftDelete
+{
     
     /**
      * Helper method to check if the row is soft deleted
@@ -23,7 +24,8 @@ trait SoftDelete {
      *
      * @return bool|null Bool if we know for sure, null if abnormal
      */
-    public function isDeleted($field = null, $deletedValue = null, $notDeletedValue = null) {
+    public function isDeleted($field = null, $deletedValue = null, $notDeletedValue = null)
+    {
         $field ??= self::DELETED_FIELD;
         $deletedValue ??= self::YES;
         $notDeletedValue ??= self::NO;
@@ -33,6 +35,12 @@ trait SoftDelete {
                 return true;
             }
             if ($this->$field === $notDeletedValue) {
+                return false;
+            }
+            if ((int)$this->$field === (int)$deletedValue && intval($this->$field) === intval($deletedValue)) {
+                return true;
+            }
+            if ((int)$this->$field === (int)$notDeletedValue && intval($this->$field) === intval($notDeletedValue)) {
                 return false;
             }
             
@@ -55,7 +63,8 @@ trait SoftDelete {
      *
      * @return bool
      */
-    public function restore($field = null, $notDeletedValue = null) {
+    public function restore($field = null, $notDeletedValue = null)
+    {
         if (true || ini_get('orm.events')) {
             $this->skipped = false;
             
@@ -85,13 +94,11 @@ trait SoftDelete {
         if (true || ini_get('orm.events')) {
             if (!$restored) {
                 $this->fireEvent('notRestored');
-            }
-            else {
+            } else {
                 $this->fireEvent('afterRestore');
             }
         }
         
         return $restored;
     }
-
 }

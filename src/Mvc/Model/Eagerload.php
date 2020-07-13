@@ -40,9 +40,7 @@ trait Eagerload
         $arguments = func_get_args();
         try {
             $retval = forward_static_call_array('self::incubatorWith', $arguments);
-            
-        } catch(\BadMethodCallException $e) {
-            
+        } catch (\BadMethodCallException $e) {
             // overriding the bad method call exception to work anyway
             $parameters = self::_prepareParameters($arguments);
             $retval = static::find($parameters);
@@ -62,8 +60,7 @@ trait Eagerload
         $arguments = func_get_args();
         try {
             $retval = forward_static_call_array('self::incubatorFindFirstWith', $arguments);
-        } catch(\BadMethodCallException $e) {
-            
+        } catch (\BadMethodCallException $e) {
             // overriding the bad method call exception to work anyway
             $parameters = self::_prepareParameters($arguments);
             if ($retval = static::findFirst($parameters)) {
@@ -94,7 +91,7 @@ trait Eagerload
             }
             
             return $entity;
-        } else if (strpos($method, 'findWith') === 0 || strpos($method, 'withBy') === 0) {
+        } elseif (strpos($method, 'findWith') === 0 || strpos($method, 'withBy') === 0) {
             $oriMethod = str_replace(['findWith', 'withBy'], ['find', 'findBy'], $method);
             $retval = parent::__callStatic($oriMethod, [self::_getParameters($arguments)]);
             if (isset($retval[0]) && count($retval)) {
@@ -136,5 +133,4 @@ trait Eagerload
         
         return $parameters;
     }
-    
 }

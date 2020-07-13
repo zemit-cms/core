@@ -11,7 +11,7 @@
 namespace Zemit\Mvc\Dispatcher;
 
 use \Exception;
-use Phalcon\Di\Injectable;
+use Zemit\Di\Injectable;
 use Phalcon\Events\Event;
 use Phalcon\Mvc\Dispatcher\Exception as DispatchException;
 use Zemit\Mvc\Dispatcher;
@@ -48,7 +48,8 @@ class Error extends Injectable
      * @return bool
      * @throws Exception
      */
-    public function beforeException(Event $event, Dispatcher $dispatcher, Exception $exception) {
+    public function beforeException(Event $event, Dispatcher $dispatcher, Exception $exception)
+    {
         switch ($exception->getCode()) {
 //            case DispatchException::EXCEPTION_NO_DI:
 //                // no di, calm down for now and see what happens after

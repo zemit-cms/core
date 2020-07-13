@@ -17,7 +17,8 @@ class FacebookController extends AbstractController
      *
      * @return \Phalcon\Http\ResponseInterface
      */
-    public function authorizationUrlAction($scope = null) {
+    public function authorizationUrlAction($scope = null)
+    {
         $redirectUrl = $this->oauth2Facebook->getAuthorizationUrl([
             'scope' => explode(',', $scope ?: $this->request->get('scope', 'string', self::DEFAULT_SCOPE))
         ]);
@@ -32,7 +33,8 @@ class FacebookController extends AbstractController
      *
      * @return bool
      */
-    public function validateState($state = null) {
+    public function validateState($state = null)
+    {
         $state ??= $this->request->get('state', 'string');
         
         if (empty($state) || !$this->session->has($this->sessionKey)) {
@@ -49,7 +51,8 @@ class FacebookController extends AbstractController
      *
      * @return mixed
      */
-    public function getAccessToken($code = null) {
+    public function getAccessToken($code = null)
+    {
         $code ??= $this->request->get('code', 'string');
         return $this->oauth2Facebook->getAccessToken('authorization_code', ['code' => $code]);
     }
@@ -59,7 +62,8 @@ class FacebookController extends AbstractController
      *
      * @return mixed
      */
-    public function getLongLivedAccessToken($shortLivedAccessToken = null) {
+    public function getLongLivedAccessToken($shortLivedAccessToken = null)
+    {
         return $this->oauth2Facebook->getLongLivedAccessToken($shortLivedAccessToken);
     }
     
@@ -70,7 +74,8 @@ class FacebookController extends AbstractController
      *
      * @return mixed
      */
-    public function refreshToken($refreshToken = null) {
+    public function refreshToken($refreshToken = null)
+    {
         $refreshToken ??= $this->request->get('refreshToken', 'string');
         return $this->oauth2Facebook->getAccessToken(new RefreshToken(), ['code' => $refreshToken]);
     }
@@ -80,7 +85,8 @@ class FacebookController extends AbstractController
      *
      * @return mixed
      */
-    public function getResourceOwner($token = null) {
+    public function getResourceOwner($token = null)
+    {
         $token ??= $this->getAccessToken();
         return $this->oauth2Facebook->getResourceOwner($token);
     }

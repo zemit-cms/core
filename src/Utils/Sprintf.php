@@ -13,7 +13,8 @@ namespace Zemit\Utils;
 //@TODO test & use
 class Sprintf
 {
-    public static function implodeArrayMapSprintf($array = array(), $implode = ' ', $sprintf = '%s') {
+    public static function implodeArrayMapSprintf($array = array(), $implode = ' ', $sprintf = '%s')
+    {
         return implode($implode, array_map(function ($value, $key) use ($sprintf) {
             return self::mb_sprintf($sprintf, $value, $key);
         }, $array, array_keys($array)));
@@ -33,7 +34,8 @@ class Sprintf
      * @param array $args array of [ 'arg_name' => 'arg value', ... ] replacements to be made
      * @return string|false result of sprintf call, or bool false on error
      */
-    public static function sprintfn ($format, $args = array()) {
+    public static function sprintfn($format, $args = array())
+    {
         if (!is_array($args)) {
             if (is_object($args)) {
                 $args = (array)$args;
@@ -43,7 +45,7 @@ class Sprintf
 //        $arg_nums = array_slice(array_flip(array_keys(array(0 => 0) + $args)), 1);
         $arg_nums = array_keys($args);
         array_unshift($arg_nums, 0);
-        $arg_nums = array_flip(array_slice($arg_nums, 1, NULL, true));
+        $arg_nums = array_flip(array_slice($arg_nums, 1, null, true));
         
         // find the next named argument. each search starts at the end of the previous replacement.
         for ($pos = 0; preg_match('/(?<=%)([a-zA-Z_]\w*)(?=\$)/', $format, $match, PREG_OFFSET_CAPTURE, $pos);) {
@@ -129,8 +131,9 @@ class Sprintf
             $argv = array($argv);
         }
         
-        if (is_null($encoding))
+        if (is_null($encoding)) {
             $encoding = mb_internal_encoding();
+        }
         
         // Use UTF-8 in the format so we can use the u flag in preg_split
         $format = mb_convert_encoding($format, 'UTF-8', $encoding);
@@ -138,13 +141,16 @@ class Sprintf
         $newformat = ""; // build a new format in UTF-8
         $newargv = array(); // unhandled args in unchanged encoding
         
-        while($format !== "") {
-            
+        while ($format !== "") {
             // Split the format in two parts: $pre and $post by the first %-directive
             // We get also the matched groups
             @list ($pre, $sign, $filler, $align, $size, $precision, $type, $post) =
-                preg_split("!\%(\+?)('.|[0 ]|)(-?)([1-9][0-9]*|)(\.[1-9][0-9]*|)([%a-zA-Z])!u",
-                    $format, 2, PREG_SPLIT_DELIM_CAPTURE);
+                preg_split(
+                    "!\%(\+?)('.|[0 ]|)(-?)([1-9][0-9]*|)(\.[1-9][0-9]*|)([%a-zA-Z])!u",
+                    $format,
+                    2,
+                    PREG_SPLIT_DELIM_CAPTURE
+                );
             
             $newformat .= mb_convert_encoding($pre, $encoding, 'UTF-8');
             
@@ -162,20 +168,23 @@ class Sprintf
                 // truncate $arg
                 if ($precision !== '') {
                     $precision = intval(substr($precision, 1));
-                    if ($precision > 0 && mb_strlen($arg, $encoding) > $precision)
+                    if ($precision > 0 && mb_strlen($arg, $encoding) > $precision) {
                         $arg = mb_substr($precision, 0, $precision, $encoding);
+                    }
                 }
                 
                 // define padding
                 if ($size > 0) {
                     $arglen = mb_strlen($arg, $encoding);
                     if ($arglen < $size) {
-                        if ($filler === '')
+                        if ($filler === '') {
                             $filler = ' ';
-                        if ($align == '-')
+                        }
+                        if ($align == '-') {
                             $padding_post = str_repeat($filler, $size - $arglen);
-                        else
+                        } else {
                             $padding_pre = str_repeat($filler, $size - $arglen);
+                        }
                     }
                 }
                 

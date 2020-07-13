@@ -33,7 +33,7 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function() use ($di) {
+        $di->setShared($this->getName(), function () use ($di) {
             $config = $di->get('config')->annotations;
             
             $driver = $config->drivers->{$config->default};

@@ -95,7 +95,6 @@ MSG;
         $this->subject = $from;
         $this->subjectClassName = $className;
         $this->eagerLoads = ($from === null || empty($arguments)) ? [] : static::parseArguments($arguments);
-        
     }
     
     /**

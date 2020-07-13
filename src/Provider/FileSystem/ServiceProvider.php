@@ -35,7 +35,7 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function($root = null) {
+        $di->setShared($this->getName(), function ($root = null) {
             if ($root === null) {
                 $root = dirname(app_path());
             }

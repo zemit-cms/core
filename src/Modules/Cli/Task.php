@@ -29,11 +29,13 @@ Options:
 
 DOC;
     
-    public function helpAction() {
+    public function helpAction()
+    {
         echo $this->consoleDoc;
     }
     
-    public function mainAction() {
+    public function mainAction()
+    {
         $this->helpAction();
     }
 }

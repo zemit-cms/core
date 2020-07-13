@@ -10,7 +10,6 @@
 
 namespace Zemit\Mvc\Controller;
 
-use Hamcrest\Util;
 use Phalcon\Http\Response;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\Model\Resultset;
@@ -44,17 +43,12 @@ class Rest extends \Zemit\Mvc\Controller
         $id ??= $this->getParam('id');
         
         if ($this->request->isPost() || $this->request->isPut()) {
-            
             $this->dispatcher->forward(['action' => 'save']);
-            
         }
         else if ($this->request->isDelete()) {
-            
             $this->dispatcher->forward(['action' => 'delete']);
-            
         }
         else if ($this->request->isGet()) {
-            
             if (is_null($id)) {
                 $this->dispatcher->forward(['action' => 'getAll']);
             }
@@ -109,7 +103,7 @@ class Rest extends \Zemit\Mvc\Controller
 //        dd($find);
         $with = $model::with($this->getWith() ? : [], $find ? : []);
 //        $list = $model::find($find ? : []);
-    
+        
         /**
          * @var int $key
          * @var \Zemit\Mvc\Model $item
@@ -140,7 +134,6 @@ class Rest extends \Zemit\Mvc\Controller
     public function exportAction()
     {
         $response = $this->getAllAction();
-        dd($this->view->getVar('list'));
         $list = $this->view->list ?? null;
         if (isset($list[0])) {
             $csv = Writer::createFromFileObject(new \SplTempFileObject());
@@ -209,9 +202,9 @@ class Rest extends \Zemit\Mvc\Controller
         if ($new) {
             $entity = new $model();
         }
-    
+        
         $entity->assign($this->getParams(), $this->getWhitelist(), $this->getColumnMap());
-    
+        
         /**
          * Event to run
          * @see https://docs.phalcon.io/4.0/en/db-models-events
@@ -232,18 +225,16 @@ class Rest extends \Zemit\Mvc\Controller
         
         // run events, as it would normally
         foreach ($events as $event => $state) {
-            
             $this->skipped = false;
             
             // skip depending wether it's a create or update
-            if (str_contains($event, $new? 'Update' : 'Create')) {
+            if (str_contains($event, $new ? 'Update' : 'Create')) {
                 continue;
             }
             
             // fire the event, allowing to fail or skip
             $events[$event] = $entity->fireEventCancel($event);
             if ($events[$event] === false) {
-                
                 // event failed
                 break;
             }
@@ -382,7 +373,7 @@ class Rest extends \Zemit\Mvc\Controller
     public function setRestResponse($response = null, $code = null, $status = null, $jsonOptions = 0, $depth = 512)
     {
         $debug = $this->config->app->debug ?? false;
-    
+        
         // keep forced status code or set our own
         $responseStatusCode = $this->response->getStatusCode();
         $reasonPhrase = $this->response->getReasonPhrase();
@@ -390,7 +381,7 @@ class Rest extends \Zemit\Mvc\Controller
         $code ??= (int)$responseStatusCode ? : 200;
         $view = $this->view->getParamsToView();
         $hash = hash('sha512', json_encode($view));
-    
+        
         /**
          * Debug section
          * - Versions
@@ -400,11 +391,13 @@ class Rest extends \Zemit\Mvc\Controller
          * - Dispatcher
          * - Router
          */
-        $request = $debug? $this->request->toArray() : null;
+        $request = $debug ? $this->request->toArray() : null;
         $identity = $debug ? $this->identity->getIdentity() : null;
-        $profiler = $debug && $this->profiler? $this->profiler->toArray() : null;
+        $profiler = $debug && $this->profiler ? $this->profiler->toArray() : null;
+        $dispatcher = $debug ? $this->dispatcher->toArray() : null;
+        $router = $debug ? $this->router->toArray() : null;
         
-        $api = $debug? [
+        $api = $debug ? [
             'php' => phpversion(),
             'phalcon' => Version::get(),
             'zemit' => $this->config->core->version,
@@ -413,39 +406,9 @@ class Rest extends \Zemit\Mvc\Controller
             'name' => $this->config->app->name,
         ] : [];
         $api['version'] = '0.1';
-    
-        $dispatcher = $debug? [
-            'namespace' => $this->dispatcher->getNamespaceName(),
-            'module' => $this->dispatcher->getModuleName(),
-            'controller' => $this->dispatcher->getControllerName(),
-            'action' => $this->dispatcher->getActionName(),
-            'params' => $this->dispatcher->getParams(),
-            'previousNamespace' => $this->dispatcher->getPreviousNamespaceName(),
-            'previousController' => $this->dispatcher->getPreviousControllerName(),
-            'previousAction' => $this->dispatcher->getPreviousActionName(),
-        ] : null;
-    
-        $mathedRoute = $this->router->getMatchedRoute();
-        $router = $debug? [
-            'namespace' => $this->router->getNamespaceName(),
-            'module' => $this->router->getModuleName(),
-            'controller' => $this->router->getControllerName(),
-            'action' => $this->router->getActionName(),
-            'params' => $this->router->getParams(),
-            'defaults' => $this->router->getDefaults(),
-            'matches' => $this->router->getMatches(),
-            'matched' => [
-                'id' => $mathedRoute->getRouteId(),
-                'name' => $mathedRoute->getName(),
-                'hostname' => $mathedRoute->getHostname(),
-                'paths' => $mathedRoute->getPaths(),
-                'pattern' => $mathedRoute->getPattern(),
-                'httpMethod' => $mathedRoute->getHttpMethods(),
-                'reversedPaths' => $mathedRoute->getReversedPaths(),
-            ],
-        ] : null;
         
         $this->response->setStatusCode($code, $code . ' ' . $status);
+        
         return $this->response->setJsonContent(array_merge([
             'api' => $api,
             'timestamp' => date('c'),
@@ -454,7 +417,7 @@ class Rest extends \Zemit\Mvc\Controller
             'code' => $code,
             'response' => $response,
             'view' => $view,
-        ], $debug? [
+        ], $debug ? [
             'identity' => $identity,
             'profiler' => $profiler,
             'request' => $request,
@@ -471,17 +434,17 @@ class Rest extends \Zemit\Mvc\Controller
     public function afterExecuteRoute(Dispatcher $dispatcher)
     {
         $response = $dispatcher->getReturnedValue();
-
+        
         // Avoid breaking default phalcon behaviour
         if ($response instanceof Response) {
             return;
         }
-
+        
         // Merge response into view variables
         if (is_array($response)) {
             $this->view->setVars($response, true);
         }
-
+        
         // Return our Rest normalized response
         $dispatcher->setReturnedValue($this->setRestResponse(is_array($response) ? null : $response));
     }

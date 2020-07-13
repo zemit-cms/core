@@ -10,16 +10,16 @@
 
 namespace Zemit\Mvc\Model;
 
-trait Utils {
+trait Utils
+{
     
-    public static function _jsonEncode(&$object, $default = array(), $options = null) {
+    public static function _jsonEncode(&$object, $default = array(), $options = null)
+    {
 
         // Encodage normal
         if (is_array($object) || is_object($object)) {
             $object = json_encode($object, $options);
-        }
-        else {
-            
+        } else {
             // field is empty, default encode
             if (empty($object)) {
                 $object = json_encode($default, $options);
@@ -36,7 +36,8 @@ trait Utils {
      * @param mixed array|object $default
      * @return mixed array|object du JSON de la variable $objects
      */
-    public static function _jsonDecode(&$objects, $default = array(), $assoc = true) {
+    public static function _jsonDecode(&$objects, $default = array(), $assoc = true)
+    {
 
         // normal decode
         if (!empty($objects) && !(is_array($objects) || is_object($objects))) {
@@ -55,7 +56,8 @@ trait Utils {
         return $objects;
     }
     
-    public static function _emptyNull(&$object, $default = null) {
+    public static function _emptyNull(&$object, $default = null)
+    {
         if (empty($object)) {
             $object = $default;
         }

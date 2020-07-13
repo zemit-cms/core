@@ -10,7 +10,6 @@
 
 namespace Zemit\Models;
 
-
 use Zemit\Mvc\Model;
 
 class Group extends Model

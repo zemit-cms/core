@@ -36,7 +36,7 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(\Phalcon\Di\DiInterface $di): void
     {
-        $di->setShared($this->getName(), function() use ($di) {
+        $di->setShared($this->getName(), function () use ($di) {
             $config = $di->get('config');
             $security = new Security();
             

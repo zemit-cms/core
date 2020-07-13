@@ -30,7 +30,7 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(DiInterface $container)
     {
-        $container->setShared($this->getName(), function() {
+        $container->setShared($this->getName(), function () {
             $em = new Manager();
             $em->enablePriorities(true);
             return $em;

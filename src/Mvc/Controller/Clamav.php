@@ -19,7 +19,8 @@ use Xenolope\Quahog\Client;
  */
 trait Clamav
 {
-    public function getAction($id = null) {
+    public function getAction($id = null)
+    {
         $this->clamav->startSession();
         $this->view->ping = $this->clamav->ping();
         $this->view->version = $this->clamav->version();
@@ -27,11 +28,13 @@ trait Clamav
         $this->clamav->endSession();
     }
     
-    public function reloadAction() {
+    public function reloadAction()
+    {
         $this->view->reload = $this->clamav->reload();
     }
     
-    public function shutdownAction() {
+    public function shutdownAction()
+    {
         $this->getAction();
         $this->view->shutdown = $this->clamav->shutdown();
     }

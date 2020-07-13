@@ -19,7 +19,8 @@ use Phalcon\Application\AbstractApplication;
  * Class Modules
  * @package Zemit\Bootstrap
  */
-class Modules {
+class Modules
+{
     
     public $modulesDir;
     
@@ -32,5 +33,4 @@ class Modules {
         $application->registerModules($config->modules->toArray());
         $application->setDefaultModule($config->router->defaults->module);
     }
-    
 }

@@ -61,7 +61,6 @@ class Security extends \Phalcon\Security
         
         $permissions ??= $this->permissions->roles->toArray() ?? [];
         foreach ($permissions as $role => $rolePermission) {
-            
             $role = $role === '*' ? 'everyone' : $role;
             $aclRole = new Role($role);
             
@@ -72,7 +71,6 @@ class Security extends \Phalcon\Security
             $components = $rolePermission[$componentName] ?? [];
             $components = is_array($components) ? $components : [$components];
             foreach ($components as $component => $accessList) {
-                
                 if (empty($component)) {
                     $component = $accessList;
                     $accessList = '*';
@@ -83,7 +81,6 @@ class Security extends \Phalcon\Security
                     $acl->addComponent($aclComponent, $accessList);
                     $acl->allow($aclRole, $aclComponent, $accessList);
                 }
-                
             }
         }
         

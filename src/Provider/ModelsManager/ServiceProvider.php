@@ -33,7 +33,7 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(\Phalcon\Di\DiInterface $di): void
     {
-        $di->setShared($this->getName(), function() use ($di) {
+        $di->setShared($this->getName(), function () use ($di) {
             $modelsManager = new Manager();
             $modelsManager->setEventsManager($di->get('eventsManager'));
             

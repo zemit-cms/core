@@ -43,7 +43,7 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(\Phalcon\Di\DiInterface $di): void
     {
-        $di->setShared($this->getName(), function() use ($di) {
+        $di->setShared($this->getName(), function () use ($di) {
             $config = $di->get('config')->cookies;
             $cookies = new Cookies(
                 $config->useEncryption ?? self::DEFAULT_USE_ENCRYPTION,

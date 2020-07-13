@@ -18,7 +18,7 @@ use Zemit\Modules\Backend\Controller;
  */
 abstract class AbstractController extends Controller
 {
-    public function initialize() {
-    
+    public function initialize()
+    {
     }
 }

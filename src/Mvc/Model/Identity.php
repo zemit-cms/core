@@ -53,10 +53,9 @@ trait Identity
      */
     public function getCurrentUserIdCallback($as = false)
     {
-        return function() use ($as) {
+        return function () use ($as) {
             
             return $this->getCurrentUserId($as);
-            
         };
     }
 }

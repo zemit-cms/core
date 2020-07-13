@@ -54,7 +54,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         $logLevels = $this->logLevels;
         
-        $di->setShared($this->getName(), function($filename = null, $format = null) use ($logLevels, $di) {
+        $di->setShared($this->getName(), function ($filename = null, $format = null) use ($logLevels, $di) {
             $config = $di->get('config')->logger;
             
             // Setting up the log level

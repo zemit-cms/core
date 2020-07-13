@@ -57,7 +57,8 @@ class TestController extends AbstractController
         ],
     ];
     
-    public function indexAction() {
+    public function indexAction()
+    {
         foreach ($this->testUrls as $url => $array) {
             $result = $this->url->get($array);
             if ($result !== $url) {

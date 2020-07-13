@@ -10,7 +10,7 @@
 
 namespace Zemit\Provider\Captcha\Adapters;
 
-use Phalcon\Di\Injectable;
+use Zemit\Di\Injectable;
 use Phalcon\Config;
 use ReCaptcha\ReCaptcha as GoogleCaptcha;
 use Zemit\Tag;

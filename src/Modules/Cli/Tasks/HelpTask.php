@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
+
 namespace Zemit\Modules\Cli\Tasks;
 
 use Zemit\Modules\Cli\Task;
@@ -25,16 +26,23 @@ Usage:
   php zemit cli <task> [<action>] [<params> ...]
 
 Options:
-  task: build,cron
+  task: build,cron,cache
 
 
 DOC;
     
-    public function buildAction() {
+    public function buildAction()
+    {
         $this->dispatcher->forward(['task' => 'build', 'action' => 'help']);
     }
     
-    public function CronAction() {
+    public function cronAction()
+    {
         $this->dispatcher->forward(['task' => 'cron', 'action' => 'help']);
+    }
+    
+    public function cacheAction()
+    {
+        $this->dispatcher->forward(['task' => 'cache', 'action' => 'help']);
     }
 }

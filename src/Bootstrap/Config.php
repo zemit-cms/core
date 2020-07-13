@@ -16,6 +16,12 @@ use Zemit\Filters;
 use Zemit\Locale;
 use Zemit\Models\Session;
 use Zemit\Models\User;
+use Zemit\Modules\Api\Controllers\UserController;
+use Zemit\Modules\Cli\Tasks\CacheTask;
+use Zemit\Modules\Cli\Tasks\CronTask;
+use Zemit\Modules\Frontend\Controllers\ErrorController;
+use Zemit\Modules\Frontend\Controllers\IndexController;
+use Zemit\Modules\Frontend\Controllers\TestController;
 use Zemit\Providers;
 use Zemit\Utils\Env;
 use Zemit\Version;
@@ -26,9 +32,16 @@ class Config extends PhalconConfig
 {
     public function defineConst()
     {
+        // @todo remove this
+        ini_set('error_reporting', E_ALL);
+        ini_set('display_errors', 1);
+        
+        defined('VENDOR_PATH') || define('VENDOR_PATH', Env::get('ROOT_PATH', 'vendor/'));
+        defined('ROOT_PATH') || define('ROOT_PATH', Env::get('ROOT_PATH', null));
+        defined('APP_PATH') || define('APP_PATH', Env::get('APP_PATH', null));
         defined('APPLICATION_ENV') || define('APPLICATION_ENV', Env::get('APPLICATION_ENV', 'development'));
         defined('CORE_PATH') || define('CORE_PATH', Env::get('CORE_PATH', mb_substr(__DIR__, 0, mb_strlen(basename(__DIR__)) * -1)));
-        defined('PRIVATE_PATH') || define('PRIVATE_PATH', Env::get('APP_PRIVATE_PATH', APP_PATH . '/private/'));
+        defined('PRIVATE_PATH') || define('PRIVATE_PATH', Env::get('APP_PRIVATE_PATH', constant('APP_PATH') . '/private/'));
     }
     
     public function __construct($config = [])
@@ -269,22 +282,50 @@ class Config extends PhalconConfig
                     'namespace' => Env::get('ROUTER_DEFAULT_NAMESPACE', 'Zemit\\Modules\\Frontend\\Controllers'),
                     'module' => Env::get('ROUTER_DEFAULT_MODULE', 'frontend'),
                     'controller' => Env::get('ROUTER_DEFAULT_CONTROLLER', 'index'),
+                    'task' => Env::get('ROUTER_DEFAULT_CONTROLLER', 'index'),
                     'action' => Env::get('ROUTER_DEFAULT_ACTION', 'index'),
                 ],
                 'notFound' => [
+                    'namespace' => Env::get('ROUTER_NOTFOUND_NAMESPACE', null),
                     'module' => Env::get('ROUTER_NOTFOUND_MODULE', null),
                     'controller' => Env::get('ROUTER_NOTFOUND_CONTROLLER', 'error'),
+                    'task' => Env::get('ROUTER_NOTFOUND_CONTROLLER', 'error'),
                     'action' => Env::get('ROUTER_NOTFOUND_ACTION', 'notFound'),
                 ],
-                'error' => [
-                    'module' => Env::get('ROUTER_ERROR_MODULE', null),
-                    'controller' => Env::get('ROUTER_ERROR_CONTROLLER', 'error'),
-                    'action' => Env::get('ROUTER_ERROR_ACTION', 'fatal'),
+                'fatal' => [
+                    'namespace' => Env::get('ROUTER_FATAL_NAMESPACE', null),
+                    'module' => Env::get('ROUTER_FATAL_MODULE', null),
+                    'controller' => Env::get('ROUTER_FATAL_CONTROLLER', 'error'),
+                    'task' => Env::get('ROUTER_FATAL_CONTROLLER', 'error'),
+                    'action' => Env::get('ROUTER_FATAL_ACTION', 'fatal'),
                 ],
-                'maintenance' => [
+                'forbidden' => [
+                    'namespace' => Env::get('ROUTER_MAINTENANCE_NAMESPACE', null),
                     'module' => Env::get('ROUTER_MAINTENANCE_MODULE', null),
                     'controller' => Env::get('ROUTER_MAINTENANCE_CONTROLLER', 'error'),
+                    'task' => Env::get('ROUTER_MAINTENANCE_CONTROLLER', 'error'),
+                    'action' => Env::get('ROUTER_MAINTENANCE_ACTION', 'forbidden'),
+                ],
+                'unauthorized' => [
+                    'namespace' => Env::get('ROUTER_MAINTENANCE_NAMESPACE', null),
+                    'module' => Env::get('ROUTER_MAINTENANCE_MODULE', null),
+                    'controller' => Env::get('ROUTER_MAINTENANCE_CONTROLLER', 'error'),
+                    'task' => Env::get('ROUTER_MAINTENANCE_CONTROLLER', 'error'),
+                    'action' => Env::get('ROUTER_MAINTENANCE_ACTION', 'unauthorized'),
+                ],
+                'maintenance' => [
+                    'namespace' => Env::get('ROUTER_MAINTENANCE_NAMESPACE', null),
+                    'module' => Env::get('ROUTER_MAINTENANCE_MODULE', null),
+                    'controller' => Env::get('ROUTER_MAINTENANCE_CONTROLLER', 'error'),
+                    'task' => Env::get('ROUTER_MAINTENANCE_CONTROLLER', 'error'),
                     'action' => Env::get('ROUTER_MAINTENANCE_ACTION', 'maintenance'),
+                ],
+                'error' => [
+                    'namespace' => Env::get('ROUTER_ERROR_NAMESPACE', null),
+                    'module' => Env::get('ROUTER_ERROR_MODULE', null),
+                    'controller' => Env::get('ROUTER_ERROR_CONTROLLER', 'error'),
+                    'task' => Env::get('ROUTER_ERROR_CONTROLLER', 'error'),
+                    'action' => Env::get('ROUTER_ERROR_ACTION', 'index'),
                 ],
             ],
             
@@ -627,6 +668,24 @@ class Config extends PhalconConfig
              * Client config to passe to front-end
              */
             'client' => [],
+            
+            /**
+             * Application permissions
+             */
+            'permissions' => [
+                'roles' => [
+                    'everyone' => [
+                        'controllers' => [
+                            IndexController::class => ['*'],
+                            ErrorController::class => ['*'],
+                            TestController::class => ['*'],
+                            UserController::class => ['*'],
+                            CronTask::class => ['*'],
+                            CacheTask::class => ['*'],
+                        ]
+                    ]
+                ]
+            ],
         ]);
         if (!empty($config)) {
             $this->merge(new PhalconConfig($config));

@@ -107,26 +107,21 @@ trait Relationship
                 }
                 
                 if ($relationData instanceof ModelInterface) {
-                    
                     if ($relationData instanceof $referencedModel) {
-                        
                         $assign = $relationData;
-                    }
-                    else {
+                    } else {
                         throw new Exception('Instance of `' . get_class($relationData) . '` received on model `' . $modelClass . '` in alias `' . $alias . ', expected instance of `' . $referencedModel . '`', 400);
                     }
                 }
                 
                 // array | traversable | resultset
-                else if (is_array($relationData) || $relationData instanceof \Traversable) {
+                elseif (is_array($relationData) || $relationData instanceof \Traversable) {
                     $assign = [];
                     
                     if (empty($relationData)) {
                         $assign = $this->_getEntityFromData($relationData, $referencedFields, $referencedModel);
-                    }
-                    else {
+                    } else {
                         foreach ($relationData as $traversedKey => $traversedData) {
-                            
                             // Array of things
                             if (is_int($traversedKey)) {
                                 $entity = null;
@@ -134,7 +129,7 @@ trait Relationship
                                 // Using bool as behaviour to delete missing relationship or keep them
                                 // @TODO find a better way... :(
                                 // if [alias => [true, ...]
-                                switch($traversedData) {
+                                switch ($traversedData) {
                                     case 'false':
                                         $traversedData = false;
                                         break;
@@ -154,18 +149,15 @@ trait Relationship
                                 
                                 // if [alias => AliasModel]
                                 if ($traversedData instanceof ModelInterface) {
-                                    
                                     if ($traversedData instanceof $referencedModel) {
                                         $entity = $traversedData;
-                                    }
-                                    else {
+                                    } else {
                                         throw new Exception('Instance of `' . get_class($traversedData) . '` received on model `' . $modelClass . '` in alias `' . $alias . ', expected instance of `' . $referencedModel . '`', 400);
                                     }
                                 }
                                 
                                 // if [alias => [[id => 1], [id => 2], [id => 3], ....]]
-                                else if (is_array($traversedData) || is_object($traversedData)) {
-                                    
+                                elseif (is_array($traversedData) || is_object($traversedData)) {
                                     $entity = $this->_getEntityFromData($traversedData, $referencedFields, $referencedModel);
                                 }
                                 
@@ -176,7 +168,6 @@ trait Relationship
                             
                             // if [alias => [id => 1]]
                             else {
-                                
                                 $assign = $this->_getEntityFromData($relationData, $referencedFields, $referencedModel);
                                 break;
                             }
@@ -186,18 +177,14 @@ trait Relationship
                 
                 // we got something to assign
                 if (!empty($assign) || $this->_keepMissingRelated[$alias] === false) {
-                    
                     $this->$alias = is_array($assign) ? array_values(array_filter($assign)) : $assign;
                     
                     // if is empty fix for actual save
                     if (empty($assign)) {
                         $this->dirtyRelated[$alias] = [];
                     }
-                    
                 }
-                
             } // END RELATION
-            
         } // END DATA LOOP
         
         return $this;
@@ -257,7 +244,8 @@ trait Relationship
                      */
                     if (!($record instanceof ModelInterface)) {
                         $connection->rollback($nesting);
-                        throw new Exception('Instance of `' . get_class($record) . '` received on model `' . $className . '` in alias `' . $alias .
+                        throw new Exception(
+                            'Instance of `' . get_class($record) . '` received on model `' . $className . '` in alias `' . $alias .
                             ', expected instance of `' . ModelInterface::class . '` as part of the belongs-to relation',
                             400
                         );
@@ -355,12 +343,11 @@ trait Relationship
                      * Custom logic for many-to-many relationships
                      */
                     if ($relation->getType() === Relation::HAS_MANY_THROUGH) {
-
 //                        $nodeAssign = [];
                         
                         $originFields = $relation->getFields();
                         $originFields = is_array($originFields) ? $originFields : [$originFields];
-                        
+    
                         $intermediateModelClass = $relation->getIntermediateModel();
                         $intermediateFields = $relation->getIntermediateFields();
                         $intermediateFields = is_array($intermediateFields) ? $intermediateFields : [$intermediateFields];
@@ -385,7 +372,6 @@ trait Relationship
                         
                         $nodeIdListToKeep = [];
                         foreach ($assign as $key => $entity) {
-                            
                             // get referenced model bindings
                             $referencedBind = [];
                             foreach ($referencedFields as $referencedField) {
@@ -400,7 +386,6 @@ trait Relationship
                             ]);
                             
                             if ($nodeEntity) {
-    
                                 $buildPrimaryKey = [];
                                 foreach ($intermediatePrimaryKeyAttributes as $intermediatePrimaryKey => $intermediatePrimaryKeyAttribute) {
                                     $buildPrimaryKey [] = $nodeEntity->readAttribute($intermediatePrimaryKeyAttribute);
@@ -408,8 +393,8 @@ trait Relationship
                                 $nodeIdListToKeep []= implode('.', $buildPrimaryKey);
                                 
                                 // Restoring node entities if previously soft deleted
-                                if (method_exists($nodeEntity, 'restore')) {
-                                    if (!$nodeEntity->restore()) {
+                                if (method_exists($nodeEntity, 'restore') && method_exists($nodeEntity, 'isDeleted')) {
+                                    if ($nodeEntity->isDeleted() && !$nodeEntity->restore()) {
                                         
                                         /**
                                          * Append messages with context
@@ -451,7 +436,6 @@ trait Relationship
                         }
                         
                         if (!($this->_keepMissingRelated[$lowerCaseAlias] ?? true)) {
-                            
                             // handle if we empty the related
                             if (empty($nodeIdListToKeep)) {
                                 $nodeIdListToKeep = [0];
@@ -524,7 +508,6 @@ trait Relationship
                     
                     
                     foreach ($relatedRecords as $recordAfter) {
-                        
                         if (!$isThrough) {
                             foreach ($columns as $key => $column) {
                                 $recordAfter->writeAttribute($referencedFields[$key], $this->$column);
@@ -561,7 +544,6 @@ trait Relationship
                              *  If it already exist, it can be updated with the new referenced key.
                              */
                             if ($relation->getType() === Relation::HAS_ONE_THROUGH) {
-                                
                                 $bind = [];
                                 foreach ($columns as $column) {
                                     $bind[] = $this->$column;
@@ -615,8 +597,7 @@ trait Relationship
                             }
                         }
                     }
-                }
-                else {
+                } else {
                     if (is_array($assign)) {
                         $connection->rollback($nesting);
                         throw new Exception("There are no defined relations for the model '" . get_class($this) . "' using alias '" . $lowerCaseAlias . "'");

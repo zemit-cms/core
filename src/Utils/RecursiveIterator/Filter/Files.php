@@ -10,9 +10,11 @@
 
 namespace Zemit\Utils\RecursiveIterator\Filter;
 
-class Files extends \RecursiveFilterIterator {
+class Files extends \RecursiveFilterIterator
+{
 
-    public function accept() {
+    public function accept()
+    {
         $iterator = $this->getInnerIterator();
 
         // allow traversal

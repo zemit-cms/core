@@ -32,27 +32,28 @@ Options:
 
 DOC;
     
-    public function helpAction() {
+    public function helpAction()
+    {
         echo $this->consoleDoc;
     }
     
-    public function mainAction() {
-    
+    public function mainAction()
+    {
     }
     
-    public function hourlyAction() {
-    
+    public function hourlyAction()
+    {
     }
     
-    public function dailyAction() {
-    
+    public function dailyAction()
+    {
     }
     
-    public function weeklyAction() {
-    
+    public function weeklyAction()
+    {
     }
     
-    public function monthlyAction() {
-    
+    public function monthlyAction()
+    {
     }
 }

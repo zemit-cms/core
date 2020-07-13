@@ -20,16 +20,16 @@ use Zemit\Assets\Manager;
  */
 class Tag extends \Phalcon\Tag
 {
-    static protected $_assetsService = null;
+    protected static $_assetsService = null;
     
-    static protected $_meta = [
+    protected static $_meta = [
         [
             'name' => 'generator',
             'content' => 'Zemit'
         ]
     ];
-    static protected $_link = [];
-    static protected $_attr = [];
+    protected static $_link = [];
+    protected static $_attr = [];
     
     /**
      * @return \Zemit\Escaper
@@ -79,7 +79,7 @@ class Tag extends \Phalcon\Tag
     public static function implodeSprintf($array, $sprintf = '%s', $implode = null)
     {
         $array = array_filter($array);
-        return implode($implode, array_map(function($value, $key) use ($sprintf) {
+        return implode($implode, array_map(function ($value, $key) use ($sprintf) {
             [$value, $key] = self::escapeParam($value, $key);
             return sprintf($sprintf, $value, $key);
         }, $array, array_keys($array)));
@@ -93,11 +93,11 @@ class Tag extends \Phalcon\Tag
      *
      * @return array Return the escaped value and attribute [$value, $attr]
      */
-    public static function escapeParam($value = null, $attr = null, $glue =  ' ')
+    public static function escapeParam($value = null, $attr = null, $glue = ' ')
     {
         $escaper = self::getEscaperService();
         $attr = $escaper->escapeHtmlAttr($attr);
-        switch($attr) {
+        switch ($attr) {
             case 'css':
             case 'style':
                 $value = $escaper->escapeCss($value);
@@ -114,7 +114,6 @@ class Tag extends \Phalcon\Tag
                 // array escaper
                 
                 if (is_array($value)) {
-                    
                     if (isset($value[0]) && is_string($value[0])) {
                         foreach ($value as &$v) {
                             $v = $escaper->escapeHtmlAttr($v);
@@ -125,10 +124,9 @@ class Tag extends \Phalcon\Tag
                     else {
                         $value = $escaper->escapeJson(json_encode($value));
                     }
-                    
                 }
                 // other object escaper
-                else if (is_object($value)) {
+                elseif (is_object($value)) {
                     $value = $escaper->escapeJson(json_encode($value));
                 }
                 // default escaper
@@ -259,7 +257,7 @@ class Tag extends \Phalcon\Tag
         if (!empty($name)) {
             if (is_string($name)) {
                 $params = array_merge_recursive(self::getAttr($name), $params);
-            } else if (is_array($name)) {
+            } elseif (is_array($name)) {
                 foreach ($name as $n) {
                     $params = array_merge_recursive(self::getAttr($n), $params);
                 }
@@ -287,7 +285,7 @@ class Tag extends \Phalcon\Tag
         
         if (is_null($name)) {
             $ret = self::$_attr;
-        } else if (is_array($name)) {
+        } elseif (is_array($name)) {
             foreach ($name as $n) {
                 $ret [] = isset(self::$_attr[$n]) ? self::$_attr[$n] : null;
             }
@@ -382,7 +380,6 @@ class Tag extends \Phalcon\Tag
     
     public static function getHead()
     {
-    
     }
     
     /**

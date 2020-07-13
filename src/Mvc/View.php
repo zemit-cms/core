@@ -92,7 +92,6 @@ class View extends \Phalcon\Mvc\View
         $content = parent::getContent();
         
         if ($this->getMinify()) {
-            
             // Clean comments
             $content = preg_replace('/<!--([^\[|(<!)].*)/', null, $content);
             $content = preg_replace('/(?<!\S)\/\/\s*[^\r\n]*/', null, $content);

@@ -43,9 +43,9 @@ trait EventsAwareTrait
     /**
      * return event manager
      *
-     * @return Manager | null
+     * @return Manager|null
      */
-    public function getEventsManager() : ManagerInterface
+    public function getEventsManager() : ?ManagerInterface
     {
         if (!empty($this->eventsManager)) {
             $manager = $this->eventsManager;
@@ -55,6 +55,7 @@ trait EventsAwareTrait
         if (isset($manager) && $manager instanceof Manager) {
             return $manager;
         }
+        
         return null;
     }
     
@@ -135,31 +136,27 @@ trait EventsAwareTrait
         
         // holder not set, apply class to it
         if (!isset($holder)) {
-            
             // can be a class path
             if (class_exists($class)) {
                 $holder = new $class(...$params);
             }
             // can be a callable
-            else if (is_callable($class)) {
+            elseif (is_callable($class)) {
                 $holder = $class(...$params);
             }
             // can be the object
-            else if (is_object($class)) {
+            elseif (is_object($class)) {
                 $holder = $class;
             }
             // class not found
-            else if (is_string($class)) {
+            elseif (is_string($class)) {
                 throw new Exception('Class "' . $class . '" not found');
             }
             // other error
             else {
                 throw new Exception('Unknown type "' . $class . '" for "$class"');
             }
-        }
-        
-        else if (is_string($holder)) {
-            
+        } elseif (is_string($holder)) {
             // can be a class path
             if (class_exists($holder)) {
                 $holder = new $holder(...$params);

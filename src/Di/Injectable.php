@@ -15,6 +15,7 @@ use Zemit\Bootstrap\Config;
 use Zemit\Escaper;
 use Zemit\Filter;
 use Zemit\Identity;
+use Zemit\Mvc\Dispatcher;
 use Zemit\Tag;
 
 /**
@@ -28,6 +29,7 @@ use Zemit\Tag;
  * @property Tag $tag
  * @property Escaper $escaper
  * @property Filter $filter
+ * @property Dispatcher $dispatcher
  *
  * @package Zemit\Di
  */
