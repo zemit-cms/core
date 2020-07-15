@@ -100,6 +100,7 @@ class Model extends \Phalcon\Mvc\Model
     use \Zemit\Mvc\Model\FindIn;
     use \Zemit\Mvc\Model\SoftDelete;
     use \Zemit\Mvc\Model\Identity;
+//    use \Zemit\Mvc\Model\Events;
 
 //    use \Zemit\Mvc\Model\Utils;
     

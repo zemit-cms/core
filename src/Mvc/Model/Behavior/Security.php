@@ -15,6 +15,7 @@ use Phalcon\Messages\Message;
 use Phalcon\Mvc\Model\Behavior\Exception;
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Mvc\Model\Behavior;
+use Phalcon\Text;
 use Zemit\Models\Group;
 use Zemit\Models\Role;
 use Zemit\Models\Session;
@@ -77,12 +78,18 @@ class Security extends Behavior
         $this->security->getAcl();
         
         switch ($eventType) {
+            case 'beforeFind':
+            case 'beforeFindFirst':
+            case 'beforeCount':
+            case 'beforeSum':
+            case 'beforeAverage':
             case 'beforeCreate':
             case 'beforeUpdate':
             case 'beforeDelete':
             case 'beforeRestore':
-            case 'beforeFetch':
-                return $this->isAllowed($eventType, $model);
+            case 'beforeReorder':
+                $type = lcfirst(Text::camelize(str_replace(['before_', 'after_'], [null, null], Text::uncamelize($eventType))));
+                return $this->isAllowed($type, $model);
                 break;
         }
         

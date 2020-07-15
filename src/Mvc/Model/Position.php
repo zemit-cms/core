@@ -78,7 +78,25 @@ trait Position
     public function reorder(int $position = null, string $field = null)
     {
         $field ??= $this->_positionSettings['field'] ?? 'position';
+    
+        /**
+         * Call the beforeReorder
+         */
+        if ($this->fireEventCancel('beforeReorder') === false) {
+            return false;
+        }
+        
         $this->assign([$field => $position], [$field]);
-        return $this->save() && (!$this->hasSnapshotData() || $this->hasUpdated($field));
+        $saved = $this->save() && (!$this->hasSnapshotData() || $this->hasUpdated($field));
+    
+        /**
+         * Call the afterReorder
+         */
+        if ($saved) {
+            $this->fireEvent('afterReorder');
+        }
+        
+        
+        return $saved;
     }
 }

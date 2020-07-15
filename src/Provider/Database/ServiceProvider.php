@@ -13,6 +13,7 @@ namespace Zemit\Provider\Database;
 use Phalcon\Di\DiInterface;
 use Zemit\Db\Events\Logger;
 use Zemit\Db\Events\Profiler;
+use Zemit\Db\Events\Security;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
@@ -49,6 +50,7 @@ class ServiceProvider extends AbstractServiceProvider
             /** @var \Phalcon\Db\Adapter\Pdo $connection */
             $connection = new $adapter($config);
     
+            $eventsManager->attach('db', new Security());
             $eventsManager->attach('db', new Logger());
             $eventsManager->attach('db', new Profiler());
             

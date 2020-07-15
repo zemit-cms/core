@@ -70,18 +70,19 @@ class Security extends Injectable
             $dispatcher->forward($this->config->router->notFound->toArray());
             return false;
         }
-        
+    
         $allowed = false;
         
         $roles = $this->identity->getAclRoles();
         
         foreach ($roles as $role) {
+//            if ($role->getName() === 'admin') dd($role, $handlerClass, $action);
             $allowed = $acl->isAllowed($role, $handlerClass, $action);
             if ($allowed) {
                 break;
             }
         }
-        
+    
         $permissions = $this->config->permissions->toArray() ?? [];
         if (empty($permissions)) {
             $allowed = true;

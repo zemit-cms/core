@@ -55,8 +55,8 @@ class Env
             return dirname($_SERVER['DOCUMENT_ROOT']);
         }
         
-        if (defined('APP_PATH')) {
-            return constant('APP_PATH');
+        if (defined('ENV_PATH')) {
+            return constant('ENV_PATH');
         }
         
         return getcwd();

@@ -17,20 +17,27 @@ namespace Zemit\Mvc\Model;
  */
 trait FindIn
 {
-    
     /**
      * @param array $keys
      *
      * @return mixed
      */
-    public static function findIn(array $keys)
+    public static function findIn(array $keys = [], array $params = [])
     {
+        $class = get_called_class();
+        $that = new $class();
+        $call = __FUNCTION__;
+        
+        if ($that->fireEventCancel('before' . ucfirst($call)) === false) {
+            throw new \Exception('Not allowed to call `' . $call . '` on model `' . $class . '`');
+        }
+        
         $keys = $keys ? $keys : array(null);
         
         $intFilter = function ($id) {
             return (int) $id;
         };
-        $query = self::query();
+        $query = self::getPreparedQuery($params);
         foreach ($keys as $key => $ids) {
             $query->inWhere($key, array_map($intFilter, $ids));
         }
@@ -39,18 +46,22 @@ trait FindIn
     }
     
     /**
+     * Find In By Id List
+     *
      * @param $ids
      *
      * @return mixed
      */
-    public static function findInById($ids)
+    public static function findInById($idList, $filter = null, $field = 'id')
     {
-        $ids = $ids ? $ids : array(null);
-        $intFilter = function ($ids) {
-            return (int) $ids;
+        $idList = empty($idList)? [null] : $idList;
+        
+        $filter ??= function ($id) {
+            return (int) $id;
         };
+        
         $query = self::query();
-        $query->inWhere('id', array_map($intFilter, $ids));
+        $query->inWhere($field, array_map($filter, $idList));
         return $query->execute();
     }
     

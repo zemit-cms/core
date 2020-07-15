@@ -47,9 +47,9 @@ class ServiceProvider extends AbstractServiceProvider
             /**
              * Camelize
              */
-            $camelize = new Camelize();
-            $camelize->setDI($di);
-            $eventsManager->attach('dispatch', $camelize);
+//            $camelize = new Camelize();
+//            $camelize->setDI($di);
+//            $eventsManager->attach('dispatch', $camelize);
             
             /**
              * Security
