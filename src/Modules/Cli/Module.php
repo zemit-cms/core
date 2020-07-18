@@ -123,7 +123,7 @@ class Module implements ModuleDefinitionInterface
         // Config
         $this->config = $this->config ?? $di['config'] ?? new Config();
         $this->config->app->module = mb_strtolower($this->name);
-        $this->config->app->dir->module = $this->config->app->dir->modules . strtolower($this->name) . '/';
+        $this->config->app->dir->module = $this->config->app->dir->modules . $this->name . '/';
         $this->loader = $this->loader ?? $di['loader'] ?? new Loader();
         $this->router = $this->router ?? $di['router'] ?? new Router();
         $this->dispatcher = $this->dispatcher ?? $di['dispatcher'] ?? new Dispatcher();

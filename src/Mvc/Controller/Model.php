@@ -188,13 +188,16 @@ trait Model
         
         foreach ($searchList as $searchTerm) {
             $orConditions = [];
-            // @todo figure out why I can't use the same binding multiple time...
-            // temp fix, generating new binding for each condition
-            foreach ($this->getSearchWhitelist() as $whitelist) {
-                $searchTermBinding = '_' . uniqid() . '_';
-                $orConditions []= $this->appendModelName($whitelist) . " like :$searchTermBinding:";
-                $this->setBind([$searchTermBinding => '%' . $searchTerm . '%']);
-                $this->setBindTypes([$searchTermBinding => Column::BIND_PARAM_STR]);
+            $searchWhitelist = $this->getSearchWhitelist();
+            if ($searchWhitelist) {
+                foreach ($searchWhitelist as $whitelist) {
+                    // @todo figure out why I can't use the same binding multiple time...
+                    // temp fix, generating new binding for each condition
+                    $searchTermBinding = '_' . uniqid() . '_';
+                    $orConditions []= $this->appendModelName($whitelist) . " like :$searchTermBinding:";
+                    $this->setBind([$searchTermBinding => '%' . $searchTerm . '%']);
+                    $this->setBindTypes([$searchTermBinding => Column::BIND_PARAM_STR]);
+                }
             }
     
             if (!empty($orConditions)) {
@@ -756,19 +759,28 @@ trait Model
         $ret = [];
         
         foreach ($list as $single) {
+            
             if ($single) {
+                
                 /** @var Messages $validations */
                 $messages = $single instanceof Message ? $list : $single->getMessages();
+                
                 if ($messages && (is_array($messages) || $messages instanceof \Traversable)) {
+                    
                     foreach ($messages as $message) {
+                        
                         $validationFields = $message->getField();
+                        
                         if (!is_array($validationFields)) {
                             $validationFields = [$validationFields];
                         }
+                        
                         foreach ($validationFields as $validationField) {
+                            
                             if (empty($ret[$validationField])) {
                                 $ret[$validationField] = [];
                             }
+                            
                             $ret[$validationField][] = [
                                 'field' => $message->getField(),
                                 'code' => $message->getCode(),

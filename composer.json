@@ -101,5 +101,14 @@
     "psr-4": {
       "Zemit\\Test\\": "tests/unit"
     }
-  }
+  },
+  "bin": [
+    "bin/migration-data-export.sh",
+    "bin/migration-generate.sh",
+    "bin/migration-list.sh",
+    "bin/migration-run.sh",
+    "bin/regenerate-all-models.sh",
+    "zemit.bat",
+    "zemit"
+  ]
 }

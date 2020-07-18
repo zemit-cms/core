@@ -11,6 +11,7 @@
 namespace Zemit\Provider\Url;
 
 use Phalcon\Di\DiInterface;
+use Phalcon\Mvc\RouterInterface;
 use Zemit\Url;
 use Zemit\Provider\AbstractServiceProvider;
 
@@ -39,7 +40,7 @@ class ServiceProvider extends AbstractServiceProvider
             $config = $di->get('config')->app;
             $router = $di->get('router');
             
-            $url = new Url($router);
+            $url = new Url($router instanceof RouterInterface? $router : null);
             $url->setStaticBaseUri($config->staticUri ?? '/');
             $url->setBaseUri($config->uri ?? '/');
             

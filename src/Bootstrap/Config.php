@@ -130,6 +130,7 @@ class Config extends PhalconConfig
                     'log' => Env::get('APP_LOG_PATH', PRIVATE_PATH . '/log/'),
                     'files' => Env::get('APP_FILE_PATH', PRIVATE_PATH . '/files/'),
                     'trash' => Env::get('APP_TRASH_PATH', PRIVATE_PATH . '/trash/'),
+                    'tmp' => Env::get('APP_TMP_PATH', PRIVATE_PATH . '/tmp/'),
                     'migrations' => Env::get('APP_MIGRATION_PATH', PRIVATE_PATH . '/migrations/'),
                 ],
             ],
@@ -217,6 +218,7 @@ class Config extends PhalconConfig
                 Provider\Oauth2Google\ServiceProvider::class => Provider\Oauth2Google\ServiceProvider::class,
                 
                 // lib
+                Provider\Ocr\ServiceProvider::class => Provider\Ocr\ServiceProvider::class,
                 Provider\Jwt\ServiceProvider::class => Provider\Jwt\ServiceProvider::class,
                 Provider\V8js\ServiceProvider::class => Provider\V8js\ServiceProvider::class,
                 Provider\Captcha\ServiceProvider::class => Provider\Captcha\ServiceProvider::class,

@@ -13,6 +13,7 @@ namespace Zemit\Mvc;
 use Phalcon\Di\DiInterface;
 use Phalcon\Loader;
 use Phalcon\Mvc\Dispatcher;
+use Phalcon\Mvc\RouterInterface;
 use Phalcon\Mvc\Url;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\ModuleDefinitionInterface;
@@ -116,19 +117,23 @@ class Module implements ModuleDefinitionInterface
         // url settings
         $this->url->setBasePath('/' . $this->name . '/');
         $this->url->setStaticBaseUri('/' . $this->name . '/');
-        
-        // router settings
-        $this->router->removeExtraSlashes(true);
+    
         $this->router->setDefaults([
             'namespace' => $this->dispatcher->getDefaultNamespace(),
             'module' => $this->name,
             'controller' => 'index',
             'action' => 'index'
         ]);
-        $this->router->notFound([
-            'controller' => 'error',
-            'action' => 'notFound'
-        ]);
+        
+        // router settings
+        if ($this->router instanceof RouterInterface) {
+            $this->router->notFound([
+                'controller' => 'error',
+                'action' => 'notFound'
+            ]);
+            
+            $this->router->removeExtraSlashes(true);
+        }
         
         // save services
         $this->setServices($di);
@@ -153,7 +158,7 @@ class Module implements ModuleDefinitionInterface
         // Config
         $this->config = $this->config ?? $di['config'] ?? new Config();
         $this->config->app->module = mb_strtolower($this->name);
-        $this->config->app->dir->module = $this->config->app->dir->modules . strtolower($this->name) . '/';
+        $this->config->app->dir->module = $this->config->app->dir->modules . $this->name . '/';
         $this->loader = $this->loader ?? $di['loader'] ?? new Loader();
         $this->router = $this->router ?? $di['router'] ?? new Router();
         $this->dispatcher = $this->dispatcher ?? $di['dispatcher'] ?? new Dispatcher();
