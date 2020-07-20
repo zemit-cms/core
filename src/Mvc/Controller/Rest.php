@@ -135,17 +135,37 @@ class Rest extends \Zemit\Mvc\Controller
     public function exportAction()
     {
         $response = $this->getAllAction();
-        $list = $this->view->list ?? null;
+        $params = $this->view->getParamsToView();
+        $list = $params['list'] ?? null;
         if (isset($list[0])) {
             $csv = Writer::createFromFileObject(new \SplTempFileObject());
             $csv->setOutputBOM(Writer::BOM_UTF8);
             $csv->insertOne(array_keys($list[0]));
+            $this->flatternArrayForCsv($list);
             $csv->insertAll($list);
             $csv->output(ucfirst(Slug::generate(basename(str_replace('\\', '/', $this->getModelName())))) . ' List (' . date('Y-m-d') . ').csv');
             die;
         }
         
         return $response;
+    }
+    
+    /**
+     * @param array|null $array
+     *
+     * @return array|null
+     */
+    public function flatternArrayForCsv(?array &$list = null) {
+        
+        foreach ($list as $listKey => $listValue) {
+            foreach ($listValue as $column => $value) {
+                if (is_array($value) || is_object($value)) {
+                    $list[$listKey][$column] = json_encode($value);
+                }
+            }
+        }
+        
+        return $list;
     }
     
     /**

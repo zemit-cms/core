@@ -677,7 +677,7 @@ trait Relationship
              * Set the related model
              */
             $message->setMetaData([
-                'model' => $record,
+//                'model' => $record,
                 'context' => $this->rebuildMessageContext($message, $context),
             ]);
             

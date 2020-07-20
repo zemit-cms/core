@@ -39,6 +39,16 @@ class Url extends \Phalcon\Url
      */
     public static function getAbsolutePath(string $path) : string
     {
+        if (strpos($path, 'https://') === 0) {
+            return $path;
+        }
+        if (strpos($path, 'http://') === 0) {
+            return $path;
+        }
+        if (strpos($path, '//') === 0) {
+            return $path;
+        }
+        
         $path = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
         $parts = array_filter(explode(DIRECTORY_SEPARATOR, $path), 'mb_strlen');
         $absolutes = array();
