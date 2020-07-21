@@ -468,11 +468,11 @@ trait Model
         
         if (is_string($field)) {
             // Add the current model name by default
+            $explode = explode(' ', $field);
             if (!str_contains($field, '.')) {
-                $explode = explode(' ', $field);
                 $field = trim('[' . $modelName . '].[' . array_shift($explode) . '] ' . implode(' ', $explode));
             } elseif (!str_contains($field, ']') && !str_contains($field, '[')) {
-                $field = '[' . implode('].[', explode('.', $field)) . ']';
+                $field = trim('[' . implode('].[', explode('.', array_shift($explode))) . ']' . implode(' ', $explode));
             }
         } elseif (is_array($field)) {
             foreach ($field as $fieldKey => $fieldValue) {
