@@ -97,8 +97,13 @@ trait Relationship
             
             // @todo add a resursive whitelist check & columnMap support
             if ($relation) {
+                
+                $fields = $relation->getFields();
+                $fields = is_array($fields) ? $fields : [$fields];
+                
                 $referencedFields = $relation->getReferencedFields();
                 $referencedFields = is_array($referencedFields) ? $referencedFields : [$referencedFields];
+                
                 $referencedModel = $relation->getReferencedModel();
                 $assign = null;
                 
@@ -117,6 +122,10 @@ trait Relationship
                 // array | traversable | resultset
                 elseif (is_array($relationData) || $relationData instanceof \Traversable) {
                     $assign = [];
+    
+                    foreach ($fields as $key => $field) {
+                        $relationData [$referencedFields[$key]]= $this->readAttribute($field);
+                    }
                     
                     if (empty($relationData)) {
                         $assign = $this->_getEntityFromData($relationData, $referencedFields, $referencedModel);
@@ -635,7 +644,7 @@ trait Relationship
         
         // all keys were found
         if (count($dataKeys) === count($fields)) {
-            
+    
             /** @var ModelInterface $entity */
             /** @var ModelInterface|string $modelClass */
             $entity = $modelClass::findFirst([

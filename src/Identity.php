@@ -286,6 +286,10 @@ class Identity extends Injectable
      */
     public function has($needles = null, array $haystack = [], $or = false)
     {
+        if (!is_array($needles)) {
+            $needles = [$needles];
+        }
+        
         $result = [];
         foreach ([...$needles] as $needle) {
             if (is_array($needle)) {
