@@ -37,14 +37,14 @@ class ServiceProvider extends AbstractServiceProvider
             $config = $di->get('config')->annotations;
             
             $driver = $config->drivers->{$config->default};
-            $adapter = '\Phalcon\Annotations\Extended\Adapter\\' . $driver->adapter;
+            $className = $driver->adapter;
             
             $default = [
                 'lifetime' => $config->lifetime,
                 'prefix' => $config->prefix,
             ];
             
-            return new $adapter(array_merge($driver->toArray(), $default));
+            return new $className(array_merge($driver->toArray(), $default));
         });
     }
 }

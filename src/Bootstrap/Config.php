@@ -112,7 +112,7 @@ class Config extends PhalconConfig
                 
                 'dir' => [
                     // project
-                    'root' => Env::get('APP_ROOT_PATH', defined('ROOT_PATH') ? ROOT_PATH : getcwd()),
+                    'root' => Env::get('APP_ROOT_PATH', defined('ROOT_PATH') ? ROOT_PATH ?: getcwd() : getcwd()),
                     'vendor' => Env::get('APP_VENDOR_PATH', VENDOR_PATH),
                     'app' => Env::get('APP_PATH', APP_PATH . '/'),
                     'public' => Env::get('APP_PUBLIC_PATH', getcwd()),
@@ -199,7 +199,6 @@ class Config extends PhalconConfig
                 Provider\ModelsManager\ServiceProvider::class => Provider\ModelsManager\ServiceProvider::class,
                 Provider\ModelsMetadata\ServiceProvider::class => Provider\ModelsMetadata\ServiceProvider::class,
                 Provider\ModelsCache\ServiceProvider::class => Provider\ModelsCache\ServiceProvider::class,
-                Provider\ViewCache\ServiceProvider::class => Provider\ViewCache\ServiceProvider::class,
                 Provider\Mailer\ServiceProvider::class => Provider\Mailer\ServiceProvider::class,
                 Provider\Logger\ServiceProvider::class => Provider\Logger\ServiceProvider::class,
                 Provider\FileSystem\ServiceProvider::class => Provider\FileSystem\ServiceProvider::class,
@@ -231,11 +230,24 @@ class Config extends PhalconConfig
              * Logger Configuration
              */
             'logger' => [
-                'path' => Env::get('APP_LOGGER_PATH', PRIVATE_PATH . '/log/'),
-                'format' => Env::get('APP_LOGGER_FORMAT', '[%date%][%type%] %message%'),
-                'date' => 'Y-m-d H:i:s',
-                'level' => Env::get('APP_LOGGER_LEVEL', 'info'),
-                'filename' => Env::get('APP_LOGGER_DEFAULT_FILENAME', 'application'),
+                'driver' => explode(',', Env::get('APP_LOGGER_PATH', 'noop')),
+                'drivers' => [
+                    'noop' => [
+                        'adapter' => \Phalcon\Logger\Adapter\Noop::class,
+                    ],
+                    'stream' => [
+                        'adapter' => \Phalcon\Logger\Adapter\Stream::class,
+                    ],
+                    'syslog' => [
+                        'adapter' => \Phalcon\Logger\Adapter\Syslog::class,
+                    ],
+                ],
+                'default' => [
+                    'path' => Env::get('APP_LOGGER_PATH', PRIVATE_PATH . '/log/'),
+                    'format' => Env::get('APP_LOGGER_FORMAT', '[%date%][%type%] %message%'),
+                    'date' => Env::get('APP_LOGGER_DATE', 'Y-m-d H:i:s'),
+                    'filename' => Env::get('APP_LOGGER_DEFAULT_FILENAME', 'application'),
+                ],
             ],
             
             /**
@@ -459,14 +471,17 @@ class Config extends PhalconConfig
              * Cache drivers configs
              */
             'cache' => [
-                'driver' => Env::get('CACHE_DRIVER', 'file'),
-                'views' => Env::get('VIEW_CACHE_DRIVER', 'views'),
+                'driver' => Env::get('CACHE_DRIVER', 'memory'),
                 'drivers' => [
+                    'memory' => [
+                        'adapter' => \Phalcon\Cache\Adapter\Memory::class,
+                    ],
                     'apcu' => [
                         'adapter' => \Phalcon\Cache\Adapter\Apcu::class,
                     ],
-                    'memory' => [
-                        'adapter' => \Phalcon\Cache\Adapter\Memory::class,
+                    'file' => [
+                        'adapter' => \Phalcon\Cache\Adapter\Stream::class,
+                        'cacheDir' => PRIVATE_PATH . '/cache/data/',
                     ],
                     'memcached' => [
                         'adapter' => \Phalcon\Cache\Adapter\Libmemcached::class,
@@ -487,18 +502,11 @@ class Config extends PhalconConfig
                         'persistent' => Env::get('REDIS_PERSISTENT', null),
                         'socket' => Env::get('REDIS_PERSISTENT_SOCKET', null),
                     ],
-                    'file' => [
-                        'adapter' => 'File',
-                        'cacheDir' => PRIVATE_PATH . '/cache/data/',
-                    ],
-                    'views' => [
-                        'adapter' => 'File',
-                        'cacheDir' => PRIVATE_PATH . '/cache/views/',
-                    ],
                 ],
                 'default' => [
                     'prefix' => Env::get('CACHE_PREFIX', 'zemit_cache_'),
                     'lifetime' => Env::get('CACHE_LIFETIME', 86400),
+                    'defaultSerializer' => Env::get('CACHE_DEFAULT_SERIALIZER', 'Php'),
                 ],
             ],
             
@@ -549,19 +557,47 @@ class Config extends PhalconConfig
             
             /**
              * Annotations Configuration
+             * - Memory
+             * - Apcu
+             * - Stream
+             * - Memcached
+             * - Redis
+             * - Aerospike
              */
             'annotations' => [
                 'default' => Env::get('ANNOTATIONS_DRIVER', 'memory'),
                 'drivers' => [
-                    'apc' => [
-                        'adapter' => 'Apc',
+                    'memory' => [
+                        'adapter' => \Phalcon\Annotations\Adapter\Memory::class,
+                    ],
+                    'apcu' => [
+                        'adapter' => \Phalcon\Annotations\Adapter\Apcu::class,
                     ],
                     'file' => [
-                        'adapter' => 'Files',
+                        'adapter' => \Phalcon\Annotations\Adapter\Stream::class,
                         'annotationsDir' => PRIVATE_PATH . '/cache/annotations',
                     ],
-                    'memory' => [
-                        'adapter' => 'Memory',
+                    'memcached' => [
+                        'adapter' => \Phalcon\Annotations\Adapter\Memcached::class,
+                        'servers' => [
+                            [
+                                'host' => Env::get('MEMCACHED_HOST', '127.0.0.1'),
+                                'port' => Env::get('MEMCACHED_PORT', 11211),
+                                'weight' => Env::get('MEMCACHED_WEIGHT', 100),
+                            ],
+                        ],
+                    ],
+                    'redis' => [
+                        'adapter' => \Phalcon\Annotations\Adapter\Redis::class,
+                        'host' => Env::get('REDIS_HOST', '127.0.0.1'),
+                        'port' => Env::get('REDIS_PORT', 6379),
+                        'index' => Env::get('REDIS_INDEX', 0),
+                        'auth' => Env::get('REDIS_AUTH', null),
+                        'persistent' => Env::get('REDIS_PERSISTENT', null),
+                        'socket' => Env::get('REDIS_PERSISTENT_SOCKET', null),
+                    ],
+                    'aerospike' => [
+                        'adapter' => \Phalcon\Annotations\Adapter\Aerospike::class,
                     ],
                 ],
                 'prefix' => Env::get('ANNOTATIONS_PREFIX', 'zemit_annotations_'),

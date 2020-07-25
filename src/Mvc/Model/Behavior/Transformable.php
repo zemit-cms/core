@@ -43,7 +43,9 @@ class Transformable extends Behavior
         }
         
         foreach ($options as $field => $value) {
-            $model->assign([$field => is_callable($value)? $value($model, $field) : $value]);
+            $value = is_callable($value)? $value($model, $field) : $value;
+            $model->writeAttribute($field, $value);
+//            $model->assign([$field => $value]);
         }
     }
 }

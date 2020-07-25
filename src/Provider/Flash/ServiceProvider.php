@@ -27,7 +27,7 @@ class ServiceProvider extends AbstractServiceProvider
      */
     protected $serviceName = 'flash';
     
-    protected $bannerStyle = [
+    protected $cssStyle = [
         'error' => 'alert alert-danger fade in',
         'success' => 'alert alert-success fade in',
         'notice' => 'alert alert-info fade in',
@@ -43,26 +43,27 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(\Phalcon\Di\DiInterface $di): void
     {
-        $bannerStyle = $this->bannerStyle;
+        $cssStyle = $this->cssStyle;
         
-        $di->setShared($this->getName(), function () use ($bannerStyle, $di) {
-            $flash = new Direct($bannerStyle);
-            
+        $di->setShared($this->getName(), function () use ($di, $cssStyle) {
+            $flash = new Direct();
+    
             $flash->setAutoescape(true);
             $flash->setDI($di);
-            $flash->setCssClasses($bannerStyle);
+            $flash->setCssClasses($cssStyle);
             
             return $flash;
         });
         
-        $di->setShared('flashSession', function () use ($bannerStyle, $di) {
-            $flash = new Session($bannerStyle);
-            
-            $flash->setAutoescape(true);
-            $flash->setDI($di);
-            $flash->setCssClasses($bannerStyle);
-            
-            return $flash;
-        });
+        // @todo flash session in its own service provider
+//        $di->setShared($this->getName() . 'Session', function () use ($di, $cssStyle) {
+//            $flash = new Session();
+//
+//            $flash->setAutoescape(true);
+//            $flash->setDI($di);
+//            $flash->setCssClasses($cssStyle);
+//
+//            return $flash;
+//        });
     }
 }

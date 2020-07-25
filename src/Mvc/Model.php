@@ -16,6 +16,7 @@ use Phalcon\Mvc\Model\Behavior\Timestampable;
 
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Security;
+use Phalcon\Text;
 use Zemit\Identity;
 use Zemit\Models\Audit;
 use Zemit\Models\AuditDetail;
@@ -100,6 +101,7 @@ class Model extends \Phalcon\Mvc\Model
     use \Zemit\Mvc\Model\FindIn;
     use \Zemit\Mvc\Model\SoftDelete;
     use \Zemit\Mvc\Model\Identity;
+
 //    use \Zemit\Mvc\Model\Events;
 
 //    use \Zemit\Mvc\Model\Utils;
@@ -115,17 +117,17 @@ class Model extends \Phalcon\Mvc\Model
         // Security
         $this->addSecurityBehavior();
         
-        // Create / Update / Delete / Restore
-        $this->addCreatedBehavior();
-        $this->addUpdatedBehavior();
-        $this->addDeletedBehavior();
-        $this->addRestoredBehavior();
-        
         // Other Behaviors
         $this->addSlugBehavior();
         $this->addSoftDeleteBehavior();
         $this->addPositionBehavior();
         $this->addBlameableBehavior();
+        
+        // Create / Update / Delete / Restore
+        $this->addCreatedBehavior();
+        $this->addUpdatedBehavior();
+        $this->addDeletedBehavior();
+        $this->addRestoredBehavior();
     }
     
     /**
@@ -214,7 +216,7 @@ class Model extends \Phalcon\Mvc\Model
                 }),
                 'updatedAt' => $this->hasChangedCallback(function() {
                     return date(self::DATETIME_FORMAT);
-                }),
+                })
             ],
         ]));
     }
@@ -245,7 +247,12 @@ class Model extends \Phalcon\Mvc\Model
                     return ($model->isDeleted())
                         ? date(self::DATETIME_FORMAT)
                         : $model->readAttribute($field);
-                }),
+                })
+//                'deletedAt' => function(ModelInterface $model, string $field) {
+//                    return (($model->isDeleted()) && (!$model->hasSnapshotData() || ($model->hasChanged($field) || $model->hasUpdated($field))))
+//                        ? date(self::DATETIME_FORMAT)
+//                        : $model->readAttribute($field);
+//                },
             ],
         ]));
     }
@@ -271,16 +278,10 @@ class Model extends \Phalcon\Mvc\Model
     {
         $this->addBehavior(new Transformable([
             'beforeValidation' => [
-                'index' => function($model) {
-                    if (property_exists($model, 'index')) {
-                        $value = $model->getIndex();
-                        if (empty($value)) {
-                            $value = $model->getLabel() ?? $model->toJson() ?? json_encode($model->toArray() ?? $model);
-                        }
-                        
-                        return \Zemit\Utils\Slug::generate($value);
-                    }
-                },
+                'index' => function($model, $field) {
+                    $value = $model->readAttribute($field);
+                    return \Zemit\Utils\Slug::generate($value);
+                }
             ],
         ]));
     }
@@ -325,10 +326,10 @@ class Model extends \Phalcon\Mvc\Model
      *
      * @return \Closure
      */
-    public function hasChangedCallback($callback)
+    public function hasChangedCallback($callback, $anyField = true)
     {
-        return function(ModelInterface $model, $field) use ($callback) {
-            return ($model->hasSnapshotData() && $model->hasChanged($field)) ?
+        return function(ModelInterface $model, $field) use ($callback, $anyField) {
+            return (!$model->hasSnapshotData() || $model->hasChanged($anyField? null : $field) || $model->hasUpdated($anyField? null : $field)) ?
                 $callback($model, $field) :
                 $model->readAttribute($field);
         };
@@ -390,5 +391,37 @@ class Model extends \Phalcon\Mvc\Model
     public function hasDirtyRelated()
     {
         return count($this->dirtyRelated) ? true : false;
+    }
+    
+    /**
+     * Method to get attribute from getters or the raw property, or the read attribute
+     *
+     * @param string $attribute
+     *
+     * @return mixed|null
+     */
+    public function getAttribute(string $attribute) {
+        if ($this->getModelsMetaData()->hasAttribute($this, $attribute)) {
+            $method = 'get' . ucfirst(Text::camelize($attribute));
+            if (method_exists($this, $method)) {
+                return $this->$method();
+            }
+            
+            if (property_exists($this, $attribute)) {
+                return $this->$attribute;
+            }
+            
+            return $this->readAttribute($attribute);
+        }
+        
+        return null;
+    }
+    
+    public function jsonEncode($data, int $options = JSON_UNESCAPED_SLASHES, int $depth = 14) {
+        return json_encode($data, JSON_UNESCAPED_SLASHES, 14) ?: $data;
+    }
+    
+    public function jsonDecode($data) {
+        return json_decode($data, true, 14) ?: $data;
     }
 }

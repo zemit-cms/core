@@ -11,7 +11,6 @@
 namespace Zemit\Provider\Markdown;
 
 use Zemit\Provider\AbstractServiceProvider;
-use Zemit\Markdown\Markdown;
 
 /**
  * Zemit\Provider\Markdown\ServiceProvider
@@ -33,11 +32,8 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(\Phalcon\Di\DiInterface $di) : void
     {
-        $di->setShared(
-            $this->getName(),
-            function () use ($di) {
-                return new Markdown();
-            }
-        );
+        $di->setShared($this->getName(), function () use ($di) {
+            return true; // @todo
+        });
     }
 }

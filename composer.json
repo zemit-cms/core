@@ -64,7 +64,8 @@
     "erusev/parsedown": "^1.6",
     "xenolope/quahog": "^2.1",
     "ext-json": "*",
-    "phalcon/devtools": "dev-master"
+    "phalcon/devtools": "dev-master",
+    "league/flysystem": "2.x-dev"
   },
   "require-dev": {
     "phpv8/v8js-stubs": "^1.4.1",

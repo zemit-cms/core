@@ -14,6 +14,7 @@ use Phalcon\Di\DiInterface;
 use Phalcon\Logger;
 use Phalcon\Logger\Adapter\Noop;
 use Phalcon\Logger\Formatter\Line;
+use Phalcon\Logger\Formatter\Json;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
@@ -23,7 +24,7 @@ use Zemit\Provider\AbstractServiceProvider;
  */
 class ServiceProvider extends AbstractServiceProvider
 {
-    const DEFAULT_LEVEL = 'debug';
+    const DEFAULT_LOG_LEVEL = Logger::DEBUG;
     const DEFAULT_FORMAT = '[%date%][%type%] %message%';
     const DEFAULT_DATE = 'Y-m-d H:i:s';
     
@@ -33,18 +34,6 @@ class ServiceProvider extends AbstractServiceProvider
      */
     protected $serviceName = 'logger';
     
-    protected $logLevels = [
-        'emergency' => Logger::EMERGENCY,
-        'critical' => Logger::CRITICAL,
-        'alert' => Logger::ALERT,
-        'error' => Logger::ERROR,
-        'warning' => Logger::WARNING,
-        'notice' => Logger::NOTICE,
-        'info' => Logger::INFO,
-        'debug' => Logger::DEBUG,
-        'custom' => Logger::CUSTOM,
-    ];
-    
     /**
      * {@inheritdoc}
      *
@@ -52,51 +41,50 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(DiInterface $di): void
     {
-        $logLevels = $this->logLevels;
-        
-        $di->setShared($this->getName(), function ($filename = null, $format = null) use ($logLevels, $di) {
+        $di->setShared($this->getName(), function () use ($di) {
             $config = $di->get('config')->logger;
+            $drivers = $config->driver;
             
-            // Setting up the log level
-            if (empty($config->level)) {
-                $level = self::DEFAULT_LEVEL;
-            } else {
-                $level = strtolower($config->level);
+            // Can be a string or an array
+            if (!is_array($drivers)) {
+                $drivers = [$drivers];
             }
             
-            if (!array_key_exists($level, $logLevels)) {
-                $level = Logger::DEBUG;
-            } else {
-                $level = $logLevels[$level];
-            }
-            
-            // Setting up date format
-            if (empty($config->date)) {
-                $date = self::DEFAULT_DATE;
-            } else {
-                $date = $config->date;
-            }
-            
-            // Format setting up
-            if (empty($format)) {
-                if (!isset($config->format)) {
-                    $format = self::DEFAULT_FORMAT;
-                } else {
-                    $format = $config->format;
+            $adapters = [];
+            foreach ($config->driver as $driver) {
+                $options = $config->drivers->$driver;
+                $adapter = $options->adapter;
+                $name = $options->name;
+                
+                // driver
+                $adapters[$driver] = new $adapter($name, $options);
+                
+                // json
+                if ($config->default->formatter === 'json') {
+    
+                    // json formatter
+                    $formatter = new Json();
+                    $formatter->setDateFormat($options['date'] ? : self::DEFAULT_DATE);
                 }
+                
+                // defualt formatter
+                else {
+                    
+                    // line formatter
+                    $formatter = new Line();
+                    $formatter->setFormat($options['format'] ?: self::DEFAULT_FORMAT);
+                    $formatter->setDateFormat($options['date'] ?: self::DEFAULT_DATE);
+                }
+                
+                // set formatter
+                $adapters[$driver]->setFormatter($formatter);
             }
             
-            // Setting up the filename
-            $filename = trim($filename ? : $config->filename, '\\/');
+            // logger
+            $logger = new Logger('logger', $adapters);
             
-            if (!strpos($filename, '.log')) {
-                $filename = rtrim($filename, '.') . '.log';
-            }
-            
-            $logger = new Noop(rtrim($config->path, '\\/') . DIRECTORY_SEPARATOR . $filename);
-            
-            $logger->setFormatter(new Line($format, $date));
-            $logger->setLogLevel($level);
+            // default log level
+            $logger->setLogLevel($config->default->logLevel ?? self::DEFAULT_LOG_LEVEL);
             
             return $logger;
         });

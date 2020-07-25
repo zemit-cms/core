@@ -14,6 +14,7 @@ use Phalcon\Di\DiInterface;
 use Phalcon\Mvc\View\Engine\Volt;
 use Phalcon\Mvc\ViewBaseInterface;
 use Zemit\Provider\AbstractServiceProvider;
+use Zemit\Utils\Env;
 
 /**
  * Zemit\Provider\VoltTemplate\ServiceProvider
@@ -27,39 +28,20 @@ class ServiceProvider extends AbstractServiceProvider
      * @var string
      */
     protected $serviceName = 'volt';
-
+    
     /**
      * {@inheritdoc}
      *
      * @return void
      */
-    public function register(\Phalcon\Di\DiInterface $container) : void
+    public function register(\Phalcon\Di\DiInterface $di): void
     {
-        $service = function (ViewBaseInterface $view, DiInterface $di = null) use ($container) {
-            $volt = new Volt($view, $di ?: $container);
-
-            $volt->setOptions(
-                [
-                    'compiledPath'  => function ($path) {
-                        $path     = trim(substr($path, strlen(dirname(app_path()))), '\\/');
-                        $filename = basename(str_replace(['\\', '/'], '_', $path), '.volt') . '.php';
-                        $cacheDir = cache_path('volt');
-
-                        if (!is_dir($cacheDir)) {
-                            @mkdir($cacheDir, 0755, true);
-                        }
-
-                        return $cacheDir . DIRECTORY_SEPARATOR . $filename;
-                    },
-                    'compileAlways' => environment('development') || env('APP_DEBUG', false),
-                ]
-            );
-
+        $di->setShared($this->getName(), function() use ($di) {
+            $view = $di->get('view');
+            $volt = new Volt($view, $di);
+            $volt->setOptions([]); // @todo ?
             $volt->getCompiler()->addExtension(new VoltFunctions());
-
             return $volt;
-        };
-    
-        $container->setShared($this->getName(), $service);
+        });
     }
 }

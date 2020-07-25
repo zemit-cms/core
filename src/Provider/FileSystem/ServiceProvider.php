@@ -11,7 +11,7 @@
 namespace Zemit\Provider\FileSystem;
 
 use League\Flysystem\Filesystem;
-use League\Flysystem\Adapter\Local;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use Phalcon\Di\DiInterface;
 use Zemit\Provider\AbstractServiceProvider;
 
@@ -35,12 +35,10 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function ($root = null) {
-            if ($root === null) {
-                $root = dirname(app_path());
-            }
-            
-            return new Filesystem(new Local($root));
+        $di->setShared($this->getName(), function ($root = null) use ($di) {
+            $config = $di->get('config');
+            $root ??= $config->app->dir->root;
+            return new Filesystem(new LocalFilesystemAdapter($root));
         });
     }
 }

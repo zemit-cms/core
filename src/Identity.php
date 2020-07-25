@@ -739,7 +739,7 @@ class Identity extends Injectable
                     $email = new $emailClass();
                     $email->setTemplateByIndex('password-reset');
                     $email->setTo($user->getEmail());
-                    $email->setMeta(['user' => $user->expose(['User' => [
+                    $meta = ['user' => $user->expose(['User' => [
                         false,
                         'firstName',
                         'lastName',
@@ -747,7 +747,9 @@ class Identity extends Injectable
                         'token' => function ($builder) use ($token) {
                             $builder->setValue($token);
                         },
-                    ]])]);
+                    ]])];
+                    $meta['link'] = $this->url->get('/reset-password/' . $token);
+                    $email->setMeta();
                     $saved = $user->save();
                     $sent = $saved ? $email->send() : false;
     

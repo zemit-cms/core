@@ -15,6 +15,7 @@ use Phalcon\Mvc\Model\Behavior\Exception;
 use Phalcon\Mvc\Model\MetaData;
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Mvc\Model\Behavior;
+use Phalcon\Text;
 use Zemit\Models\Audit;
 use Zemit\Models\AuditDetail;
 use Zemit\Mvc\Model\User;
@@ -106,6 +107,8 @@ class Blameable extends Behavior
      */
     public function createAudit($event, ModelInterface $model)
     {
+        $event = lcfirst(Text::uncamelize(str_replace(['before', 'after'], ['', ''], $event)));
+        
         $auditClass = $this->auditClass;
         $auditDetailClass = $this->auditDetailClass;
         
@@ -135,7 +138,7 @@ class Blameable extends Behavior
             $after = $model->readAttribute($map);
             
             // skip unchanged
-            if ($event === 'afterUpdate' && $changedFields !== null && $snapshot !== null) {
+            if ($event === 'update' && $changedFields !== null && $snapshot !== null) {
                 if ($before === $after || !in_array($map, $changedFields, true)) {
                     continue;
                 }
