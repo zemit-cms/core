@@ -15,6 +15,14 @@ use Zemit\Mvc\Router\ModuleRoute;
 
 /**
  * Class Router
+ * {@inheritDoc}
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
  * @package Zemit\Mvc
  */
 class Router extends \Phalcon\Mvc\Router

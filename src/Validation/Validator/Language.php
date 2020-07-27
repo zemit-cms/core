@@ -14,6 +14,18 @@ use Phalcon\Messages\Message;
 use Phalcon\Validation;
 use Zemit\Validation\AbstractValidator;
 
+/**
+ * Class Language
+ * {@inheritDoc}
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Validation\Validator
+ */
 class Language extends AbstractValidator
 {
     /**

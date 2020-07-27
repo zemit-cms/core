@@ -12,6 +12,13 @@ namespace Zemit\Cli;
 
 /**
  * Class ExceptionHandler
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
  * @package Zemit\Cli
  */
 class ExceptionHandler

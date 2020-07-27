@@ -12,6 +12,14 @@ namespace Zemit\Cli;
 
 /**
  * Class Router
+ * {@inheritDoc}
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
  * @package Zemit\Cli
  */
 class Router extends \Phalcon\Cli\Router

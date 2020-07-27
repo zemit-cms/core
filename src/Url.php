@@ -12,7 +12,15 @@ namespace Zemit;
 
 /**
  * Class Url
- * @package Zemit\Mvc
+ * {@inheritDoc}
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit
  */
 class Url extends \Phalcon\Url
 {

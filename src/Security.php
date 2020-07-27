@@ -16,24 +16,17 @@ use Phalcon\Acl\Component;
 use Phalcon\Acl\Role;
 use Zemit\Bootstrap\Config;
 
-/***
- * Zemit\Provider\Security\Security
+/**
+ * Class Security
+ * {@inheritDoc}
  *
- * This component provides a set of functions to improve the security in Forum application.
- * Prefixed version.
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
  *
- * <code>
- * $login = $this->request->getPost('login');
- * $password = $this->request->getPost('password');
+ * @since 1.0
+ * @version 1.0
  *
- * $user = Users::findFirstByLogin($login);
- * if ($user && $this->security->checkHash($password, $user->password)) {
- *     //The password is valid
- * }
- * </code>
- *
- * @package Zemit\Provider\Security
- * @property \Phalcon\Security\Random $_random
+ * @package Zemit
  */
 class Security extends \Phalcon\Security
 {

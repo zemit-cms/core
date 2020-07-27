@@ -12,10 +12,23 @@ namespace Zemit\Http;
 
 /**
  * Class StatusCode
- *
  * According to Wikipedia List of HTTP status codes
  *
+ * Example:
+ * ```php
+ *  StatusCode::getMEssage[StatusCode::OK] // 'OK'
+ *  StatusCode::getMessage[200] // 'OK'
+ *  StatusCode::CODE[200] // 'OK'
+ *  StatusCode::OK // 200
+ * ```
+ *
  * @link https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Http
  */
@@ -188,8 +201,28 @@ class StatusCode
      *
      * @return string|null Return the message or null
      */
-    public static function getMessage(int $code) : ?string
+    public static function getMessage(int $code): ?string
     {
         return self::CODE[(int)$code] ?? null;
+    }
+    
+    /**
+     * Forward undefined instance method to static calls
+     *
+     * @param string $name
+     * @param array $params
+     */
+    public function __call(string $name, array $params) {
+        return self::$name(...$params);
+    }
+    
+    /**
+     * Forward undefined instance method to static calls
+     *
+     * @param string $name
+     * @param array $params
+     */
+    public function __get(string $name) {
+        return __get($name, $params);
     }
 }

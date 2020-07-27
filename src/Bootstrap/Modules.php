@@ -13,15 +13,19 @@ namespace Zemit\Bootstrap;
 use Phalcon\Application\AbstractApplication;
 
 /**
- * Require a config from the DI
- * Config : [modules => ['api', 'backend', 'frontend']]
- *
  * Class Modules
+ * Registering a list of module
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
  * @package Zemit\Bootstrap
  */
 class Modules
 {
-    
     public $modulesDir;
     
     public function __construct(AbstractApplication $application = null)

@@ -12,7 +12,13 @@ namespace Zemit;
 
 /**
  * Class Validation
- * Allows to validate data using custom or built-in validators
+ * {@inheritDoc}
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit
  */

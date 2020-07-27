@@ -13,7 +13,14 @@ namespace Zemit\Exception;
 use Zemit\Exception;
 
 /**
- * Zemit\Exception\HttpException
+ * Class HttpException
+ * {@inheritDoc}
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Exception
  */

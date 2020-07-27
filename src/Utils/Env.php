@@ -15,10 +15,22 @@ use Dotenv\Dotenv;
 /**
  * Class Env
  * Allow to access environment variable easily
- * Ex. (SET): $this->SET_APPLICATION_ENV('production');
- * Ex. (SET): self::SET_APPLICATION_ENV('production');
- * Ex. (GET): $this->GET_APPLICATION_ENV('development');
- * Ex. (GET): self::GET_APPLICATION_ENV('development');
+ *
+ * Example usage:
+ * ```php
+ * $this->SET_APPLICATION_ENV('production'); // SET APPLICATION_ENV to 'production'
+ * self::SET_APPLICATION_ENV('production'); // SET APPLICATION_ENV to 'production'
+ * $this->GET_APPLICATION_ENV('default'); // GET APPLICATION_ENV value or 'default'
+ * self::GET_APPLICATION_ENV('default'); // GET APPLICATION_ENV value or 'default'
+ * ```
+ *
+ * @todo fix dotenv mandatory file
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
  * @package Zemit\Utils
  */
 class Env

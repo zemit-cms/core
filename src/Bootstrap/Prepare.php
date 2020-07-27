@@ -17,6 +17,13 @@ use Zemit\Events\EventsAwareTrait;
 /**
  * Class Prepare
  * Prepare raw php stuff early in the bootstrap
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
  * @package Zemit\Bootstrap
  */
 class Prepare extends Injectable

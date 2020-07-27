@@ -13,6 +13,15 @@ use Zemit\Mvc\Application;
 
 /**
  * Class Router
+ * Default Bootstrap Phalcon Zemit Router Implementation
+ * {@inheritDoc}
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
  * @package Zemit\Bootstrap
  */
 class Router extends \Zemit\Mvc\Router

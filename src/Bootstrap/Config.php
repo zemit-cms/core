@@ -30,6 +30,18 @@ use Zemit\Version;
 use Zemit\Provider;
 use Phalcon\Config as PhalconConfig;
 
+/**
+ * Class Config
+ * {@inheritDoc}
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Bootstrap
+ */
 class Config extends PhalconConfig
 {
     public function defineConst()
@@ -46,6 +58,12 @@ class Config extends PhalconConfig
         defined('PRIVATE_PATH') || define('PRIVATE_PATH', Env::get('APP_PRIVATE_PATH', constant('APP_PATH') . '/private/'));
     }
     
+    /**
+     * Config constructor.
+     * {@inheritDoc}
+     *
+     * @param array $config
+     */
     public function __construct($config = [])
     {
         $this->defineConst();

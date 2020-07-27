@@ -21,6 +21,18 @@ use Phalcon\Validation\Validator\PresenceOf;
 use Zemit\Models\Session;
 use Zemit\Models\User;
 
+/**
+ * Class Identity
+ * {@inheritDoc}
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit
+ */
 class Identity extends Injectable
 {
     /**

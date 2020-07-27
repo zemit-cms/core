@@ -15,7 +15,14 @@ use Whoops\Exception\Frame;
 use Whoops\Handler\Handler;
 
 /**
- * Zemit\Exception\Handler\LoggerHandler
+ * Class LoggerHandler
+ * {@inheritDoc}
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Exception\Handler
  */

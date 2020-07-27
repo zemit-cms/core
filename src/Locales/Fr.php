@@ -13,6 +13,20 @@ namespace Zemit\Locale;
 use Phalcon\Translate\Adapter\NativeArray;
 use Phalcon\Translate\InterpolatorFactory;
 
+/**
+ * Class Fr
+ * {@inheritDoc}
+ *
+ * @link https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Locale
+ */
 class Fr extends NativeArray
 {
     public function __construct(InterpolatorFactory $interpolator, array $options)

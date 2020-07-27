@@ -14,7 +14,14 @@ use Phalcon\Di;
 use Whoops\Handler\Handler;
 
 /**
- * Zemit\Exception\Handler\ErrorPageHandler
+ * Class ErrorPageHandler
+ * {@inheritDoc}
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Exception\Handler
  */
@@ -83,7 +90,7 @@ class ErrorPageHandler extends Handler
 
         switch ($this->getException()->getCode()) {
             case 404:
-                $action = 'show404';
+                $action = 'notFound';
                 break;
             default:
                 $action = $defaultAction;

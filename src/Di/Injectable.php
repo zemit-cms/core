@@ -11,25 +11,39 @@
 namespace Zemit\Di;
 
 use Zemit\Bootstrap;
-use Zemit\Bootstrap\Config;
+use Zemit\Debug;
 use Zemit\Escaper;
 use Zemit\Filter;
+use Zemit\Http\Request;
 use Zemit\Identity;
+use Zemit\Locale;
 use Zemit\Mvc\Dispatcher;
+use Zemit\Security;
 use Zemit\Tag;
+use Zemit\Utils;
 
 /**
  * Class Injectable
- * This class allows to access services in the services container by just only
- * accessing a public property with the same name of a registered service
+ * {@inheritDoc}
  *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @property Bootstrap\Config $config
  * @property Bootstrap $bootstrap
- * @property Config $config
- * @property Identity $identity
- * @property Tag $tag
+ * @property Debug $debug
  * @property Escaper $escaper
  * @property Filter $filter
+ * @property Request $request
+ * @property Identity $identity
+ * @property Locale $locale
  * @property Dispatcher $dispatcher
+ * @property Security $security
+ * @property Tag $tag
+ * @property Utils $utils
  *
  * @package Zemit\Di
  */

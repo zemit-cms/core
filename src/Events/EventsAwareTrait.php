@@ -17,9 +17,13 @@ use Zemit\Exception;
 use Zemit\Utils\Slug;
 
 /**
- * Zemit\Events\EventManagerAwareTrait
+ * Trait EventsAwareTrait
  *
- * Trait for event processing
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Events
  */
@@ -95,7 +99,6 @@ trait EventsAwareTrait
     {
         self::$_eventsSlug = $eventSlug;
     }
-    
     
     /**
      * Checking if event manager is defined - fire event

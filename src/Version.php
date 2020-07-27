@@ -11,9 +11,16 @@
 namespace Zemit;
 
 /**
- * Zemit\Version
+ * Class Version
+ * This class allows to get the installed version of the zemit core
  *
- * This class allows to get the installed version of the framework
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit
  */
 class Version extends \Phalcon\Version
 {
