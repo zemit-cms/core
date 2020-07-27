@@ -34,6 +34,7 @@ abstract class AbstractModel extends \Zemit\Mvc\Model
     
     /**
      * Set the default relationships
+     * @param array|null $relationships
      */
     public function setDefaultRelationships(?array $relationships = null) : void
     {
