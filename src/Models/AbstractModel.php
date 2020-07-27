@@ -13,6 +13,7 @@ namespace Zemit\Models;
 use Phalcon\Validation\Validator\Between;
 use Phalcon\Validation\Validator\Date;
 use Phalcon\Validation\Validator\Numericality;
+use Zemit\Locale;
 use Zemit\Validation;
 
 /**
@@ -20,8 +21,57 @@ use Zemit\Validation;
  *
  * @package Zemit\Models
  */
-abstract class Base extends \Zemit\Mvc\Model
+abstract class AbstractModel extends \Zemit\Mvc\Model
 {
+    /**
+     * Initialize method for model.
+     */
+    public function initialize()
+    {
+        parent::initialize();
+        $this->setDefaultRelationships();
+    }
+    
+    /**
+     * Set the default relationships
+     */
+    public function setDefaultRelationships(?array $relationships = []) : void
+    {
+        $userClass = $this->getIdentity()->getUserClass() ?: User::class;
+        
+        $relationships ??= [
+            [
+                'type' => 'belongsTo',
+                'property' => 'userId',
+                'alias' => 'User',
+                'class' => $userClass,
+            ],
+            [
+                'type' => 'belongsTo',
+                'property' => 'createdBy',
+                'alias' => 'CreatedByUser',
+                'class' => $userClass,
+            ],
+            [
+                'type' => 'belongsTo',
+                'property' => 'updatedBy',
+                'alias' => 'UpdatedByUser',
+                'class' => $userClass,
+            ],
+            [
+                'type' => 'belongsTo',
+                'property' => 'deletedBy',
+                'alias' => 'DeletedByUser',
+                'class' => $userClass,
+            ],
+        ];
+        foreach ($relationships as $rel) {
+            if (property_exists($this, $rel['property'])) {
+                $this->{$rel['type']}($rel['property'], $rel['class'], 'id', ['alias' => $rel['alias']]);
+            }
+        }
+    }
+    
     /**
      * Translation shortcut
      * @return mixed
@@ -77,7 +127,9 @@ abstract class Base extends \Zemit\Mvc\Model
             $set = $property . ucfirst($lang);
             
             if (property_exists($this, $set)) {
-                $this->writeAttribute($set, $value);
+                if (!$this->_possibleSetter($set, $value)) {
+                    $this->writeAttribute($set, $value);
+                }
                 return;
             }
         }
