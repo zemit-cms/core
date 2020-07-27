@@ -35,7 +35,7 @@ abstract class AbstractModel extends \Zemit\Mvc\Model
     /**
      * Set the default relationships
      */
-    public function setDefaultRelationships(?array $relationships = []) : void
+    public function setDefaultRelationships(?array $relationships = null) : void
     {
         $userClass = $this->getIdentity()->getUserClass() ?: User::class;
         
