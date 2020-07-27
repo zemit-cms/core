@@ -128,9 +128,7 @@ abstract class AbstractModel extends \Zemit\Mvc\Model
             $set = $property . ucfirst($lang);
             
             if (property_exists($this, $set)) {
-                if (!$this->_possibleSetter($set, $value)) {
-                    $this->writeAttribute($set, $value);
-                }
+                $this->writeAttribute($set, $value);
                 return;
             }
         }

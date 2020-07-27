@@ -14,8 +14,6 @@ use PDO;
 use Zemit\Filter;
 use Zemit\Filters;
 use Zemit\Locale;
-use Zemit\Models\Session;
-use Zemit\Models\User;
 use Zemit\Modules\Api\Controllers\UserController;
 use Zemit\Modules\Cli\Tasks\CacheTask;
 use Zemit\Modules\Cli\Tasks\CronTask;
@@ -187,9 +185,74 @@ class Config extends PhalconConfig
              * Identity Provider Configuration
              */
             'identity' => [
-                'userClass' => Env::get('IDENTITY_USER_CLASS', User::class),
-                'sessionClass' => Env::get('IDENTITY_SESSION_CLASS', Session::class),
+                'userClass' => Env::get('IDENTITY_USER_CLASS', \Zemit\Models\User::class),
+                'sessionClass' => Env::get('IDENTITY_SESSION_CLASS', \Zemit\Models\Session::class),
                 'sessionKey' => Env::get('IDENTITY_SESSION_KEY', 'zemit-identity'),
+            ],
+    
+            /**
+             *
+             */
+            'models' => [
+    
+                // System
+                \Zemit\Models\Backup::class => \Zemit\Models\Backup::class,
+                \Zemit\Models\Audit::class => \Zemit\Models\Audit::class,
+                \Zemit\Models\AuditDetail::class => \Zemit\Models\AuditDetail::class,
+                \Zemit\Models\Log::class => \Zemit\Models\Log::class,
+                \Zemit\Models\Email::class => \Zemit\Models\Email::class,
+                \Zemit\Models\Job::class => \Zemit\Models\Job::class,
+                \Zemit\Models\File::class => \Zemit\Models\File::class,
+                \Zemit\Models\Session::class => \Zemit\Models\Session::class,
+                
+                # system misc
+                \Zemit\Models\Locale::class => \Zemit\Models\Locale::class,
+                \Zemit\Models\Translation::class => \Zemit\Models\Translation::class,
+                \Zemit\Models\Setting::class => \Zemit\Models\Setting::class,
+                \Zemit\Models\Template::class => \Zemit\Models\Template::class,
+                
+                // Workspace
+                \Zemit\Models\Workspace::class => \Zemit\Models\Workspace::class,
+                \Zemit\Models\WorkspaceProject::class => \Zemit\Models\WorkspaceProject::class,
+                \Zemit\Models\WorkspaceUser::class => \Zemit\Models\WorkspaceUser::class,
+            
+                // Project
+                \Zemit\Models\Project::class => \Zemit\Models\Project::class,
+                \Zemit\Models\ProjectUser::class => \Zemit\Models\ProjectUser::class,
+                \Zemit\Models\ProjectChannel::class => \Zemit\Models\ProjectChannel::class,
+                \Zemit\Models\ProjectEndpoint::class => \Zemit\Models\ProjectEndpoint::class,
+                \Zemit\Models\ProjectLocale::class => \Zemit\Models\ProjectLocale::class,
+                
+                // User
+                \Zemit\Models\Profile::class => \Zemit\Models\Profile::class,
+                \Zemit\Models\User::class => \Zemit\Models\User::class,
+                \Zemit\Models\UserType::class => \Zemit\Models\UserType::class,
+                \Zemit\Models\UserGroup::class => \Zemit\Models\UserGroup::class,
+                \Zemit\Models\UserRole::class => \Zemit\Models\UserRole::class,
+                \Zemit\Models\UserFeature::class => \Zemit\Models\UserFeature::class,
+                
+                // Role
+                \Zemit\Models\Role::class => \Zemit\Models\Role::class,
+                \Zemit\Models\RoleRole::class => \Zemit\Models\RoleRole::class,
+                \Zemit\Models\RoleFeature::class => \Zemit\Models\RoleFeature::class,
+                
+                // Group
+                \Zemit\Models\Group::class => \Zemit\Models\Group::class,
+                \Zemit\Models\GroupRole::class => \Zemit\Models\GroupRole::class,
+                \Zemit\Models\GroupType::class => \Zemit\Models\GroupType::class,
+                \Zemit\Models\GroupFeature::class => \Zemit\Models\GroupFeature::class,
+                
+                // Type
+                \Zemit\Models\Type::class => \Zemit\Models\Type::class,
+                
+                // Feature
+                \Zemit\Models\Feature::class => \Zemit\Models\Feature::class,
+                
+                // Zemit
+                \Zemit\Models\Permission::class => \Zemit\Models\Permission::class,
+                \Zemit\Models\Flow::class => \Zemit\Models\Flow::class,
+                \Zemit\Models\FlowAction::class => \Zemit\Models\FlowAction::class,
+                \Zemit\Models\Field::class => \Zemit\Models\Field::class,
             ],
             
             /**

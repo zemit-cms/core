@@ -122,13 +122,9 @@ trait Relationship
                 // array | traversable | resultset
                 elseif (is_array($relationData) || $relationData instanceof \Traversable) {
                     $assign = [];
-    
-                    foreach ($fields as $key => $field) {
-                        $relationData [$referencedFields[$key]]= $this->readAttribute($field);
-                    }
                     
                     if (empty($relationData)) {
-                        $assign = $this->_getEntityFromData($relationData, $referencedFields, $referencedModel);
+                        $assign = $this->_getEntityFromData($relationData, $referencedFields, $referencedModel, $fields);
                     } else {
                         foreach ($relationData as $traversedKey => $traversedData) {
                             // Array of things
@@ -167,7 +163,7 @@ trait Relationship
                                 
                                 // if [alias => [[id => 1], [id => 2], [id => 3], ....]]
                                 elseif (is_array($traversedData) || is_object($traversedData)) {
-                                    $entity = $this->_getEntityFromData($traversedData, $referencedFields, $referencedModel);
+                                    $entity = $this->_getEntityFromData($traversedData, $referencedFields, $referencedModel, $fields);
                                 }
                                 
                                 if ($entity) {
@@ -177,7 +173,7 @@ trait Relationship
                             
                             // if [alias => [id => 1]]
                             else {
-                                $assign = $this->_getEntityFromData($relationData, $referencedFields, $referencedModel);
+                                $assign = $this->_getEntityFromData($relationData, $referencedFields, $referencedModel, $fields);
                                 break;
                             }
                         }
@@ -195,7 +191,7 @@ trait Relationship
                 }
             } // END RELATION
         } // END DATA LOOP
-        
+    
         return $this;
     }
     
@@ -628,6 +624,7 @@ trait Relationship
     
     /**
      * Get an entity from data
+     * @todo unit test for this
      *
      * @param array $data Data
      * @param array $fields Columns
@@ -635,9 +632,21 @@ trait Relationship
      *
      * @return ModelInterface
      */
-    public function _getEntityFromData(array $data, array $fields, string $modelClass): ModelInterface
+    public function _getEntityFromData(array $data, array $fields, string $modelClass, ?array $readFields = []): ModelInterface
     {
         $entity = null;
+    
+        // Set value to compare
+        if (!empty($readFields)) {
+            foreach ($fields as $key => $field) {
+                if (empty($data[$fields[$key]])) { // @todo maybe remove this if
+                    $value = $this->readAttribute($field);
+                    if (!empty($value)) { // @todo maybe remove this if
+                        $data [$fields[$key]]= $value;
+                    }
+                }
+            }
+        }
         
         // array_keys_exists (if $referencedFields keys exists)
         $dataKeys = array_intersect_key($data, array_flip($fields));
