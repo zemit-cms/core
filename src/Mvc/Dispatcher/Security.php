@@ -13,7 +13,8 @@ namespace Zemit\Mvc\Dispatcher;
 use Phalcon\Acl\Resource;
 use Phalcon\Dispatcher\AbstractDispatcher;
 use Phalcon\Events\Event;
-use Phalcon\Mvc\Dispatcher;
+use Phalcon\Mvc\Dispatcher as MvcDispatcher;
+use Phalcon\Cli\Dispatcher as CliDispatcher;
 use Zemit\Di\Injectable;
 use Zemit\Events\Identity;
 
@@ -49,11 +50,11 @@ class Security extends Injectable
         // get controller and action
         $module = $dispatcher->getModuleName();
         $namespace = $dispatcher->getNamespaceName();
-        if ($dispatcher instanceof Dispatcher) {
+        if ($dispatcher instanceof MvcDispatcher) {
             $controller = $dispatcher->getControllerName();
             $controllerClass = $dispatcher->getControllerClass();
         }
-        if ($dispatcher instanceof \Phalcon\Cli\Dispatcher) {
+        if ($dispatcher instanceof CliDispatcher) {
             $task = $dispatcher->getTaskName();
             $taskSuffix = $dispatcher->getTaskSuffix();
         }

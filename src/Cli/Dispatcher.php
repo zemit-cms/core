@@ -8,8 +8,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc;
+namespace Zemit\Cli;
 
+use Zemit\Dispatcher\DispatcherInterface;
 use Zemit\Dispatcher\DispatcherTrait;
 
 /**
@@ -22,9 +23,9 @@ use Zemit\Dispatcher\DispatcherTrait;
  * @since 1.0
  * @version 1.0
  *
- * @package Zemit\Mvc
+ * @package Zemit\Cli
  */
-class Dispatcher extends \Phalcon\Mvc\Dispatcher
+class Dispatcher extends \Phalcon\Cli\Dispatcher implements DispatcherInterface
 {
     use DispatcherTrait;
 }

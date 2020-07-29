@@ -8,12 +8,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc;
-
-use Zemit\Dispatcher\DispatcherTrait;
+namespace Zemit\Dispatcher;
 
 /**
- * Class Dispatcher
+ * Interface DispatcherInterface
  * {@inheritDoc}
  *
  * @author Julien Turbide <jturbide@nuagerie.com>
@@ -22,9 +20,14 @@ use Zemit\Dispatcher\DispatcherTrait;
  * @since 1.0
  * @version 1.0
  *
- * @package Zemit\Mvc
+ * @package Zemit\Dispatcher
  */
-class Dispatcher extends \Phalcon\Mvc\Dispatcher
+interface DispatcherInterface extends \Phalcon\Dispatcher\DispatcherInterface
 {
-    use DispatcherTrait;
+    /**
+     * To Array
+     *
+     * @return array
+     */
+    public function toArray();
 }

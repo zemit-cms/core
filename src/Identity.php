@@ -378,7 +378,6 @@ class Identity extends Injectable
                 }
             }
             
-            
             if ($user->grouplist) {
                 foreach ($user->grouplist as $group) {
                     $groupList [$group->getIndex()] = $group;
@@ -391,8 +390,7 @@ class Identity extends Injectable
                 }
             }
             
-            
-            if ($user->typeList) {
+            if ($user->typelist) {
                 foreach ($user->typelist as $type) {
                     $typeList [$type->getIndex()] = $type;
         
@@ -749,7 +747,7 @@ class Identity extends Injectable
                     // Send it by email
                     $emailClass = $this->getEmailClass();
                     $email = new $emailClass();
-                    $email->setTemplateByIndex('password-reset');
+                    $email->setTemplateByIndex('reset-password');
                     $email->setTo($user->getEmail());
                     $meta = ['user' => $user->expose(['User' => [
                         false,

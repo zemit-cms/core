@@ -18,6 +18,12 @@ use Phalcon\Events\EventInterface;
  * Class Security
  * Database Events Security
  *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
  * @package Zemit\Db\Events
  */
 class Security extends Injectable

@@ -10,8 +10,9 @@
 
 namespace Zemit\Provider\Dispatcher;
 
-use Phalcon\Cli\Dispatcher as CliDispatcher;
 use Phalcon\Di\DiInterface;
+
+use Zemit\Cli\Dispatcher as CliDispatcher;
 use Zemit\Mvc\Dispatcher as MvcDispatcher;
 use Zemit\Mvc\Dispatcher\Camelize;
 use Zemit\Mvc\Dispatcher\Error;
@@ -64,6 +65,13 @@ class ServiceProvider extends AbstractServiceProvider
             $maintenance = new Maintenance();
             $maintenance->setDI($di);
             $eventsManager->attach('dispatch', $maintenance);
+    
+            /**
+             * Logger
+             */
+            $logger = new MvcDispatcher\Logger();
+            $logger->setDI($di);
+            $eventsManager->attach('dispatch', $logger);
             
             // CLI Dispatcher
             if (isset($config->mode) && $config->mode === 'console') {
@@ -72,9 +80,9 @@ class ServiceProvider extends AbstractServiceProvider
                 /**
                  * Error
                  */
-                $error = new Error();
-                $error->setDI($di);
-                $eventsManager->attach('dispatch', $error);
+//                $error = new Error();
+//                $error->setDI($di);
+//                $eventsManager->attach('dispatch', $error);
     
                 /**
                  * Rest

@@ -14,7 +14,14 @@ use Phalcon\Di;
 
 /**
  * Class Profiler
- * {@inheritdoc} \Phalcon\Db\Profiler
+ * {@inheritdoc}
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
  * @package Zemit\Db
  */
 class Profiler extends \Phalcon\Db\Profiler
@@ -24,7 +31,6 @@ class Profiler extends \Phalcon\Db\Profiler
      */
     public function toArray()
     {
-    
         $config = Di::getDefault()->get('config');
         if (!$config->app->profiler) {
             return false;

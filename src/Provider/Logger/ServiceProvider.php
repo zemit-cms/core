@@ -52,32 +52,43 @@ class ServiceProvider extends AbstractServiceProvider
             
             $adapters = [];
             foreach ($config->driver as $driver) {
-                $options = $config->drivers->$driver;
-                $adapter = $options->adapter;
-                $name = $options->name;
+                $default = $config->default->toArray();
+                $options = $config->drivers->$driver->toArray();
+                $options = array_merge($default, $options);
+                $adapter = $options['adapter'];
+                $filename = $options['filename'] ?: $driver;
                 
-                // driver
-                $adapters[$driver] = new $adapter($name, $options);
-                
+                if (!is_array($filename)) {
+                    $filename = [$filename];
+                }
+    
                 // json
                 if ($config->default->formatter === 'json') {
-    
+        
                     // json formatter
                     $formatter = new Json();
                     $formatter->setDateFormat($options['date'] ? : self::DEFAULT_DATE);
                 }
-                
-                // defualt formatter
+    
+                // default formatter
                 else {
-                    
+        
                     // line formatter
                     $formatter = new Line();
                     $formatter->setFormat($options['format'] ?: self::DEFAULT_FORMAT);
                     $formatter->setDateFormat($options['date'] ?: self::DEFAULT_DATE);
                 }
                 
-                // set formatter
-                $adapters[$driver]->setFormatter($formatter);
+                foreach ($filename as $file) {
+                    
+                    $path = $options['path'] . $file . '.log';
+    
+                    // driver
+                    $adapters[$file] = new $adapter($path, $options);
+    
+                    // set formatter
+                    $adapters[$file]->setFormatter($formatter);
+                }
             }
             
             // logger

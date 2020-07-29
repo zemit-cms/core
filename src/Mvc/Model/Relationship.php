@@ -638,7 +638,7 @@ trait Relationship
     
         // Set value to compare
         if (!empty($readFields)) {
-            foreach ($fields as $key => $field) {
+            foreach ($readFields as $key => $field) {
                 if (empty($data[$fields[$key]])) { // @todo maybe remove this if
                     $value = $this->readAttribute($field);
                     if (!empty($value)) { // @todo maybe remove this if

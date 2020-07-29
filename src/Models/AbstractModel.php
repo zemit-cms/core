@@ -23,6 +23,8 @@ use Zemit\Validation;
  */
 abstract class AbstractModel extends \Zemit\Mvc\Model
 {
+    const MAX_UNSIGNED_INT = 4294967295;
+    
     /**
      * Initialize method for model.
      */
@@ -34,11 +36,12 @@ abstract class AbstractModel extends \Zemit\Mvc\Model
     
     /**
      * Set the default relationships
+     *
      * @param array|null $relationships
      */
-    public function setDefaultRelationships(?array $relationships = null) : void
+    public function setDefaultRelationships(?array $relationships = null): void
     {
-        $userClass = $this->getIdentity()->getUserClass() ?: User::class;
+        $userClass = $this->getIdentity()->getUserClass() ? : User::class;
         
         $relationships ??= [
             [
@@ -77,7 +80,8 @@ abstract class AbstractModel extends \Zemit\Mvc\Model
      * Translation shortcut
      * @return mixed
      */
-    public function _() {
+    public function _()
+    {
         return $this->getDI()->get('translate')->_(...func_get_args());
     }
     
@@ -91,7 +95,8 @@ abstract class AbstractModel extends \Zemit\Mvc\Model
      * @return mixed
      * @throws \Phalcon\Mvc\Model\Exception
      */
-    public function __call(string $method, array $arguments) {
+    public function __call(string $method, array $arguments)
+    {
         
         /** @var Locale $locale */
         $locale = $this->getDI()->get('locale');
@@ -117,7 +122,8 @@ abstract class AbstractModel extends \Zemit\Mvc\Model
      *
      * @throws \Phalcon\Mvc\Model\Exception
      */
-    public function __set(string $property, $value) {
+    public function __set(string $property, $value)
+    {
         
         /** @var Locale $locale */
         $locale = $this->getDI()->get('locale');
@@ -129,6 +135,7 @@ abstract class AbstractModel extends \Zemit\Mvc\Model
             
             if (property_exists($this, $set)) {
                 $this->writeAttribute($set, $value);
+                
                 return;
             }
         }
@@ -138,15 +145,17 @@ abstract class AbstractModel extends \Zemit\Mvc\Model
     
     /**
      * Language support
-     * @todo __isset
-     * Magic method to get related records using the relation alias as a property
-     * - Allow to get $this->name{Fr|En} from inexistant name property
      *
      * @param string $method
      *
      * @throws \Phalcon\Mvc\Model\Exception
+     * @todo __isset
+     * Magic method to get related records using the relation alias as a property
+     * - Allow to get $this->name{Fr|En} from inexistant name property
+     *
      */
-    public function __get(string $property) {
+    public function __get(string $property)
+    {
         
         /** @var Locale $locale */
         $locale = $this->getDI()->get('locale');
@@ -169,12 +178,20 @@ abstract class AbstractModel extends \Zemit\Mvc\Model
      *
      * @return mixed
      */
-    public function genericValidation(?Validation $validator = null) {
+    public function genericValidation(?Validation $validator = null)
+    {
         $validator ??= new Validation();
+    
+        // POSITION
+        if (property_exists($this, 'position')) {
+            $validator->add('position', new Numericality(['message' => $this->_('positionNotValid'), 'allowEmpty' => true]));
+            $validator->add('position', new Between(['minimum' => 0, 'maximum' => self::MAX_UNSIGNED_INT, 'message' => $this->_('positionNotValid'), 'allowEmpty' => true]));
+        }
         
         // DELETED
         if (property_exists($this, 'deleted')) {
-            $validator->add('deleted', new Between([ "minimum" => 0, "maximum" => 1, 'message' => $this->_('deletedNotBetween')]));
+            $validator->add('deleted', new Between(['minimum' => 0, 'maximum' => 1, 'message' => $this->_('deletedNotBetween')]));
+            $validator->add('deleted', new Numericality(['message' => $this->_('deletedNotValid'), 'allowEmpty' => true]));
         }
         
         // CREATED
@@ -183,6 +200,7 @@ abstract class AbstractModel extends \Zemit\Mvc\Model
         }
         if (property_exists($this, 'createdBy')) {
             $validator->add('createdBy', new Numericality(['message' => $this->_('createdByNotValid'), 'allowEmpty' => true]));
+            $validator->add('createdBy', new Between(['minimum' => 0, 'maximum' => self::MAX_UNSIGNED_INT, 'message' => $this->_('createdByNotValid'), 'allowEmpty' => true]));
         }
         
         // UPDATED
@@ -191,6 +209,7 @@ abstract class AbstractModel extends \Zemit\Mvc\Model
         }
         if (property_exists($this, 'updatedBy')) {
             $validator->add('updatedBy', new Numericality(['message' => $this->_('updatedByNotValid'), 'allowEmpty' => true]));
+            $validator->add('updatedBy', new Between(['minimum' => 0, 'maximum' => self::MAX_UNSIGNED_INT, 'message' => $this->_('updatedByNotValid'), 'allowEmpty' => true]));
         }
         
         // DELETED
@@ -199,6 +218,7 @@ abstract class AbstractModel extends \Zemit\Mvc\Model
         }
         if (property_exists($this, 'deletedBy')) {
             $validator->add('deletedBy', new Numericality(['message' => $this->_('deletedByNotValid'), 'allowEmpty' => true]));
+            $validator->add('deletedBy', new Between(['minimum' => 0, 'maximum' => self::MAX_UNSIGNED_INT, 'message' => $this->_('deletedByNotValid'), 'allowEmpty' => true]));
         }
         
         // RESTORED
@@ -207,6 +227,7 @@ abstract class AbstractModel extends \Zemit\Mvc\Model
         }
         if (property_exists($this, 'restoredBy')) {
             $validator->add('restoredBy', new Numericality(['message' => $this->_('restoredByNotValid'), 'allowEmpty' => true]));
+            $validator->add('restoredBy', new Between(['minimum' => 0, 'maximum' => self::MAX_UNSIGNED_INT, 'message' => $this->_('restoredByNotValid'), 'allowEmpty' => true]));
         }
         
         return $validator;

@@ -10,7 +10,9 @@
 
 namespace Zemit\Di;
 
+use Phalcon\Logger;
 use Zemit\Bootstrap;
+use Zemit\Db\Profiler;
 use Zemit\Debug;
 use Zemit\Escaper;
 use Zemit\Filter;
@@ -44,6 +46,8 @@ use Zemit\Utils;
  * @property Security $security
  * @property Tag $tag
  * @property Utils $utils
+ * @property Profiler $profiler
+ * @property Logger $logger
  *
  * @package Zemit\Di
  */

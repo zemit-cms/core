@@ -116,7 +116,7 @@ class Rest extends \Zemit\Mvc\Controller
         $list = is_array($list) ? array_values(array_filter($list)) : $list;
         $this->view->list = $list;
         $this->view->listCount = count($list);
-        $this->view->totalCount = $model::count($this->getFindCount($find));
+        $this->view->totalCount = $model::find($this->getFindCount($find));
         $this->view->totalCount = is_int($this->view->totalCount)? $this->view->totalCount : count($this->view->totalCount); // @todo fix count to work with rollup when joins
         $this->view->limit = $find['limit'] ?? false;
         $this->view->offset = $find['offset'] ?? false;

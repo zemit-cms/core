@@ -17,6 +17,7 @@ use Phalcon\Mvc\Model\Resultset;
 use Phalcon\Text;
 use Zemit\Http\Request;
 use Zemit\Identity;
+use Zemit\Utils\Slug;
 
 trait Model
 {
@@ -522,6 +523,40 @@ trait Model
     }
     
     /**
+     * Get a cache key from params
+     *
+     * @param array|null $params
+     *
+     * @return string|null
+     */
+    public function getCacheKey(?array $params = null) : ?string
+    {
+        $params ??= $this->getParams();
+        return hash('sha256', Slug::generate(json_encode($params, JSON_UNESCAPED_SLASHES)));
+    }
+    
+    /**
+     * Get cache setting
+     *
+     * @param array|null $params
+     *
+     * @return array|null
+     */
+    public function getCache(?array $params = null)
+    {
+        $params ??= $this->getParams();
+        
+        if (!empty($params['cache'])) {
+            return [
+                'lifetime' => (int)$params['cache'],
+                'key' => $this->getCacheKey($params),
+            ];
+        }
+        
+        return null;
+    }
+    
+    /**
      * Get find definition
      *
      * @return array
@@ -541,6 +576,7 @@ trait Model
         $find['joins'] = $this->getJoins();
         $find['group'] = $this->getGroup();
         $find['having'] = $this->getHaving();
+        $find['cache'] = $this->getCache();
         
         // fix for grouping by multiple fields, phalcon only allow string here
         foreach (['distinct', 'group'] as $findKey) {

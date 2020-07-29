@@ -12,9 +12,9 @@ namespace Zemit\Modules\Cli;
 
 use Phalcon\Di\DiInterface;
 use Phalcon\Loader;
-use Phalcon\Cli\Dispatcher;
-use Phalcon\Cli\Router;
 use Phalcon\Mvc\ModuleDefinitionInterface;
+use Zemit\Cli\Dispatcher;
+use Zemit\Cli\Router;
 use Zemit\Bootstrap\Config;
 use Zemit\Utils;
 

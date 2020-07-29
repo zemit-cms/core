@@ -117,7 +117,7 @@ class Config extends PhalconConfig
                 'minify' => Env::get('APP_MINIFY', false), // Set true to activate minifying
                 'copyright' => Env::get('APP_COPYRIGHT', false), // Set true to activate the cache
                 'profiler' => Env::get('APP_PROFILER', false), // Set true to return the profiler
-                'logger' => Env::get('APP_LOGGER', false), // Set true to log database transactions
+                'logger' => Env::get('APP_LOGGER', false), // Set true to enable logging
                 'uri' => Env::get('APP_URI', '/'), // Base URI of your application
                 'staticUri' => Env::get('APP_STATIC_URI', '/'), // Base URI of your application
                 'encoding' => Env::get('APP_ENCODING', 'UTF-8'), // allow to set encoding to use with the application
@@ -186,6 +186,7 @@ class Config extends PhalconConfig
              */
             'identity' => [
                 'userClass' => Env::get('IDENTITY_USER_CLASS', \Zemit\Models\User::class),
+                'emailClass' => Env::get('IDENTITY_EMAIL_CLASS', \Zemit\Models\Email::class),
                 'sessionClass' => Env::get('IDENTITY_SESSION_CLASS', \Zemit\Models\Session::class),
                 'sessionKey' => Env::get('IDENTITY_SESSION_KEY', 'zemit-identity'),
             ],
@@ -311,7 +312,16 @@ class Config extends PhalconConfig
              * Logger Configuration
              */
             'logger' => [
-                'driver' => explode(',', Env::get('APP_LOGGER_PATH', 'noop')),
+                'enable' => Env::get('LOGGER_ENABLE', false),
+                
+                'error' => Env::get('LOGGER_ERROR', false),
+                'database' => Env::get('LOGGER_DATABASE', false),
+                'dispatcher' => Env::get('LOGGER_DISPATCHER', false),
+                'profiler' => Env::get('LOGGER_DATABASE', false),
+                'mailer' => Env::get('LOGGER_MAILER', false),
+                'cron' => Env::get('LOGGER_CRON', false),
+                
+                'driver' => explode(',', Env::get('LOGGER_DRIVER', 'noop')),
                 'drivers' => [
                     'noop' => [
                         'adapter' => \Phalcon\Logger\Adapter\Noop::class,
@@ -324,10 +334,10 @@ class Config extends PhalconConfig
                     ],
                 ],
                 'default' => [
-                    'path' => Env::get('APP_LOGGER_PATH', PRIVATE_PATH . '/log/'),
-                    'format' => Env::get('APP_LOGGER_FORMAT', '[%date%][%type%] %message%'),
-                    'date' => Env::get('APP_LOGGER_DATE', 'Y-m-d H:i:s'),
-                    'filename' => Env::get('APP_LOGGER_DEFAULT_FILENAME', 'application'),
+                    'path' => Env::get('LOGGER_PATH', PRIVATE_PATH . '/log/'),
+                    'format' => Env::get('LOGGER_FORMAT', '[%date%][%type%] %message%'),
+                    'date' => Env::get('LOGGER_DATE', 'Y-m-d H:i:s'),
+                    'filename' => Env::get('LOGGER_DEFAULT_FILENAME', 'zemit'),
                 ],
             ],
             

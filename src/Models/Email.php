@@ -175,7 +175,7 @@ class Email extends AbstractEmail
     {
         $validator = $this->genericValidation();
         
-        $validator->add('template_id', new PresenceOf(['message' => $this->_('templateIdRequired')]));
+        $validator->add('templateId', new PresenceOf(['message' => $this->_('templateIdRequired')]));
         $validator->add('to', new PresenceOf(['message' => $this->_('toRequired')]));
         $validator->add('subject', new PresenceOf(['message' => $this->_('subjectRequired')]));
         $validator->add('subject', new Max(['max' => 240, 'message' => $this->_('subjectLengthExceeded'), 'included' => true]));
