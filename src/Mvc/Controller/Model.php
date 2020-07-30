@@ -14,6 +14,7 @@ use Phalcon\Db\Column;
 use Phalcon\Messages\Message;
 use Phalcon\Messages\Messages;
 use Phalcon\Mvc\Model\Resultset;
+use Phalcon\Mvc\ModelInterface;
 use Phalcon\Text;
 use Zemit\Http\Request;
 use Zemit\Identity;
@@ -295,7 +296,7 @@ trait Model
         $roleList ??= ['dev', 'admin'];
         $modelName = $this->getModelName();
         
-        if ($identity && !$identity->hasRole($roleList)) {
+        if ($modelName && $identity && !$identity->hasRole($roleList)) {
             $ret = [];
             
             $columns ??= [
@@ -761,8 +762,8 @@ trait Model
      */
     public function getModelNameFromController(string $controllerName = null, array $namespaces = null, string $needle = 'Models'): ?string
     {
-        $controllerName ??= $this->dispatcher->getControllerName();
-        $namespaces ??= $this->loader->getNamespaces();
+        $controllerName ??= $this->dispatcher->getControllerName() ?? '';
+        $namespaces ??= $this->loader->getNamespaces() ?? [];
         
         $model = ucfirst(Text::camelize(Text::uncamelize($controllerName)));
         if (!class_exists($model)) {
@@ -773,8 +774,8 @@ trait Model
                 }
             }
         }
-        
-        return class_exists($model) ? $model : null;
+    
+        return class_exists($model) && new $model() instanceof ModelInterface ? $model : null;
     }
     
     /**
