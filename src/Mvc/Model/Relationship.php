@@ -372,7 +372,7 @@ trait Relationship
                         // get current model bindings
                         $originBind = [];
                         foreach ($originFields as $originField) {
-                            $originBind [] = $this->{'get' . ucfirst($originField)} ?? $this->$originField;
+                            $originBind [] = $this->{'get' . ucfirst($originField)} ?? $this->$originField ?? null;
                         }
                         
                         $nodeIdListToKeep = [];
@@ -380,7 +380,7 @@ trait Relationship
                             // get referenced model bindings
                             $referencedBind = [];
                             foreach ($referencedFields as $referencedField) {
-                                $referencedBind [] = $entity->{'get' . ucfirst($referencedField)} ?? $entity->$referencedField;
+                                $referencedBind [] = $entity->{'get' . ucfirst($referencedField)} ?? $entity->$referencedField ?? null;
                             }
                             
                             /** @var ModelInterface $nodeEntity */
