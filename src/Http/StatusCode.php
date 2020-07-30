@@ -223,6 +223,6 @@ class StatusCode
      * @param array $params
      */
     public function __get(string $name) {
-        return __get($name, $params);
+        return __get($name);
     }
 }
