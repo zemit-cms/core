@@ -94,7 +94,7 @@ class Router extends \Phalcon\Mvc\Router
             'params' => $this->getParams(),
             'defaults' => $this->getDefaults(),
             'matches' => $this->getMatches(),
-            'matched' => [
+            'matched' => $mathedRoute ? [
                 'id' => $mathedRoute->getRouteId(),
                 'name' => $mathedRoute->getName(),
                 'hostname' => $mathedRoute->getHostname(),
@@ -102,7 +102,7 @@ class Router extends \Phalcon\Mvc\Router
                 'pattern' => $mathedRoute->getPattern(),
                 'httpMethod' => $mathedRoute->getHttpMethods(),
                 'reversedPaths' => $mathedRoute->getReversedPaths(),
-            ],
+            ] : null,
         ];
     }
 }
