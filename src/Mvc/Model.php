@@ -119,6 +119,8 @@ class Model extends \Phalcon\Mvc\Model
         
         // Other Behaviors
         $this->addSlugBehavior();
+        $this->addUuidBehavior();
+        
         $this->addSoftDeleteBehavior();
         $this->addPositionBehavior();
         $this->addBlameableBehavior();
@@ -186,6 +188,23 @@ class Model extends \Phalcon\Mvc\Model
         $this->addBehavior(new \Zemit\Mvc\Model\Behavior\Security($config));
     }
     
+    
+    /**
+     * Created By
+     */
+    public function addUuidBehavior(): void
+    {
+        /** @var \Zemit\Security $security */
+        $security = $this->getDI()->get('security');
+        
+        $this->addBehavior(new Transformable([
+            'beforeValidationOnCreate' => [
+                'uuid' => function ($model, $field) use ($security) {
+                    return $model->getAttribute($field) ?? $security->getRandom()->uuid();
+                },
+            ],
+        ]));
+    }
     
     /**
      * Created By

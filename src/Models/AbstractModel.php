@@ -13,6 +13,8 @@ namespace Zemit\Models;
 use Phalcon\Validation\Validator\Between;
 use Phalcon\Validation\Validator\Date;
 use Phalcon\Validation\Validator\Numericality;
+use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Validation\Validator\Uniqueness;
 use Zemit\Locale;
 use Zemit\Validation;
 
@@ -181,6 +183,7 @@ abstract class AbstractModel extends \Zemit\Mvc\Model
     public function genericValidation(?Validation $validator = null)
     {
         $validator ??= new Validation();
+        $modelsMetaData = $this->getModelsMetaData();
     
         // POSITION
         if (property_exists($this, 'position')) {
@@ -225,10 +228,20 @@ abstract class AbstractModel extends \Zemit\Mvc\Model
         if (property_exists($this, 'restoredAt')) {
             $validator->add('restoredAt', new Date(['format' => self::DATETIME_FORMAT, 'message' => $this->_('restoredAtNotValid'), 'allowEmpty' => true]));
         }
-        if (property_exists($this, 'restoredBy')) {
-            $validator->add('restoredBy', new Numericality(['message' => $this->_('restoredByNotValid'), 'allowEmpty' => true]));
-            $validator->add('restoredBy', new Between(['minimum' => 0, 'maximum' => self::MAX_UNSIGNED_INT, 'message' => $this->_('restoredByNotValid'), 'allowEmpty' => true]));
+        $attribute = 'restoredBy';
+        if (property_exists($this, $attribute) && $modelsMetaData->hasAttribute($this, $attribute)) {
+            $validator->add($attribute, new Numericality(['message' => $this->_('notNumeric'), 'allowEmpty' => true]));
+            $validator->add($attribute, new Between(['minimum' => 0, 'maximum' => self::MAX_UNSIGNED_INT, 'message' => $this->_('notValid'), 'allowEmpty' => true]));
         }
+    
+        // UUID / GUID / UID
+        foreach (['uuid', 'guid', 'uid'] as $attribute) {
+            if (property_exists($this, $attribute) && $modelsMetaData->hasAttribute($this, $attribute)) {
+                $validator->add($attribute, new PresenceOf(['message' => $this->_('required')]));
+                $validator->add($attribute, new Uniqueness(['message' => $this->_('notUnique')]));
+            }
+        }
+        
         
         return $validator;
     }
