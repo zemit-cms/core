@@ -168,11 +168,10 @@ class Env
      * Set the environnement variable
      * @param $name string Env key to set
      * @param $value mixed Value to set
-     * @return mixed Env value
      */
     public function __set(string $name, $value)
     {
-        return self::set($name, $value);
+        self::set($name, $value);
     }
     
     /**
