@@ -53,8 +53,14 @@ class Env
     public static function getDotenv(array $filePath = null)
     {
         $filePath ??= self::getCurrentPath();
-        self::$dotenv ??= Dotenv::create($filePath);
-        self::$vars ??= self::$dotenv->load();
+        $envFilePath = $filePath . '/.env';
+        
+        if (is_readable($envFilePath)) {
+            self::$dotenv ??= Dotenv::create($filePath);
+            self::$vars ??= self::$dotenv->load();
+        }
+    
+        self::$vars ??= getenv();
         return self::$dotenv;
     }
     
@@ -112,12 +118,10 @@ class Env
      */
     public static function get($key, $default = null)
     {
-        self::$vars ??= self::getDotenv()->load();
-        $ret = self::$vars[$key] ?? null;
+        self::getDotenv();
         
-        if ($ret === null) {
-            $ret = ($default instanceof Closure) ? $default() : $default;
-        }
+        $ret = self::$vars[$key] ?? null;
+        $ret ??= ($default instanceof Closure) ? $default() : $default;
         
         if (is_string($ret)) {
             switch (strtolower($ret)) {
@@ -146,7 +150,8 @@ class Env
      */
     public static function set($key, $value)
     {
-        self::getDotenv()->setEnvironmentVariable($key, $value);
+        $dotenv = self::getDotenv();
+        $dotenv? $dotenv->setEnvironmentVariable($key, $value) : $_ENV[$key] = $value;
     }
     
     /**
