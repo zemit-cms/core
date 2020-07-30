@@ -317,9 +317,10 @@ class Config extends PhalconConfig
                 'error' => Env::get('LOGGER_ERROR', false),
                 'database' => Env::get('LOGGER_DATABASE', false),
                 'dispatcher' => Env::get('LOGGER_DISPATCHER', false),
-                'profiler' => Env::get('LOGGER_DATABASE', false),
+                'profiler' => Env::get('LOGGER_PROFILER', false),
                 'mailer' => Env::get('LOGGER_MAILER', false),
                 'cron' => Env::get('LOGGER_CRON', false),
+                'auth' => Env::get('LOGGER_AUTH', false),
                 
                 'driver' => explode(',', Env::get('LOGGER_DRIVER', 'noop')),
                 'drivers' => [
