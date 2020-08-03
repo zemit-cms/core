@@ -347,7 +347,6 @@ DOC;
     public function services()
     {
         return $this->fireSet($this->services, Services::class, [$this->di, $this->config]);
-        ;
     }
     
     /**

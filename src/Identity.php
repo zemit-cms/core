@@ -409,6 +409,11 @@ class Identity extends Injectable
             }
         }
         
+        // Append inherit roles
+        foreach ($roleList as $role) {
+        
+        }
+        
         // We don't need userAs group / type / role list
         return [
             'loggedIn' => $this->isLoggedIn(),
@@ -749,16 +754,15 @@ class Identity extends Injectable
                     $email = new $emailClass();
                     $email->setTemplateByIndex('reset-password');
                     $email->setTo($user->getEmail());
-                    $meta = ['user' => $user->expose(['User' => [
+                    $meta = [];
+                    $meta['user'] = $user->expose(['User' => [
                         false,
                         'firstName',
                         'lastName',
                         'email',
-                        'token' => function ($builder) use ($token) {
-                            $builder->setValue($token);
-                        },
-                    ]])];
-                    $meta['link'] = $this->url->get('/reset-password/' . $token);
+                    ]]);
+                    $meta['resetLink'] = $this->url->get('/reset-password/' . $token);
+                    
                     $email->setMeta();
                     $saved = $user->save();
                     $sent = $saved ? $email->send() : false;

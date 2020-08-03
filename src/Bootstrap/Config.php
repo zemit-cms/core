@@ -277,6 +277,7 @@ class Config extends PhalconConfig
                 
                 Provider\Profiler\ServiceProvider::class => Provider\Profiler\ServiceProvider::class,
                 Provider\Database\ServiceProvider::class => Provider\Database\ServiceProvider::class,
+                Provider\DatabaseReadOnly\ServiceProvider::class => Provider\DatabaseReadOnly\ServiceProvider::class,
                 Provider\Annotations\ServiceProvider::class => Provider\Annotations\ServiceProvider::class,
                 Provider\ModelsManager\ServiceProvider::class => Provider\ModelsManager\ServiceProvider::class,
                 Provider\ModelsMetadata\ServiceProvider::class => Provider\ModelsMetadata\ServiceProvider::class,
@@ -509,8 +510,8 @@ class Config extends PhalconConfig
                         'port' => Env::get('REDIS_PORT', 6379),
                         'index' => Env::get('REDIS_INDEX', 0),
                         'auth' => Env::get('REDIS_AUTH', null),
-                        'persistent' => Env::get('REDIS_PERSISTENT', null),
-                        'socket' => Env::get('REDIS_PERSISTENT_SOCKET', null),
+                        'persistent' => Env::get('REDIS_PERSISTENT', 0),
+                        'socket' => Env::get('REDIS_SOCKET', null),
                     ],
                     'noop' => [
                         'adapter' => \Phalcon\Session\Adapter\Noop::class,
@@ -592,7 +593,7 @@ class Config extends PhalconConfig
                         'index' => Env::get('REDIS_INDEX', 0),
                         'auth' => Env::get('REDIS_AUTH', null),
                         'persistent' => Env::get('REDIS_PERSISTENT', null),
-                        'socket' => Env::get('REDIS_PERSISTENT_SOCKET', null),
+                        'socket' => Env::get('REDIS_SOCKET', null),
                     ],
                 ],
                 'default' => [
@@ -635,7 +636,7 @@ class Config extends PhalconConfig
                         'index' => Env::get('REDIS_INDEX', 0),
                         'auth' => Env::get('REDIS_AUTH', null),
                         'persistent' => Env::get('REDIS_PERSISTENT', null),
-                        'socket' => Env::get('REDIS_PERSISTENT_SOCKET', null),
+                        'socket' => Env::get('REDIS_SOCKET', null),
                     ],
                     'wincache' => [
                         'adapter' => \Phalcon\Mvc\Model\MetaData\Wincache::class,
@@ -686,7 +687,7 @@ class Config extends PhalconConfig
                         'index' => Env::get('REDIS_INDEX', 0),
                         'auth' => Env::get('REDIS_AUTH', null),
                         'persistent' => Env::get('REDIS_PERSISTENT', null),
-                        'socket' => Env::get('REDIS_PERSISTENT_SOCKET', null),
+                        'socket' => Env::get('REDIS_SOCKET', null),
                     ],
                     'aerospike' => [
                         'adapter' => \Phalcon\Annotations\Adapter\Aerospike::class,
@@ -714,6 +715,15 @@ class Config extends PhalconConfig
                             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . Env::get('DATABASE_CHARSET', 'utf8'),
                             PDO::ATTR_EMULATE_PREPARES => Env::get('DATABASE_PDO_EMULATE_PREPARES', false), // https://stackoverflow.com/questions/10113562/pdo-mysql-use-pdoattr-emulate-prepares-or-not
                             PDO::ATTR_STRINGIFY_FETCHES => Env::get('DATABASE_PDO_STRINGIFY_FETCHES', false),
+                            PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => Env::get('MYSQL_ATTR_SSL_VERIFY_SERVER_CERT', true),
+                        ],
+                        'readOnly' => [
+                            'host' => Env::get('DATABASE_READONLY_HOST'),
+                            'port' => Env::get('DATABASE_READONLY_PORT'),
+                            'dbname' => Env::get('DATABASE_READONLY_DBNAME'),
+                            'username' => Env::get('DATABASE_READONLY_USERNAME'),
+                            'password' => Env::get('DATABASE_READONLY_PASSWORD'),
+                            'charset' => Env::get('DATABASE_READONLY_CHARSET'),
                         ],
                     ],
                 ],

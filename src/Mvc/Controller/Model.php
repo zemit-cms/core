@@ -28,6 +28,7 @@ trait Model
     /**
      * Get the current Model Name
      *
+     * @deprecated change to getModelClassName() instead
      * @return string|null
      */
     public function getModelName()

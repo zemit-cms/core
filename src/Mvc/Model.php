@@ -110,6 +110,9 @@ class Model extends \Phalcon\Mvc\Model
     {
         // Default model setup
         self::setup();
+        $this->setWriteConnectionService('db');
+        $this->setReadConnectionService('dbr');
+        
         $this->setEventsManager(new Manager());
         $this->keepSnapshots(true);
         $this->useDynamicUpdate(true);

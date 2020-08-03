@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Provider\Database;
+namespace Zemit\Provider\DatabaseReadOnly;
 
 use Phalcon\Di\DiInterface;
 use Zemit\Db\Events\Logger;
@@ -27,7 +27,7 @@ class ServiceProvider extends AbstractServiceProvider
      * The Service name.
      * @var string
      */
-    protected $serviceName = 'db';
+    protected $serviceName = 'dbr';
     
     /**
      * {@inheritdoc}
@@ -46,7 +46,16 @@ class ServiceProvider extends AbstractServiceProvider
             
             $config = $driver->toArray();
             unset($config['adapter']);
-            unset($config['readOnly']);
+            
+            // merge readonly config to config
+            if (isset($config['readOnly'])) {
+                foreach ($config['readOnly'] as $key => $value) {
+                    if (isset($value)) {
+                        $config[$key] = $value;
+                    }
+                }
+                unset($config['readOnly']);
+            }
             
             /** @var \Phalcon\Db\Adapter\Pdo $connection */
             $connection = new $adapter($config);
