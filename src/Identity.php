@@ -763,7 +763,7 @@ class Identity extends Injectable
                     ]]);
                     $meta['resetLink'] = $this->url->get('/reset-password/' . $token);
                     
-                    $email->setMeta();
+                    $email->setMeta($meta);
                     $saved = $user->save();
                     $sent = $saved ? $email->send() : false;
     

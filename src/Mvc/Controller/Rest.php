@@ -437,6 +437,12 @@ class Rest extends \Zemit\Mvc\Controller
         $api['version'] = '0.1';
         
         $this->response->setStatusCode($code, $code . ' ' . $status);
+        $this->response->setEtag($hash);
+        
+        $cache = $this->getCache();
+        if (!empty($cache['lifetime'])) {
+            $this->response->setCache($cache['lifetime']);
+        }
         
         return $this->response->setJsonContent(array_merge([
             'api' => $api,
