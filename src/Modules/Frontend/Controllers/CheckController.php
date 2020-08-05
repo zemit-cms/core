@@ -31,7 +31,13 @@ use Zemit\Utils;
 /**
  * Class CheckController
  *
- * @package App\Modules\Frontend\Controllers
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Modules\Frontend\Controllers
  */
 class CheckController extends AbstractController
 {

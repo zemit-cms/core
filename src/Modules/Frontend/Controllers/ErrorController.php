@@ -15,6 +15,12 @@ use Zemit\Mvc\Controller\StatusCode;
 /**
  * Class ErrorController
  *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
  * @package Zemit\Modules\Frontend\Controllers
  */
 class ErrorController extends AbstractController

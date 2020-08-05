@@ -12,6 +12,13 @@ namespace Zemit\Modules\Frontend;
 
 /**
  * Class Module
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
  * @package Zemit\Modules\Frontend
  */
 class Module extends \Zemit\Mvc\Module
