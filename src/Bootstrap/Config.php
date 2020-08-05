@@ -14,6 +14,7 @@ use PDO;
 use Zemit\Filter;
 use Zemit\Filters;
 use Zemit\Locale;
+use Zemit\Models\User;
 use Zemit\Modules\Api\Controllers\UserController;
 use Zemit\Modules\Cli\Tasks\CacheTask;
 use Zemit\Modules\Cli\Tasks\CronTask;
@@ -22,6 +23,12 @@ use Zemit\Modules\Frontend\Controllers\IndexController;
 use Zemit\Modules\Frontend\Controllers\TestController;
 use Zemit\Modules\Oauth2\Controllers\FacebookController;
 use Zemit\Modules\Oauth2\Controllers\GoogleController;
+use Zemit\Mvc\Controller\Behavior\Model\Create;
+use Zemit\Mvc\Controller\Behavior\Model\Delete;
+use Zemit\Mvc\Controller\Behavior\Model\Restore;
+use Zemit\Mvc\Controller\Behavior\Model\Update;
+use Zemit\Mvc\Controller\Behavior\Skip\SkipIdentityCondition;
+use Zemit\Mvc\Controller\Behavior\Skip\SkipWhitelist;
 use Zemit\Providers;
 use Zemit\Utils\Env;
 use Zemit\Version;
@@ -717,6 +724,9 @@ class Config extends PhalconConfig
                             PDO::ATTR_STRINGIFY_FETCHES => Env::get('DATABASE_PDO_STRINGIFY_FETCHES', false),
                             PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => Env::get('MYSQL_ATTR_SSL_VERIFY_SERVER_CERT', true),
                         ],
+                        /**
+                         * ReadOnly Configuration
+                         */
                         'readOnly' => [
                             'host' => Env::get('DATABASE_READONLY_HOST'),
                             'port' => Env::get('DATABASE_READONLY_PORT'),
@@ -819,19 +829,71 @@ class Config extends PhalconConfig
              * Application permissions
              */
             'permissions' => [
+                'features' => [
+                    // This feature allow to administer users
+                    'user' => [
+                        'behaviors' => [
+                            UserController::class => [
+                                SkipWhitelist::class,
+                                SkipIdentityCondition::class,
+                                Create::class,
+                                Update::class,
+                                Delete::class,
+                                Restore::class,
+                            ]
+                        ],
+                        'components' => [
+                            UserController::class => ['*'],
+                            User::class => ['*'],
+                        ]
+                    ],
+                ],
                 'roles' => [
+                    // Everyone
                     'everyone' => [
+                        'components' => [
+                        
+                        ],
                         'controllers' => [
                             IndexController::class => ['*'],
                             ErrorController::class => ['*'],
                             TestController::class => ['*'],
                             UserController::class => ['*'],
-                            CronTask::class => ['*'],
-                            CacheTask::class => ['*'],
                             FacebookController::class => ['*'],
                             GoogleController::class => ['*'],
-                        ]
-                    ]
+                        ],
+                        'tasks' => [
+                            CronTask::class => ['*'],
+                            CacheTask::class => ['*'],
+                        ],
+                        'views' => [
+                        
+                        ],
+                    ],
+                    // Visitor Only
+                    'visitor' => [
+                    
+                    ],
+                    // Guest Only
+                    'guest' => [
+                    
+                    ],
+                    // User only
+                    'user' => [
+                    
+                    ],
+                    // Admin only
+                    'admin' => [
+                        'inherit' => [
+                        
+                        ],
+                    ],
+                    // Dev only
+                    'dev' => [
+                        'inherit' => [
+                            'admin'
+                        ],
+                    ],
                 ]
             ],
         ]);
