@@ -14,6 +14,13 @@ use Xenolope\Quahog\Client;
 
 /**
  * Trait Clamav
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
  * @property Client $clamav
  * @package Zemit\Mvc\Controller
  */

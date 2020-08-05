@@ -10,14 +10,17 @@
 
 namespace Zemit\Provider\VoltTemplate;
 
-use Phalcon\Di\DiInterface;
 use Phalcon\Mvc\View\Engine\Volt;
-use Phalcon\Mvc\ViewBaseInterface;
 use Zemit\Provider\AbstractServiceProvider;
-use Zemit\Utils\Env;
 
 /**
- * Zemit\Provider\VoltTemplate\ServiceProvider
+ * Class ServiceProvider
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Provider\VoltTemplate
  */
@@ -41,6 +44,7 @@ class ServiceProvider extends AbstractServiceProvider
             $volt = new Volt($view, $di);
             $volt->setOptions([]); // @todo ?
             $volt->getCompiler()->addExtension(new VoltFunctions());
+            
             return $volt;
         });
     }

@@ -16,7 +16,13 @@ use Phalcon\Translate\InterpolatorFactory;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Zemit\Provider\Flash\ServiceProvider
+ * Class ServiceProvider
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Provider\Translate
  */
@@ -43,7 +49,7 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function () use ($di) {
+        $di->setShared($this->getName(), function() use ($di) {
             $config = $di->get('config');
             if ($config && $config->has('translate')) {
                 $options = $config->translate->toArray();

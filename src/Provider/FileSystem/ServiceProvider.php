@@ -16,7 +16,13 @@ use Phalcon\Di\DiInterface;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Zemit\Provider\FileSystem\ServiceProvider
+ * Class ServiceProvider
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Provider\FileSystem
  */
@@ -35,9 +41,10 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function ($root = null) use ($di) {
+        $di->setShared($this->getName(), function($root = null) use ($di) {
             $config = $di->get('config');
             $root ??= $config->app->dir->root;
+            
             return new Filesystem(new LocalFilesystemAdapter($root));
         });
     }

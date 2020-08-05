@@ -16,7 +16,13 @@ use Zemit\Bootstrap\Config;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Zemit\Provider\Config\ServiceProvider
+ * Class ServiceProvider
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Provider\Config
  */
@@ -29,33 +35,33 @@ class ServiceProvider extends AbstractServiceProvider
      *
      * @param DiInterface $di
      */
-    public function register(DiInterface $di = null) : void
+    public function register(DiInterface $di = null): void
     {
         // Set shared service in DI
-        $di->setShared($this->getName(), function () use ($di) {
-    
+        $di->setShared($this->getName(), function() use ($di) {
+            
             /** @var Bootstrap $bootstrap */
             $bootstrap = $di->get('bootstrap');
-    
+            
             $config = $bootstrap->config ?? new Config();
             if (is_string($config) && class_exists($config)) {
                 $config = new $config();
             }
-
+            
             // Inject some dynamic variables
             $config->mode = $di->get('bootstrap')->getMode();
-
+            
             // Merge config with current environment
             $config->mergeEnvConfig();
             
             // Launch bootstrap prepare raw php configs
             $bootstrap->prepare()->php($config);
-
+            
             // Register other providers
 //            foreach ($config->providers as $provider) {
 //                $di->register(new $provider($di));
 //            }
-
+            
             // Set the config
             return $config;
         });

@@ -16,11 +16,18 @@ use Phalcon\Di\DiInterface;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Zemit\Provider\Tag\ServiceProvider
- * @see https://github.com/tegaphilip/padlock
- * @see https://oauth2.thephpleague.com/framework-integrations/
+ * Class ServiceProvider
  *
- * @package Zemit\Provider\Config
+ * @link https://github.com/tegaphilip/padlock
+ * @link https://oauth2.thephpleague.com/framework-integrations/
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Provider\Oauth2Google
  */
 class ServiceProvider extends AbstractServiceProvider
 {
@@ -35,8 +42,9 @@ class ServiceProvider extends AbstractServiceProvider
     {
         $config = $di->get('config');
         $session = $di->get('session');
-        $di->setShared($this->getName(), function () use ($config, $session) {
+        $di->setShared($this->getName(), function() use ($config, $session) {
             $google = new Google($config->oauth2->google->toArray());
+            
             return $google;
         });
     }

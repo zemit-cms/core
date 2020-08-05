@@ -15,7 +15,13 @@ use Zemit\Provider\AbstractServiceProvider;
 use Zemit\Utils\Env;
 
 /**
- * Zemit\Provider\Environment\ServiceProvider
+ * Class ServiceProvider
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Provider\Environment
  */

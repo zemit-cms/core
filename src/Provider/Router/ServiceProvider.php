@@ -17,9 +17,15 @@ use Zemit\Bootstrap\Router;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Zemit\Provider\Routing\ServiceProvider
+ * Class ServiceProvider
  *
- * @package Zemit\Provider\Routing
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Provider\Router
  */
 class ServiceProvider extends AbstractServiceProvider
 {
@@ -36,17 +42,17 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function () use ($di) {
+        $di->setShared($this->getName(), function() use ($di) {
             $eventsManager = $di->get('eventsManager');
             $config = $di->get('config')->router;
             
             /** @var Bootstrap $bootstrap */
             $bootstrap = $di->get('bootstrap');
-    
+            
             /**
              * Router
              */
-            $router = $bootstrap->isConsole()? new \Zemit\Cli\Router(true) : new Router(true, $bootstrap->application);
+            $router = $bootstrap->isConsole() ? new \Zemit\Cli\Router(true) : new Router(true, $bootstrap->application);
             $router->setDI($di);
             
             // Console

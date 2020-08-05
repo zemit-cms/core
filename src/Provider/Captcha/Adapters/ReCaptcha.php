@@ -16,7 +16,13 @@ use ReCaptcha\ReCaptcha as GoogleCaptcha;
 use Zemit\Tag;
 
 /**
- * Zemit\Provider\Captcha\Adapters\ReCaptcha
+ * Class ReCaptcha
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Provider\Captcha\Adapters
  */

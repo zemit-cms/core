@@ -15,7 +15,13 @@ use InvalidArgumentException;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Zemit\Provider\Mail\ServiceProvider
+ * Class ServiceProvider
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Provider\Mailer
  */
@@ -34,13 +40,13 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(\Phalcon\Di\DiInterface $di): void
     {
-        $di->setShared($this->getName(), function () use ($di) {
+        $di->setShared($this->getName(), function() use ($di) {
             
             /** @var \Phalcon\Config $config */
             $config = $di->get('config')->mailer;
             $driver = $config->get('default');
             
-            switch ($driver) {
+            switch($driver) {
                 case 'smtp':
                 case 'mail':
                 case 'sendmail':

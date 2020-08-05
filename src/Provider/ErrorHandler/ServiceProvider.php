@@ -20,7 +20,13 @@ use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
 /**
- * Zemit\Provider\ErrorHandler\ServiceProvider
+ * Class ServiceProvider
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Provider\ErrorHandler
  */
@@ -33,7 +39,7 @@ class ServiceProvider extends AbstractServiceProvider
      *
      * @param DiInterface $container
      */
-    public function register(DiInterface $container)
+    public function register(DiInterface $container): void
     {
         $serviceName = $this->getName();
         
@@ -41,16 +47,17 @@ class ServiceProvider extends AbstractServiceProvider
         $container->setShared($serviceName . '::prettyPageHandler', PrettyPageHandler::class);
         $container->setShared($serviceName . '::errorPageHandler', ErrorPageHandler::class);
         
-        $container->setShared($serviceName, function () use ($serviceName, $container) {
+        $container->setShared($serviceName, function() use ($serviceName, $container) {
             $run = new Run();
             
             $mode = $container->get('bootstrap')->getMode();
             
-            switch ($mode) {
+            switch($mode) {
                 case 'normal':
                     if (true) { //@TODO fetch from config
                         $run->pushHandler($container->get($serviceName . '::prettyPageHandler'));
-                    } else {
+                    }
+                    else {
                         $run->pushHandler($container->get($serviceName . '::errorPageHandler'));
                     }
                     break;
@@ -68,6 +75,7 @@ class ServiceProvider extends AbstractServiceProvider
             }
             
             $run->pushHandler($container->get($serviceName . '::loggerHandler'));
+            
             return $run;
         });
         

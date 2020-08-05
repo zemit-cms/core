@@ -14,9 +14,15 @@ use Phalcon\Di\DiInterface;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Zemit\Provider\JavascriptParser\ServiceProvider
+ * Class ServiceProvider
  *
- * @package Zemit\Provider\JavascriptParser
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Provider\V8js
  */
 class ServiceProvider extends AbstractServiceProvider
 {
@@ -33,7 +39,7 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function () {
+        $di->setShared($this->getName(), function() {
             return true; // @todo
 //            $v8 = new \V8Js();
 //            return $v8;

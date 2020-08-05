@@ -18,7 +18,13 @@ use Phalcon\Logger\Formatter\Json;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Zemit\Provider\Logger\ServiceProvider
+ * Class ServiceProvider
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Provider\Logger
  */
@@ -41,7 +47,7 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function () use ($di) {
+        $di->setShared($this->getName(), function() use ($di) {
             $config = $di->get('config')->logger;
             $drivers = $config->driver;
             
@@ -56,36 +62,36 @@ class ServiceProvider extends AbstractServiceProvider
                 $options = $config->drivers->$driver->toArray();
                 $options = array_merge($default, $options);
                 $adapter = $options['adapter'];
-                $filename = $options['filename'] ?: $driver;
+                $filename = $options['filename'] ? : $driver;
                 
                 if (!is_array($filename)) {
                     $filename = [$filename];
                 }
-    
+                
                 // json
                 if ($config->default->formatter === 'json') {
-        
+                    
                     // json formatter
                     $formatter = new Json();
                     $formatter->setDateFormat($options['date'] ? : self::DEFAULT_DATE);
                 }
-    
+                
                 // default formatter
                 else {
-        
+                    
                     // line formatter
                     $formatter = new Line();
-                    $formatter->setFormat($options['format'] ?: self::DEFAULT_FORMAT);
-                    $formatter->setDateFormat($options['date'] ?: self::DEFAULT_DATE);
+                    $formatter->setFormat($options['format'] ? : self::DEFAULT_FORMAT);
+                    $formatter->setDateFormat($options['date'] ? : self::DEFAULT_DATE);
                 }
                 
                 foreach ($filename as $file) {
                     
                     $path = $options['path'] . $file . '.log';
-    
+                    
                     // driver
                     $adapters[$file] = new $adapter($path, $options);
-    
+                    
                     // set formatter
                     $adapters[$file]->setFormatter($formatter);
                 }

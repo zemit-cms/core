@@ -15,7 +15,13 @@ use Zemit\Http\Request;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Zemit\Provider\Request\ServiceProvider
+ * Class ServiceProvider
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Provider\Request
  */
@@ -34,9 +40,10 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function () use ($di) {
+        $di->setShared($this->getName(), function() use ($di) {
             $request = new Request();
             $request->setDI($di);
+            
             return $request;
         });
     }

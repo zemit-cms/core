@@ -14,9 +14,15 @@ use Phalcon\Avatar\Gravatar;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Zemit\Provider\Avatar\ServiceProvider
+ * Class ServiceProvider
  *
- * @package Zemit\Provider\Avatar
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Provider\Gravatar
  */
 class ServiceProvider extends AbstractServiceProvider
 {
@@ -25,17 +31,17 @@ class ServiceProvider extends AbstractServiceProvider
      * @var string
      */
     protected $serviceName = 'gravatar';
-
+    
     /**
      * {@inheritdoc}
      *
      * @return void
      */
-    public function register(\Phalcon\Di\DiInterface $di) : void
+    public function register(\Phalcon\Di\DiInterface $di): void
     {
         $di->setShared(
             $this->getName(),
-            function () use ($di) {
+            function() use ($di) {
                 return new Gravatar($di->get('config')->get('gravatar'));
             }
         );

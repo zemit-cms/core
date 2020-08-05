@@ -15,7 +15,13 @@ use Phalcon\Di\DiInterface;
 use Zemit\Di\Injectable;
 
 /**
- * Zemit\Provider\AbstractServiceProvider
+ * Class AbstractServiceProvider
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Provider
  */

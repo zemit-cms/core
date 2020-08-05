@@ -16,9 +16,15 @@ use Zemit\Url;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Zemit\Provider\UrlResolver\ServiceProvider
+ * Class ServiceProvider
  *
- * @package Zemit\Provider\UrlResolver
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Provider\Url
  */
 class ServiceProvider extends AbstractServiceProvider
 {
@@ -36,17 +42,15 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function () use ($di) {
+        $di->setShared($this->getName(), function() use ($di) {
             $config = $di->get('config')->app;
             $router = $di->get('router');
             
-            $url = new Url($router instanceof RouterInterface? $router : null);
+            $url = new Url($router instanceof RouterInterface ? $router : null);
             $url->setStaticBaseUri($config->staticUri ?? '/');
             $url->setBaseUri($config->uri ?? '/');
             
             return $url;
         });
-        
-        $di->setShared('slug', ['className' => Slug::class]);
     }
 }

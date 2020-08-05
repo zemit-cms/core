@@ -11,9 +11,15 @@
 namespace Zemit\Assets;
 
 /**
+ * Class Manager
  * {@inheritDoc}
  *
- * Class Manager
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
  * @package Zemit\Assets
  */
 class Manager extends \Phalcon\Assets\Manager

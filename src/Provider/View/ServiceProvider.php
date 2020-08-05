@@ -19,7 +19,13 @@ use Zemit\Mvc\View\Error as ViewError;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Zemit\Provider\View\ServiceProvider
+ * Class ServiceProvider
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Provider\View
  */
@@ -38,7 +44,7 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(\Phalcon\Di\DiInterface $di): void
     {
-        $di->setShared($this->getName(), function () use ($di) {
+        $di->setShared($this->getName(), function() use ($di) {
             $config = $di->get('config');
             $eventsManager = $di->get('eventsManager');
             

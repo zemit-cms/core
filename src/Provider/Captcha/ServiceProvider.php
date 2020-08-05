@@ -14,7 +14,13 @@ use Phalcon\Di\DiInterface;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Zemit\Provider\Captcha\ServiceProvider
+ * Class ServiceProvider
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Provider\Captcha
  */

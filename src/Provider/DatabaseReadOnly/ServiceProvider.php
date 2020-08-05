@@ -17,9 +17,15 @@ use Zemit\Db\Events\Security;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Zemit\Provider\Database\ServiceProvider
+ * Class ServiceProvider
  *
- * @package Zemit\Provider\Database
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Provider\DatabaseReadOnly
  */
 class ServiceProvider extends AbstractServiceProvider
 {
@@ -37,7 +43,7 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function () use ($di) {
+        $di->setShared($this->getName(), function() use ($di) {
             $config = $di->get('config')->database;
             $eventsManager = $di->get('eventsManager');
             
@@ -59,12 +65,13 @@ class ServiceProvider extends AbstractServiceProvider
             
             /** @var \Phalcon\Db\Adapter\Pdo $connection */
             $connection = new $adapter($config);
-    
+            
             $eventsManager->attach('db', new Security());
             $eventsManager->attach('db', new Logger());
             $eventsManager->attach('db', new Profiler());
             
             $connection->setEventsManager($eventsManager);
+
 //            $connection->setDi($di);
             
             return $connection;

@@ -20,6 +20,17 @@ use Zemit\Http\Request;
 use Zemit\Identity;
 use Zemit\Utils\Slug;
 
+/**
+ * Trait Model
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Mvc\Controller
+ */
 trait Model
 {
     protected $_bind = [];

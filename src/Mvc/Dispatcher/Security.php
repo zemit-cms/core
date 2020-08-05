@@ -19,9 +19,16 @@ use Zemit\Di\Injectable;
 use Zemit\Events\Identity;
 
 /**
- * SecurityPlugin
- *
+ * Class Security
  * This is the security plugin which controls that users only have access to the modules they're assigned to
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Mvc\Dispatcher
  */
 class Security extends Injectable
 {

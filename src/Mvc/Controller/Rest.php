@@ -19,6 +19,13 @@ use Zemit\Utils\Slug;
 
 /**
  * Class Rest
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
  * @package Zemit\Mvc\Controller
  */
 class Rest extends \Zemit\Mvc\Controller

@@ -12,6 +12,13 @@ namespace Zemit\Mvc\Controller;
 
 /**
  * Trait Identity
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
  * @property \Phalcon\Mvc\View|\Phalcon\Mvc\ViewInterface $view
  * @property \Zemit\Identity $identity
  * @package Zemit\Mvc\Controller

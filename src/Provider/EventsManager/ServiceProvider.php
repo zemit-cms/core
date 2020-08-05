@@ -15,7 +15,13 @@ use Phalcon\Events\Manager;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Zemit\Provider\EventsManager\ServiceProvider
+ * Class ServiceProvider
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Provider\EventsManager
  */
@@ -30,9 +36,10 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(DiInterface $container)
     {
-        $container->setShared($this->getName(), function () {
+        $container->setShared($this->getName(), function() {
             $em = new Manager();
             $em->enablePriorities(true);
+            
             return $em;
         });
     }

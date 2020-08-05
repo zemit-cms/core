@@ -13,9 +13,16 @@ namespace Zemit\Modules\Backend\Controllers;
 use Zemit\Mvc\View;
 
 /**
+ * Class PartialsController
  * @TODO security
+ *
  * @author Julien Turbide <jturbide@nuagerie.com>
- * @package Zemit\Modules\Backend
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Modules\Backend\Controllers
  */
 class PartialsController extends AbstractController
 {

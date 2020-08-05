@@ -15,7 +15,13 @@ use Phalcon\Http\Response\Cookies;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Zemit\Provider\Filter\ServiceProvider
+ * Class ServiceProvider
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Provider\Cookies
  */
@@ -43,12 +49,13 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(\Phalcon\Di\DiInterface $di): void
     {
-        $di->setShared($this->getName(), function () use ($di) {
+        $di->setShared($this->getName(), function() use ($di) {
             $config = $di->get('config')->cookies;
             $cookies = new Cookies(
                 $config->useEncryption ?? self::DEFAULT_USE_ENCRYPTION,
                 $config->signKey ?? self::DEFAULT_SIGN_KEY
             );
+            
             return $cookies;
         });
     }

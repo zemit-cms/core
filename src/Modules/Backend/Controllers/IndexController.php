@@ -14,14 +14,19 @@ use Zemit\Modules\Backend\Controller;
 
 /**
  * Class IndexController
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
  * @package Zemit\Modules\Backend\Controllers
  */
 class IndexController extends Controller
 {
     public function indexAction()
     {
-//        dd($this->router->getModuleName());
-//        dd($this->router->getActionName());
-//        dd($this->router->getMatchedRoute()->getPaths());
+    
     }
 }

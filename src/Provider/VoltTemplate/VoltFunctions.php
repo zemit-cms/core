@@ -10,10 +10,17 @@
 
 namespace Zemit\Provider\VoltTemplate;
 
+use Phalcon\Di;
 use Zemit\Version;
 
 /**
- * Zemit\Provider\VoltTemplate\VoltFunctions
+ * Class VoltFunctions
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Provider\VoltTemplate
  */
@@ -23,42 +30,34 @@ class VoltFunctions
      * Compile any function call in a template.
      *
      * @param string $name
-     * @param mixed  $arguments
+     * @param mixed $arguments
      *
      * @return null|string
      */
     public function compileFunction($name, $arguments)
     {
-        switch ($name) {
+        switch($name) {
             case 'join':
                 return 'implode(' . $arguments . ')';
-            case 'chr':
-            case 'number_format':
-                return $name . '(' . $arguments . ')';
-            case 'gravatar':
-                return 'container("gravatar")->getAvatar(' . $arguments . ')';
-            case 'forum_version':
-                return Version::class . '::get()';
-            case 'forum_name':
-                return '"'. $di->get('config')->site->software . '"';
         }
-
+        
         return null;
     }
-
+    
     /**
      * Compile some filters.
      *
-     * @param  string $name      The filter name
-     * @param  mixed  $arguments The filter args
+     * @param string $name The filter name
+     * @param mixed $arguments The filter args
+     *
      * @return string|null
      */
     public function compileFilter($name, $arguments)
     {
-        switch ($name) {
+        switch($name) {
             // @todo
         }
-
+        
         return null;
     }
 }

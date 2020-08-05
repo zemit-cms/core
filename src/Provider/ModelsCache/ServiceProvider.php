@@ -16,7 +16,13 @@ use Phalcon\Storage\SerializerFactory;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Zemit\Provider\ModelsCache\ServiceProvider
+ * Class ServiceProvider
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Provider\ModelsCache
  */
@@ -42,7 +48,7 @@ class ServiceProvider extends AbstractServiceProvider
 //            $adapter = $driver->adapter;
             
             $options = array_merge($config->default->toArray(), $driver->toArray());
-    
+            
             $serializerFactory = new SerializerFactory();
             $adapterFactory = new AdapterFactory($serializerFactory);
             $adapter = $adapterFactory->newInstance($config->driver, $options);

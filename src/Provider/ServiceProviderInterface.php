@@ -11,7 +11,13 @@
 namespace Zemit\Provider;
 
 /**
- * Zemit\Provider\ServiceProviderInterface
+ * Interface ServiceProviderInterface
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Provider
  */

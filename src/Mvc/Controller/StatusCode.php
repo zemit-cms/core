@@ -17,6 +17,12 @@ use Zemit\Mvc\Dispatcher;
  * Trait StatusCode
  * Mostly designed for Error Controllers
  *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
  * @property Dispatcher $dispatcher
  * @property Response $response
  * @package Zemit\Mvc\Controller

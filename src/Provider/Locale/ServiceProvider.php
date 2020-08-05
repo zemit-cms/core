@@ -15,7 +15,13 @@ use Zemit\Locale;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Zemit\Provider\Flash\ServiceProvider
+ * Class ServiceProvider
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Provider\Locale
  */
@@ -29,7 +35,7 @@ class ServiceProvider extends AbstractServiceProvider
         'default' => 'en',
         'sessionKey' => 'zemit-locale',
         'mode' => Locale::MODE_SESSION_GEOIP,
-        'allowed' => ['en']
+        'allowed' => ['en'],
     ];
     
     /**
@@ -47,14 +53,14 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function () use ($di) {
+        $di->setShared($this->getName(), function() use ($di) {
             
             // get options from config
             $config = $di->get('config');
             if ($config && $config->has('locale')) {
                 $options = $config->locale->toArray();
             }
-    
+            
             return new Locale($options ?? self::DEFAULT_LOCALE_OPTIONS);
         });
     }

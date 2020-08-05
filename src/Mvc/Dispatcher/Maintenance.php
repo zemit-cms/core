@@ -19,6 +19,12 @@ use Zemit\Mvc\Dispatcher;
 /**
  * Maintenance Dispatcher Plugin
  *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
  * Redirect to the maintenance module/controller/action
  */
 class Maintenance extends Injectable

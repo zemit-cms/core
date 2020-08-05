@@ -16,6 +16,18 @@ use Phalcon\Mvc\Dispatcher;
 use Phalcon\Events\Event;
 use Phalcon\Text;
 
+/**
+ * Class Module
+ * @todo make it work?
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Mvc\Dispatcher
+ */
 class Module extends Injectable
 {
     public function beforeDispatchLoop(Event $event, DispatcherInterface $dispatcher)

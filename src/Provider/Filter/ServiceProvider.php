@@ -17,9 +17,15 @@ use Zemit\Filter;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Zemit\Provider\Filter\ServiceProvider
+ * Class ServiceProvider
  *
- * @package Zemit\Provider\Config
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Provider\Filter
  */
 class ServiceProvider extends AbstractServiceProvider
 {
@@ -32,8 +38,9 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function () use ($di) {
+        $di->setShared($this->getName(), function() use ($di) {
             $factory = new FilterFactory();
+            
             return $factory->newInstance();
         });
     }

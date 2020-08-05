@@ -15,7 +15,13 @@ use Phalcon\Flash\Session;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Zemit\Provider\Flash\ServiceProvider
+ * Class ServiceProvider
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Provider\Flash
  */
@@ -45,9 +51,9 @@ class ServiceProvider extends AbstractServiceProvider
     {
         $cssStyle = $this->cssStyle;
         
-        $di->setShared($this->getName(), function () use ($di, $cssStyle) {
+        $di->setShared($this->getName(), function() use ($di, $cssStyle) {
             $flash = new Direct();
-    
+            
             $flash->setAutoescape(true);
             $flash->setDI($di);
             $flash->setCssClasses($cssStyle);

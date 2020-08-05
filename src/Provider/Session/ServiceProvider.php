@@ -20,7 +20,13 @@ use Phalcon\Storage\SerializerFactory;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Zemit\Provider\Session\ServiceProvider
+ * Class ServiceProvider
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Provider\Session
  */
@@ -39,21 +45,22 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function () use ($di) {
+        $di->setShared($this->getName(), function() use ($di) {
             $config = $di->get('config')->session;
             $driver = $config->drivers->{$config->driver};
             $adapter = $driver->adapter;
-    
+            
             // Merge default config with driver config
             $options = array_merge($config->default->toArray(), $driver->toArray());
-    
+            
             // Create the new session manager
             $session = new Manager();
             
             // Set the storage adapter
             if (in_array($adapter, [Noop::class, Stream::class])) {
                 $session->setAdapter(new $adapter($options));
-            } else {
+            }
+            else {
                 $serializerFactory = new SerializerFactory();
                 $adapterFactory = new AdapterFactory($serializerFactory);
                 $session->setAdapter(new $adapter($adapterFactory, $options));
@@ -61,6 +68,7 @@ class ServiceProvider extends AbstractServiceProvider
             
             // Start and return the session
             $session->start();
+            
             return $session;
         });
     }

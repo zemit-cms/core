@@ -21,6 +21,12 @@ use Zemit\Mvc\Dispatcher;
 /**
  * SecurityPlugin
  *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
  * This is the security plugin which controls that users only have access to the modules they're assigned to
  */
 class Logger extends Injectable

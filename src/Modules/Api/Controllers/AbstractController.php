@@ -14,6 +14,13 @@ use Zemit\Modules\Api\Controller;
 
 /**
  * Class AbstractController
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
  * @package Zemit\Modules\Api\Controllers
  */
 abstract class AbstractController extends Controller

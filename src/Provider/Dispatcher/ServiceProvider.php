@@ -22,7 +22,13 @@ use Zemit\Mvc\Dispatcher\Maintenance;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Zemit\Provider\Dispatcher\ServiceProvider
+ * Class ServiceProvider
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @package Zemit\Provider\Dispatcher
  */
@@ -41,7 +47,7 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function () use ($di) {
+        $di->setShared($this->getName(), function() use ($di) {
             $eventsManager = $di->get('eventsManager');
             $config = $di->get('config');
             
@@ -65,7 +71,7 @@ class ServiceProvider extends AbstractServiceProvider
             $maintenance = new Maintenance();
             $maintenance->setDI($di);
             $eventsManager->attach('dispatch', $maintenance);
-    
+            
             /**
              * Logger
              */
@@ -76,14 +82,15 @@ class ServiceProvider extends AbstractServiceProvider
             // CLI Dispatcher
             if (isset($config->mode) && $config->mode === 'console') {
                 $dispatcher = new CliDispatcher();
-            } else {
+            }
+            else {
                 /**
                  * Error
                  */
 //                $error = new Error();
 //                $error->setDI($di);
 //                $eventsManager->attach('dispatch', $error);
-    
+                
                 /**
                  * Rest
                  */

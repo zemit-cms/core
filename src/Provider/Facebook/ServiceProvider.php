@@ -14,9 +14,15 @@ use Phalcon\Di\DiInterface;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Zemit\Provider\Escaper\ServiceProvider
+ * Class ServiceProvider
  *
- * @package Zemit\Provider\Config
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Provider\Facebook
  */
 class ServiceProvider extends AbstractServiceProvider
 {
@@ -27,10 +33,11 @@ class ServiceProvider extends AbstractServiceProvider
      *
      * @param DiInterface $di
      */
-    public function register(\Phalcon\Di\DiInterface $di) : void
+    public function register(\Phalcon\Di\DiInterface $di): void
     {
-        $di->setShared($this->getName(), function () use ($di) {
+        $di->setShared($this->getName(), function() use ($di) {
             $facebook = new Facebook();
+            
             return $facebook;
         });
     }

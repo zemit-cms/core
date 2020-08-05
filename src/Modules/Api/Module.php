@@ -11,8 +11,15 @@
 namespace Zemit\Modules\Api;
 
 /**
+ * Class Module
+ *
  * @author Julien Turbide <jturbide@nuagerie.com>
- * @version 1.0.0
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Modules\Api
  */
 class Module extends \Zemit\Mvc\Module
 {
