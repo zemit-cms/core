@@ -439,6 +439,8 @@ class Rest extends \Zemit\Mvc\Controller
         $this->response->setStatusCode($code, $code . ' ' . $status);
         $this->response->setEtag($hash);
         
+        // @todo handle this correctly
+        // @todo private vs public cache type
         $cache = $this->getCache();
         if (!empty($cache['lifetime'])) {
             $this->response->setCache($cache['lifetime']);
