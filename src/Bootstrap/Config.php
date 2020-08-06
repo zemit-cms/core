@@ -851,6 +851,12 @@ class Config extends PhalconConfig
                 'roles' => [
                     // Everyone
                     'everyone' => [
+                        'behaviors' => [
+                        
+                        ],
+                        'features' => [
+                            'user',
+                        ],
                         'components' => [
                         
                         ],
@@ -865,6 +871,9 @@ class Config extends PhalconConfig
                         'tasks' => [
                             CronTask::class => ['*'],
                             CacheTask::class => ['*'],
+                        ],
+                        'models' => [
+                        
                         ],
                         'views' => [
                         

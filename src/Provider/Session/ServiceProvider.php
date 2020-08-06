@@ -12,6 +12,7 @@
 namespace Zemit\Provider\Session;
 
 use Phalcon\Di\DiInterface;
+use Phalcon\Session\Adapter\Redis;
 use Phalcon\Session\Manager;
 use Phalcon\Session\Adapter\Noop;
 use Phalcon\Session\Adapter\Stream;
@@ -55,7 +56,7 @@ class ServiceProvider extends AbstractServiceProvider
             
             // Create the new session manager
             $session = new Manager();
-            
+    
             // Set the storage adapter
             if (in_array($adapter, [Noop::class, Stream::class])) {
                 $session->setAdapter(new $adapter($options));
@@ -64,6 +65,11 @@ class ServiceProvider extends AbstractServiceProvider
                 $serializerFactory = new SerializerFactory();
                 $adapterFactory = new AdapterFactory($serializerFactory);
                 $session->setAdapter(new $adapter($adapterFactory, $options));
+                
+                if ($adapter instanceof Redis) {
+                    ini_set('session.save_handler', 'redis');
+                    ini_set('session.save_path', $options['host'] . ':' . $options['port'] . '?' . http_build_query($options));
+                }
             }
             
             // Start and return the session
