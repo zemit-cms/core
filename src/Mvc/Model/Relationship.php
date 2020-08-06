@@ -23,6 +23,18 @@ use Phalcon\Mvc\ModelInterface;
 use Zemit\Mvc\Model;
 use Zemit\Utils\Sprintf;
 
+/**
+ * Trait Relationship
+ * Allow to automagically save all kind of relationships
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Mvc\Model
+ */
 trait Relationship
 {
     protected array $_keepMissingRelated = [];
@@ -98,6 +110,8 @@ trait Relationship
             // @todo add a resursive whitelist check & columnMap support
             if ($relation) {
                 
+                $type = $relation->getType();
+                
                 $fields = $relation->getFields();
                 $fields = is_array($fields) ? $fields : [$fields];
                 
@@ -124,7 +138,7 @@ trait Relationship
                     $assign = [];
                     
                     if (empty($relationData)) {
-                        $assign = $this->_getEntityFromData($relationData, $referencedFields, $referencedModel, $fields);
+                        $assign = $this->_getEntityFromData($relationData, $referencedFields, $referencedModel, $fields, $type);
                     } else {
                         foreach ($relationData as $traversedKey => $traversedData) {
                             // Array of things
@@ -163,7 +177,7 @@ trait Relationship
                                 
                                 // if [alias => [[id => 1], [id => 2], [id => 3], ....]]
                                 elseif (is_array($traversedData) || is_object($traversedData)) {
-                                    $entity = $this->_getEntityFromData($traversedData, $referencedFields, $referencedModel, $fields);
+                                    $entity = $this->_getEntityFromData($traversedData, $referencedFields, $referencedModel, $fields, $type);
                                 }
                                 
                                 if ($entity) {
@@ -173,7 +187,7 @@ trait Relationship
                             
                             // if [alias => [id => 1]]
                             else {
-                                $assign = $this->_getEntityFromData($relationData, $referencedFields, $referencedModel, $fields);
+                                $assign = $this->_getEntityFromData($relationData, $referencedFields, $referencedModel, $fields, $type);
                                 break;
                             }
                         }
@@ -182,6 +196,7 @@ trait Relationship
                 
                 // we got something to assign
                 if (!empty($assign) || $this->_keepMissingRelated[$alias] === false) {
+                    
                     $this->$alias = is_array($assign) ? array_values(array_filter($assign)) : $assign;
                     
                     // if is empty fix for actual save
@@ -632,20 +647,24 @@ trait Relationship
      *
      * @return ModelInterface
      */
-    public function _getEntityFromData(array $data, array $fields, string $modelClass, ?array $readFields = []): ModelInterface
+    public function _getEntityFromData(array $data, array $fields, string $modelClass, ?array $readFields = [], int $type = null): ModelInterface
     {
         $entity = null;
-    
-        // Set value to compare
-        if (!empty($readFields)) {
-            foreach ($readFields as $key => $field) {
-                if (empty($data[$fields[$key]])) { // @todo maybe remove this if
-                    $value = $this->readAttribute($field);
-                    if (!empty($value)) { // @todo maybe remove this if
-                        $data [$fields[$key]]= $value;
+        
+        if ($type === Relation::HAS_ONE || $type === Relation::BELONGS_TO) {
+            
+            // Set value to compare
+            if (!empty($readFields)) {
+                foreach ($readFields as $key => $field) {
+                    if (empty($data[$fields[$key]])) { // @todo maybe remove this if
+                        $value = $this->readAttribute($field);
+                        if (!empty($value)) { // @todo maybe remove this if
+                            $data [$fields[$key]]= $value;
+                        }
                     }
                 }
             }
+            
         }
         
         // array_keys_exists (if $referencedFields keys exists)
