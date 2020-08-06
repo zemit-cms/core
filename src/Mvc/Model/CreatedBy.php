@@ -10,12 +10,23 @@
 
 namespace Zemit\Mvc\Model;
 
+/**
+ * Trait CreatedBy
+ * @todo to be removed
+ * @deprecated use behavior instead
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Mvc\Model
+ */
 trait CreatedBy
 {
-    
     protected function _setCreatedBy($field = 'created_by')
     {
-    
         if (property_exists($this, $field)) {
             $this->getEventsManager()->attach('model', function ($event, $entity) use ($field) {
                 switch ($event->getType()) {

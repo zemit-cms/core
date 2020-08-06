@@ -11,6 +11,7 @@
 namespace Zemit\Mvc;
 
 use Phalcon\Config;
+use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Events\Manager;
 use Phalcon\Mvc\Model\Behavior\Timestampable;
 
@@ -26,16 +27,8 @@ use Zemit\Mvc\Model\Behavior\Blameable;
 use Zemit\Mvc\Model\Behavior\Conditional;
 use Zemit\Mvc\Model\Behavior\Position;
 use Zemit\Mvc\Model\Behavior\SoftDelete;
-
+use Zemit\Mvc\Model\Behavior\Cache;
 use Zemit\Mvc\Model\Behavior\Transformable;
-use Zemit\Mvc\Model\Eagerload;
-use Zemit\Mvc\Model\Expose\Expose;
-use Zemit\Mvc\Model\FindIn;
-use Zemit\Mvc\Model\Log;
-use Zemit\Mvc\Model\RawValue;
-use Zemit\Mvc\Model\Relationship;
-use Zemit\Mvc\Model\Slug;
-use Zemit\Mvc\Model\Snapshots;
 
 //use Zemit\Mvc\Model\Utils;
 
@@ -94,6 +87,7 @@ class Model extends \Phalcon\Mvc\Model
     const DATETIME_FORMAT = 'Y-m-d H:i:s';
     const DATE_FORMAT = 'Y-m-d';
     const TIME_FORMAT = 'H:i:s';
+    const REPLICA_DELAY = 1000;
     
     use \Zemit\Mvc\Model\Eagerload;
     use \Zemit\Mvc\Model\Relationship;
@@ -101,6 +95,8 @@ class Model extends \Phalcon\Mvc\Model
     use \Zemit\Mvc\Model\FindIn;
     use \Zemit\Mvc\Model\SoftDelete;
     use \Zemit\Mvc\Model\Identity;
+    use \Zemit\Mvc\Model\Replication;
+    use \Zemit\Mvc\Model\Cache;
 
 //    use \Zemit\Mvc\Model\Events;
 
@@ -110,12 +106,16 @@ class Model extends \Phalcon\Mvc\Model
     {
         // Default model setup
         self::setup();
-        $this->setWriteConnectionService('db');
-        $this->setReadConnectionService('dbr');
         
         $this->setEventsManager(new Manager());
         $this->keepSnapshots(true);
         $this->useDynamicUpdate(true);
+        
+        // Cache
+        $this->initializeCache();
+        
+        // Replication
+        $this->initializeReplication();
         
         // Security
         $this->addSecurityBehavior();
@@ -202,7 +202,7 @@ class Model extends \Phalcon\Mvc\Model
         
         $this->addBehavior(new Transformable([
             'beforeValidationOnCreate' => [
-                'uuid' => function ($model, $field) use ($security) {
+                'uuid' => function($model, $field) use ($security) {
                     return $model->getAttribute($field) ?? $security->getRandom()->uuid();
                 },
             ],
@@ -238,7 +238,7 @@ class Model extends \Phalcon\Mvc\Model
                 }),
                 'updatedAt' => $this->hasChangedCallback(function() {
                     return date(self::DATETIME_FORMAT);
-                })
+                }),
             ],
         ]));
     }
@@ -302,8 +302,9 @@ class Model extends \Phalcon\Mvc\Model
             'beforeValidation' => [
                 'index' => function($model, $field) {
                     $value = $model->readAttribute($field);
+                    
                     return \Zemit\Utils\Slug::generate($value);
-                }
+                },
             ],
         ]));
     }
@@ -351,7 +352,7 @@ class Model extends \Phalcon\Mvc\Model
     public function hasChangedCallback($callback, $anyField = true)
     {
         return function(ModelInterface $model, $field) use ($callback, $anyField) {
-            return (!$model->hasSnapshotData() || $model->hasChanged($anyField? null : $field) || $model->hasUpdated($anyField? null : $field)) ?
+            return (!$model->hasSnapshotData() || $model->hasChanged($anyField ? null : $field) || $model->hasUpdated($anyField ? null : $field)) ?
                 $callback($model, $field) :
                 $model->readAttribute($field);
         };
@@ -422,7 +423,8 @@ class Model extends \Phalcon\Mvc\Model
      *
      * @return mixed|null
      */
-    public function getAttribute(string $attribute) {
+    public function getAttribute(string $attribute)
+    {
         if ($this->getModelsMetaData()->hasAttribute($this, $attribute)) {
             $method = 'get' . ucfirst(Text::camelize($attribute));
             if (method_exists($this, $method)) {
@@ -439,11 +441,13 @@ class Model extends \Phalcon\Mvc\Model
         return null;
     }
     
-    public function jsonEncode($data, int $options = JSON_UNESCAPED_SLASHES, int $depth = 14) {
-        return json_encode($data, JSON_UNESCAPED_SLASHES, 14) ?: $data;
+    public function jsonEncode($data, int $options = JSON_UNESCAPED_SLASHES, int $depth = 14)
+    {
+        return json_encode($data, JSON_UNESCAPED_SLASHES, 14) ? : $data;
     }
     
-    public function jsonDecode($data) {
-        return json_decode($data, true, 14) ?: $data;
+    public function jsonDecode($data)
+    {
+        return json_decode($data, true, 14) ? : $data;
     }
 }

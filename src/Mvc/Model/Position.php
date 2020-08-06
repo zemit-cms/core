@@ -13,6 +13,20 @@ namespace Zemit\Mvc\Model;
 use Phalcon\Text;
 use Zemit\Mvc\Model;
 
+/**
+ * Trait Position
+ * @todo add a setting to do either raw sql query or use the complete orm with events
+ * @todo fix it to make it work again
+ * @todo refactor to use behavior instead
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Mvc\Model
+ */
 trait Position
 {
     

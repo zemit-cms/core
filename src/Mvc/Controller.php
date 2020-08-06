@@ -20,7 +20,14 @@ use Zemit\Utils;
 use Xenolope\Quahog\Client as Clamav;
 
 /**
+ * Class Controller
+ * {@inheritDoc}
+ *
  * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
  *
  * @property Application $application
  * @property Bootstrap $bootstrap

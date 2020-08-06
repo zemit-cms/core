@@ -13,9 +13,21 @@ namespace Zemit\Mvc\Model;
 use Phalcon\Mvc\Model;
 use Phalcon\Mvc\ModelInterface;
 
+/**
+ * Trait DeletedAt
+ * @todo to be removed
+ * @deprecated use SoftDeleteBehavior instead
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Mvc\Model
+ */
 trait DeletedAt
 {
-
     protected function _setDeletedAt($field = 'deletedAt', $format = self::DATETIME_FORMAT, $deletedField = null)
     {
         $deletedField ??= $this->_softDeleteSettings['field'] ?? 'deleted';

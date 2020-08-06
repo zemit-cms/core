@@ -14,7 +14,6 @@ namespace Zemit\Mvc\Model;
 
 /**
  * Class Eagerload
- *
  * Overriding EagerLoadingTrait from the phalcon incubator to handle more type of requests
  * - Allow to call the "with" and "findfirstWith" without passing an argument
  * - Adding the default phalcon call static behavior to the "with" and "findFirstWith"
@@ -22,12 +21,16 @@ namespace Zemit\Mvc\Model;
  *  - withBy{Property}()
  *  - every other magic call statics that may exists
  *
- * @author Zemit@nuagerie.com
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
  * @package Zemit\Mvc\Model
  */
 trait Eagerload
 {
-    
     // forked from the phalcon incubator
     use \Zemit\Mvc\Model\EagerLoadingTrait {
         with as incubatorWith;

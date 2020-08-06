@@ -10,9 +10,20 @@
 
 namespace Zemit\Mvc\Model;
 
+/**
+ * Trait UpdatedAt
+ * @deprecated @todo to be removed
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Mvc\Model
+ */
 trait UpdatedAt
 {
-
     protected function _setUpdatedAt($field = 'updatedAt', $format = 'Y-m-d H:i:s')
     {
         if (property_exists($this, $field)) {

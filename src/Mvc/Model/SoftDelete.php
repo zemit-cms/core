@@ -13,9 +13,19 @@ namespace Zemit\Mvc\Model;
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Db\RawValue;
 
+/**
+ * Trait SoftDelete
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Mvc\Model
+ */
 trait SoftDelete
 {
-    
     /**
      * Helper method to check if the row is soft deleted
      * @param null $field

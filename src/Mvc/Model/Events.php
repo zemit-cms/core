@@ -13,6 +13,17 @@ namespace Zemit\Mvc\Model;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Zemit\Mvc\Model;
 
+/**
+ * Trait Events
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Mvc\Model
+ */
 trait Events
 {
 //    /**

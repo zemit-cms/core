@@ -12,6 +12,17 @@ namespace Zemit\Mvc\Model;
 
 use Zemit\Mvc\Model\EagerLoading\Loader;
 
+/**
+ * Trait EagerLoadingTrait
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Mvc\Model
+ */
 trait EagerLoadingTrait
 {
     /**

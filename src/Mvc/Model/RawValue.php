@@ -10,6 +10,18 @@
 
 namespace Zemit\Mvc\Model;
 
+/**
+ * Trait RawValue
+ * @deprecated @todo to be removed
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Mvc\Model
+ */
 trait RawValue
 {
     public function _setRawValues(array $fields = null, array $eventTypes = ['beforeValidationOnCreate'])

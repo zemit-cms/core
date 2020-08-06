@@ -18,6 +18,13 @@ use Phalcon\Http\ResponseInterface;
  * Switches default Phalcon MVC into a simple HMVC to allow requests
  * between different namespaces and modules
  * {@inheritdoc}
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
  * @package Zemit\Mvc
  */
 class Application extends \Phalcon\Mvc\Application

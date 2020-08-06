@@ -23,8 +23,16 @@ use Zemit\Bootstrap\Router;
 use Zemit\Utils;
 
 /**
+ * Class Module
+ * {@inheritDoc}
+ * 
  * @author Julien Turbide <jturbide@nuagerie.com>
- * @version 1.0.0
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Mvc
  */
 class Module implements ModuleDefinitionInterface
 {

@@ -13,6 +13,19 @@ namespace Zemit\Mvc\Model;
 use Phalcon\Text;
 use Phalcon\Db\Column;
 
+/**
+ * Trait Log
+ * @deprecated please use AuditBehavior instead
+ * @todo to be removed
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Mvc\Model
+ */
 trait Log
 {
     

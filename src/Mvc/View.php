@@ -17,6 +17,13 @@ use Zemit\Utils\Slug;
 /**
  * Class View
  * {@inheritdoc}
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
  * @package Zemit\Mvc
  */
 class View extends \Phalcon\Mvc\View

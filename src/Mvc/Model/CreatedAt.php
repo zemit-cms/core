@@ -10,21 +10,33 @@
 
 namespace Zemit\Mvc\Model;
 
+/**
+ * Trait CreatedAt
+ * @todo to be removed
+ * @deprecated use behavior instead
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Mvc\Model
+ */
 trait CreatedAt
 {
-
     protected function _setCreatedAt($field = 'created_at', $format = 'Y-m-d H:i:s')
     {
-        
         if (property_exists($this, $field)) {
-            $this->getEventsManager()->attach('model', function ($event, $entity) use ($field, $format) {
-                switch ($event->getType()) {
+            $this->getEventsManager()->attach('model', function($event, $entity) use ($field, $format) {
+                switch($event->getType()) {
                     case 'beforeValidationOnCreate':
                         if (property_exists($entity, $field) && empty($entity->$field)) {
                             $entity->$field = date($format);
                         }
                         break;
                 }
+                
                 return true;
             });
         }

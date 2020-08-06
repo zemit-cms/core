@@ -571,7 +571,7 @@ trait Model
     {
         $params ??= $this->getParams();
         
-        return hash('sha256', Slug::generate(json_encode($params, JSON_UNESCAPED_SLASHES)));
+        return Slug::generate(json_encode($params, JSON_UNESCAPED_SLASHES));
     }
     
     /**

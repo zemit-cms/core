@@ -12,12 +12,22 @@ namespace Zemit\Mvc\Model;
 
 use Zemit\Utils\Slug as PhalconSlug;
 
+/**
+ * Trait Slug
+ * @deprecated @todo to be removed
+ *
+ * @author Julien Turbide <jturbide@nuagerie.com>
+ * @copyright Zemit Team <contact@zemit.com>
+ *
+ * @since 1.0
+ * @version 1.0
+ *
+ * @package Zemit\Mvc\Model
+ */
 trait Slug
 {
-    
     protected function _setSlug($slugField = 'slug', $fromField = 'name')
     {
-        
         if (property_exists($this, $slugField) && property_exists($this, $fromField)) {
             $this->getEventsManager()->attach('model', function ($event, $entity) use ($slugField, $fromField) {
                 switch ($event->getType()) {
