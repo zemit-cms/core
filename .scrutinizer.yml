@@ -4,8 +4,8 @@ build:
     zemit:
       root_path: './'
       services:
-        mysql: 8.0
-        redis: 5
+        mysql: latest
+        redis: 6
       resources:
         cpus: 1
       environment:
@@ -17,7 +17,6 @@ build:
               host: zemit.local # also make sure to add under "hosts" above
               web_root: public/
               rules:
-                - RewriteEngine On
                 - RewriteCond %{REQUEST_FILENAME} !-d
                 - RewriteCond %{REQUEST_FILENAME} !-f
                 - RewriteRule ^(.*)$ index.php?_url=/$1 [QSA,L]
