@@ -1,5 +1,7 @@
 build:
   nodes:
+    analysis:
+
     my-tests:
       environment:
         php:
@@ -11,3 +13,11 @@ build:
             - redis
             - memcached
             - apcu
+      tests:
+        override:
+          - php-scrutinizer-run
+filter:
+  excluded_paths:
+    - 'tests/'
+  dependency_paths:
+    - 'vendor/'
