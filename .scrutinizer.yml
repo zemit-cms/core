@@ -1,0 +1,13 @@
+build:
+  nodes:
+    my-tests:
+      environment:
+        php:
+          version: 7.4
+          # @link https://pecl.php.net/
+          pecl_extensions:
+            - psr
+            - phalcon
+            - redis
+            - memcached
+            - apcu
