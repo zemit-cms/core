@@ -9,6 +9,9 @@ build:
       resources:
         cpus: 1
       environment:
+        selenium: true
+        google_chrome:
+          use_latest: true
         hosts:
           zemit.local: 127.0.0.1
         apache2:
@@ -30,6 +33,7 @@ build:
             - apcu
           ini:
             memory_limit: -1
+      timezone: 'America/New_York'
       dependencies:
         after:
           - composer require --dev phalcon/ide-stubs
