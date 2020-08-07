@@ -45,7 +45,7 @@ build:
         stop_on_failure: false
         override:
           - command: php-scrutinizer-run --enable-security-analysis
-          - command: phpcs-run --config phpcs.xml
+          - command: phpcs-run
       cache:
         disabled: false
         directories:
