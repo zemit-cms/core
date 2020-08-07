@@ -146,7 +146,7 @@ class Manager extends \Phalcon\Assets\Manager
      *
      * @return string|null
      */
-    public function outputCss($collectionName = 'css'): string
+    public function outputCss(?string $collectionName = 'css'): string
     {
         $this->setCollectionVersion($collectionName);
         
