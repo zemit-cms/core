@@ -21,9 +21,10 @@ build:
               host: zemit.local # also make sure to add under "hosts" above
               web_root: public/
               rules:
-                - RewriteCond %{REQUEST_FILENAME} !-d
-                - RewriteCond %{REQUEST_FILENAME} !-f
-                - RewriteRule ^(.*)$ index.php?_url=/$1 [QSA,L]
+                - 'RewriteEngine On'
+                - 'RewriteCond %{REQUEST_FILENAME} !-d'
+                - 'RewriteCond %{REQUEST_FILENAME} !-f'
+                - 'RewriteRule ^(.*)$ index.php?_url=/$1 [QSA,L]'
         php:
           version: 7.4.9
           # @link https://pecl.php.net/
@@ -35,6 +36,8 @@ build:
           ini:
             memory_limit: -1
       dependencies:
+        before:
+          - composer install
         after:
           - composer require --dev phalcon/ide-stubs
       tests:
