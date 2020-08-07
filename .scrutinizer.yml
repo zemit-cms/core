@@ -2,12 +2,14 @@ build:
   nodes:
     # Edge Zemit Build
     zemit:
+      services:
+        mysql: 8.0
+        redis: 5
       resources:
         cpus: 1
       environment:
         php:
-          version: 7.4
-          compile_options: '--enable-sigchild --without-pear'
+          version: 7.4.9
           # @link https://pecl.php.net/
           pecl_extensions:
             - phalcon
@@ -25,10 +27,12 @@ build:
         after:
           - composer require --dev phalcon/ide-stubs
       tests:
+        stop_on_failure: false
         override:
-          - php-scrutinizer-run --enable-security-analysis
+          - command: php-scrutinizer-run --enable-security-analysis
           - command: phpcs-run --config phpcs.xml
       cache:
+        disabled: false
         directories:
           - ~/.composer
           - ~/.npm
