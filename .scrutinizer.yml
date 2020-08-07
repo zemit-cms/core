@@ -10,6 +10,8 @@ build:
             - redis
             - memcached
             - apcu
+          ini:
+            memory_limit: -1
       dependencies:
         after:
           - composer require --dev phalcon/ide-stubs
@@ -17,6 +19,12 @@ build:
         override:
           - php-scrutinizer-run --enable-security-analysis
           - command: phpcs-run --config phpcs.xml
+      cache:
+        directories:
+          - ~/.composer
+          - ~/.npm
+          - vendor/
+          - node_modules/
 checks:
   php: true
 filter:
