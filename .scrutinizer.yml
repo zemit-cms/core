@@ -16,6 +16,7 @@ build:
         hosts:
           zemit.local: 127.0.0.1
         apache2:
+          modules: ['rewrite']
           sites:
             zemit:
               host: zemit.local # also make sure to add under "hosts" above
