@@ -1,5 +1,6 @@
 build:
   nodes:
+    # Edge Zemit Build
     zemit:
       environment:
         php:
@@ -25,6 +26,8 @@ build:
           - ~/.npm
           - vendor/
           - node_modules/
+      resources:
+        cpus: 4
 checks:
   php: true
 filter:
