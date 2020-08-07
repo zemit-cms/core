@@ -2,9 +2,12 @@ build:
   nodes:
     # Edge Zemit Build
     zemit:
+      resources:
+        cpus: 1
       environment:
         php:
           version: 7.4
+          compile_options: '--enable-sigchild --without-pear'
           # @link https://pecl.php.net/
           pecl_extensions:
             - phalcon
@@ -14,6 +17,11 @@ build:
           ini:
             memory_limit: -1
       dependencies:
+        before:
+          - pecl install phalcon
+          - pecl install redis
+          - pecl install memcached
+          - pecl install apcu
         after:
           - composer require --dev phalcon/ide-stubs
       tests:
@@ -26,8 +34,6 @@ build:
           - ~/.npm
           - vendor/
           - node_modules/
-      resources:
-        cpus: 4
 checks:
   php: true
 filter:
