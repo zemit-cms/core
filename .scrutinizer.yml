@@ -2,12 +2,25 @@ build:
   nodes:
     # Edge Zemit Build
     zemit:
+      root_path: './'
       services:
         mysql: 8.0
         redis: 5
       resources:
         cpus: 1
       environment:
+        hosts:
+          zemit.local: 127.0.0.1
+        apache2:
+          sites:
+            zemit:
+              host: zemit.local # also make sure to add under "hosts" above
+              web_root: public/
+              rules:
+                - RewriteEngine On
+                - RewriteCond %{REQUEST_FILENAME} !-d
+                - RewriteCond %{REQUEST_FILENAME} !-f
+                - RewriteRule ^(.*)$ index.php?_url=/$1 [QSA,L]
         php:
           version: 7.4.9
           # @link https://pecl.php.net/
