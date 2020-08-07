@@ -10,6 +10,8 @@
 
 namespace Zemit\Assets;
 
+use Phalcon\Assets\Collection;
+
 /**
  * Class Manager
  * {@inheritDoc}
@@ -24,30 +26,29 @@ namespace Zemit\Assets;
  */
 class Manager extends \Phalcon\Assets\Manager
 {
-    
     /**
      * Version of your app (ex. 1.0.0)
      * @var string Set the version to be added in the asset path
      */
-    private $_version;
+    protected string $version;
     
     /**
      *
      * @var bool true to automatically add the file time to the asset path
      */
-    private $_fileTime;
+    protected bool $fileTime;
     
     /**
      * Minify Javascript
      * @var bool true automatically minify javascript files
      */
-    private $_minifyJS;
+    protected bool $minifyJS;
     
     /**
      * Minify CSS
      * @var bool true automatically minify stylesheet files
      */
-    private $_minifyCSS;
+    protected bool $minifyCSS;
     
     /**
      * Force the version manually
@@ -57,7 +58,7 @@ class Manager extends \Phalcon\Assets\Manager
      */
     public function setVersion($version)
     {
-        $this->_version = $version;
+        $this->version = $version;
     }
     
     /**
@@ -66,63 +67,78 @@ class Manager extends \Phalcon\Assets\Manager
      */
     public function getVersion()
     {
-        return $this->_version;
+        return $this->version;
     }
-    
-    public function setFileTime($fileTime)
-    {
-        $this->_fileTime = $fileTime ? true : false;
-    }
-    
-    public function getFileTime()
-    {
-        return $this->_fileTime ? true : false;
-    }
-    
-    public function setMinifyJS($minifyJS)
-    {
-        $this->_minifyJS = $minifyJS ? true : false;
-    }
-    
-    public function getMinifyJS()
-    {
-        return $this->_minifyJS ? true : false;
-    }
-    
-    public function setMinifyCSS($minifyCSS)
-    {
-        $this->_minifyCSS = $minifyCSS ? true : false;
-    }
-    
-    public function getMinifyCSS()
-    {
-        return $this->_minifyCSS ? true : false;
-    }
-    
     
     /**
-     * @param null $collectionName
+     * Set File Time
+     * @param $fileTime True to enable
+     */
+    public function setFileTime(bool $fileTime) : void
+    {
+        $this->fileTime = $fileTime ? true : false;
+    }
+    
+    /**
+     * Get File Time
+     * @return bool True if enabled
+     */
+    public function getFileTime()
+    {
+        return $this->fileTime ? true : false;
+    }
+    
+    /**
+     * Set minify JS
+     * @todo to be removed
+     * @deprecated You should use webpack or something else
+     * @param $minifyJS True to enable
+     */
+    public function setMinifyJS(bool $minifyJS) : void
+    {
+        $this->minifyJS = $minifyJS ? true : false;
+    }
+    
+    /**
+     * @return bool
+     * @todo to be removed
+     * @deprecated You should use webpack or something else
+     */
+    public function getMinifyJS() : bool
+    {
+        return $this->minifyJS ? true : false;
+    }
+    
+    /**
+     * @todo to be removed
+     * @deprecated You should use webpack or something else
+     * @param $minifyCSS
+     */
+    public function setMinifyCSS(bool $minifyCSS) : void
+    {
+        $this->minifyCSS = $minifyCSS ? true : false;
+    }
+    
+    /**
+     * @todo to be removed
+     * @deprecated You should use webpack or something else
+     * @return bool
+     */
+    public function getMinifyCSS() : bool
+    {
+        return $this->minifyCSS ? true : false;
+    }
+    
+    /**
+     * @param string|null $collectionName
      *
      * @return string
      */
-    public function outputJs($collectionName = 'js') : String
+    public function outputJs(?string $collectionName = 'js'): string
     {
-        if (!is_null($collectionName)) {
-            $collection = $this->exists($collectionName) ? $this->get($collectionName) : false;
-            if ($collection) {
-                $resources = $this->get($collectionName)->getResources();
-                if ($resources) {
-                    foreach ($resources as $resource) {
-                        // Add version and filetime to the local resources only
-                        if ($resource->getLocal()) {
-                            $resource->setPath(self::_addVersionToPath($resource->getPath(), $this->getVersion(), $this->getFileTime()));
-                        }
-                    }
-                }
-                return parent::outputJs($collectionName);
-            }
-        }
-        return '';
+        $this->setCollectionVersion($collectionName);
+        
+        return parent::outputJs($collectionName);
     }
     
     /**
@@ -130,25 +146,51 @@ class Manager extends \Phalcon\Assets\Manager
      *
      * @return string|null
      */
-    public function outputCss($collectionName = 'css') : String
+    public function outputCss($collectionName = 'css'): string
     {
-        if (!is_null($collectionName)) {
-            $collection = $this->exists($collectionName) ? $this->get($collectionName) : false;
-            if ($collection) {
-                $ressources = $collection->getResources();
-                if ($ressources) {
-                    foreach ($ressources as $ressource) {
-                        if ($ressource->getLocal()) {
-                            $ressource->setPath(self::_addVersionToPath($ressource->getPath(), $this->getVersion(), $this->getFileTime()));
-                        }
-                    }
-                }
-                return parent::outputCss($collectionName);
-            }
-        }
-        return '';
+        $this->setCollectionVersion($collectionName);
+        
+        return parent::outputCss($collectionName);
     }
     
+    /**
+     * Add version to the collection
+     *
+     * @param string|null $collectionName
+     *
+     * @return Collection
+     */
+    public function setCollectionVersion(?string $collectionName = null): Collection
+    {
+        $collection = $this->exists($collectionName) ? $this->get($collectionName) : false;
+        if ($collection) {
+            $collection = $this->get($collectionName);
+            if ($collection) {
+                $version = $this->getVersion();
+                if (empty($version)) {
+                    $collection->setVersion($version);
+                }
+                else {
+                    $collection->setAutoVersion(true);
+                }
+            }
+        }
+        
+        return $collection;
+    }
+    
+    /**
+     * Add version to a path
+     *
+     * @todo to be removed or check if phalcon team implemented it according to our needs
+     * @deprecated Now natively supported by phalcon asset collection itself
+     *
+     * @param $path
+     * @param $version
+     * @param false $addFileMTimeToPath
+     *
+     * @return string
+     */
     private static function _addVersionToPath($path, $version, $addFileMTimeToPath = false)
     {
         if ($addFileMTimeToPath) {
@@ -159,10 +201,20 @@ class Manager extends \Phalcon\Assets\Manager
             $ext = array_pop($path);
             $path = implode('.', $path) . '.' . $version . '.' . $ext;
         }
+        
         return $path;
     }
     
-    private static function _addFileMtimeToPath($filepath)
+    /**
+     * Add File Mime Time to the path
+     *
+     * @deprecated
+     *
+     * @param $filepath
+     *
+     * @return string
+     */
+    private static function _addFileMtimeToPath(string $filepath)
     {
         $path = $filepath;
         if (file_exists($filepath)) {
@@ -170,6 +222,7 @@ class Manager extends \Phalcon\Assets\Manager
             $ext = array_pop($path);
             $path = implode('.', $path) . '.' . date('Ymdhis', filemtime($filepath)) . '.' . $ext;
         }
+        
         return $path;
     }
 }

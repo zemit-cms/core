@@ -6,14 +6,19 @@ build:
           version: 7.4
           # @link https://pecl.php.net/
           pecl_extensions:
-            - psr
             - phalcon
             - redis
             - memcached
             - apcu
+      dependencies:
+        after:
+          - composer require --dev phalcon/ide-stubs
       tests:
         override:
-          - php-scrutinizer-run
+          - php-scrutinizer-run --enable-security-analysis
+          - command: phpcs-run --config phpcs.xml
+checks:
+  php: true
 filter:
   excluded_paths:
     - 'tests/'
