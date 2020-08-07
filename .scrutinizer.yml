@@ -1,8 +1,6 @@
 build:
   nodes:
-    analysis:
-
-    my-tests:
+    zemit:
       environment:
         php:
           version: 7.4
