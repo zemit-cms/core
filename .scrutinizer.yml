@@ -32,11 +32,6 @@ build:
           ini:
             memory_limit: -1
       dependencies:
-        before:
-          - pecl install phalcon
-          - pecl install redis
-          - pecl install memcached
-          - pecl install apcu
         after:
           - composer require --dev phalcon/ide-stubs
       tests:
