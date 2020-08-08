@@ -48,9 +48,9 @@ build:
         override:
           - command: php-scrutinizer-run --enable-security-analysis
           - command: phpcs-run
-          - command: phpunit --coverage-clover zemit-coverage ./
+          - command: ./vendor/bin/phpunit
             coverage:
-              file: zemit-coverage
+              file: phpunit-coverage
               format: php-clover
       cache:
         disabled: false
