@@ -38,9 +38,11 @@ build:
             memory_limit: -1
       dependencies:
         before:
-          - composer install
+          - composer self-update
         after:
           - composer require --dev phalcon/ide-stubs
+          - composer require --dev phpunit/phpunit
+          - composer require --dev squizlabs/php_codesniffer
       tests:
         stop_on_failure: false
         override:
