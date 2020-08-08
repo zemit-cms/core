@@ -1,21 +1,18 @@
 # Zemit Core
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/zemit-cms/core/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/zemit-cms/core/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/zemit-cms/core/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/zemit-cms/core/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/zemit-cms/core/badges/build.png?b=master)](https://scrutinizer-ci.com/g/zemit-cms/core/build-status/master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/zemit-cms/core/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/zemit-cms/core/?branch=master)
 [![Code Intelligence Status](https://scrutinizer-ci.com/g/zemit-cms/core/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
+[![Code Coverage](https://scrutinizer-ci.com/g/zemit-cms/core/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/zemit-cms/core/?branch=master)
+
+[![Latest Stable Version](https://poser.pugx.org/zemit-cms/core/v/stable)](https://packagist.org/packages/zemit-cms/core)
+[![Latest Unstable Version](https://poser.pugx.org/zemit-cms/core/v/unstable)](https://packagist.org/packages/zemit-cms/core)
+[![License](https://poser.pugx.org/zemit-cms/core/license)](https://packagist.org/packages/zemit-cms/core)
 
 [![Daily Downloads](https://poser.pugx.org/zemit-cms/core/d/daily)](https://packagist.org/packages/zemit-cms/core)
 [![Monthly Downloads](https://poser.pugx.org/zemit-cms/core/d/monthly)](https://packagist.org/packages/zemit-cms/core)
 [![Total Downloads](https://poser.pugx.org/zemit-cms/core/downloads)](https://packagist.org/packages/zemit-cms/core)
 
-[![License](https://poser.pugx.org/zemit-cms/core/license)](https://packagist.org/packages/zemit-cms/core)
-[![Latest Stable Version](https://poser.pugx.org/zemit-cms/core/v/stable)](https://packagist.org/packages/zemit-cms/core)
-[![Latest Unstable Version](https://poser.pugx.org/zemit-cms/core/v/unstable)](https://packagist.org/packages/zemit-cms/core)
-[![composer.lock](https://poser.pugx.org/zemit-cms/core/composerlock)](https://packagist.org/packages/zemit-cms/core)
-
-
-Core library of the Zemit application that mostly handle the backend part.
-This library is using modules and a generic routing system but also allows the application to be highly customized.
+Zemit Core is an open source headless CMS built on top of [Phalcon](https://github.com/phalcon/cphalcon), an open source web framework delivered as a C extension for the PHP language providing high performance and lower resource consumption
 
 ## Contents
 - [Getting Started](#getting-started)
@@ -28,7 +25,6 @@ This library is using modules and a generic routing system but also allows the a
 Zemit is using the [Phalcon Framework](https://phalconphp.com). You can use [composer](https://getcomposer.org/) in order to add Zemit core to an existing project. If you want to create a new project from srtach, we invite you to visit the [Zemit App](https://github.com/zemit-cms/app) repository for more informations.
 
     composer require zemit-cms/core
-
 
 ## Requirements
 Zemit Core requires multiple PHP extensions. Please use `composer` to make sure that you meet the requirements.
@@ -51,5 +47,7 @@ See [CONTRIBUTING.md](https://github.com/zemit-cms/core/blob/master/CONTRIBUTING
 
 ## License
 Zemit is open source software licensed under the BSD 3-Clause License.
-Copyright © 2017-present, Zemit Team.<br>
+
+Copyright © 2017-present, Zemit Team.
+
 See the [LICENSE.txt](https://github.com/zemit-cms/core/blob/master/LICENSE.txt) file for more.

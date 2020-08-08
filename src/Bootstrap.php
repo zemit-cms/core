@@ -74,7 +74,7 @@ class Bootstrap
     
     /**
      * Bootstrap console args
-     * @var array|object
+     * @var array
      */
     public $args;
     
