@@ -65,6 +65,6 @@ filter:
   excluded_paths:
     - 'tests/'
     - 'src/Migrations/'
-    - 'src/Mvc/Controller/StatusCode'
+    - 'src/Mvc/Controller/StatusCode.php'
   dependency_paths:
     - 'vendor/'
