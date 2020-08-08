@@ -67,6 +67,5 @@ class Profiler extends Injectable
         if ($this->isEnabled()) {
             $this->profiler->stopProfile();
         }
-        
     }
 }
