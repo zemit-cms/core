@@ -45,9 +45,10 @@ build:
           - composer require --dev squizlabs/php_codesniffer
       tests:
         stop_on_failure: false
-        override:
-          - command: php-scrutinizer-run --enable-security-analysis
-          - command: phpcs-run
+#        override:
+#          - command: php-scrutinizer-run --enable-security-analysis
+#          - command: phpcs-run
+#          - command: phpunit-run
       cache:
         disabled: false
         directories:
