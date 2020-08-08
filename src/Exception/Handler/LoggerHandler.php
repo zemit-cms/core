@@ -157,13 +157,10 @@ class LoggerHandler extends Handler
         }
 
         // Dump the arguments:
-        ob_start();
-        var_dump($frame->getArgs());
-        if (ob_get_length() > $this->getTraceFunctionArgsOutputLimit()) {
+        $jsonArgs = json_encode($frame->getArgs(), JSON_PRETTY_PRINT);
+        if ($jsonArgs > $this->getTraceFunctionArgsOutputLimit()) {
             // The argument var_dump is to big.
             // Discarded to limit memory usage.
-            ob_clean();
-
             return sprintf(
                 "\n%sArguments dump length greater than %d Bytes. Discarded.",
                 self::VAR_DUMP_PREFIX,
@@ -173,7 +170,7 @@ class LoggerHandler extends Handler
 
         return sprintf(
             "\n%s",
-            preg_replace('/^/m', self::VAR_DUMP_PREFIX, ob_get_clean())
+            preg_replace('/^/m', self::VAR_DUMP_PREFIX, $jsonArgs)
         );
     }
 
