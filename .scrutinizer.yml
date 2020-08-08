@@ -50,7 +50,7 @@ build:
           - command: phpcs-run
           - command: ./vendor/bin/phpunit
             coverage:
-              file: phpunit-coverage
+              file: phpunit-coverage.xml
               format: php-clover
       cache:
         disabled: false

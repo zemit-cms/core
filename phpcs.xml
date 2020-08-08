@@ -32,5 +32,7 @@
         patterns on the command line.
     -->
     <exclude-pattern>private/*</exclude-pattern>
+    <exclude-pattern>storage/*</exclude-pattern>
+    <exclude-pattern>public/storage/*</exclude-pattern>
     <exclude-pattern>**vendor**</exclude-pattern>
 </ruleset>
