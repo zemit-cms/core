@@ -15,7 +15,7 @@
         </testsuite>
     </testsuites>
     <logging>
-        <log type="coverage-clover" target="phpunit-clover.xml"/>
+        <log type="coverage-clover" target="./phpunit-clover.xml"/>
     </logging>
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
