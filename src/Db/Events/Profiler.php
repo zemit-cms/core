@@ -34,9 +34,7 @@ class Profiler extends Injectable
      */
     public function isEnabled(): bool
     {
-        return
-            $this->config->has('app') &&
-            $this->config->get('app')->profiler;
+        return ($this->config->path('app.profiler', $this->config->path('profiler.enable', false)));
     }
     
     /**
@@ -62,6 +60,7 @@ class Profiler extends Injectable
      * Stop the current profile
      *
      * @scrutinizer ignore-unused
+     *
      * @param EventInterface $event
      * @param AbstractAdapter $connection
      */
