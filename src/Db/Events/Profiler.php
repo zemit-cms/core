@@ -34,7 +34,11 @@ class Profiler extends Injectable
      */
     public function isEnabled(): bool
     {
-        return ($this->config->path('app.profiler', $this->config->path('profiler.enable', false)));
+        return (bool)$this->config->path('app.profiler',
+            $this->config->path('profiler.enable',
+                false
+            )
+        );
     }
     
     /**
