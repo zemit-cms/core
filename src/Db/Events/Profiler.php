@@ -48,17 +48,20 @@ class Profiler extends Injectable
     public function beforeQuery(EventInterface $event, AbstractAdapter $connection)
     {
         if ($this->isEnabled()) {
-            $this->profiler->startProfile(
-                $connection->getSQLStatement(),
-                $connection->getSqlVariables(),
-                $connection->getSQLBindTypes(),
-            );
+            if (!$event->isStopped()) {
+                $this->profiler->startProfile(
+                    $connection->getSQLStatement(),
+                    $connection->getSqlVariables(),
+                    $connection->getSQLBindTypes(),
+                );
+            }
         }
     }
     
     /**
      * Stop the current profile
      *
+     * @scrutinizer ignore-unused
      * @param EventInterface $event
      * @param AbstractAdapter $connection
      */
