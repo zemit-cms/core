@@ -80,12 +80,10 @@
     "phpspec/phpspec": "~6.1",
     "squizlabs/php_codesniffer": "~3.4",
 
-    "phpdocumentor/reflection-docblock": "^4.3",
     "phpunit/phpunit": "^9.4",
     "fzaninotto/faker": "^1.8",
-    "mockery/mockery": "^1.2",
 
-    "codeception/codeception": "^2.5",
+    "codeception/codeception": "^4.1.6",
     "codeception/verify": "~1.0",
     "codeception/specify": "~1.1",
     "codeception/mockery-module": "^0.2"
