@@ -60,5 +60,7 @@ checks:
 filter:
   excluded_paths:
     - 'tests/'
+    - 'src/Migrations/'
+    - 'src/Mvc/Controller/StatusCode'
   dependency_paths:
     - 'vendor/'
