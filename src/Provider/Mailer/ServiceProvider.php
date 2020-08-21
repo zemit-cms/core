@@ -60,7 +60,13 @@ class ServiceProvider extends AbstractServiceProvider
                     // Get the mailer manager settings
                     $settings = $config->path('mailer.drivers.' . $driver, []);
                     $settings = $settings instanceof Config? $settings->toArray() : $settings;
-                    $settings = array_merge($settings, $config->path('mailer.default', []));
+                    
+                    // Get the mailer manager default settings
+                    $default = $config->path('mailer.default', []);
+                    $default = $default instanceof Config? $default->toArray() : $default;
+                    
+                    // Merge default settings
+                    $settings = array_merge($settings, $default);
                     
                     // Prepare the mailer manager
                     $manager = new Manager($settings);
