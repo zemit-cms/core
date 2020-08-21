@@ -383,7 +383,7 @@ class Config extends PhalconConfig
                 ],
                 \Zemit\Mvc\Module::NAME_OAUTH2 => [
                     'className' => \Zemit\Modules\Oauth2\Module::class,
-                    'path' => CORE_PATH . 'Modules/OAuth2/Module.php',
+                    'path' => CORE_PATH . 'Modules/Oauth2/Module.php',
                 ],
                 /**
                  * @TODO support this way too
@@ -743,7 +743,7 @@ class Config extends PhalconConfig
              * Mailer configuration
              */
             'mailer' => [
-                'default' => Env::get('MAILER_DEFAULT_DRIVER', 'sendmail'),
+                'driver' => Env::get('MAILER_DRIVER', 'sendmail'),
                 'drivers' => [
                     'mail' => [
                         'driver' => 'mail',
@@ -761,6 +761,11 @@ class Config extends PhalconConfig
                         'password' => Env::get('MAILER_SMTP_PASSWORD', ''),
                     ],
                 ],
+                'default' => [
+                    'charset' => Env::get('MAILER_CHARSET', 'utf-8'),
+                    'viewsDir' => Env::get('MAILER_VIEWS_DIR', APP_PATH . '/Modules/Frontend/Views/'),
+                    'baseUri' => Env::get('MAILER_BASE_URI', null),
+                ],
                 'from' => [
                     'email' => Env::get('MAILER_FROM_EMAIL', 'zemit@localhost'),
                     'name' => Env::get('MAILER_FROM_NAME', 'Zemit'),
@@ -768,8 +773,6 @@ class Config extends PhalconConfig
                 'to' => [...explode(',', Env::get('MAILER_TO_EMAIL', ''))],
                 'cc' => [...explode(',', Env::get('MAILER_CC_EMAIL', ''))],
                 'bcc' => [...explode(',', Env::get('MAILER_BCC_EMAIL', ''))],
-                'charset' => Env::get('MAILER_CHARSET', 'utf-8'),
-                'viewsDir' => Env::get('MAILER_VIEWS_DIR', APP_PATH . '/Modules/Frontend/Views/'),
             ],
             
             /**

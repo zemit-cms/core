@@ -13,6 +13,9 @@ namespace Zemit\Provider\Oauth2Facebook;
 use League\OAuth2\Client\Provider\Facebook;
 use Phalcon\Di\DiInterface;
 
+use Phalcon\Session\Manager;
+use Phalcon\Config;
+use Zemit\Http\Request;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
@@ -40,11 +43,28 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(DiInterface $di): void
     {
+        /** @var Config $config */
         $config = $di->get('config');
+        
+        /** @var Manager $session */
         $session = $di->get('session');
-        $di->setShared($this->getName(), function() use ($config, $session) {
-            $facebook = new Facebook($config->oauth2->facebook->toArray());
+        
+        /** @var Request $request */
+        $request = $di->get('request');
+        
+        $di->setShared($this->getName(), function() use ($config, $request) {
+            $settings = $config->path('oauth2.facebook', []);
+            $settings = $settings instanceof Config? $settings->toArray() : $settings;
+    
+            // Set the full url
+            $secure = $request->isSecure();
+            $scheme = $request->getScheme() . '://';
+            $host = $request->getHttpHost();
+            $port = $request->getPort();
+            $port = !in_array($port, [$secure? '443' : '80'])? ':' . $port : null;
+            $settings['redirectUri'] = $scheme . $host . $port . '/' . ($settings['redirectUri'] ?: '');
             
+            $facebook = new Facebook($settings);
             return $facebook;
         });
     }

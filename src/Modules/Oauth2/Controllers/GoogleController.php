@@ -11,17 +11,19 @@
 namespace Zemit\Modules\Oauth2\Controllers;
 
 use League\OAuth2\Client\Grant\RefreshToken;
+use League\OAuth2\Client\Provider\Facebook;
 
 /**
  * Class GoogleController
  *
+ * @property Google $oauth2Google
  * @package Zemit\Modules\Oauth2\Controllers
  */
 class GoogleController extends AbstractController
 {
     const DEFAULT_SCOPE = null;
     
-    public $sessionKey = 'oauth2-google-state';
+    public string $sessionKey = 'oauth2-google-state';
     
     /**
      * Redirect to Authorization Url

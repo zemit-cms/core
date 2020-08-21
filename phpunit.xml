@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit backupGlobals="false"
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         backupGlobals="false"
          backupStaticAttributes="false"
          bootstrap="vendor/autoload.php"
          colors="true"
@@ -8,23 +9,24 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false"
->
-    <testsuites>
-        <testsuite name="Tests">
-            <directory suffix=".php">./tests/</directory>
-        </testsuite>
-    </testsuites>
-    <logging>
-        <log type="coverage-clover" target="./phpunit-clover.xml"/>
-    </logging>
-    <filter>
-        <whitelist addUncoveredFilesFromWhitelist="true">
-            <directory>./</directory>
-            <exclude>
-                <directory suffix=".php">./tests</directory>
-                <directory suffix=".php">./vendor</directory>
-                <directory suffix=".php">./src/Migrations</directory>
-            </exclude>
-        </whitelist>
-    </filter>
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+  <coverage includeUncoveredFiles="true">
+    <include>
+      <directory>./</directory>
+    </include>
+    <exclude>
+      <directory suffix=".php">./tests</directory>
+      <directory suffix=".php">./vendor</directory>
+      <directory suffix=".php">./src/Migrations</directory>
+    </exclude>
+    <report>
+      <clover outputFile="./phpunit-clover.xml"/>
+    </report>
+  </coverage>
+  <testsuites>
+    <testsuite name="Tests">
+      <directory suffix=".php">./tests/Unit</directory>
+    </testsuite>
+  </testsuites>
+  <logging/>
 </phpunit>

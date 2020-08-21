@@ -10,6 +10,8 @@
 
 namespace Zemit\Provider\Mailer;
 
+use Phalcon\Config;
+use Phalcon\Di\DiInterface;
 use Phalcon\Mailer\Manager;
 use InvalidArgumentException;
 use Zemit\Provider\AbstractServiceProvider;
@@ -38,20 +40,36 @@ class ServiceProvider extends AbstractServiceProvider
      *
      * @return void
      */
-    public function register(\Phalcon\Di\DiInterface $di): void
+    public function register(DiInterface $di): void
     {
         $di->setShared($this->getName(), function() use ($di) {
             
             /** @var \Phalcon\Config $config */
-            $config = $di->get('config')->mailer;
-            $driver = $config->get('default');
+            $config = $di->get('config');
+            
+            /** @var \Phalcon\Config|string $driver */
+            $driver = $config->path('mailer.driver', 'sendmail');
+            
+            /** @var \Phalcon\Events\Manager $eventsManager */
+            $eventsManager = $di->get('eventsManager');
             
             switch($driver) {
                 case 'smtp':
                 case 'mail':
                 case 'sendmail':
-                    $manager = new Manager($config->drivers->$driver->toArray());
+                    // Get the mailer manager settings
+                    $settings = $config->path('mailer.drivers.' . $driver, []);
+                    $settings = $settings instanceof Config? $settings->toArray() : $settings;
+                    $settings = array_merge($settings, $config->path('mailer.default', []));
+                    
+                    // Prepare the mailer manager
+                    $manager = new Manager($settings);
+                    
+                    // Bind the DI
                     $manager->setDI($di);
+                    
+                    // Bind the global event manager
+                    $manager->setEventsManager($eventsManager);
                     
                     return $manager;
             }

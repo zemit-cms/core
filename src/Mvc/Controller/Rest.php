@@ -442,8 +442,13 @@ class Rest extends \Zemit\Mvc\Controller
         // @todo private vs public cache type
         $cache = $this->getCache();
         if (!empty($cache['lifetime'])) {
-            $this->response->setCache($cache['lifetime']);
-            $this->response->setEtag($hash);
+            if ($this->response->getStatusCode() === 200) {
+                $this->response->setCache($cache['lifetime']);
+                $this->response->setEtag($hash);
+            }
+        } else {
+            $this->response->setCache(0);
+            $this->response->setHeader('Cache-Control', 'no-cache, max-age=0');
         }
         
         return $this->response->setJsonContent(array_merge([

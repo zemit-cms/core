@@ -11,17 +11,19 @@
 namespace Zemit\Modules\Oauth2\Controllers;
 
 use League\OAuth2\Client\Grant\RefreshToken;
+use League\OAuth2\Client\Provider\Facebook;
 
 /**
  * Class FacebookController
  *
+ * @property Facebook $oauth2Facebook
  * @package Zemit\Modules\Oauth2\Controllers
  */
 class FacebookController extends AbstractController
 {
     const DEFAULT_SCOPE = 'email';
     
-    public $sessionKey = 'oauth2-facebook-state';
+    public string $sessionKey = 'oauth2-facebook-state';
     
     /**
      * Redirect to Authorization Url
