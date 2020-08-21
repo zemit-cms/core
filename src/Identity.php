@@ -15,6 +15,7 @@ use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Ecdsa\Sha512;
 use Phalcon\Acl\Role;
 use Phalcon\Db\Column;
+use Phalcon\Validation\Validator\Confirmation;
 use Zemit\Di\Injectable;
 use Phalcon\Messages\Message;
 use Phalcon\Validation\Validator\PresenceOf;
@@ -735,6 +736,7 @@ class Identity extends Injectable
             $validation->appendMessage(new Message('A session is required', 'session', 'PresenceOf', 403));
         }
         else {
+            $user = false;
             if (isset($params['email'])) {
                 $userClass = $this->getUserClass();
                 $user = $userClass::findFirstByEmail($params['email']);
@@ -751,6 +753,7 @@ class Identity extends Injectable
                     
                     // Send it by email
                     $emailClass = $this->getEmailClass();
+                    
                     $email = new $emailClass();
                     $email->setTemplateByIndex('reset-password');
                     $email->setTo($user->getEmail());
@@ -779,12 +782,18 @@ class Identity extends Injectable
                 else {
                     $validation->add('password', new PresenceOf(['message' => 'password is required']));
                     $validation->add('passwordConfirm', new PresenceOf(['message' => 'password confirm is required']));
+                    $validation->add('password', new Confirmation(['message' => 'password does not match passwordConfirm', 'with' => 'passwordConfirm']));
                     $validation->validate($params);
                     
-                    if ($user->checkToken($params['token']) && !empty($password) && !empty($passwordConfirm)) {
-                        $params['token'] = null;
-                        $user->assign($params, ['token', 'password', 'passwordConfirm']);
-                        $saved = $user->save();
+                    if (!$user->checkToken($params['token'])) {
+                        $validation->appendMessage(new Message('invalid token', 'token', 'NotValid', 400));
+                    }
+                    else {
+                        if (!count($validation->getMessages())) {
+                            $params['token'] = null;
+                            $user->assign($params, ['token', 'password', 'passwordConfirm']);
+                            $saved = $user->save();
+                        }
                     }
                 }
                 
