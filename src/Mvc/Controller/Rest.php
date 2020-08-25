@@ -10,6 +10,7 @@
 
 namespace Zemit\Mvc\Controller;
 
+use League\Csv\CharsetConverter;
 use Phalcon\Http\Response;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\Model\Resultset;
@@ -145,13 +146,97 @@ class Rest extends \Zemit\Mvc\Controller
         $params = $this->view->getParamsToView();
         $list = $params['list'] ?? null;
         if (isset($list[0])) {
-            $csv = Writer::createFromFileObject(new \SplTempFileObject());
-            $csv->setOutputBOM(Writer::BOM_UTF8);
-            $csv->insertOne(array_keys($list[0]));
+            
+            // Get the export mode (csv, csv-windows, csv-mac, xlsx)
+            $contentType = $this->getContentType();
+            
+            // Flattern the array for the CSV / XLSX writing
             $this->flatternArrayForCsv($list);
-            $csv->insertAll($list);
-            $csv->output(ucfirst(Slug::generate(basename(str_replace('\\', '/', $this->getModelName())))) . ' List (' . date('Y-m-d') . ').csv');
-            die;
+            
+            // Prepare the filename to export
+            $fileName = ucfirst(Slug::generate(basename(str_replace('\\', '/', $this->getModelClassName())))) . ' List (' . date('Y-m-d') . ')';
+            
+            if ($contentType === 'json') {
+//                $this->response->setJsonContent($list);
+                $this->response->setContent(json_encode($list, JSON_PRETTY_PRINT, 2048));
+                $this->response->setContentType('application/json');
+                $this->response->setHeader('Content-disposition', 'attachment; filename="'.addslashes($fileName).'.json"');
+                return $this->response->send();
+            }
+            
+            // CSV
+            if ($contentType === 'csv') {
+                
+                // Get CSV custom request parameters
+                $mode = $params['mode'] ?? null;
+                $delimiter = $params['delimiter'] ?? null;
+                $newline = $params['newline'] ?? null;
+                $escape = $params['escape'] ?? null;
+                $outputBOM = $params['outputBOM'] ?? null;
+                $skipIncludeBOM = $params['skipIncludeBOM'] ?? null;
+                
+//                $csv = Writer::createFromFileObject(new \SplTempFileObject());
+                $csv = Writer::createFromStream(fopen('php://memory', 'r+'));
+    
+                // CSV - MS Excel on MacOS
+                if ($mode === 'mac') {
+                    $csv->setOutputBOM(Writer::BOM_UTF16_LE); // utf-16
+                    $csv->setDelimiter("\t"); // tabs separated
+                    $csv->setNewline("\r\n"); // new lines
+                    CharsetConverter::addTo($csv, 'UTF-8', 'UTF-16');
+                }
+                
+                // CSV - MS Excel on Windows
+                else {
+                    $csv->setOutputBOM(Writer::BOM_UTF8); // utf-8
+                    $csv->setDelimiter(','); // comma separated
+                    $csv->setNewline("\n"); // new line windows
+                    CharsetConverter::addTo($csv, 'UTF-8', 'UTF-8');
+                }
+                
+                // Apply forced params from request
+                if (isset($outputBOM)) {
+                    $csv->setOutputBOM($outputBOM);
+                }
+                if (isset($delimiter)) {
+                    $csv->setDelimiter($delimiter);
+                }
+                if (isset($newline)) {
+                    $csv->setNewline($newline);
+                }
+                if (isset($escape)) {
+                    $csv->setEscape($escape);
+                }
+                if ($skipIncludeBOM) {
+                    $csv->skipInputBOM();
+                }
+                else {
+                    $csv->includeInputBOM();
+                }
+    
+                // CSV
+                $csv->insertOne(array_keys($list[0]));
+                $csv->insertAll($list);
+                $csv->output($fileName . '.csv');
+                die;
+            }
+
+            // XLSX
+            if ($contentType === 'xlsx') {
+                $xlsxArray = [];
+                foreach ($list as $array) {
+                    if (empty($xlsxArray)) {
+                        $xlsxArray []= array_keys($array);
+                    }
+                    $xlsxArray []= array_values($array);
+                }
+                $xlsx = \SimpleXLSXGen::fromArray($xlsxArray);
+                $xlsx->downloadAs($fileName . '.xlsx');
+                die;
+            }
+            
+            // Something went wrong
+            throw new \Exception('Failed to export `' . $this->getModelClassName() . '` using content-type `' . $contentType . '`', 400);
         }
         
         return $response;
@@ -167,7 +252,7 @@ class Rest extends \Zemit\Mvc\Controller
         foreach ($list as $listKey => $listValue) {
             foreach ($listValue as $column => $value) {
                 if (is_array($value) || is_object($value)) {
-                    $list[$listKey][$column] = json_encode($value);
+                    $list[$listKey][$column] = gettype($value);
                 }
             }
         }

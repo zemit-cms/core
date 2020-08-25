@@ -519,7 +519,6 @@ trait Model
             }
         }
         
-        
         return $field;
     }
     
@@ -593,6 +592,59 @@ trait Model
         }
         
         return null;
+    }
+    
+    
+    /**
+     * Get requested content type
+     * - Default will return csv
+     *
+     * @param array|null $params
+     *
+     * @return string
+     * @throws \Exception
+     */
+    public function getContentType(?array $params = null) {
+        $params ??= $this->getParams();
+    
+        $contentType = strtolower($params['contentType'] ?? $params['content-type'] ?? 'json');
+        
+        switch ($contentType) {
+            case 'html':
+            case 'text/html':
+            case 'application/html':
+                // html not supported yet
+                break;
+            case 'xml':
+            case 'text/xml':
+            case 'application/xml':
+                // xml not supported yet
+                break;
+            case 'text':
+            case 'text/plain':
+                // plain text not supported yet
+                break;
+            case 'json':
+            case 'text/json':
+            case 'application/json':
+                return 'json';
+                break;
+            case 'csv':
+            case 'text/csv':
+                return 'csv';
+                break;
+            case 'xlsx':
+            case 'application/xlsx':
+            case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+                return 'xlsx';
+                break;
+            case 'xls':
+            case 'application/vnd.ms-excel':
+                // old xls not supported yet
+                break;
+        }
+
+        throw new \Exception('`'.$contentType.'` is not supported.', 400);
     }
     
     /**
