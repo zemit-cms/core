@@ -22,7 +22,7 @@ Zemit Core is an open source headless CMS built on top of [Phalcon](https://gith
 - [License](#license)
   
 ## Getting Started
-Zemit is using the [Phalcon Framework](https://phalconphp.com). You can use [composer](https://getcomposer.org/) in order to add Zemit core to an existing project. If you want to create a new project from srtach, we invite you to visit the [Zemit App](https://github.com/zemit-cms/app) repository for more informations.
+Zemit is using the [Phalcon Framework](https://phalconphp.com). You can use [composer](https://getcomposer.org/) in order to add Zemit core to an existing project. If you want to create a new project from scratch, we invite you to visit the [Zemit App](https://github.com/zemit-cms/app) repository for more informations.
 
     composer require zemit-cms/core
 
