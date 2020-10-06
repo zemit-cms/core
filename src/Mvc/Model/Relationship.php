@@ -40,6 +40,15 @@ trait Relationship
     protected array $_keepMissingRelated = [];
     protected array $_relationshipContext = [];
     
+    protected $dirtyRelated;
+    
+    /**
+     * Returns the models manager related to the entity instance
+     *
+     * @return ManagerInterface
+     */
+    abstract public function getModelsManager();
+    
     /**
      * @return string
      */
@@ -128,18 +137,20 @@ trait Relationship
                 if ($relationData instanceof ModelInterface) {
                     if ($relationData instanceof $referencedModel) {
                         $assign = $relationData;
-                    } else {
+                    }
+                    else {
                         throw new Exception('Instance of `' . get_class($relationData) . '` received on model `' . $modelClass . '` in alias `' . $alias . ', expected instance of `' . $referencedModel . '`', 400);
                     }
                 }
                 
                 // array | traversable | resultset
-                elseif (is_array($relationData) || $relationData instanceof \Traversable) {
+                else if (is_array($relationData) || $relationData instanceof \Traversable) {
                     $assign = [];
                     
                     if (empty($relationData)) {
                         $assign = $this->_getEntityFromData($relationData, $referencedFields, $referencedModel, $fields, $type);
-                    } else {
+                    }
+                    else {
                         foreach ($relationData as $traversedKey => $traversedData) {
                             // Array of things
                             if (is_int($traversedKey)) {
@@ -148,7 +159,7 @@ trait Relationship
                                 // Using bool as behaviour to delete missing relationship or keep them
                                 // @TODO find a better way... :(
                                 // if [alias => [true, ...]
-                                switch ($traversedData) {
+                                switch($traversedData) {
                                     case 'false':
                                         $traversedData = false;
                                         break;
@@ -170,14 +181,15 @@ trait Relationship
                                 if ($traversedData instanceof ModelInterface) {
                                     if ($traversedData instanceof $referencedModel) {
                                         $entity = $traversedData;
-                                    } else {
+                                    }
+                                    else {
                                         throw new Exception('Instance of `' . get_class($traversedData) . '` received on model `' . $modelClass . '` in alias `' . $alias . ', expected instance of `' . $referencedModel . '`', 400);
                                     }
                                 }
                                 
                                 // if [alias => [[id => 1], [id => 2], [id => 3], ....]]
-                                elseif (is_array($traversedData) || is_object($traversedData)) {
-                                    $entity = $this->_getEntityFromData($traversedData, $referencedFields, $referencedModel, $fields, $type);
+                                else if (is_array($traversedData) || $traversedData instanceof \Traversable) {
+                                    $entity = $this->_getEntityFromData((array)$traversedData, $referencedFields, $referencedModel, $fields, $type);
                                 }
                                 
                                 if ($entity) {
@@ -187,7 +199,7 @@ trait Relationship
                             
                             // if [alias => [id => 1]]
                             else {
-                                $assign = $this->_getEntityFromData($relationData, $referencedFields, $referencedModel, $fields, $type);
+                                $assign = $this->_getEntityFromData((array)$relationData, $referencedFields, $referencedModel, $fields, $type);
                                 break;
                             }
                         }
@@ -206,7 +218,7 @@ trait Relationship
                 }
             } // END RELATION
         } // END DATA LOOP
-    
+        
         return $this;
     }
     
@@ -248,7 +260,6 @@ trait Relationship
             $relation = $manager->getRelationByAlias($className, $alias);
             
             if ($relation) {
-                
                 /**
                  * Get the relation type
                  */
@@ -258,7 +269,7 @@ trait Relationship
                  * Only belongsTo are stored before save the master record
                  */
                 if ($type === Relation::BELONGS_TO) {
-    
+                    
                     /**
                      * We only support model interface for the belongs-to relation
                      */
@@ -367,7 +378,7 @@ trait Relationship
                         
                         $originFields = $relation->getFields();
                         $originFields = is_array($originFields) ? $originFields : [$originFields];
-    
+                        
                         $intermediateModelClass = $relation->getIntermediateModel();
                         $intermediateFields = $relation->getIntermediateFields();
                         $intermediateFields = is_array($intermediateFields) ? $intermediateFields : [$intermediateFields];
@@ -410,7 +421,7 @@ trait Relationship
                                 foreach ($intermediatePrimaryKeyAttributes as $intermediatePrimaryKey => $intermediatePrimaryKeyAttribute) {
                                     $buildPrimaryKey [] = $nodeEntity->readAttribute($intermediatePrimaryKeyAttribute);
                                 }
-                                $nodeIdListToKeep []= implode('.', $buildPrimaryKey);
+                                $nodeIdListToKeep [] = implode('.', $buildPrimaryKey);
                                 
                                 // Restoring node entities if previously soft deleted
                                 if (method_exists($nodeEntity, 'restore') && method_exists($nodeEntity, 'isDeleted')) {
@@ -445,7 +456,7 @@ trait Relationship
                                     
                                     return false;
                                 }
-
+                                
                                 // remove it
                                 unset($assign[$key]);
                                 unset($related[$lowerCaseAlias][$key]);
@@ -459,7 +470,8 @@ trait Relationship
                             // handle if we empty the related
                             if (empty($nodeIdListToKeep)) {
                                 $nodeIdListToKeep = [0];
-                            } else {
+                            }
+                            else {
                                 $nodeIdListToKeep = array_values(array_filter(array_unique($nodeIdListToKeep)));
                             }
                             
@@ -468,7 +480,7 @@ trait Relationship
                             /** @var ModelInterface|string $intermediateModelClass */
                             $nodeEntityToDeleteList = $intermediateModelClass::find([
                                 'conditions' => Sprintf::implodeArrayMapSprintf(array_merge($intermediateFields), ' and ', '[' . $intermediateModelClass . '].[%s] = ?%s')
-                                        . ' and concat(' . Sprintf::implodeArrayMapSprintf($intermediatePrimaryKeyAttributes, ', \'.\', ', '[' . $intermediateModelClass . '].[%s]') . ') not in ({id:array})',
+                                    . ' and concat(' . Sprintf::implodeArrayMapSprintf($intermediatePrimaryKeyAttributes, ', \'.\', ', '[' . $intermediateModelClass . '].[%s]') . ') not in ({id:array})',
                                 'bind' => [...$originBind, 'id' => $nodeIdListToKeep],
                                 'bindTypes' => [...array_fill(0, count($intermediateFields), Column::BIND_PARAM_STR), 'id' => $idBindType],
                             ]);
@@ -493,8 +505,8 @@ trait Relationship
                     
                     $columns = $relation->getFields();
                     $referencedFields = $relation->getReferencedFields();
-                    $columns = is_array($columns)? $columns : [$columns];
-                    $referencedFields = is_array($referencedFields)? $referencedFields : [$referencedFields];
+                    $columns = is_array($columns) ? $columns : [$columns];
+                    $referencedFields = is_array($referencedFields) ? $referencedFields : [$referencedFields];
                     
                     /**
                      * Create an implicit array for has-many/has-one records
@@ -522,8 +534,8 @@ trait Relationship
                         $intermediateModelClass = $relation->getIntermediateModel();
                         $intermediateFields = $relation->getIntermediateFields();
                         $intermediateReferencedFields = $relation->getIntermediateReferencedFields();
-                        $intermediateFields = is_array($intermediateFields)? $intermediateFields : [$intermediateFields];
-                        $intermediateReferencedFields = is_array($intermediateReferencedFields)? $intermediateReferencedFields : [$intermediateReferencedFields];
+                        $intermediateFields = is_array($intermediateFields) ? $intermediateFields : [$intermediateFields];
+                        $intermediateReferencedFields = is_array($intermediateReferencedFields) ? $intermediateReferencedFields : [$intermediateReferencedFields];
                     }
                     
                     
@@ -585,12 +597,12 @@ trait Relationship
                                  * Write value in the intermediate model
                                  */
                                 $intermediateModel->writeAttribute($intermediateFields[$key], $this->$column);
-    
+                                
                                 /**
                                  * Get the value from the referenced model
                                  */
                                 $intermediateValue = $recordAfter->readAttribute($referencedFields[$key]);
-    
+                                
                                 /**
                                  * Write the intermediate value in the intermediate model
                                  */
@@ -617,7 +629,8 @@ trait Relationship
                             }
                         }
                     }
-                } else {
+                }
+                else {
                     if (is_array($assign)) {
                         $connection->rollback($nesting);
                         throw new Exception("There are no defined relations for the model '" . get_class($this) . "' using alias '" . $lowerCaseAlias . "'");
@@ -639,13 +652,14 @@ trait Relationship
     
     /**
      * Get an entity from data
-     * @todo unit test for this
      *
      * @param array $data Data
      * @param array $fields Columns
      * @param string $modelClass Class the fetch
      *
      * @return ModelInterface
+     * @todo unit test for this
+     *
      */
     public function _getEntityFromData(array $data, array $fields, string $modelClass, ?array $readFields = [], int $type = null): ModelInterface
     {
@@ -659,7 +673,7 @@ trait Relationship
                     if (empty($data[$fields[$key]])) { // @todo maybe remove this if
                         $value = $this->readAttribute($field);
                         if (!empty($value)) { // @todo maybe remove this if
-                            $data [$fields[$key]]= $value;
+                            $data [$fields[$key]] = $value;
                         }
                     }
                 }
@@ -672,7 +686,7 @@ trait Relationship
         
         // all keys were found
         if (count($dataKeys) === count($fields)) {
-    
+            
             /** @var ModelInterface $entity */
             /** @var ModelInterface|string $modelClass */
             $entity = $modelClass::findFirst([
