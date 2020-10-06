@@ -306,7 +306,7 @@ DOC;
         return $this->fireSet($this->config, Config::class, [], function (Bootstrap $bootstrap) {
             $bootstrap->config->mode = $bootstrap->getMode();
             $bootstrap->config->mergeEnvConfig();
-            $bootstrap->prepare->php();
+//            $bootstrap->prepare->php();
         });
     }
     

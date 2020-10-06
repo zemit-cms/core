@@ -55,7 +55,7 @@ class ServiceProvider extends AbstractServiceProvider
             $config->mergeEnvConfig();
             
             // Launch bootstrap prepare raw php configs
-            $bootstrap->prepare()->php($config);
+            $bootstrap->prepare()->php($config->path('app'));
             
             // Register other providers
 //            foreach ($config->providers as $provider) {
