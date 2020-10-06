@@ -12,6 +12,7 @@ namespace Zemit\Modules\Oauth2\Controllers;
 
 use League\OAuth2\Client\Grant\RefreshToken;
 use League\OAuth2\Client\Provider\Facebook;
+use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 
 /**
  * Class FacebookController
@@ -39,6 +40,22 @@ class FacebookController extends AbstractController
         ]);
         $this->session->set($this->sessionKey, $this->oauth2Facebook->getState());
         return $this->response->redirect($redirectUrl);
+    }
+    
+    /**
+     *
+     */
+    public function callbackAction() {
+        
+        if ($this->validateState()) {
+            $accessToken = $this->getAccessToken();
+            $longLivedAccessToken = $this->getLongLivedAccessToken($accessToken);
+            $resourceOwner = $this->getResourceOwner($accessToken);
+            
+//            $resourceOwner->toArray();
+//            $session = $this->identity->getSession();
+//            $session->setUserId();
+        }
     }
     
     /**
@@ -98,7 +115,7 @@ class FacebookController extends AbstractController
     /**
      * @param null $token
      *
-     * @return mixed
+     * @return ResourceOwnerInterface
      */
     public function getResourceOwner($token = null)
     {
