@@ -62,7 +62,7 @@ class ServiceProvider extends AbstractServiceProvider
             $host = $request->getHttpHost();
             $port = $request->getPort();
             $port = !in_array($port, [$secure? '443' : '80'])? ':' . $port : null;
-            $settings['redirectUri'] = $scheme . $host . $port . '/' . ($settings['redirectUri'] ?: '');
+            $settings['redirectUri'] = $scheme . $host . $port . ($settings['redirectUri'] ?: '');
             
             $facebook = new Facebook($settings);
             return $facebook;

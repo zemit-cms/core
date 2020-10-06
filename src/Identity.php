@@ -184,7 +184,7 @@ class Identity extends Injectable
      */
     public function setMode($mode)
     {
-        switch ($mode) {
+        switch($mode) {
             case self::MODE_STRING:
             case self::MODE_JWT:
                 $this->mode = $mode;
@@ -203,7 +203,7 @@ class Identity extends Injectable
         $ret = $this->session->has($this->sessionKey) ? $ret = $this->session->get($this->sessionKey) : null;
         
         if ($ret) {
-            switch ($this->mode) {
+            switch($this->mode) {
                 case self::MODE_DEFAULT:
                     break;
                 case self::MODE_JWT:
@@ -226,7 +226,7 @@ class Identity extends Injectable
         $identity = json_encode($identity);
         
         $token = null;
-        switch ($this->mode) {
+        switch($this->mode) {
             case self::MODE_JWT:
                 $token = $this->jwt->getToken(['identity' => $identity]);
                 break;
@@ -331,10 +331,10 @@ class Identity extends Injectable
         
         $key ??= $this->security->getRandom()->uuid();
         $token ??= $this->security->getRandom()->hex(512);
-    
+        
         $sessionClass = $this->getSessionClass();
         $session = $this->getSession($key, $token) ? : new $sessionClass();
-    
+        
         if ($session && $refresh) {
             $token = $this->security->getRandom()->hex(512);
         }
@@ -382,7 +382,7 @@ class Identity extends Injectable
             if ($user->grouplist) {
                 foreach ($user->grouplist as $group) {
                     $groupList [$group->getIndex()] = $group;
-        
+                    
                     if ($group->rolelist) {
                         foreach ($group->rolelist as $role) {
                             $roleList [$role->getIndex()] = $role;
@@ -394,11 +394,11 @@ class Identity extends Injectable
             if ($user->typelist) {
                 foreach ($user->typelist as $type) {
                     $typeList [$type->getIndex()] = $type;
-        
+                    
                     if ($type->grouplist) {
                         foreach ($type->grouplist as $group) {
                             $groupList [$group->getIndex()] = $group;
-        
+                            
                             if ($group->rolelist) {
                                 foreach ($group->rolelist as $role) {
                                     $roleList [$role->getIndex()] = $role;
@@ -429,7 +429,6 @@ class Identity extends Injectable
     
     /**
      * Return true if the user is currently logged in
-     * @return bool
      *
      * @param bool $as
      * @param bool $refresh
@@ -471,7 +470,7 @@ class Identity extends Injectable
             $session = $this->getSession();
             
             $userClass = $this->getUserClass();
-            $user = !$session? false : $userClass::findFirstWithById([
+            $user = !$session ? false : $userClass::findFirstWithById([
                 'RoleList',
                 'GroupList.RoleList',
                 'TypeList.GroupList.RoleList',
@@ -613,6 +612,106 @@ class Identity extends Injectable
     }
     
     /**
+     *
+     */
+    public function oauth2(string $provider, int $id, string $accessToken, ?array $meta = [])
+    {
+        $loggedInUser = null;
+        $saved = null;
+        
+        // retrieve and prepare oauth2 entity
+        $oauth2 = Oauth2::findFirst([
+            'provider = :provider: and id = :id:',
+            'bind' => [
+                'provider' => $this->filter->sanitize($provider, 'string'),
+                'id' => (int)$id,
+            ],
+            'bindTypes' => [
+                'provider' => Column::BIND_PARAM_STR,
+                'id' => Column::BIND_PARAM_INT,
+            ],
+        ]);
+        if (!$oauth2) {
+            $oauth2 = new Oauth2();
+            $oauth2->setProviderName($provider);
+            $oauth2->setProviderId($id);
+        }
+        $oauth2->setAccessToken($accessToken);
+        $oauth2->setMeta($meta);
+        $oauth2->setName($meta['name'] ?? null);
+        $oauth2->setFirstName($meta['first_name'] ?? null);
+        $oauth2->setLastName($meta['last_name'] ?? null);
+        $oauth2->setEmail($meta['email'] ?? null);
+        
+        // ge the current session
+        $session = $this->getSession();
+        
+        // link the current user to the oauth2 entity
+        $oauth2UserId = $oauth2->getUserId();
+        $sessionUserId = $session->getUserId();
+        if (empty($oauth2UserId) && !empty($sessionUserId)) {
+            $oauth2->setUserId($sessionUserId);
+        }
+        
+        // prepare validation
+        $validation = new Validation();
+        
+        // save the oauth2 entity
+        $saved = $oauth2->save();
+        
+        // append oauth2 error messages
+        foreach ($oauth2->getMessages() as $message) {
+            $validation->appendMessage($message);
+        }
+        
+        // a session is required
+        if (!$session) {
+            $validation->appendMessage(new Message('A session is required', 'session', 'PresenceOf', 403));
+        }
+        
+        // user id is required
+        $validation->add('userId', new PresenceOf(['message' => 'userId is required']));
+        $validation->validate($oauth2 ? $oauth2->toArray() : []);
+        
+        // All validation passed
+        if ($saved && !$validation->getMessages()->count()) {
+    
+            $user = $this->findUser($oauth2->getUserId());
+    
+            // user not found, login failed
+            if (!$user) {
+                $validation->appendMessage(new Message('Login Failed', ['id'], 'LoginFailed', 401));
+            }
+            
+            // access forbidden, login failed
+            else if ($user->isDeleted()) {
+                $validation->appendMessage(new Message('Login Forbidden', 'password', 'LoginForbidden', 403));
+            }
+            
+            // login success
+            else {
+                $loggedInUser = $user;
+            }
+            
+            // Set the oauth user id into the session
+            $session->setUserId($loggedInUser ? $loggedInUser->getId() : null);
+            $saved = $session->save();
+            
+            // append session error messages
+            foreach ($session->getMessages() as $message) {
+                $validation->appendMessage($message);
+            }
+        }
+        
+        return [
+            'saved' => $saved,
+            'loggedIn' => $this->isLoggedIn(false, true),
+            'loggedInAs' => $this->isLoggedIn(true, true),
+            'messages' => $validation->getMessages(),
+        ];
+    }
+    
+    /**
      * Login Action
      * - Require an active session to bind the logged in userId
      *
@@ -663,10 +762,10 @@ class Identity extends Injectable
             else {
                 $loggedInUser = $user;
             }
-    
+            
             $session->setUserId($loggedInUser ? $loggedInUser->getId() : null);
             $saved = $session->save();
-    
+            
             foreach ($session->getMessages() as $message) {
                 $validation->appendMessage($message);
             }
@@ -769,7 +868,7 @@ class Identity extends Injectable
                     $email->setMeta($meta);
                     $saved = $user->save();
                     $sent = $saved ? $email->send() : false;
-    
+                    
                     // Appending error messages
                     foreach (['user', 'email'] as $e) {
                         foreach ($$e->getMessages() as $message) {
@@ -946,31 +1045,38 @@ class Identity extends Injectable
     
     /**
      * Retrieve the user from a username or an email
-     * @todo maybe move this into user model?
      *
      * @param $usernameOrEmail
      *
      * @return mixed
+     * @todo maybe move this into user model?
+     *
      */
-    public function findUser($usernameOrEmail) {
-        
-        if (empty($usernameOrEmail)) {
+    public function findUser($idUsernameEmail)
+    {
+        if (empty($idUsernameEmail)) {
             return false;
         }
         
-        $usernameEmail = $this->filter->sanitize($usernameOrEmail, ['string', 'trim']);
         $userClass = $this->getUserClass();
-        $user = $userClass::findFirst([
-            'email = :email: or username = :username:',
-            'bind' => [
-                'email' => $usernameEmail,
-                'username' => $usernameEmail
-            ],
-            'bindTypes' => [
-                'email' => Column::BIND_PARAM_STR,
-                'username' => Column::BIND_PARAM_STR,
-            ],
-        ]);
+        
+        if (!is_int($idUsernameEmail)) {
+            $usernameEmail = $this->filter->sanitize($idUsernameEmail, ['string', 'trim']);
+            $user = $userClass::findFirst([
+                'email = :email: or username = :username:',
+                'bind' => [
+                    'email' => $usernameEmail,
+                    'username' => $usernameEmail,
+                ],
+                'bindTypes' => [
+                    'email' => Column::BIND_PARAM_STR,
+                    'username' => Column::BIND_PARAM_STR,
+                ],
+            ]);
+        }
+        else {
+            $user = $userClass::findFirstById((int)$idUsernameEmail);
+        }
         
         return $user;
     }
