@@ -132,6 +132,7 @@ class Config extends PhalconConfig
                 'timeoutLimit' => Env::get('APP_TIMEOUT_LIMIT', 60), // allow to set timeout limit to use with the application
                 'memoryLimit' => Env::get('APP_MEMORY_LIMIT', '256M'), // allow to set timeout limit to use with the application
                 'postLimit' => Env::get('APP_POST_LIMIT', '20M'), // allow to set timeout limit to use with the application
+                'sendEmail' => Env::get('APP_SEND_EMAIL', false), // allow to send real email or not
                 
                 'dir' => [
                     // project
