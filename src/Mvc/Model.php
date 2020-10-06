@@ -384,7 +384,7 @@ class Model extends \Phalcon\Mvc\Model
      *
      * @return bool If the hash is valid or not
      */
-    public function checkHash(string $hash = null, string $string = null)
+    public function checkHash(string $hash = null, string $string = null) : bool
     {
         if (empty($hash)) {
             return false;
@@ -411,7 +411,7 @@ class Model extends \Phalcon\Mvc\Model
      *
      * @return bool
      */
-    public function hasDirtyRelated()
+    public function hasDirtyRelated() : bool
     {
         return count($this->dirtyRelated) ? true : false;
     }
