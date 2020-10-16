@@ -99,7 +99,6 @@ abstract class AbstractModel extends \Zemit\Mvc\Model
      */
     public function __call(string $method, array $arguments)
     {
-        
         /** @var Locale $locale */
         $locale = $this->getDI()->get('locale');
         
@@ -126,7 +125,6 @@ abstract class AbstractModel extends \Zemit\Mvc\Model
      */
     public function __set(string $property, $value)
     {
-        
         /** @var Locale $locale */
         $locale = $this->getDI()->get('locale');
         
@@ -158,7 +156,6 @@ abstract class AbstractModel extends \Zemit\Mvc\Model
      */
     public function __get(string $property)
     {
-        
         /** @var Locale $locale */
         $locale = $this->getDI()->get('locale');
         

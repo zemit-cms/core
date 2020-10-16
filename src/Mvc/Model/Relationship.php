@@ -16,6 +16,7 @@ use Phalcon\Db\Column;
 use Phalcon\Messages\Message;
 use Phalcon\Mvc\Model\Manager;
 use Phalcon\Mvc\Model\ManagerInterface;
+use Phalcon\Mvc\Model\MetaData;
 use Phalcon\Mvc\Model\Relation;
 use Phalcon\Mvc\Model\RelationInterface;
 use Phalcon\Mvc\Model\ResultsetInterface;
@@ -148,7 +149,7 @@ trait Relationship
                     $assign = [];
                     
                     if (empty($relationData)) {
-                        $assign = $this->_getEntityFromData($relationData, $referencedFields, $referencedModel, $fields, $type);
+                        $assign = $this->_getEntityFromData($relationData, $referencedFields, $referencedModel, $fields, $type, $whiteList, $dataColumnMap);
                     }
                     else {
                         foreach ($relationData as $traversedKey => $traversedData) {
@@ -189,7 +190,7 @@ trait Relationship
                                 
                                 // if [alias => [[id => 1], [id => 2], [id => 3], ....]]
                                 else if (is_array($traversedData) || $traversedData instanceof \Traversable) {
-                                    $entity = $this->_getEntityFromData((array)$traversedData, $referencedFields, $referencedModel, $fields, $type);
+                                    $entity = $this->_getEntityFromData((array)$traversedData, $referencedFields, $referencedModel, $fields, $type, $whiteList, $dataColumnMap);
                                 }
                                 
                                 if ($entity) {
@@ -199,7 +200,7 @@ trait Relationship
                             
                             // if [alias => [id => 1]]
                             else {
-                                $assign = $this->_getEntityFromData((array)$relationData, $referencedFields, $referencedModel, $fields, $type);
+                                $assign = $this->_getEntityFromData((array)$relationData, $referencedFields, $referencedModel, $fields, $type, $whiteList, $dataColumnMap);
                                 break;
                             }
                         }
@@ -210,11 +211,7 @@ trait Relationship
                 if (!empty($assign) || $this->_keepMissingRelated[$alias] === false) {
                     
                     $this->$alias = is_array($assign) ? array_values(array_filter($assign)) : $assign;
-                    
-                    // if is empty fix for actual save
-                    if (empty($assign)) {
-                        $this->dirtyRelated[$alias] = [];
-                    }
+                    $this->dirtyRelated[$alias] = $this->$alias ?? false;
                 }
             } // END RELATION
         } // END DATA LOOP
@@ -653,15 +650,20 @@ trait Relationship
     /**
      * Get an entity from data
      *
-     * @param array $data Data
-     * @param array $fields Columns
-     * @param string $modelClass Class the fetch
+     * @param array $data
+     * @param array $fields
+     * @param string $modelClass
+     * @param array|null $readFields
+     * @param int|null $type
+     * @param array|null $whiteList
+     * @param array|null $dataColumnMap
      *
      * @return ModelInterface
      * @todo unit test for this
      *
+     * @return ModelInterface
      */
-    public function _getEntityFromData(array $data, array $fields, string $modelClass, ?array $readFields = [], int $type = null): ModelInterface
+    public function _getEntityFromData(array $data, array $fields, string $modelClass, ?array $readFields = [], int $type = null, ?array $whiteList = null, ?array $dataColumnMap = null): ModelInterface
     {
         $entity = null;
         
@@ -687,6 +689,21 @@ trait Relationship
         // all keys were found
         if (count($dataKeys) === count($fields)) {
             
+            if ($type === Relation::HAS_MANY) {
+    
+                /** @var MetaData $modelMetaData */
+                $modelsMetaData = $this->getModelsMetaData();
+                $primaryKeys = $modelsMetaData->getPrimaryKeyAttributes($this);
+                
+                // Force primary keys for single to many
+                foreach ($primaryKeys as $primaryKey) {
+                    if (isset($data[$primaryKey]) && !in_array($primaryKey, $fields, true)) {
+                        $dataKeys [$primaryKey] = $data[$primaryKey];
+                        $fields []= $primaryKey;
+                    }
+                }
+            }
+            
             /** @var ModelInterface $entity */
             /** @var ModelInterface|string $modelClass */
             $entity = $modelClass::findFirst([
@@ -703,7 +720,7 @@ trait Relationship
         
         // assign new values
         if ($entity) {
-            $entity->assign($data);
+            $entity->assign($data, $whiteList[$modelClass] ?? null, $dataColumnMap[$modelClass] ?? null);
         }
         
         return $entity;
