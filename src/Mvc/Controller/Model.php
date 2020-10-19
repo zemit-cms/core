@@ -216,8 +216,6 @@ trait Model
             $searchWhitelist = $this->getSearchWhitelist();
             if ($searchWhitelist) {
                 foreach ($searchWhitelist as $whitelist) {
-                    // @todo figure out why I can't use the same binding multiple time...
-                    // temp fix, generating new binding for each condition
                     $searchTermBinding = '_' . uniqid() . '_';
                     $orConditions [] = $this->appendModelName($whitelist) . " like :$searchTermBinding:";
                     $this->setBind([$searchTermBinding => '%' . $searchTerm . '%']);
@@ -348,6 +346,15 @@ trait Model
         return null;
     }
     
+    function arrayMapRecursive($callback, $array)
+    {
+        $func = function ($item) use (&$func, &$callback) {
+            return is_array($item) ? array_map($func, $item) : call_user_func($callback, $item);
+        };
+        
+        return array_map($func, $array);
+    }
+    
     /**
      * Get Filter Condition
      *
@@ -364,7 +371,7 @@ trait Model
     {
         $filters ??= $this->getParam('filters');
         $whitelist ??= $this->getFilterWhitelist();
-        $lowercaseWhitelist = !is_null($whitelist) ? array_map('mb_strtolower', $whitelist) : $whitelist;
+        $lowercaseWhitelist = !is_null($whitelist) ? $this->arrayMapRecursive('mb_strtolower', $whitelist) : $whitelist;
         
         // No filter, no query
         if (empty($filters)) {
@@ -415,6 +422,7 @@ trait Model
                         throw new \Exception('Not allowed to filter using the following operator: `' . $queryOperator . '`', 403);
                         break;
                 }
+                
                 $bind = [];
                 $bindType = [];
 

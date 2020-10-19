@@ -148,8 +148,18 @@ trait Relationship
                 else if (is_array($relationData) || $relationData instanceof \Traversable) {
                     $assign = [];
                     
+                    $getEntityParams = [
+                        'alias' => $alias,
+                        'fields' => $referencedFields,
+                        'modelClass' => $referencedModel,
+                        'readFields' => $fields,
+                        'type' => $type,
+                        'whiteList' => $whiteList,
+                        'dataColumnMap'=> $dataColumnMap,
+                    ];
+                    
                     if (empty($relationData)) {
-                        $assign = $this->_getEntityFromData($relationData, $referencedFields, $referencedModel, $fields, $type, $whiteList, $dataColumnMap);
+                        $assign = $this->_getEntityFromData($relationData, $getEntityParams);
                     }
                     else {
                         foreach ($relationData as $traversedKey => $traversedData) {
@@ -190,7 +200,7 @@ trait Relationship
                                 
                                 // if [alias => [[id => 1], [id => 2], [id => 3], ....]]
                                 else if (is_array($traversedData) || $traversedData instanceof \Traversable) {
-                                    $entity = $this->_getEntityFromData((array)$traversedData, $referencedFields, $referencedModel, $fields, $type, $whiteList, $dataColumnMap);
+                                    $entity = $this->_getEntityFromData((array)$traversedData, $getEntityParams);
                                 }
                                 
                                 if ($entity) {
@@ -200,7 +210,7 @@ trait Relationship
                             
                             // if [alias => [id => 1]]
                             else {
-                                $assign = $this->_getEntityFromData((array)$relationData, $referencedFields, $referencedModel, $fields, $type, $whiteList, $dataColumnMap);
+                                $assign = $this->_getEntityFromData((array)$relationData, $getEntityParams);
                                 break;
                             }
                         }
@@ -211,6 +221,12 @@ trait Relationship
                 if (!empty($assign) || $this->_keepMissingRelated[$alias] === false) {
                     
                     $this->$alias = is_array($assign) ? array_values(array_filter($assign)) : $assign;
+                    
+                    // fix to force recursive parent save from children entities within _preSaveRelatedRecords method
+                    if ($this->$alias && $this->$alias instanceof ModelInterface) {
+                        $this->$alias->setDirtyState(self::DIRTY_STATE_TRANSIENT);
+                    }
+                    
                     $this->dirtyRelated[$alias] = $this->$alias ?? false;
                 }
             } // END RELATION
@@ -651,20 +667,32 @@ trait Relationship
      * Get an entity from data
      *
      * @param array $data
-     * @param array $fields
-     * @param string $modelClass
-     * @param array|null $readFields
-     * @param int|null $type
-     * @param array|null $whiteList
-     * @param array|null $dataColumnMap
+     * @param array $configuration
+     *
+     * @param string $alias deprecated
+     * @param array $fields deprecated
+     * @param string $modelClass deprecated
+     * @param array|null $readFields deprecated
+     * @param int|null $type deprecated
+     * @param array|null $whiteList deprecated
+     * @param array|null $dataColumnMap deprecated
      *
      * @return ModelInterface
      * @todo unit test for this
      *
      * @return ModelInterface
      */
-    public function _getEntityFromData(array $data, array $fields, string $modelClass, ?array $readFields = [], int $type = null, ?array $whiteList = null, ?array $dataColumnMap = null): ModelInterface
+    public function _getEntityFromData(array $data, array $configuration = []): ModelInterface
     {
+        $alias = $configuration['alias'] ?? null;
+        $fields = $configuration['fields'] ?? null;
+        $modelClass = $configuration['modelClass'] ?? null;
+        $readFields = $configuration['readFields'] ?? null;
+        $type = $configuration['type'] ?? null;
+        $whiteList = $configuration['whiteList'] ?? null;
+        
+        $dataColumnMap = $configuration['dataColumnMap'] ?? null;
+        
         $entity = null;
         
         if ($type === Relation::HAS_ONE || $type === Relation::BELONGS_TO) {
@@ -720,8 +748,16 @@ trait Relationship
         
         // assign new values
         if ($entity) {
-            $entity->assign($data, $whiteList[$modelClass] ?? null, $dataColumnMap[$modelClass] ?? null);
+            
+            // can be null to bypass, empty array for nothing or filled array
+            $assignWhitelist = isset($whiteList[$modelClass]) || isset($whiteList[$alias]);
+            $assignColumnMap = isset($dataColumnMap[$modelClass]) || isset($dataColumnMap[$alias]);
+            $assignWhitelist = $assignWhitelist? array_merge_recursive($whiteList[$modelClass] ?? [], $whiteList[$alias] ?? []) : null;
+            $assignColumnMap = $assignColumnMap? array_merge_recursive($dataColumnMap[$modelClass] ?? [], $dataColumnMap[$alias] ?? []) : null;
+            
+            $entity->assign($data, $assignWhitelist, $assignColumnMap);
         }
+        
         
         return $entity;
     }
