@@ -1,4 +1,4 @@
-# Guidelines
+# Standard Recommendation
 
 ## PHP Standard Recommendation 
 Zemit recommends following and using the PHP-FIG PSR (PHP Standard Recommendation)
@@ -8,7 +8,10 @@ Zemit recommends following and using the PHP-FIG PSR (PHP Standard Recommendatio
 Zemit uses Phalcon 4 and is just an extension to add new features. Everything can be bypassed if required.
 
 ## Phalcon 4 Documentation
-- https://docs.phalcon.io/4.0/en/introduction
+- https://docs.phalcon.io/4.0/men/introduction
+
+## Random Standard Recommandation
+
 
 ## Zemit Specific Standard Recommendation
 - Never use "Transaction" as an alias for the Model Relationships
@@ -16,6 +19,7 @@ Zemit uses Phalcon 4 and is just an extension to add new features. Everything ca
 - Never use "ReadConnection" as an alias or property inside a Model
 - Never allow primary key modification "ID" within the whitelist
 - UserID allow for admin and dev only and force UserID using the identity service
+- Avoid defining classes using raw string, it's suggested to use `Namespace\ClassName::class` instead
 
 ## Phalcon Specific Standard Recommendation
 - Never use the same name for an alias and a property
