@@ -39,9 +39,9 @@ trait Model
     
     /**
      * Get the current Model Name
+     * @return string|null
      * @todo remove for v1
      *
-     * @return string|null
      * @deprecated change to getModelClassName() instead
      */
     public function getModelName()
@@ -61,9 +61,9 @@ trait Model
     
     /**
      * Get the WhiteList parameters for saving
+     * @return null|array
      * @todo add a whitelist object that would be able to support one configuration for the search, assign, filter
      *
-     * @return null|array
      */
     protected function getWhiteList()
     {
@@ -77,8 +77,10 @@ trait Model
      *
      * @return array|null
      */
-    public function getFlatWhiteList(?array $whiteList = null) {
+    public function getFlatWhiteList(?array $whiteList = null)
+    {
         $whiteList ??= $this->getWhiteList();
+        
         return array_keys(Expose::_parseColumnsRecursive($whiteList));
     }
     
@@ -369,7 +371,7 @@ trait Model
     
     function arrayMapRecursive($callback, $array)
     {
-        $func = function ($item) use (&$func, &$callback) {
+        $func = function($item) use (&$func, &$callback) {
             return is_array($item) ? array_map($func, $item) : call_user_func($callback, $item);
         };
         
@@ -633,12 +635,13 @@ trait Model
      * @return string
      * @throws \Exception
      */
-    public function getContentType(?array $params = null) {
+    public function getContentType(?array $params = null)
+    {
         $params ??= $this->getParams();
-    
+        
         $contentType = strtolower($params['contentType'] ?? $params['content-type'] ?? 'json');
         
-        switch ($contentType) {
+        switch($contentType) {
             case 'html':
             case 'text/html':
             case 'application/html':
@@ -672,8 +675,8 @@ trait Model
                 // old xls not supported yet
                 break;
         }
-
-        throw new \Exception('`'.$contentType.'` is not supported.', 400);
+        
+        throw new \Exception('`' . $contentType . '` is not supported.', 400);
     }
     
     /**
@@ -797,6 +800,11 @@ trait Model
     
     /**
      * Saving model automagically
+     *
+     * Note:
+     * If a newly created entity can't be retrieved using the ->getSingle
+     * method after it's creation, the entity will be returned directly
+     *
      * @TODO Support Composite Primary Key
      *
      * @param null|int|string $id
@@ -862,8 +870,9 @@ trait Model
                 $ret['messages'] = $singlePostEntity->getMessages();
                 $ret['model'] = get_class($singlePostEntity);
                 $ret['source'] = $singlePostEntity->getSource();
+                $ret['entity'] = $singlePostEntity->expose($this->getExpose());
                 $fetch = $this->getSingle($singlePostEntity->getId(), $modelName, $with);
-                $ret[$single ? 'single' : 'list'] = $fetch ? $fetch->expose($this->getExpose()) : $singlePostEntity->expose($this->getExpose());
+                $ret[$single ? 'single' : 'list'] = $fetch ? $fetch->expose($this->getExpose()) : false;
             }
             
             $retList [] = $ret;
