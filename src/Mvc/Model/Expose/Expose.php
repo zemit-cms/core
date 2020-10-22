@@ -261,7 +261,7 @@ trait Expose
      *
      * @return array|null
      */
-    private static function _parseColumnsRecursive(?array $columns = null, ?string $context = null) : ?array
+    public static function _parseColumnsRecursive(?array $columns = null, ?string $context = null) : ?array
     {
         if (!isset($columns)) {
             return null;

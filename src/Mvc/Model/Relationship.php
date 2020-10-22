@@ -117,7 +117,7 @@ trait Relationship
             /** @var \Phalcon\Mvc\Model\Relation $relation */
             $relation = $modelManager->getRelationByAlias($modelClass, $alias);
             
-            // @todo add a resursive whitelist check & columnMap support
+            // @todo add a resursive whiteList check & columnMap support
             if ($relation) {
                 
                 $type = $relation->getType();
@@ -750,12 +750,12 @@ trait Relationship
         if ($entity) {
             
             // can be null to bypass, empty array for nothing or filled array
-            $assignWhitelist = isset($whiteList[$modelClass]) || isset($whiteList[$alias]);
+            $assignWhiteList = isset($whiteList[$modelClass]) || isset($whiteList[$alias]);
             $assignColumnMap = isset($dataColumnMap[$modelClass]) || isset($dataColumnMap[$alias]);
-            $assignWhitelist = $assignWhitelist? array_merge_recursive($whiteList[$modelClass] ?? [], $whiteList[$alias] ?? []) : null;
+            $assignWhiteList = $assignWhiteList? array_merge_recursive($whiteList[$modelClass] ?? [], $whiteList[$alias] ?? []) : null;
             $assignColumnMap = $assignColumnMap? array_merge_recursive($dataColumnMap[$modelClass] ?? [], $dataColumnMap[$alias] ?? []) : null;
             
-            $entity->assign($data, $assignWhitelist, $assignColumnMap);
+            $entity->assign($data, $assignWhiteList, $assignColumnMap);
 //            $entity->setDirtyState(self::DIRTY_STATE_TRANSIENT);
         }
         

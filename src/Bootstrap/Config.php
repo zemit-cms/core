@@ -28,7 +28,7 @@ use Zemit\Mvc\Controller\Behavior\Model\Delete;
 use Zemit\Mvc\Controller\Behavior\Model\Restore;
 use Zemit\Mvc\Controller\Behavior\Model\Update;
 use Zemit\Mvc\Controller\Behavior\Skip\SkipIdentityCondition;
-use Zemit\Mvc\Controller\Behavior\Skip\SkipWhitelist;
+use Zemit\Mvc\Controller\Behavior\Skip\SkipWhiteList;
 use Zemit\Providers;
 use Zemit\Utils\Env;
 use Zemit\Version;
@@ -842,7 +842,7 @@ class Config extends PhalconConfig
                     'user' => [
                         'behaviors' => [
                             UserController::class => [
-                                SkipWhitelist::class,
+                                SkipWhiteList::class,
                                 SkipIdentityCondition::class,
                                 Create::class,
                                 Update::class,

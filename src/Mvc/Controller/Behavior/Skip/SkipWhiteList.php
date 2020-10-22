@@ -11,7 +11,7 @@
 namespace Zemit\Mvc\Controller\Behavior\Skip;
 
 /**
- * Class SkipWhitelist
+ * Class SkipWhiteList
  *
  * @author Julien Turbide <jturbide@nuagerie.com>
  * @copyright Zemit Team <contact@zemit.com>
@@ -21,13 +21,13 @@ namespace Zemit\Mvc\Controller\Behavior\Skip;
  *
  * @package Zemit\Mvc\Controller\Behavior\Skip
  */
-class SkipWhitelist
+class SkipWhiteList
 {
     /**
      * Stop operation
      * @return false
      */
-    public function beforeWhitelist() {
+    public function beforeWhiteList() {
         return false;
     }
 }

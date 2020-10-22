@@ -80,7 +80,7 @@ class Rest extends \Zemit\Mvc\Controller
      */
     public function getAction($id = null)
     {
-        $modelName = $this->getModelName();
+        $modelName = $this->getModelClassName();
         $single = $this->getSingle($id, $modelName, null);
         
         $this->view->single = $single ? $single->expose($this->getExpose()) : false;
@@ -103,14 +103,11 @@ class Rest extends \Zemit\Mvc\Controller
      */
     public function getAllAction()
     {
-        /** @var \Zemit\Mvc\Model $model */
-        $model = $this->getModelNameFromController();
+        $model = $this->getModelClassName();
         
         /** @var Resultset $with */
         $find = $this->getFind();
-//        dd($find);
         $with = $model::with($this->getWith() ? : [], $find ? : []);
-//        $list = $model::find($find ? : []);
         
         /**
          * @var int $key
@@ -268,13 +265,15 @@ class Rest extends \Zemit\Mvc\Controller
      */
     public function countAction()
     {
-        /** @var \Zemit\Mvc\Model $model */
-        $model = $this->getModelNameFromController();
-        $instance = new $model();
+        $model = $this->getModelClassName();
+        
+        /** @var \Zemit\Mvc\Model $entity */
+        $entity = new $model();
+        
         $this->view->totalCount = $model::count($this->getFindCount($this->getFind()));
         $this->view->totalCount = is_int($this->view->totalCount)? $this->view->totalCount : count($this->view->totalCount);
-        $this->view->model = get_class($instance);
-        $this->view->source = $instance->getSource();
+        $this->view->model = get_class($entity);
+        $this->view->source = $entity->getSource();
         
         return $this->setRestResponse();
     }
@@ -286,11 +285,11 @@ class Rest extends \Zemit\Mvc\Controller
      */
     public function newAction()
     {
-        /** @var \Zemit\Mvc\Model $model */
-        $model = $this->getModelNameFromController();
-        
+        $model = $this->getModelClassName();
+    
+        /** @var \Zemit\Mvc\Model $entity */
         $entity = new $model();
-        $entity->assign($this->getParams(), $this->getWhitelist(), $this->getColumnMap());
+        $entity->assign($this->getParams(), $this->getWhiteList(), $this->getColumnMap());
         
         $this->view->model = get_class($entity);
         $this->view->source = $entity->getSource();
@@ -306,10 +305,9 @@ class Rest extends \Zemit\Mvc\Controller
      */
     public function validateAction($id = null)
     {
-        /** @var \Zemit\Mvc\Model $model */
-        $model = $this->getModelNameFromController();
+        $model = $this->getModelClassName();
         
-        /** @var \Zemit\Mvc\Model $instance */
+        /** @var \Zemit\Mvc\Model $entity */
         $entity = $this->getSingle($id);
         $new = !$entity;
         
@@ -317,7 +315,7 @@ class Rest extends \Zemit\Mvc\Controller
             $entity = new $model();
         }
         
-        $entity->assign($this->getParams(), $this->getWhitelist(), $this->getColumnMap());
+        $entity->assign($this->getParams(), $this->getWhiteList(), $this->getColumnMap());
         
         /**
          * Event to run

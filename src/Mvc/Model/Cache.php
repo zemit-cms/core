@@ -19,7 +19,7 @@ use Zemit\Models\Session;
  * Trait Cache
  * Flush Cache on changes
  * @todo improve to delete only necessary keys
- * @todo improve whitelist system
+ * @todo improve whiteList system
  *
  * @author Julien Turbide <jturbide@nuagerie.com>
  * @copyright Zemit Team <contact@zemit.com>
@@ -43,22 +43,22 @@ trait Cache
      * Adding Cache Behavior
      *
      * @param null $modelsCacheService
-     * @param null $whitelist
+     * @param null $whiteList
      */
-    public function addCacheBehavior($modelsCacheService = null, $whitelist = null): void
+    public function addCacheBehavior($modelsCacheService = null, $whiteList = null): void
     {
         $modelsCacheService ??= 'modelsCache';
-        $whitelist ??= [];
+        $whiteList ??= [];
         
-        // Set default whitelist
-        $whitelist = array_merge($whitelist, [
+        // Set default whiteList
+        $whiteList = array_merge($whiteList, [
             Session::class,
             Audit::class,
             AuditDetail::class,
         ]);
         
-        // Prevent adding behavior to whitelisted models
-        foreach ($whitelist as $className) {
+        // Prevent adding behavior to whiteListed models
+        foreach ($whiteList as $className) {
             if ($this instanceof $className) {
                 return;
             }

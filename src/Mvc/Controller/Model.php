@@ -18,6 +18,7 @@ use Phalcon\Mvc\ModelInterface;
 use Phalcon\Text;
 use Zemit\Http\Request;
 use Zemit\Identity;
+use Zemit\Mvc\Model\Expose\Expose;
 use Zemit\Utils\Slug;
 
 /**
@@ -59,33 +60,46 @@ trait Model
     }
     
     /**
-     * Get the Whitelist parameters for saving
+     * Get the WhiteList parameters for saving
+     * @todo add a whitelist object that would be able to support one configuration for the search, assign, filter
      *
      * @return null|array
      */
-    protected function getWhitelist()
+    protected function getWhiteList()
     {
         return null;
     }
     
     /**
-     * Get the Whitelist parameters for filtering
+     * Get the Flattened WhiteList
      *
-     * @return null|array
+     * @param array|null $whiteList
+     *
+     * @return array|null
      */
-    protected function getFilterWhitelist()
-    {
-        return $this->getWhitelist();
+    public function getFlatWhiteList(?array $whiteList = null) {
+        $whiteList ??= $this->getWhiteList();
+        return array_keys(Expose::_parseColumnsRecursive($whiteList));
     }
     
     /**
-     * Get the Whitelist parameters for filtering
+     * Get the WhiteList parameters for filtering
      *
      * @return null|array
      */
-    protected function getSearchWhitelist()
+    protected function getFilterWhiteList()
     {
-        return $this->getFilterWhitelist();
+        return $this->getFlatWhiteList();
+    }
+    
+    /**
+     * Get the WhiteList parameters for filtering
+     *
+     * @return null|array
+     */
+    protected function getSearchWhiteList()
+    {
+        return $this->getWhiteList();
     }
     
     /**
@@ -213,11 +227,18 @@ trait Model
         
         foreach ($searchList as $searchTerm) {
             $orConditions = [];
-            $searchWhitelist = $this->getSearchWhitelist();
-            if ($searchWhitelist) {
-                foreach ($searchWhitelist as $whitelist) {
+            $searchWhiteList = $this->getSearchWhiteList();
+            if ($searchWhiteList) {
+                foreach ($searchWhiteList as $whiteList) {
+                    
+                    // Multidimensional arrays not supported yet
+                    // @todo support this properly
+                    if (is_array($whiteList)) {
+                        continue;
+                    }
+                    
                     $searchTermBinding = '_' . uniqid() . '_';
-                    $orConditions [] = $this->appendModelName($whitelist) . " like :$searchTermBinding:";
+                    $orConditions [] = $this->appendModelName($whiteList) . " like :$searchTermBinding:";
                     $this->setBind([$searchTermBinding => '%' . $searchTerm . '%']);
                     $this->setBindTypes([$searchTermBinding => Column::BIND_PARAM_STR]);
                 }
@@ -359,7 +380,7 @@ trait Model
      * Get Filter Condition
      *
      * @param array|null $filters
-     * @param array|null $whitelist
+     * @param array|null $whiteList
      * @param bool $or
      *
      * @return string|null Return the generated query
@@ -367,11 +388,11 @@ trait Model
      * @todo escape fields properly
      *
      */
-    protected function getFilterCondition(array $filters = null, array $whitelist = null, $or = false)
+    protected function getFilterCondition(array $filters = null, array $whiteList = null, $or = false)
     {
         $filters ??= $this->getParam('filters');
-        $whitelist ??= $this->getFilterWhitelist();
-        $lowercaseWhitelist = !is_null($whitelist) ? $this->arrayMapRecursive('mb_strtolower', $whitelist) : $whitelist;
+        $whiteList ??= $this->getFilterWhiteList();
+        $lowercaseWhiteList = !is_null($whiteList) ? $this->arrayMapRecursive('mb_strtolower', $whiteList) : $whiteList;
         
         // No filter, no query
         if (empty($filters)) {
@@ -383,8 +404,8 @@ trait Model
             $field = $this->filter->sanitize($filter['field'] ?? null, ['string', 'trim']);
             $lowercaseField = mb_strtolower($field);
             
-            // whitelist on filter condition
-            if (is_null($whitelist) || !in_array($lowercaseField, $lowercaseWhitelist, true)) {
+            // whiteList on filter condition
+            if (is_null($whiteList) || !in_array($lowercaseField, $lowercaseWhiteList, true)) {
                 throw new \Exception('Not allowed to filter using the following field: `' . $field . '`', 403);
                 continue;
             }
@@ -483,7 +504,7 @@ trait Model
             }
             else {
                 if (is_array($filter) || $filter instanceof \Traversable) {
-                    $query [] = $this->getFilterCondition($filter, $whitelist, !$or);
+                    $query [] = $this->getFilterCondition($filter, $whiteList, !$or);
                 }
                 else {
                     throw new \Exception('A valid field property is required.', 400);
@@ -505,7 +526,7 @@ trait Model
      */
     public function appendModelName($field, $modelName = null)
     {
-        $modelName ??= $this->getModelName();
+        $modelName ??= $this->getModelClassName();
         
         if (empty($field)) {
             return $field;
@@ -782,21 +803,21 @@ trait Model
      * @param null|\Zemit\Mvc\Model $entity
      * @param null|mixed $post
      * @param null|string $modelName
-     * @param null|array $whitelist
+     * @param null|array $whiteList
      * @param null|array $columnMap
      * @param null|array $with
      *
      * @return array
      */
-    protected function save($id = null, $entity = null, $post = null, $modelName = null, $whitelist = null, $columnMap = null, $with = null)
+    protected function save($id = null, $entity = null, $post = null, $modelName = null, $whiteList = null, $columnMap = null, $with = null)
     {
         $single = false;
         $retList = [];
         
         // Get the model name to play with
-        $modelName ??= $this->getModelName();
+        $modelName ??= $this->getModelClassName();
         $post ??= $this->getParams();
-        $whitelist ??= $this->getWhitelist();
+        $whiteList ??= $this->getWhiteList();
         $columnMap ??= $this->getColumnMap();
         $with ??= $this->getWith();
         $id = (int)$id;
@@ -836,13 +857,13 @@ trait Model
                 ];
             }
             else {
-                $singlePostEntity->assign($singlePost, $whitelist, $columnMap);
+                $singlePostEntity->assign($singlePost, $whiteList, $columnMap);
                 $ret['saved'] = $singlePostEntity->save();
                 $ret['messages'] = $singlePostEntity->getMessages();
                 $ret['model'] = get_class($singlePostEntity);
                 $ret['source'] = $singlePostEntity->getSource();
                 $fetch = $this->getSingle($singlePostEntity->getId(), $modelName, $with);
-                $ret[$single ? 'single' : 'list'] = $fetch ? $fetch->expose($this->getExpose()) : false;
+                $ret[$single ? 'single' : 'list'] = $fetch ? $fetch->expose($this->getExpose()) : $singlePostEntity->expose($this->getExpose());
             }
             
             $retList [] = $ret;
