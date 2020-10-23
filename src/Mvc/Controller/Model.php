@@ -91,7 +91,7 @@ trait Model
      */
     protected function getFilterWhiteList()
     {
-        return $this->getFlatWhiteList();
+        return $this->getWhiteList();
     }
     
     /**
@@ -101,7 +101,7 @@ trait Model
      */
     protected function getSearchWhiteList()
     {
-        return $this->getWhiteList();
+        return $this->getFilterWhiteList();
     }
     
     /**
@@ -394,6 +394,7 @@ trait Model
     {
         $filters ??= $this->getParam('filters');
         $whiteList ??= $this->getFilterWhiteList();
+        $whiteList = $this->getFlatWhiteList($whiteList);
         $lowercaseWhiteList = !is_null($whiteList) ? $this->arrayMapRecursive('mb_strtolower', $whiteList) : $whiteList;
         
         // No filter, no query
