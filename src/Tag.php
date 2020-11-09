@@ -65,7 +65,7 @@ class Tag extends \Phalcon\Tag
      */
     public static function title($tags = true)
     {
-        echo forward_static_call_array(__CLASS__ . '::' . 'get' . ucfirst(__FUNCTION__), func_get_args());
+        echo self::getTitle($tags);
     }
     
     /**
@@ -206,12 +206,12 @@ class Tag extends \Phalcon\Tag
     
     public static function getTag()
     {
-        return forward_static_call_array(__CLASS__ . '::get', func_get_args());
+        return self::get(...func_get_args());
     }
     
     public static function tag()
     {
-        echo forward_static_call_array(__CLASS__ . '::get', func_get_args());
+        echo self::get(...func_get_args());
     }
     
     /**
@@ -512,7 +512,7 @@ class Tag extends \Phalcon\Tag
      */
     public static function meta($glue = null)
     {
-        echo forward_static_call_array(__CLASS__ . '::' . 'get' . ucfirst(__FUNCTION__), func_get_args());
+        echo self::getMeta($glue);
     }
     
     /**
@@ -536,7 +536,7 @@ class Tag extends \Phalcon\Tag
      */
     public static function link($glue = null)
     {
-        echo forward_static_call_array(__CLASS__ . '::' . 'get' . ucfirst(__FUNCTION__), func_get_args());
+        echo self::getLink($glue);
     }
     
     /**
@@ -558,7 +558,7 @@ class Tag extends \Phalcon\Tag
      */
     public static function css(String $collection = null) : Void
     {
-        echo forward_static_call_array(__CLASS__ . '::' . 'get' . ucfirst(__FUNCTION__), func_get_args());
+        echo self::getCss($collection);
     }
     
     /**
@@ -580,6 +580,6 @@ class Tag extends \Phalcon\Tag
      */
     public static function js(String $collection = null) : Void
     {
-        echo forward_static_call_array(__CLASS__ . '::' . 'get' . ucfirst(__FUNCTION__), func_get_args());
+        echo self::getJs($collection);
     }
 }
