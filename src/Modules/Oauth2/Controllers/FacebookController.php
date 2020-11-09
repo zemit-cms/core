@@ -13,6 +13,7 @@ namespace Zemit\Modules\Oauth2\Controllers;
 use League\OAuth2\Client\Grant\RefreshToken;
 use League\OAuth2\Client\Provider\Facebook;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
+use Phalcon\Db\Column;
 
 /**
  * Class FacebookController
@@ -24,6 +25,7 @@ class FacebookController extends AbstractController
 {
     const DEFAULT_SCOPE = 'email';
     
+    public string $providerName = 'facebook';
     public string $sessionKey = 'oauth2-facebook-state';
     
     /**
@@ -46,16 +48,7 @@ class FacebookController extends AbstractController
      *
      */
     public function callbackAction() {
-        
-        if ($this->validateState()) {
-            $accessToken = $this->getAccessToken();
-            $longLivedAccessToken = $this->getLongLivedAccessToken($accessToken);
-            $resourceOwner = $this->getResourceOwner($accessToken);
-            
-//            $resourceOwner->toArray();
-//            $session = $this->identity->getSession();
-//            $session->setUserId();
-        }
+        // @todo
     }
     
     /**

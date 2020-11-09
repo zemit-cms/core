@@ -25,5 +25,6 @@ use Zemit\Modules\Oauth2\Controller;
  */
 abstract class AbstractController extends Controller
 {
-
+    public string $providerName;
+    public string $sessionKey;
 }
