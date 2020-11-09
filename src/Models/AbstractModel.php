@@ -102,7 +102,7 @@ abstract class AbstractModel extends \Zemit\Mvc\Model
         /** @var Locale $locale */
         $locale = $this->getDI()->get('locale');
         
-        $lang = $locale->getLocale();
+        $lang = $locale->getLocale() ?: 'en';
         
         if (mb_strrpos($method, ucfirst($lang)) !== mb_strlen($method) - mb_strlen($lang)) {
             $call = $method . ucfirst($lang);
