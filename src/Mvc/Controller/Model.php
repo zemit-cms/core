@@ -217,6 +217,15 @@ trait Model
     }
     
     /**
+     * Return the whitelisted role list for the current model
+     *
+     * @return string[] By default will return dev and admin role
+     */
+    protected function getRoleList() {
+        return ['dev', 'admin'];
+    }
+    
+    /**
      * Get Search condition
      *
      * @return string Default: deleted = 0
@@ -327,7 +336,7 @@ trait Model
     /**
      * Get Created By Condition
      *
-     * @param string $identityColumn
+     * @param string[] $columns
      * @param Identity|null $identity
      * @param string[]|null $roleList
      *
@@ -338,8 +347,8 @@ trait Model
     protected function getIdentityCondition(array $columns = null, Identity $identity = null, $roleList = null)
     {
         $identity ??= $this->identity ?? false;
-        $roleList ??= ['dev', 'admin'];
-        $modelName = $this->getModelName();
+        $roleList ??= $this->getRoleList();
+        $modelName = $this->getModelClassName();
         
         if ($modelName && $identity && !$identity->hasRole($roleList)) {
             $ret = [];
