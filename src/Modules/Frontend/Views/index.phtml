@@ -3,8 +3,8 @@
     <head>
         <?= $this->tag->renderTitle();?>
         <?= $this->tag->meta();?>
-        <?= $this->tag->css();?>
-        <?= $this->tag->js();?>
+        <?= $this->tag->css('head');?>
+        <?= $this->tag->js('head');?>
         <?= $this->partial('layout/head');?>
     </head>
     <body<?= $this->tag->getParams('body');?>>
