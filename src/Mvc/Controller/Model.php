@@ -855,7 +855,7 @@ trait Model
                 unset($singlePost['_url']);
             }
             
-            $singlePostId = (!$single || empty($id)) ? $this->getParam('id', 'number', $this->getParam('int', 'number', null)) : $id;
+            $singlePostId = (!$single || empty($id)) ? $this->getParam('id', 'int', $this->getParam('int', 'int', null)) : $id;
             unset($singlePost['id']);
             
             /** @var \Zemit\Mvc\Model $singlePostEntity */
