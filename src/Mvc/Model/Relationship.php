@@ -237,6 +237,19 @@ trait Relationship
     
     /**
      * Saves related records that must be stored prior to save the master record
+     *
+     * @todo Remove in v5.0
+     * @deprecated Use preSaveRelatedRecords()
+     *
+     * @param \Phalcon\Mvc\ModelInterface[] related
+     */
+    protected function _preSaveRelatedRecords(AdapterInterface $connection, $related): bool
+    {
+        return $this->preSaveRelatedRecords($connection, $related);
+    }
+    
+    /**
+     * Saves related records that must be stored prior to save the master record
      * Refactored based on the native cphalcon version so we can support :
      * - combined keys on relationship definition
      * - relationship context within the model messages based on the alias definition
@@ -248,7 +261,7 @@ trait Relationship
      * @throws Exception
      *
      */
-    protected function _preSaveRelatedRecords(\Phalcon\Db\Adapter\AdapterInterface $connection, $related): bool
+    protected function preSaveRelatedRecords(\Phalcon\Db\Adapter\AdapterInterface $connection, $related): bool
     {
         $nesting = false;
         
@@ -342,6 +355,20 @@ trait Relationship
     }
     
     /**
+     * Save the related records assigned in the has-one/has-many relations
+     *
+     * @todo Remove in v5.0
+     * @deprecated Use postSaveRelatedRecords()
+     *
+     * @param \Phalcon\Mvc\ModelInterface[] related
+     * @return bool
+     */
+    protected function _postSaveRelatedRecords(AdapterInterface $connection, $related): bool
+    {
+        return $this->postSaveRelatedRecords($connection, $related);
+    }
+    
+    /**
      * NOTE: we need this, this behaviour only happens:
      * - in many to many nodes
      * Fix uniqueness on combined keys in node entities, and possibly more...
@@ -354,7 +381,7 @@ trait Relationship
      *
      * @return array|bool
      */
-    protected function _postSaveRelatedRecords(\Phalcon\Db\Adapter\AdapterInterface $connection, $related): bool
+    protected function postSaveRelatedRecords(\Phalcon\Db\Adapter\AdapterInterface $connection, $related): bool
     {
         $nesting = false;
         
@@ -524,7 +551,7 @@ trait Relationship
                     /**
                      * Create an implicit array for has-many/has-one records
                      */
-                    $relatedRecords = is_object($assign) ? [$assign] : $assign;
+                    $relatedRecords = $assign instanceof ModelInterface ? [$assign] : $assign;
                     
                     foreach ($columns as $column) {
                         if (!property_exists($this, $column)) {

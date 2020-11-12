@@ -258,11 +258,13 @@ class Identity extends Injectable
     }
     
     /**
-     * @param null $roles
+     * @param array|null $roles
+     * @param bool $or
+     * @param bool $inherit
      *
      * @return bool
      */
-    public function hasRole($roles = null, $or = false)
+    public function hasRole(?array $roles = null, bool $or = false, bool $inherit = true)
     {
         return $this->has($roles, array_keys($this->getRoleList() ? : []), $or);
     }
@@ -315,7 +317,8 @@ class Identity extends Injectable
         
         return $or ?
             !in_array(false, $result, true) :
-            in_array(true, $result, true);
+            in_array(true, $result, true)
+        ;
     }
     
     /**

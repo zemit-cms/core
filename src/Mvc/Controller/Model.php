@@ -743,12 +743,13 @@ trait Model
     
     /**
      * @param string $key
+     * @param string[]|string|null $filters
      * @param string|null $default
      * @param array|null $params
      *
      * @return string[]|string|null
      */
-    public function getParam(string $key, string $filters = null, string $default = null, array $params = null)
+    public function getParam(string $key, $filters = null, string $default = null, array $params = null)
     {
         $params ??= $this->getParams();
         
