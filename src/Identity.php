@@ -364,9 +364,11 @@ class Identity extends Injectable
     /**
      * Get basic Identity information
      *
+     * @param bool $inherit
+     *
      * @return array
      */
-    public function getIdentity($inherit = true)
+    public function getIdentity(bool $inherit = true)
     {
         $user = $this->getUser();
         $userAs = $this->getUserAs();
@@ -513,29 +515,38 @@ class Identity extends Injectable
     
     /**
      * Get the "Roles" related to the current session
-     * @return array
+     *
+     * @param bool $inherit
+     *
+     * @return array|mixed
      */
-    public function getRoleList($inherit = true)
+    public function getRoleList(bool $inherit = true)
     {
         return $this->getIdentity($inherit)['roleList'] ?? [];
     }
     
     /**
      * Get the "Groups" related to the current session
+     *
+     * @param bool $inherit
+     *
      * @return array
      */
-    public function getGroupList()
+    public function getGroupList(bool $inherit = true)
     {
-        return $this->getIdentity()['groupList'] ?? [];
+        return $this->getIdentity($inherit)['groupList'] ?? [];
     }
     
     /**
      * Get the "Types" related to the current session
+     *
+     * @param bool $inherit
+     *
      * @return array
      */
-    public function getTypeList()
+    public function getTypeList(bool $inherit = true)
     {
-        return $this->getIdentity()['typeList'] ?? [];
+        return $this->getIdentity($inherit)['typeList'] ?? [];
     }
     
     /**
