@@ -266,7 +266,7 @@ class Identity extends Injectable
      */
     public function hasRole(?array $roles = null, bool $or = false, bool $inherit = true)
     {
-        return $this->has($roles, array_keys($this->getRoleList() ? : []), $or);
+        return $this->has($roles, array_keys($this->getRoleList($inherit) ? : []), $or);
     }
     
     /**
@@ -366,7 +366,7 @@ class Identity extends Injectable
      *
      * @return array
      */
-    public function getIdentity()
+    public function getIdentity($inherit = true)
     {
         $user = $this->getUser();
         $userAs = $this->getUserAs();
@@ -414,8 +414,22 @@ class Identity extends Injectable
         }
         
         // Append inherit roles
-        foreach ($roleList as $role) {
-        
+        if ($inherit) {
+            foreach ($roleList as $role) {
+                $roleIndex = $role->getIndex();
+                $configRoles = $this->config->path('permissions.roles.' . $roleIndex . '.inherit', false);
+                if ($configRoles) {
+                    foreach ($configRoles->toArray() as $configRole) {
+                        if (!isset($roleList[$configRole])) {
+                            $roleClass = $this->getRoleClass();
+                            
+                            /** @var \Zemit\Models\Role $inheritedRole */
+                            $inheritedRole = $roleClass::findFirstByIndex($configRole);
+                            $roleList[$configRole] = $inheritedRole;
+                        }
+                    }
+                }
+            }
         }
         
         // We don't need userAs group / type / role list
@@ -501,9 +515,9 @@ class Identity extends Injectable
      * Get the "Roles" related to the current session
      * @return array
      */
-    public function getRoleList()
+    public function getRoleList($inherit = true)
     {
-        return $this->getIdentity()['roleList'] ?? [];
+        return $this->getIdentity($inherit)['roleList'] ?? [];
     }
     
     /**
