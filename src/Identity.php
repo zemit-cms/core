@@ -561,7 +561,9 @@ class Identity extends Injectable
         $aclRoles = [];
         $aclRoles['everyone'] = new Role('everyone');
         foreach ($roleList as $role) {
-            $aclRoles[$role->getIndex()] ??= new Role($role->getIndex());
+            if ($role) {
+                $aclRoles[$role->getIndex()] ??= new Role($role->getIndex());
+            }
         }
         
         return array_values($aclRoles);
