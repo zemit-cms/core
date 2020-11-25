@@ -882,8 +882,9 @@ class Identity extends Injectable
                     $emailClass = $this->getEmailClass();
                     
                     $email = new $emailClass();
+                    $email->setViewPath('template/email');
                     $email->setTemplateByIndex('reset-password');
-                    $email->setTo($user->getEmail());
+                    $email->setTo([$user->getEmail()]);
                     $meta = [];
                     $meta['user'] = $user->expose(['User' => [
                         false,
