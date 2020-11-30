@@ -933,7 +933,10 @@ class Identity extends Injectable
                 }
             }
             else {
-                $validation->appendMessage(new Message('User not found', 'user', 'PresenceOf', 404));
+//                $validation->appendMessage(new Message('User not found', 'user', 'PresenceOf', 404));
+                // OWASP Protect User Enumeration
+                $saved = true;
+                $sent = true;
             }
         }
         
