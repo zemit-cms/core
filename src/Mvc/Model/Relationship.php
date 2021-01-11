@@ -220,7 +220,8 @@ trait Relationship
                 // we got something to assign
                 if (!empty($assign) || $this->_keepMissingRelated[$alias] === false) {
     
-                    $this->$alias = is_array($assign) ? array_values(array_filter($assign)) : $assign;
+                    $assign = is_array($assign) ? array_values(array_filter($assign)) : $assign;
+                    $this->$alias = $assign;
                     
                     // fix to force recursive parent save from children entities within _preSaveRelatedRecords method
                     if ($this->$alias && $this->$alias instanceof ModelInterface) {
@@ -228,6 +229,10 @@ trait Relationship
                     }
                     
                     $this->dirtyRelated[mb_strtolower($alias)] = $this->$alias ?? false;
+                    
+                    if (empty($assign)) {
+                        $this->dirtyRelated[mb_strtolower($alias)] = [];
+                    }
                 }
             } // END RELATION
         } // END DATA LOOP
