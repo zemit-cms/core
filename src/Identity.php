@@ -287,7 +287,7 @@ class Identity extends Injectable
      * Reversing ANDs and ORs within each nested subarray
      *
      * $this->has(['dev', 'admin'], $this->getUser()->getRoles(), true); // 'dev' OR 'admin'
-     * $this->has(['dev', 'admin'], $this->getUser()->getRoles(), false); // 'dev' ADN 'admin'
+     * $this->has(['dev', 'admin'], $this->getUser()->getRoles(), false); // 'dev' AND 'admin'
      *
      * $this->has(['dev', 'admin'], $this->getUser()->getRoles()); // 'dev' AND 'admin'
      * $this->has([['dev', 'admin']], $this->getUser()->getRoles()); // 'dev' OR 'admin'
@@ -705,9 +705,9 @@ class Identity extends Injectable
         
         // All validation passed
         if ($saved && !$validation->getMessages()->count()) {
-    
+            
             $user = $this->findUser($oauth2->getUserId());
-    
+            
             // user not found, login failed
             if (!$user) {
                 $validation->appendMessage(new Message('Login Failed', ['id'], 'LoginFailed', 401));

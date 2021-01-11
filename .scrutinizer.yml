@@ -27,7 +27,7 @@ build:
                 - 'RewriteCond %{REQUEST_FILENAME} !-f'
                 - 'RewriteRule ^(.*)$ index.php?_url=/$1 [QSA,L]'
         php:
-          version: 7.4.9
+          version: 7.4.14
           # @link https://pecl.php.net/
           pecl_extensions:
             - phalcon

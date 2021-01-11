@@ -125,13 +125,33 @@ trait Model
     }
     
     /**
-     * Get expose definition
+     * Get expose definition for a single entity
      *
      * @return null|array
      */
     protected function getExpose()
     {
         return null;
+    }
+    
+    /**
+     * Get expose definition for listing many entities
+     *
+     * @return null|array
+     */
+    protected function getListExpose()
+    {
+        return $this->getExpose();
+    }
+    
+    /**
+     * Get expose definition for export
+     *
+     * @return null|array
+     */
+    protected function getExportExpose()
+    {
+        return $this->getExportExpose();
     }
     
     /**
@@ -423,7 +443,7 @@ trait Model
             }
             
             if (!empty($field)) {
-                $uniqid = substr(md5(json_encode($filter)), 0, 6);
+                $uniqid = substr(md5(json_encode($filter)), 0, 10);
 //                $queryField = '_' . uniqid($uniqid . '_field_') . '_';
                 $queryValue = '_' . uniqid($uniqid . '_value_') . '_';
                 $queryOperator = strtolower($filter['operator']);
@@ -792,7 +812,7 @@ trait Model
     public function getSingle($id = null, $modelName = null, $with = [], $find = null, $appendCondition = true)
     {
         $id ??= (int)$this->getParam('id', 'int');
-        $modelName ??= $this->getModelName();
+        $modelName ??= $this->getModelClassName();
         $with ??= $this->getWith();
         $find ??= $this->getFind();
         $condition = '[' . $modelName . '].[id] = ' . (int)$id;

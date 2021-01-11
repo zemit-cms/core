@@ -158,7 +158,7 @@ class Config extends PhalconConfig
                     'migrations' => Env::get('APP_MIGRATION_PATH', PRIVATE_PATH . '/migrations/'),
                 ],
             ],
-    
+            
             /**
              * Debug Configuration
              */
@@ -192,7 +192,7 @@ class Config extends PhalconConfig
                     ],
                 ],
             ],
-    
+            
             /**
              * Identity Provider Configuration
              */
@@ -202,12 +202,12 @@ class Config extends PhalconConfig
                 'sessionClass' => Env::get('IDENTITY_SESSION_CLASS', \Zemit\Models\Session::class),
                 'sessionKey' => Env::get('IDENTITY_SESSION_KEY', 'zemit-identity'),
             ],
-    
+            
             /**
              *
              */
             'models' => [
-    
+                
                 // System
                 \Zemit\Models\Backup::class => \Zemit\Models\Backup::class,
                 \Zemit\Models\Audit::class => \Zemit\Models\Audit::class,
@@ -228,7 +228,7 @@ class Config extends PhalconConfig
                 \Zemit\Models\Workspace::class => \Zemit\Models\Workspace::class,
                 \Zemit\Models\WorkspaceProject::class => \Zemit\Models\WorkspaceProject::class,
                 \Zemit\Models\WorkspaceUser::class => \Zemit\Models\WorkspaceUser::class,
-            
+                
                 // Project
                 \Zemit\Models\Project::class => \Zemit\Models\Project::class,
                 \Zemit\Models\ProjectUser::class => \Zemit\Models\ProjectUser::class,
@@ -320,7 +320,7 @@ class Config extends PhalconConfig
                 Provider\Clamav\ServiceProvider::class => Provider\Clamav\ServiceProvider::class,
 //                Snowair\Debugbar\ServiceProvider::class => \Snowair\Debugbar\ServiceProvider::class,
             ],
-    
+            
             /**
              * Logger Configuration
              */

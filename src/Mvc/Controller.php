@@ -12,6 +12,7 @@ namespace Zemit\Mvc;
 
 use Zemit\Bootstrap;
 use Zemit\Bootstrap\Config;
+use Zemit\Db\Profiler;
 use Zemit\Escaper;
 use Zemit\Filter;
 use Zemit\Identity;
@@ -32,6 +33,7 @@ use Xenolope\Quahog\Client as Clamav;
  * @property Application $application
  * @property Bootstrap $bootstrap
  * @property Utils $utils
+ * @property Profiler $profiler
  * @property Identity $identity
  * @property Config $config
  * @property Clamav $clamav
