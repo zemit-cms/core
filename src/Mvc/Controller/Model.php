@@ -384,7 +384,7 @@ trait Model
                     continue;
                 }
                 
-                $field = str_contains($column, '.') ? $column : $modelName . '.' . $column;
+                $field = strpos($column, '.') !== false ? $column : $modelName . '.' . $column;
                 $field = '[' . str_replace('.', '].[', $field) . ']';
                 
                 $this->setBind([$column => (int)$identity->getUserId()]);
@@ -567,10 +567,10 @@ trait Model
         if (is_string($field)) {
             // Add the current model name by default
             $explode = explode(' ', $field);
-            if (!str_contains($field, '.')) {
+            if (!strpos($field, '.') !== false) {
                 $field = trim('[' . $modelName . '].[' . array_shift($explode) . '] ' . implode(' ', $explode));
             }
-            else if (!str_contains($field, ']') && !str_contains($field, '[')) {
+            else if (strpos($field, ']') === false && strpos($field, '[') === false) {
                 $field = trim('[' . implode('].[', explode('.', array_shift($explode))) . ']' . implode(' ', $explode));
             }
         }

@@ -18,7 +18,7 @@ namespace Zemit;
  * @copyright Zemit Team <contact@zemit.com>
  *
  * @since 1.0
- * @version 1.8
+ * @version 1.9
  *
  * @package Zemit
  */
@@ -36,6 +36,6 @@ class Version extends \Phalcon\Version
      */
     protected static function _getVersion() : array
     {
-        return [0, 0, 1, 8, 0];
+        return [0, 0, 1, 9, 0];
     }
 }

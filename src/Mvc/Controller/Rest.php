@@ -374,7 +374,7 @@ class Rest extends \Zemit\Mvc\Controller
             $this->skipped = false;
             
             // skip depending wether it's a create or update
-            if (str_contains($event, $new ? 'Update' : 'Create')) {
+            if (strpos($event, $new ? 'Update' : 'Create') !== false) {
                 continue;
             }
             
