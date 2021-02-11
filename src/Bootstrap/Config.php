@@ -792,6 +792,16 @@ class Config extends PhalconConfig
              * Oauth2
              */
             'oauth2' => [
+                'client' => [
+                    'clientId' => Env::get('OAUTH2_CLIENT_ID'),
+                    'clientSecret' => Env::get('OAUTH2_CLIENT_SECRET'),
+                    'redirectUri' => Env::get('OAUTH2_CLIENT_REDIRECT_URI', '/oauth2/client/redirect'),
+                    'urlAuthorize' => Env::get('OAUTH2_CLIENT_URL_AUTHORIZE', '/oauth2/client/authorize'),
+                    'urlAccessToken' => Env::get('OAUTH2_CLIENT_URL_ACCESS_TOKEN', '/oauth2/client/token'),
+                    'urlResourceOwnerDetails' => Env::get('OAUTH2_CLIENT_URL_RESOURCE', '/oauth2/client/resource'),
+                    'proxy' => Env::get('OAUTH2_CLIENT_PROXY', null),
+                    'verify' => Env::get('OAUTH2_CLIENT_VERIFY', true),
+                ],
                 'facebook' => [
                     'clientId' => Env::get('OAUTH2_FACEBOOK_CLIENT_ID'),
                     'clientSecret' => Env::get('OAUTH2_FACEBOOK_CLIENT_SECRET'),
