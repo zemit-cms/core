@@ -434,15 +434,17 @@ trait Model
         $query = [];
         foreach ($filters as $filter) {
             $field = $this->filter->sanitize($filter['field'] ?? null, ['string', 'trim']);
-            $lowercaseField = mb_strtolower($field);
-            
-            // whiteList on filter condition
-            if (is_null($whiteList) || !in_array($lowercaseField, $lowercaseWhiteList, true)) {
-                throw new \Exception('Not allowed to filter using the following field: `' . $field . '`', 403);
-                continue;
-            }
             
             if (!empty($field)) {
+                $lowercaseField = mb_strtolower($field);
+                
+                // whiteList on filter condition
+                if (is_null($whiteList) || !in_array($lowercaseField, $lowercaseWhiteList, true)) {
+                    // @todo if config is set to throw exception on usage of not allowed filters otherwise continue looping through
+                    throw new \Exception('Not allowed to filter using the following field: `' . $field . '`', 403);
+                    continue;
+                }
+                
                 $uniqid = substr(md5(json_encode($filter)), 0, 10);
 //                $queryField = '_' . uniqid($uniqid . '_field_') . '_';
                 $queryValue = '_' . uniqid($uniqid . '_value_') . '_';
