@@ -498,7 +498,7 @@ trait Model
                         $bind[$queryValue1] = $filter['value'][1];
                         $bindType[$queryValue0] = Column::BIND_PARAM_STR;
                         $bindType[$queryValue1] = Column::BIND_PARAM_STR;
-                        $query [] = "$queryFieldBinder $queryOperator :$queryValue0: and :$queryValue1:";
+                        $query [] = (($queryOperator === 'not between')? 'not ' : null) . "$queryFieldBinder between :$queryValue0: and :$queryValue1:";
                     }
                     else {
                         $bind[$queryValue] = $filter['value'];
