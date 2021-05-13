@@ -827,7 +827,6 @@ trait Model
             $find['conditions'] = $condition;
         }
         
-        
         return $id ? $modelName::findFirstWith($with ?? [], $find ?? []) : false;
     }
     
