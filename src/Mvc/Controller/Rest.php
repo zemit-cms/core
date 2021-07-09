@@ -176,7 +176,7 @@ class Rest extends \Zemit\Mvc\Controller
         /** @var Resultset $with */
         $find = $this->getFind();
         $with = $model::with($this->getWith() ? : [], $find ? : []);
-        
+
         /**
          * Expose the list
          * @var int $key
@@ -186,10 +186,10 @@ class Rest extends \Zemit\Mvc\Controller
         foreach ($with as $key => $item) {
             $list[$key] = $item->expose($this->getExportExpose());
         }
-        
+
         $list = is_array($list) ? array_values(array_filter($list)) : $list;
         $this->flatternArrayForCsv($list);
-        
+
         if ($contentType === 'json') {
 //            $this->response->setJsonContent($list);
             $this->response->setContent(json_encode($list, JSON_PRETTY_PRINT, 2048));
@@ -272,22 +272,98 @@ class Rest extends \Zemit\Mvc\Controller
         // Something went wrong
         throw new \Exception('Failed to export `' . $this->getModelClassName() . '` using content-type `' . $contentType . '`', 400);
     }
-    
+
     /**
      * @param array|null $array
      *
      * @return array|null
      */
     public function flatternArrayForCsv(?array &$list = null) {
-        
+
         foreach ($list as $listKey => $listValue) {
             foreach ($listValue as $column => $value) {
                 if (is_array($value) || is_object($value)) {
-                    $list[$listKey][$column] = gettype($value);
+                    $list[$listKey][$column] = $this->arrayFlatten($value);
+                    if (is_array($list[$listKey][$column])) {
+                        foreach ($list[$listKey][$column] as $childKey => $childValue) {
+                            $list[$listKey][$childKey] = $childValue;
+                            unset ($list[$listKey][$column]);
+                        }
+                    }
                 }
             }
         }
-        
+
+        $this->formatColumnText($list);
+        return $this->mergeColumns($list);
+    }
+
+    /**
+     * @param array|null $array
+     *
+     * @return array|null
+     */
+    function arrayFlatten(?array $array) {
+        $return = array();
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $return = array_merge($return, $this->arrayFlatten($value));
+            }
+            else {
+                $return[$key] = $value;
+            }
+        }
+        return $return;
+    }
+
+    /**
+     * @param array|null $list
+     *
+     * @return array|null
+     */
+    public function mergeColumns (?array &$list) {
+        $columnToMergeList = $this->getExportMergeColum ();
+        if (!$columnToMergeList || empty($columnToMergeList)) {
+            return  $list;
+        }
+
+        $columnList = [];
+        foreach ($list as $listKey => $listValue) {
+            foreach ($columnToMergeList as $columnToMerge) {
+                foreach ($columnToMerge['columns'] as $column) {
+                    if (isset($listValue[$column])) {
+                        $columnList[$listKey][] = $listValue[$column];
+                        unset($list[$listKey][$column]);
+                    }
+                }
+                $list[$listKey][$columnToMerge['name']] = implode (' ', $columnList[$listKey] ?? []);
+            }
+        }
+
+        return $list;
+    }
+
+    /**
+     * @param array|null $list
+     *
+     * @return array|null
+     */
+    public function formatColumnText (?array &$list) {
+        foreach ($list as $listKey => $listValue) {
+            $formatArray = $this->getExportFormatFieldText ($listValue);
+            if ($formatArray) {
+                foreach ($formatArray as $formatKey => $formatValue) {
+                    if (isset($formatValue['text'])) {
+                        $list[$listKey][$formatKey] = $formatValue['text'];
+                        if ($formatValue['rename']) {
+                            $list[$listKey][$formatValue['rename']] = $formatValue['text'];
+                            unset($list[$listKey][$formatKey]);
+                        }
+                    }
+                }
+            }
+        }
+
         return $list;
     }
     
