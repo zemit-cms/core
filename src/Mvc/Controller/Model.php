@@ -151,7 +151,28 @@ trait Model
      */
     protected function getExportExpose()
     {
-        return $this->getExportExpose();
+        return $this->getExpose();
+    }
+
+    /**
+     * Get columns merge definition for export
+     *
+     * @return null|array
+     */
+    public function getExportMergeColum ()
+    {
+        return null;
+    }
+
+    /**
+     * Get columns format field text definition for export
+     *
+     * @param array|null $params
+     *
+     * @return null|array
+     */
+    public function getExportFormatFieldText (?array $params = null) {
+        return null;
     }
     
     /**
