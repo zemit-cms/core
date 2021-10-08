@@ -135,7 +135,7 @@ class Rest extends \Zemit\Mvc\Controller
         
         /** @var Resultset $with */
         $find = $this->getFind();
-        $with = $model::with($this->getWith() ? : [], $find ? : []);
+        $with = $model::with($this->getListWith() ? : [], $find ? : []);
         
         /**
          * Expose the list
@@ -175,7 +175,7 @@ class Rest extends \Zemit\Mvc\Controller
         
         /** @var Resultset $with */
         $find = $this->getFind();
-        $with = $model::with($this->getWith() ? : [], $find ? : []);
+        $with = $model::with($this->getListWith() ? : [], $find ? : []);
 
         /**
          * Expose the list

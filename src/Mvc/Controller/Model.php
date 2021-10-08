@@ -125,6 +125,16 @@ trait Model
     }
     
     /**
+     * Get relationship eager loading definition for a listing
+     *
+     * @return null|array
+     */
+    protected function getListWith()
+    {
+        return $this->getWith();
+    }
+    
+    /**
      * Get expose definition for a single entity
      *
      * @return null|array
