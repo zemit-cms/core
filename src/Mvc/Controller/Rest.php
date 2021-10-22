@@ -378,9 +378,8 @@ class Rest extends \Zemit\Mvc\Controller
     public function formatColumnText (?array &$list) {
         foreach ($list as $listKey => $listValue) {
             $formatArray = $this->getExportFormatFieldText ($listValue);
-            $columNameList = array_keys($formatArray);
-
             if ($formatArray) {
+				$columNameList = array_keys($formatArray);
                 foreach ($formatArray as $formatKey => $formatValue) {
                     if (isset($formatValue['text'])) {
                         $list[$listKey][$formatKey] = $formatValue['text'];
@@ -401,10 +400,10 @@ class Rest extends \Zemit\Mvc\Controller
                         }
                     }
                 }
-            }
 
-            if (isset($formatArray['reorder']) && $formatArray['reorder']) {
-                $list[$listKey] = $this->arrayCustomOrder($list[$listKey], $columNameList);
+                if (isset($formatArray['reorder']) && $formatArray['reorder']) {
+                    $list[$listKey] = $this->arrayCustomOrder($list[$listKey], $columNameList);
+                }
             }
         }
 
