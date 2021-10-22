@@ -283,7 +283,8 @@ class Rest extends \Zemit\Mvc\Controller
         foreach ($list as $listKey => $listValue) {
             foreach ($listValue as $column => $value) {
                 if (is_array($value) || is_object($value)) {
-                    $list[$listKey][$column] = $this->arrayFlatten($value);
+                    $value = $this->concatListFieldElementForCsv($value, ' ');
+                    $list[$listKey][$column] = $this->arrayFlatten($value , $column);
                     if (is_array($list[$listKey][$column])) {
                         foreach ($list[$listKey][$column] as $childKey => $childValue) {
                             $list[$listKey][$childKey] = $childValue;
@@ -299,18 +300,44 @@ class Rest extends \Zemit\Mvc\Controller
     }
 
     /**
+     * @param array|object $list
+     * @param string|null $seperator
+     *
+     * @return array|object
+     */
+    public function concatListFieldElementForCsv($list, $seperator = ' ') {
+        foreach ($list as $valueKey => $element) {
+            if (is_array($element) || is_object($element)) {
+                $lastKey = array_key_last($list);
+                if ($valueKey === $lastKey) {
+                    continue;
+                }
+                foreach ($element as $elKey => $elValue) {
+                    $list[$lastKey][$elKey] .= $seperator . $elValue;
+                    if ($lastKey != $valueKey) {
+                        unset($list[$valueKey]);
+                    }
+                }
+            }
+        }
+
+        return $list;
+    }
+
+    /**
      * @param array|null $array
+     * @param string|null $alias
      *
      * @return array|null
      */
-    function arrayFlatten(?array $array) {
+    function arrayFlatten(?array $array, ?string $alias = null) {
         $return = array();
         foreach ($array as $key => $value) {
             if (is_array($value)) {
-                $return = array_merge($return, $this->arrayFlatten($value));
+                $return = array_merge($return, $this->arrayFlatten($value, $alias));
             }
             else {
-                $return[$key] = $value;
+                $return[$alias . '.' . $key] = $value;
             }
         }
         return $return;
@@ -352,21 +379,53 @@ class Rest extends \Zemit\Mvc\Controller
         foreach ($list as $listKey => $listValue) {
             $formatArray = $this->getExportFormatFieldText ($listValue);
             if ($formatArray) {
+				$columNameList = array_keys($formatArray);
                 foreach ($formatArray as $formatKey => $formatValue) {
                     if (isset($formatValue['text'])) {
                         $list[$listKey][$formatKey] = $formatValue['text'];
-                        if ($formatValue['rename']) {
-                            $list[$listKey][$formatValue['rename']] = $formatValue['text'];
+                    }
+
+                    if (isset($formatValue['rename'])) {
+
+                        $list[$listKey][$formatValue['rename']] = $formatValue['text'] ?? ($list[$listKey][$formatKey] ?? null);
+                        if ($formatValue['rename'] !== $formatKey) {
+                            foreach ($columNameList as $columnKey => $columnValue) {
+
+                                if ($formatKey === $columnValue) {
+                                    $columNameList[$columnKey] = $formatValue['rename'];
+                                }
+                            }
+
                             unset($list[$listKey][$formatKey]);
                         }
                     }
+                }
+
+                if (isset($formatArray['reorder']) && $formatArray['reorder']) {
+                    $list[$listKey] = $this->arrayCustomOrder($list[$listKey], $columNameList);
                 }
             }
         }
 
         return $list;
     }
-    
+
+    /**
+     * @param array $arrayToOrder
+     * @param array $orderList
+     *
+     * @return array
+     */
+    function arrayCustomOrder($arrayToOrder, $orderList) {
+        $ordered = array();
+        foreach ($orderList as $key) {
+            if (isset($arrayToOrder[$key])) {
+                $ordered[$key] = $arrayToOrder[$key];
+            }
+        }
+        return $ordered;
+    }
+
     /**
      * Count a record list
      * @TODO add total count / deleted count / active count
