@@ -69,8 +69,10 @@ class Rest extends \Zemit\Mvc\Controller
         }
         else if ($this->request->isOptions()) {
             
-            // @TODO handle this correctly
-            return $this->setRestResponse(['result' => 'OK']);
+            // @TODO review
+            // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#successful_responses
+            // https://livebook.manning.com/book/cors-in-action/chapter-4/98
+            return $this->setRestResponse(['result' => ''], 204, 'No Content');
         }
     }
     

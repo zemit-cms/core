@@ -42,7 +42,7 @@ class Security extends Injectable
      */
     public function beforeDispatchLoop(Event $event, AbstractDispatcher $dispatcher)
     {
-        return $this->checkAcl($event, $dispatcher);
+        return $this->request->isOptions() || $this->checkAcl($event, $dispatcher);
     }
     
     /**
