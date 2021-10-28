@@ -42,6 +42,7 @@ class Security extends Injectable
      */
     public function beforeDispatchLoop(Event $event, AbstractDispatcher $dispatcher)
     {
+        // @todo at least check for 404 before isOption
         return $this->request->isOptions() || $this->checkAcl($event, $dispatcher);
     }
     
