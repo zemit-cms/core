@@ -417,20 +417,22 @@ class Identity extends Injectable
         
         // Append inherit roles
         if ($inherit) {
+            $roleIndexList = [];
             foreach ($roleList as $role) {
-                $roleIndex = $role->getIndex();
-                $configRoles = $this->config->path('permissions.roles.' . $roleIndex . '.inherit', false);
-                if ($configRoles) {
-                    foreach ($configRoles->toArray() as $configRole) {
-                        if (!isset($roleList[$configRole])) {
-                            $roleClass = $this->getRoleClass();
-                            
-                            /** @var \Zemit\Models\Role $inheritedRole */
-                            $inheritedRole = $roleClass::findFirstByIndex($configRole);
-                            $roleList[$configRole] = $inheritedRole;
-                        }
-                    }
-                }
+                $roleIndexList []= $role->getIndex();
+            }
+            $inheritedRoleIndexList = $this->getInheritedRoleList($roleIndexList);
+            
+            /** @var \Phalcon\Mvc\Model\Resultset $inheritedRoleEntity */
+            $inheritedRoleList = $this->getRoleClass()::find([
+                'index in ({role:array})', // @todo should filter soft-deleted roles?
+                'bind' => ['role' => $inheritedRoleIndexList],
+                'bindTypes' => ['role' => Column::BIND_PARAM_STR],
+            ]);
+    
+            /** @var Models\Role $inheritedRoleEntity */
+            foreach ($inheritedRoleList as $inheritedRoleEntity) {
+                $roleList[$inheritedRoleEntity->getIndex()] = $inheritedRoleEntity;
             }
         }
         
@@ -444,6 +446,46 @@ class Identity extends Injectable
             'typeList' => $typeList,
             'groupList' => $groupList,
         ];
+    }
+    
+    /**
+     * Return the list of inherited role list (recursively)
+     *
+     * @param array $roleIndexList
+     *
+     * @return array List of inherited role list (recursive)
+     */
+    public function getInheritedRoleList(array $roleIndexList = [])
+    {
+        $inheritedRoleList = [];
+        $processedRoleIndexList = [];
+        
+        // While we still have role index list to process
+        while (!empty($roleIndexList))
+        {
+            // Process role index list
+            foreach ($roleIndexList as $roleIndex)
+            {
+                // Get inherited roles from config service
+                $configRoleList = $this->config->path('permissions.roles.' . $roleIndex . '.inherit', false);
+                
+                if ($configRoleList) {
+                    // Append inherited role to process list
+                    $roleList = $configRoleList->toArray();
+                    $roleIndexList = array_merge($roleIndexList, $roleList);
+                    $inheritedRoleList = array_merge($inheritedRoleList, $roleList);
+                }
+                
+                // Add role index to processed list
+                $processedRoleIndexList []= $roleIndex;
+            }
+            
+            // Keep the unprocessed role index list
+            $roleIndexList = array_filter(array_unique(array_diff($roleIndexList, $processedRoleIndexList)));
+        }
+        
+        // Return the list of inherited role list (recursively)
+        return array_filter(array_unique($inheritedRoleList));
     }
     
     /**
