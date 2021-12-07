@@ -191,6 +191,7 @@ class Rest extends \Zemit\Mvc\Controller
 
         $list = is_array($list) ? array_values(array_filter($list)) : $list;
         $this->flatternArrayForCsv($list);
+		$this->formatColumnText($list);
 
         if ($contentType === 'json') {
 //            $this->response->setJsonContent($list);
@@ -296,9 +297,6 @@ class Rest extends \Zemit\Mvc\Controller
                 }
             }
         }
-
-        $this->formatColumnText($list);
-        return $this->mergeColumns($list);
     }
 
     /**
@@ -346,30 +344,28 @@ class Rest extends \Zemit\Mvc\Controller
     }
 
     /**
-     * @param array|null $list
+     * @param array|null $listValue
      *
      * @return array|null
      */
-    public function mergeColumns (?array &$list) {
+    public function mergeColumns (?array $listValue) {
         $columnToMergeList = $this->getExportMergeColum ();
         if (!$columnToMergeList || empty($columnToMergeList)) {
-            return  $list;
+            return  $listValue;
         }
 
         $columnList = [];
-        foreach ($list as $listKey => $listValue) {
-            foreach ($columnToMergeList as $columnToMerge) {
-                foreach ($columnToMerge['columns'] as $column) {
-                    if (isset($listValue[$column])) {
-                        $columnList[$listKey][] = $listValue[$column];
-                        unset($list[$listKey][$column]);
-                    }
+        foreach ($columnToMergeList as $key => $columnToMerge) {
+            foreach ($columnToMerge['columns'] as $column) {
+                if (isset($listValue[$column])) {
+                    $columnList[] = $listValue[$column];
+                    unset($listValue[$column]);
                 }
-                $list[$listKey][$columnToMerge['name']] = implode (' ', $columnList[$listKey] ?? []);
             }
+            $listValue[$columnToMerge['name']] = implode (' ', $columnList ?? []);
         }
 
-        return $list;
+        return $listValue;
     }
 
     /**
@@ -379,9 +375,15 @@ class Rest extends \Zemit\Mvc\Controller
      */
     public function formatColumnText (?array &$list) {
         foreach ($list as $listKey => $listValue) {
+
+            $mergeColumArray = $this->mergeColumns($listValue);
+            if(!empty($mergeColumArray)) {
+                $list[$listKey] = $mergeColumArray;
+            }
+
             $formatArray = $this->getExportFormatFieldText ($listValue);
             if ($formatArray) {
-				$columNameList = array_keys($formatArray);
+                $columNameList = array_keys($formatArray);
                 foreach ($formatArray as $formatKey => $formatValue) {
                     if (isset($formatValue['text'])) {
                         $list[$listKey][$formatKey] = $formatValue['text'];
@@ -403,7 +405,7 @@ class Rest extends \Zemit\Mvc\Controller
                     }
                 }
 
-                if (isset($formatArray['reorder']) && $formatArray['reorder']) {
+                if (isset($formatArray['reorderColumns']) && $formatArray['reorderColumns']) {
                     $list[$listKey] = $this->arrayCustomOrder($list[$listKey], $columNameList);
                 }
             }
@@ -421,7 +423,7 @@ class Rest extends \Zemit\Mvc\Controller
     function arrayCustomOrder($arrayToOrder, $orderList) {
         $ordered = array();
         foreach ($orderList as $key) {
-            if (isset($arrayToOrder[$key])) {
+            if (array_key_exists($key, $arrayToOrder)) {
                 $ordered[$key] = $arrayToOrder[$key];
             }
         }
