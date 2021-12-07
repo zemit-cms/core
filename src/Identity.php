@@ -421,18 +421,21 @@ class Identity extends Injectable
             foreach ($roleList as $role) {
                 $roleIndexList []= $role->getIndex();
             }
-            $inheritedRoleIndexList = $this->getInheritedRoleList($roleIndexList);
             
-            /** @var \Phalcon\Mvc\Model\Resultset $inheritedRoleEntity */
-            $inheritedRoleList = $this->getRoleClass()::find([
-                'index in ({role:array})', // @todo should filter soft-deleted roles?
-                'bind' => ['role' => $inheritedRoleIndexList],
-                'bindTypes' => ['role' => Column::BIND_PARAM_STR],
-            ]);
+            $inheritedRoleIndexList = $this->getInheritedRoleList($roleIndexList);
+            if (!empty($inheritedRoleIndexList)) {
+                
+                /** @var \Phalcon\Mvc\Model\Resultset $inheritedRoleEntity */
+                $inheritedRoleList = $this->getRoleClass()::find([
+                    'index in ({role:array})', // @todo should filter soft-deleted roles?
+                    'bind' => ['role' => $inheritedRoleIndexList],
+                    'bindTypes' => ['role' => Column::BIND_PARAM_STR],
+                ]);
     
-            /** @var Models\Role $inheritedRoleEntity */
-            foreach ($inheritedRoleList as $inheritedRoleEntity) {
-                $roleList[$inheritedRoleEntity->getIndex()] = $inheritedRoleEntity;
+                /** @var Models\Role $inheritedRoleEntity */
+                foreach ($inheritedRoleList as $inheritedRoleEntity) {
+                    $roleList[$inheritedRoleEntity->getIndex()] = $inheritedRoleEntity;
+                }
             }
         }
         
