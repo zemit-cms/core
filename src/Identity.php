@@ -488,7 +488,7 @@ class Identity extends Injectable
         }
         
         // Return the list of inherited role list (recursively)
-        return array_filter(array_unique($inheritedRoleList));
+        return array_values(array_filter(array_unique($inheritedRoleList)));
     }
     
     /**
