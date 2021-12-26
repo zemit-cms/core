@@ -46,7 +46,7 @@ class Profiler extends \Phalcon\Db\Profiler
                     'sqlBindTypes' => $profile->getSqlBindTypes(),
                     'initialTime' => $profile->getInitialTime(),
                     'finalTime' => $profile->getFinalTime(),
-                    'elapsedSeconds' => $profile->getTotalElapsedSeconds(),
+                    'elapsedSeconds' => $profile->getTotalElapsedSeconds() / 1000000000,
                 ];
             }
         }
@@ -54,7 +54,7 @@ class Profiler extends \Phalcon\Db\Profiler
         return [
             'profiles' => $profiles,
             'numberTotalStatements' => $this->getNumberTotalStatements(),
-            'totalElapsedSeconds' => $this->getTotalElapsedSeconds(),
+            'totalElapsedSeconds' => $this->getTotalElapsedSeconds() / 1000000000,
         ];
     }
 }
