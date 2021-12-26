@@ -305,6 +305,7 @@ class Config extends PhalconConfig
                 Provider\Escaper\ServiceProvider::class => Provider\Escaper\ServiceProvider::class,
                 Provider\Markdown\ServiceProvider::class => Provider\Markdown\ServiceProvider::class,
                 Provider\Utils\ServiceProvider::class => Provider\Utils\ServiceProvider::class,
+                Provider\Crypt\ServiceProvider::class => Provider\Crypt\ServiceProvider::class,
                 
                 // oauth2
                 Provider\Identity\ServiceProvider::class => Provider\Identity\ServiceProvider::class,
