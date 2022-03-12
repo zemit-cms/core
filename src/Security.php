@@ -35,14 +35,13 @@ class Security extends \Phalcon\Security
     /**
      * Returns an existing or new access control list
      *
-     * @param $permissions
-     * @param string $componentName
-     * @param string $models
+     * @param array $componentNames
+     * @param array|null $permissions
      * @param string $inherit
      *
      * @return AclList
      */
-    public function getAcl(string $componentName = 'components', array $permissions = null, string $inherit = 'inherit')
+    public function getAcl(array $componentNames = ['components'], array $permissions = null, string $inherit = 'inherit')
     {
         $acl = new Memory();
         
@@ -61,18 +60,20 @@ class Security extends \Phalcon\Security
             
             $acl->addRole($aclRole);
             
-            $components = $rolePermission[$componentName] ?? [];
-            $components = is_array($components) ? $components : [$components];
-            foreach ($components as $component => $accessList) {
-                if (empty($component)) {
-                    $component = $accessList;
-                    $accessList = '*';
-                }
-                
-                if ($component !== '*') {
-                    $aclComponent = new Component($component);
-                    $acl->addComponent($aclComponent, $accessList);
-                    $acl->allow($aclRole, $aclComponent, $accessList);
+            foreach ($componentNames as $componentName) {
+                $components = $rolePermission[$componentName] ?? [];
+                $components = is_array($components) ? $components : [$components];
+                foreach ($components as $component => $accessList) {
+                    if (empty($component)) {
+                        $component = $accessList;
+                        $accessList = '*';
+                    }
+        
+                    if ($component !== '*') {
+                        $aclComponent = new Component($component);
+                        $acl->addComponent($aclComponent, $accessList);
+                        $acl->allow($aclRole, $aclComponent, $accessList);
+                    }
                 }
             }
         }
