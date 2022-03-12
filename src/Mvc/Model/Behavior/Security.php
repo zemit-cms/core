@@ -98,7 +98,7 @@ class Security extends Behavior
     
     public function isAllowed($eventType, $model)
     {
-        $acl = $this->security->getAcl('models');
+        $acl = $this->security->getAcl(['models']);
         
         $modelClass = get_class($model);
         
