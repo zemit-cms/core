@@ -304,8 +304,8 @@ DOC;
             $this->config = $this->di->get('config');
         }
         return $this->fireSet($this->config, Config::class, [], function (Bootstrap $bootstrap) {
-            $bootstrap->config->mode = $bootstrap->getMode();
-            $bootstrap->config->mergeEnvConfig();
+//            $bootstrap->config->mode = $bootstrap->getMode();
+//            $bootstrap->config->mergeEnvConfig();
 //            $bootstrap->prepare->php();
         });
     }
@@ -318,7 +318,7 @@ DOC;
     {
         return $this->fireSet($this->debug, Debug::class, [], function (Bootstrap $bootstrap) {
             $config = $bootstrap->config->debug;
-            $bootstrap->prepare()->debug($bootstrap->config);
+            $bootstrap->prepare->debug($bootstrap->config);
             
             if ($bootstrap->config->app->debug || $bootstrap->config->debug->enable) {
                 if (is_bool($config)) {
