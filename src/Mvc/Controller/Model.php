@@ -321,7 +321,7 @@ trait Model
      */
     protected function getSoftDeleteCondition()
     {
-        return '[' . $this->getModelName() . '].[deleted] = 0';
+        return '[' . $this->getModelClassName() . '].[deleted] = 0';
     }
     
     /**
@@ -397,6 +397,11 @@ trait Model
      */
     protected function getIdentityCondition(array $columns = null, Identity $identity = null, $roleList = null)
     {
+        // @todo
+        if ($this->request->isOptions()){
+            return null;
+        }
+        
         $identity ??= $this->identity ?? false;
         $roleList ??= $this->getRoleList();
         $modelName = $this->getModelClassName();
@@ -641,6 +646,10 @@ trait Model
             $this->getSearchCondition(),
             $this->getPermissionCondition(),
         ])));
+        
+        if (empty($conditions)) {
+            $conditions []= 1;
+        }
         
         return '(' . implode(') and (', $conditions) . ')';
     }
@@ -928,12 +937,11 @@ trait Model
                 ];
             }
             else {
+                // assign & save
                 $singlePostEntity->assign($singlePost, $whiteList, $columnMap);
-                $ret['saved'] = $singlePostEntity->save();
-                $ret['messages'] = $singlePostEntity->getMessages();
-                $ret['model'] = get_class($singlePostEntity);
-                $ret['source'] = $singlePostEntity->getSource();
-                $ret['entity'] = $singlePostEntity->expose($this->getExpose());
+                $ret = $this->saveEntity($singlePostEntity);
+                
+                // refetch & expose
                 $fetch = $this->getSingle($singlePostEntity->getId(), $modelName, $with);
                 $ret[$single ? 'single' : 'list'] = $fetch ? $fetch->expose($this->getExpose()) : false;
             }
@@ -942,6 +950,21 @@ trait Model
         }
         
         return $single ? $retList[0] : $retList;
+    }
+    
+    /**
+     * @param $single
+     *
+     * @return void
+     */
+    protected function saveEntity($entity) {
+        $ret = [];
+        $ret['saved'] = $entity->save();
+        $ret['messages'] = $entity->getMessages();
+        $ret['model'] = get_class($entity);
+        $ret['source'] = $entity->getSource();
+        $ret['entity'] = $entity->expose($this->getExpose());
+        return $ret;
     }
     
     /**
