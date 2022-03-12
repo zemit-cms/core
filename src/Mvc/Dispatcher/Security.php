@@ -39,6 +39,7 @@ class Security extends Injectable
      * @param \Phalcon\Mvc\Dispatcher $dispatcher
      *
      * @return bool
+     * @throws \Phalcon\Exception
      */
     public function beforeDispatchLoop(Event $event, AbstractDispatcher $dispatcher)
     {
@@ -50,10 +51,13 @@ class Security extends Injectable
      * Check if the current identity is allowed from the dispatcher
      *
      * @return bool
+     * @throws \Phalcon\Exception
      */
     public function checkAcl(Event $event, AbstractDispatcher $dispatcher)
     {
         $dispatcher ??= $this->dispatcher;
+        
+        $componentNames = ['components'];
         
         // get controller and action
         $module = $dispatcher->getModuleName();
@@ -61,18 +65,21 @@ class Security extends Injectable
         if ($dispatcher instanceof MvcDispatcher) {
             $controller = $dispatcher->getControllerName();
             $controllerClass = $dispatcher->getControllerClass();
+            $componentNames []= 'controllers';
         }
         if ($dispatcher instanceof CliDispatcher) {
             $task = $dispatcher->getTaskName();
             $taskSuffix = $dispatcher->getTaskSuffix();
+            $componentNames []= 'tasks';
         }
         $handlerClass = $dispatcher->getHandlerClass();
         $handlerSuffix = $dispatcher->getHandlerSuffix();
         
         $action = $dispatcher->getActionName();
         $actionSuffix = $dispatcher->getActionSuffix();
-        
-        $acl = $this->security->getAcl('controllers');
+    
+        // Get ACL components (components + task, or components + controllers)
+        $acl = $this->security->getAcl($componentNames);
         
         // Security not found
         if (!$acl->isComponent($handlerClass)) {
