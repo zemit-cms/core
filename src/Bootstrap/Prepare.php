@@ -46,8 +46,8 @@ class Prepare extends Injectable
         $this->initialize();
         $this->forwarded();
         $this->define();
-//        $this->debug();
-//        $this->php();
+//        $this->debug(); // called after debug fireset
+//        $this->php(); // called after config fireset
         self::$initialized = true;
     }
     
@@ -110,23 +110,17 @@ class Prepare extends Injectable
      */
     public function php(Config $config = null, $force = false) : void
     {
-        if (!$force && self::$initialized) {
-            return;
-        }
-    
-        $appConfig = $config->app ?? $this->config->app;
-
-        if ($appConfig) {
-            setlocale(LC_ALL, 'fr_CA.' . $appConfig->encoding, 'French_Canada.1252');
-            date_default_timezone_set($appConfig->timezone ?? 'America/Montreal');
-            mb_internal_encoding($appConfig->encoding ?? 'UTF-8');
-            mb_http_output($appConfig->encoding ?? 'UTF-8');
-            ini_set('memory_limit', $appConfig->memoryLimit ?? '256M');
-            ini_set('post_max_size', $appConfig->postLimit ?? '20M');
-            ini_set('upload_max_filesize', $appConfig->postLimit ?? '20M');
-            ini_set('max_execution_time', $appConfig->timeoutLimit ?? '60');
-            ini_set('html_errors', $appConfig->htmlErrors ?? 0);
-            set_time_limit($appConfig->timeoutLimit ?? '60');
+        if ($config) {
+            setlocale(LC_ALL, 'fr_CA.' . $config->encoding, 'French_Canada.1252');
+            date_default_timezone_set($config->timezone ?? 'America/Montreal');
+            mb_internal_encoding($config->encoding ?? 'UTF-8');
+            mb_http_output($config->encoding ?? 'UTF-8');
+            ini_set('memory_limit', $config->memoryLimit ?? '256M');
+            ini_set('post_max_size', $config->postLimit ?? '20M');
+            ini_set('upload_max_filesize', $config->postLimit ?? '20M');
+            ini_set('max_execution_time', $config->timeoutLimit ?? '60');
+            ini_set('html_errors', $config->htmlErrors ?? 0);
+            set_time_limit($config->timeoutLimit ?? '60');
         }
     }
 }
