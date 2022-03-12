@@ -31,7 +31,7 @@ Usage:
   php zemit cli <task> <action> [<params> ...]
 
 Options:
-  task: build,cache,cron,errors,help
+  task: build,cache,cron,errors,help,scaffold
 
 
 DOC;
