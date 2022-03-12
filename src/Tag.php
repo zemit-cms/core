@@ -544,7 +544,7 @@ class Tag extends \Phalcon\Tag
      * @param string $collection CSS Collection string
      * @return string Return the CSS implicit output of that collection
      */
-    public static function getCss(String $collection = null) : String
+    public static function getCss(String $collection = null) : ?String
     {
         $assets = self::getAssetsService();
         $assets->useImplicitOutput(false);
@@ -566,7 +566,7 @@ class Tag extends \Phalcon\Tag
      * @param string $collection JS Collection string
      * @return string Return the JS implicit output of that collection
      */
-    public static function getJs(String $collection = null) : String
+    public static function getJs(String $collection = null) : ?String
     {
         $assets = self::getAssetsService();
         $assets->useImplicitOutput(false);
