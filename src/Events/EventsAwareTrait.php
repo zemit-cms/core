@@ -114,7 +114,7 @@ trait EventsAwareTrait
         if ($manager = $this->getEventsManager()) {
             $manager->fire($this->getEventsSlug() . ':' . $task, $this, $data, $cancelable);
         } else {
-            throw new Exception('Events Manager Service Provider \'eventsManager\' does not exists in DI of \'' . get_class($this) . '\'');
+            throw new \Exception('Events Manager Service Provider \'eventsManager\' does not exists in DI of \'' . get_class($this) . '\'');
         }
     }
     
@@ -153,11 +153,11 @@ trait EventsAwareTrait
             }
             // class not found
             elseif (is_string($class)) {
-                throw new Exception('Class "' . $class . '" not found');
+                throw new \Exception('Class "' . $class . '" not found');
             }
             // other error
             else {
-                throw new Exception('Unknown type "' . $class . '" for "$class"');
+                throw new \Exception('Unknown type "' . $class . '" for "$class"');
             }
         } elseif (is_string($holder)) {
             // can be a class path
@@ -166,7 +166,7 @@ trait EventsAwareTrait
             }
             // class not founmd
             else {
-                throw new Exception('Class "' . $class . '" not found');
+                throw new \Exception('Class "' . $class . '" not found');
             }
         }
         
