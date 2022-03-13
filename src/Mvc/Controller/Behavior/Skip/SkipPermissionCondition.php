@@ -27,7 +27,7 @@ class SkipPermissionCondition
      * Stop operation
      * @return false
      */
-    public function beforePermissionCondition() {
+    public function getPermissionCondition() {
         return false;
     }
 }

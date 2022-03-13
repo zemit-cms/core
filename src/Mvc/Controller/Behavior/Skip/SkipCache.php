@@ -27,7 +27,7 @@ class SkipCache
      * Stop operation
      * @return false
      */
-    public function beforeCache() {
+    public function getCache() {
         return false;
     }
 }

@@ -11,7 +11,7 @@
 namespace Zemit\Mvc\Controller\Behavior\Skip;
 
 /**
- * Class SkipOffset
+ * Class SkipDistinct
  *
  * @author Julien Turbide <jturbide@nuagerie.com>
  * @copyright Zemit Team <contact@zemit.com>
@@ -21,13 +21,13 @@ namespace Zemit\Mvc\Controller\Behavior\Skip;
  *
  * @package Zemit\Mvc\Controller\Behavior\Skip
  */
-class SkipOffset
+class SkipDistinct
 {
     /**
      * Stop operation
      * @return false
      */
-    public function getOffset() {
+    public function getDistinct() {
         return false;
     }
 }

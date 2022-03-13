@@ -27,7 +27,7 @@ class SkipFilterCondition
      * Stop operation
      * @return false
      */
-    public function beforeFilterCondition() {
+    public function getFilterCondition() {
         return false;
     }
 }

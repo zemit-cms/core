@@ -27,7 +27,7 @@ class SkipHaving
      * Stop operation
      * @return false
      */
-    public function beforeHaving() {
+    public function getHaving() {
         return false;
     }
 }

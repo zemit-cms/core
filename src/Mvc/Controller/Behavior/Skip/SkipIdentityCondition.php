@@ -27,7 +27,7 @@ class SkipIdentityCondition
      * Stop operation
      * @return false
      */
-    public function beforeIdentityCondition() {
+    public function getIdentityCondition() {
         return false;
     }
 }

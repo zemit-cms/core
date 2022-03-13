@@ -27,7 +27,7 @@ class SkipJoins
      * Stop operation
      * @return false
      */
-    public function beforeJoins() {
+    public function getJoins() {
         return false;
     }
 }

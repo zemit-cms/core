@@ -27,7 +27,7 @@ class SkipWhiteList
      * Stop operation
      * @return false
      */
-    public function beforeWhiteList() {
+    public function getWhiteList() {
         return false;
     }
 }

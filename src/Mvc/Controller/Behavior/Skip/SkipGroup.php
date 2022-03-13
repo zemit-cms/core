@@ -27,7 +27,7 @@ class SkipGroup
      * Stop operation
      * @return false
      */
-    public function beforeGroup() {
+    public function getGroup() {
         return false;
     }
 }

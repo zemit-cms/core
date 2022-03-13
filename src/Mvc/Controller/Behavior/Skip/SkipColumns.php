@@ -27,7 +27,7 @@ class SkipColumns
      * Stop operation
      * @return false
      */
-    public function beforeColumns() {
+    public function getColumns() {
         return false;
     }
 }

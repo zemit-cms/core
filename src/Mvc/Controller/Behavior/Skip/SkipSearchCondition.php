@@ -27,7 +27,7 @@ class SkipSearchCondition
      * Stop operation
      * @return false
      */
-    public function beforeSearchCondition() {
+    public function getSearchCondition() {
         return false;
     }
 }

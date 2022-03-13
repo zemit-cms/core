@@ -10,6 +10,10 @@
 
 namespace Zemit\Mvc\Controller\Behavior\Skip;
 
+use Phalcon\Events\Event;
+use Zemit\Di\Injectable;
+use Zemit\Mvc\Controller\Rest;
+
 /**
  * Class SkipSoftDeleteCondition
  *
@@ -21,13 +25,13 @@ namespace Zemit\Mvc\Controller\Behavior\Skip;
  *
  * @package Zemit\Mvc\Controller\Behavior\Skip
  */
-class SkipSoftDeleteCondition
+class SkipSoftDeleteCondition extends Injectable
 {
     /**
      * Stop operation
      * @return false
      */
-    public function beforeSoftDeleteCondition() {
+    public function getSoftDeleteCondition(Event $event, Rest $controller, $softDeleteCondition) {
         return false;
     }
 }
