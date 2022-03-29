@@ -1230,4 +1230,4 @@ FileETag None
     RewriteRule ^(.*)$ index.php?_url=/$1 [QSA,L]
 </IfModule>
 
-php_value max_input_vars 2000
+#php_value max_input_vars 2000
