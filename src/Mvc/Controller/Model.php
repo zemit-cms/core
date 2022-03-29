@@ -319,7 +319,7 @@ trait Model
      *
      * @return string Default: deleted = 0
      */
-    protected function getSoftDeleteCondition()
+    protected function getSoftDeleteCondition(): ?string
     {
         return '[' . $this->getModelClassName() . '].[deleted] = 0';
     }
@@ -631,6 +631,12 @@ trait Model
         return null;
     }
     
+    protected function fireGet($method) {
+        $ret = $this->{$method}();
+        $eventRet = $this->eventsManager->fire('rest:' . $method, $this, $ret);
+        return $eventRet === false? null : $eventRet ?? $ret;
+    }
+    
     /**
      * Get all conditions
      *
@@ -640,11 +646,11 @@ trait Model
     protected function getConditions()
     {
         $conditions = array_values(array_unique(array_filter([
-            $this->getSoftDeleteCondition(),
-            $this->getIdentityCondition(),
-            $this->getFilterCondition(),
-            $this->getSearchCondition(),
-            $this->getPermissionCondition(),
+            $this->fireGet('getSoftDeleteCondition'),
+            $this->fireGet('getIdentityCondition'),
+            $this->fireGet('getFilterCondition'),
+            $this->fireGet('getSearchCondition'),
+            $this->fireGet('getPermissionCondition'),
         ])));
         
         if (empty($conditions)) {
@@ -732,16 +738,13 @@ trait Model
             case 'text/json':
             case 'application/json':
                 return 'json';
-                break;
             case 'csv':
             case 'text/csv':
                 return 'csv';
-                break;
             case 'xlsx':
             case 'application/xlsx':
             case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
                 return 'xlsx';
-                break;
             case 'xls':
             case 'application/vnd.ms-excel':
                 // old xls not supported yet
@@ -760,18 +763,18 @@ trait Model
     protected function getFind()
     {
         $find = [];
-        $find['conditions'] = $this->getConditions();
-        $find['bind'] = $this->getBind();
-        $find['bindTypes'] = $this->getBindTypes();
-        $find['limit'] = $this->getLimit();
-        $find['offset'] = $this->getOffset();
-        $find['order'] = $this->getOrder();
-        $find['columns'] = $this->getColumns();
-        $find['distinct'] = $this->getDistinct();
-        $find['joins'] = $this->getJoins();
-        $find['group'] = $this->getGroup();
-        $find['having'] = $this->getHaving();
-        $find['cache'] = $this->getCache();
+        $find['conditions'] = $this->fireGet('getConditions');
+        $find['bind'] = $this->fireGet('getBind');
+        $find['bindTypes'] = $this->fireGet('getBindTypes');
+        $find['limit'] = $this->fireGet('getLimit');
+        $find['offset'] = $this->fireGet('getOffset');
+        $find['order'] = $this->fireGet('getOrder');
+        $find['columns'] = $this->fireGet('getColumns');
+        $find['distinct'] = $this->fireGet('getDistinct');
+        $find['joins'] = $this->fireGet('getJoins');
+        $find['group'] = $this->fireGet('getGroup');
+        $find['having'] = $this->fireGet('getHaving');
+        $find['cache'] = $this->fireGet('getCache');
         
         // fix for grouping by multiple fields, phalcon only allow string here
         foreach (['distinct', 'group'] as $findKey) {
@@ -957,7 +960,8 @@ trait Model
      *
      * @return void
      */
-    protected function saveEntity($entity) {
+    protected function saveEntity($entity) : array
+    {
         $ret = [];
         $ret['saved'] = $entity->save();
         $ret['messages'] = $entity->getMessages();
@@ -970,8 +974,8 @@ trait Model
     /**
      * Try to find the appropriate model from the current controller name
      *
-     * @param string $controllerName
-     * @param array $namespaces
+     * @param ?string $controllerName
+     * @param ?array $namespaces
      * @param string $needle
      *
      * @return string|null

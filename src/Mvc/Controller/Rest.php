@@ -11,12 +11,14 @@
 namespace Zemit\Mvc\Controller;
 
 use League\Csv\CharsetConverter;
+use Phalcon\Events\Manager;
 use Phalcon\Http\Response;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\Model\Resultset;
 use League\Csv\Writer;
 use Phalcon\Version;
 use Zemit\Db\Profiler;
+use Zemit\Di\Injectable;
 use Zemit\Utils\Slug;
 
 /**
@@ -722,6 +724,40 @@ class Rest extends \Zemit\Mvc\Controller
             'dispatcher' => $dispatcher,
             'router' => $router,
         ] : []), $jsonOptions, $depth);
+    }
+    
+    public function beforeExecuteRoute(Dispatcher $dispatcher) {
+        // @todo use eventsManager from service provider instead
+        $this->eventsManager->enablePriorities(true);
+        // @todo see if we can implement receiving an array of responses globally: V2
+        // $this->eventsManager->collectResponses(true);
+        
+        // retrieve events based on the role & config
+        $permissions = $this->config->path('permissions.roles')->toArray();
+        foreach ($permissions as $role => $permission) {
+            $behaviorsContext = $permission['behaviors'] ?? [];
+            foreach ($behaviorsContext as $className => $behaviors) {
+                if (is_int($className) || get_class($this) === $className) {
+                    $this->attachBehaviors($behaviors);
+                }
+                if ($this->getModelClassName() === $className) {
+                    $this->attachBehaviors($behaviors, 'model');
+                }
+            }
+        }
+    }
+    
+    public function attachBehaviors($behaviors, $eventType = 'rest') {
+        if (!is_array($behaviors)) {
+            $behaviors = [$behaviors];
+        }
+        foreach ($behaviors as $behavior) {
+            $event = new $behavior();
+            if ($event instanceof Injectable) {
+                $event->setDI($this->getDI());
+            }
+            $this->eventsManager->attach($event->eventType ?? $eventType, $event, $event->priority ?? Manager::DEFAULT_PRIORITY);
+        }
     }
     
     /**
