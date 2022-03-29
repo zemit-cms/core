@@ -47,7 +47,9 @@ class ServiceProvider extends AbstractServiceProvider
             $config = $di->get('config');
             $headers = $config->path('response.headers', []);
             if (!empty($headers)) {
-                $response->setHeaders($headers);
+                foreach ($headers as $name => $value) {
+                    $response->setHeader($name, $value);
+                }
             }
             
             return $response;
