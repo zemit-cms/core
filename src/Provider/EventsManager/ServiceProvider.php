@@ -32,15 +32,14 @@ class ServiceProvider extends AbstractServiceProvider
     /**
      * {@inheritdoc}
      *
-     * @param DiInterface $container
+     * @param DiInterface $di
      */
-    public function register(DiInterface $container)
+    public function register(DiInterface $di): void
     {
-        $container->setShared($this->getName(), function() {
-            $em = new Manager();
-            $em->enablePriorities(true);
-            
-            return $em;
+        $di->setShared($this->getName(), function() {
+            $eventsManager = new Manager();
+            $eventsManager->enablePriorities(true);
+            return $eventsManager;
         });
     }
 }
