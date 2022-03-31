@@ -162,7 +162,7 @@ class Sprintf
                     2,
                     PREG_SPLIT_DELIM_CAPTURE
                 );
-            
+
             $newformat .= mb_convert_encoding($pre, $encoding, 'UTF-8');
             
             if ($type == '') {
@@ -205,6 +205,11 @@ class Sprintf
                 // another type, pass forward
                 $newformat .= "%$sign$filler$align$size$precision$type";
                 $newargv[] = array_shift($argv);
+            }
+
+            if (strlen($post) === 1 && $post == ']') {
+                $newformat .= mb_convert_encoding($post, $encoding, 'UTF-8');
+                $post = '';
             }
             $format = strval($post);
         }
