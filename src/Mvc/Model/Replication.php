@@ -85,7 +85,7 @@ trait Replication
     public function initializeReplication($force = false)
     {
         $di = $this->getDI();
-        $enabled = $force || $di->config->path('database.drivers.mysql.readonly.enable', false);
+        $enabled = $force || $di->get('config')->path('database.drivers.mysql.readonly.enable', false);
         
         if ($enabled) {
             self::setReplicationLag(1000);
