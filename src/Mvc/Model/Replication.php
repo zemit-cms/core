@@ -82,13 +82,18 @@ trait Replication
      * - Set Read & Write Connection Service
      * - Add Replication Behavior
      */
-    public function initializeReplication()
+    public function initializeReplication($force = false)
     {
-        self::setReplicationLag(1000);
-        $this->setConnectionService('db');
-        $this->setReadConnectionService('dbr');
-        $this->setWriteConnectionService('db');
-        $this->addReadWriteConnectionBehavior();
+        $di = $this->getDI();
+        $enabled = $force || $di->config->path('database.drivers.mysql.readonly.enable', false);
+        
+        if ($enabled) {
+            self::setReplicationLag(1000);
+            $this->setConnectionService('db');
+            $this->setReadConnectionService('dbr');
+            $this->setWriteConnectionService('db');
+            $this->addReadWriteConnectionBehavior();
+        }
     }
     
     /**

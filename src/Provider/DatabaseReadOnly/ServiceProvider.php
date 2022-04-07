@@ -70,9 +70,9 @@ class ServiceProvider extends AbstractServiceProvider
             $eventsManager->attach('db', new Logger());
             $eventsManager->attach('db', new Profiler());
             
-            $connection->setEventsManager($eventsManager);
+//            $connection->setEventsManager($eventsManager);
 
-//            $connection->setDi($di);
+            $connection->setDi($di);
             
             return $connection;
         });
