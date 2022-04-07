@@ -53,6 +53,11 @@ class ServiceProvider extends AbstractServiceProvider
             
             // Merge default config with driver config
             $options = array_merge($config->default->toArray(), $driver->toArray());
+            $ini = $config->ini->toArray();
+            
+            foreach ($ini as $key => $value) {
+                ini_set($key, $value);
+            }
             
             // Create the new session manager
             $session = new Manager();
