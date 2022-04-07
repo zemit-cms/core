@@ -357,14 +357,14 @@ class Rest extends \Zemit\Mvc\Controller
         }
 
         $columnList = [];
-        foreach ($columnToMergeList as $key => $columnToMerge) {
+        foreach ($columnToMergeList as  $columnToMerge) {
             foreach ($columnToMerge['columns'] as $column) {
                 if (isset($listValue[$column])) {
-                    $columnList[] = $listValue[$column];
+                    $columnList[$columnToMerge['name']][] = $listValue[$column];
                     unset($listValue[$column]);
                 }
             }
-            $listValue[$columnToMerge['name']] = implode (' ', $columnList ?? []);
+            $listValue[$columnToMerge['name']] = implode (' ', $columnList[$columnToMerge['name']] ?? []);
         }
 
         return $listValue;
