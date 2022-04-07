@@ -155,13 +155,20 @@ class Sprintf
         while ($format !== "") {
             // Split the format in two parts: $pre and $post by the first %-directive
             // We get also the matched groups
-            @list ($pre, $sign, $filler, $align, $size, $precision, $type, $post) =
-                preg_split(
-                    "!\%(\+?)('.|[0 ]|)(-?)([1-9][0-9]*|)(\.[1-9][0-9]*|)([%a-zA-Z])!u",
-                    $format,
-                    2,
-                    PREG_SPLIT_DELIM_CAPTURE
-                );
+            $split = preg_split(
+                "!\%(\+?)('.|[0 ]|)(-?)([1-9][0-9]*|)(\.[1-9][0-9]*|)([%a-zA-Z])!u",
+                $format,
+                2,
+                PREG_SPLIT_DELIM_CAPTURE
+            );
+            $pre = $split[0] ?? null;
+            $sign = $split[1] ?? null;
+            $filler = $split[2] ?? null;
+            $align = $split[3] ?? null;
+            $size = $split[4] ?? null;
+            $precision = $split[5] ?? null;
+            $type = $split[6] ?? null;
+            $post = $split[7] ?? null;
             
             $newformat .= mb_convert_encoding($pre, $encoding, 'UTF-8');
             
