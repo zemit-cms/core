@@ -16,8 +16,12 @@ use Zemit\Filters;
 use Zemit\Locale;
 use Zemit\Models\User;
 use Zemit\Modules\Api\Controllers\UserController;
+use Zemit\Modules\Cli\Tasks\BuildTask;
 use Zemit\Modules\Cli\Tasks\CacheTask;
 use Zemit\Modules\Cli\Tasks\CronTask;
+use Zemit\Modules\Cli\Tasks\ErrorTask;
+use Zemit\Modules\Cli\Tasks\HelpTask;
+use Zemit\Modules\Cli\Tasks\ScaffoldTask;
 use Zemit\Modules\Frontend\Controllers\ErrorController;
 use Zemit\Modules\Frontend\Controllers\IndexController;
 use Zemit\Modules\Frontend\Controllers\TestController;
@@ -172,14 +176,17 @@ class Config extends PhalconConfig
                 'uri' => Env::get('DEBUG_URI'),
                 'blacklist' => [
                     'server' => [
+                        'PWD',
                         'PASS',
                         'PASSWD',
                         'PASSWORD',
                         'TOKEN',
                         'HASH',
+                        'DB_PWD',
                         'DB_PASS',
                         'DB_PASSWD',
                         'DB_PASSWORD',
+                        'DATABASE_PWD',
                         'DATABASE_PASS',
                         'DATABASE_PASSWD',
                         'DATABASE_PASSWORD',
@@ -190,6 +197,20 @@ class Config extends PhalconConfig
                         'API_SECRET',
                         'API_KEY',
                     ],
+                ],
+            ],
+    
+            /**
+             * Response Provider Configuration
+             * - Set default security headers
+             */
+            'response' => [
+                'headers' => [
+                    'Content-Security-Policy-Report-Only' => Env::get('RESPONSE_HEADER_CSP_REPORT_ONLY', "default-src 'self'; img-src 'self' data:; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; object-src 'none'; connect-src 'self';"),
+                    'Strict-Transport-Security' => Env::get('RESPONSE_HEADER_STRICT_TRANSPORT_SECURITY', 'max-age=63072000; includeSubDomains; preload'),
+                    'X-Content-Type-Options' => Env::get('RESPONSE_HEADER_CONTENT_TYPE_OPTIONS', 'nosniff'),
+                    'X-Frame-Options' => Env::get('RESPONSE_HEADER_FRAME_OPTIONS', 'Deny'),
+                    'X-XSS-Protection' => Env::get('RESPONSE_HEADER_XSS_PROTECTION', 0),
                 ],
             ],
             
@@ -235,6 +256,11 @@ class Config extends PhalconConfig
                 \Zemit\Models\ProjectChannel::class => \Zemit\Models\ProjectChannel::class,
                 \Zemit\Models\ProjectEndpoint::class => \Zemit\Models\ProjectEndpoint::class,
                 \Zemit\Models\ProjectLocale::class => \Zemit\Models\ProjectLocale::class,
+                
+                // Chanel
+                \Zemit\Models\Channel::class => \Zemit\Models\Channel::class,
+                \Zemit\Models\ChannelChannel::class => \Zemit\Models\ChannelChannel::class,
+                \Zemit\Models\ChannelField::class => \Zemit\Models\ChannelField::class,
                 
                 // User
                 \Zemit\Models\Profile::class => \Zemit\Models\Profile::class,
@@ -282,6 +308,7 @@ class Config extends PhalconConfig
                 Provider\Translate\ServiceProvider::class => Provider\Translate\ServiceProvider::class,
                 Provider\Url\ServiceProvider::class => Provider\Url\ServiceProvider::class,
                 Provider\Request\ServiceProvider::class => Provider\Request\ServiceProvider::class,
+                Provider\Response\ServiceProvider::class => Provider\Response\ServiceProvider::class,
                 Provider\Router\ServiceProvider::class => Provider\Router\ServiceProvider::class,
                 Provider\Dispatcher\ServiceProvider::class => Provider\Dispatcher\ServiceProvider::class,
                 Provider\VoltTemplate\ServiceProvider::class => Provider\VoltTemplate\ServiceProvider::class,
@@ -502,35 +529,32 @@ class Config extends PhalconConfig
                 'driver' => Env::get('SESSION_DRIVER', 'stream'),
                 'drivers' => [
                     'stream' => [
-                        'adapter' => \Phalcon\Session\Adapter\Stream::class,
+                        'adapter' => Env::get('SESSION_STREAM_ADAPTER', \Phalcon\Session\Adapter\Stream::class),
                         'savePath' => Env::get('SESSION_STREAM_SAVE_PATH', '/tmp')
                     ],
                     'memcached' => [
-                        'adapter' => \Phalcon\Session\Adapter\Libmemcached::class,
+                        'adapter' => Env::get('SESSION_MEMCACHED_ADAPTER', \Phalcon\Session\Adapter\Libmemcached::class),
                         'servers' => [
                             [
-                                'host' => Env::get('MEMCACHED_HOST', '127.0.0.1'),
-                                'port' => Env::get('MEMCACHED_PORT', 11211),
-                                'weight' => Env::get('MEMCACHED_WEIGHT', 100),
+                                'host' => Env::get('SESSION_MEMCACHED_HOST', Env::get('MEMCACHED_HOST', '127.0.0.1')),
+                                'port' => Env::get('SESSION_MEMCACHED_PORT', Env::get('MEMCACHED_PORT', 11211)),
+                                'weight' => Env::get('SESSION_MEMCACHED_WEIGHT', Env::get('MEMCACHED_WEIGHT', 100)),
                             ],
                         ],
                         // Client options must be instance of array
                         'client' => [],
                     ],
                     'redis' => [
-                        'adapter' => \Phalcon\Session\Adapter\Redis::class,
-                        'host' => Env::get('REDIS_HOST', '127.0.0.1'),
-                        'port' => Env::get('REDIS_PORT', 6379),
-                        'index' => Env::get('REDIS_INDEX', 0),
-                        'auth' => Env::get('REDIS_AUTH', null),
-                        'persistent' => Env::get('REDIS_PERSISTENT', 0),
-                        'socket' => Env::get('REDIS_SOCKET', null),
+                        'adapter' => Env::get('SESSION_REDIS_ADAPTER', \Phalcon\Session\Adapter\Redis::class),
+                        'host' => Env::get('SESSION_REDIS_HOST', Env::get('REDIS_HOST', '127.0.0.1')),
+                        'port' => Env::get('SESSION_REDIS_PORT', Env::get('REDIS_PORT', 6379)),
+                        'index' => Env::get('SESSION_REDIS_INDEX', Env::get('REDIS_INDEX', 0)),
+                        'auth' => Env::get('SESSION_REDIS_AUTH', Env::get('REDIS_AUTH', null)),
+                        'persistent' => Env::get('SESSION_REDIS_PERSISTENT', Env::get('REDIS_PERSISTENT', 0)),
+                        'socket' => Env::get('SESSION_REDIS_SOCKET', Env::get('REDIS_SOCKET', null)),
                     ],
                     'noop' => [
-                        'adapter' => \Phalcon\Session\Adapter\Noop::class,
-                    ],
-                    'file' => [
-                        'adapter' => 'Files',
+                        'adapter' => Env::get('SESSION_NOOP_ADAPTER', \Phalcon\Session\Adapter\Noop::class),
                     ],
                 ],
                 'default' => [
@@ -580,33 +604,33 @@ class Config extends PhalconConfig
                 'driver' => Env::get('CACHE_DRIVER', 'memory'),
                 'drivers' => [
                     'memory' => [
-                        'adapter' => \Phalcon\Cache\Adapter\Memory::class,
+                        'adapter' => Env::get('CACHE_MEMORY_ADAPTER', \Phalcon\Cache\Adapter\Memory::class),
                     ],
                     'apcu' => [
-                        'adapter' => \Phalcon\Cache\Adapter\Apcu::class,
+                        'adapter' => Env::get('CACHE_APCU_ADAPTER', \Phalcon\Cache\Adapter\Apcu::class),
                     ],
-                    'file' => [
-                        'adapter' => \Phalcon\Cache\Adapter\Stream::class,
-                        'cacheDir' => PRIVATE_PATH . '/cache/data/',
+                    'stream' => [
+                        'adapter' => Env::get('CACHE_STREAM_ADAPTER', \Phalcon\Cache\Adapter\Stream::class),
+                        'cacheDir' => Env::get('CACHE_STREAM_DIR', PRIVATE_PATH . '/cache/data/'),
                     ],
                     'memcached' => [
-                        'adapter' => \Phalcon\Cache\Adapter\Libmemcached::class,
+                        'adapter' => Env::get('CACHE_MEMCACHED_ADAPTER', \Phalcon\Cache\Adapter\Libmemcached::class),
                         'servers' => [
                             [
-                                'host' => Env::get('MEMCACHED_HOST', '127.0.0.1'),
-                                'port' => Env::get('MEMCACHED_PORT', 11211),
-                                'weight' => Env::get('MEMCACHED_WEIGHT', 100),
+                                'host' => Env::get('CACHE_MEMCACHED_HOST', Env::get('MEMCACHED_HOST', '127.0.0.1')),
+                                'port' => Env::get('CACHE_MEMCACHED_PORT', Env::get('MEMCACHED_PORT', 11211)),
+                                'weight' => Env::get('CACHE_MEMCACHED_WEIGHT', Env::get('MEMCACHED_WEIGHT', 100)),
                             ],
                         ],
                     ],
                     'redis' => [
-                        'adapter' => \Phalcon\Cache\Adapter\Redis::class,
-                        'host' => Env::get('REDIS_HOST', '127.0.0.1'),
-                        'port' => Env::get('REDIS_PORT', 6379),
-                        'index' => Env::get('REDIS_INDEX', 0),
-                        'auth' => Env::get('REDIS_AUTH', null),
-                        'persistent' => Env::get('REDIS_PERSISTENT', null),
-                        'socket' => Env::get('REDIS_SOCKET', null),
+                        'adapter' => Env::get('CACHE_REDIS_ADAPTER', \Phalcon\Cache\Adapter\Redis::class),
+                        'host' => Env::get('CACHE_REDIS_HOST', Env::get('REDIS_HOST', '127.0.0.1')),
+                        'port' => Env::get('CACHE_REDIS_PORT', Env::get('REDIS_PORT', 6379)),
+                        'index' => Env::get('CACHE_REDIS_INDEX', Env::get('REDIS_INDEX', 0)),
+                        'auth' => Env::get('CACHE_REDIS_AUTH', Env::get('REDIS_AUTH', null)),
+                        'persistent' => Env::get('CACHE_REDIS_PERSISTENT', Env::get('REDIS_PERSISTENT', null)),
+                        'socket' => Env::get('CACHE_REDIS_SOCKET', Env::get('REDIS_SOCKET', null)),
                     ],
                 ],
                 'default' => [
@@ -623,36 +647,36 @@ class Config extends PhalconConfig
                 'driver' => Env::get('METADATA_DRIVER', 'memory'),
                 'drivers' => [
                     'apcu' => [
-                        'adapter' => \Phalcon\Mvc\Model\MetaData\Apcu::class,
+                        'adapter' => Env::get('METADATA_APCU_ADAPTER', \Phalcon\Mvc\Model\MetaData\Apcu::class),
                     ],
                     'memory' => [
-                        'adapter' => \Phalcon\Mvc\Model\MetaData\Memory::class,
+                        'adapter' => Env::get('METADATA_MEMORY_ADAPTER', \Phalcon\Mvc\Model\MetaData\Memory::class),
+                    ],
+                    'stream' => [
+                        'adapter' => Env::get('METADATA_STREAM_ADAPTER', \Phalcon\Mvc\Model\MetaData\Stream::class),
+                        'metaDataDir' => Env::get('METADATA_STREAM_DIR', PRIVATE_PATH . '/cache/metadata/'),
                     ],
                     'memcached' => [
-                        'adapter' => \Phalcon\Mvc\Model\MetaData\Libmemcached::class,
+                        'adapter' => Env::get('METADATA_MEMCACHED_ADAPTER', \Phalcon\Mvc\Model\MetaData\Libmemcached::class),
                         'servers' => [
                             [
-                                'host' => Env::get('MEMCACHED_HOST', '127.0.0.1'),
-                                'port' => Env::get('MEMCACHED_PORT', 11211),
-                                'weight' => Env::get('MEMCACHED_WEIGHT', 100),
+                                'host' => Env::get('METADATA_MEMCACHED_HOST', Env::get('MEMCACHED_HOST', '127.0.0.1')),
+                                'port' => Env::get('METADATA_MEMCACHED_PORT', Env::get('MEMCACHED_PORT', 11211)),
+                                'weight' => Env::get('METADATA_MEMCACHED_WEIGHT', Env::get('MEMCACHED_WEIGHT', 100)),
                             ],
                         ],
                     ],
-                    'stream' => [
-                        'adapter' => \Phalcon\Mvc\Model\MetaData\Stream::class,
-                        'metaDataDir' => PRIVATE_PATH . '/cache/metadata/',
-                    ],
                     'redis' => [
-                        'adapter' => \Phalcon\Mvc\Model\MetaData\Redis::class,
-                        'host' => Env::get('REDIS_HOST', '127.0.0.1'),
-                        'port' => Env::get('REDIS_PORT', 6379),
-                        'index' => Env::get('REDIS_INDEX', 0),
-                        'auth' => Env::get('REDIS_AUTH', null),
-                        'persistent' => Env::get('REDIS_PERSISTENT', null),
-                        'socket' => Env::get('REDIS_SOCKET', null),
+                        'adapter' => Env::get('METADATA_REDIS_ADAPTER', \Phalcon\Mvc\Model\MetaData\Redis::class),
+                        'host' => Env::get('METADATA_REDIS_HOST', Env::get('REDIS_HOST', '127.0.0.1')),
+                        'port' => Env::get('METADATA_REDIS_PORT', Env::get('REDIS_PORT', 6379)),
+                        'index' => Env::get('METADATA_REDIS_INDEX', Env::get('REDIS_INDEX', 0)),
+                        'auth' => Env::get('METADATA_REDIS_AUTH', Env::get('REDIS_AUTH', null)),
+                        'persistent' => Env::get('METADATA_REDIS_PERSISTENT', Env::get('REDIS_PERSISTENT', null)),
+                        'socket' => Env::get('METADATA_REDIS_SOCKET', Env::get('REDIS_SOCKET', null)),
                     ],
                     'wincache' => [
-                        'adapter' => \Phalcon\Mvc\Model\MetaData\Wincache::class,
+                        'adapter' => Env::get('METADATA_WINCACHE_ADAPTER', \Phalcon\Mvc\Model\MetaData\Wincache::class),
                     ],
                 ],
                 'default' => [
@@ -674,36 +698,36 @@ class Config extends PhalconConfig
                 'default' => Env::get('ANNOTATIONS_DRIVER', 'memory'),
                 'drivers' => [
                     'memory' => [
-                        'adapter' => \Phalcon\Annotations\Adapter\Memory::class,
+                        'adapter' => Env::get('ANNOTATIONS_MEMORY_ADAPTER', \Phalcon\Annotations\Adapter\Memory::class),
                     ],
                     'apcu' => [
-                        'adapter' => \Phalcon\Annotations\Adapter\Apcu::class,
+                        'adapter' => Env::get('ANNOTATIONS_APCU_ADAPTER', \Phalcon\Annotations\Adapter\Apcu::class),
                     ],
                     'file' => [
-                        'adapter' => \Phalcon\Annotations\Adapter\Stream::class,
-                        'annotationsDir' => PRIVATE_PATH . '/cache/annotations',
+                        'adapter' => Env::get('ANNOTATIONS_STREAM_ADAPTER', \Phalcon\Annotations\Adapter\Stream::class),
+                        'annotationsDir' => Env::get('ANNOTATIONS_STREAM_DIR', PRIVATE_PATH . '/cache/annotations'),
                     ],
                     'memcached' => [
-                        'adapter' => \Phalcon\Annotations\Adapter\Memcached::class,
+                        'adapter' => Env::get('ANNOTATIONS_MEMCACHED_ADAPTER', \Phalcon\Annotations\Adapter\Memcached::class),
                         'servers' => [
                             [
-                                'host' => Env::get('MEMCACHED_HOST', '127.0.0.1'),
-                                'port' => Env::get('MEMCACHED_PORT', 11211),
-                                'weight' => Env::get('MEMCACHED_WEIGHT', 100),
+                                'host' => Env::get('ANNOTATIONS_MEMCACHED_HOST', Env::get('MEMCACHED_HOST', '127.0.0.1')),
+                                'port' => Env::get('ANNOTATIONS_MEMCACHED_PORT', Env::get('MEMCACHED_PORT', 11211)),
+                                'weight' => Env::get('ANNOTATIONS_MEMCACHED_WEIGHT', Env::get('MEMCACHED_WEIGHT', 100)),
                             ],
                         ],
                     ],
                     'redis' => [
-                        'adapter' => \Phalcon\Annotations\Adapter\Redis::class,
-                        'host' => Env::get('REDIS_HOST', '127.0.0.1'),
-                        'port' => Env::get('REDIS_PORT', 6379),
-                        'index' => Env::get('REDIS_INDEX', 0),
-                        'auth' => Env::get('REDIS_AUTH', null),
-                        'persistent' => Env::get('REDIS_PERSISTENT', null),
-                        'socket' => Env::get('REDIS_SOCKET', null),
+                        'adapter' => Env::get('ANNOTATIONS_REDIS_ADAPTER', \Phalcon\Annotations\Adapter\Redis::class),
+                        'host' => Env::get('ANNOTATIONS_REDIS_HOST', Env::get('REDIS_HOST', '127.0.0.1')),
+                        'port' => Env::get('ANNOTATIONS_REDIS_PORT', Env::get('REDIS_PORT', 6379)),
+                        'index' => Env::get('ANNOTATIONS_REDIS_INDEX', Env::get('REDIS_INDEX', 0)),
+                        'auth' => Env::get('ANNOTATIONS_REDIS_AUTH', Env::get('REDIS_AUTH', null)),
+                        'persistent' => Env::get('ANNOTATIONS_REDIS_PERSISTENT', Env::get('REDIS_PERSISTENT', null)),
+                        'socket' => Env::get('ANNOTATIONS_REDIS_SOCKET', Env::get('REDIS_SOCKET', null)),
                     ],
                     'aerospike' => [
-                        'adapter' => \Phalcon\Annotations\Adapter\Aerospike::class,
+                        'adapter' => Env::get('ANNOTATIONS_AEROSPIKE_ADAPTER', \Phalcon\Annotations\Adapter\Aerospike::class),
                     ],
                 ],
                 'prefix' => Env::get('ANNOTATIONS_PREFIX', 'zemit_annotations_'),
@@ -734,6 +758,7 @@ class Config extends PhalconConfig
                          * ReadOnly Configuration
                          */
                         'readOnly' => [
+                            'enable' => Env::get('DATABASE_READONLY_ENABLE', false),
                             'host' => Env::get('DATABASE_READONLY_HOST'),
                             'port' => Env::get('DATABASE_READONLY_PORT'),
                             'dbname' => Env::get('DATABASE_READONLY_DBNAME'),
@@ -840,7 +865,7 @@ class Config extends PhalconConfig
             ],
             
             /**
-             * Client config to passe to front-end
+             * Client config to pass to front-end
              */
             'client' => [],
             
@@ -852,18 +877,8 @@ class Config extends PhalconConfig
                     // This feature allow to administer users
                     'user' => [
                         'behaviors' => [
-                            UserController::class => [
-                                SkipWhiteList::class,
-                                SkipIdentityCondition::class,
-                                Create::class,
-                                Update::class,
-                                Delete::class,
-                                Restore::class,
-                            ]
                         ],
                         'components' => [
-                            UserController::class => ['*'],
-                            User::class => ['*'],
                         ]
                     ],
                 ],
@@ -890,6 +905,10 @@ class Config extends PhalconConfig
                         'tasks' => [
                             CronTask::class => ['*'],
                             CacheTask::class => ['*'],
+                            ErrorTask::class => ['*'],
+                            ScaffoldTask::class => ['*'],
+                            HelpTask::class => ['*'],
+                            BuildTask::class => ['*'],
                         ],
                         'models' => [
                         
@@ -913,7 +932,8 @@ class Config extends PhalconConfig
                     // Admin only
                     'admin' => [
                         'inherit' => [
-                        
+                        ],
+                        'behaviors' => [
                         ],
                     ],
                     // Dev only
