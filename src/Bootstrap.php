@@ -44,19 +44,19 @@ use Docopt;
 class Bootstrap
 {
     use EventsAwareTrait;
-    
+
     /**
      * Bootstrap modes
      */
     const MODE_CLI = 'console';
     const MODE_DEFAULT = 'default';
     const MODE_CONSOLE = self::MODE_CLI;
-    
+
     /**
      * @deprecated Use MODE_DEFAULT instead
      */
     const MODE_NORMAL = self::MODE_DEFAULT;
-    
+
     /**
      * Ideally, only the config service provider should be added here, then it will load other service from itself
      * You can also add new Service Providers here if it's absolutely required to be loaded earlier before
@@ -65,75 +65,75 @@ class Bootstrap
     public $providers = [
         Provider\Config\ServiceProvider::class => Provider\Config\ServiceProvider::class,
     ];
-    
+
     /**
      * Bootstrap mode
      * @var string
      */
     public $mode;
-    
+
     /**
      * Bootstrap console args
      * @var array
      */
     public $args;
-    
+
     /**
      * Dependencies
      * @var FactoryDefault|FactoryDefault\Cli
      */
     public $di;
-    
+
     /**
      * @var Dotenv
      */
     public $dotenv;
-    
+
     /**
      * @var Prepare
      */
     public $prepare;
-    
+
     /**
      * @var Config
      */
     public $config;
-    
+
     /**
      * @var Services
      */
     public $services;
-    
+
     /**
      * @var Application|\Phalcon\Cli\Console
      */
     public $application;
-    
+
     /**
      * @var Modules
      */
     public $modules;
-    
+
     /**
      * @var Router
      */
     public $router;
-    
+
     /**
      * @var Debug
      */
     public $debug;
-    
+
     /**
      * @var Response
      */
     public $response;
-    
+
     /**
      * @var Docopt
      */
     public $docopt;
-    
+
     /**
      * @var string
      */
@@ -163,7 +163,7 @@ Options:
   --debug=<debug>         Force the debug and ignore debug value from the config [default: false]
   --env=<env>             Force environment to pick the configuration files [default: development]
 DOC;
-    
+
     /**
      * Bootstrap constructor.
      * Setup the di, env, app, config, services, applications, modules and then the router
@@ -189,14 +189,14 @@ DOC;
         $this->modules();
 //        $this->router(); // using serviceProvider now
     }
-    
+
     /**
      * Initialisation
      */
     public function initialize()
     {
     }
-    
+
     /**
      * Prepare the DI including itself (Bootstrap) and setup as default DI
      * Also use the cli factory default for console mode
@@ -215,15 +215,15 @@ DOC;
             function (Bootstrap $bootstrap) {
                 // Register bootstrap itself
                 $this->di->setShared('bootstrap', $bootstrap);
-                
+
                 // Set as the default DI
                 Di::setDefault($this->di);
             }
         );
-        
+
         return $this->di;
     }
-    
+
     /**
      * Reading .env file
      * @return Dotenv
@@ -231,7 +231,7 @@ DOC;
      */
     public function dotenv()
     {
-        
+
         try {
             $this->dotenv = Dotenv::create(dirname(APP_PATH)); // @todo fix this to handle fireset instead, using a new class extending dotenv
             $this->dotenv->load();
@@ -241,10 +241,10 @@ DOC;
         } catch (\Dotenv\Exception\InvalidPathException|\Dotenv\Exception\InvalidFileException $e) {
             // just ignore and run the application anyway
         }
-        
+
         return $this->dotenv;
     }
-    
+
     /**
      * Get arguments from command line interface (cli / console)
      * @return Docopt
@@ -259,7 +259,7 @@ DOC;
             }
         });
     }
-    
+
     /**
      * Preparing some native PHP related stuff
      * @return Prepare
@@ -269,14 +269,14 @@ DOC;
     {
         return $this->fireSet($this->prepare, Prepare::class);
     }
-    
+
     /**
      * Registering bootstrap providers
      */
     public function register(array &$providers = null)
     {
         $providers ??= $this->providers;
-        
+
         foreach ($providers as $key => $provider) {
             if (is_string($provider) && class_exists($provider)) {
                 $provider = new $provider($this->di);
@@ -286,10 +286,10 @@ DOC;
                 }
             }
         }
-        
+
         return $this->providers;
     }
-    
+
     /**
      * Prepare the config service
      * - Fire events (before & after)
@@ -309,7 +309,7 @@ DOC;
 //            $bootstrap->prepare->php();
         });
     }
-    
+
     /**
      * @return Debug
      * @throws Exception
@@ -319,13 +319,18 @@ DOC;
         return $this->fireSet($this->debug, Debug::class, [], function (Bootstrap $bootstrap) {
             $config = $bootstrap->config->debug;
             $bootstrap->prepare->debug($bootstrap->config);
-            
-            if (!$this->isConsole()) {
+
+            // @todo review on phalcon5 php8+ because phalcon4 php8+ debug is doing cyclic error
+            $cyclicError =
+                version_compare(PHP_VERSION, '8.0.0', '>=') &&
+                version_compare(\Phalcon\Version::get(), '5.0.0', '<');
+
+            if (!$this->isConsole() && !$cyclicError) {
                 if ($bootstrap->config->app->debug || $bootstrap->config->debug->enable) {
                     if (is_bool($config)) {
                         $bootstrap->debug->listen();
                     } else {
-                        $bootstrap->debug->listen($config->exception ?? true, $config->lowSeverity ?? true);
+                        $bootstrap->debug->listen($config->exception ?? true, $config->lowSeverity ?? false);
                         $bootstrap->debug->setBlacklist($config->has('blacklist')? $config->blacklist->toArray() : []);
                         $bootstrap->debug->setShowFiles($config->showFiles ?? true);
                         $bootstrap->debug->setShowBackTrace($config->showBackTrace ?? true);
@@ -338,7 +343,7 @@ DOC;
             }
         });
     }
-    
+
     /**
      * Prepare procedural services way
      * - Fire events (before & after)
@@ -350,7 +355,7 @@ DOC;
     {
         return $this->fireSet($this->services, Services::class, [$this->di, $this->config]);
     }
-    
+
     /**
      * Prepare the application
      * - Fire events (before & after)
@@ -369,7 +374,7 @@ DOC;
             [$this->di]
         );
     }
-    
+
     /**
      * Prepare the application for modules
      * - Fire events (before & after)
@@ -381,7 +386,7 @@ DOC;
     {
         return $this->fireSet($this->modules, Modules::class, [$this->application]);
     }
-    
+
     /**
      * Prepare the router
      * - Fire events (before & after router)
@@ -395,7 +400,7 @@ DOC;
     {
         return $this->fireSet($this->router, $this->isConsole() ? CliRouter::class : Router::class, [true, $this->application]);
     }
-    
+
     /**
      * Run Zemit App
      * - Fire events (before run & after run)
@@ -407,7 +412,7 @@ DOC;
     public function run()
     {
         $this->fire('beforeRun');
-        
+
         // cli console mode, get the arguments from the doctlib
         if ($this->isConsole() || $this->application instanceof Console) {
             try {
@@ -445,7 +450,7 @@ DOC;
             }
         }
     }
-    
+
     /**
      * Get & format arguments from the $this->args property
      * @return array Key value pair, human readable
@@ -463,7 +468,7 @@ DOC;
         }
         return $arguments;
     }
-    
+
     /**
      * Return True if the bootstrap mode is set to 'console'
      * @return bool Console mode
@@ -472,7 +477,7 @@ DOC;
     {
         return $this->getMode() === self::MODE_CONSOLE;
     }
-    
+
     /**
      * Return the raw bootstrap mode, should be either 'console' or 'default'
      * @return string Bootstrap mode
