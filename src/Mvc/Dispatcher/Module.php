@@ -11,14 +11,11 @@
 namespace Zemit\Mvc\Dispatcher;
 
 use Zemit\Di\Injectable;
-use Phalcon\Mvc\DispatcherInterface;
-use Phalcon\Mvc\Dispatcher;
+use Phalcon\Dispatcher\DispatcherInterface;
 use Phalcon\Events\Event;
-use Phalcon\Text;
 
 /**
  * Class Module
- * @todo make it work?
  *
  * @author Julien Turbide <jturbide@nuagerie.com>
  * @copyright Zemit Team <contact@zemit.com>
@@ -32,12 +29,20 @@ class Module extends Injectable
 {
     public function beforeDispatchLoop(Event $event, DispatcherInterface $dispatcher)
     {
-        $module = $this->getDI()->get('config')->modules->{$dispatcher->getModuleName()};
-        if (is_array($module) || $module instanceof \Traversable) {
-            foreach ($module as $module) {
-                if (is_callable($module)) {
-                }
-            }
+        // @todo use module this way instead?
+//        $module = $this->getDI()->get('config')->modules->{$dispatcher->getModuleName()};
+//        if (is_array($module) || $module instanceof \Traversable) {
+//            foreach ($module as $module) {
+//                if (is_callable($module)) {
+//                }
+//            }
+//        }
+    }
+
+    public function beforeForward(Event $event, DispatcherInterface $dispatcher, array $forward)
+    {
+        if (!empty($forward['module'])) {
+            $dispatcher->setModuleName($forward['module']);
         }
     }
 }
