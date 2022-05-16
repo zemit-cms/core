@@ -61,7 +61,7 @@ class View extends \Phalcon\Mvc\View
     public function render($controllerName, $actionName, $params = [])
     {
         // fix @todo check if we still have this issue
-        if (!$this->exists($controllerName . (empty($actionName)? null : '/' . $actionName))) {
+        if (!$this->exists($controllerName . (empty($actionName) ? null : '/' . $actionName))) {
             $controllerName = Slug::generate(Text::uncamelize($controllerName));
             $actionName = Slug::generate(Text::uncamelize($actionName));
         }
@@ -78,10 +78,10 @@ class View extends \Phalcon\Mvc\View
      * @return String
      * @throws \Zemit\Exception
      */
-    public function getRender($controllerName, $actionName, $params = null, $configCallback = null) : String
+    public function getRender($controllerName, $actionName, $params = null, $configCallback = null): string
     {
         // fix @todo check if we still have this issue
-        if (!$this->exists($controllerName . (empty($actionName)? null : '/' . $actionName))) {
+        if (!$this->exists($controllerName . (empty($actionName) ? null : '/' . $actionName))) {
             $controllerName = Slug::generate(Text::uncamelize($controllerName));
             $actionName = Slug::generate(Text::uncamelize($actionName));
         }
@@ -93,7 +93,7 @@ class View extends \Phalcon\Mvc\View
      * Also automatically minify content
      * @return string
      */
-    public function getContent() : string
+    public function getContent(): string
     {
         // Don't worry
         $content = parent::getContent();
