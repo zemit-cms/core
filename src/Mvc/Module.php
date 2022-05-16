@@ -12,20 +12,19 @@ namespace Zemit\Mvc;
 
 use Phalcon\Di\DiInterface;
 use Phalcon\Loader;
-use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\RouterInterface;
-use Phalcon\Mvc\Url;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\ModuleDefinitionInterface;
 use Phalcon\Text;
 use Zemit\Bootstrap\Config;
 use Zemit\Bootstrap\Router;
 use Zemit\Utils;
+use Zemit\Url;
 
 /**
  * Class Module
  * {@inheritDoc}
- * 
+ *
  * @author Julien Turbide <jturbide@nuagerie.com>
  * @copyright Zemit Team <contact@zemit.com>
  *
@@ -37,12 +36,10 @@ use Zemit\Utils;
 class Module implements ModuleDefinitionInterface
 {
     const NAME_FRONTEND = 'frontend';
-    const NAME_BACKEND = 'backend';
+    const NAME_ADMIN = 'admin';
     const NAME_API = 'api';
     const NAME_CLI = 'cli';
     const NAME_OAUTH2 = 'oauth2';
-    
-    public $namespace = __NAMESPACE__;
     
     /**
      * Module name to register
@@ -117,27 +114,24 @@ class Module implements ModuleDefinitionInterface
         $this->dispatcher->setDefaultNamespace($namespace . '\\Controllers');
         
         // view settings
-        $this->view->setViewsDir([
-//            $this->config->app->dir->module . 'views/',
-            $this->config->core->dir->base . 'Modules/' . Text::camelize($this->name) . '/Views/',
-        ]);
+        $this->view->setViewsDir($this->getViewsDir());
         
         // url settings
         $this->url->setBasePath('/' . $this->name . '/');
         $this->url->setStaticBaseUri('/' . $this->name . '/');
-    
+        
         $this->router->setDefaults([
             'namespace' => $this->dispatcher->getDefaultNamespace(),
             'module' => $this->name,
             'controller' => 'index',
-            'action' => 'index'
+            'action' => 'index',
         ]);
         
         // router settings
         if ($this->router instanceof RouterInterface) {
             $this->router->notFound([
                 'controller' => 'error',
-                'action' => 'notFound'
+                'action' => 'notFound',
             ]);
             
             $this->router->removeExtraSlashes(true);
@@ -147,16 +141,24 @@ class Module implements ModuleDefinitionInterface
         $this->setServices($di);
     }
     
+    public function getViewsDir()
+    {
+        return [
+            Utils::getDirname(get_class($this)) . '/Views/',
+        ];
+    }
+    
     public function getNamespaces()
     {
         $namespaces = [];
-    
+        
         // Caller namespace
         $namespace = Utils::getNamespace($this);
+        $dirname = Utils::getDirname($this);
         
         // register the vendor module controllers
-        $namespaces[$namespace . '\\Controllers'] = $this->config->core->dir->modules . '/' . Text::camelize($this->name) . '/Controllers/';
-        $namespaces[$namespace . '\\Models'] = $this->config->core->dir->modules . '/' . Text::camelize($this->name) . '/Models/';
+        $namespaces[$namespace . '\\Controllers'] = $dirname . '/Controllers/';
+        $namespaces[$namespace . '\\Models'] = $dirname . '/Models/';
         $namespaces['Zemit\\Models'] = $this->config->core->dir->base . '/Models/';
         return $namespaces;
     }
