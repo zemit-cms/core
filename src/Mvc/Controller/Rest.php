@@ -19,6 +19,7 @@ use League\Csv\Writer;
 use Phalcon\Version;
 use Zemit\Db\Profiler;
 use Zemit\Di\Injectable;
+use Zemit\Utils;
 use Zemit\Utils\Slug;
 
 /**
@@ -81,13 +82,14 @@ class Rest extends \Zemit\Mvc\Controller
     /**
      * Retrieving a single record
      * Alias of method getAction()
-     * @deprecated Should use getAction() method instead
-     *
      * @param null $id
      *
      * @return bool|\Phalcon\Http\ResponseInterface
+     * @deprecated Should use getAction() method instead
+     *
      */
-    public function getSingleAction($id = null) {
+    public function getSingleAction($id = null)
+    {
         return $this->getAction($id);
     }
     
@@ -119,11 +121,12 @@ class Rest extends \Zemit\Mvc\Controller
     /**
      * Retrieving a record list
      * Alias of method getListAction()
+     * @return \Phalcon\Http\ResponseInterface
      * @deprecated Should use getListAction() method instead
      *
-     * @return \Phalcon\Http\ResponseInterface
      */
-    public function getAllAction() {
+    public function getAllAction()
+    {
         return $this->getListAction();
     }
     
@@ -139,7 +142,7 @@ class Rest extends \Zemit\Mvc\Controller
         
         /** @var Resultset $with */
         $find = $this->getFind();
-        $with = $model::with($this->getListWith() ? : [], $find ? : []);
+        $with = $model::with($this->getListWith() ?: [], $find ?: []);
         
         /**
          * Expose the list
@@ -155,7 +158,7 @@ class Rest extends \Zemit\Mvc\Controller
         $this->view->list = $list;
         $this->view->listCount = count($list);
         $this->view->totalCount = $model::find($this->getFindCount($find));
-        $this->view->totalCount = is_int($this->view->totalCount)? $this->view->totalCount : count($this->view->totalCount); // @todo fix count to work with rollup when joins
+        $this->view->totalCount = is_int($this->view->totalCount) ? $this->view->totalCount : count($this->view->totalCount); // @todo fix count to work with rollup when joins
         $this->view->limit = $find['limit'] ?? false;
         $this->view->offset = $find['offset'] ?? false;
         $this->view->find = ($this->config->app->debug || $this->config->debug->enable) ? $find : false;
@@ -179,8 +182,8 @@ class Rest extends \Zemit\Mvc\Controller
         
         /** @var Resultset $with */
         $find = $this->getFind();
-        $with = $model::with($this->getListWith() ? : [], $find ? : []);
-
+        $with = $model::with($this->getListWith() ?: [], $find ?: []);
+        
         /**
          * Expose the list
          * @var int $key
@@ -190,16 +193,16 @@ class Rest extends \Zemit\Mvc\Controller
         foreach ($with as $key => $item) {
             $list[$key] = $item->expose($this->getExportExpose());
         }
-
+        
         $list = is_array($list) ? array_values(array_filter($list)) : $list;
         $this->flatternArrayForCsv($list);
-		$this->formatColumnText($list);
-
+        $this->formatColumnText($list);
+        
         if ($contentType === 'json') {
 //            $this->response->setJsonContent($list);
             $this->response->setContent(json_encode($list, JSON_PRETTY_PRINT, 2048));
             $this->response->setContentType('application/json');
-            $this->response->setHeader('Content-disposition', 'attachment; filename="'.addslashes($fileName).'.json"');
+            $this->response->setHeader('Content-disposition', 'attachment; filename="' . addslashes($fileName) . '.json"');
             return $this->response->send();
         }
         
@@ -213,7 +216,7 @@ class Rest extends \Zemit\Mvc\Controller
             $escape = $params['escape'] ?? null;
             $outputBOM = $params['outputBOM'] ?? null;
             $skipIncludeBOM = $params['skipIncludeBOM'] ?? null;
-            
+
 //            $csv = Writer::createFromFileObject(new \SplTempFileObject());
             $csv = Writer::createFromStream(fopen('php://memory', 'r+'));
             
@@ -265,9 +268,9 @@ class Rest extends \Zemit\Mvc\Controller
             $xlsxArray = [];
             foreach ($list as $array) {
                 if (empty($xlsxArray)) {
-                    $xlsxArray []= array_keys($array);
+                    $xlsxArray [] = array_keys($array);
                 }
-                $xlsxArray []= array_values($array);
+                $xlsxArray [] = array_values($array);
             }
             $xlsx = \SimpleXLSXGen::fromArray($xlsxArray);
             $xlsx->downloadAs($fileName . '.xlsx');
@@ -277,19 +280,20 @@ class Rest extends \Zemit\Mvc\Controller
         // Something went wrong
         throw new \Exception('Failed to export `' . $this->getModelClassName() . '` using content-type `' . $contentType . '`', 400);
     }
-
+    
     /**
      * @param array|null $array
      *
      * @return array|null
      */
-    public function flatternArrayForCsv(?array &$list = null) {
-
+    public function flatternArrayForCsv(?array &$list = null)
+    {
+        
         foreach ($list as $listKey => $listValue) {
             foreach ($listValue as $column => $value) {
                 if (is_array($value) || is_object($value)) {
                     $value = $this->concatListFieldElementForCsv($value, ' ');
-                    $list[$listKey][$column] = $this->arrayFlatten($value , $column);
+                    $list[$listKey][$column] = $this->arrayFlatten($value, $column);
                     if (is_array($list[$listKey][$column])) {
                         foreach ($list[$listKey][$column] as $childKey => $childValue) {
                             $list[$listKey][$childKey] = $childValue;
@@ -300,14 +304,15 @@ class Rest extends \Zemit\Mvc\Controller
             }
         }
     }
-
+    
     /**
      * @param array|object $list
      * @param string|null $seperator
      *
      * @return array|object
      */
-    public function concatListFieldElementForCsv($list, $seperator = ' ') {
+    public function concatListFieldElementForCsv($list, $seperator = ' ')
+    {
         foreach ($list as $valueKey => $element) {
             if (is_array($element) || is_object($element)) {
                 $lastKey = array_key_last($list);
@@ -322,18 +327,19 @@ class Rest extends \Zemit\Mvc\Controller
                 }
             }
         }
-
+        
         return $list;
     }
-
+    
     /**
      * @param array|null $array
      * @param string|null $alias
      *
      * @return array|null
      */
-    function arrayFlatten(?array $array, ?string $alias = null) {
-        $return = array();
+    function arrayFlatten(?array $array, ?string $alias = null)
+    {
+        $return = [];
         foreach ($array as $key => $value) {
             if (is_array($value)) {
                 $return = array_merge($return, $this->arrayFlatten($value, $alias));
@@ -344,86 +350,89 @@ class Rest extends \Zemit\Mvc\Controller
         }
         return $return;
     }
-
+    
     /**
      * @param array|null $listValue
      *
      * @return array|null
      */
-    public function mergeColumns (?array $listValue) {
-        $columnToMergeList = $this->getExportMergeColum ();
+    public function mergeColumns(?array $listValue)
+    {
+        $columnToMergeList = $this->getExportMergeColum();
         if (!$columnToMergeList || empty($columnToMergeList)) {
-            return  $listValue;
+            return $listValue;
         }
-
+        
         $columnList = [];
-        foreach ($columnToMergeList as  $columnToMerge) {
+        foreach ($columnToMergeList as $columnToMerge) {
             foreach ($columnToMerge['columns'] as $column) {
                 if (isset($listValue[$column])) {
                     $columnList[$columnToMerge['name']][] = $listValue[$column];
                     unset($listValue[$column]);
                 }
             }
-            $listValue[$columnToMerge['name']] = implode (' ', $columnList[$columnToMerge['name']] ?? []);
+            $listValue[$columnToMerge['name']] = implode(' ', $columnList[$columnToMerge['name']] ?? []);
         }
-
+        
         return $listValue;
     }
-
+    
     /**
      * @param array|null $list
      *
      * @return array|null
      */
-    public function formatColumnText (?array &$list) {
+    public function formatColumnText(?array &$list)
+    {
         foreach ($list as $listKey => $listValue) {
-
+            
             $mergeColumArray = $this->mergeColumns($listValue);
-            if(!empty($mergeColumArray)) {
+            if (!empty($mergeColumArray)) {
                 $list[$listKey] = $mergeColumArray;
             }
-
-            $formatArray = $this->getExportFormatFieldText ($listValue);
+            
+            $formatArray = $this->getExportFormatFieldText($listValue);
             if ($formatArray) {
                 $columNameList = array_keys($formatArray);
                 foreach ($formatArray as $formatKey => $formatValue) {
                     if (isset($formatValue['text'])) {
                         $list[$listKey][$formatKey] = $formatValue['text'];
                     }
-
+                    
                     if (isset($formatValue['rename'])) {
-
+                        
                         $list[$listKey][$formatValue['rename']] = $formatValue['text'] ?? ($list[$listKey][$formatKey] ?? null);
                         if ($formatValue['rename'] !== $formatKey) {
                             foreach ($columNameList as $columnKey => $columnValue) {
-
+                                
                                 if ($formatKey === $columnValue) {
                                     $columNameList[$columnKey] = $formatValue['rename'];
                                 }
                             }
-
+                            
                             unset($list[$listKey][$formatKey]);
                         }
                     }
                 }
-
+                
                 if (isset($formatArray['reorderColumns']) && $formatArray['reorderColumns']) {
                     $list[$listKey] = $this->arrayCustomOrder($list[$listKey], $columNameList);
                 }
             }
         }
-
+        
         return $list;
     }
-
+    
     /**
      * @param array $arrayToOrder
      * @param array $orderList
      *
      * @return array
      */
-    function arrayCustomOrder($arrayToOrder, $orderList) {
-        $ordered = array();
+    function arrayCustomOrder($arrayToOrder, $orderList)
+    {
+        $ordered = [];
         foreach ($orderList as $key) {
             if (array_key_exists($key, $arrayToOrder)) {
                 $ordered[$key] = $arrayToOrder[$key];
@@ -431,7 +440,7 @@ class Rest extends \Zemit\Mvc\Controller
         }
         return $ordered;
     }
-
+    
     /**
      * Count a record list
      * @TODO add total count / deleted count / active count
@@ -446,7 +455,7 @@ class Rest extends \Zemit\Mvc\Controller
         $entity = new $model();
         
         $this->view->totalCount = $model::count($this->getFindCount($this->getFind()));
-        $this->view->totalCount = is_int($this->view->totalCount)? $this->view->totalCount : count($this->view->totalCount);
+        $this->view->totalCount = is_int($this->view->totalCount) ? $this->view->totalCount : count($this->view->totalCount);
         $this->view->model = get_class($entity);
         $this->view->source = $entity->getSource();
         
@@ -664,8 +673,8 @@ class Rest extends \Zemit\Mvc\Controller
         // keep forced status code or set our own
         $responseStatusCode = $this->response->getStatusCode();
         $reasonPhrase = $this->response->getReasonPhrase();
-        $status ??= $reasonPhrase ? : 'OK';
-        $code ??= (int)$responseStatusCode ? : 200;
+        $status ??= $reasonPhrase ?: 'OK';
+        $code ??= (int)$responseStatusCode ?: 200;
         $view = $this->view->getParamsToView();
         $hash = hash('sha512', json_encode($view));
         
@@ -683,6 +692,7 @@ class Rest extends \Zemit\Mvc\Controller
         $profiler = $debug && $this->profiler ? $this->profiler->toArray() : null;
         $dispatcher = $debug ? $this->dispatcher->toArray() : null;
         $router = $debug ? $this->router->toArray() : null;
+        
         
         $api = $debug ? [
             'php' => phpversion(),
@@ -704,10 +714,13 @@ class Rest extends \Zemit\Mvc\Controller
                 $this->response->setCache($cache['lifetime']);
                 $this->response->setEtag($hash);
             }
-        } else {
+        }
+        else {
             $this->response->setCache(0);
             $this->response->setHeader('Cache-Control', 'no-cache, max-age=0');
         }
+        
+        $memory = $debug ?: null;
         
         return $this->response->setJsonContent(array_merge([
             'api' => $api,
@@ -723,10 +736,12 @@ class Rest extends \Zemit\Mvc\Controller
             'request' => $request,
             'dispatcher' => $dispatcher,
             'router' => $router,
+            'memory' => Utils::getMemoryUsage(),
         ] : []), $jsonOptions, $depth);
     }
     
-    public function beforeExecuteRoute(Dispatcher $dispatcher) {
+    public function beforeExecuteRoute(Dispatcher $dispatcher)
+    {
         // @todo use eventsManager from service provider instead
         $this->eventsManager->enablePriorities(true);
         // @todo see if we can implement receiving an array of responses globally: V2
@@ -747,7 +762,8 @@ class Rest extends \Zemit\Mvc\Controller
         }
     }
     
-    public function attachBehaviors($behaviors, $eventType = 'rest') {
+    public function attachBehaviors($behaviors, $eventType = 'rest')
+    {
         if (!is_array($behaviors)) {
             $behaviors = [$behaviors];
         }
