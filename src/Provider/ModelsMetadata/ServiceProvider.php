@@ -45,11 +45,11 @@ class ServiceProvider extends AbstractServiceProvider
         $di->setShared($this->getName(), function() use ($di) {
             
             $config = $di->get('config')->metadata;
-            $driver = $config->drivers->{$config->driver};
+            $driverName = $di->get('bootstrap')->getMode() === 'console'? 'cli' : 'driver';
+            $driver = $config->drivers->{$config->$driverName};
             $adapter = $driver->adapter;
             
             $options = array_merge($config->default->toArray(), $driver->toArray());
-            
             if (in_array($adapter, [Memory::class, Stream::class])) {
                 return new $adapter($options);
             }

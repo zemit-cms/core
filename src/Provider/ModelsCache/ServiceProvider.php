@@ -44,15 +44,15 @@ class ServiceProvider extends AbstractServiceProvider
         $di->setShared($this->getName(), function() use ($di) {
             
             $config = $di->get('config')->cache;
-            $driver = $config->drivers->{$config->driver};
-//            $adapter = $driver->adapter;
+            $driverName = $di->get('bootstrap')->getMode() === 'console'? 'cli' : 'driver';
+            $driver = $config->drivers->{$config->$driverName};
             
             $options = array_merge($config->default->toArray(), $driver->toArray());
             
             $serializerFactory = new SerializerFactory();
             $adapterFactory = new AdapterFactory($serializerFactory);
-            $adapter = $adapterFactory->newInstance($config->driver, $options);
-            
+            $adapter = $adapterFactory->newInstance($config->$driverName, $options);
+    
             return new Cache($adapter);
         });
     }
