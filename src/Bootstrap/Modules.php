@@ -35,6 +35,7 @@ class Modules
          */
         $config = $application->getDI()->get('config');
         $application->registerModules($config->modules->toArray());
+//        $application->registerModules($config->core->modules->toArray(), true); // @todo disable router for these default modules as it may cause security issues, therefor we should consider only allowing dispatching
         $application->setDefaultModule($config->router->defaults->module);
     }
 }
