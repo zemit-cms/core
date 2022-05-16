@@ -43,16 +43,19 @@ trait DispatcherTrait
         else {
             if ((!isset($forward['namespace']) || $this->getNamespaceName() !== $forward['namespace']) &&
                 (!isset($forward['module']) || $this->getModuleName() !== $forward['module']) &&
+                (!isset($forward['task']) || $this->getControllerName() !== $forward['task']) &&
                 (!isset($forward['controller']) || $this->getControllerName() !== $forward['controller']) &&
                 (!isset($forward['action']) || $this->getActionName() !== $forward['action']) &&
-                (!isset($forward['params']) || $this->getParams() !== $forward['params']) &&
-                true
+                (!isset($forward['params']) || $this->getParams() !== $forward['params'])
             ) {
                 if (!isset($forward['namespace'])) {
                     unset($forward['namespace']);
                 }
                 if (!isset($forward['module'])) {
                     unset($forward['module']);
+                }
+                if (!isset($forward['task'])) {
+                    unset($forward['task']);
                 }
                 if (!isset($forward['controller'])) {
                     unset($forward['controller']);
@@ -81,6 +84,7 @@ trait DispatcherTrait
             'handlerClass' => $this->getHandlerClass(),
             'handlerSuffix' => $this->getHandlerSuffix(),
             'activeMethod' => $this->getActiveMethod(),
+            'actionSuffix' => $this->getActionSuffix(),
         ];
         if ($this instanceof MvcDispatcher) {
             $ret['controller'] = $this->getControllerName();
@@ -90,7 +94,6 @@ trait DispatcherTrait
         }
         if ($this instanceof CliDispatcher) {
             $ret['task'] = $this->getTaskName();
-            $ret['lastTask'] = $this->getLastTask();
             $ret['taskSuffix'] = $this->getTaskSuffix();
         }
         return $ret;
