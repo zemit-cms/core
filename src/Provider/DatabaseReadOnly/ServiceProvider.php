@@ -63,7 +63,7 @@ class ServiceProvider extends AbstractServiceProvider
                 unset($config['readOnly']);
             }
             
-            /** @var \Phalcon\Db\Adapter\Pdo $connection */
+            /** @var \Phalcon\Db\Adapter\Pdo\AbstractPdo $connection */
             $connection = new $adapter($config);
             
             $eventsManager->attach('db', new Security());
