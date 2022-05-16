@@ -39,6 +39,7 @@
     "ext-json": "*",
     "ext-pdo": "*",
     "ext-mbstring": "*",
+    "ext-simplexml": "*",
     "phalcon/incubator": "~4.0",
     "phalcon/devtools": "~4.0.3",
     "lcobucci/jwt": "~3.3.3",
