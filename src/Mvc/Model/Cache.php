@@ -73,10 +73,10 @@ trait Cache
                 }
             
                 /** @var \Phalcon\Cache $modelsCache */
-                $cache = $this->getDI()->get($modelsCacheService);
+                $modelsCache = $this->getDI()->get($modelsCacheService);
                 
                 // Flush the entire cache
-                return $cache->clear();
+                return $modelsCache->clear();
             },
         ];
         $this->addBehavior(new Behavior\Action([
