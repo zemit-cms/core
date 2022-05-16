@@ -76,13 +76,12 @@ class Security extends Behavior
     public function notify($eventType, ModelInterface $model)
     {
         $this->security->getAcl();
-        
         switch ($eventType) {
-            case 'beforeFind':
-            case 'beforeFindFirst':
-            case 'beforeCount':
-            case 'beforeSum':
-            case 'beforeAverage':
+            case 'beforeFind': // @todo implement this
+            case 'beforeFindFirst': // @todo implement this
+            case 'beforeCount':  // @todo implement this
+            case 'beforeSum': // @todo implement this
+            case 'beforeAverage': // @todo implement this
             case 'beforeCreate':
             case 'beforeUpdate':
             case 'beforeDelete':
@@ -90,7 +89,6 @@ class Security extends Behavior
             case 'beforeReorder':
                 $type = lcfirst(Text::camelize(str_replace(['before_', 'after_'], [null, null], Text::uncamelize($eventType))));
                 return $this->isAllowed($type, $model);
-                break;
         }
         
         return true;
@@ -98,7 +96,7 @@ class Security extends Behavior
     
     public function isAllowed($eventType, $model)
     {
-        $acl = $this->security->getAcl(['models']);
+        $acl = $this->security->getAcl(['models', 'components']);
         
         $modelClass = get_class($model);
         
@@ -106,11 +104,6 @@ class Security extends Behavior
         if (!$acl->isComponent($modelClass)) {
             $model->appendMessage(new Message('Model permission not found for `' . $modelClass . '`', 'id', 'NotFound', 404));
             return false;
-        }
-        
-        // allowed for everyone
-        if ($acl->isAllowed('everyone', $modelClass, $eventType)) {
-            return true;
         }
         
         // allowed for roles
