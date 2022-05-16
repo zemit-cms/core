@@ -24,5 +24,24 @@ namespace Zemit\Cli;
  */
 class Router extends \Phalcon\Cli\Router
 {
-    
+    /**
+     * Router toArray
+     * @return array
+     */
+    public function toArray() {
+        $mathedRoute = $this->getMatchedRoute();
+        return [
+            'module' => $this->getModuleName(),
+            'action' => $this->getActionName(),
+            'params' => $this->getParams(),
+            'matches' => $this->getMatches(),
+            'matched' => $mathedRoute ? [
+                'id' => $mathedRoute->getRouteId(),
+                'name' => $mathedRoute->getName(),
+                'paths' => $mathedRoute->getPaths(),
+                'pattern' => $mathedRoute->getPattern(),
+                'reversedPaths' => $mathedRoute->getReversedPaths(),
+            ] : null,
+        ];
+    }
 }
