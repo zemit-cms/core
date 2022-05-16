@@ -28,7 +28,7 @@ class ModuleRoute extends RouterGroup
     public $locale;
     public $default;
     public $params;
-    
+
     /**
      * ModuleRoute constructor.
      * The module routing is segmented in order to give more control over
@@ -46,47 +46,47 @@ class ModuleRoute extends RouterGroup
         $this->locale = $locale;
         parent::__construct($paths);
     }
-    
+
     public function initialize()
     {
         $path = $this->getPaths();
         $module = $path['module'];
         $params = $this->params ? '/:params' : null;
-    
+
         if ($this->default) {
             $module = 'zemit';
         }
-        
+
         /**
-         * /backend/
-         * /fr/backend/
-         * /fr-FR/backend/
-         * /fr_FR/backend/
+         * /admin/
+         * /fr/admin/
+         * /fr-FR/admin/
+         * /fr_FR/admin/
          */
         $prefix = ($this->locale? '/{locale:([a-z]{2,3})}' : null) . ($this->default ? null : '/' . $module);
         $this->setPrefix($prefix);
         $prefixName = ($this->locale? 'locale-' : null) . $module;
         $prefixPos = $this->locale? 1 : 0;
-        
-        // /backend
+
+        // /admin
         $this->add('' . $params, [
             'params' => $prefixPos + 1
         ])->setName($prefixName);
 
-        // /backend/users
+        // /admin/users
         $this->add('/:controller' . $params, [
             'controller' => $prefixPos + 1,
             'params' => $prefixPos + 2
         ])->setName($prefixName . '-controller');
 
-        // /backend/user/list
+        // /admin/user/list
         $this->add('/:controller/:action' . $params, [
             'controller' => $prefixPos + 1,
             'action' => $prefixPos + 2,
             'params' => $prefixPos + 3
         ])->setName($prefixName . '-controller-action');
 
-        // /backend/user/profile/jturbide
+        // /admin/user/profile/jturbide
         $this->add('/:controller/:action/([a-zA-Z0-9\_\-]+)' . $params, [
             'controller' => $prefixPos + 1,
             'action' => $prefixPos + 2,
@@ -94,7 +94,7 @@ class ModuleRoute extends RouterGroup
             'params' => $prefixPos + 4
         ])->setName($prefixName . '-controller-action-slug');
 
-        // backend/user/edit/1
+        // /admin/user/edit/1
         $this->add('/:controller/:action/:int' . $params, [
             'controller' => $prefixPos + 1,
             'action' => $prefixPos + 2,
