@@ -10,7 +10,7 @@
 
 namespace Zemit\Mvc;
 
-use Phalcon\Config;
+use Zemit\Bootstrap\Config;
 use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Events\Manager;
 use Phalcon\Mvc\Model\Behavior\Timestampable;
@@ -202,7 +202,7 @@ class Model extends \Phalcon\Mvc\Model
         
         $this->addBehavior(new Transformable([
             'beforeValidationOnCreate' => [
-                'uuid' => function($model, $field) use ($security) {
+                'uuid' => function ($model, $field) use ($security) {
                     return $model->getAttribute($field) ?? $security->getRandom()->uuid();
                 },
             ],
@@ -230,13 +230,13 @@ class Model extends \Phalcon\Mvc\Model
     {
         $this->addBehavior(new Transformable([
             'beforeValidationOnUpdate' => [
-                'updatedBy' => $this->hasChangedCallback(function() {
+                'updatedBy' => $this->hasChangedCallback(function () {
                     return $this->getCurrentUserIdCallback(false)();
                 }),
-                'updatedAs' => $this->hasChangedCallback(function() {
+                'updatedAs' => $this->hasChangedCallback(function () {
                     return $this->getCurrentUserIdCallback(true)();
                 }),
-                'updatedAt' => $this->hasChangedCallback(function() {
+                'updatedAt' => $this->hasChangedCallback(function () {
                     return date(self::DATETIME_FORMAT);
                 }),
             ],
@@ -255,17 +255,17 @@ class Model extends \Phalcon\Mvc\Model
                 'deletedAt' => date(self::DATETIME_FORMAT),
             ],
             'beforeValidationOnUpdate' => [
-                'deletedBy' => $this->hasChangedCallback(function($model, $field) {
+                'deletedBy' => $this->hasChangedCallback(function ($model, $field) {
                     return ($model->isDeleted())
                         ? $this->getCurrentUserIdCallback(false)()
                         : $model->readAttribute($field);
                 }),
-                'deletedAs' => $this->hasChangedCallback(function($model, $field) {
+                'deletedAs' => $this->hasChangedCallback(function ($model, $field) {
                     return ($model->isDeleted())
                         ? $this->getCurrentUserIdCallback(true)()
                         : $model->readAttribute($field);
                 }),
-                'deletedAt' => $this->hasChangedCallback(function($model, $field) {
+                'deletedAt' => $this->hasChangedCallback(function ($model, $field) {
                     return ($model->isDeleted())
                         ? date(self::DATETIME_FORMAT)
                         : $model->readAttribute($field);
@@ -300,7 +300,7 @@ class Model extends \Phalcon\Mvc\Model
     {
         $this->addBehavior(new Transformable([
             'beforeValidation' => [
-                'index' => function($model, $field) {
+                'index' => function ($model, $field) {
                     $value = $model->readAttribute($field);
                     
                     return \Zemit\Utils\Slug::generate($value);
@@ -335,10 +335,12 @@ class Model extends \Phalcon\Mvc\Model
      */
     public function addBlameableBehavior(): void
     {
+        /** @var Config $config */
+        $config = $this->getDI()->get('config');
         $this->addBehavior(new Blameable([
-            'auditClass' => Audit::class,
-            'auditDetailClass' => AuditDetail::class,
-            'userClass' => User::class,
+            'auditClass' => $config->getModelClass(Audit::class),
+            'auditDetailClass' => $config->getModelClass(AuditDetail::class),
+            'userClass' => $config->getModelClass(User::class),
         ]));
     }
     
@@ -351,7 +353,7 @@ class Model extends \Phalcon\Mvc\Model
      */
     public function hasChangedCallback($callback, $anyField = true)
     {
-        return function(ModelInterface $model, $field) use ($callback, $anyField) {
+        return function (ModelInterface $model, $field) use ($callback, $anyField) {
             return (!$model->hasSnapshotData() || $model->hasChanged($anyField ? null : $field) || $model->hasUpdated($anyField ? null : $field)) ?
                 $callback($model, $field) :
                 $model->readAttribute($field);
@@ -384,7 +386,7 @@ class Model extends \Phalcon\Mvc\Model
      *
      * @return bool If the hash is valid or not
      */
-    public function checkHash(string $hash = null, string $string = null) : bool
+    public function checkHash(string $hash = null, string $string = null): bool
     {
         if (empty($hash)) {
             return false;
@@ -411,7 +413,7 @@ class Model extends \Phalcon\Mvc\Model
      *
      * @return bool
      */
-    public function hasDirtyRelated() : bool
+    public function hasDirtyRelated(): bool
     {
         return count($this->dirtyRelated) ? true : false;
     }
@@ -441,13 +443,28 @@ class Model extends \Phalcon\Mvc\Model
         return null;
     }
     
-    public function jsonEncode($data, int $options = JSON_UNESCAPED_SLASHES, int $depth = 14)
+    /**
+     * JSON Encode or fallback to value
+     * @param mixed $value
+     * @param int $flags
+     * @param int $depth
+     * @return false|string|mixed
+     */
+    public function jsonEncode(mixed $value, int $flags = JSON_UNESCAPED_SLASHES, int $depth = 512)
     {
-        return json_encode($data, JSON_UNESCAPED_SLASHES, 14) ? : $data;
+        return json_encode($value, $flags, $depth) ?: $value;
     }
     
-    public function jsonDecode($data)
+    /**
+     * JSON Decode or fallback to value
+     * @param string $json
+     * @param bool|null $associative
+     * @param int $depth
+     * @param int $flags
+     * @return mixed|string
+     */
+    public function jsonDecode(string $json, ?bool $associative = null, int $depth = 512, int $flags = 0)
     {
-        return json_decode($data, true, 14) ? : $data;
+        return json_decode($json, $associative, $depth, $flags) ?: $json;
     }
 }
