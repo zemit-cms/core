@@ -18,7 +18,7 @@ use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Text;
 use Zemit\Models\Audit;
 use Zemit\Models\AuditDetail;
-use Zemit\Mvc\Model\User;
+use Zemit\Models\User;
 
 /**
  * Zemit\Mvc\Model\Behavior\Blameable
@@ -91,10 +91,8 @@ class Blameable extends Behavior
             case 'afterCreate':
             case 'afterUpdate':
                 return $this->createAudit($eventType, $model);
-                break;
             case 'beforeUpdate':
                 return $this->collectData($eventType, $model);
-                break;
         }
     }
     
@@ -126,8 +124,8 @@ class Blameable extends Behavior
         $audit->setTable($model->getSource());
         $audit->setPrimary($model->getId());
         $audit->setEvent($event);
-        $audit->setColumns(json_encode($columnMap ? : $columns));
-        $audit->setBefore($snapshot? json_encode($snapshot) : null);
+        $audit->setColumns(json_encode($columnMap ?: $columns));
+        $audit->setBefore($snapshot ? json_encode($snapshot) : null);
         $audit->setAfter(json_encode($model->toArray()));
         $audit->setParentId(self::$parentId);
         
@@ -167,19 +165,23 @@ class Blameable extends Behavior
             $model->appendMessage($message);
         }
         
-        self::$parentId = (!empty($model->hasDirtyRelated()))? $audit->getId() : null;
+        self::$parentId = (!empty($model->hasDirtyRelated())) ? $audit->getId() : null;
         
         return $save;
     }
     
     /**
+     * @param $event
      * @param ModelInterface $model
+     * @return bool true if snapshot data exists
      */
     protected function collectData($event, ModelInterface $model)
     {
         if ($model->hasSnapshotData()) {
             $this->snapshot = $model->getSnapshotData();
             $this->changedFields = $model->getChangedFields();
+            return true;
         }
+        return false;
     }
 }
