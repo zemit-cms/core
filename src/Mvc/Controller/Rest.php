@@ -693,7 +693,6 @@ class Rest extends \Zemit\Mvc\Controller
         $dispatcher = $debug ? $this->dispatcher->toArray() : null;
         $router = $debug ? $this->router->toArray() : null;
         
-        
         $api = $debug ? [
             'php' => phpversion(),
             'phalcon' => Version::get(),
@@ -719,8 +718,6 @@ class Rest extends \Zemit\Mvc\Controller
             $this->response->setCache(0);
             $this->response->setHeader('Cache-Control', 'no-cache, max-age=0');
         }
-        
-        $memory = $debug ?: null;
         
         return $this->response->setJsonContent(array_merge([
             'api' => $api,
