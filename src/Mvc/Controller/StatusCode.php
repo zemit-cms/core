@@ -35,7 +35,9 @@ trait StatusCode
      */
     public function indexAction($code = null)
     {
-        $code ??= $this->dispatcher->getParam('code', 200);
+        $code ??= $this->dispatcher->getParam('code');
+        $code = $code instanceof \Exception ? $code->getCode() : $code;
+        $code = $code ?: 500;
         $this->setStatusCode($code);
     }
     
@@ -741,6 +743,7 @@ trait StatusCode
      */
     public function setStatusCode($code)
     {
+        $code = $code ?: 500;
         return $this->response->setStatusCode($code, \Zemit\Http\StatusCode::getMessage($code));
     }
 }
