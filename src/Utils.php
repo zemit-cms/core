@@ -31,15 +31,39 @@ class Utils
      *
      * @return bool|string
      */
-    public static function getNamespace(object $class) : string
+    public static function getNamespace(object $class): string
     {
         return substr(get_class($class), 0, strrpos(get_class($class), "\\"));
     }
     
     /**
+     * @param object|string $class
+     * @return string
+     */
+    public static function getDirname($class): string
+    {
+        return dirname((new \ReflectionClass($class))->getFileName());
+    }
+    
+    /**
+     * Return a human readable memory usage array (in MB)
+     * @return string[]
+     */
+    public static function getMemoryUsage(): array
+    {
+        $toMb = 1048576.2;
+        return [
+            'memory' => (memory_get_usage() / $toMb) . ' MB',
+            'memoryPeak' => (memory_get_peak_usage() / $toMb) . ' MB',
+            'realMemory' => (memory_get_usage(true) / $toMb) . ' MB',
+            'realMemoryPeak' => (memory_get_peak_usage(true) / $toMb) . ' MB',
+        ];
+    }
+    
+    /**
      * Dump the passed variables and end the script.
      *
-     * @param  mixed
+     * @param mixed
      * @return void
      */
     public static function dd()
@@ -50,7 +74,7 @@ class Utils
     /**
      * Dump the passed variables without end the script.
      *
-     * @param  mixed
+     * @param mixed
      * @return void
      */
     public static function dump()
@@ -88,17 +112,19 @@ class Utils
         $functionName = Text::uncamelize($name);
         if (function_exists($functionName)) {
             return call_user_func_array($functionName, func_get_args());
-        } else {
+        }
+        else {
             throw new \Exception("Function {$functionName} does not exists.");
         }
     }
 }
+
 if (!function_exists('dd')) {
     
     /**
      * Dump the passed variables and end the script.
      *
-     * @param  mixed
+     * @param mixed
      * @return void
      */
     function dd()
@@ -112,7 +138,7 @@ if (!function_exists('dump')) {
     /**
      * Dump the passed variables without end the script.
      *
-     * @param  mixed
+     * @param mixed
      * @return void
      */
     function dump()
