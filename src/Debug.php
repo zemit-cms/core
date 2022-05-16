@@ -27,7 +27,7 @@ class Debug extends \Phalcon\Debug
     /**
      * {@inheritDoc}
      */
-    public function getVersion() : String
+    public function getVersion() : string
     {
         $version = Version::get();
         return
