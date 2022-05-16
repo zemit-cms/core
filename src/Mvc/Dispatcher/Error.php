@@ -11,9 +11,9 @@
 namespace Zemit\Mvc\Dispatcher;
 
 use \Exception;
+use Phalcon\Dispatcher\Exception as DispatchException;
 use Zemit\Di\Injectable;
 use Phalcon\Events\Event;
-use Phalcon\Mvc\Dispatcher\Exception as DispatchException;
 use Zemit\Mvc\Dispatcher;
 
 /**
@@ -33,20 +33,21 @@ class Error extends Injectable
      * Error -> not-found - 404
      */
     const DEFAULT_404_MODULE = null;
+    const DEFAULT_404_NAMESPACE = null;
     const DEFAULT_404_CONTROLLER = 'error';
     const DEFAULT_404_ACTION = 'notFound';
-    
+
     /**
      * Error -> fatal - 500
      */
     const DEFAULT_500_MODULE = null;
+    const DEFAULT_500_NAMESPACE = null;
     const DEFAULT_500_CONTROLLER = 'error';
     const DEFAULT_500_ACTION = 'fatal';
-    
+
     /**
      * Dispatcher Error Plugin
-     * - Handling 404 & 500 for now
-     * @todo improve to handle all possible error codes instead of words
+     * - Forward to 404 or 500 error controller
      *
      * @param Event $event
      * @param Dispatcher $dispatcher
@@ -58,16 +59,12 @@ class Error extends Injectable
     public function beforeException(Event $event, Dispatcher $dispatcher, Exception $exception)
     {
         switch ($exception->getCode()) {
-//            case DispatchException::EXCEPTION_NO_DI:
-//                // no di, calm down for now and see what happens after
-//                // maybe if module can't be found
-//                // @todo why?
-//                break;
             case DispatchException::EXCEPTION_HANDLER_NOT_FOUND:
             case DispatchException::EXCEPTION_ACTION_NOT_FOUND:
                 if ($exception instanceof \Phalcon\Dispatcher\Exception) {
                     $route = $this->config->router->notFound->toArray() ?? [];
                     $route['module'] ??= self::DEFAULT_404_MODULE;
+                    $route['namespace'] ??= self::DEFAULT_404_NAMESPACE;
                     $route['controller'] ??= self::DEFAULT_404_CONTROLLER;
                     $route['action'] ??= self::DEFAULT_404_ACTION;
                     $route['params']['exception'] = $exception;
@@ -76,19 +73,18 @@ class Error extends Injectable
                 }
                 break;
             default:
-                // Everything else, if debug is false, forward forward to fatal error 500
+                http_response_code(500);
+                // Everything else, if debug is false, forward to fatal error 500
                 if (!$this->config->app->debug && !$this->config->debug->enable) {
                     $route = $this->config->router->error->toArray() ?? [];
                     $route['module'] ??= self::DEFAULT_500_MODULE;
+                    $route['namespace'] ??= self::DEFAULT_500_NAMESPACE;
                     $route['controller'] ??= self::DEFAULT_500_CONTROLLER;
                     $route['action'] ??= self::DEFAULT_500_ACTION;
                     $route['params']['exception'] = $exception;
                     $dispatcher->forward($route, true);
                     return false;
-                } else {
-                    throw $exception;
                 }
-                break;
         }
         throw $exception;
     }
