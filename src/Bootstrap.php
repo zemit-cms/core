@@ -141,27 +141,19 @@ class Bootstrap
 Zemit Console
 
 Usage:
-  zemit <module> <task> [<action>] [<params> ...]  [--env=<env>] [--debug=<debug>] [--plugin=<plugin>] [--log-file=<file>]
+  zemit <module> <task> [<action>] [<params> ...] [--help | --quiet | --verbose] [--debug] [--format=<format>]
   zemit (-h | --help)
   zemit (-v | --version)
   zemit (-i | --info)
-  zemit (-c | --config)
 
 Options:
   -h --help               show this help message
   -v --version            print version number
-  -i --info               print environment informations
-  -c --config             print the generated config that is used
+  -i --info               print information
+  -q --quiet              suppress output
   -V --verbose            increase verbosity
-  -q --quiet              suppress non-error messages
-  -f --force              force action even if not safe
-  -n --dry-run            perform a trial run with no changes made
-  -p --plugins            execute task for all plugins at once
-  --ignore-errors         keep executing the task even after errors
-  --plugin=<plugin>       plugin to execute the task
-  --log-file=<file>       log what we're doing to the specified file [default: private/logs/cli.log]
-  --debug=<debug>         Force the debug and ignore debug value from the config [default: false]
-  --env=<env>             Force environment to pick the configuration files [default: development]
+  -d --debug              enable debug mode
+  --format=<format>       change output returned value format (json, xml, serialized, raw, dump)
 DOC;
 
     /**
