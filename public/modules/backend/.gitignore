@@ -1,4 +1,0 @@
-# Ignore everything except it's parent folder
-*
-*/
-!.gitignore
