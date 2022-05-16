@@ -36,7 +36,6 @@ use Xenolope\Quahog\Client as Clamav;
  * @property Profiler $profiler
  * @property Identity $identity
  * @property Config $config
- * @property Clamav $clamav
  * @property Tag $tag
  * @property Escaper $escaper
  * @property Filter $filter
