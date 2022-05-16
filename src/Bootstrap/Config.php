@@ -14,29 +14,15 @@ use PDO;
 use Zemit\Filter;
 use Zemit\Filters;
 use Zemit\Locale;
-use Zemit\Models\User;
-use Zemit\Modules\Api\Controllers\UserController;
-use Zemit\Modules\Cli\Tasks\BuildTask;
-use Zemit\Modules\Cli\Tasks\CacheTask;
-use Zemit\Modules\Cli\Tasks\CronTask;
-use Zemit\Modules\Cli\Tasks\ErrorTask;
-use Zemit\Modules\Cli\Tasks\HelpTask;
-use Zemit\Modules\Cli\Tasks\ScaffoldTask;
-use Zemit\Modules\Frontend\Controllers\ErrorController;
-use Zemit\Modules\Frontend\Controllers\IndexController;
-use Zemit\Modules\Frontend\Controllers\TestController;
-use Zemit\Modules\Oauth2\Controllers\FacebookController;
-use Zemit\Modules\Oauth2\Controllers\GoogleController;
-use Zemit\Mvc\Controller\Behavior\Model\Create;
-use Zemit\Mvc\Controller\Behavior\Model\Delete;
-use Zemit\Mvc\Controller\Behavior\Model\Restore;
-use Zemit\Mvc\Controller\Behavior\Model\Update;
-use Zemit\Mvc\Controller\Behavior\Skip\SkipIdentityCondition;
-use Zemit\Mvc\Controller\Behavior\Skip\SkipWhiteList;
-use Zemit\Providers;
-use Zemit\Utils\Env;
 use Zemit\Version;
 use Zemit\Provider;
+use Zemit\Utils\Env;
+use Zemit\Models;
+use Zemit\Modules\Admin;
+use Zemit\Modules\Frontend;
+use Zemit\Modules\Cli;
+use Zemit\Modules\Api;
+use Zemit\Mvc\Controller\Behavior;
 use Phalcon\Config as PhalconConfig;
 
 /**
@@ -55,10 +41,6 @@ class Config extends PhalconConfig
 {
     public function defineConst()
     {
-        // @todo remove this
-        ini_set('error_reporting', E_ALL);
-        ini_set('display_errors', 1);
-        
         defined('VENDOR_PATH') || define('VENDOR_PATH', Env::get('ROOT_PATH', 'vendor/'));
         defined('ROOT_PATH') || define('ROOT_PATH', Env::get('ROOT_PATH', null));
         defined('APP_PATH') || define('APP_PATH', Env::get('APP_PATH', null));
@@ -87,23 +69,23 @@ class Config extends PhalconConfig
                 'version' => Version::get(),
                 'package' => 'zemit-cms',
                 'modules' => [
-                    \Zemit\Mvc\Module::NAME_FRONTEND => [
+                    'zemit-' . \Zemit\Mvc\Module::NAME_FRONTEND => [
                         'className' => \Zemit\Modules\Frontend\Module::class,
                         'path' => CORE_PATH . 'Modules/Frontend/Module.php',
                     ],
-                    \Zemit\Mvc\Module::NAME_BACKEND => [
-                        'className' => \Zemit\Modules\Backend\Module::class,
-                        'path' => CORE_PATH . 'Modules/Backend/Module.php',
+                    'zemit-' . \Zemit\Mvc\Module::NAME_ADMIN => [
+                        'className' => \Zemit\Modules\Admin\Module::class,
+                        'path' => CORE_PATH . 'Modules/Admin/Module.php',
                     ],
-                    \Zemit\Mvc\Module::NAME_API => [
+                    'zemit-' . \Zemit\Mvc\Module::NAME_API => [
                         'className' => \Zemit\Modules\Api\Module::class,
                         'path' => CORE_PATH . 'Modules/Api/Module.php',
                     ],
-                    \Zemit\Mvc\Module::NAME_CLI => [
+                    'zemit-' . \Zemit\Mvc\Module::NAME_CLI => [
                         'className' => \Zemit\Modules\Cli\Module::class,
                         'path' => CORE_PATH . 'Modules/Cli/Module.php',
                     ],
-                    \Zemit\Mvc\Module::NAME_OAUTH2 => [
+                    'zemit-' . \Zemit\Mvc\Module::NAME_OAUTH2 => [
                         'className' => \Zemit\Modules\Oauth2\Module::class,
                         'path' => CORE_PATH . 'Modules/Oauth2/Module.php',
                     ],
@@ -163,13 +145,19 @@ class Config extends PhalconConfig
                 ],
             ],
             
+            'php' => [
+                'ini' => [
+                    'zend.exception_ignore_args' => Env::get('PHP_INI_ZEND_EXCEPTION_IGNORE_ARGS', 'On'),
+                ],
+            ],
+            
             /**
              * Debug Configuration
              */
             'debug' => [
                 'enable' => Env::get('DEBUG_ENABLE', false),
                 'exception' => Env::get('DEBUG_EXCEPTION', true),
-                'lowSeverity' => Env::get('DEBUG_LOW_SEVERITY', true),
+                'lowSeverity' => Env::get('DEBUG_LOW_SEVERITY', false),
                 'showFiles' => Env::get('DEBUG_SHOW_FILES', true),
                 'showBackTrace' => Env::get('DEBUG_SHOW_BACKTRACE', true),
                 'showFileFragment' => Env::get('DEBUG_SHOW_FRAGMENT', true),
@@ -199,7 +187,7 @@ class Config extends PhalconConfig
                     ],
                 ],
             ],
-    
+            
             /**
              * Response Provider Configuration
              * - Set default security headers
@@ -218,9 +206,6 @@ class Config extends PhalconConfig
              * Identity Provider Configuration
              */
             'identity' => [
-                'userClass' => Env::get('IDENTITY_USER_CLASS', \Zemit\Models\User::class),
-                'emailClass' => Env::get('IDENTITY_EMAIL_CLASS', \Zemit\Models\Email::class),
-                'sessionClass' => Env::get('IDENTITY_SESSION_CLASS', \Zemit\Models\Session::class),
                 'sessionKey' => Env::get('IDENTITY_SESSION_KEY', 'zemit-identity'),
             ],
             
@@ -229,69 +214,57 @@ class Config extends PhalconConfig
              */
             'models' => [
                 
-                // System
-                \Zemit\Models\Backup::class => \Zemit\Models\Backup::class,
-                \Zemit\Models\Audit::class => \Zemit\Models\Audit::class,
-                \Zemit\Models\AuditDetail::class => \Zemit\Models\AuditDetail::class,
-                \Zemit\Models\Log::class => \Zemit\Models\Log::class,
-                \Zemit\Models\Email::class => \Zemit\Models\Email::class,
-                \Zemit\Models\Job::class => \Zemit\Models\Job::class,
-                \Zemit\Models\File::class => \Zemit\Models\File::class,
-                \Zemit\Models\Session::class => \Zemit\Models\Session::class,
+                // Base system
+                Models\Backup::class => Models\Backup::class,
+                Models\Audit::class => Models\Audit::class,
+                Models\AuditDetail::class => Models\AuditDetail::class,
+                Models\Log::class => Models\Log::class,
+                Models\Email::class => Models\Email::class,
+                Models\Job::class => Models\Job::class,
+                Models\File::class => Models\File::class,
+                Models\Session::class => Models\Session::class,
+                Models\Flag::class => Models\Flag::class,
+                Models\Setting::class => Models\Setting::class,
                 
-                # system misc
-                \Zemit\Models\Locale::class => \Zemit\Models\Locale::class,
-                \Zemit\Models\Translation::class => \Zemit\Models\Translation::class,
-                \Zemit\Models\Setting::class => \Zemit\Models\Setting::class,
-                \Zemit\Models\Template::class => \Zemit\Models\Template::class,
+                // Translate
+                Models\Lang::class => Models\Lang::class,
+                Models\Translate::class => Models\Translate::class,
+                Models\TranslateField::class => Models\TranslateField::class,
+                Models\TranslateTable::class => Models\TranslateTable::class,
                 
-                // Workspace
-                \Zemit\Models\Workspace::class => \Zemit\Models\Workspace::class,
-                \Zemit\Models\WorkspaceProject::class => \Zemit\Models\WorkspaceProject::class,
-                \Zemit\Models\WorkspaceUser::class => \Zemit\Models\WorkspaceUser::class,
+                // Site & CMS
+                Models\Site::class => Models\Site::class,
+                Models\SiteLang::class => Models\SiteLang::class,
+                Models\Page::class => Models\Page::class,
+                Models\Post::class => Models\Post::class,
+                Models\Template::class => Models\Template::class,
+                Models\Channel::class => Models\Channel::class,
+                Models\Field::class => Models\Field::class,
                 
-                // Project
-                \Zemit\Models\Project::class => \Zemit\Models\Project::class,
-                \Zemit\Models\ProjectUser::class => \Zemit\Models\ProjectUser::class,
-                \Zemit\Models\ProjectChannel::class => \Zemit\Models\ProjectChannel::class,
-                \Zemit\Models\ProjectEndpoint::class => \Zemit\Models\ProjectEndpoint::class,
-                \Zemit\Models\ProjectLocale::class => \Zemit\Models\ProjectLocale::class,
-                
-                // Chanel
-                \Zemit\Models\Channel::class => \Zemit\Models\Channel::class,
-                \Zemit\Models\ChannelChannel::class => \Zemit\Models\ChannelChannel::class,
-                \Zemit\Models\ChannelField::class => \Zemit\Models\ChannelField::class,
-                
-                // User
-                \Zemit\Models\Profile::class => \Zemit\Models\Profile::class,
-                \Zemit\Models\User::class => \Zemit\Models\User::class,
-                \Zemit\Models\UserType::class => \Zemit\Models\UserType::class,
-                \Zemit\Models\UserGroup::class => \Zemit\Models\UserGroup::class,
-                \Zemit\Models\UserRole::class => \Zemit\Models\UserRole::class,
-                \Zemit\Models\UserFeature::class => \Zemit\Models\UserFeature::class,
+                // User & Permissions
+                Models\Profile::class => Models\Profile::class,
+                Models\User::class => Models\User::class,
+                Models\UserType::class => Models\UserType::class,
+                Models\UserGroup::class => Models\UserGroup::class,
+                Models\UserRole::class => Models\UserRole::class,
+                Models\UserFeature::class => Models\UserFeature::class,
                 
                 // Role
-                \Zemit\Models\Role::class => \Zemit\Models\Role::class,
-                \Zemit\Models\RoleRole::class => \Zemit\Models\RoleRole::class,
-                \Zemit\Models\RoleFeature::class => \Zemit\Models\RoleFeature::class,
+                Models\Role::class => Models\Role::class,
+                Models\RoleRole::class => Models\RoleRole::class,
+                Models\RoleFeature::class => Models\RoleFeature::class,
                 
                 // Group
-                \Zemit\Models\Group::class => \Zemit\Models\Group::class,
-                \Zemit\Models\GroupRole::class => \Zemit\Models\GroupRole::class,
-                \Zemit\Models\GroupType::class => \Zemit\Models\GroupType::class,
-                \Zemit\Models\GroupFeature::class => \Zemit\Models\GroupFeature::class,
+                Models\Group::class => Models\Group::class,
+                Models\GroupRole::class => Models\GroupRole::class,
+                Models\GroupType::class => Models\GroupType::class,
+                Models\GroupFeature::class => Models\GroupFeature::class,
                 
                 // Type
-                \Zemit\Models\Type::class => \Zemit\Models\Type::class,
+                Models\Type::class => Models\Type::class,
                 
                 // Feature
-                \Zemit\Models\Feature::class => \Zemit\Models\Feature::class,
-                
-                // Zemit
-                \Zemit\Models\Permission::class => \Zemit\Models\Permission::class,
-                \Zemit\Models\Flow::class => \Zemit\Models\Flow::class,
-                \Zemit\Models\FlowAction::class => \Zemit\Models\FlowAction::class,
-                \Zemit\Models\Field::class => \Zemit\Models\Field::class,
+                Models\Feature::class => Models\Feature::class,
             ],
             
             /**
@@ -402,9 +375,9 @@ class Config extends PhalconConfig
                     'className' => \Zemit\Modules\Frontend\Module::class,
                     'path' => CORE_PATH . 'Modules/Frontend/Module.php',
                 ],
-                \Zemit\Mvc\Module::NAME_BACKEND => [
-                    'className' => \Zemit\Modules\Backend\Module::class,
-                    'path' => CORE_PATH . 'Modules/Backend/Module.php',
+                \Zemit\Mvc\Module::NAME_ADMIN => [
+                    'className' => \Zemit\Modules\Admin\Module::class,
+                    'path' => CORE_PATH . 'Modules/Admin/Module.php',
                 ],
                 \Zemit\Mvc\Module::NAME_API => [
                     'className' => \Zemit\Modules\Api\Module::class,
@@ -422,7 +395,7 @@ class Config extends PhalconConfig
                  * @TODO support this way too
                  */
 //                \Zemit\Modules\Frontend\Module::class => \Zemit\Modules\Frontend\Module::class,
-//                \Zemit\Modules\Backend\Module::class => \Zemit\Modules\Backend\Module::class,
+//                \Zemit\Modules\Admin\Module::class => \Zemit\Modules\Admin\Module::class,
 //                \Zemit\Modules\Api\Module::class => \Zemit\Modules\Api\Module::class,
 //                \Zemit\Modules\Cli\Module::class => \Zemit\Modules\Cli\Module::class,
             ],
@@ -431,6 +404,7 @@ class Config extends PhalconConfig
              * Default router settings
              */
             'router' => [
+                'hostnames' => [],
                 'defaults' => [
                     'namespace' => Env::get('ROUTER_DEFAULT_NAMESPACE', 'Zemit\\Modules\\Frontend\\Controllers'),
                     'module' => Env::get('ROUTER_DEFAULT_MODULE', 'frontend'),
@@ -530,7 +504,7 @@ class Config extends PhalconConfig
                 'drivers' => [
                     'stream' => [
                         'adapter' => Env::get('SESSION_STREAM_ADAPTER', \Phalcon\Session\Adapter\Stream::class),
-                        'savePath' => Env::get('SESSION_STREAM_SAVE_PATH', '/tmp')
+                        'savePath' => Env::get('SESSION_STREAM_SAVE_PATH', '/tmp'),
                     ],
                     'memcached' => [
                         'adapter' => Env::get('SESSION_MEMCACHED_ADAPTER', \Phalcon\Session\Adapter\Libmemcached::class),
@@ -639,6 +613,7 @@ class Config extends PhalconConfig
              * Cache drivers configs
              */
             'cache' => [
+                'cli' => Env::get('CACHE_DRIVER_CLI', 'memory'),
                 'driver' => Env::get('CACHE_DRIVER', 'memory'),
                 'drivers' => [
                     'memory' => [
@@ -682,6 +657,7 @@ class Config extends PhalconConfig
              * Metadata Configuration
              */
             'metadata' => [
+                'cli' => Env::get('METADATA_DRIVER_CLI', 'memory'),
                 'driver' => Env::get('METADATA_DRIVER', 'memory'),
                 'drivers' => [
                     'apcu' => [
@@ -787,10 +763,10 @@ class Config extends PhalconConfig
                         'password' => Env::get('DATABASE_PASSWORD', ''),
                         'charset' => Env::get('DATABASE_CHARSET', 'utf8'),
                         'options' => [
-                            \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . Env::get('DATABASE_CHARSET', 'utf8'),
-                            \PDO::ATTR_EMULATE_PREPARES => Env::get('DATABASE_PDO_EMULATE_PREPARES', false), // https://stackoverflow.com/questions/10113562/pdo-mysql-use-pdoattr-emulate-prepares-or-not
-                            \PDO::ATTR_STRINGIFY_FETCHES => Env::get('DATABASE_PDO_STRINGIFY_FETCHES', false),
-                            \PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => Env::get('MYSQL_ATTR_SSL_VERIFY_SERVER_CERT', true),
+                            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . Env::get('DATABASE_CHARSET', 'utf8'),
+                            PDO::ATTR_EMULATE_PREPARES => Env::get('DATABASE_PDO_EMULATE_PREPARES', false), // https://stackoverflow.com/questions/10113562/pdo-mysql-use-pdoattr-emulate-prepares-or-not
+                            PDO::ATTR_STRINGIFY_FETCHES => Env::get('DATABASE_PDO_STRINGIFY_FETCHES', false),
+                            PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => Env::get('MYSQL_ATTR_SSL_VERIFY_SERVER_CERT', true),
                         ],
                         /**
                          * ReadOnly Configuration
@@ -911,76 +887,191 @@ class Config extends PhalconConfig
              * Application permissions
              */
             'permissions' => [
+                
+                /**
+                 * Feature permissions
+                 */
                 'features' => [
-                    // This feature allow to administer users
-                    'user' => [
-                        'behaviors' => [
-                        ],
+                    
+                    'test' => [
                         'components' => [
-                        ]
+                            Api\Controllers\TestController::class => ['*'],
+                        ],
+                    ],
+                    
+                    'base' => [
+                        'models' => [
+                            Models\Audit::class => ['create'],
+                            Models\AuditDetail::class => ['create'],
+                            Models\Session::class => ['*'],
+                        ],
+                    ],
+                    
+                    'login' => [
+                        'components' => [
+                            Api\Controllers\AuthController::class => ['login'],
+                            Models\User::class => ['find'],
+                        ],
+                    ],
+                    
+                    'logout' => [
+                        'components' => [
+                            Api\Controllers\AuthController::class => ['logout'],
+                        ],
+                    ],
+                    
+                    'register' => [
+                        'components' => [
+                            Api\Controllers\AuthController::class => ['register'],
+                            Models\User::class => ['find', 'create'],
+                        ],
+                    ],
+                    
+                    'cron' => [
+                        'components' => [
+                            Cli\Tasks\CronTask::class => ['*'],
+                        ],
+                    ],
+                    
+                    'manageSiteList' => [
+                        'components' => [
+                            Api\Controllers\SiteController::class => ['*'],
+                            Models\Site::class => ['*'],
+                        ],
+                        'behaviors' => [
+                            Api\Controllers\SiteController::class => [
+                                Behavior\Skip\SkipIdentityCondition::class,
+                            ],
+                        ],
+                    ],
+                    
+                    'manageRoleList' => [
+                        'components' => [
+                            Api\Controllers\RoleController::class => ['*'],
+                            Models\Role::class => ['*'],
+                        ],
+                        'behaviors' => [
+                            Api\Controllers\RoleController::class => [
+                                Behavior\Skip\SkipIdentityCondition::class,
+                            ],
+                        ],
+                    ],
+                    
+                    'manageGroupList' => [
+                        'components' => [
+                            Api\Controllers\GroupController::class => ['*'],
+                            Models\Group::class => ['*'],
+                        ],
+                        'behaviors' => [
+                            Api\Controllers\GroupController::class => [
+                                Behavior\Skip\SkipIdentityCondition::class,
+                            ],
+                        ],
+                    ],
+                    
+                    'manageTypeList' => [
+                        'components' => [
+                            Api\Controllers\TypeController::class => ['*'],
+                            Models\Group::class => ['*'],
+                        ],
+                        'behaviors' => [
+                            Api\Controllers\TypeController::class => [
+                                Behavior\Skip\SkipIdentityCondition::class,
+                            ],
+                        ],
+                    ],
+                    
+                    'manageLangList' => [
+                        'components' => [
+                            Api\Controllers\LangController::class => ['*'],
+                            Models\Lang::class => ['*'],
+                        ],
+                        'behaviors' => [
+                            Api\Controllers\LangController::class => [
+                                Behavior\Skip\SkipIdentityCondition::class,
+                            ],
+                        ],
+                    ],
+                    
+                    'manageUserList' => [
+                        'components' => [
+                            Api\Controllers\UserController::class => ['*'],
+                            Models\User::class => ['*'],
+                        ],
+                        'behaviors' => [
+                            Api\Controllers\UserController::class => [
+                                Behavior\Skip\SkipIdentityCondition::class,
+                            ],
+                        ],
                     ],
                 ],
+                
+                /**
+                 * Roles permissions
+                 */
                 'roles' => [
-                    // Everyone
-                    'everyone' => [
-                        'behaviors' => [
-                        
-                        ],
-                        'features' => [
-                            'user',
-                        ],
+                    
+                    // Console (CLI)
+                    'cli' => [
                         'components' => [
-                        
-                        ],
-                        'controllers' => [
-                            IndexController::class => ['*'],
-                            ErrorController::class => ['*'],
-                            TestController::class => ['*'],
-                            UserController::class => ['*'],
-                            FacebookController::class => ['*'],
-                            GoogleController::class => ['*'],
-                        ],
-                        'tasks' => [
-                            CronTask::class => ['*'],
-                            CacheTask::class => ['*'],
-                            ErrorTask::class => ['*'],
-                            ScaffoldTask::class => ['*'],
-                            HelpTask::class => ['*'],
-                            BuildTask::class => ['*'],
-                        ],
-                        'models' => [
-                        
-                        ],
-                        'views' => [
-                        
+                            Cli\Tasks\BuildTask::class => ['*'],
+                            Cli\Tasks\CacheTask::class => ['*'],
+                            Cli\Tasks\CronTask::class => ['*'],
+                            Cli\Tasks\ErrorTask::class => ['*'],
+                            Cli\Tasks\DeploymentTask::class => ['*'],
+                            Cli\Tasks\HelpTask::class => ['*'],
+                            Cli\Tasks\ScaffoldTask::class => ['*'],
+                            Cli\Tasks\TestTask::class => ['*'],
                         ],
                     ],
-                    // Visitor Only
-                    'visitor' => [
                     
+                    // Everyone with or without role
+                    'everyone' => [
+                        'features' => [
+                            'base',
+                        ],
                     ],
-                    // Guest Only
+                    
+                    // Everyone without role
                     'guest' => [
-                    
+                        'features' => [
+                            'login',
+                            'register',
+                        ],
                     ],
-                    // User only
+                    
+                    // User
                     'user' => [
-                    
+                        'features' => [
+                            'logout',
+                        ],
                     ],
-                    // Admin only
+                    
+                    // Admin
                     'admin' => [
+                        'features' => [
+                            'manageUserList',
+                            'manageSiteList',
+                            'manageLangList',
+                        ],
                         'inherit' => [
                         ],
                         'behaviors' => [
                         ],
                     ],
-                    // Dev only
+                    
+                    // Dev
                     'dev' => [
+                        'features' => [
+                            'manageRoleList',
+                            'manageGroupList',
+                            'manageTypeList',
+                        ],
                         'inherit' => [
-                            'admin'
+                            'admin',
                         ],
                     ],
-                ]
+                ],
             ],
         ]);
         if (!empty($config)) {
@@ -1011,6 +1102,15 @@ class Config extends PhalconConfig
         }
         
         return $this;
+    }
+    
+    /**
+     * @param string $class
+     * @return string
+     */
+    public function getModelClass(string $class)
+    {
+        return $this->models->$class ?: $class;
     }
 }
 
