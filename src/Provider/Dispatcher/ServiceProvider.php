@@ -47,7 +47,7 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function() use ($di) {
+        $di->setShared($this->getName(), function () use ($di) {
             $eventsManager = $di->get('eventsManager');
             $config = $di->get('config');
             
@@ -79,6 +79,13 @@ class ServiceProvider extends AbstractServiceProvider
             $logger->setDI($di);
             $eventsManager->attach('dispatch', $logger);
             
+            /**
+             * Module
+             */
+            $module = new MvcDispatcher\Module();
+            $module->setDI($di);
+            $eventsManager->attach('dispatch', $module);
+            
             // CLI Dispatcher
             if (isset($config->mode) && $config->mode === 'console') {
                 $dispatcher = new CliDispatcher();
@@ -87,9 +94,9 @@ class ServiceProvider extends AbstractServiceProvider
                 /**
                  * Error
                  */
-//                $error = new Error();
-//                $error->setDI($di);
-//                $eventsManager->attach('dispatch', $error);
+                $error = new Error();
+                $error->setDI($di);
+                $eventsManager->attach('dispatch', $error);
                 
                 /**
                  * Rest
