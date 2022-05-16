@@ -10,15 +10,20 @@
 
 namespace Zemit\Models;
 
-use Phalcon\Validation;
-use Phalcon\Validation\Validator\PresenceOf;
 use Zemit\Models\Base\AbstractAuditDetail;
+use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Validation\Validator\InclusionIn;
+use Phalcon\Validation\Validator\StringLength\Max;
 
 /**
  * Class AuditDetail
  *
-* @package Zemit\Models
-*/
+ * @property Audit $AuditEntity
+ *
+ * @method Audit getAuditEntity($params = null)
+ *
+ * @package Zemit\Models
+ */
 class AuditDetail extends AbstractAuditDetail
 {
     const EVENT_CREATE = 'create';
@@ -26,7 +31,7 @@ class AuditDetail extends AbstractAuditDetail
     const EVENT_DELETE = 'delete';
     const EVENT_RESTORE = 'restore';
     const EVENT_OTHER = 'other';
-    
+
     protected $event = self::EVENT_OTHER;
     protected $deleted = self::NO;
 
@@ -34,20 +39,33 @@ class AuditDetail extends AbstractAuditDetail
     {
         parent::initialize();
 
-        $this->belongsTo('auditId', Audit::class, 'id', ['alias' => 'Audit']);
+        $this->belongsTo('auditId', Audit::class, 'id', ['alias' => 'AuditEntity']);
     }
-    
+
     public function validation()
     {
         $validator = $this->genericValidation();
+        $eventInclusions = [self::EVENT_CREATE, self::EVENT_UPDATE, self::EVENT_DELETE, self::EVENT_RESTORE, self::EVENT_OTHER];
 
-        $validator->add('auditId', new PresenceOf(['message' => $this->_('auditIdIsRequired')]));
-        $validator->add('model', new PresenceOf(['message' => $this->_('modelIsRequired')]));
-        $validator->add('table', new PresenceOf(['message' => $this->_('tableIsRequired')]));
-        $validator->add('primary', new PresenceOf(['message' => $this->_('primaryIsRequired')]));
-        $validator->add('column', new PresenceOf(['message' => $this->_('columnIsRequired')]));
-        $validator->add('map', new PresenceOf(['message' => $this->_('mapIsRequired')]));
-        
+        $validator->add('auditId', new PresenceOf(['message' => $this->_('required')]));
+
+        $validator->add('model', new PresenceOf(['message' => $this->_('required')]));
+        $validator->add('model', new Max(['max' => 255, 'message' => $this->_('length-exceeded')]));
+
+        $validator->add('table', new PresenceOf(['message' => $this->_('required')]));
+        $validator->add('table', new Max(['max' => 60, 'message' => $this->_('length-exceeded')]));
+
+        $validator->add('primary', new PresenceOf(['message' => $this->_('required')]));
+
+        $validator->add('column', new PresenceOf(['message' => $this->_('required')]));
+        $validator->add('column', new Max(['max' => 60, 'message' => $this->_('length-exceeded')]));
+
+        $validator->add('map', new PresenceOf(['message' => $this->_('required')]));
+        $validator->add('map', new Max(['max' => 60, 'message' => $this->_('length-exceeded')]));
+
+        $validator->add('event', new PresenceOf(['message' => $this->_('required')]));
+        $validator->add('event', new InclusionIn(['message' => $this->_('not-valid'), 'domain' => $eventInclusions]));
+
         return $this->validate($validator);
     }
 }
