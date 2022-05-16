@@ -41,7 +41,7 @@ class Security extends \Phalcon\Security
      *
      * @return AclList
      */
-    public function getAcl(array $componentNames = ['components'], array $permissions = null, string $inherit = 'inherit')
+    public function getAcl(array $componentNames = ['components'], ?array $permissions = null, string $inherit = 'inherit')
     {
         $acl = new Memory();
         
@@ -50,15 +50,24 @@ class Security extends \Phalcon\Security
         /** @var Config $config */
         $config = $this->getDI()->get('config');
         $this->permissions ??= $config->get('permissions');
-        
-        $permissions ??= $this->permissions->roles->toArray() ?? [];
-        foreach ($permissions as $role => $rolePermission) {
+    
+        $permissions ??= $this->permissions->toArray() ?? [];
+        $featureList = $permissions['features'] ?? [];
+        $roleList = $permissions['roles'] ?? [];
+        foreach ($roleList as $role => $rolePermission) {
             $role = $role === '*' ? 'everyone' : $role;
             $aclRole = new Role($role);
             
             $aclRoleList[$role] = $aclRole;
             
             $acl->addRole($aclRole);
+            
+            if (isset($rolePermission['features'])) {
+                foreach ($rolePermission['features'] as $feature) {
+                    $rolePermission = array_merge_recursive($rolePermission, $featureList[$feature] ?? []);
+                    // @todo remove duplicates
+                }
+            }
             
             foreach ($componentNames as $componentName) {
                 $components = $rolePermission[$componentName] ?? [];
