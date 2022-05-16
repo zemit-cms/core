@@ -119,43 +119,43 @@ class Identity extends Injectable
     }
     
     /**
-     * @return string
+     * @return string|Mvc\Model|\Zemit\Models\Session
      */
     public function getSessionClass()
     {
-        return $this->getOption('sessionClass') ?? \Zemit\Models\Session::class;
+        return $this->config->getModelClass(\Zemit\Models\Session::class);
     }
     
     /**
-     * @return string
+     * @return string|Mvc\Model|\Zemit\Models\User
      */
     public function getUserClass()
     {
-        return $this->getOption('userClass') ?? \Zemit\Models\User::class;
+        return $this->config->getModelClass(\Zemit\Models\User::class);
     }
     
     /**
-     * @return string
+     * @return string|Mvc\Model|\Zemit\Models\Group
      */
     public function getGroupClass()
     {
-        return $this->getOption('groupClass') ?? \Zemit\Models\Group::class;
+        return $this->config->getModelClass(\Zemit\Models\Group::class);
     }
     
     /**
-     * @return string
+     * @return string|Mvc\Model|\Zemit\Models\Role
      */
     public function getRoleClass()
     {
-        return $this->getOption('roleClass') ?? \Zemit\Models\Role::class;
+        return $this->config->getModelClass(\Zemit\Models\Role::class);
     }
     
     /**
-     * @return string
+     * @return string|Mvc\Model|\Zemit\Models\Type
      */
     public function getTypeClass()
     {
-        return $this->getOption('roleClass') ?? \Zemit\Models\Type::class;
+        return $this->config->getModelClass(\Zemit\Models\Type::class);
     }
     
     /**
@@ -163,7 +163,7 @@ class Identity extends Injectable
      */
     public function getEmailClass()
     {
-        return $this->getOption('emailClass') ?? \Zemit\Models\Email::class;
+        return $this->config->getModelClass(\Zemit\Models\Email::class);
     }
     
     /**
@@ -184,7 +184,7 @@ class Identity extends Injectable
      */
     public function setMode($mode)
     {
-        switch($mode) {
+        switch ($mode) {
             case self::MODE_STRING:
             case self::MODE_JWT:
                 $this->mode = $mode;
@@ -203,7 +203,7 @@ class Identity extends Injectable
         $ret = $this->session->has($this->sessionKey) ? $ret = $this->session->get($this->sessionKey) : null;
         
         if ($ret) {
-            switch($this->mode) {
+            switch ($this->mode) {
                 case self::MODE_DEFAULT:
                     break;
                 case self::MODE_JWT:
@@ -226,13 +226,13 @@ class Identity extends Injectable
         $identity = json_encode($identity);
         
         $token = null;
-        switch($this->mode) {
+        switch ($this->mode) {
             case self::MODE_JWT:
                 $token = $this->jwt->getToken(['identity' => $identity]);
                 break;
         }
         
-        $this->session->set($this->sessionKey, $token ? : $identity);
+        $this->session->set($this->sessionKey, $token ?: $identity);
     }
     
     /**
@@ -266,7 +266,7 @@ class Identity extends Injectable
      */
     public function hasRole(?array $roles = null, bool $or = false, bool $inherit = true)
     {
-        return $this->has($roles, array_keys($this->getRoleList($inherit) ? : []), $or);
+        return $this->has($roles, array_keys($this->getRoleList($inherit) ?: []), $or);
     }
     
     /**
@@ -317,8 +317,7 @@ class Identity extends Injectable
         
         return $or ?
             !in_array(false, $result, true) :
-            in_array(true, $result, true)
-        ;
+            in_array(true, $result, true);
     }
     
     /**
@@ -336,7 +335,7 @@ class Identity extends Injectable
         $token ??= $this->security->getRandom()->hex(512);
         
         $sessionClass = $this->getSessionClass();
-        $session = $this->getSession($key, $token) ? : new $sessionClass();
+        $session = $this->getSession($key, $token) ?: new $sessionClass();
         
         if ($session && $refresh) {
             $token = $this->security->getRandom()->hex(512);
@@ -419,7 +418,7 @@ class Identity extends Injectable
         if ($inherit) {
             $roleIndexList = [];
             foreach ($roleList as $role) {
-                $roleIndexList []= $role->getIndex();
+                $roleIndexList [] = $role->getIndex();
             }
             
             $inheritedRoleIndexList = $this->getInheritedRoleList($roleIndexList);
@@ -431,7 +430,7 @@ class Identity extends Injectable
                     'bind' => ['role' => $inheritedRoleIndexList],
                     'bindTypes' => ['role' => Column::BIND_PARAM_STR],
                 ]);
-    
+                
                 /** @var Models\Role $inheritedRoleEntity */
                 foreach ($inheritedRoleList as $inheritedRoleEntity) {
                     $roleList[$inheritedRoleEntity->getIndex()] = $inheritedRoleEntity;
@@ -464,11 +463,9 @@ class Identity extends Injectable
         $processedRoleIndexList = [];
         
         // While we still have role index list to process
-        while (!empty($roleIndexList))
-        {
+        while (!empty($roleIndexList)) {
             // Process role index list
-            foreach ($roleIndexList as $roleIndex)
-            {
+            foreach ($roleIndexList as $roleIndex) {
                 // Get inherited roles from config service
                 $configRoleList = $this->config->path('permissions.roles.' . $roleIndex . '.inherit', false);
                 
@@ -480,7 +477,7 @@ class Identity extends Injectable
                 }
                 
                 // Add role index to processed list
-                $processedRoleIndexList []= $roleIndex;
+                $processedRoleIndexList [] = $roleIndex;
             }
             
             // Keep the unprocessed role index list
@@ -595,23 +592,38 @@ class Identity extends Injectable
     }
     
     /**
-     * @param array|null $roles
+     * Return the list of ACL roles
+     * - Reserved roles: guest, cli, everyone
      *
+     * @param array|null $roleList
      * @return array
      */
-    public function getAclRoles(array $roleList = null)
+    public function getAclRoles(?array $roleList = null): array
     {
         $roleList ??= $this->getRoleList();
-        
         $aclRoles = [];
-        $aclRoles['everyone'] = new Role('everyone');
+        
+        // Add roles from databases
         foreach ($roleList as $role) {
             if ($role) {
                 $aclRoles[$role->getIndex()] ??= new Role($role->getIndex());
             }
         }
         
-        return array_values($aclRoles);
+        // Add guest role if no roles was detected
+        if (count($aclRoles) === 0) {
+            $aclRoles['guest'] = new Role('guest', 'Guest without role');
+        }
+        
+        // Add console role
+        if ($this->bootstrap->isConsole()) {
+            $aclRoles['cli'] = new Role('cli', 'Console mode');
+        }
+        
+        // Add everyone role
+        $aclRoles['everyone'] = new Role('everyone', 'Everyone');
+        
+        return array_filter(array_values(array_unique($aclRoles)));
     }
     
     /**
@@ -818,6 +830,11 @@ class Identity extends Injectable
                 $validation->appendMessage(new Message('Login Failed', ['email', 'password'], 'LoginFailed', 401));
             }
             
+            else if ($user->isDeleted()) {
+                // access forbidden, login failed
+                $validation->appendMessage(new Message('Login Forbidden', 'password', 'LoginForbidden', 403));
+            }
+            
             else if (empty($user->getPassword())) {
                 // password disabled, login failed
                 $validation->appendMessage(new Message('Password Login Disabled', 'password', 'LoginFailed', 401));
@@ -826,11 +843,6 @@ class Identity extends Injectable
             else if (!$user->checkPassword($params['password'])) {
                 // password failed, login failed
                 $validation->appendMessage(new Message('Login Failed', ['email', 'password'], 'LoginFailed', 401));
-            }
-            
-            else if ($user->isDeleted()) {
-                // access forbidden, login failed
-                $validation->appendMessage(new Message('Login Forbidden', 'password', 'LoginForbidden', 403));
             }
             
             // login success
@@ -1000,7 +1012,7 @@ class Identity extends Injectable
     public function getKeyToken()
     {
         $basicAuth = $this->request->getBasicAuth();
-        $authorization = array_filter(explode(' ', $this->request->getHeader('Authorization') ? : ''));
+        $authorization = array_filter(explode(' ', $this->request->getHeader('Authorization') ?: ''));
         
         $jwt = $this->request->get('jwt', 'string');
         $key = $this->request->get('key', 'string');
@@ -1040,8 +1052,8 @@ class Identity extends Injectable
     /**
      * Return the session by key if the token is valid
      *
-     * @param string $key
-     * @param string $token
+     * @param ?string $key
+     * @param ?string $token
      * @param bool $refresh Pass true to force a session fetch from the database
      *
      * @return void|bool|Session Return the session by key if the token is valid, false otherwise
@@ -1099,7 +1111,7 @@ class Identity extends Injectable
      *
      * @return string
      */
-    public function getJwtToken($claim, $data)
+    public function getJwtToken($claim, $data) : string
     {
         $uri = $this->request->getScheme() . '://' . $this->request->getHttpHost();
 
@@ -1124,10 +1136,8 @@ class Identity extends Injectable
     
     /**
      * Retrieve the user from a username or an email
-     *
-     * @param $usernameOrEmail
-     *
-     * @return mixed
+     * @param $idUsernameEmail
+     * @return false|\Phalcon\Mvc\Model\ResultInterface|\Phalcon\Mvc\ModelInterface|Models\Base\AbstractUser|null
      * @todo maybe move this into user model?
      *
      */
