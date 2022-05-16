@@ -52,15 +52,32 @@ class Router extends \Phalcon\Mvc\Router
      * - Default controller
      * - Default action
      * - Default notFound
-     * - No module (not yet well supported)
      */
     public function defaultRoutes()
     {
         $this->removeExtraSlashes(true);
-        $this->setDefaults($this->config->router->defaults->toArray()?: $this->defaults);
-        $this->notFound($this->config->router->notFound->toArray()?: $this->notFound);
+        $this->setDefaults($this->config->router->defaults->toArray() ?: $this->defaults);
+        $this->notFound($this->config->router->notFound->toArray() ?: $this->notFound);
         $this->mount(new ModuleRoute($this->getDefaults(), true));
         $this->mount(new ModuleRoute($this->getDefaults(), true, true));
+    }
+    
+    /**
+     * @param array|null $hostnames
+     * @param array|null $defaults
+     * @return void
+     */
+    public function hostnamesRoutes(array $hostnames = null, array $defaults = null)
+    {
+        $defaults ??= $this->getDefaults();
+        $hostnames ??= $this->config->router->hostnames->toArray() ?: [];
+        foreach ($hostnames as $hostname => $hostnameRoute) {
+            if (!isset($hostnameRoute['module']) || !is_string($hostnameRoute['module'])) {
+                throw new \InvalidArgumentException('Router hostname config parameter "module" must be a string under "' . $hostname . '"');
+            }
+            $this->mount((new ModuleRoute(array_merge($defaults, $hostnameRoute), true))->setHostname($hostname));
+            $this->mount((new ModuleRoute(array_merge($defaults, $hostnameRoute), true, true))->setHostname($hostname));
+        }
     }
     
     /**
@@ -84,7 +101,8 @@ class Router extends \Phalcon\Mvc\Router
      * Router toArray
      * @return array
      */
-    public function toArray() {
+    public function toArray()
+    {
         $mathedRoute = $this->getMatchedRoute();
         return [
             'namespace' => $this->getNamespaceName(),
