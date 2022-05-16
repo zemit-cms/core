@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
+
 namespace Zemit\Bootstrap;
 
 use Zemit\Mvc\Application;
@@ -30,12 +31,12 @@ class Router extends \Zemit\Mvc\Router
         'namespace' => \Zemit\Modules\Frontend\Controller::class,
         'module' => 'frontend',
         'controller' => 'index',
-        'action' => 'index'
+        'action' => 'index',
     ];
     
     public $notFound = [
         'controller' => 'error',
-        'action' => 'notFound'
+        'action' => 'notFound',
     ];
     
     /**
@@ -44,19 +45,19 @@ class Router extends \Zemit\Mvc\Router
     public function __construct($defaultRoutes = true, $application = null)
     {
         parent::__construct($defaultRoutes, $application);
-    
+        
         $this->add('/', [
         ])->setName('default');
         
         $this->add('/:controller', [
-            'controller' => 1
+            'controller' => 1,
         ])->setName('default-controller');
         
         $this->add('/:controller/:action', [
             'controller' => 1,
             'action' => 2,
         ])->setName('default-controller-action');
-    
+        
         $this->add('/:controller/:action/:slug', [
             'controller' => 1,
             'action' => 2,
@@ -71,37 +72,38 @@ class Router extends \Zemit\Mvc\Router
         
         foreach ($this->config->locale->allowed as $locale) {
             $this->add('/' . $locale, [
-                'locale' => $locale
+                'locale' => $locale,
             ])->setName($locale);
             
             $this->add('/' . $locale . '/:controller', [
                 'locale' => $locale,
-                'controller' => 1
+                'controller' => 1,
             ])->setName($locale);
             
             $this->add('/' . $locale . '/:controller/:action', [
                 'locale' => $locale,
                 'controller' => 1,
-                'action' => 2
+                'action' => 2,
             ])->setName($locale);
-    
+            
             $this->add('/' . $locale . '/:controller/:action/:slug', [
                 'locale' => $locale,
                 'controller' => 1,
                 'action' => 2,
-                'slug' => 3
+                'slug' => 3,
             ])->setName($locale);
-    
+            
             $this->add('/' . $locale . '/:controller/:action/:int', [
                 'locale' => $locale,
                 'controller' => 1,
                 'action' => 2,
-                'int' => 3
+                'int' => 3,
             ])->setName($locale);
         }
-    
+        
         if (isset($application)) {
             $this->modulesRoutes($application);
+            $this->hostnamesRoutes();
         }
     }
 }
