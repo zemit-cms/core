@@ -80,8 +80,8 @@ trait Model
     public function getFlatWhiteList(?array $whiteList = null)
     {
         $whiteList ??= $this->getWhiteList();
-        
-        return array_keys(Expose::_parseColumnsRecursive($whiteList));
+        $ret = Expose::_parseColumnsRecursive($whiteList);
+        return $ret ? array_keys($ret) : null;
     }
     
     /**
@@ -163,17 +163,17 @@ trait Model
     {
         return $this->getExpose();
     }
-
+    
     /**
      * Get columns merge definition for export
      *
      * @return null|array
      */
-    public function getExportMergeColum ()
+    public function getExportMergeColum()
     {
         return null;
     }
-
+    
     /**
      * Get columns format field text definition for export
      *
@@ -181,7 +181,8 @@ trait Model
      *
      * @return null|array
      */
-    public function getExportFormatFieldText (?array $params = null) {
+    public function getExportFormatFieldText(?array $params = null)
+    {
         return null;
     }
     
@@ -272,7 +273,8 @@ trait Model
      *
      * @return string[] By default will return dev and admin role
      */
-    protected function getRoleList() {
+    protected function getRoleList()
+    {
         return ['dev', 'admin'];
     }
     
@@ -334,7 +336,7 @@ trait Model
     public function getParamExplodeArrayMapFilter($field, $sanitizer = 'string', $glue = ',')
     {
         $filter = $this->filter;
-        $ret = array_filter(array_map(function($e) use ($filter, $sanitizer) {
+        $ret = array_filter(array_map(function ($e) use ($filter, $sanitizer) {
             return $this->appendModelName(trim($filter->sanitize($e, $sanitizer)));
         }, explode($glue, $this->getParam($field, $sanitizer))));
         
@@ -398,7 +400,7 @@ trait Model
     protected function getIdentityCondition(array $columns = null, Identity $identity = null, $roleList = null)
     {
         // @todo
-        if ($this->request->isOptions()){
+        if ($this->request->isOptions()) {
             return null;
         }
         
@@ -436,7 +438,7 @@ trait Model
     
     function arrayMapRecursive($callback, $array)
     {
-        $func = function($item) use (&$func, &$callback) {
+        $func = function ($item) use (&$func, &$callback) {
             return is_array($item) ? array_map($func, $item) : call_user_func($callback, $item);
         };
         
@@ -485,7 +487,7 @@ trait Model
 //                $queryField = '_' . uniqid($uniqid . '_field_') . '_';
                 $queryValue = '_' . uniqid($uniqid . '_value_') . '_';
                 $queryOperator = strtolower($filter['operator']);
-                switch($queryOperator) {
+                switch ($queryOperator) {
                     case '=': // Equal operator
                     case '!=': // Not equal operator
                     case '<>': // Not equal operator
@@ -536,7 +538,7 @@ trait Model
                         $bind[$queryValue1] = $filter['value'][1];
                         $bindType[$queryValue0] = Column::BIND_PARAM_STR;
                         $bindType[$queryValue1] = Column::BIND_PARAM_STR;
-                        $query [] = (($queryOperator === 'not between')? 'not ' : null) . "$queryFieldBinder between :$queryValue0: and :$queryValue1:";
+                        $query [] = (($queryOperator === 'not between') ? 'not ' : null) . "$queryFieldBinder between :$queryValue0: and :$queryValue1:";
                     }
                     else {
                         $bind[$queryValue] = $filter['value'];
@@ -631,10 +633,11 @@ trait Model
         return null;
     }
     
-    protected function fireGet($method) {
+    protected function fireGet($method)
+    {
         $ret = $this->{$method}();
         $eventRet = $this->eventsManager->fire('rest:' . $method, $this, $ret);
-        return $eventRet === false? null : $eventRet ?? $ret;
+        return $eventRet === false ? null : $eventRet ?? $ret;
     }
     
     /**
@@ -654,7 +657,7 @@ trait Model
         ])));
         
         if (empty($conditions)) {
-            $conditions []= 1;
+            $conditions [] = 1;
         }
         
         return '(' . implode(') and (', $conditions) . ')';
@@ -719,7 +722,7 @@ trait Model
         
         $contentType = strtolower($params['contentType'] ?? $params['content-type'] ?? 'json');
         
-        switch($contentType) {
+        switch ($contentType) {
             case 'html':
             case 'text/html':
             case 'application/html':
@@ -960,7 +963,7 @@ trait Model
      *
      * @return void
      */
-    protected function saveEntity($entity) : array
+    protected function saveEntity($entity): array
     {
         $ret = [];
         $ret['saved'] = $entity->save();
@@ -1051,6 +1054,6 @@ trait Model
             }
         }
         
-        return $ret ? : false;
+        return $ret ?: false;
     }
 }
