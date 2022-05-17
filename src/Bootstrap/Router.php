@@ -102,8 +102,8 @@ class Router extends \Zemit\Mvc\Router
         }
         
         if (isset($application)) {
-            $this->modulesRoutes($application);
             $this->hostnamesRoutes();
+            $this->modulesRoutes($application);
         }
     }
 }
