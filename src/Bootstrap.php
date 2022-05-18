@@ -53,11 +53,6 @@ class Bootstrap
     const MODE_CONSOLE = self::MODE_CLI;
 
     /**
-     * @deprecated Use MODE_DEFAULT instead
-     */
-    const MODE_NORMAL = self::MODE_DEFAULT;
-
-    /**
      * Ideally, only the config service provider should be added here, then it will load other service from itself
      * You can also add new Service Providers here if it's absolutely required to be loaded earlier before
      * @var array abstract => concrete
@@ -141,12 +136,13 @@ class Bootstrap
 Zemit Console
 
 Usage:
-  zemit <module> <task> [<action>] [<params> ...] [--help | --quiet | --verbose] [--debug] [--format=<format>]
+  zemit <module> <task> [<action>] [--help | --quiet | --verbose] [--debug] [--format=<format>] [<args>...] [-c <fds>=<value>]
   zemit (-h | --help)
   zemit (-v | --version)
   zemit (-i | --info)
 
 Options:
+  -c <fds>=<value>       test
   -h --help               show this help message
   -v --version            print version number
   -i --info               print information
@@ -154,6 +150,9 @@ Options:
   -V --verbose            increase verbosity
   -d --debug              enable debug mode
   --format=<format>       change output returned value format (json, xml, serialized, raw, dump)
+
+The most commonly used zemit commands are:
+   deployment        Populate the database
 DOC;
 
     /**
@@ -223,7 +222,6 @@ DOC;
      */
     public function dotenv()
     {
-
         try {
             $this->dotenv = Dotenv::create(dirname(APP_PATH)); // @todo fix this to handle fireset instead, using a new class extending dotenv
             $this->dotenv->load();
@@ -246,8 +244,11 @@ DOC;
     {
         return $this->fireSet($this->docopt, Docopt::class, [], function (Bootstrap $bootstrap) {
             if ($this->isConsole()) {
-                $args = $bootstrap->docopt->handle($bootstrap->consoleDoc);
-                $bootstrap->args = is_null($bootstrap->args)? $args : array_merge($bootstrap->args, $args);
+                $docoptResponse = $bootstrap->docopt->handle($bootstrap->consoleDoc, [
+                    'argv' => array_slice($_SERVER['argv'], 1),
+                    'optionsFirst' => true,
+                ]);
+                $bootstrap->args = array_merge($bootstrap->args ?? [], $docoptResponse->args);
             }
         });
     }
@@ -358,13 +359,7 @@ DOC;
      */
     public function application()
     {
-        return $this->fireSet(
-            $this->application,
-            $this->isConsole() ?
-                Console::class :
-                Application::class,
-            [$this->di]
-        );
+        return $this->fireSet($this->application, $this->isConsole() ? Console::class : Application::class, [$this->di]);
     }
 
     /**
@@ -447,7 +442,7 @@ DOC;
      * Get & format arguments from the $this->args property
      * @return array Key value pair, human readable
      */
-    public function getArguments()
+    public function getArguments() : array
     {
         $arguments = [];
         if ($this->args) {
@@ -462,7 +457,7 @@ DOC;
     }
 
     /**
-     * Return True if the bootstrap mode is set to 'console'
+     * Return true if the bootstrap mode is set to 'console'
      * @return bool Console mode
      */
     public function isConsole() : bool
