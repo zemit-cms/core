@@ -36,7 +36,37 @@ use Phalcon\Config as PhalconConfig;
  * @version 1.0
  *
  * @package Zemit\Bootstrap
+ *
+ * @property Config $core
+ * @property Config $app
+ * @property Config $php
+ * @property Config $debug
+ * @property Config $response
+ * @property Config $identity
+ * @property Config $models
+ * @property Config $providers
+ * @property Config $logger
+ * @property Config $filters
+ * @property Config $modules
+ * @property Config $router
+ * @property Config $gravatar
+ * @property Config $reCaptcha
+ * @property Config $locale
+ * @property Config $translate
+ * @property Config $session
+ * @property Config $module
+ * @property Config $security
+ * @property Config $cache
+ * @property Config $metadata
+ * @property Config $annotations
+ * @property Config $mailer
+ * @property Config $cookies
+ * @property Config $oauth2
+ * @property Config $dotenv
+ * @property Config $client
+ * @property Config $permissions
  */
+
 class Config extends PhalconConfig
 {
     public function defineConst()
