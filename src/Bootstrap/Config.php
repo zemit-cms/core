@@ -937,10 +937,12 @@ class Config extends PhalconConfig
                         'components' => [
                             Api\Controllers\SiteController::class => ['*'],
                             Models\Site::class => ['*'],
+                            Models\SiteLang::class => ['*'],
                         ],
                         'behaviors' => [
                             Api\Controllers\SiteController::class => [
                                 Behavior\Skip\SkipIdentityCondition::class,
+                                Behavior\Skip\SkipSoftDeleteCondition::class,
                             ],
                         ],
                     ],
@@ -949,10 +951,12 @@ class Config extends PhalconConfig
                         'components' => [
                             Api\Controllers\RoleController::class => ['*'],
                             Models\Role::class => ['*'],
+                            Models\UserRole::class => ['*'],
                         ],
                         'behaviors' => [
                             Api\Controllers\RoleController::class => [
                                 Behavior\Skip\SkipIdentityCondition::class,
+                                Behavior\Skip\SkipSoftDeleteCondition::class,
                             ],
                         ],
                     ],
@@ -965,6 +969,7 @@ class Config extends PhalconConfig
                         'behaviors' => [
                             Api\Controllers\GroupController::class => [
                                 Behavior\Skip\SkipIdentityCondition::class,
+                                Behavior\Skip\SkipSoftDeleteCondition::class,
                             ],
                         ],
                     ],
@@ -977,6 +982,7 @@ class Config extends PhalconConfig
                         'behaviors' => [
                             Api\Controllers\TypeController::class => [
                                 Behavior\Skip\SkipIdentityCondition::class,
+                                Behavior\Skip\SkipSoftDeleteCondition::class,
                             ],
                         ],
                     ],
@@ -989,6 +995,7 @@ class Config extends PhalconConfig
                         'behaviors' => [
                             Api\Controllers\LangController::class => [
                                 Behavior\Skip\SkipIdentityCondition::class,
+                                Behavior\Skip\SkipSoftDeleteCondition::class,
                             ],
                         ],
                     ],
@@ -1001,6 +1008,20 @@ class Config extends PhalconConfig
                         'behaviors' => [
                             Api\Controllers\UserController::class => [
                                 Behavior\Skip\SkipIdentityCondition::class,
+                                Behavior\Skip\SkipSoftDeleteCondition::class,
+                            ],
+                        ],
+                    ],
+                    
+                    'manageAuditList' => [
+                        'components' => [
+                            Api\Controllers\AuditController::class => ['*'],
+                            Models\Audit::class => ['*'],
+                        ],
+                        'behaviors' => [
+                            Api\Controllers\AuditController::class => [
+                                Behavior\Skip\SkipIdentityCondition::class,
+                                Behavior\Skip\SkipSoftDeleteCondition::class,
                             ],
                         ],
                     ],
@@ -1066,6 +1087,7 @@ class Config extends PhalconConfig
                             'manageRoleList',
                             'manageGroupList',
                             'manageTypeList',
+                            'manageAuditList',
                         ],
                         'inherit' => [
                             'admin',
