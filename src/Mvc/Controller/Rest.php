@@ -570,15 +570,15 @@ class Rest extends \Zemit\Mvc\Controller
     /**
      * Deleting a record
      *
-     * @param null $id
+     * @param null|int $id
      *
-     * @return bool
+     * @return bool|\Phalcon\Http\ResponseInterface
      */
     public function deleteAction($id = null)
     {
         $single = $this->getSingle($id);
         
-        $this->view->deleted = $single ? $single->delete() : false;
+        $this->view->deleted = $single && $single->delete();
         $this->view->single = $single ? $single->expose($this->getExpose()) : false;
         $this->view->messages = $single ? $single->getMessages() : false;
         
@@ -596,19 +596,19 @@ class Rest extends \Zemit\Mvc\Controller
      *
      * @param null $id
      *
-     * @return bool
+     * @return bool|\Phalcon\Http\ResponseInterface
      */
     public function restoreAction($id = null)
     {
         $single = $this->getSingle($id);
         
-        $this->view->restored = $single ? $single->restore() : false;
+        $this->view->restored = $single && $single->restore();
         $this->view->single = $single ? $single->expose($this->getExpose()) : false;
         $this->view->messages = $single ? $single->getMessages() : false;
         
         if (!$single) {
             $this->response->setStatusCode(404, 'Not Found');
-            
+    
             return false;
         }
         
@@ -744,13 +744,24 @@ class Rest extends \Zemit\Mvc\Controller
         // @todo see if we can implement receiving an array of responses globally: V2
         // $this->eventsManager->collectResponses(true);
         
-        // retrieve events based on the role & config
-        $permissions = $this->config->path('permissions.roles')->toArray();
-        foreach ($permissions as $role => $permission) {
-            $behaviorsContext = $permission['behaviors'] ?? [];
+        // retrieve events based on the config roles and features
+        $permissions = $this->config->get('permissions')->toArray() ?? [];
+        $featureList = $permissions['features'] ?? [];
+        $roleList = $permissions['roles'] ?? [];
+        
+        foreach ($roleList as $role => $rolePermission) {
+    
+            if (isset($rolePermission['features'])) {
+                foreach ($rolePermission['features'] as $feature) {
+                    $rolePermission = array_merge_recursive($rolePermission, $featureList[$feature] ?? []);
+                    // @todo remove duplicates
+                }
+            }
+            
+            $behaviorsContext = $rolePermission['behaviors'] ?? [];
             foreach ($behaviorsContext as $className => $behaviors) {
                 if (is_int($className) || get_class($this) === $className) {
-                    $this->attachBehaviors($behaviors);
+                    $this->attachBehaviors($behaviors, 'rest');
                 }
                 if ($this->getModelClassName() === $className) {
                     $this->attachBehaviors($behaviors, 'model');
