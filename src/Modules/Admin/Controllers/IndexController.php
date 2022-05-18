@@ -8,9 +8,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Backend\Controllers;
+namespace Zemit\Modules\Admin\Controllers;
 
-use Zemit\Modules\Backend\Controller;
+use Zemit\Modules\Admin\Controller;
 
 /**
  * Class IndexController
@@ -21,7 +21,7 @@ use Zemit\Modules\Backend\Controller;
  * @since 1.0
  * @version 1.0
  *
- * @package Zemit\Modules\Backend\Controllers
+ * @package Zemit\Modules\Admin\Controllers
  */
 class IndexController extends Controller
 {

@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Backend;
+namespace Zemit\Modules\Admin;
 
 /**
  * Class Module
@@ -19,9 +19,9 @@ namespace Zemit\Modules\Backend;
  * @since 1.0
  * @version 1.0
  *
- * @package Zemit\Modules\Backend
+ * @package Zemit\Modules\Admin
  */
 class Module extends \Zemit\Mvc\Module
 {
-    public $name = self::NAME_BACKEND;
+    public $name = self::NAME_ADMIN;
 }

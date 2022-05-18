@@ -8,12 +8,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Backend\Controllers;
+namespace Zemit\Modules\Admin\Controllers;
 
-use Zemit\Mvc\Controller\StatusCode;
+use Zemit\Modules\Admin\Controller;
 
 /**
- * Class ErrorController
+ * Class AbstractController
  *
  * @author Julien Turbide <jturbide@nuagerie.com>
  * @copyright Zemit Team <contact@zemit.com>
@@ -21,9 +21,11 @@ use Zemit\Mvc\Controller\StatusCode;
  * @since 1.0
  * @version 1.0
  *
- * @package Zemit\Modules\Backend\Controllers
+ * @package Zemit\Modules\Admin\Controllers
  */
-class ErrorController extends AbstractController
+abstract class AbstractController extends Controller
 {
-    use StatusCode;
+    public function initialize()
+    {
+    }
 }

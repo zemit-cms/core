@@ -8,10 +8,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Backend;
+namespace Zemit\Modules\Admin;
 
 /**
- * Class Loader
+ * Class Controller
  *
  * @author Julien Turbide <jturbide@nuagerie.com>
  * @copyright Zemit Team <contact@zemit.com>
@@ -19,9 +19,11 @@ namespace Zemit\Modules\Backend;
  * @since 1.0
  * @version 1.0
  *
- * @package Zemit\Modules\Backend
+ * @package Zemit\Modules\Admin
  */
-class Loader extends \Phalcon\Loader
+class Controller extends \Zemit\Mvc\Controller
 {
-
+    public function initialize()
+    {
+    }
 }
