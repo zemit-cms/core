@@ -1,16 +1,16 @@
 <?php
 /**
- * This file is part of the Zemit Framework.
+ * This page is part of the Zemit Framework.
  *
  * (c) Zemit Team <contact@zemit.com>
  *
  * For the full copyright and license information, please view the LICENSE.txt
- * file that was distributed with this source code.
+ * page that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Backend\Controllers;
+namespace Zemit\Modules\Api\Controllers;
 
-use Zemit\Modules\Backend\Controller;
+use Zemit\Modules\Api\Controller;
 
 /**
  * Class PageController
@@ -21,11 +21,9 @@ use Zemit\Modules\Backend\Controller;
  * @since 1.0
  * @version 1.0
  *
- * @package Zemit\Modules\Backend\Controllers
+ * @package Zemit\Modules\Api\Controllers
  */
 class PageController extends Controller
 {
-    public function indexAction()
-    {
-    }
+
 }

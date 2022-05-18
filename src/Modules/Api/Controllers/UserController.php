@@ -26,4 +26,28 @@ use Zemit\Modules\Api\Controller;
 class UserController extends Controller
 {
 
+    public function getWith() {
+        return [
+            'RoleList'
+        ];
+    }
+    
+    public function getSearchWhiteList()
+    {
+        return [
+            'id',
+            'email',
+            'firstName',
+            'lastName'
+        ];
+    }
+    
+    public function getExpose() {
+        return [
+            'User' => [
+                true,
+            ],
+        ];
+    }
+    
 }

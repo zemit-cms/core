@@ -13,7 +13,7 @@ namespace Zemit\Modules\Api\Controllers;
 use Zemit\Modules\Api\Controller;
 
 /**
- * Class IndexController
+ * Class AuditController
  *
  * @author Julien Turbide <jturbide@nuagerie.com>
  * @copyright Zemit Team <contact@zemit.com>
@@ -23,7 +23,7 @@ use Zemit\Modules\Api\Controller;
  *
  * @package Zemit\Modules\Api\Controllers
  */
-class IndexController extends Controller
+class AuditController extends Controller
 {
-    
+
 }

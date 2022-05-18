@@ -8,12 +8,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Backend\Controllers;
+namespace Zemit\Modules\Api\Controllers;
 
-use Zemit\Modules\Backend\Controller;
+use Zemit\Modules\Api\Controller;
 
 /**
- * Class MenuController
+ * Class TranslateFieldController
  *
  * @author Julien Turbide <jturbide@nuagerie.com>
  * @copyright Zemit Team <contact@zemit.com>
@@ -21,11 +21,9 @@ use Zemit\Modules\Backend\Controller;
  * @since 1.0
  * @version 1.0
  *
- * @package Zemit\Modules\Backend\Controllers
+ * @package Zemit\Modules\Api\Controllers
  */
-class MenuController extends Controller
+class TranslateFieldController extends Controller
 {
-    public function indexAction()
-    {
-    }
+
 }
