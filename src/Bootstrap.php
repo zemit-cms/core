@@ -310,7 +310,7 @@ DOC;
     public function debug()
     {
         return $this->fireSet($this->debug, Debug::class, [], function (Bootstrap $bootstrap) {
-            $config = $bootstrap->config->debug;
+            $config = $bootstrap->config->debug->toArray();
             $bootstrap->prepare->debug($bootstrap->config);
 
             // @todo review on phalcon5 php8+ because phalcon4 php8+ debug is doing cyclic error
@@ -319,18 +319,14 @@ DOC;
                 version_compare(\Phalcon\Version::get(), '5.0.0', '<');
 
             if (!$this->isConsole() && !$cyclicError) {
-                if ($bootstrap->config->app->debug || $bootstrap->config->debug->enable) {
-                    if (is_bool($config)) {
-                        $bootstrap->debug->listen();
-                    } else {
-                        $bootstrap->debug->listen($config->exception ?? true, $config->lowSeverity ?? false);
-                        $bootstrap->debug->setBlacklist($config->has('blacklist')? $config->blacklist->toArray() : []);
-                        $bootstrap->debug->setShowFiles($config->showFiles ?? true);
-                        $bootstrap->debug->setShowBackTrace($config->showBackTrace ?? true);
-                        $bootstrap->debug->setShowFileFragment($config->showFileFragment ?? true);
-                        if (is_string($config->uri)) {
-                            $bootstrap->debug->setUri($config->uri);
-                        }
+                if ($bootstrap->config->app->get('debug') || $config['enable']) {
+                    $bootstrap->debug->listen($config['exception'] ?? true, $config['lowSeverity'] ?? false);
+                    $bootstrap->debug->setBlacklist($config['blacklist'] ?? []);
+                    $bootstrap->debug->setShowFiles($config['showFiles'] ?? true);
+                    $bootstrap->debug->setShowBackTrace($config['showBackTrace'] ?? true);
+                    $bootstrap->debug->setShowFileFragment($config['showFileFragment'] ?? true);
+                    if (is_string($config['uri'])) {
+                        $bootstrap->debug->setUri($config['uri']);
                     }
                 }
             }
