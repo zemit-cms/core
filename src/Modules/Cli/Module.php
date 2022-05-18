@@ -33,8 +33,6 @@ class Module implements ModuleDefinitionInterface
 {
     const NAME_CLI = 'Cli';
     
-    public $namespace = __NAMESPACE__;
-    
     /**
      * Module name to register
      * @var string Module name
@@ -104,7 +102,7 @@ class Module implements ModuleDefinitionInterface
             'namespace' => $this->dispatcher->getDefaultNamespace(),
             'module' => strtolower($this->name),
             'controller' => 'help',
-            'action' => 'main'
+            'action' => 'main',
         ]);
         
         // save services
@@ -117,11 +115,12 @@ class Module implements ModuleDefinitionInterface
         
         // Caller namespace
         $namespace = Utils::getNamespace($this);
+        $dirname = Utils::getDirname($this);
         
         // register the vendor module controllers
-        $namespaces[$namespace . '\\Tasks'] = $this->config->core->dir->base . $this->name . '/Tasks/';
-        $namespaces[$namespace . '\\Models'] = $this->config->core->dir->base . $this->name . '/Models/';
-
+        $namespaces[$namespace . '\\Tasks'] = $dirname . '/Tasks/';
+        $namespaces[$namespace . '\\Models'] = $dirname . '/Models/';
+        
         return $namespaces;
     }
     
