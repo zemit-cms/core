@@ -11,14 +11,17 @@
 namespace Zemit\Models;
 
 use Zemit\Models\Base\AbstractUserType;
-use Phalcon\Validation;
-use Phalcon\Validation\Validator\Date;
 use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\StringLength\Max;
 use Phalcon\Validation\Validator\Uniqueness;
 
 /**
  * Class UserType
+ *
+ * @property User $UserEntity
+ * @property Type $TypeEntity
+ *
+ * @method User getUserEntity($params = null)
+ * @method Type getTypeEntity($params = null)
  *
  * @package Zemit\Models
  */
@@ -30,19 +33,19 @@ class UserType extends AbstractUserType
     public function initialize()
     {
         parent::initialize();
-        
-        $this->hasOne('userId', User::class, 'id', ['alias' => 'User']);
-        $this->hasOne('typeId', Type::class, 'id', ['alias' => 'Type']);
+
+        $this->hasOne('userId', User::class, 'id', ['alias' => 'UserEntity']);
+        $this->hasOne('typeId', Type::class, 'id', ['alias' => 'TypeEntity']);
     }
-    
+
     public function validation()
     {
         $validator = $this->genericValidation();
-        
-        $validator->add('userId', new PresenceOf(['message' => $this->_('userIdRequired')]));
-        $validator->add('typeId', new PresenceOf(['message' => $this->_('typeIdRequired')]));
-        $validator->add(['userId', 'typeId'], new Uniqueness(['message' => $this->_('userTypeNotUnique')]));
-        
+
+        $validator->add('userId', new PresenceOf(['message' => $this->_('required')]));
+        $validator->add('typeId', new PresenceOf(['message' => $this->_('required')]));
+        $validator->add(['userId', 'typeId'], new Uniqueness(['message' => $this->_('not-unique')]));
+
         return $this->validate($validator);
     }
 }

@@ -11,144 +11,132 @@
 namespace Zemit\Models;
 
 use Zemit\Models\Base\AbstractUser;
-
-use Phalcon\Messages\Message;
 use Phalcon\Security;
-use Phalcon\Validation;
 use Phalcon\Validation\Validator\Between;
+use Phalcon\Validation\Validator\Confirmation;
 use Phalcon\Validation\Validator\Date;
 use Phalcon\Validation\Validator\Email;
-use Phalcon\Validation\Validator\PasswordStrength;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength\Max;
-use Phalcon\Validation\Validator\StringLength\Min;
 use Phalcon\Validation\Validator\Uniqueness;
+use Phalcon\Validation\Validator\InclusionIn;
 
+use Zemit\Identity;
 
 /**
  * Class User
  *
- * @property \App\Provider\Square\Square $square
- * @property Identity $identity
+ * @property UserGroup[] $GroupNode
+ * @property Group[] $GroupList
+ * @property UserRole[] $RoleNode
+ * @property Role[] $RoleList
+ * @property UserType[] $TypeNode
+ * @property Type[] $TypeList
+ * @property File[] $FileList
+ * @property Identity $Identity
+ *
+ * @method UserGroup[] getGroupNode($params = null)
+ * @method Group[] getGroupList($params = null)
+ * @method UserRole[] getRoleNode($params = null)
+ * @method Role[] getRoleList($params = null)
+ * @method UserType[] getTypeNode($params = null)
+ * @method Type[] getTypeList($params = null)
+ * @method File[] getFileList($params = null)
  *
  * @package Zemit\Models
  */
 class User extends AbstractUser
 {
+    protected $language = self::LANG_FR;
     protected $deleted = self::NO;
-    
-    /**
-     * @var string
-     */
-    protected $passwordConfirm;
-    
-    /**
-     * Returns the value of field password
-     *
-     * @return string
-     */
-    public function getPasswordConfirm()
-    {
-        return $this->passwordConfirm;
-    }
-    
-    /**
-     * Method to set the value of field password
-     *
-     * @param string $passwordConfirm
-     * @return $this
-     */
-    public function setPassword($passwordConfirm)
-    {
-        $this->passwordConfirm = $passwordConfirm;
-        
-        return $this;
-    }
-    
+
     public function initialize()
     {
         parent::initialize();
+
+        $this->hasMany('id', File::Class, 'userId', ['alias' => 'FileList']);
+
+        $this->hasMany('id', UserGroup::class, 'userId', ['alias' => 'GroupNode']);
+        $this->hasManyToMany('id', UserGroup::Class, 'userId',
+            'groupId', Group::class, 'id', ['alias' => 'GroupList']);
+
+        $this->hasMany('id', UserRole::class, 'userId', ['alias' => 'RoleNode']);
+        $this->hasManyToMany('id', UserRole::Class, 'userId',
+            'roleId', Role::class, 'id', ['alias' => 'RoleList']);
+
+        $this->hasMany('id', UserType::class, 'userId', ['alias' => 'TypeNode']);
+        $this->hasManyToMany('id', UserType::Class, 'userId',
+            'typeId', Type::class, 'id', ['alias' => 'TypeList']);
     }
-    
-    public function beforeValidationOnCreate()
-    {
-        if (empty($this->username)) {
-            $this->setUsername(md5(uniqid()));
-        }
-    }
-    
-    /**
-     * Validation
-     * @return bool
-     */
+
     public function validation()
     {
         $validator = $this->genericValidation();
-        
-        // Email
-        $validator->add('email', new Uniqueness(['message' => $this->_('notUnique')]));
-        $validator->add('email', new Email(['message' => $this->_('notValid')]));
-        $validator->add('email', new Max(['message' => $this->_('maxLength'), 'allowEmpty' => true, 'max' => 255]));
-        $validator->add('email', new Min(['message' => $this->_('minLength'), 'allowEmpty' => true, 'max' => 6]));
-        if (empty($this->getName())) {
-            $validator->add('email', new PresenceOf(['message' => $this->_('emailRequired')]));
+
+        $validator->add('username', new PresenceOf(['message' => $this->_('username') . ': ' . $this->_('required')]));
+        $validator->add('email', new Max(['max' => 120, 'message' => $this->_('email') . ': ' . $this->_('length-exceeded')]));
+
+        $validator->add('firstName', new PresenceOf(['message' => $this->_('first-name') . ': ' . $this->_('required')]));
+        $validator->add('firstName', new Max(['max' => 60, 'message' => $this->_('first-name') . ': ' . $this->_('length-exceeded')]));
+
+        $validator->add('lastName', new PresenceOf(['message' => $this->_('last-name') . ': ' . $this->_('required')]));
+        $validator->add('lastName', new Max(['max' => 60, 'message' => $this->_('last-name') . ': ' . $this->_('length-exceeded')]));
+
+        $validator->add('email', new PresenceOf(['message' => $this->_('email') . ': ' . $this->_('required')]));
+        $validator->add('email', new Email(['message' => $this->_('email') . ': ' . 'email-not-valid']));
+        $validator->add('email', new Uniqueness(['message' => $this->_('email') . ': ' . $this->_('not-unique')]));
+        $validator->add('email', new Max(['max' => 191, 'message' => $this->_('email') . ': ' . $this->_('length-exceeded')]));
+
+        $validator->add('gender', new Between(["minimum" => 0, "maximum" => 1, 'message' => $this->_('boolean-not-valid')]));
+
+        if ($this->getDob()) {
+            $validator->add('dob', new Date(['format' => self::DATE_FORMAT, 'message' => $this->_('date-not-valid')]));
         }
-        
-        // Username
-        $validator->add('name', new Uniqueness(['message' => $this->_('notUnique')]));
-        $validator->add('name', new Max(['message' => $this->_('maxLength'), 'allowEmpty' => true, 'max' => 60]));
-        $validator->add('name', new Min(['message' => $this->_('minLength'), 'allowEmpty' => true, 'min' => 6]));
-        if (empty($this->getEmail())) {
-            $validator->add('name', new PresenceOf(['message' => $this->_('usernameRequired')]));
-        }
-        
-        if (!empty($this->getPasswordConfirm())) {
-        
+
+        $validator->add(['phone', 'phone2', 'cellphone', 'fax'], new Max(['max' => 60, 'message' => $this->_('length-exceeded')]));
+
+        $validator->add('token', new Max(['max' => 120, 'message' => $this->_('length-exceeded')]));
+
+        // Password
+        if (!$this->hasSnapshotData() || $this->hasChanged('password')) {
+            $validator->add(['password', 'passwordConfirm'], new Max(['max' => 255, 'message' => 'Le mot de passe ne doit pas dépasser :max caractères']));
+            $validator->add('passwordConfirm', new Confirmation([
+                'message' => 'La mot de passe et la confirmation doivent être identique',
+                'with' => 'password',
+            ]));
         }
 
         return $this->validate($validator);
     }
-    
-    public function prepareSave()
+
+    /**
+     * Prepare save after validation
+     */
+    public function beforeSave()
     {
         $this->preparePassword();
     }
-    
-    /**
-     * Change the token hash and return its original value
-     */
-    public function prepareToken($token = null)
-    {
-        /** @var Security $security */
-        $security = $this->getDI()->get('security');
-        
-        $token ??= $security->getRandom()->uuid();
-        
-        $this->setToken($this->hash($token));
-        
-        return $token;
-    }
-    
+
     /**
      * Salt & hash the passwordConfirm field into password
      */
-    public function preparePassword()
+    public function preparePassword(): void
     {
         $password = $this->getPassword();
         $passwordConfirm = $this->getPasswordConfirm();
         if (!empty($passwordConfirm) && $password === $passwordConfirm) {
-            $this->setPassword($this->hash($this->getEmail() . $passwordConfirm));
-            $this->setPasswordConfirm(null);
+            $this->setPassword($this->hash($passwordConfirm));
         }
+        $this->setPasswordConfirm(null);
     }
-    
+
     /**
-     * @param string $password
+     * @param string|null $password
      *
      * @return bool If the hash is valid or not
      */
-    public function checkPassword(string $password = null)
+    public function checkPassword(string $password = null): bool
     {
-        return $password ? $this->checkHash($this->getPassword(), $this->getEmail() . $password) : false;
+        return $password ? $this->checkHash($this->getPassword(), $password) : false;
     }
 }

@@ -11,16 +11,28 @@
 namespace Zemit\Models;
 
 use Zemit\Models\Base\AbstractGroup;
-use Phalcon\Validation;
-use Phalcon\Validation\Validator\Date;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength\Max;
 
 /**
  * Class Group
  *
-* @package Zemit\Models
-*/
+ * @property UserGroup[] $UserNode
+ * @property User[] $UserList
+ * @property GroupRole[] $RoleNode
+ * @property Role[] $RoleList
+ * @property GroupType[] $TypeNode
+ * @property Type[] $TypeList
+ *
+ * @method UserGroup[] getUserNode($params = null)
+ * @method User[] getUserList($params = null)
+ * @method GroupRole[] getRoleNode($params = null)
+ * @method Role[] getRoleList($params = null)
+ * @method GroupType[] getTypeNode($params = null)
+ * @method Type[] getTypeList($params = null)
+ *
+ * @package Zemit\Models
+ */
 class Group extends AbstractGroup
 {
     protected $deleted = self::NO;
@@ -31,7 +43,7 @@ class Group extends AbstractGroup
         parent::initialize();
 
         // User relationship
-        $this->hasMany('id', UserGroup::class, 'groupId', ['alias' => 'GroupNode']);
+        $this->hasMany('id', UserGroup::class, 'groupId', ['alias' => 'UserNode']);
         $this->hasManyToMany('id', UserGroup::Class, 'groupId',
             'userId', User::class, 'id', ['alias' => 'UserList']);
 
@@ -44,25 +56,31 @@ class Group extends AbstractGroup
         $this->hasMany('id', GroupType::class, 'groupId', ['alias' => 'TypeNode']);
         $this->hasManyToMany('id', GroupType::class, 'groupId',
             'typeId', Type::class, 'id', ['alias' => 'TypeList']);
-
     }
-    
+
+    public function beforeValidation()
+    {
+        if (!$this->index) {
+            $this->setIndex($this->getLabelFr());
+        }
+        if (!$this->labelEn) {
+            $this->setLabelEn($this->getLabelFr());
+        }
+    }
+
     public function validation()
     {
         $validator = $this->genericValidation();
 
-        // index
-        $validator->add('index', new Max(['max' => 50, 'message' => $this->_('indexLengthExceeded'), 'included' => true]));
-        $validator->add('index', new PresenceOf(['message' => $this->_('indexRequired')]));
-    
-        // Label Fr
-        $validator->add('labelFr', new PresenceOf(['message' => $this->_('labelFrRequired')]));
-        $validator->add('labelFr', new Max(['max' => 100, 'message' => $this->_('labelFrLengthExceeded'), 'included' => true]));
-    
-        // Label En
-        $validator->add('labelEn', new PresenceOf(['message' => $this->_('labelEnRequired')]));
-        $validator->add('labelFr', new Max(['max' => 100, 'message' => $this->_('labelFrLengthExceeded'), 'included' => true]));
-        
+        $validator->add('index', new Max(['max' => 50, 'message' => $this->_('index') .': '. $this->_('length-exceeded')]));
+        $validator->add('index', new PresenceOf(['message' => $this->_('index') .': '. $this->_('required')]));
+
+        $validator->add('labelFr', new PresenceOf(['message' => $this->_('label-fr') .': '. $this->_('required')]));
+        $validator->add('labelFr', new Max(['max' => 100, 'message' => $this->_('label-fr') .': '. $this->_('length-exceeded')]));
+
+        $validator->add('labelEn', new PresenceOf(['message' => $this->_('label-en') .': '. $this->_('required')]));
+        $validator->add('labelFr', new Max(['max' => 100, 'message' => $this->_('label-en') .': '. $this->_('length-exceeded')]));
+
         return $this->validate($validator);
     }
 }

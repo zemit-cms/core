@@ -10,16 +10,16 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractLog;
+use Zemit\Models\Base\AbstractPost;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength\Max;
 
 /**
- * Class Log
+ * Class Post
  *
  * @package Zemit\Models
  */
-class Log extends AbstractLog
+class Post extends AbstractPost
 {
     protected $deleted = self::NO;
 

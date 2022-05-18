@@ -10,16 +10,17 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractLog;
+use Zemit\Models\Base\AbstractTranslateTable;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength\Max;
+use Phalcon\Validation\Validator\Uniqueness;
 
 /**
- * Class Log
+ * Class Setting
  *
- * @package Zemit\Models
- */
-class Log extends AbstractLog
+* @package Zemit\Models
+*/
+class TranslateTable extends AbstractTranslateTable
 {
     protected $deleted = self::NO;
 

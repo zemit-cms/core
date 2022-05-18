@@ -11,15 +11,20 @@
 namespace Zemit\Models;
 
 use Zemit\Models\Base\AbstractTemplate;
-use Phalcon\Validation;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength\Max;
 
 /**
  * Class Template
  *
-* @package Zemit\Models
-*/
+ * @property $subject
+ * @property $content
+ *
+ * @method getSubject
+ * @method getContent
+ *
+ * @package Zemit\Models
+ */
 class Template extends AbstractTemplate
 {
     protected $deleted = self::NO;
@@ -28,27 +33,23 @@ class Template extends AbstractTemplate
     {
         parent::initialize();
     }
-    
+
     public function validation()
     {
         $validator = $this->genericValidation();
-    
-        // index
-        $validator->add('index', new Max(['max' => 50, 'message' => $this->_('indexLengthExceeded'), 'included' => true]));
-        $validator->add('index', new PresenceOf(['message' => $this->_('indexRequired')]));
-    
-        // Label
-        $validator->add('label', new PresenceOf(['message' => $this->_('labelRequired')]));
-        $validator->add('label', new Max(['max' => 100, 'message' => $this->_('labelLengthExceeded'), 'included' => true]));
-    
-        // Subject Fr
-        $validator->add('subjectFr', new PresenceOf(['message' => $this->_('subjectFrRequired')]));
-        $validator->add('subjectFr', new Max(['max' => 100, 'message' => $this->_('subjectFrLengthExceeded'), 'included' => true]));
-    
-        // Subject En
-        $validator->add('subjectEn', new PresenceOf(['message' => $this->_('subjectEnRequired')]));
-        $validator->add('subjectEn', new Max(['max' => 100, 'message' => $this->_('subjectEnLengthExceeded'), 'included' => true]));
-    
+
+        $validator->add('index', new PresenceOf(['message' => $this->_('index') .': '. $this->_('required')]));
+        $validator->add('index', new Max(['max' => 50, 'message' => $this->_('index') .': '. $this->_('length-exceeded')]));
+
+        $validator->add('label', new PresenceOf(['message' => $this->_('label') .': '. $this->_('required')]));
+        $validator->add('label', new Max(['max' => 100, 'message' => $this->_('label') .': '. $this->_('length-exceeded')]));
+
+        $validator->add('subjectFr', new PresenceOf(['message' => $this->_('subject-fr') .': '. $this->_('required')]));
+        $validator->add('subjectFr', new Max(['max' => 100, 'message' => $this->_('subject-fr') .': '. $this->_('length-exceeded')]));
+
+        $validator->add('subjectEn', new PresenceOf(['message' => $this->_('subject-en') .': '. $this->_('required')]));
+        $validator->add('subjectEn', new Max(['max' => 100, 'message' => $this->_('subject-en') .': '. $this->_('length-exceeded')]));
+
         return $this->validate($validator);
     }
 }

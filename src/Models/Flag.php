@@ -10,16 +10,16 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractLog;
+use Zemit\Models\Base\AbstractFlag;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength\Max;
 
 /**
- * Class Log
+ * Class Flag
  *
  * @package Zemit\Models
  */
-class Log extends AbstractLog
+class Flag extends AbstractFlag
 {
     protected $deleted = self::NO;
 
@@ -32,9 +32,9 @@ class Log extends AbstractLog
     public function validation()
     {
         $validator = $this->genericValidation();
-
+        
         // @todo validations
-
+        
         return $this->validate($validator);
     }
 }

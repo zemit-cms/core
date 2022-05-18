@@ -11,91 +11,47 @@
 namespace Zemit\Models;
 
 use Zemit\Models\Base\AbstractFile;
-use Phalcon\Validation;
-use Phalcon\Validation\Validator\Date;
-use Phalcon\Validation\Validator\InclusionIn;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength\Max;
-use thiagoalessio\TesseractOCR\TesseractOCR;
-use Spatie\PdfToText\Pdf;
 
 /**
  * Class File
+ *
+ * @property EmailFile $EmailFileEntity
+ * @property User $UserEntity
+ *
+ * @method EmailFile getEmailFileEntity($params = null)
+ * @method User getUserEntity($params = null)
  *
  * @package Zemit\Models
  */
 class File extends AbstractFile
 {
-    const CATEGORY_ANIMAL = 'animal';
-    const CATEGORY_USER = 'user';
-    const CATEGORY_INCIDENT = 'incident';
-    const CATEGORY_PARKING_SPACE = 'parking_space';
-    const CATEGORY_VEHICLE = 'vehicle';
-    const CATEGORY_OTHER = 'other';
-
-    protected $category = self::CATEGORY_OTHER;
     protected $deleted = self::NO;
 
     public function initialize()
     {
         parent::initialize();
 
-        // File Relation
-        $this->hasMany('id', FileRelation::class, 'fileId', ['alias' => 'FileNode']);
-
-        // ParkingSpace relationship
-        $this->hasManyToMany('id', FileRelation::class, 'fileId',
-            'parkingSpaceId', ParkingSpace::class, ['alias' => 'ParkingSpaceList']);
-
-        // Animal relationship
-        $this->hasManyToMany('id', FileRelation::class, 'fileId',
-            'animalId', Animal::class, ['alias' => 'AnimalList']);
-
-        // Incident relationship
-        $this->hasManyToMany('id', FileRelation::class, 'fileId',
-            'incidentId', Incident::class, ['alias' => 'IncidentList']);
-
-        // Incident relationship
-        $this->hasManyToMany('id', FileRelation::class, 'fileId',
-            'vehicleId', Vehicle::class, ['alias' => 'VehicleList']);
-
+        $this->hasOne('id', EmailFile::class, 'fileId', ['alias' => 'EmailFileEntity']);
+        $this->belongsTo('userId', User::class, 'id', ['alias' => 'UserEntity']);
     }
 
     public function validation()
     {
         $validator = $this->genericValidation();
 
-        // Category
-        $validator->add('category', new PresenceOf(['message' => $this->_('categoryRequired')]));
-        $validator->add('category', new InclusionIn(['message' => $this->_('categoryNotValid'),
-            'domain' => [
-                self::CATEGORY_ANIMAL,
-                self::CATEGORY_INCIDENT,
-                self::CATEGORY_PARKING_SPACE,
-                self::CATEGORY_USER,
-                self::CATEGORY_VEHICLE,
-                self::CATEGORY_OTHER
-            ]
-        ]));
+        $validator->add('key', new Max(['max' => 50, 'message' => $this->_('length-exceeded')]));
+        $validator->add('path', new Max(['max' => 120, 'message' => $this->_('length-exceeded')]));
+        $validator->add('type', new Max(['max' => 100, 'message' => $this->_('length-exceeded')]));
+        $validator->add('typeReal', new Max(['max' => 100, 'message' => $this->_('length-exceeded')]));
+        $validator->add('extension', new Max(['max' => 6, 'message' => $this->_('length-exceeded')]));
+        $validator->add('name', new Max(['max' => 100, 'message' => $this->_('length-exceeded')]));
+        $validator->add('nameTemp', new Max(['max' => 120, 'message' => $this->_('length-exceeded')]));
+        $validator->add('size', new Max(['max' => 45, 'message' => $this->_('length-exceeded')]));
+        $validator->add('createdBy', new PresenceOf(['message' => $this->_('required')]));
 
         return $this->validate($validator);
-    }
-    
-    /**
-     * After delete
-     * @todo make trash system with cron rotation
-     */
-    public function afterDelete() {
-        
-        if ($this->isDeleted()) {
-            
-            $filePath = $this->getFilePath();
-            
-            // for new delete the file direclty
-            if (file_exists($filePath)) {
-                unlink($filePath);
-            }
-        }
     }
 
     /**
@@ -106,21 +62,20 @@ class File extends AbstractFile
      *
      * @return null|string
      */
-    public function getFilePath($fileName = null, $category = null)
+    public function getFilePath($fileName = null)
     {
         $fileName ??= $this->getPath();
-        $category ??= $this->getCategory();
         $filePath = null;
 
         $config = $this->getDI()->get('config');
-        $filePath = $config->app->dir->files . $category . (isset($category) ? '/': '') . $fileName;
+        $filePath = $config->app->dir->files . $fileName;
         if (!file_exists($filePath)) {
             $filePath = null;
         }
 
         return $filePath;
     }
-    
+
     /**
      * Compress an image
      *
@@ -137,7 +92,7 @@ class File extends AbstractFile
     {
         $source ??= $this->getFilePath();
         $destination ??= $source;
-        
+
         if (empty($source)) {
             return false;
         }
@@ -152,13 +107,14 @@ class File extends AbstractFile
             if ($imageWidth > $imageHeight) {
                 $imageSize['height'] = floor(($imageHeight / $imageWidth) * $maxWidth);
                 $imageSize['width'] = $maxWidth;
-            } else {
+            }
+            else {
                 $imageSize['width'] = floor(($imageWidth / $imageHeight) * $maxHeight);
                 $imageSize['height'] = $maxHeight;
             }
         }
 
-        switch(mb_strtolower($info['mime'])) {
+        switch (mb_strtolower($info['mime'])) {
             case 'image/jpg':
             case 'image/jpeg':
                 $image = imagecreatefromjpeg($source);
@@ -175,81 +131,30 @@ class File extends AbstractFile
         }
 
         if ($image) {
-            $newImage = imagecreatetruecolor($imageSize['width'] , $imageSize['height']);
+            $newImage = imagecreatetruecolor($imageSize['width'], $imageSize['height']);
             imagecopyresampled($newImage, $image, 0, 0, 0, 0, $imageSize['width'], $imageSize['height'], $imageWidth, $imageHeight);
 
             $exif = @exif_read_data($source);
-            if(!empty($exif['Orientation'])) {
-                switch($exif['Orientation']) {
+            if (!empty($exif['Orientation'])) {
+                switch ($exif['Orientation']) {
                     case 8:
-                        $newImage = imagerotate($newImage,90,0);
+                        $newImage = imagerotate($newImage, 90, 0);
                         break;
                     case 3:
-                        $newImage = imagerotate($newImage,180,0);
+                        $newImage = imagerotate($newImage, 180, 0);
                         break;
                     case 6:
-                        $newImage = imagerotate($newImage,-90,0);
+                        $newImage = imagerotate($newImage, -90, 0);
                         break;
                 }
             }
-    
-            $returnMethodName($newImage, $destination, $returnMethodName === 'imagejpg'? $quality : ceil($quality / 10));
-            
+
+            $returnMethodName($newImage, $destination, $returnMethodName === 'imagejpg' ? $quality : ceil($quality / 10));
+
             return $destination;
         }
 
         return false;
-    }
-
-    /**
-     * Generate a string from an image using an OCR
-     *
-     * @param null $source
-     *
-     * @return string|null Return the string from OCR or null otherwise
-     */
-    public function getFileText(string $source = null) : ?string
-    {
-        $source ??= $this->getFilePath();
-        
-        // No source, nothing to return
-        if (empty($source)) {
-            return null;
-        }
-
-        /** @var TesseractOCR $ocr */
-        $ocr = $this->getDI()->get('ocr');
-
-        $text = null;
-        $ext = strtolower(pathinfo($source, PATHINFO_EXTENSION));
-
-        // JPEG / GIF
-        if ($ext === 'jpg' || $ext === 'jpeg' || $ext === 'gif') {
-            $category = $this->getCategory();
-            $destination = $this->getDI()->get('config')->app->dir->files . $category . (isset($category) ? '/': '') . md5(uniqid()) . '.png';
-            $path = $this->compressImage($destination);
-
-            if ($path) {
-                $text = $ocr->image($path)->run();
-                unlink($path);
-            }
-        }
-        
-        // PDF
-        else if ($ext === 'pdf') {
-            
-            /** @var Pdf $ocr */
-            $pdf = $this->getDI()->get('pdfToText');
-            $text = $pdf->setPdf($source)->text();
-            
-        }
-        
-        // PNG
-        else {
-            $text = $ocr->image($source)->run();
-        }
-
-        return $text;
     }
 
 }

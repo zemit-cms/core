@@ -11,16 +11,16 @@
 namespace Zemit\Models;
 
 use Zemit\Models\Base\AbstractSetting;
-use Phalcon\Validation;
-use Phalcon\Validation\Validator\Date;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength\Max;
+use Phalcon\Validation\Validator\Uniqueness;
+
 
 /**
  * Class Setting
  *
-* @package Zemit\Models
-*/
+ * @package Zemit\Models
+ */
 class Setting extends AbstractSetting
 {
     protected $deleted = self::NO;
@@ -29,21 +29,20 @@ class Setting extends AbstractSetting
     {
         parent::initialize();
     }
-    
+
     public function validation()
     {
         $validator = $this->genericValidation();
 
-        // Index
-        $validator->add('index', new PresenceOf(['message' => $this->_('indexRequired')]));
-        $validator->add('index', new Max(['max' => 255, 'message' => $this->_('indexLengthExceeded'), 'included' => true]));
+        $validator->add('index', new PresenceOf(['message' => $this->_('required')]));
+        $validator->add('index', new Max(['max' => 255, 'message' => $this->_('length-exceeded')]));
+        $validator->add('index', new Uniqueness(['message' => $this->_('not-unique')]));
 
-        // Category
-        $validator->add('category', new Max(['max' => 255, 'message' => $this->_('categoryLengthExceeded'), 'included' => true]));
+        $validator->add('category', new Max(['max' => 255, 'message' => $this->_('length-exceeded')]));
 
-        // Label
-        $validator->add('label', new Max(['max' => 255, 'message' => $this->_('labelLengthExceeded'), 'included' => true]));
-        
+        $validator->add('labelFr', new Max(['max' => 255, 'message' => $this->_('length-exceeded')]));
+        $validator->add('labelEn', new Max(['max' => 255, 'message' => $this->_('length-exceeded')]));
+
         return $this->validate($validator);
     }
 }

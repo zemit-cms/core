@@ -10,7 +10,7 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractTranslation;
+use Zemit\Models\Base\AbstractTranslateField;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength\Max;
 use Phalcon\Validation\Validator\Uniqueness;
@@ -20,28 +20,22 @@ use Phalcon\Validation\Validator\Uniqueness;
  *
 * @package Zemit\Models
 */
-class Translation extends AbstractTranslation
+class TranslateField extends AbstractTranslateField
 {
     protected $deleted = self::NO;
 
     public function initialize()
     {
         parent::initialize();
+        // @todo relationships
     }
-    
+
     public function validation()
     {
         $validator = $this->genericValidation();
 
-        // Index
-        $validator->add('index', new Uniqueness(['message' => $this->_('indexUniqueness')]));
-        $validator->add('index', new PresenceOf(['message' => $this->_('indexRequired')]));
-        $validator->add('index', new Max(['max' => 60, 'message' => $this->_('indexLengthExceeded'), 'included' => true]));
-        
-        // Label
-        $validator->add('label', new PresenceOf(['message' => $this->_('labelFrRequired')]));
-        $validator->add('valueEn', new Max(['max' => 255, 'message' => $this->_('valueEnLengthExceeded'), 'included' => true]));
-        
+        // @todo validations
+
         return $this->validate($validator);
     }
 }

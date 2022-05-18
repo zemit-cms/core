@@ -8,18 +8,26 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Common\Models;
+namespace Zemit\Models;
 
 use Zemit\Models\Base\AbstractGroupType;
-use Phalcon\Validation\Validator\Date;
 use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\StringLength\Max;
 use Phalcon\Validation\Validator\Uniqueness;
 
 /**
  * Class GroupType
  *
- * @package App\Common\Models
+ * @property Group $Group
+ * @property Type $Type
+ * @property Group $GroupEntity
+ * @property Type $TypeEntity
+ *
+ * @method Group getGroup($params = null)
+ * @method Type getType($params = null)
+ * @method Group getGroupEntity($params = null)
+ * @method Type getTypeEntity($params = null)
+ *
+ * @package Zemit\Models
  */
 class GroupType extends AbstractGroupType
 {
@@ -29,20 +37,19 @@ class GroupType extends AbstractGroupType
     public function initialize()
     {
         parent::initialize();
-        
-        // Belongs to
-        $this->hasOne('groupId', Group::class, 'id', ['alias' => 'Group']);
-        $this->hasOne('typeId', Type::class, 'id', ['alias' => 'Type']);
+
+        $this->hasOne('groupId', Group::class, 'id', ['alias' => 'GroupEntity']);
+        $this->hasOne('typeId', Type::class, 'id', ['alias' => 'TypeEntity']);
     }
-    
+
     public function validation()
     {
         $validator = $this->genericValidation();
-        
-        $validator->add('groupId', new PresenceOf(['message' => $this->_('groupIdRequired')]));
-        $validator->add('typeId', new PresenceOf(['message' => $this->_('typeIdRequired')]));
-        $validator->add(['groupId', 'typeId'], new Uniqueness(['message' => $this->_('groupTypeNotUnique')]));
-        
+
+        $validator->add('groupId', new PresenceOf(['message' => $this->_('required')]));
+        $validator->add('typeId', new PresenceOf(['message' => $this->_('required')]));
+        $validator->add(['groupId', 'typeId'], new Uniqueness(['message' => $this->_('not-unique')]));
+
         return $this->validate($validator);
     }
 }

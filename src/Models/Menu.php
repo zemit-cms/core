@@ -10,16 +10,16 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractLog;
+use Zemit\Models\Base\AbstractMenu;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength\Max;
 
 /**
- * Class Log
+ * Class Menu
  *
  * @package Zemit\Models
  */
-class Log extends AbstractLog
+class Menu extends AbstractMenu
 {
     protected $deleted = self::NO;
 

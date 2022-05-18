@@ -8,19 +8,26 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Common\Models;
+namespace Zemit\Models;
 
 use Zemit\Models\Base\AbstractGroupRole;
-use Phalcon\Validation;
-use Phalcon\Validation\Validator\Date;
 use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\StringLength\Max;
 use Phalcon\Validation\Validator\Uniqueness;
 
 /**
  * Class GroupRole
  *
- * @package App\Common\Models
+ * @property Group $Group
+ * @property Role $Role
+ * @property Group $GroupEntity
+ * @property Role $RoleEntity
+ *
+ * @method Group getGroup($params = null)
+ * @method Role getRole($params = null)
+ * @method Group getGroupEntity($params = null)
+ * @method Role getRoleEntity($params = null)
+ *
+ * @package Zemit\Models
  */
 class GroupRole extends AbstractGroupRole
 {
@@ -30,20 +37,19 @@ class GroupRole extends AbstractGroupRole
     public function initialize()
     {
         parent::initialize();
-        
-        // Belongs to
-        $this->hasOne('groupId', Group::class, 'id', ['alias' => 'Group']);
-        $this->hasOne('roleId', Role::class, 'id', ['alias' => 'Role']);
+
+        $this->hasOne('groupId', Group::class, 'id', ['alias' => 'GroupEntity']);
+        $this->hasOne('roleId', Role::class, 'id', ['alias' => 'RoleEntity']);
     }
-    
+
     public function validation()
     {
         $validator = $this->genericValidation();
-        
-        $validator->add('groupId', new PresenceOf(['message' => $this->_('groupIdRequired')]));
-        $validator->add('roleId', new PresenceOf(['message' => $this->_('roleIdRequired')]));
-        $validator->add(['groupId', 'roleId'], new Uniqueness(['message' => $this->_('groupRoleNotUnique')]));
-        
+
+        $validator->add('groupId', new PresenceOf(['message' => $this->_('required')]));
+        $validator->add('roleId', new PresenceOf(['message' => $this->_('required')]));
+        $validator->add(['groupId', 'roleId'], new Uniqueness(['message' => $this->_('not-unique')]));
+
         return $this->validate($validator);
     }
 }

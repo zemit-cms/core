@@ -11,14 +11,17 @@
 namespace Zemit\Models;
 
 use Zemit\Models\Base\AbstractUserGroup;
-use Phalcon\Validation;
-use Phalcon\Validation\Validator\Date;
 use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\StringLength\Max;
 use Phalcon\Validation\Validator\Uniqueness;
 
 /**
  * Class UserGroup
+ *
+ * @property User $UserEntity
+ * @property Group $GroupEntity
+ *
+ * @method User getUserEntity($params = null)
+ * @method Group getGroupEntity($params = null)
  *
  * @package Zemit\Models
  */
@@ -30,19 +33,19 @@ class UserGroup extends AbstractUserGroup
     public function initialize()
     {
         parent::initialize();
-        
-        $this->hasOne('userId', User::class, 'id', ['alias' => 'User']);
-        $this->hasOne('groupId', Group::class, 'id', ['alias' => 'Group']);
+
+        $this->hasOne('userId', User::class, 'id', ['alias' => 'UserEntity']);
+        $this->hasOne('groupId', Group::class, 'id', ['alias' => 'GroupEntity']);
     }
-    
+
     public function validation()
     {
         $validator = $this->genericValidation();
-        
-        $validator->add('userId', new PresenceOf(['message' => $this->_('userIdRequired')]));
-        $validator->add('groupId', new PresenceOf(['message' => $this->_('groupIdRequired')]));
-        $validator->add(['userId', 'groupId'], new Uniqueness(['message' => $this->_('userGroupNotUnique')]));
-        
+
+        $validator->add('userId', new PresenceOf(['message' => $this->_('required')]));
+        $validator->add('groupId', new PresenceOf(['message' => $this->_('required')]));
+        $validator->add(['userId', 'groupId'], new Uniqueness(['message' => $this->_('not-unique')]));
+
         return $this->validate($validator);
     }
 }
