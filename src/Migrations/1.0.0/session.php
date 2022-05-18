@@ -6,9 +6,9 @@ use Phalcon\Db\Reference;
 use Phalcon\Migrations\Mvc\Model\Migration;
 
 /**
- * Class TemplateMigration_100
+ * Class SessionMigration_100
  */
-class TemplateMigration_100 extends Migration
+class SessionMigration_100 extends Migration
 {
     /**
      * Define the table structure
@@ -17,7 +17,7 @@ class TemplateMigration_100 extends Migration
      */
     public function morph()
     {
-        $this->morphTable('template', [
+        $this->morphTable('session', [
                 'columns' => [
                     new Column(
                         'id',
@@ -31,46 +31,65 @@ class TemplateMigration_100 extends Migration
                         ]
                     ),
                     new Column(
-                        'index',
+                        'user_id',
                         [
-                            'type' => Column::TYPE_VARCHAR,
-                            'notNull' => true,
-                            'size' => 50,
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
+                            'notNull' => false,
+                            'size' => 1,
                             'after' => 'id'
                         ]
                     ),
                     new Column(
-                        'label',
+                        'as_user_id',
                         [
-                            'type' => Column::TYPE_VARCHAR,
-                            'notNull' => true,
-                            'size' => 100,
-                            'after' => 'index'
-                        ]
-                    ),
-                    new Column(
-                        'subject',
-                        [
-                            'type' => Column::TYPE_VARCHAR,
-                            'notNull' => true,
-                            'size' => 100,
-                            'after' => 'label'
-                        ]
-                    ),
-                    new Column(
-                        'content',
-                        [
-                            'type' => Column::TYPE_MEDIUMTEXT,
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
                             'notNull' => false,
-                            'after' => 'subject'
+                            'size' => 1,
+                            'after' => 'user_id'
+                        ]
+                    ),
+                    new Column(
+                        'key',
+                        [
+                            'type' => Column::TYPE_VARCHAR,
+                            'notNull' => true,
+                            'size' => 60,
+                            'after' => 'as_user_id'
+                        ]
+                    ),
+                    new Column(
+                        'token',
+                        [
+                            'type' => Column::TYPE_VARCHAR,
+                            'notNull' => true,
+                            'size' => 128,
+                            'after' => 'key'
+                        ]
+                    ),
+                    new Column(
+                        'jwt',
+                        [
+                            'type' => Column::TYPE_TEXT,
+                            'notNull' => false,
+                            'after' => 'token'
                         ]
                     ),
                     new Column(
                         'meta',
                         [
-                            'type' => Column::TYPE_MEDIUMTEXT,
+                            'type' => Column::TYPE_TEXT,
                             'notNull' => false,
-                            'after' => 'content'
+                            'after' => 'jwt'
+                        ]
+                    ),
+                    new Column(
+                        'date',
+                        [
+                            'type' => Column::TYPE_DATETIME,
+                            'notNull' => true,
+                            'after' => 'meta'
                         ]
                     ),
                     new Column(
@@ -81,7 +100,7 @@ class TemplateMigration_100 extends Migration
                             'unsigned' => true,
                             'notNull' => true,
                             'size' => 1,
-                            'after' => 'meta'
+                            'after' => 'date'
                         ]
                     ),
                     new Column(
@@ -201,9 +220,10 @@ class TemplateMigration_100 extends Migration
                 'indexes' => [
                     new Index('PRIMARY', ['id'], 'PRIMARY'),
                     new Index('id_UNIQUE', ['id'], 'UNIQUE'),
-                    new Index('index_UNIQUE', ['index'], 'UNIQUE'),
-                    new Index('index', ['index'], ''),
-                    new Index('label', ['label'], ''),
+                    new Index('user_id', ['user_id'], ''),
+                    new Index('as_user_id', ['as_user_id'], ''),
+                    new Index('key', ['key'], ''),
+                    new Index('token', ['token'], ''),
                     new Index('created_by', ['created_by'], ''),
                     new Index('created_as', ['created_as'], ''),
                     new Index('updated_by', ['updated_by'], ''),

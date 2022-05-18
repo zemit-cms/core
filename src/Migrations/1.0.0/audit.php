@@ -6,9 +6,9 @@ use Phalcon\Db\Reference;
 use Phalcon\Migrations\Mvc\Model\Migration;
 
 /**
- * Class TemplateMigration_100
+ * Class AuditMigration_100
  */
-class TemplateMigration_100 extends Migration
+class AuditMigration_100 extends Migration
 {
     /**
      * Define the table structure
@@ -17,12 +17,12 @@ class TemplateMigration_100 extends Migration
      */
     public function morph()
     {
-        $this->morphTable('template', [
+        $this->morphTable('audit', [
                 'columns' => [
                     new Column(
                         'id',
                         [
-                            'type' => Column::TYPE_INTEGER,
+                            'type' => Column::TYPE_BIGINTEGER,
                             'unsigned' => true,
                             'notNull' => true,
                             'autoIncrement' => true,
@@ -31,46 +31,75 @@ class TemplateMigration_100 extends Migration
                         ]
                     ),
                     new Column(
-                        'index',
+                        'parent_id',
                         [
-                            'type' => Column::TYPE_VARCHAR,
-                            'notNull' => true,
-                            'size' => 50,
+                            'type' => Column::TYPE_BIGINTEGER,
+                            'unsigned' => true,
+                            'notNull' => false,
+                            'size' => 1,
                             'after' => 'id'
                         ]
                     ),
                     new Column(
-                        'label',
+                        'model',
                         [
                             'type' => Column::TYPE_VARCHAR,
                             'notNull' => true,
-                            'size' => 100,
-                            'after' => 'index'
+                            'size' => 255,
+                            'after' => 'parent_id'
                         ]
                     ),
                     new Column(
-                        'subject',
+                        'table',
                         [
                             'type' => Column::TYPE_VARCHAR,
                             'notNull' => true,
-                            'size' => 100,
-                            'after' => 'label'
+                            'size' => 60,
+                            'after' => 'model'
                         ]
                     ),
                     new Column(
-                        'content',
+                        'primary',
                         [
-                            'type' => Column::TYPE_MEDIUMTEXT,
-                            'notNull' => false,
-                            'after' => 'subject'
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
+                            'notNull' => true,
+                            'size' => 1,
+                            'after' => 'table'
                         ]
                     ),
                     new Column(
-                        'meta',
+                        'event',
+                        [
+                            'type' => Column::TYPE_ENUM,
+                            'default' => "other",
+                            'notNull' => true,
+                            'size' => "'create','update','delete','restore','other'",
+                            'after' => 'primary'
+                        ]
+                    ),
+                    new Column(
+                        'columns',
+                        [
+                            'type' => Column::TYPE_TEXT,
+                            'notNull' => false,
+                            'after' => 'event'
+                        ]
+                    ),
+                    new Column(
+                        'before',
                         [
                             'type' => Column::TYPE_MEDIUMTEXT,
                             'notNull' => false,
-                            'after' => 'content'
+                            'after' => 'columns'
+                        ]
+                    ),
+                    new Column(
+                        'after',
+                        [
+                            'type' => Column::TYPE_MEDIUMTEXT,
+                            'notNull' => false,
+                            'after' => 'before'
                         ]
                     ),
                     new Column(
@@ -81,7 +110,7 @@ class TemplateMigration_100 extends Migration
                             'unsigned' => true,
                             'notNull' => true,
                             'size' => 1,
-                            'after' => 'meta'
+                            'after' => 'after'
                         ]
                     ),
                     new Column(
@@ -150,7 +179,7 @@ class TemplateMigration_100 extends Migration
                         ]
                     ),
                     new Column(
-                        'deleted_by',
+                        'deleted_as',
                         [
                             'type' => Column::TYPE_INTEGER,
                             'unsigned' => true,
@@ -160,13 +189,13 @@ class TemplateMigration_100 extends Migration
                         ]
                     ),
                     new Column(
-                        'deleted_as',
+                        'deleted_by',
                         [
                             'type' => Column::TYPE_INTEGER,
                             'unsigned' => true,
                             'notNull' => false,
                             'size' => 1,
-                            'after' => 'deleted_by'
+                            'after' => 'deleted_as'
                         ]
                     ),
                     new Column(
@@ -174,7 +203,7 @@ class TemplateMigration_100 extends Migration
                         [
                             'type' => Column::TYPE_DATETIME,
                             'notNull' => false,
-                            'after' => 'deleted_as'
+                            'after' => 'deleted_by'
                         ]
                     ),
                     new Column(
@@ -201,9 +230,10 @@ class TemplateMigration_100 extends Migration
                 'indexes' => [
                     new Index('PRIMARY', ['id'], 'PRIMARY'),
                     new Index('id_UNIQUE', ['id'], 'UNIQUE'),
-                    new Index('index_UNIQUE', ['index'], 'UNIQUE'),
-                    new Index('index', ['index'], ''),
-                    new Index('label', ['label'], ''),
+                    new Index('parent_id', ['parent_id'], ''),
+                    new Index('model', ['model'], ''),
+                    new Index('table', ['table'], ''),
+                    new Index('primary_2', ['primary'], ''),
                     new Index('created_by', ['created_by'], ''),
                     new Index('created_as', ['created_as'], ''),
                     new Index('updated_by', ['updated_by'], ''),

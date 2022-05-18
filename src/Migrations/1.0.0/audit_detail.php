@@ -6,9 +6,9 @@ use Phalcon\Db\Reference;
 use Phalcon\Migrations\Mvc\Model\Migration;
 
 /**
- * Class TemplateMigration_100
+ * Class AuditDetailMigration_100
  */
-class TemplateMigration_100 extends Migration
+class AuditDetailMigration_100 extends Migration
 {
     /**
      * Define the table structure
@@ -17,12 +17,12 @@ class TemplateMigration_100 extends Migration
      */
     public function morph()
     {
-        $this->morphTable('template', [
+        $this->morphTable('audit_detail', [
                 'columns' => [
                     new Column(
                         'id',
                         [
-                            'type' => Column::TYPE_INTEGER,
+                            'type' => Column::TYPE_BIGINTEGER,
                             'unsigned' => true,
                             'notNull' => true,
                             'autoIncrement' => true,
@@ -31,46 +31,85 @@ class TemplateMigration_100 extends Migration
                         ]
                     ),
                     new Column(
-                        'index',
+                        'audit_id',
                         [
-                            'type' => Column::TYPE_VARCHAR,
+                            'type' => Column::TYPE_BIGINTEGER,
+                            'unsigned' => true,
                             'notNull' => true,
-                            'size' => 50,
+                            'size' => 1,
                             'after' => 'id'
                         ]
                     ),
                     new Column(
-                        'label',
+                        'model',
                         [
                             'type' => Column::TYPE_VARCHAR,
                             'notNull' => true,
-                            'size' => 100,
-                            'after' => 'index'
+                            'size' => 255,
+                            'after' => 'audit_id'
                         ]
                     ),
                     new Column(
-                        'subject',
+                        'table',
                         [
                             'type' => Column::TYPE_VARCHAR,
                             'notNull' => true,
-                            'size' => 100,
-                            'after' => 'label'
+                            'size' => 60,
+                            'after' => 'model'
                         ]
                     ),
                     new Column(
-                        'content',
+                        'primary',
                         [
-                            'type' => Column::TYPE_MEDIUMTEXT,
-                            'notNull' => false,
-                            'after' => 'subject'
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
+                            'notNull' => true,
+                            'size' => 1,
+                            'after' => 'table'
                         ]
                     ),
                     new Column(
-                        'meta',
+                        'event',
+                        [
+                            'type' => Column::TYPE_ENUM,
+                            'default' => "other",
+                            'notNull' => true,
+                            'size' => "'create','update','delete','restore','other'",
+                            'after' => 'primary'
+                        ]
+                    ),
+                    new Column(
+                        'column',
+                        [
+                            'type' => Column::TYPE_VARCHAR,
+                            'notNull' => true,
+                            'size' => 60,
+                            'after' => 'event'
+                        ]
+                    ),
+                    new Column(
+                        'map',
+                        [
+                            'type' => Column::TYPE_VARCHAR,
+                            'notNull' => true,
+                            'size' => 60,
+                            'after' => 'column'
+                        ]
+                    ),
+                    new Column(
+                        'before',
                         [
                             'type' => Column::TYPE_MEDIUMTEXT,
                             'notNull' => false,
-                            'after' => 'content'
+                            'after' => 'map'
+                        ]
+                    ),
+                    new Column(
+                        'after',
+                        [
+                            'type' => Column::TYPE_MEDIUMTEXT,
+                            'notNull' => false,
+                            'after' => 'before'
                         ]
                     ),
                     new Column(
@@ -81,7 +120,7 @@ class TemplateMigration_100 extends Migration
                             'unsigned' => true,
                             'notNull' => true,
                             'size' => 1,
-                            'after' => 'meta'
+                            'after' => 'after'
                         ]
                     ),
                     new Column(
@@ -201,9 +240,12 @@ class TemplateMigration_100 extends Migration
                 'indexes' => [
                     new Index('PRIMARY', ['id'], 'PRIMARY'),
                     new Index('id_UNIQUE', ['id'], 'UNIQUE'),
-                    new Index('index_UNIQUE', ['index'], 'UNIQUE'),
-                    new Index('index', ['index'], ''),
-                    new Index('label', ['label'], ''),
+                    new Index('audit_id', ['audit_id'], ''),
+                    new Index('model', ['model'], ''),
+                    new Index('table', ['table'], ''),
+                    new Index('primary_2', ['primary'], ''),
+                    new Index('column', ['column'], ''),
+                    new Index('map', ['map'], ''),
                     new Index('created_by', ['created_by'], ''),
                     new Index('created_as', ['created_as'], ''),
                     new Index('updated_by', ['updated_by'], ''),

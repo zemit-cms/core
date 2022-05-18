@@ -26,7 +26,7 @@ class UserRoleMigration_100 extends Migration
                             'unsigned' => true,
                             'notNull' => true,
                             'autoIncrement' => true,
-                            'size' => 10,
+                            'size' => 1,
                             'first' => true
                         ]
                     ),
@@ -36,7 +36,7 @@ class UserRoleMigration_100 extends Migration
                             'type' => Column::TYPE_INTEGER,
                             'unsigned' => true,
                             'notNull' => true,
-                            'size' => 10,
+                            'size' => 1,
                             'after' => 'id'
                         ]
                     ),
@@ -46,41 +46,19 @@ class UserRoleMigration_100 extends Migration
                             'type' => Column::TYPE_INTEGER,
                             'unsigned' => true,
                             'notNull' => true,
-                            'size' => 10,
+                            'size' => 1,
                             'after' => 'user_id'
                         ]
                     ),
                     new Column(
-                        'created_at',
+                        'position',
                         [
-                            'type' => Column::TYPE_DATETIME,
-                            'default' => "current_timestamp()",
+                            'type' => Column::TYPE_INTEGER,
+                            'default' => "0",
+                            'unsigned' => true,
                             'notNull' => true,
+                            'size' => 1,
                             'after' => 'role_id'
-                        ]
-                    ),
-                    new Column(
-                        'updated_at',
-                        [
-                            'type' => Column::TYPE_DATETIME,
-                            'notNull' => false,
-                            'after' => 'created_at'
-                        ]
-                    ),
-                    new Column(
-                        'deleted_at',
-                        [
-                            'type' => Column::TYPE_DATETIME,
-                            'notNull' => false,
-                            'after' => 'updated_at'
-                        ]
-                    ),
-                    new Column(
-                        'deprecated_at',
-                        [
-                            'type' => Column::TYPE_DATETIME,
-                            'notNull' => false,
-                            'after' => 'deleted_at'
                         ]
                     ),
                     new Column(
@@ -91,56 +69,142 @@ class UserRoleMigration_100 extends Migration
                             'unsigned' => true,
                             'notNull' => true,
                             'size' => 1,
-                            'after' => 'deprecated_at'
+                            'after' => 'position'
                         ]
                     ),
                     new Column(
-                        'deprecated',
+                        'created_at',
                         [
-                            'type' => Column::TYPE_TINYINTEGER,
-                            'default' => "0",
-                            'unsigned' => true,
+                            'type' => Column::TYPE_DATETIME,
+                            'default' => "CURRENT_TIMESTAMP",
                             'notNull' => true,
-                            'size' => 1,
                             'after' => 'deleted'
+                        ]
+                    ),
+                    new Column(
+                        'created_by',
+                        [
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
+                            'notNull' => false,
+                            'size' => 1,
+                            'after' => 'created_at'
+                        ]
+                    ),
+                    new Column(
+                        'created_as',
+                        [
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
+                            'notNull' => false,
+                            'size' => 1,
+                            'after' => 'created_by'
+                        ]
+                    ),
+                    new Column(
+                        'updated_at',
+                        [
+                            'type' => Column::TYPE_DATETIME,
+                            'notNull' => false,
+                            'after' => 'created_as'
+                        ]
+                    ),
+                    new Column(
+                        'updated_by',
+                        [
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
+                            'notNull' => false,
+                            'size' => 1,
+                            'after' => 'updated_at'
+                        ]
+                    ),
+                    new Column(
+                        'updated_as',
+                        [
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
+                            'notNull' => false,
+                            'size' => 1,
+                            'after' => 'updated_by'
+                        ]
+                    ),
+                    new Column(
+                        'deleted_at',
+                        [
+                            'type' => Column::TYPE_DATETIME,
+                            'notNull' => false,
+                            'after' => 'updated_as'
+                        ]
+                    ),
+                    new Column(
+                        'deleted_as',
+                        [
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
+                            'notNull' => false,
+                            'size' => 1,
+                            'after' => 'deleted_at'
+                        ]
+                    ),
+                    new Column(
+                        'deleted_by',
+                        [
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
+                            'notNull' => false,
+                            'size' => 1,
+                            'after' => 'deleted_as'
+                        ]
+                    ),
+                    new Column(
+                        'restored_at',
+                        [
+                            'type' => Column::TYPE_DATETIME,
+                            'notNull' => false,
+                            'after' => 'deleted_by'
+                        ]
+                    ),
+                    new Column(
+                        'restored_by',
+                        [
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
+                            'notNull' => false,
+                            'size' => 1,
+                            'after' => 'restored_at'
+                        ]
+                    ),
+                    new Column(
+                        'restored_as',
+                        [
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
+                            'notNull' => false,
+                            'size' => 1,
+                            'after' => 'restored_by'
                         ]
                     )
                 ],
                 'indexes' => [
                     new Index('PRIMARY', ['id'], 'PRIMARY'),
                     new Index('id_UNIQUE', ['id'], 'UNIQUE'),
-                    new Index('user_role_user_id_fk_idx', ['user_id'], ''),
-                    new Index('user_role_role_id_fk_idx', ['role_id'], '')
-                ],
-                'references' => [
-                    new Reference(
-                        'user_role_role_id_fk',
-                        [
-                            'referencedTable' => 'role',
-                            'referencedSchema' => 'zemit',
-                            'columns' => ['role_id'],
-                            'referencedColumns' => ['id'],
-                            'onUpdate' => 'CASCADE',
-                            'onDelete' => 'CASCADE'
-                        ]
-                    ),
-                    new Reference(
-                        'user_role_user_id_fk',
-                        [
-                            'referencedTable' => 'user',
-                            'referencedSchema' => 'zemit',
-                            'columns' => ['user_id'],
-                            'referencedColumns' => ['id'],
-                            'onUpdate' => 'CASCADE',
-                            'onDelete' => 'CASCADE'
-                        ]
-                    )
+                    new Index('user_id', ['user_id'], ''),
+                    new Index('role_id', ['role_id'], ''),
+                    new Index('created_by', ['created_by'], ''),
+                    new Index('created_as', ['created_as'], ''),
+                    new Index('updated_by', ['updated_by'], ''),
+                    new Index('updated_as', ['updated_as'], ''),
+                    new Index('deleted_by', ['deleted_by'], ''),
+                    new Index('deleted_as', ['deleted_as'], ''),
+                    new Index('restored_by', ['restored_by'], ''),
+                    new Index('restored_as', ['restored_as'], '')
                 ],
                 'options' => [
                     'table_type' => 'BASE TABLE',
                     'auto_increment' => '',
                     'engine' => 'InnoDB',
-                    'table_collation' => 'utf8mb4_general_ci'
+                    'table_collation' => 'utf8_general_ci'
                 ],
             ]
         );

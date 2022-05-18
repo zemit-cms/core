@@ -6,9 +6,9 @@ use Phalcon\Db\Reference;
 use Phalcon\Migrations\Mvc\Model\Migration;
 
 /**
- * Class TemplateMigration_100
+ * Class EmailMigration_100
  */
-class TemplateMigration_100 extends Migration
+class EmailMigration_100 extends Migration
 {
     /**
      * Define the table structure
@@ -17,7 +17,7 @@ class TemplateMigration_100 extends Migration
      */
     public function morph()
     {
-        $this->morphTable('template', [
+        $this->morphTable('email', [
                 'columns' => [
                     new Column(
                         'id',
@@ -31,21 +31,63 @@ class TemplateMigration_100 extends Migration
                         ]
                     ),
                     new Column(
-                        'index',
+                        'template_id',
                         [
-                            'type' => Column::TYPE_VARCHAR,
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
                             'notNull' => true,
-                            'size' => 50,
+                            'size' => 1,
                             'after' => 'id'
                         ]
                     ),
                     new Column(
-                        'label',
+                        'uuid',
                         [
                             'type' => Column::TYPE_VARCHAR,
                             'notNull' => true,
-                            'size' => 100,
-                            'after' => 'index'
+                            'size' => 255,
+                            'after' => 'template_id'
+                        ]
+                    ),
+                    new Column(
+                        'from',
+                        [
+                            'type' => Column::TYPE_VARCHAR,
+                            'notNull' => true,
+                            'size' => 500,
+                            'after' => 'uuid'
+                        ]
+                    ),
+                    new Column(
+                        'to',
+                        [
+                            'type' => Column::TYPE_TEXT,
+                            'notNull' => true,
+                            'after' => 'from'
+                        ]
+                    ),
+                    new Column(
+                        'cc',
+                        [
+                            'type' => Column::TYPE_TEXT,
+                            'notNull' => false,
+                            'after' => 'to'
+                        ]
+                    ),
+                    new Column(
+                        'bcc',
+                        [
+                            'type' => Column::TYPE_TEXT,
+                            'notNull' => false,
+                            'after' => 'cc'
+                        ]
+                    ),
+                    new Column(
+                        'read_receipt_to',
+                        [
+                            'type' => Column::TYPE_TEXT,
+                            'notNull' => false,
+                            'after' => 'bcc'
                         ]
                     ),
                     new Column(
@@ -53,15 +95,15 @@ class TemplateMigration_100 extends Migration
                         [
                             'type' => Column::TYPE_VARCHAR,
                             'notNull' => true,
-                            'size' => 100,
-                            'after' => 'label'
+                            'size' => 255,
+                            'after' => 'read_receipt_to'
                         ]
                     ),
                     new Column(
                         'content',
                         [
                             'type' => Column::TYPE_MEDIUMTEXT,
-                            'notNull' => false,
+                            'notNull' => true,
                             'after' => 'subject'
                         ]
                     ),
@@ -74,6 +116,54 @@ class TemplateMigration_100 extends Migration
                         ]
                     ),
                     new Column(
+                        'view_path',
+                        [
+                            'type' => Column::TYPE_VARCHAR,
+                            'notNull' => false,
+                            'size' => 255,
+                            'after' => 'meta'
+                        ]
+                    ),
+                    new Column(
+                        'sent',
+                        [
+                            'type' => Column::TYPE_TINYINTEGER,
+                            'default' => "0",
+                            'unsigned' => true,
+                            'notNull' => true,
+                            'size' => 1,
+                            'after' => 'view_path'
+                        ]
+                    ),
+                    new Column(
+                        'sent_at',
+                        [
+                            'type' => Column::TYPE_DATETIME,
+                            'notNull' => false,
+                            'after' => 'sent'
+                        ]
+                    ),
+                    new Column(
+                        'sent_by',
+                        [
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
+                            'notNull' => false,
+                            'size' => 1,
+                            'after' => 'sent_at'
+                        ]
+                    ),
+                    new Column(
+                        'sent_as',
+                        [
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
+                            'notNull' => false,
+                            'size' => 1,
+                            'after' => 'sent_by'
+                        ]
+                    ),
+                    new Column(
                         'deleted',
                         [
                             'type' => Column::TYPE_TINYINTEGER,
@@ -81,7 +171,7 @@ class TemplateMigration_100 extends Migration
                             'unsigned' => true,
                             'notNull' => true,
                             'size' => 1,
-                            'after' => 'meta'
+                            'after' => 'sent_as'
                         ]
                     ),
                     new Column(
@@ -201,9 +291,9 @@ class TemplateMigration_100 extends Migration
                 'indexes' => [
                     new Index('PRIMARY', ['id'], 'PRIMARY'),
                     new Index('id_UNIQUE', ['id'], 'UNIQUE'),
-                    new Index('index_UNIQUE', ['index'], 'UNIQUE'),
-                    new Index('index', ['index'], ''),
-                    new Index('label', ['label'], ''),
+                    new Index('uuid_UNIQUE', ['uuid'], 'UNIQUE'),
+                    new Index('template_id', ['template_id'], ''),
+                    new Index('uuid', ['uuid'], ''),
                     new Index('created_by', ['created_by'], ''),
                     new Index('created_as', ['created_as'], ''),
                     new Index('updated_by', ['updated_by'], ''),

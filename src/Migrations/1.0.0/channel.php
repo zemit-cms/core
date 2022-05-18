@@ -26,8 +26,28 @@ class ChannelMigration_100 extends Migration
                             'unsigned' => true,
                             'notNull' => true,
                             'autoIncrement' => true,
-                            'size' => 10,
+                            'size' => 1,
                             'first' => true
+                        ]
+                    ),
+                    new Column(
+                        'lang_id',
+                        [
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
+                            'notNull' => true,
+                            'size' => 1,
+                            'after' => 'id'
+                        ]
+                    ),
+                    new Column(
+                        'site_id',
+                        [
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
+                            'notNull' => true,
+                            'size' => 1,
+                            'after' => 'lang_id'
                         ]
                     ),
                     new Column(
@@ -35,42 +55,57 @@ class ChannelMigration_100 extends Migration
                         [
                             'type' => Column::TYPE_VARCHAR,
                             'notNull' => true,
-                            'size' => 60,
-                            'after' => 'id'
+                            'size' => 255,
+                            'after' => 'site_id'
                         ]
                     ),
                     new Column(
-                        'slug',
+                        'index',
                         [
                             'type' => Column::TYPE_VARCHAR,
                             'notNull' => true,
-                            'size' => 60,
+                            'size' => 45,
                             'after' => 'name'
                         ]
                     ),
                     new Column(
-                        'description',
+                        'deleted',
                         [
-                            'type' => Column::TYPE_TEXT,
-                            'notNull' => false,
-                            'after' => 'slug'
-                        ]
-                    ),
-                    new Column(
-                        'status',
-                        [
-                            'type' => Column::TYPE_CHAR,
-                            'notNull' => false,
-                            'size' => 20,
-                            'after' => 'description'
+                            'type' => Column::TYPE_TINYINTEGER,
+                            'default' => "0",
+                            'unsigned' => true,
+                            'notNull' => true,
+                            'size' => 1,
+                            'after' => 'index'
                         ]
                     ),
                     new Column(
                         'created_at',
                         [
                             'type' => Column::TYPE_DATETIME,
+                            'default' => "CURRENT_TIMESTAMP",
                             'notNull' => true,
-                            'after' => 'status'
+                            'after' => 'deleted'
+                        ]
+                    ),
+                    new Column(
+                        'created_by',
+                        [
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
+                            'notNull' => false,
+                            'size' => 1,
+                            'after' => 'created_at'
+                        ]
+                    ),
+                    new Column(
+                        'created_as',
+                        [
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
+                            'notNull' => false,
+                            'size' => 1,
+                            'after' => 'created_by'
                         ]
                     ),
                     new Column(
@@ -78,7 +113,27 @@ class ChannelMigration_100 extends Migration
                         [
                             'type' => Column::TYPE_DATETIME,
                             'notNull' => false,
-                            'after' => 'created_at'
+                            'after' => 'created_as'
+                        ]
+                    ),
+                    new Column(
+                        'updated_by',
+                        [
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
+                            'notNull' => false,
+                            'size' => 1,
+                            'after' => 'updated_at'
+                        ]
+                    ),
+                    new Column(
+                        'updated_as',
+                        [
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
+                            'notNull' => false,
+                            'size' => 1,
+                            'after' => 'updated_by'
                         ]
                     ),
                     new Column(
@@ -86,21 +141,69 @@ class ChannelMigration_100 extends Migration
                         [
                             'type' => Column::TYPE_DATETIME,
                             'notNull' => false,
-                            'after' => 'updated_at'
+                            'after' => 'updated_as'
+                        ]
+                    ),
+                    new Column(
+                        'deleted_as',
+                        [
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
+                            'notNull' => false,
+                            'size' => 1,
+                            'after' => 'deleted_at'
+                        ]
+                    ),
+                    new Column(
+                        'deleted_by',
+                        [
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
+                            'notNull' => false,
+                            'size' => 1,
+                            'after' => 'deleted_as'
+                        ]
+                    ),
+                    new Column(
+                        'restored_at',
+                        [
+                            'type' => Column::TYPE_DATETIME,
+                            'notNull' => false,
+                            'after' => 'deleted_by'
+                        ]
+                    ),
+                    new Column(
+                        'restored_by',
+                        [
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
+                            'notNull' => false,
+                            'size' => 1,
+                            'after' => 'restored_at'
+                        ]
+                    ),
+                    new Column(
+                        'deleted_copy1',
+                        [
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
+                            'notNull' => false,
+                            'size' => 1,
+                            'after' => 'restored_by'
                         ]
                     )
                 ],
                 'indexes' => [
                     new Index('PRIMARY', ['id'], 'PRIMARY'),
                     new Index('id_UNIQUE', ['id'], 'UNIQUE'),
-                    new Index('name_UNIQUE', ['name'], 'UNIQUE'),
-                    new Index('slug_UNIQUE', ['slug'], 'UNIQUE')
+                    new Index('index_UNIQUE', ['index'], 'UNIQUE'),
+                    new Index('name_UNIQUE', ['name'], 'UNIQUE')
                 ],
                 'options' => [
                     'table_type' => 'BASE TABLE',
                     'auto_increment' => '',
                     'engine' => 'InnoDB',
-                    'table_collation' => 'utf8mb4_general_ci'
+                    'table_collation' => 'utf8_general_ci'
                 ],
             ]
         );

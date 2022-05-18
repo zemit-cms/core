@@ -6,9 +6,9 @@ use Phalcon\Db\Reference;
 use Phalcon\Migrations\Mvc\Model\Migration;
 
 /**
- * Class TemplateMigration_100
+ * Class DataMigration_100
  */
-class TemplateMigration_100 extends Migration
+class DataMigration_100 extends Migration
 {
     /**
      * Define the table structure
@@ -17,7 +17,7 @@ class TemplateMigration_100 extends Migration
      */
     public function morph()
     {
-        $this->morphTable('template', [
+        $this->morphTable('data', [
                 'columns' => [
                     new Column(
                         'id',
@@ -31,46 +31,41 @@ class TemplateMigration_100 extends Migration
                         ]
                     ),
                     new Column(
-                        'index',
+                        'site_id',
                         [
-                            'type' => Column::TYPE_VARCHAR,
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
                             'notNull' => true,
-                            'size' => 50,
+                            'size' => 1,
                             'after' => 'id'
                         ]
                     ),
                     new Column(
-                        'label',
+                        'channel_id',
                         [
-                            'type' => Column::TYPE_VARCHAR,
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
                             'notNull' => true,
-                            'size' => 100,
-                            'after' => 'index'
+                            'size' => 1,
+                            'after' => 'site_id'
                         ]
                     ),
                     new Column(
-                        'subject',
+                        'field_id',
                         [
-                            'type' => Column::TYPE_VARCHAR,
+                            'type' => Column::TYPE_INTEGER,
+                            'unsigned' => true,
                             'notNull' => true,
-                            'size' => 100,
-                            'after' => 'label'
+                            'size' => 1,
+                            'after' => 'channel_id'
                         ]
                     ),
                     new Column(
-                        'content',
+                        'value',
                         [
                             'type' => Column::TYPE_MEDIUMTEXT,
                             'notNull' => false,
-                            'after' => 'subject'
-                        ]
-                    ),
-                    new Column(
-                        'meta',
-                        [
-                            'type' => Column::TYPE_MEDIUMTEXT,
-                            'notNull' => false,
-                            'after' => 'content'
+                            'after' => 'field_id'
                         ]
                     ),
                     new Column(
@@ -81,7 +76,7 @@ class TemplateMigration_100 extends Migration
                             'unsigned' => true,
                             'notNull' => true,
                             'size' => 1,
-                            'after' => 'meta'
+                            'after' => 'value'
                         ]
                     ),
                     new Column(
@@ -150,7 +145,7 @@ class TemplateMigration_100 extends Migration
                         ]
                     ),
                     new Column(
-                        'deleted_by',
+                        'deleted_as',
                         [
                             'type' => Column::TYPE_INTEGER,
                             'unsigned' => true,
@@ -160,13 +155,13 @@ class TemplateMigration_100 extends Migration
                         ]
                     ),
                     new Column(
-                        'deleted_as',
+                        'deleted_by',
                         [
                             'type' => Column::TYPE_INTEGER,
                             'unsigned' => true,
                             'notNull' => false,
                             'size' => 1,
-                            'after' => 'deleted_by'
+                            'after' => 'deleted_as'
                         ]
                     ),
                     new Column(
@@ -174,7 +169,7 @@ class TemplateMigration_100 extends Migration
                         [
                             'type' => Column::TYPE_DATETIME,
                             'notNull' => false,
-                            'after' => 'deleted_as'
+                            'after' => 'deleted_by'
                         ]
                     ),
                     new Column(
@@ -186,32 +181,12 @@ class TemplateMigration_100 extends Migration
                             'size' => 1,
                             'after' => 'restored_at'
                         ]
-                    ),
-                    new Column(
-                        'restored_as',
-                        [
-                            'type' => Column::TYPE_INTEGER,
-                            'unsigned' => true,
-                            'notNull' => false,
-                            'size' => 1,
-                            'after' => 'restored_by'
-                        ]
                     )
                 ],
                 'indexes' => [
                     new Index('PRIMARY', ['id'], 'PRIMARY'),
                     new Index('id_UNIQUE', ['id'], 'UNIQUE'),
-                    new Index('index_UNIQUE', ['index'], 'UNIQUE'),
-                    new Index('index', ['index'], ''),
-                    new Index('label', ['label'], ''),
-                    new Index('created_by', ['created_by'], ''),
-                    new Index('created_as', ['created_as'], ''),
-                    new Index('updated_by', ['updated_by'], ''),
-                    new Index('updated_as', ['updated_as'], ''),
-                    new Index('deleted_by', ['deleted_by'], ''),
-                    new Index('deleted_as', ['deleted_as'], ''),
-                    new Index('restored_by', ['restored_by'], ''),
-                    new Index('restored_as', ['restored_as'], '')
+                    new Index('value_fulltext', ['value'], 'FULLTEXT')
                 ],
                 'options' => [
                     'table_type' => 'BASE TABLE',
