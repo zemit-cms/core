@@ -855,7 +855,7 @@ trait Model
      * @param string|null $modelName
      * @param string|array|null $with
      *
-     * @return bool|Resultset
+     * @return bool|Resultset|\Zemit\Mvc\Model
      */
     public function getSingle($id = null, $modelName = null, $with = [], $find = null, $appendCondition = true)
     {
