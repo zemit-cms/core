@@ -27,6 +27,17 @@ use Phalcon\Text;
 class Utils
 {
     /**
+     * Remove time and memory limits
+     * @return void
+     */
+    public static function setUnlimitedRuntime() {
+        ini_set('memory_limit', -1);
+        ini_set('max_execution_time', 0);
+        ini_set('max_input_time', 0);
+        set_time_limit(0);
+    }
+    
+    /**
      * @param $class
      *
      * @return bool|string
