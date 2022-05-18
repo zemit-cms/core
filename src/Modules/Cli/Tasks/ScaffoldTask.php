@@ -65,7 +65,7 @@ DOC;
             $columns = $this->db->describeColumns($table);
             foreach ($columns as $column) {
                 
-                switch($column->getType()) {
+                switch ($column->getType()) {
                     case Column::TYPE_TIMESTAMP:
                     case Column::TYPE_MEDIUMINTEGER:
                     case Column::TYPE_SMALLINTEGER:
@@ -119,10 +119,10 @@ DOC;
                         break;
                     case "string":
                         if ($tsType === 'string') {
-                            $default = !empty($columnDefault)? '"' . addslashes($columnDefault) . '"' : null;
+                            $default = !empty($columnDefault) ? '"' . addslashes($columnDefault) . '"' : null;
                         }
                         if ($tsType === 'number') {
-                            $default = !empty($columnDefault)? $columnDefault : null;
+                            $default = !empty($columnDefault) ? $columnDefault : null;
                         }
                         if ($tsType === 'array') {
                             $default = '[]';
@@ -142,7 +142,7 @@ DOC;
                 }
                 
                 $propertyName = lcfirst(Text::camelize($column->getName()));
-                $output [] = '    public ' . $propertyName . ': ' . $tsType . (!empty($default)? ' = ' . $default : null) . ';';
+                $output [] = '    public ' . $propertyName . ': ' . $tsType . (!empty($default) ? ' = ' . $default : null) . ';';
             }
             $output [] = '}';
             
