@@ -27,7 +27,6 @@ use Phalcon\Config as PhalconConfig;
 
 /**
  * Class Config
- * {@inheritDoc}
  *
  * @author Julien Turbide <jturbide@nuagerie.com>
  * @copyright Zemit Team <contact@zemit.com>
@@ -1157,12 +1156,14 @@ class Config extends PhalconConfig
     }
     
     /**
+     * Return the mapped model class name from $this->models->$class
+     *
      * @param string $class
      * @return string
      */
     public function getModelClass(string $class)
     {
-        return $this->models->$class ?: $class;
+        return $this->get('models.' . $class, $class);
     }
 }
 
