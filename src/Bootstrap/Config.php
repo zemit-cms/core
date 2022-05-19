@@ -1138,7 +1138,7 @@ class Config extends PhalconConfig
      *
      * @return Config $this Return the merged current config
      */
-    public function mergeEnvConfig($env = null)
+    public function mergeEnvConfig(?string $env = null) : self
     {
         $configFile = $this->app->dir->config . (isset($env) ? $env : $this->app->env) . '.php';
         
@@ -1161,7 +1161,7 @@ class Config extends PhalconConfig
      * @param string $class
      * @return string
      */
-    public function getModelClass(string $class)
+    public function getModelClass(string $class) : string
     {
         return $this->get('models.' . $class, $class);
     }
