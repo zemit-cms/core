@@ -10,10 +10,7 @@
 
 namespace Zemit\Provider\ModelsCache;
 
-use Phalcon\Cache;
-use Phalcon\Cache\AdapterFactory;
-use Phalcon\Storage\SerializerFactory;
-use Zemit\Provider\AbstractServiceProvider;
+use Zemit\Provider\Cache\ServiceProvider as CacheServiceProvider;
 
 /**
  * Class ServiceProvider
@@ -26,34 +23,11 @@ use Zemit\Provider\AbstractServiceProvider;
  *
  * @package Zemit\Provider\ModelsCache
  */
-class ServiceProvider extends AbstractServiceProvider
+class ServiceProvider extends CacheServiceProvider
 {
     /**
      * The Service name.
      * @var string
      */
-    protected $serviceName = 'modelsCache';
-    
-    /**
-     * {@inheritdoc}
-     *
-     * @return void
-     */
-    public function register(\Phalcon\Di\DiInterface $di): void
-    {
-        $di->setShared($this->getName(), function() use ($di) {
-            
-            $config = $di->get('config')->cache;
-            $driverName = $di->get('bootstrap')->getMode() === 'console'? 'cli' : 'driver';
-            $driver = $config->drivers->{$config->$driverName};
-            
-            $options = array_merge($config->default->toArray(), $driver->toArray());
-            
-            $serializerFactory = new SerializerFactory();
-            $adapterFactory = new AdapterFactory($serializerFactory);
-            $adapter = $adapterFactory->newInstance($config->$driverName, $options);
-    
-            return new Cache($adapter);
-        });
-    }
+    protected $serviceName = 'cache';
 }
