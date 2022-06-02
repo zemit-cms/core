@@ -8,12 +8,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Provider\ModelsCache;
-
-use Zemit\Provider\Cache\ServiceProvider as CacheServiceProvider;
+namespace Zemit;
 
 /**
- * Class ServiceProvider
+ * Class Cache
  *
  * @author Julien Turbide <jturbide@nuagerie.com>
  * @copyright Zemit Team <contact@zemit.com>
@@ -21,13 +19,9 @@ use Zemit\Provider\Cache\ServiceProvider as CacheServiceProvider;
  * @since 1.0
  * @version 1.0
  *
- * @package Zemit\Provider\ModelsCache
+ * @package Zemit
  */
-class ServiceProvider extends CacheServiceProvider
+class Cache extends \Phalcon\Cache
 {
-    /**
-     * The Service name.
-     * @var string
-     */
-    protected $serviceName = 'modelsCache';
+
 }

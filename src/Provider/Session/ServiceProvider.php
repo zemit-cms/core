@@ -12,8 +12,8 @@
 namespace Zemit\Provider\Session;
 
 use Phalcon\Di\DiInterface;
-use Phalcon\Session\Adapter\Redis;
 use Phalcon\Session\Manager;
+use Phalcon\Session\Adapter\Redis;
 use Phalcon\Session\Adapter\Noop;
 use Phalcon\Session\Adapter\Stream;
 use Phalcon\Storage\AdapterFactory;

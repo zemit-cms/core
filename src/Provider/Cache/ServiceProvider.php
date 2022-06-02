@@ -10,7 +10,7 @@
 
 namespace Zemit\Provider\Cache;
 
-use Phalcon\Cache;
+use Zemit\Cache;
 use Phalcon\Cache\AdapterFactory;
 use Phalcon\Storage\SerializerFactory;
 use Zemit\Provider\AbstractServiceProvider;
