@@ -333,18 +333,15 @@ class Identity extends Injectable
         
         $key ??= $this->security->getRandom()->uuid();
         $token ??= $this->security->getRandom()->hex(512);
+        $newToken = $refresh? $this->security->getRandom()->hex(512) : $token;
+        $date = date('Y-m-d H:i:s');
         
         $sessionClass = $this->getSessionClass();
         $session = $this->getSession($key, $token) ?: new $sessionClass();
-        
-        if ($session && $refresh) {
-            $token = $this->security->getRandom()->hex(512);
-        }
-        
         $session->setKey($key);
-        $session->setToken($session->hash($key . $token));
-        $session->setDate(date('Y-m-d H:i:s'));
-        $store = ['key' => $session->getKey(), 'token' => $token];
+        $session->setToken($session->hash($key . $newToken));
+        $session->setDate($date);
+        $store = ['key' => $session->getKey(), 'token' => $newToken];
         
         ($save = $session->save()) ?
             $this->session->set($this->sessionKey, $store) :
@@ -355,7 +352,7 @@ class Identity extends Injectable
             'stored' => $this->session->has($this->sessionKey),
             'refreshed' => $save && $refresh,
             'validated' => $session->checkHash($session->getToken(), $session->getKey() . $token),
-            'messages' => $session ? $session->getMessages() : [],
+            'messages' => $session->getMessages(),
             'jwt' => $this->getJwtToken($this->sessionKey, $store),
         ];
     }
@@ -730,7 +727,7 @@ class Identity extends Injectable
         $oauth2->setLastName($meta['last_name'] ?? null);
         $oauth2->setEmail($meta['email'] ?? null);
         
-        // ge the current session
+        // get the current session
         $session = $this->getSession();
         
         // link the current user to the oauth2 entity
