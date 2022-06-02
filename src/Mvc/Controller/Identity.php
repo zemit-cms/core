@@ -60,7 +60,9 @@ trait Identity
      */
     public function loginAction()
     {
+        $this->view->setVars($this->identity->getJwt());
         $this->view->setVars($this->identity->login($this->getParams()));
+        $this->view->setVars($this->identity->getIdentity());
         
         return $this->view->loggedIn;
     }

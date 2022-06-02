@@ -49,9 +49,7 @@ class ServiceProvider extends AbstractServiceProvider
                 $options = $config->identity->toArray();
             }
             
-            $identity = new Identity($options ?? null);
-            
-            return $identity;
+            return new Identity($options ?? null);
         });
     }
 }
