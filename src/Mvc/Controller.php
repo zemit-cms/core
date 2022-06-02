@@ -18,11 +18,10 @@ use Zemit\Filter;
 use Zemit\Identity;
 use Zemit\Tag;
 use Zemit\Utils;
-use Xenolope\Quahog\Client as Clamav;
+use Zemit\Cache;
 
 /**
  * Class Controller
- * {@inheritDoc}
  *
  * @author Julien Turbide <jturbide@nuagerie.com>
  * @copyright Zemit Team <contact@zemit.com>
@@ -41,6 +40,7 @@ use Xenolope\Quahog\Client as Clamav;
  * @property Filter $filter
  * @property Dispatcher $dispatcher
  * @property Router $router
+ * @property Cache $cache
  */
 class Controller extends \Phalcon\Mvc\Controller
 {
