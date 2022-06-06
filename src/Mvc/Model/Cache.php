@@ -11,6 +11,7 @@
 namespace Zemit\Mvc\Model;
 
 use Phalcon\Mvc\ModelInterface;
+use Zemit\Bootstrap\Config;
 use Zemit\Models\Audit;
 use Zemit\Models\AuditDetail;
 use Zemit\Models\Session;
@@ -20,6 +21,7 @@ use Zemit\Models\Session;
  * Flush Cache on changes
  * @todo improve to delete only necessary keys
  * @todo improve whiteList system
+ * @todo precache
  *
  * @author Julien Turbide <jturbide@nuagerie.com>
  * @copyright Zemit Team <contact@zemit.com>
@@ -50,11 +52,14 @@ trait Cache
         $modelsCacheService ??= 'modelsCache';
         $whiteList ??= [];
         
+        /** @var Config $config */
+        $config = $this->getDI()->get('config');
+        
         // Set default whiteList
         $whiteList = array_merge($whiteList, [
-            Session::class,
-            Audit::class,
-            AuditDetail::class,
+            $config->getModelClass(Session::class),
+            $config->getModelClass(Audit::class),
+            $config->getModelClass(AuditDetail::class),
         ]);
         
         // Prevent adding behavior to whiteListed models
