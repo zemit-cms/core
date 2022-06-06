@@ -1037,7 +1037,10 @@ class Identity extends Injectable
             }
         }
         
-        else if ($this->session->has($this->sessionKey)) {
+        else if (
+            $this->config->get('identity.sessionFallback', false)
+            && $this->session->has($this->sessionKey)
+        ) {
             $sessionStore = $this->session->get($this->sessionKey);
             $key = $sessionStore['key'] ?? null;
             $token = $sessionStore['token'] ?? null;

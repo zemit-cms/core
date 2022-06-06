@@ -79,12 +79,13 @@ class Config extends PhalconConfig
     }
     
     /**
-     * Config constructor.
+     * Config Constructor
      * {@inheritDoc}
      *
-     * @param array $config
+     * @param array $data
+     * @param bool $insensitive
      */
-    public function __construct($config = [])
+    public function __construct(array $data = [], bool $insensitive = true)
     {
         $this->defineConst();
         
@@ -235,7 +236,10 @@ class Config extends PhalconConfig
              * Identity Provider Configuration
              */
             'identity' => [
+                'adapter' => Env::get('IDENTITY_ADAPTER', 'session'), // session | database
+                'mode' => Env::get('IDENTITY_SESSION_MODE', 'jwt'), // jwt | string
                 'sessionKey' => Env::get('IDENTITY_SESSION_KEY', 'zemit-identity'),
+                'sessionFallback' => Env::get('IDENTITY_SESSION_FALLBACK', false),
             ],
             
             /**
@@ -323,6 +327,7 @@ class Config extends PhalconConfig
                 Provider\ModelsManager\ServiceProvider::class => Provider\ModelsManager\ServiceProvider::class,
                 Provider\ModelsMetadata\ServiceProvider::class => Provider\ModelsMetadata\ServiceProvider::class,
                 Provider\ModelsCache\ServiceProvider::class => Provider\ModelsCache\ServiceProvider::class,
+                Provider\Cache\ServiceProvider::class => Provider\Cache\ServiceProvider::class,
                 Provider\Mailer\ServiceProvider::class => Provider\Mailer\ServiceProvider::class,
                 Provider\Logger\ServiceProvider::class => Provider\Logger\ServiceProvider::class,
                 Provider\FileSystem\ServiceProvider::class => Provider\FileSystem\ServiceProvider::class,
@@ -1042,6 +1047,19 @@ class Config extends PhalconConfig
                         ],
                     ],
                     
+                    'manageTemplateList' => [
+                        'components' => [
+                            Api\Controllers\TemplateController::class => ['*'],
+                            Models\Template::class => ['*'],
+                        ],
+                        'behaviors' => [
+                            Api\Controllers\TemplateController::class => [
+                                Behavior\Skip\SkipIdentityCondition::class,
+                                Behavior\Skip\SkipSoftDeleteCondition::class,
+                            ],
+                        ],
+                    ],
+                    
                     'manageAuditList' => [
                         'components' => [
                             Api\Controllers\AuditController::class => ['*'],
@@ -1103,8 +1121,10 @@ class Config extends PhalconConfig
                             'manageUserList',
                             'manageSiteList',
                             'manageLangList',
+                            'manageTemplateList',
                         ],
                         'inherit' => [
+                            'user',
                         ],
                         'behaviors' => [
                         ],
@@ -1119,14 +1139,15 @@ class Config extends PhalconConfig
                             'manageAuditList',
                         ],
                         'inherit' => [
+                            'user',
                             'admin',
                         ],
                     ],
                 ],
             ],
         ]);
-        if (!empty($config)) {
-            $this->merge(new PhalconConfig($config));
+        if (!empty($data)) {
+            $this->merge(new PhalconConfig($data));
         }
     }
     
