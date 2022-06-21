@@ -134,7 +134,7 @@ class Config extends PhalconConfig
                 'namespace' => Env::get('APP_NAMESPACE', 'Zemit'), // Namespace of your application
                 'version' => Env::get('APP_VERSION', date('Ymd')), // allow to set and force a specific version
                 'maintenance' => Env::get('APP_MAINTENANCE', false), // Set true to force the maintenance page
-                'env' => Env::get('APP_ENV', Env::get('APPLICATION_ENV', null)), // Set the current environnement
+                'env' => Env::get('APP_ENV', Env::get('APPLICATION_ENV', null)), // Set the current environment
                 'debug' => Env::get('APP_DEBUG', false), // Set true to display debug
                 'cache' => Env::get('APP_CACHE', false), // Set true to activate the cache
                 'minify' => Env::get('APP_MINIFY', false), // Set true to activate minifying
@@ -236,6 +236,7 @@ class Config extends PhalconConfig
              * Identity Provider Configuration
              */
             'identity' => [
+                'authorizationHeader' => Env::get('IDENTITY_AUTHORIZATION_HEADER', 'Authorization'),
                 'adapter' => Env::get('IDENTITY_ADAPTER', 'session'), // session | database
                 'mode' => Env::get('IDENTITY_SESSION_MODE', 'jwt'), // jwt | string
                 'sessionKey' => Env::get('IDENTITY_SESSION_KEY', 'zemit-identity'),
@@ -934,7 +935,8 @@ class Config extends PhalconConfig
                     ],
                     
                     'base' => [
-                        'models' => [
+                        'components' => [
+                            Api\Controllers\AuthController::class => ['get'],
                             Models\Audit::class => ['create'],
                             Models\AuditDetail::class => ['create'],
                             Models\Session::class => ['*'],
@@ -964,20 +966,6 @@ class Config extends PhalconConfig
                     'cron' => [
                         'components' => [
                             Cli\Tasks\CronTask::class => ['*'],
-                        ],
-                    ],
-                    
-                    'manageSiteList' => [
-                        'components' => [
-                            Api\Controllers\SiteController::class => ['*'],
-                            Models\Site::class => ['*'],
-                            Models\SiteLang::class => ['*'],
-                        ],
-                        'behaviors' => [
-                            Api\Controllers\SiteController::class => [
-                                Behavior\Skip\SkipIdentityCondition::class,
-                                Behavior\Skip\SkipSoftDeleteCondition::class,
-                            ],
                         ],
                     ],
                     
@@ -1072,6 +1060,46 @@ class Config extends PhalconConfig
                             ],
                         ],
                     ],
+    
+                    'manageSiteList' => [
+                        'components' => [
+                            Api\Controllers\SiteController::class => ['*'],
+                            Models\Site::class => ['*'],
+                            Models\SiteLang::class => ['*'],
+                        ],
+                        'behaviors' => [
+                            Api\Controllers\SiteController::class => [
+                                Behavior\Skip\SkipIdentityCondition::class,
+                                Behavior\Skip\SkipSoftDeleteCondition::class,
+                            ],
+                        ],
+                    ],
+    
+                    'managePageList' => [
+                        'components' => [
+                            Api\Controllers\PageController::class => ['*'],
+                            Models\Page::class => ['*'],
+                        ],
+                        'behaviors' => [
+                            Api\Controllers\PageController::class => [
+                                Behavior\Skip\SkipIdentityCondition::class,
+                                Behavior\Skip\SkipSoftDeleteCondition::class,
+                            ],
+                        ],
+                    ],
+                    
+                    'managePostList' => [
+                        'components' => [
+                            Api\Controllers\PostController::class => ['*'],
+                            Models\Post::class => ['*'],
+                        ],
+                        'behaviors' => [
+                            Api\Controllers\PostController::class => [
+                                Behavior\Skip\SkipIdentityCondition::class,
+                                Behavior\Skip\SkipSoftDeleteCondition::class,
+                            ],
+                        ],
+                    ],
                 ],
                 
                 /**
@@ -1119,8 +1147,10 @@ class Config extends PhalconConfig
                     'admin' => [
                         'features' => [
                             'manageUserList',
-                            'manageSiteList',
                             'manageLangList',
+                            'manageSiteList',
+                            'managePageList',
+                            'managePostList',
                             'manageTemplateList',
                         ],
                         'inherit' => [
