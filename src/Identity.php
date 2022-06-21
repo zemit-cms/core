@@ -1006,14 +1006,16 @@ class Identity extends Injectable
      *
      * @return array
      */
-    public function getKeyToken()
+    public function getKeyToken($jwt = null, $key = null, $token = null)
     {
         $basicAuth = $this->request->getBasicAuth();
-        $authorization = array_filter(explode(' ', $this->request->getHeader('Authorization') ?: ''));
+        $authorization = array_filter(explode(' ', $this->request->getHeader(
+            $this->config->path('identity.authorizationHeader', 'Authorization')
+        ) ?: ''));
         
-        $jwt = $this->request->get('jwt', 'string');
-        $key = $this->request->get('key', 'string');
-        $token = $this->request->get('token', 'string');
+        $jwt = $this->request->get('jwt', 'string', $jwt);
+        $key = $this->request->get('key', 'string', $key);
+        $token = $this->request->get('token', 'string', $token);
         
         if (!empty($jwt)) {
             $sessionClaim = $this->getClaim($jwt, $this->sessionKey);
@@ -1038,8 +1040,7 @@ class Identity extends Injectable
         }
         
         else if (
-            $this->config->get('identity.sessionFallback', false)
-            && $this->session->has($this->sessionKey)
+            $this->session->has($this->sessionKey)
         ) {
             $sessionStore = $this->session->get($this->sessionKey);
             $key = $sessionStore['key'] ?? null;
@@ -1138,7 +1139,6 @@ class Identity extends Injectable
      * Retrieve the user from a username or an email
      * @param $idUsernameEmail
      * @return false|\Phalcon\Mvc\Model\ResultInterface|\Phalcon\Mvc\ModelInterface|Models\Base\AbstractUser|null
-     * @todo maybe move this into user model?
      *
      */
     public function findUser($idUsernameEmail)
