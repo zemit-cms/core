@@ -31,7 +31,7 @@ use Zemit\Utils;
  */
 class Module implements ModuleDefinitionInterface
 {
-    const NAME_CLI = 'Cli';
+    const NAME_CLI = 'cli';
     
     /**
      * Module name to register
@@ -120,6 +120,7 @@ class Module implements ModuleDefinitionInterface
         // register the vendor module controllers
         $namespaces[$namespace . '\\Tasks'] = $dirname . '/Tasks/';
         $namespaces[$namespace . '\\Models'] = $dirname . '/Models/';
+        $namespaces['Zemit\\Models'] = $this->config->core->dir->base . '/Models/';
         
         return $namespaces;
     }
