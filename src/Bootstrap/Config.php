@@ -1214,7 +1214,7 @@ class Config extends PhalconConfig
      */
     public function getModelClass(string $class) : string
     {
-        return $this->get('models.' . $class, $class);
+        return $this->path('models.' . $class, $class);
     }
 }
 
