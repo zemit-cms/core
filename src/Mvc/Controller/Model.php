@@ -480,14 +480,29 @@ trait Model
                 if (is_null($whiteList) || !in_array($lowercaseField, $lowercaseWhiteList, true)) {
                     // @todo if config is set to throw exception on usage of not allowed filters otherwise continue looping through
                     throw new \Exception('Not allowed to filter using the following field: `' . $field . '`', 403);
-                    continue;
                 }
                 
                 $uniqid = substr(md5(json_encode($filter)), 0, 10);
 //                $queryField = '_' . uniqid($uniqid . '_field_') . '_';
                 $queryValue = '_' . uniqid($uniqid . '_value_') . '_';
                 $queryOperator = strtolower($filter['operator']);
+    
+                // Map alias query operator
+                $mapAlias = [
+                    'equals' => '=',
+                    'does not equal' => '!=',
+                    'different than' => '<>',
+                    'greater than' => '>',
+                    'greater than or equal' => '>=',
+                    'less than' => '<',
+                    'less than or equal' => '<=',
+                    'null-safe equal' => '<=>',
+                ];
+                $queryOperator = $mapAlias[$queryOperator] ?? $queryOperator;
+                
                 switch ($queryOperator) {
+                    
+                    // mysql native
                     case '=': // Equal operator
                     case '!=': // Not equal operator
                     case '<>': // Not equal operator
@@ -511,9 +526,24 @@ trait Model
                     case 'is true': // // Test a value against a boolean
                     case 'is not true': // // Test a value against a boolean
                         break;
+                        
+                    // advanced filters
+                    case 'regexp': // @todo
+                    case 'not regexp': // @todo
+                    case 'contains':
+                    case 'does not contain':
+                    case 'contains word': // @todo
+                    case 'does not contain word': // @todo
+                    case 'distance sphere greater than'; // @todo
+                    case 'distance sphere greater than or equal'; // @todo
+                    case 'distance sphere less than'; // @todo
+                    case 'distance sphere less than or equal'; // @todo
+                    case 'is empty':
+                    case 'is not empty':
+                        break;
+                        
                     default:
                         throw new \Exception('Not allowed to filter using the following operator: `' . $queryOperator . '`', 403);
-                        break;
                 }
                 
                 $bind = [];
@@ -540,6 +570,64 @@ trait Model
                         $bindType[$queryValue1] = Column::BIND_PARAM_STR;
                         $query [] = (($queryOperator === 'not between') ? 'not ' : null) . "$queryFieldBinder between :$queryValue0: and :$queryValue1:";
                     }
+                    
+                    else if (in_array($queryOperator, ['contains', 'does not contain'])) {
+                        $queryValue0 = '_' . uniqid($uniqid . '_value_') . '_';
+                        $queryValue1 = '_' . uniqid($uniqid . '_value_') . '_';
+                        $queryValue2 = '_' . uniqid($uniqid . '_value_') . '_';
+                        $bind[$queryValue0] = '%' . $filter['value'] . '%';
+                        $bind[$queryValue1] = '%' . $filter['value'];
+                        $bind[$queryValue2] = $filter['value'] . '%';
+                        $bindType[$queryValue0] = Column::BIND_PARAM_STR;
+                        $bindType[$queryValue1] = Column::BIND_PARAM_STR;
+                        $bindType[$queryValue2] = Column::BIND_PARAM_STR;
+                        $query [] = ($queryOperator === 'does not contain'? '!' : '') . "($queryFieldBinder like :$queryValue0: or $queryFieldBinder like :$queryValue1: or $queryFieldBinder like :$queryValue2:)";
+                    }
+                    
+                    else if (in_array($queryOperator, ['is empty', 'is not empty'])) {
+                        $query [] = ($queryOperator === 'is not empty'? '!' : '') . "(TRIM($queryFieldBinder) = '' or $queryFieldBinder is null)";
+                    }
+                    
+                    else if (in_array($queryOperator, ['regexp', 'not regexp'])) {
+                        $bind[$queryValue] = $filter['value'];
+                        $query [] = $queryOperator . "REGEXP($queryFieldBinder, $queryValueBinder)";
+                    }
+                    
+                    else if (in_array($queryOperator, [
+                        'distance sphere equals',
+                        'distance sphere greater than',
+                        'distance sphere greater than or equal',
+                        'distance sphere less than',
+                        'distance sphere less than or equal',
+                    ])) {
+                        // Prepare values binding of 2 sphere point to calculate distance
+                        $queryBindValue0 = '_' . uniqid($uniqid . '_value_') . '_';
+                        $queryBindValue1 = '_' . uniqid($uniqid . '_value_') . '_';
+                        $queryBindValue2 = '_' . uniqid($uniqid . '_value_') . '_';
+                        $queryBindValue3 = '_' . uniqid($uniqid . '_value_') . '_';
+                        $bind[$queryBindValue0] = $filter['value'][0];
+                        $bind[$queryBindValue1] = $filter['value'][1];
+                        $bind[$queryBindValue2] = $filter['value'][2];
+                        $bind[$queryBindValue3] = $filter['value'][3];
+                        $bindType[$queryBindValue0] = Column::BIND_PARAM_DECIMAL;
+                        $bindType[$queryBindValue1] = Column::BIND_PARAM_DECIMAL;
+                        $bindType[$queryBindValue2] = Column::BIND_PARAM_DECIMAL;
+                        $bindType[$queryBindValue3] = Column::BIND_PARAM_DECIMAL;
+    
+                        $queryPointLatBinder0 = $queryBindValue0;
+                        $queryPointLonBinder0 = $queryBindValue1;
+                        $queryPointLatBinder1 = $queryBindValue2;
+                        $queryPointLonBinder1 = $queryBindValue3;
+    
+                        $queryLogicalOperator =
+                            (strpos($queryOperator, 'greater') !== false? '>' : null) .
+                            (strpos($queryOperator, 'less') !== false? '<' : null) .
+                            (strpos($queryOperator, 'equal') !== false? '=' : null);
+    
+                        $bind[$queryValue] = $filter['value'];
+                        $query [] = "ST_Distance_Sphere(point($queryPointLatBinder0, $queryPointLonBinder0), point($queryPointLatBinder1, $queryPointLonBinder1)) $queryLogicalOperator $queryValueBinder";
+                    }
+                    
                     else {
                         $bind[$queryValue] = $filter['value'];
                         if (is_string($filter['value'])) {
@@ -943,6 +1031,10 @@ trait Model
                 ];
             }
             else {
+                // allow custom manipulations
+                // @todo move this using events
+                $this->beforeAssign($singlePostEntity, $singlePost, $whiteList, $columnMap);
+                
                 // assign & save
                 $singlePostEntity->assign($singlePost, $whiteList, $columnMap);
                 $ret = $this->saveEntity($singlePostEntity);
@@ -956,6 +1048,18 @@ trait Model
         }
         
         return $single ? $retList[0] : $retList;
+    }
+    
+    /**
+     * Allow overrides to add alter variables before entity assign & save
+     * @param ModelInterface $entity
+     * @param array $post
+     * @param array|null $whiteList
+     * @param array|null $columnMap
+     * @return void
+     */
+    protected function beforeAssign(ModelInterface &$entity, Array &$post, ?Array &$whiteList, ?Array &$columnMap): void {
+    
     }
     
     /**

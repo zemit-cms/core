@@ -158,7 +158,7 @@ trait Relationship
                         'dataColumnMap'=> $dataColumnMap,
                     ];
                     
-                    if (empty($relationData)) {
+                    if (empty($relationData) && !in_array($type, [Relation::HAS_MANY_THROUGH, Relation::HAS_MANY])) {
                         $assign = $this->_getEntityFromData($relationData, $getEntityParams);
                     }
                     else {
@@ -725,7 +725,7 @@ trait Relationship
         
         $dataColumnMap = $configuration['dataColumnMap'] ?? null;
         
-        $entity = null;
+        $entity = false;
         
         if ($type === Relation::HAS_ONE || $type === Relation::BELONGS_TO) {
             
@@ -757,8 +757,8 @@ trait Relationship
                 
                 // Force primary keys for single to many
                 foreach ($primaryKeys as $primaryKey) {
-                    if (isset($data[$primaryKey]) && !in_array($primaryKey, $fields, true)) {
-                        $dataKeys [$primaryKey] = $data[$primaryKey];
+                    if (!in_array($primaryKey, $fields, true)) {
+                        $dataKeys [$primaryKey] = $data[$primaryKey] ?? null;
                         $fields []= $primaryKey;
                     }
                 }
