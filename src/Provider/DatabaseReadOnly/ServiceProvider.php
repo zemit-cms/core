@@ -52,6 +52,11 @@ class ServiceProvider extends AbstractServiceProvider
             
             $config = $driver->toArray();
             unset($config['adapter']);
+    
+            // set dialect class
+            if (!empty($config['dialectClass'])) {
+                $config['dialectClass'] = new $config['dialectClass']();
+            }
             
             // merge readonly config to config
             if (isset($config['readOnly'])) {
@@ -66,6 +71,7 @@ class ServiceProvider extends AbstractServiceProvider
             /** @var \Phalcon\Db\Adapter\Pdo\AbstractPdo $connection */
             $connection = new $adapter($config);
             
+            // attach events
             $eventsManager->attach('db', new Security());
             $eventsManager->attach('db', new Logger());
             $eventsManager->attach('db', new Profiler());
