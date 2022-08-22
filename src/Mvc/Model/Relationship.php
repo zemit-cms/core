@@ -701,14 +701,6 @@ trait Relationship
      * @param array $data
      * @param array $configuration
      *
-     * @param string $alias deprecated
-     * @param array $fields deprecated
-     * @param string $modelClass deprecated
-     * @param array|null $readFields deprecated
-     * @param int|null $type deprecated
-     * @param array|null $whiteList deprecated
-     * @param array|null $dataColumnMap deprecated
-     *
      * @return ModelInterface
      * @todo unit test for this
      *

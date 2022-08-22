@@ -929,11 +929,18 @@ trait Model
         }
 
 //        $params = empty($request->getRawBody()) ? [] : $request->getJsonRawBody(true); // @TODO handle this differently
-        return array_merge_recursive(
+        $params = array_merge_recursive(
             $request->getFilteredQuery(), // $_GET
             $request->getFilteredPut(), // $_PUT
             $request->getFilteredPost(), // $_POST
         );
+    
+        // @todo see if we can prevent phalcon from returning this
+        if (isset($params['_url'])) {
+            unset($params['_url']);
+        }
+        
+        return $params;
     }
     
     /**
@@ -1006,13 +1013,10 @@ trait Model
         foreach ($post as $key => $singlePost) {
             $ret = [];
             
-            // @todo see if we should remove this earlier
-            if (isset($singlePost['_url'])) {
-                unset($singlePost['_url']);
-            }
-            
             $singlePostId = (!$single || empty($id)) ? $this->getParam('id', 'int', $this->getParam('int', 'int', null)) : $id;
-            unset($singlePost['id']);
+            if (isset($singlePost['id'])) {
+                unset($singlePost['id']);
+            }
             
             /** @var \Zemit\Mvc\Model $singlePostEntity */
             $singlePostEntity = (!$single || !isset($entity)) ? $this->getSingle($singlePostId, $modelName) : $entity;
