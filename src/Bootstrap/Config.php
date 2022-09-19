@@ -550,12 +550,11 @@ class Config extends PhalconConfig
                                 'weight' => Env::get('SESSION_MEMCACHED_WEIGHT', Env::get('MEMCACHED_WEIGHT', 100)),
                             ],
                         ],
-                        // Client options must be instance of array
                         'client' => [],
                     ],
                     'redis' => [
                         'adapter' => Env::get('SESSION_REDIS_ADAPTER', \Phalcon\Session\Adapter\Redis::class),
-                        'defaultSerializer' => Env::get('SESSION_REDIS_DEFAULT_SERIALIZER', Env::get('REDIS_DEFAULT_SERIALIZER', \Redis::SERIALIZER_PHP)),
+                        'defaultSerializer' => Env::get('SESSION_REDIS_DEFAULT_SERIALIZER', Env::get('REDIS_DEFAULT_SERIALIZER', 1)), // \Redis::SERIALIZER_PHP
                         'lifetime' => Env::get('SESSION_REDIS_LIFETIME', Env::get('REDIS_LIFETIME', 3600)),
                         'serializer' => Env::get('SESSION_REDIS_SERIALIZER', Env::get('REDIS_SERIALIZER', null)),
                         'host' => Env::get('SESSION_REDIS_HOST', Env::get('REDIS_HOST', '127.0.0.1')),
@@ -676,7 +675,7 @@ class Config extends PhalconConfig
                     ],
                     'redis' => [
                         'adapter' => Env::get('CACHE_REDIS_ADAPTER', \Phalcon\Cache\Adapter\Redis::class),
-                        'defaultSerializer' => Env::get('CACHE_REDIS_DEFAULT_SERIALIZER', Env::get('REDIS_DEFAULT_SERIALIZER', \Redis::SERIALIZER_PHP)),
+                        'defaultSerializer' => Env::get('CACHE_REDIS_DEFAULT_SERIALIZER', Env::get('REDIS_DEFAULT_SERIALIZER', 1)), // \Redis::SERIALIZER_PHP
                         'lifetime' => Env::get('CACHE_REDIS_LIFETIME', Env::get('REDIS_LIFETIME', 3600)),
                         'serializer' => Env::get('CACHE_REDIS_SERIALIZER', Env::get('REDIS_SERIALIZER', null)),
                         'host' => Env::get('CACHE_REDIS_HOST', Env::get('REDIS_HOST', '127.0.0.1')),
@@ -723,7 +722,7 @@ class Config extends PhalconConfig
                     ],
                     'redis' => [
                         'adapter' => Env::get('METADATA_REDIS_ADAPTER', \Phalcon\Mvc\Model\MetaData\Redis::class),
-                        'defaultSerializer' => Env::get('METADATA_REDIS_DEFAULT_SERIALIZER', Env::get('REDIS_DEFAULT_SERIALIZER', \Redis::SERIALIZER_PHP)),
+                        'defaultSerializer' => Env::get('METADATA_REDIS_DEFAULT_SERIALIZER', Env::get('REDIS_DEFAULT_SERIALIZER', 1)), // \Redis::SERIALIZER_PHP
                         'lifetime' => Env::get('METADATA_REDIS_LIFETIME', Env::get('REDIS_LIFETIME', 3600)),
                         'serializer' => Env::get('METADATA_REDIS_SERIALIZER', Env::get('REDIS_SERIALIZER', null)),
                         'host' => Env::get('METADATA_REDIS_HOST', Env::get('REDIS_HOST', '127.0.0.1')),
@@ -777,7 +776,7 @@ class Config extends PhalconConfig
                     ],
                     'redis' => [
                         'adapter' => Env::get('ANNOTATIONS_REDIS_ADAPTER', \Phalcon\Annotations\Adapter\Redis::class),
-                        'defaultSerializer' => Env::get('ANNOTATIONS_REDIS_DEFAULT_SERIALIZER', Env::get('REDIS_DEFAULT_SERIALIZER', \Redis::SERIALIZER_PHP)),
+                        'defaultSerializer' => Env::get('ANNOTATIONS_REDIS_DEFAULT_SERIALIZER', Env::get('REDIS_DEFAULT_SERIALIZER', 1)), // \Redis::SERIALIZER_PHP
                         'lifetime' => Env::get('ANNOTATIONS_REDIS_LIFETIME', Env::get('REDIS_LIFETIME', 3600)),
                         'serializer' => Env::get('ANNOTATIONS_REDIS_SERIALIZER', Env::get('REDIS_SERIALIZER', null)),
                         'host' => Env::get('ANNOTATIONS_REDIS_HOST', Env::get('REDIS_HOST', '127.0.0.1')),
