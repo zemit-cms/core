@@ -337,6 +337,12 @@ trait Model
     {
         $filter = $this->filter;
         $ret = array_filter(array_map(function ($e) use ($filter, $sanitizer) {
+            
+            // allow to run RAND()
+            if (strrpos($e, 'RAND()') === 0) {
+                return $e;
+            }
+            
             return $this->appendModelName(trim($filter->sanitize($e, $sanitizer)));
         }, explode($glue, $this->getParam($field, $sanitizer))));
         
@@ -723,6 +729,13 @@ trait Model
     
     protected function fireGet($method)
     {
+        // @todo
+//        $eventRet = $this->eventsManager->fire('rest:before' . ucfirst($method), $this);
+//        if ($eventRet !== false) {
+//            $ret = $this->{$method}();
+//            $eventRet = $this->eventsManager->fire('rest:after' . ucfirst($method), $this, $ret);
+//        }
+        
         $ret = $this->{$method}();
         $eventRet = $this->eventsManager->fire('rest:' . $method, $this, $ret);
         return $eventRet === false ? null : $eventRet ?? $ret;
