@@ -596,7 +596,13 @@ trait Model
                     
                     else if (in_array($queryOperator, ['regexp', 'not regexp'])) {
                         $bind[$queryValue] = $filter['value'];
-                        $query [] = $queryOperator . "REGEXP($queryFieldBinder, $queryValueBinder)";
+                        $query [] = $queryOperator . "($queryFieldBinder, $queryValueBinder)";
+                    }
+                    
+                    else if (in_array($queryOperator, ['contains word', 'does not contain word'])) {
+                        $bind[$queryValue] = '\\b' . $filter['value'] . '\\b';
+                        $regexQueryOperator = str_replace(['contains word', 'does not contain word'], ['regexp', 'not regexp'], $queryOperator);
+                        $query [] = $regexQueryOperator . "($queryFieldBinder, $queryValueBinder)";
                     }
                     
                     else if (in_array($queryOperator, [
