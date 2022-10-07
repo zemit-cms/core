@@ -31,7 +31,7 @@ trait Identity
      * @param bool $refresh
      *
      * @return bool
-     * @throws \Phalcon\Security\Exception
+     * @throws \Phalcon\Encryption\Security\Exception
      */
     public function getAction($request = null)
     {
@@ -45,7 +45,7 @@ trait Identity
      * Refresh or create a session
      *
      * @return bool
-     * @throws \Phalcon\Security\Exception
+     * @throws \Phalcon\Encryption\Security\Exception
      */
     public function refreshAction()
     {

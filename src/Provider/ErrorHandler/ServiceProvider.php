@@ -10,7 +10,7 @@
 
 namespace Zemit\Provider\ErrorHandler;
 
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use Phalcon\Di\DiInterface;
 use Zemit\Provider\AbstractServiceProvider;
 use Zemit\Exception\Handler\ErrorPageHandler;

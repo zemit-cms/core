@@ -10,17 +10,17 @@
 
 namespace Zemit\Di;
 
-use Phalcon\Logger;
+use Phalcon\Logger\Logger;
 use Zemit\Bootstrap;
 use Zemit\Db\Profiler;
-use Zemit\Debug;
-use Zemit\Escaper;
-use Zemit\Filter;
+use Zemit\Filter\Filter;
+use Zemit\Html\Escaper;
 use Zemit\Http\Request;
 use Zemit\Identity;
 use Zemit\Locale;
 use Zemit\Mvc\Dispatcher;
 use Zemit\Security;
+use Zemit\Support\Debug;
 use Zemit\Tag;
 use Zemit\Utils;
 
@@ -37,7 +37,7 @@ use Zemit\Utils;
  * @property Bootstrap\Config $config
  * @property Bootstrap $bootstrap
  * @property Debug $debug
- * @property Escaper $escaper
+ * @property \Zemit\Html\Escaper $escaper
  * @property Filter $filter
  * @property Request $request
  * @property Identity $identity
@@ -53,5 +53,5 @@ use Zemit\Utils;
  */
 class Injectable extends \Phalcon\Di\Injectable implements \Phalcon\Di\InjectionAwareInterface
 {
-    
+
 }

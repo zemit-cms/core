@@ -40,8 +40,8 @@
 
 namespace Zemit\Models\Base;
 
-use Phalcon\Validation;
-use Phalcon\Validation\Validator\Email as EmailValidator;
+use Phalcon\Filter\Validation;
+use Phalcon\Filter\Validation\Validator\Email as EmailValidator;
 
 /**
  * AbstractUser

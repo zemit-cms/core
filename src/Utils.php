@@ -11,7 +11,7 @@
 namespace Zemit;
 
 use Phalcon\Debug\Dump;
-use Phalcon\Text;
+use Phalcon\Support\HelperFactory;
 
 /**
  * Class Utils
@@ -120,7 +120,7 @@ class Utils
      */
     public static function __callStatic(string $name, array $arguments)
     {
-        $functionName = Text::uncamelize($name);
+        $functionName = (new HelperFactory)->uncamelize($name);
         if (function_exists($functionName)) {
             return call_user_func_array($functionName, func_get_args());
         }

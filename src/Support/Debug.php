@@ -8,7 +8,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit;
+namespace Zemit\Support;
+
+use Zemit\Support;
 
 /**
  * Class Debug
@@ -22,19 +24,19 @@ namespace Zemit;
  *
  * @package Zemit
  */
-class Debug extends \Phalcon\Debug
+class Debug extends \Phalcon\Support\Debug
 {
     /**
      * {@inheritDoc}
      */
     public function getVersion() : string
     {
-        $version = Version::get();
+        $version = (new Version)->get();
         return
             '<div class="version">'.
-                ' Phalcon Framework <a href="https://docs.phalconphp.com/en/'.$version.'/" target="_new">'.\Phalcon\Version::get().'</a>'.
+                ' Phalcon Framework <a href="https://docs.phalconphp.com/en/'.$version.'/" target="_new">'.(new \Phalcon\Support\Version)->get().'</a>'.
                 '&nbsp;&nbsp; – &nbsp;' .
-                ' Zemit CMS <a href="https://docs.zemit.com/en/'.$version.'/" target="_new">'.\Zemit\Version::get().'</a>'.
+                ' Zemit CMS <a href="https://docs.zemit.com/en/'.$version.'/" target="_new">'. (new Support\Version)->get().'</a>'.
             '</div>'
             ;
     }

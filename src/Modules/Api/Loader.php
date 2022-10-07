@@ -21,7 +21,7 @@ namespace Zemit\Modules\Api;
  *
  * @package Zemit\Modules\Api
  */
-class Loader extends \Phalcon\Loader
+class Loader extends \Phalcon\Autoload\Loader
 {
 
 }

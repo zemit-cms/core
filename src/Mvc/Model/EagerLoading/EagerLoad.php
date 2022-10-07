@@ -2,7 +2,7 @@
 
 use Phalcon\Mvc\Model\Relation;
 use Phalcon\Mvc\Model\Resultset;
-use Phalcon\Version;
+use Phalcon\Support\Version;
 
 /**
  * Represents a level in the relations tree to be eagerly loaded
@@ -28,7 +28,7 @@ final class EagerLoad
     public function __construct(Relation $relation, $constraints, $parent)
     {
         if (static::$isPhalcon2 === null) {
-            static::$isPhalcon2 = version_compare(Version::get(), '2.0.0') >= 0;
+            static::$isPhalcon2 = version_compare((new Version)->get(), '2.0.0') >= 0;
         }
         
         $this->relation    = $relation;

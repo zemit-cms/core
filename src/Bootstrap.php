@@ -10,24 +10,23 @@
 
 namespace Zemit;
 
-use Phalcon\Di;
+use Docopt;
+use Dotenv\Dotenv;
+use Phalcon\Di\Di;
 use Phalcon\Di\FactoryDefault;
-use Phalcon\Http\Response;
-use Phalcon\Text;
 use Phalcon\Events;
-
-use Zemit\Bootstrap\Prepare;
+use Phalcon\Http\Response;
+use Phalcon\Support\HelperFactory;
 use Zemit\Bootstrap\Config;
-use Zemit\Bootstrap\Services;
 use Zemit\Bootstrap\Modules;
+use Zemit\Bootstrap\Prepare;
 use Zemit\Bootstrap\Router;
-use Zemit\Events\EventsAwareTrait;
-use Zemit\Mvc\Application;
+use Zemit\Bootstrap\Services;
 use Zemit\Cli\Console;
 use Zemit\Cli\Router as CliRouter;
-
-use Dotenv\Dotenv;
-use Docopt;
+use Zemit\Events\EventsAwareTrait;
+use Zemit\Mvc\Application;
+use Zemit\Support\Debug;
 
 /**
  * Class Bootstrap
@@ -136,7 +135,7 @@ class Bootstrap
 Zemit Console
 
 Usage:
-  zemit <module> <task> [<action>] [--help | --quiet | --verbose] [--debug] [--format=<format>] [<args>...] [-c <fds>=<value>]
+  zemit <module> <task> <action> [--help | --quiet | --verbose] [--debug] [--format=<format>] [<args>...] [-c <fds>=<value>]
   zemit (-h | --help)
   zemit (-v | --version)
   zemit (-i | --info)
@@ -316,7 +315,7 @@ DOC;
             // @todo review on phalcon5 php8+ because phalcon4 php8+ debug is doing cyclic error
             $cyclicError =
                 version_compare(PHP_VERSION, '8.0.0', '>=') &&
-                version_compare(\Phalcon\Version::get(), '5.0.0', '<');
+                version_compare((new \Phalcon\Support\Version)->get(), '5.0.0', '<');
 
             if (!$this->isConsole() && !$cyclicError) {
                 if ($bootstrap->config->app->get('debug') || $config['enable']) {
@@ -436,7 +435,7 @@ DOC;
 
     /**
      * Get & format arguments from the $this->args property
-     * @return array Key value pair, human readable
+     * @return array Key value pair, human-readable
      */
     public function getArguments() : array
     {
@@ -444,7 +443,7 @@ DOC;
         if ($this->args) {
             foreach ($this->args as $key => $value) {
                 if (preg_match('/(<(.*?)>|\-\-(.*))/', $key, $match)) {
-                    $key = lcfirst(Text::camelize(Text::uncamelize(array_pop($match))));
+                    $key = lcfirst((new HelperFactory)->camelize((new HelperFactory)->uncamelize(array_pop($match))));
                     $arguments[$key] = $value;
                 }
             }

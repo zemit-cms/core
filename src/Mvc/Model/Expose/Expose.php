@@ -12,7 +12,7 @@ namespace Zemit\Mvc\Model\Expose;
 
 use Zemit\Mvc\Model;
 use Zemit\Utils\Multibyte;
-use Phalcon\Text;
+use Phalcon\Support\HelperFactory;
 use Zemit\Utils\Sprintf;
 
 /**
@@ -56,7 +56,7 @@ trait Expose
         $builder->setProtected($protected);
         $builder->setParent($this);
         $builder->setValue($this);
-        $builder->setKey(trim(mb_strtolower(Text::camelize($this->getSource()))));
+        $builder->setKey(trim(mb_strtolower((new HelperFactory)->camelize($this->getSource()))));
         
         return self::_expose($builder);
     }

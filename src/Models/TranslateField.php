@@ -11,9 +11,9 @@
 namespace Zemit\Models;
 
 use Zemit\Models\Base\AbstractTranslateField;
-use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\StringLength\Max;
-use Phalcon\Validation\Validator\Uniqueness;
+use Phalcon\Filter\Validation\Validator\PresenceOf;
+use Phalcon\Filter\Validation\Validator\StringLength\Max;
+use Phalcon\Filter\Validation\Validator\Uniqueness;
 
 /**
  * Class Setting

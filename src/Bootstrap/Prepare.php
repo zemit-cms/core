@@ -10,8 +10,8 @@
 
 namespace Zemit\Bootstrap;
 
-use Phalcon\Debug;
-use Phalcon\Config;
+use Phalcon\Support\Debug;
+use Phalcon\Config\Config;
 use Zemit\Di\Injectable;
 use Zemit\Events\EventsAwareTrait;
 

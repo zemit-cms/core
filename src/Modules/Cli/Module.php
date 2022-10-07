@@ -11,7 +11,7 @@
 namespace Zemit\Modules\Cli;
 
 use Phalcon\Di\DiInterface;
-use Phalcon\Loader;
+use Phalcon\Autoload\Loader;
 use Phalcon\Mvc\ModuleDefinitionInterface;
 use Zemit\Cli\Dispatcher;
 use Zemit\Cli\Router;
@@ -71,7 +71,7 @@ class Module implements ModuleDefinitionInterface
         $this->getServices($di);
         
         // register namespaces
-        $this->loader->registerNamespaces($this->getNamespaces(), true);
+        $this->loader->setNamespaces($this->getNamespaces(), true);
         
         // register autoloader
         $this->loader->register();

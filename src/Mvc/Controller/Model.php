@@ -15,7 +15,7 @@ use Phalcon\Messages\Message;
 use Phalcon\Messages\Messages;
 use Phalcon\Mvc\Model\Resultset;
 use Phalcon\Mvc\ModelInterface;
-use Phalcon\Text;
+use Phalcon\Support\HelperFactory;
 use Zemit\Http\Request;
 use Zemit\Identity;
 use Zemit\Mvc\Model\Expose\Expose;
@@ -1115,7 +1115,7 @@ trait Model
         $controllerName ??= $this->dispatcher->getControllerName() ?? '';
         $namespaces ??= $this->loader->getNamespaces() ?? [];
         
-        $model = ucfirst(Text::camelize(Text::uncamelize($controllerName)));
+        $model = ucfirst((new HelperFactory)->camelize((new HelperFactory)->uncamelize($controllerName)));
         if (!class_exists($model)) {
             foreach ($namespaces as $namespace => $path) {
                 $possibleModel = $namespace . '\\' . $model;

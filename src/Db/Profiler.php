@@ -10,7 +10,7 @@
 
 namespace Zemit\Db;
 
-use Phalcon\Di;
+use Phalcon\Di\Di;
 
 /**
  * Class Profiler

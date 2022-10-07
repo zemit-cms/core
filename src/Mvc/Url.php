@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit;
+namespace Zemit\Mvc;
 
 /**
  * Class Url
@@ -22,7 +22,7 @@ namespace Zemit;
  *
  * @package Zemit
  */
-class Url extends \Phalcon\Url
+class Url extends \Phalcon\Mvc\Url
 {
     
     /**

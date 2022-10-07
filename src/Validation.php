@@ -22,7 +22,7 @@ namespace Zemit;
  *
  * @package Zemit
  */
-class Validation extends \Phalcon\Validation
+class Validation extends \Phalcon\Filter\Validation
 {
     
 }

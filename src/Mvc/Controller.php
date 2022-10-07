@@ -12,13 +12,13 @@ namespace Zemit\Mvc;
 
 use Zemit\Bootstrap;
 use Zemit\Bootstrap\Config;
+use Zemit\Cache\Cache;
 use Zemit\Db\Profiler;
-use Zemit\Escaper;
-use Zemit\Filter;
+use Zemit\Filter\Filter;
+use Zemit\Html\Escaper;
 use Zemit\Identity;
 use Zemit\Tag;
 use Zemit\Utils;
-use Zemit\Cache;
 
 /**
  * Class Controller
@@ -40,7 +40,7 @@ use Zemit\Cache;
  * @property Filter $filter
  * @property Dispatcher $dispatcher
  * @property Router $router
- * @property Cache $cache
+ * @property \Zemit\Cache\Cache $cache
  */
 class Controller extends \Phalcon\Mvc\Controller
 {

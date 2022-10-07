@@ -11,21 +11,20 @@
 namespace Zemit\Modules\Frontend\Controllers;
 
 use Phalcon\Db\Adapter\Pdo\Mysql;
+use Phalcon\Filter\Filter;
 use Phalcon\Http\Response;
 use Phalcon\Messages\Message;
-use Phalcon\Validation;
-
+use Phalcon\Filter\Validation;
 use Zemit\Bootstrap;
 use Zemit\Bootstrap\Config;
-use Zemit\Escaper;
-use Phalcon\Filter;
+use Zemit\Html\Escaper;
 use Zemit\Http\Request;
 use Zemit\Identity;
 use Zemit\Locale;
 use Zemit\Mvc\Application;
 use Zemit\Mvc\Dispatcher;
 use Zemit\Mvc\Router;
-use Zemit\Url;
+use Zemit\Mvc\Url;
 use Zemit\Utils;
 
 /**
@@ -120,7 +119,7 @@ class CheckController extends AbstractController
         'identity' => Identity::class,
         'db' => Mysql::class,
         'escaper' => Escaper::class,
-//        'filter' => \Zemit\Filter::class, // @todo make it work
+//        'filter' => \Zemit\Filter\Filter::class, // @todo make it work
         'filter' => Filter::class,
         'locale' => Locale::class,
         'utils' => Utils::class,
@@ -171,8 +170,8 @@ class CheckController extends AbstractController
         $versionList = $this->getVersionList();
         foreach ([
                      'php' => PHP_VERSION,
-                     'phalcon' => \Phalcon\Version::get(),
-                     'zemit' => \Zemit\Version::get(),
+                     'phalcon' => (new \Phalcon\Support\Version)->get(),
+                     'zemit' => (new \Zemit\Support\Version)->get(),
                  ] as $what => $version) {
             
             if (!version_compare($version, $versionList[$what], '>=')) {

@@ -21,7 +21,7 @@ namespace Zemit\Modules\Admin;
  *
  * @package Zemit\Modules\Admin
  */
-class Loader extends \Phalcon\Loader
+class Loader extends \Phalcon\Autoload\Loader
 {
 
 }

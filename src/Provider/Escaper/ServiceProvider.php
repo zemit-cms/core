@@ -11,7 +11,7 @@
 namespace Zemit\Provider\Escaper;
 
 use Phalcon\Di\DiInterface;
-use Zemit\Escaper;
+use Zemit\Html\Escaper;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**

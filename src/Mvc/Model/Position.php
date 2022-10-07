@@ -10,7 +10,7 @@
 
 namespace Zemit\Mvc\Model;
 
-use Phalcon\Text;
+use Phalcon\Support\HelperFactory;
 use Zemit\Mvc\Model;
 
 /**
@@ -54,7 +54,7 @@ trait Position
                             
                             if ($entityPosition instanceof \Phalcon\Db\RawValue) {
                             } else {
-                                $uField = Text::uncamelize($field);
+                                $uField = (new HelperFactory)->uncamelize($field);
 //                                ini_set('xdebug.max_nesting_level', 0);
                                 if ($snapshot[$field] > $entityPosition) {
 //                                    $updatePositionQuery = 'UPDATE [' . get_class($entity) . '] SET ['.$field.'] = ['.$field.']+1 WHERE ['.$field.'] >= ?1 and ['.$field.'] < ?2 and ['.$idField.'] <> ?0';

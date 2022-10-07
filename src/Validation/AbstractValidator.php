@@ -22,7 +22,7 @@ namespace Zemit\Validation;
  *
  * @package Zemit\Validation
  */
-abstract class AbstractValidator extends \Phalcon\Validation\AbstractValidator
+abstract class AbstractValidator extends \Phalcon\Filter\Validation\AbstractValidator
 {
     public function __construct(array $options = [])
     {

@@ -10,7 +10,7 @@
 
 namespace Zemit\Events;
 
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use Phalcon\Events\Manager;
 use Phalcon\Events\ManagerInterface;
 use Zemit\Exception;

@@ -11,9 +11,9 @@
 namespace Zemit\Models;
 
 use Zemit\Models\Base\AbstractAuditDetail;
-use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\InclusionIn;
-use Phalcon\Validation\Validator\StringLength\Max;
+use Phalcon\Filter\Validation\Validator\PresenceOf;
+use Phalcon\Filter\Validation\Validator\InclusionIn;
+use Phalcon\Filter\Validation\Validator\StringLength\Max;
 
 /**
  * Class AuditDetail

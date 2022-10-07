@@ -10,12 +10,12 @@
 
 namespace Zemit\Mvc\Model\Behavior;
 
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use Phalcon\Messages\Message;
 use Phalcon\Mvc\Model\Behavior\Exception;
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Mvc\Model\Behavior;
-use Phalcon\Text;
+use Phalcon\Support\HelperFactory;
 use Zemit\Models\Group;
 use Zemit\Models\Role;
 use Zemit\Models\Session;
@@ -87,7 +87,7 @@ class Security extends Behavior
             case 'beforeDelete':
             case 'beforeRestore':
             case 'beforeReorder':
-                $type = lcfirst(Text::camelize(str_replace(['before_', 'after_'], [null, null], Text::uncamelize($eventType))));
+                $type = lcfirst((new HelperFactory)->camelize(str_replace(['before_', 'after_'], [null, null], (new HelperFactory)->uncamelize($eventType))));
                 return $this->isAllowed($type, $model);
         }
         

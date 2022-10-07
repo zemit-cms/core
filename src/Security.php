@@ -28,7 +28,7 @@ use Zemit\Bootstrap\Config;
  *
  * @package Zemit
  */
-class Security extends \Phalcon\Security
+class Security extends \Phalcon\Encryption\Security
 {
     protected $permissions = null;
     

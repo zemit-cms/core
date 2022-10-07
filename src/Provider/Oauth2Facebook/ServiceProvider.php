@@ -14,7 +14,7 @@ use League\OAuth2\Client\Provider\Facebook;
 use Phalcon\Di\DiInterface;
 
 use Phalcon\Session\Manager;
-use Phalcon\Config;
+use Phalcon\Config\Config;
 use Zemit\Http\Request;
 use Zemit\Provider\AbstractServiceProvider;
 

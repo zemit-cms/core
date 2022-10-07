@@ -10,7 +10,7 @@
 
 namespace Zemit\Exception\Handler;
 
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use Whoops\Handler\Handler;
 
 /**

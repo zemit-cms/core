@@ -16,7 +16,7 @@ use Phalcon\Http\Response;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\Model\Resultset;
 use League\Csv\Writer;
-use Phalcon\Version;
+use Phalcon\Support\Version;
 use Zemit\Db\Profiler;
 use Zemit\Di\Injectable;
 use Zemit\Utils;
@@ -695,7 +695,7 @@ class Rest extends \Zemit\Mvc\Controller
         
         $api = $debug ? [
             'php' => phpversion(),
-            'phalcon' => Version::get(),
+            'phalcon' => (new Version)->get(),
             'zemit' => $this->config->core->version,
             'core' => $this->config->core->name,
             'app' => $this->config->app->version,

@@ -10,15 +10,15 @@
 
 namespace Zemit\Models;
 
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use Phalcon\Session\Manager;
 use Zemit\Models\Base\AbstractSession;
 use Phalcon\Mvc\Model\Behavior\Timestampable;
-use Phalcon\Security;
-use Phalcon\Validation\Validator\Date;
-use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\Uniqueness;
-use Phalcon\Validation\Validator\StringLength\Max;
+use Phalcon\Encryption\Security;
+use Phalcon\Filter\Validation\Validator\Date;
+use Phalcon\Filter\Validation\Validator\PresenceOf;
+use Phalcon\Filter\Validation\Validator\Uniqueness;
+use Phalcon\Filter\Validation\Validator\StringLength\Max;
 
 /**
  * Class Session

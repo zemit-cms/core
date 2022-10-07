@@ -8,7 +8,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit;
+namespace Zemit\Html;
+
+use Zemit\Filters;
 
 /**
  * Class Escaper
@@ -22,7 +24,7 @@ namespace Zemit;
  *
  * @package Zemit
  */
-class Escaper extends \Phalcon\Escaper
+class Escaper extends \Phalcon\Html\Escaper
 {
     
     /**

@@ -11,7 +11,7 @@
 namespace Zemit\Modules\Cli\Tasks;
 
 use Phalcon\Db\Column;
-use Phalcon\Text;
+use Phalcon\Support\HelperFactory;
 use Zemit\Modules\Cli\Task;
 
 /**
@@ -51,7 +51,7 @@ DOC;
         $tables = $this->db->listTables();
         foreach ($tables as $table) {
             
-            $className = ucFirst(Text::camelize($table));
+            $className = ucFirst((new HelperFactory)->camelize($table));
             $fileName = $className . '.ts';
             
             $abstractClassName = 'Abstract' . $className;
@@ -141,7 +141,7 @@ DOC;
                         break;
                 }
                 
-                $propertyName = lcfirst(Text::camelize($column->getName()));
+                $propertyName = lcfirst((new HelperFactory)->camelize($column->getName()));
                 $output [] = '    public ' . $propertyName . ': ' . $tsType . (!empty($default) ? ' = ' . $default : null) . ';';
             }
             $output [] = '}';

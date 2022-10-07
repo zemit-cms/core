@@ -16,8 +16,8 @@ use Phalcon\Events\Manager;
 use Phalcon\Mvc\Model\Behavior\Timestampable;
 
 use Phalcon\Mvc\ModelInterface;
-use Phalcon\Security;
-use Phalcon\Text;
+use Phalcon\Encryption\Security;
+use Phalcon\Support\HelperFactory;
 use Zemit\Identity;
 use Zemit\Models\Audit;
 use Zemit\Models\AuditDetail;
@@ -428,7 +428,7 @@ class Model extends \Phalcon\Mvc\Model
     public function getAttribute(string $attribute)
     {
         if ($this->getModelsMetaData()->hasAttribute($this, $attribute)) {
-            $method = 'get' . ucfirst(Text::camelize($attribute));
+            $method = 'get' . ucfirst((new HelperFactory)->camelize($attribute));
             if (method_exists($this, $method)) {
                 return $this->$method();
             }

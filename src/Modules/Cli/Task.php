@@ -11,7 +11,7 @@
 namespace Zemit\Modules\Cli;
 
 use Phalcon\Cli\Dispatcher;
-use Phalcon\Version;
+use Phalcon\Support\Version;
 use Zemit\Utils;
 
 /**
@@ -89,7 +89,7 @@ DOC;
         
         $api = $debug ? [
             'php' => phpversion(),
-            'phalcon' => Version::get(),
+            'phalcon' => (new Version)->get(),
             'zemit' => $this->config->core->version,
             'core' => $this->config->core->name,
             'app' => $this->config->app->version,

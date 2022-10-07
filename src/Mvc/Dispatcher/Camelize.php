@@ -13,7 +13,7 @@ namespace Zemit\Mvc\Dispatcher;
 use Zemit\Di\Injectable;
 use Phalcon\Dispatcher\AbstractDispatcher;
 use Phalcon\Events\Event;
-use Phalcon\Text;
+use Phalcon\Support\HelperFactory;
 
 /**
  * Class Camelize
@@ -31,8 +31,8 @@ class Camelize extends Injectable
     /**
      * Automagically camelize the action name
      *
-     * @see Text::camelize()
-     * @see Text::uncamelize()
+     * @see (new HelperFactory)->camelize()
+     * @see (new HelperFactory)->uncamelize()
      *
      * @param Event $event
      * @param AbstractDispatcher $dispatcher
@@ -41,8 +41,8 @@ class Camelize extends Injectable
     {
         $dispatcher->setActionName(
             lcfirst(
-                Text::camelize(
-                    Text::uncamelize(
+                (new HelperFactory)->camelize(
+                    (new HelperFactory)->uncamelize(
                         $dispatcher->getActionName()
                     )
                 )

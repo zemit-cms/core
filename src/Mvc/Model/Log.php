@@ -10,7 +10,7 @@
 
 namespace Zemit\Mvc\Model;
 
-use Phalcon\Text;
+use Phalcon\Support\HelperFactory;
 use Phalcon\Db\Column;
 
 /**
@@ -40,7 +40,7 @@ trait Log
         self::$_staticLog['table'] = $table;
         self::$_staticLog['user_id_field'] = $user_id_field;
         self::$_staticLog['class'] = (empty(self::$_staticLog['namespace'])? null : self::$_staticLog['namespace'] . '\\') .
-            ucfirst(Text::camelize(Text::uncamelize(self::$_staticLog['table'])));
+            ucfirst((new HelperFactory)->camelize((new HelperFactory)->uncamelize(self::$_staticLog['table'])));
         
         if ($this->getSource() !== $table) {
             $this->getEventsManager()->attach('model', function ($event, $entity) use ($namespace, $table) {
@@ -56,7 +56,7 @@ trait Log
                         case 'afterValidation':
                             // fix for the "already" deleted related tables and nodes
                             // @TODO refaire le fix sans refaire de fetch à la BD
-                            $classPath = $namespace . '\\' . ucfirst(Text::camelize(Text::uncamelize($entity->getSource())));
+                            $classPath = $namespace . '\\' . ucfirst((new HelperFactory)->camelize((new HelperFactory)->uncamelize($entity->getSource())));
                             $refetched = $classPath::findFirstById($entity->id);
 //
                             if ($refetched) {

@@ -10,7 +10,9 @@
 
 namespace Zemit\Provider\Assets;
 
+use Phalcon\Html\TagFactory;
 use Zemit\Assets\Manager;
+use Zemit\Html\Escaper;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
@@ -39,6 +41,11 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(\Phalcon\Di\DiInterface $di): void
     {
-        $di->setShared($this->getName(), Manager::class);
+        $escaper = new Escaper();
+        $tagFactory = new TagFactory($escaper);
+        
+        $di->setShared($this->getName(), function () use ($tagFactory) {
+            return new Manager($tagFactory);
+        });
     }
 }

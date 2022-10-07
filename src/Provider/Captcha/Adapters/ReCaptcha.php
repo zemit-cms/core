@@ -11,7 +11,7 @@
 namespace Zemit\Provider\Captcha\Adapters;
 
 use Zemit\Di\Injectable;
-use Phalcon\Config;
+use Phalcon\Config\Config;
 use ReCaptcha\ReCaptcha as GoogleCaptcha;
 use Zemit\Tag;
 

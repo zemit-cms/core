@@ -12,17 +12,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
+use Docopt;
 use Dotenv\Dotenv;
 use Phalcon\Di;
-use Phalcon\Di\FactoryDefault;
 use Zemit\Bootstrap;
-use Zemit\Bootstrap\Modules;
-use Zemit\Bootstrap\Services;
 use Zemit\Bootstrap\Config;
+use Zemit\Bootstrap\Modules;
 use Zemit\Bootstrap\Prepare;
-use Zemit\Debug;
+use Zemit\Bootstrap\Services;
 use Zemit\Mvc\Application;
-use Docopt;
+use Zemit\Support\Debug;
 
 /**
  * Class BootstrapTest

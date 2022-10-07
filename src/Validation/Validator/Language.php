@@ -11,7 +11,7 @@
 namespace Zemit\Validation\Validator;
 
 use Phalcon\Messages\Message;
-use Phalcon\Validation;
+use Phalcon\Filter\Validation;
 use Zemit\Validation\AbstractValidator;
 
 /**

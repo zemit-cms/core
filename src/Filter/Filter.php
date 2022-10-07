@@ -8,11 +8,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit;
+namespace Zemit\Filter;
 
-use Phalcon\Config;
-use Phalcon\Di;
+use Phalcon\Config\Config;
+use Phalcon\Di\Di;
 use Phalcon\Di\DiInterface;
+use Zemit\Filters;
 
 /**
  * Class Filter
@@ -26,7 +27,7 @@ use Phalcon\Di\DiInterface;
  *
  * @package Zemit
  */
-class Filter extends \Phalcon\Filter
+class Filter extends \Phalcon\Filter\Filter
 {
     const FILTER_MD5 = 'md5';
     const FILTER_JSON = 'json';

@@ -11,6 +11,7 @@
 namespace Zemit\Modules\Admin\Controllers;
 
 use Zemit\Modules\Admin\Controller;
+use Zemit\Tag;
 
 /**
  * Class AbstractController
@@ -27,5 +28,14 @@ abstract class AbstractController extends Controller
 {
     public function initialize()
     {
+        Tag::setAttr('html', ['lang' => $this->dispatcher->getParam('language', 'string', 'en')]);
+        Tag::setTitle($this->config->core->name);
+    
+        $this->assets->collection('head')
+            ->addCss('/head.css', true, true, [], true, true)
+            ->addJs('/head.js', true, true, [], true, true);
+    
+        $this->assets->collection('footer')
+            ->addJs('/footer.js', true, true, [], true, true);
     }
 }

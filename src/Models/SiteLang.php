@@ -11,8 +11,8 @@
 namespace Zemit\Models;
 
 use Zemit\Models\Base\AbstractSiteLang;
-use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\Uniqueness;
+use Phalcon\Filter\Validation\Validator\PresenceOf;
+use Phalcon\Filter\Validation\Validator\Uniqueness;
 
 /**
  * Class SiteLang

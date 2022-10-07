@@ -10,8 +10,7 @@
 
 namespace Zemit\Provider\VoltTemplate;
 
-use Phalcon\Di;
-use Zemit\Version;
+use Phalcon\Di\Di;
 
 /**
  * Class VoltFunctions

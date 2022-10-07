@@ -46,7 +46,7 @@ class AuthController extends Controller
      * @param bool $refresh
      *
      * @return bool
-     * @throws \Phalcon\Security\Exception
+     * @throws \Phalcon\Encryption\Security\Exception
      */
     public function getAction($request = null)
     {

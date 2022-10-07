@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use Zemit\Version;
+use Zemit\Support\Version;
 
 /**
  * Class VersionTest

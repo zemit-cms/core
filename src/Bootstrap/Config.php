@@ -11,19 +11,17 @@
 namespace Zemit\Bootstrap;
 
 use PDO;
-use Zemit\Filter;
+use Phalcon\Config\Config as PhalconConfig;
+use Zemit\Filter\Filter;
 use Zemit\Filters;
 use Zemit\Locale;
-use Zemit\Version;
+use Zemit\Models;
+use Zemit\Modules\Api;
+use Zemit\Modules\Cli;
+use Zemit\Modules\Frontend;
+use Zemit\Mvc\Controller\Behavior;
 use Zemit\Provider;
 use Zemit\Utils\Env;
-use Zemit\Models;
-use Zemit\Modules\Admin;
-use Zemit\Modules\Frontend;
-use Zemit\Modules\Cli;
-use Zemit\Modules\Api;
-use Zemit\Mvc\Controller\Behavior;
-use Phalcon\Config as PhalconConfig;
 
 /**
  * Class Config
@@ -96,7 +94,7 @@ class Config extends PhalconConfig
              */
             'core' => [
                 'name' => 'Zemit Core',
-                'version' => Version::get(),
+                'version' => (new \Zemit\Support\Version)->get(),
                 'package' => 'zemit-cms',
                 'modules' => [
                     'zemit-' . \Zemit\Mvc\Module::NAME_FRONTEND => [
@@ -135,7 +133,7 @@ class Config extends PhalconConfig
                 'version' => Env::get('APP_VERSION', date('Ymd')), // allow to set and force a specific version
                 'maintenance' => Env::get('APP_MAINTENANCE', false), // Set true to force the maintenance page
                 'env' => Env::get('APP_ENV', Env::get('APPLICATION_ENV', null)), // Set the current environment
-                'debug' => Env::get('APP_DEBUG', false), // Set true to display debug
+                'debug' => Env::get('APP_DEBUG', true), // Set true to display debug
                 'cache' => Env::get('APP_CACHE', false), // Set true to activate the cache
                 'minify' => Env::get('APP_MINIFY', false), // Set true to activate minifying
                 'copyright' => Env::get('APP_COPYRIGHT', false), // Set true to activate the cache
@@ -954,6 +952,12 @@ class Config extends PhalconConfig
                             Models\Session::class => ['*'],
                         ],
                     ],
+    
+                    'frontend' => [
+                        'components' => [
+                            Frontend\Controllers\IndexController::class => ['index'],
+                        ],
+                    ],
                     
                     'login' => [
                         'components' => [
@@ -1137,6 +1141,7 @@ class Config extends PhalconConfig
                     'everyone' => [
                         'features' => [
                             'base',
+                            'frontend',
                         ],
                     ],
                     

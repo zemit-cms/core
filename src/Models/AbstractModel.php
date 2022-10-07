@@ -11,11 +11,11 @@
 namespace Zemit\Models;
 
 use Phalcon\Mvc\Model\Relation;
-use Phalcon\Validation\Validator\Between;
-use Phalcon\Validation\Validator\Date;
-use Phalcon\Validation\Validator\Numericality;
-use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\Uniqueness;
+use Phalcon\Filter\Validation\Validator\Between;
+use Phalcon\Filter\Validation\Validator\Date;
+use Phalcon\Filter\Validation\Validator\Numericality;
+use Phalcon\Filter\Validation\Validator\PresenceOf;
+use Phalcon\Filter\Validation\Validator\Uniqueness;
 use Zemit\Locale;
 use Zemit\Validation;
 
@@ -353,7 +353,7 @@ abstract class AbstractModel extends \Zemit\Mvc\Model
         /** @var Locale $locale */
         $locale = $this->getDI()->get('locale');
         
-        $lang = $locale->getLocale();
+        $lang = $locale->getLocale() ?? '';
         
         if (mb_strrpos($property, ucfirst($lang)) !== mb_strlen($property) - 2) {
             $set = $property . ucfirst($lang);

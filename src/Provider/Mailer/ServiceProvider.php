@@ -10,7 +10,7 @@
 
 namespace Zemit\Provider\Mailer;
 
-use Phalcon\Config;
+use Phalcon\Config\Config;
 use Phalcon\Di\DiInterface;
 use Phalcon\Mailer\Manager;
 use InvalidArgumentException;
@@ -44,10 +44,10 @@ class ServiceProvider extends AbstractServiceProvider
     {
         $di->setShared($this->getName(), function() use ($di) {
             
-            /** @var \Phalcon\Config $config */
+            /** @var \Phalcon\Config\Config $config */
             $config = $di->get('config');
             
-            /** @var \Phalcon\Config|string $driver */
+            /** @var \Phalcon\Config\Config|string $driver */
             $driver = $config->path('mailer.driver', 'sendmail');
             
             /** @var \Phalcon\Events\Manager $eventsManager */

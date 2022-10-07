@@ -10,8 +10,7 @@
 
 namespace Zemit\Mvc;
 
-use Phalcon\Text;
-use phpDocumentor\Reflection\Types\Boolean;
+use Phalcon\Support\HelperFactory;
 use Zemit\Utils\Slug;
 
 /**
@@ -62,8 +61,8 @@ class View extends \Phalcon\Mvc\View
     {
         // fix @todo check if we still have this issue
         if (!$this->exists($controllerName . (empty($actionName) ? null : '/' . $actionName))) {
-            $controllerName = Slug::generate(Text::uncamelize($controllerName));
-            $actionName = Slug::generate(Text::uncamelize($actionName));
+            $controllerName = Slug::generate((new HelperFactory)->uncamelize($controllerName));
+            $actionName = Slug::generate((new HelperFactory)->uncamelize($actionName));
         }
         return parent::render($controllerName, $actionName, $params);
     }
@@ -82,8 +81,8 @@ class View extends \Phalcon\Mvc\View
     {
         // fix @todo check if we still have this issue
         if (!$this->exists($controllerName . (empty($actionName) ? null : '/' . $actionName))) {
-            $controllerName = Slug::generate(Text::uncamelize($controllerName));
-            $actionName = Slug::generate(Text::uncamelize($actionName));
+            $controllerName = Slug::generate((new HelperFactory)->uncamelize($controllerName));
+            $actionName = Slug::generate((new HelperFactory)->uncamelize($actionName));
         }
         return parent::getRender($controllerName, $actionName, $params);
     }

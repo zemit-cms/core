@@ -10,7 +10,7 @@
 
 namespace Zemit;
 
-use Phalcon\Escaper\EscaperInterface;
+use Phalcon\Html\Escaper\EscaperInterface;
 use Zemit\Assets\Manager;
 
 /**
@@ -39,7 +39,7 @@ class Tag extends \Phalcon\Tag
     protected static $_attr = [];
     
     /**
-     * @return \Zemit\Escaper
+     * @return \Zemit\Html\Escaper
      */
     public static function getEscaperService() : EscaperInterface
     {
@@ -77,13 +77,13 @@ class Tag extends \Phalcon\Tag
      * <div <?php Tag::implodeSprintf(['class' => 'class1 class2', 'id' => 'my-id', 'test' => ['test1', 'test2']], '%2$s="%1$s"', ' ');?>></div>
      * <div class="class1 class2" id="my-id" test="{['test1', 'test2']}"></div>
      *
-     * @param $array
-     * @param $implode
-     * @param $sprintf
+     * @param array $array
+     * @param string $implode
+     * @param string $sprintf
      *
      * @return string
      */
-    public static function implodeSprintf($array, $sprintf = '%s', $implode = null)
+    public static function implodeSprintf(array $array, string $sprintf = '%s', string $implode = '')
     {
         $array = array_filter($array);
         return implode($implode, array_map(function ($value, $key) use ($sprintf) {
@@ -252,7 +252,7 @@ class Tag extends \Phalcon\Tag
      *
      * @return string Return the imploded sprintf "%2$s="%1$s" from an array
      */
-    public static function getParams($name = null, $params = [], $sprintf = ' %2$s="%1$s"', $glue = null)
+    public static function getParams($name = null, $params = [], string $sprintf = ' %2$s="%1$s"', string $glue = '')
     {
         // get by name if params is string, and params becomes empty
         if (is_string($params) && is_null($name)) {

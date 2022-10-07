@@ -11,8 +11,8 @@
 namespace Zemit\Models;
 
 use Zemit\Models\Base\AbstractUserRole;
-use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\Uniqueness;
+use Phalcon\Filter\Validation\Validator\PresenceOf;
+use Phalcon\Filter\Validation\Validator\Uniqueness;
 
 /**
  * Class UserRole

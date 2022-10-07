@@ -11,9 +11,7 @@
 namespace Zemit\Provider\Filter;
 
 use Phalcon\Di\DiInterface;
-
 use Phalcon\Filter\FilterFactory;
-use Zemit\Filter;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**

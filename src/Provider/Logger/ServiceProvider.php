@@ -11,7 +11,7 @@
 namespace Zemit\Provider\Logger;
 
 use Phalcon\Di\DiInterface;
-use Phalcon\Logger;
+use Phalcon\Logger\Logger;
 use Phalcon\Logger\Adapter\Noop;
 use Phalcon\Logger\Formatter\Line;
 use Phalcon\Logger\Formatter\Json;

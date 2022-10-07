@@ -13,10 +13,10 @@ namespace Zemit\Models;
 use Zemit\Models\Base\AbstractEmail;
 use Phalcon\Mailer\Manager;
 use Phalcon\Messages\Message;
-use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\StringLength\Max;
-use Phalcon\Validation\Validator\Uniqueness;
-use Phalcon\Validation\Validator\Numericality;
+use Phalcon\Filter\Validation\Validator\PresenceOf;
+use Phalcon\Filter\Validation\Validator\StringLength\Max;
+use Phalcon\Filter\Validation\Validator\Uniqueness;
+use Phalcon\Filter\Validation\Validator\Numericality;
 
 /**
  * Class Email

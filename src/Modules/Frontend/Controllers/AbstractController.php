@@ -34,7 +34,7 @@ abstract class AbstractController extends Controller
         $this->assets->collection('head')
             ->addCss('/head.css', true, true, [], true, true)
             ->addJs('/head.js', true, true, [], true, true);
-        
+
         $this->assets->collection('footer')
             ->addJs('/footer.js', true, true, [], true, true);
     }

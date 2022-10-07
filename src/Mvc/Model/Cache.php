@@ -77,7 +77,7 @@ trait Cache
                     return false;
                 }
             
-                /** @var \Phalcon\Cache $modelsCache */
+                /** @var \Phalcon\Cache\Cache $modelsCache */
                 $modelsCache = $this->getDI()->get($modelsCacheService);
                 
                 // Flush the entire cache

@@ -15,10 +15,10 @@ use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Ecdsa\Sha512;
 use Phalcon\Acl\Role;
 use Phalcon\Db\Column;
-use Phalcon\Validation\Validator\Confirmation;
+use Phalcon\Filter\Validation\Validator\Confirmation;
 use Zemit\Di\Injectable;
 use Phalcon\Messages\Message;
-use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Filter\Validation\Validator\PresenceOf;
 use Zemit\Models\Session;
 use Zemit\Models\User;
 
@@ -325,7 +325,7 @@ class Identity extends Injectable
      *
      * @param bool $refresh
      *
-     * @throws \Phalcon\Security\Exception
+     * @throws \Phalcon\Encryption\Security\Exception
      */
     public function getJwt($refresh = false)
     {

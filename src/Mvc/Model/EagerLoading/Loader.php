@@ -1,6 +1,6 @@
 <?php namespace Zemit\Mvc\Model\EagerLoading;
 
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Mvc\Model\Relation;
 use Phalcon\Mvc\Model\Resultset\Simple;

@@ -55,8 +55,12 @@ class ServiceProvider extends AbstractServiceProvider
                 $options = $config->translate->toArray();
             }
             
+            if (is_string($options['locale'])) {
+                $options['locale'] = [$options['locale']];
+            }
+            
             $translate = new Gettext(new InterpolatorFactory(), $options ?? self::DEFAULT_OPTIONS);
-            $translate->setLocale(LC_MESSAGES, $di->get('locale')->get() . '.utf8');
+            $translate->setLocale(LC_MESSAGES, [$di->get('locale')->get() . '.utf8']);
             
             return $translate;
         });

@@ -54,7 +54,7 @@ class Slug
         }
         $transliterator = Transliterator::create('Any-Latin; Latin-ASCII');
         $string = $transliterator->transliterate(
-            mb_convert_encoding(htmlspecialchars_decode($string), 'UTF-8', 'auto')
+            mb_convert_encoding(htmlspecialchars_decode($string ?? ''), 'UTF-8', 'auto')
         );
         self::restoreLocale($oldLocale);
         return self::cleanString($string, $delimiter);

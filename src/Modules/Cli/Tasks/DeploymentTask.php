@@ -101,11 +101,11 @@ DOC;
     
     public $_insert = [
         Role::class => [
-            ['index' => 'everyone', 'labelFr' => 'Tous', 'labelEn' => 'Everyone'],
-            ['index' => 'guest', 'labelFr' => 'Invité', 'labelEn' => 'Guest'],
-            ['index' => 'user', 'labelFr' => 'Utilisateur', 'labelEn' => 'User'],
-            ['index' => 'admin', 'labelFr' => 'Administrateur', 'labelEn' => 'Administrator'],
-            ['index' => 'dev', 'labelFr' => 'Développeur', 'labelEn' => 'Developer'],
+            ['index' => 'everyone', 'label' => 'Everyone'],
+            ['index' => 'guest', 'label' => 'Guest'],
+            ['index' => 'user', 'label' => 'User'],
+            ['index' => 'admin', 'label' => 'Administrator'],
+            ['index' => 'dev', 'label' => 'Developer'],
         ],
         User::class => [
             ['username' => 'dev', 'email' => 'dev@zemit.com', 'firstName' => 'Developer', 'lastName' => 'Zemit'],

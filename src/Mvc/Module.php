@@ -10,16 +10,14 @@
 
 namespace Zemit\Mvc;
 
+use Phalcon\Autoload\Loader;
 use Phalcon\Di\DiInterface;
-use Phalcon\Loader;
+use Phalcon\Mvc\ModuleDefinitionInterface;
 use Phalcon\Mvc\RouterInterface;
 use Phalcon\Mvc\View;
-use Phalcon\Mvc\ModuleDefinitionInterface;
-use Phalcon\Text;
 use Zemit\Bootstrap\Config;
 use Zemit\Bootstrap\Router;
 use Zemit\Utils;
-use Zemit\Url;
 
 /**
  * Class Module
@@ -88,7 +86,7 @@ class Module implements ModuleDefinitionInterface
         $this->getServices($di);
         
         // register namespaces
-        $this->loader->registerNamespaces($this->getNamespaces(), true);
+        $this->loader->setNamespaces($this->getNamespaces(), true);
         
         // register autoloader
         $this->loader->register();

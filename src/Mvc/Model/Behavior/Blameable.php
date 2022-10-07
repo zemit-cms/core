@@ -15,7 +15,7 @@ use Phalcon\Mvc\Model\Behavior\Exception;
 use Phalcon\Mvc\Model\MetaData;
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Mvc\Model\Behavior;
-use Phalcon\Text;
+use Phalcon\Support\HelperFactory;
 use Zemit\Models\Audit;
 use Zemit\Models\AuditDetail;
 use Zemit\Models\User;
@@ -105,7 +105,7 @@ class Blameable extends Behavior
      */
     public function createAudit($event, ModelInterface $model)
     {
-        $event = lcfirst(Text::uncamelize(str_replace(['before', 'after'], ['', ''], $event)));
+        $event = lcfirst((new HelperFactory)->uncamelize(str_replace(['before', 'after'], ['', ''], $event)));
         
         $auditClass = $this->auditClass;
         $auditDetailClass = $this->auditDetailClass;

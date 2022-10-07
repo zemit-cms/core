@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit;
+namespace Zemit\Cache;
 
 /**
  * Class Cache
@@ -21,7 +21,7 @@ namespace Zemit;
  *
  * @package Zemit
  */
-class Cache extends \Phalcon\Cache
+class Cache extends \Phalcon\Cache\Cache
 {
 
 }

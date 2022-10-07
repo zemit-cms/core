@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit;
+namespace Zemit\Support;
 
 /**
  * Class Version
@@ -22,7 +22,7 @@ namespace Zemit;
  *
  * @package Zemit
  */
-class Version extends \Phalcon\Version
+class Version extends \Phalcon\Support\Version
 {
     /**
      * Area where the version number is set. The format is as follows:
@@ -31,11 +31,13 @@ class Version extends \Phalcon\Version
      * A - Major version
      * B - Med version (two digits)
      * C - Min version (two digits)
-     * D - Special release: 1 = Alpha, 2 = Beta, 3 = RC, 4 = Stable
+     * D - Special release: 1 = alpha, 2 = beta, 3 = RC, 4 = stable
      * E - Special release version i.e. RC1, Beta2 etc.
+     *
+     * @return array
      */
-    protected static function _getVersion() : array
+    protected function getVersion() : array
     {
-        return [0, 0, 1, 9, 0];
+        return [0, 2, 0, 0, 0];
     }
 }
