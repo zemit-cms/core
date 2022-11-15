@@ -94,6 +94,9 @@ class Request extends \Phalcon\Http\Request
                 'isOptions' => $this->isOptions(),
                 'isSoap' => $this->isSoap(),
                 'isSecure' => $this->isSecure(),
+                'isCors' => $this->isCors(),
+                'isPreflight' => $this->isPreflight(),
+                'isSameOrigin' => $this->isSameOrigin(),
                 'isValidHttpMethod' => $this->isValidHttpMethod($this->getMethod()),
             ];
         }
