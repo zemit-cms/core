@@ -405,11 +405,6 @@ trait Model
      */
     protected function getIdentityCondition(array $columns = null, Identity $identity = null, $roleList = null)
     {
-        // @todo
-        if ($this->request->isOptions()) {
-            return null;
-        }
-        
         $identity ??= $this->identity ?? false;
         $roleList ??= $this->getRoleList();
         $modelName = $this->getModelClassName();

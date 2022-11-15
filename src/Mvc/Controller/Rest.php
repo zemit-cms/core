@@ -70,13 +70,6 @@ class Rest extends \Zemit\Mvc\Controller
                 $this->dispatcher->forward(['action' => 'get']);
             }
         }
-        else if ($this->request->isOptions()) {
-            
-            // @TODO review
-            // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#successful_responses
-            // https://livebook.manning.com/book/cors-in-action/chapter-4/98
-            return $this->setRestResponse(['result' => ''], 204, 'No Content');
-        }
     }
     
     /**
