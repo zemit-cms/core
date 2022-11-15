@@ -61,9 +61,9 @@ trait Model
     
     /**
      * Get the WhiteList parameters for saving
-     * @return null|array
      * @todo add a whitelist object that would be able to support one configuration for the search, assign, filter
      *
+     * @return null|array
      */
     protected function getWhiteList()
     {
@@ -496,6 +496,7 @@ trait Model
                 // Map alias query operator
                 $mapAlias = [
                     'equals' => '=',
+                    'not equal' => '!=',
                     'does not equal' => '!=',
                     'different than' => '<>',
                     'greater than' => '>',
@@ -534,12 +535,12 @@ trait Model
                         break;
                         
                     // advanced filters
-                    case 'regexp': // @todo
-                    case 'not regexp': // @todo
+                    case 'regexp':
+                    case 'not regexp':
                     case 'contains':
                     case 'does not contain':
-                    case 'contains word': // @todo
-                    case 'does not contain word': // @todo
+                    case 'contains word':
+                    case 'does not contain word':
                     case 'distance sphere greater than'; // @todo
                     case 'distance sphere greater than or equal'; // @todo
                     case 'distance sphere less than'; // @todo

@@ -56,7 +56,7 @@ class Rest extends \Zemit\Mvc\Controller
     {
         $id ??= $this->getParam('id');
         
-        if ($this->request->isPost() || $this->request->isPut()) {
+        if ($this->request->isPost() || $this->request->isPut() || $this->request->isPatch()) {
             $this->dispatcher->forward(['action' => 'save']);
         }
         else if ($this->request->isDelete()) {

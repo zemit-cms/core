@@ -15,6 +15,7 @@ use Phalcon\Di\DiInterface;
 use Zemit\Cli\Dispatcher as CliDispatcher;
 use Zemit\Mvc\Dispatcher as MvcDispatcher;
 use Zemit\Mvc\Dispatcher\Camelize;
+use Zemit\Mvc\Dispatcher\Preflight;
 use Zemit\Mvc\Dispatcher\Error;
 use Zemit\Mvc\Dispatcher\Rest;
 use Zemit\Mvc\Dispatcher\Security;
@@ -57,6 +58,13 @@ class ServiceProvider extends AbstractServiceProvider
 //            $camelize = new Camelize();
 //            $camelize->setDI($di);
 //            $eventsManager->attach('dispatch', $camelize);
+    
+            /**
+             * Cors & Preflight
+             */
+            $security = new Preflight();
+            $security->setDI($di);
+            $eventsManager->attach('dispatch', $security);
             
             /**
              * Security

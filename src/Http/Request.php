@@ -24,6 +24,36 @@ namespace Zemit\Http;
  */
 class Request extends \Phalcon\Http\Request
 {
+    /**
+     * Return true if cors request
+     * @return bool
+     */
+    public function isCors() : bool
+    {
+        return !empty($this->getHeader('Origin')) && !$this->isSameOrigin();
+    }
+    
+    /**
+     * Return true if preflight request
+     * @return bool
+     */
+    public function isPreflight() : bool
+    {
+        return $this->isCors()
+            && $this->isOptions()
+            && !empty($this->getHeader('Access-Control-Request-Method'));
+    }
+    
+    /**
+     * Return true if the header origin is the same as the request http host
+     * @return bool
+     */
+    public function isSameOrigin(): bool
+    {
+        $schemeHost = $this->getScheme() . '://' . $this->getHttpHost();
+        return $this->getHeader('Origin') === $schemeHost;
+    }
+    
     public function toArray()
     {
         $config = $this->getDI()->get('config');
