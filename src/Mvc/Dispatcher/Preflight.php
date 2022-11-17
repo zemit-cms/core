@@ -43,7 +43,7 @@ class Preflight extends Injectable
             
             $this->setCorsHeaders($response,
                 $request->getHeader('Origin'),
-                $config->path('response.corsHeaders', [])
+                $config->path('response.corsHeaders', [])->toArray()
             );
         }
         
