@@ -14,7 +14,7 @@ use Phalcon\Events\Event;
 use Phalcon\Http\Response;
 use Zemit\Bootstrap\Config;
 use Zemit\Di\Injectable;
-use Zemit\Mvc\Dispatcher;
+use Zemit\Dispatcher\DispatcherInterface;
 use Zemit\Http\Request;
 
 /**
@@ -24,9 +24,9 @@ class Preflight extends Injectable
 {
     /**
      * @param Event $event
-     * @param Dispatcher $dispatcher
+     * @param DispatcherInterface $dispatcher
      */
-    public function beforeExecuteRoute(Event $event, Dispatcher $dispatcher)
+    public function beforeExecuteRoute(Event $event, DispatcherInterface $dispatcher)
     {
         $di = $dispatcher->getDI();
         

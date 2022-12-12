@@ -10,6 +10,7 @@
 
 namespace Zemit\Mvc;
 
+use Zemit\Dispatcher\DispatcherInterface;
 use Zemit\Dispatcher\DispatcherTrait;
 
 /**
@@ -24,7 +25,7 @@ use Zemit\Dispatcher\DispatcherTrait;
  *
  * @package Zemit\Mvc
  */
-class Dispatcher extends \Phalcon\Mvc\Dispatcher
+class Dispatcher extends \Phalcon\Mvc\Dispatcher implements DispatcherInterface
 {
     use DispatcherTrait;
 }
