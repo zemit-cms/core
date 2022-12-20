@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Locale;
+namespace Zemit\Locales;
 
 use Phalcon\Translate\Adapter\NativeArray;
 use Phalcon\Translate\InterpolatorFactory;

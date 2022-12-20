@@ -59,6 +59,7 @@ class Slug
         self::restoreLocale($oldLocale);
         return self::cleanString($string, $delimiter);
     }
+    
     /**
      * Revert back to the old locale
      */
@@ -70,6 +71,7 @@ class Slug
         }
         setlocale(LC_ALL, $oldLocale);
     }
+    
     protected static function cleanString($string, $delimiter)
     {
         // replace non letter or non digits by -
