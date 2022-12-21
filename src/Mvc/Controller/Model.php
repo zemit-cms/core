@@ -478,7 +478,7 @@ trait Model
                 $lowercaseField = mb_strtolower($field);
                 
                 // whiteList on filter condition
-                if (is_null($whiteList) || !in_array($lowercaseField, $lowercaseWhiteList, true)) {
+                if (is_null($whiteList) || !in_array($lowercaseField, $lowercaseWhiteList ?? [], true)) {
                     // @todo if config is set to throw exception on usage of not allowed filters otherwise continue looping through
                     throw new \Exception('Not allowed to filter using the following field: `' . $field . '`', 403);
                 }
@@ -536,10 +536,10 @@ trait Model
                     case 'does not contain':
                     case 'contains word':
                     case 'does not contain word':
-                    case 'distance sphere greater than'; // @todo
-                    case 'distance sphere greater than or equal'; // @todo
-                    case 'distance sphere less than'; // @todo
-                    case 'distance sphere less than or equal'; // @todo
+                    case 'distance sphere greater than':
+                    case 'distance sphere greater than or equal':
+                    case 'distance sphere less than':
+                    case 'distance sphere less than or equal':
                     case 'is empty':
                     case 'is not empty':
                         break;
@@ -671,7 +671,7 @@ trait Model
                 $this->setBindTypes($bindType);
             }
             else {
-                if (is_array($filter) || $filter instanceof \Traversable) {
+                if (is_array($filter)) {
                     $query [] = $this->getFilterCondition($filter, $whiteList, !$or);
                 }
                 else {
