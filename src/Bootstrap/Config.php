@@ -359,6 +359,7 @@ class Config extends PhalconConfig
                 Provider\Oauth2Google\ServiceProvider::class => Provider\Oauth2Google\ServiceProvider::class,
                 
                 // lib
+                Provider\Aws\ServiceProvider::class => Provider\Aws\ServiceProvider::class,
                 Provider\OCR\ServiceProvider::class => Provider\OCR\ServiceProvider::class,
                 Provider\Jwt\ServiceProvider::class => Provider\Jwt\ServiceProvider::class,
                 Provider\V8js\ServiceProvider::class => Provider\V8js\ServiceProvider::class,
