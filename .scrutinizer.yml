@@ -30,7 +30,7 @@ build:
           version: 7.4.14
           # @link https://pecl.php.net/
           pecl_extensions:
-            - phalcon
+            - phalcon-4.1.2
             - redis
             - memcached
             - apcu
