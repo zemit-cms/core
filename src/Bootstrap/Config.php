@@ -50,6 +50,7 @@ use Phalcon\Config as PhalconConfig;
  * @property Config $router
  * @property Config $gravatar
  * @property Config $reCaptcha
+ * @property Config $aws
  * @property Config $locale
  * @property Config $translate
  * @property Config $session
@@ -883,6 +884,18 @@ class Config extends PhalconConfig
             'cookies' => [
                 'useEncryption' => Env::get('COOKIES_USE_ENCRYPTION', true),
                 'signKey' => Env::get('COOKIES_SIGN_KEY', ''),
+            ],
+    
+            /**
+             * AWS - Amazon Web Service
+             */
+            'aws' => [
+                'region' => Env::get('AWS_REGION', 'ca-central-1'),
+                'version' => Env::get('AWS_VERSION', 'latest'),
+                'credentials' => [
+                    'key' => Env::get('AWS_CREDENTIALS_KEY', ''),
+                    'secret' => Env::get('AWS_CREDENTIALS_SECRET', ''),
+                ],
             ],
             
             /**
