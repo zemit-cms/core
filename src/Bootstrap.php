@@ -13,6 +13,7 @@ namespace Zemit;
 use Phalcon\Di;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Http\Response;
+use Phalcon\Http\ResponseInterface;
 use Phalcon\Text;
 use Phalcon\Events;
 
@@ -120,7 +121,7 @@ class Bootstrap
     public $debug;
 
     /**
-     * @var Response
+     * @var bool|ResponseInterface
      */
     public $response;
 
@@ -296,11 +297,7 @@ DOC;
         if ($this->di->has('config')) {
             $this->config = $this->di->get('config');
         }
-        return $this->fireSet($this->config, Config::class, [], function (Bootstrap $bootstrap) {
-//            $bootstrap->config->mode = $bootstrap->getMode();
-//            $bootstrap->config->mergeEnvConfig();
-//            $bootstrap->prepare->php();
-        });
+        return $this->fireSet($this->config, Config::class);
     }
 
     /**
@@ -350,7 +347,7 @@ DOC;
      * - Fire events (before & after)
      * - Pass the current Di object
      * - Depends on the current bootstrap mode ('default', 'console')
-     * @return \Phalcon\Cli\Console|Application
+     * @return Console|Application
      * @throws Exception
      */
     public function application()
@@ -389,7 +386,7 @@ DOC;
      * - Fire events (before run & after run)
      * - Handle both console and default application
      * - Return response string
-     * @return string
+     * @return string|void
      * @throws Exception If the application can't be found
      */
     public function run()
@@ -397,40 +394,39 @@ DOC;
         $this->fire('beforeRun');
 
         // cli console mode, get the arguments from the doctlib
-        if ($this->isConsole() || $this->application instanceof Console) {
-            try {
-                ob_start();
-                $this->application->handle($this->getArguments());
-                $responseString = ob_get_clean();
-                $this->fire('afterRun');
-                return $responseString;
-            } catch (\Zemit\Exception $e) {
-                new Cli\ExceptionHandler($e);
-                // do zemit related stuff here
-                exit(1);
-            } catch (\Phalcon\Exception $e) {
-                new Cli\ExceptionHandler($e);
-                // do phalcon related stuff here
-                exit(1);
-            } catch (\Exception $exception) {
-                new Cli\ExceptionHandler($exception);
-                exit(1);
-            } catch (\Throwable $throwable) {
-                new Cli\ExceptionHandler($throwable);
-                exit(1);
+        if (isset($this->application)) {
+            if ($this->application instanceof Console) {
+                try {
+                    ob_start();
+                    $this->application->handle($this->getArguments());
+                    $responseString = ob_get_clean();
+                    $this->fire('afterRun');
+                    return $responseString;
+                } catch (\Zemit\Exception $e) {
+                    new Cli\ExceptionHandler($e);
+                    // do zemit related stuff here
+                } catch (\Phalcon\Exception $e) {
+                    new Cli\ExceptionHandler($e);
+                    // do phalcon related stuff here
+                } catch (\Exception $exception) {
+                    new Cli\ExceptionHandler($exception);
+                } catch (\Throwable $throwable) {
+                    new Cli\ExceptionHandler($throwable);
+                }
             }
-        } elseif (isset($this->application) && ($this->application instanceof \Phalcon\Mvc\Application)) {
-            // we don't need a try catch here, its handled by the application
-            // or the user can wrap it with try catch into the public/index.php instead
-            $this->response = $this->application->handle($_SERVER['REQUEST_URI'] ?? '/');
-            $this->fire('afterRun');
-            return $this->response->getContent();
-        } else {
-            if (empty($this->application)) {
-                throw new \Exception('Application \'\' not found', 404);
-            } else {
+            else if ($this->application instanceof Application) {
+                // we don't need a try catch here, its handled by the application
+                // or the user can wrap it with try catch into the public/index.php instead
+                $this->response = $this->application->handle($_SERVER['REQUEST_URI'] ?? '/');
+                $this->fire('afterRun');
+                return $this->response? $this->response->getContent() : '';
+            }
+            else {
                 throw new \Exception('Application \''.get_class($this->application).'\' not supported', 400);
             }
+        }
+        else {
+            throw new \Exception('Application not found', 404);
         }
     }
 
@@ -441,7 +437,7 @@ DOC;
     public function getArguments() : array
     {
         $arguments = [];
-        if ($this->args) {
+        if (!empty($this->args)) {
             foreach ($this->args as $key => $value) {
                 if (preg_match('/(<(.*?)>|\-\-(.*))/', $key, $match)) {
                     $key = lcfirst(Text::camelize(Text::uncamelize(array_pop($match))));
