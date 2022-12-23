@@ -40,7 +40,7 @@ build:
         before:
           - composer self-update
         after:
-          - composer require --dev phalcon/ide-stubs
+          - composer require --dev phalcon/ide-stubs:4.1.0
           - composer require --dev phpunit/phpunit
           - composer require --dev squizlabs/php_codesniffer
       tests:
