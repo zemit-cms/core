@@ -450,7 +450,7 @@ class Model extends \Phalcon\Mvc\Model
      * @param int $depth
      * @return false|string|mixed
      */
-    public function jsonEncode(mixed $value, int $flags = JSON_UNESCAPED_SLASHES, int $depth = 512)
+    public function jsonEncode($value, int $flags = JSON_UNESCAPED_SLASHES, int $depth = 512)
     {
         return json_encode($value, $flags, $depth) ?: $value;
     }
