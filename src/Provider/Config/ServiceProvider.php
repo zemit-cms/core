@@ -48,7 +48,7 @@ class ServiceProvider extends AbstractServiceProvider
                 $config = new $config();
             }
             
-            // Inject some dynamic variables
+            // Set bootstrap mode into config
             $config->mode = $di->get('bootstrap')->getMode();
             
             // Merge config with current environment
@@ -56,11 +56,6 @@ class ServiceProvider extends AbstractServiceProvider
             
             // Launch bootstrap prepare raw php configs
             $bootstrap->prepare->php($config->path('app'));
-            
-            // Register other providers
-//            foreach ($config->providers as $provider) {
-//                $di->register(new $provider($di));
-//            }
             
             // Set the config
             return $config;
