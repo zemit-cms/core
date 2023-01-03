@@ -456,8 +456,13 @@ class Config extends PhalconConfig
                     'namespace' => Env::get('ROUTER_DEFAULT_NAMESPACE', 'Zemit\\Modules\\Frontend\\Controllers'),
                     'module' => Env::get('ROUTER_DEFAULT_MODULE', 'frontend'),
                     'controller' => Env::get('ROUTER_DEFAULT_CONTROLLER', 'index'),
-                    'task' => Env::get('ROUTER_DEFAULT_CONTROLLER', 'index'),
                     'action' => Env::get('ROUTER_DEFAULT_ACTION', 'index'),
+                ],
+                'cli' => [
+                    'namespace' => Env::get('ROUTER_DEFAULT_NAMESPACE', 'Zemit\\Modules\\Cli\\Tasks'),
+                    'module' => Env::get('ROUTER_DEFAULT_MODULE', 'cli'),
+                    'task' => Env::get('ROUTER_DEFAULT_TASK', 'help'),
+                    'action' => Env::get('ROUTER_DEFAULT_ACTION', 'main'),
                 ],
                 'notFound' => [
                     'namespace' => Env::get('ROUTER_NOTFOUND_NAMESPACE', null),

@@ -14,6 +14,7 @@ namespace Zemit\Provider\Router;
 use Phalcon\Di\DiInterface;
 use Zemit\Bootstrap;
 use Zemit\Bootstrap\Router;
+use Zemit\Cli\Router as CliRouter;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
@@ -42,9 +43,11 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function() use ($di) {
+        $di->setShared($this->getName(), function () use ($di) {
             $eventsManager = $di->get('eventsManager');
-            $config = $di->get('config')->router;
+            
+            /** @var Bootstrap\Config $config */
+            $config = $di->get('config');
             
             /** @var Bootstrap $bootstrap */
             $bootstrap = $di->get('bootstrap');
@@ -52,20 +55,14 @@ class ServiceProvider extends AbstractServiceProvider
             /**
              * Router
              */
-            $router = $bootstrap->isConsole() ? new \Zemit\Cli\Router(true) : new Router(true, $bootstrap->application);
+            $router = $bootstrap->isConsole()
+                ? new CliRouter(true)
+                : new Router(true, $bootstrap->application);
+    
+            $defaults = $config->path($bootstrap->isConsole()? 'router.cli': 'router.defaults');
+            $router->setDefaults($defaults? $defaults->toArray() : []);
+            $router->setEventsManager($eventsManager);
             $router->setDI($di);
-            
-            // Console
-            if ($bootstrap->isConsole()) {
-                // @todo
-            }
-            
-            // Mvc
-            else {
-                $router->setDefaultModule($config->defaults->module);
-                $router->setDefaultNamespace($config->defaults->namespace);
-                $router->setEventsManager($eventsManager);
-            }
             
             return $router;
         });
