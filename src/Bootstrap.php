@@ -10,6 +10,8 @@
 
 namespace Zemit;
 
+use Dotenv\Environment\DotenvFactory;
+use Dotenv\Loader;
 use Phalcon\Di;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Http\Response;
@@ -224,11 +226,10 @@ DOC;
     public function dotenv()
     {
         try {
-            $this->dotenv = Dotenv::create(dirname(APP_PATH)); // @todo fix this to handle fireset instead, using a new class extending dotenv
-            $this->dotenv->load();
-//            $this->fireSet($this->dotenv, Dotenv::class, [dirname(APP_PATH)], function (Bootstrap $bootstrap) {
-//                $bootstrap->dotenv->load();
-//            });
+            $loader = new Loader([dirname(APP_PATH)], new DotenvFactory(), true);
+            $this->fireSet($this->dotenv, Dotenv::class, [$loader], function (Bootstrap $bootstrap) {
+                $bootstrap->dotenv->load();
+            });
         } catch (\Dotenv\Exception\InvalidPathException|\Dotenv\Exception\InvalidFileException $e) {
             // just ignore and run the application anyway
         }
@@ -369,70 +370,94 @@ DOC;
 
     /**
      * Prepare the router
-     * - Fire events (before & after router)
-     * - Pass the current application for default mode
-     * - Depends on the bootstrap mode ('default', 'default')
-     * - Force Re-inject router in the bootstrap DI @TODO is it still necessary
      * @return Router
      * @throws Exception
      */
     public function router()
     {
+        if ($this->di->has('router')) {
+            $this->config = $this->di->get('router');
+        }
         return $this->fireSet($this->router, $this->isConsole() ? CliRouter::class : Router::class, [true, $this->application]);
     }
-
+    
     /**
-     * Run Zemit App
+     * Run the application
      * - Fire events (before run & after run)
      * - Handle both console and default application
      * - Return response string
-     * @return string|void
-     * @throws Exception If the application can't be found
+     * @return false|string|null
+     * @throws \Exception
      */
     public function run()
     {
         $this->fire('beforeRun');
-
-        // cli console mode, get the arguments from the doctlib
+        
         if (isset($this->application)) {
+            
             if ($this->application instanceof Console) {
-                try {
-                    ob_start();
-                    $this->application->handle($this->getArguments());
-                    $responseString = ob_get_clean();
-                    $this->fire('afterRun');
-                    return $responseString;
-                } catch (\Zemit\Exception $e) {
-                    new Cli\ExceptionHandler($e);
-                    // do zemit related stuff here
-                } catch (\Phalcon\Exception $e) {
-                    new Cli\ExceptionHandler($e);
-                    // do phalcon related stuff here
-                } catch (\Exception $exception) {
-                    new Cli\ExceptionHandler($exception);
-                } catch (\Throwable $throwable) {
-                    new Cli\ExceptionHandler($throwable);
-                }
+                
+                // run console cli
+                $content = $this->handleConsole($this->application);
             }
+            
             else if ($this->application instanceof Application) {
-                // we don't need a try catch here, its handled by the application
-                // or the user can wrap it with try catch into the public/index.php instead
-                $this->response = $this->application->handle($_SERVER['REQUEST_URI'] ?? '/');
-                $this->fire('afterRun');
-                return $this->response? $this->response->getContent() : '';
+                
+                // run mvc http
+                $content = $this->handleApplication($this->application);
             }
             else {
-                throw new \Exception('Application \''.get_class($this->application).'\' not supported', 400);
+                throw new \Exception('Application \'' . get_class($this->application) . '\' not supported', 400);
             }
         }
         else {
             throw new \Exception('Application not found', 404);
         }
+        
+        $this->fire('afterRun', $content);
+        return $content;
+    }
+    
+    /**
+     * @param Console $console
+     * @return false|string|null
+     */
+    public function handleConsole(Console $console)
+    {
+        $response = null;
+        
+        try {
+            ob_start();
+            $console->handle($this->getArguments());
+            $response = ob_get_clean();
+        }
+        catch (\Zemit\Exception $e) {
+            new Cli\ExceptionHandler($e);
+        }
+        catch (\Exception $exception) {
+            new Cli\ExceptionHandler($exception);
+        }
+        catch (\Throwable $throwable) {
+            new Cli\ExceptionHandler($throwable);
+        }
+        
+        return $response;
+    }
+    
+    /**
+     * @param Application $application
+     * @return string
+     * @throws \Exception
+     */
+    public function handleApplication(Application $application): string
+    {
+        $this->response = $application->handle($_SERVER['REQUEST_URI'] ?? '/');
+        return $this->response ? $this->response->getContent() : '';
     }
 
     /**
      * Get & format arguments from the $this->args property
-     * @return array Key value pair, human readable
+     * @return array Key value pair, human-readable
      */
     public function getArguments() : array
     {
