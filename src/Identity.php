@@ -21,7 +21,7 @@ use Phalcon\Messages\Message;
 use Phalcon\Validation\Validator\PresenceOf;
 use Zemit\Models\Session;
 use Zemit\Models\User;
-use Zemit\Support\ModelClass;
+use Zemit\Support\ModelsMap;
 use Zemit\Support\Options;
 use Zemit\Support\OptionsInterface;
 
@@ -40,7 +40,7 @@ use Zemit\Support\OptionsInterface;
 class Identity extends Injectable implements OptionsInterface
 {
     use Options;
-    use ModelClass;
+    use ModelsMap;
     
     /**
      * Without encryption

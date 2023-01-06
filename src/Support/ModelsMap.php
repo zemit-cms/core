@@ -52,7 +52,7 @@ use Zemit\Models\Feature;
 /**
  * Allow to get mapped classes without using magic methods
  */
-trait ModelClass
+trait ModelsMap
 {
     /**
      * Config from DI
