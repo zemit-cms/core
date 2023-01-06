@@ -68,6 +68,11 @@ class Identity extends Injectable
     public $options = [];
     
     /**
+     * @var array
+     */
+    public $store = [];
+    
+    /**
      * @var User
      */
     public $user;
@@ -170,7 +175,7 @@ class Identity extends Injectable
      * Get the current mode
      * @return string
      */
-    public function getMode()
+    public function getMode(): string
     {
         return $this->mode;
     }
@@ -327,7 +332,7 @@ class Identity extends Injectable
      *
      * @throws \Phalcon\Security\Exception
      */
-    public function getJwt($refresh = false)
+    public function getJwt(bool $refresh = false)
     {
         [$key, $token] = $this->getKeyToken();
         
@@ -341,19 +346,25 @@ class Identity extends Injectable
         $session->setKey($key);
         $session->setToken($session->hash($key . $newToken));
         $session->setDate($date);
-        $store = ['key' => $session->getKey(), 'token' => $newToken];
+        $saved = $session->save();
         
-        ($save = $session->save()) ?
-            $this->session->set($this->sessionKey, $store) :
+        // store key & token to this instance
+        $this->store = ['key' => $session->getKey(), 'token' => $newToken];
+        
+        // store key & token into the session
+        if ($this->config->path('identity.sessionFallback', false) && $saved) {
+            $this->session->set($this->sessionKey, $this->store);
+        } else {
             $this->session->remove($this->sessionKey);
+        }
         
         return [
-            'saved' => $save,
-            'stored' => $this->session->has($this->sessionKey),
-            'refreshed' => $save && $refresh,
+            'saved' => $saved,
+            'hasSession' => $this->session->has($this->sessionKey),
+            'refreshed' => $saved && $refresh,
             'validated' => $session->checkHash($session->getToken(), $session->getKey() . $token),
             'messages' => $session->getMessages(),
-            'jwt' => $this->getJwtToken($this->sessionKey, $store),
+            'jwt' => $this->getJwtToken($this->sessionKey, $this->store),
         ];
     }
     
@@ -872,20 +883,20 @@ class Identity extends Injectable
     {
         $saved = false;
         
-        $session = $this->getSession();
+        $sessionEntity = $this->getSession();
         $validation = new Validation();
         $validation->validate();
         
-        if (!$session) {
+        if (!$sessionEntity) {
             $validation->appendMessage(new Message('A session is required', 'session', 'PresenceOf', 403));
         }
         else {
             // Logout
-            $session->setUserId(null);
-            $session->setAsUserId(null);
-            $saved = $session->save();
+            $sessionEntity->setUserId(null);
+            $sessionEntity->setAsUserId(null);
+            $saved = $sessionEntity->save();
             
-            foreach ($session->getMessages() as $message) {
+            foreach ($sessionEntity->getMessages() as $message) {
                 $validation->appendMessage($message);
             }
         }
@@ -1006,7 +1017,7 @@ class Identity extends Injectable
      *
      * @return array
      */
-    public function getKeyToken($jwt = null, $key = null, $token = null)
+    public function getKeyToken(string $jwt = null, string $key = null, string $token = null)
     {
         $basicAuth = $this->request->getBasicAuth();
         $authorization = array_filter(explode(' ', $this->request->getHeader(
@@ -1014,10 +1025,14 @@ class Identity extends Injectable
         ) ?: ''));
         
         $jwt = $this->request->get('jwt', 'string', $jwt);
-        $key = $this->request->get('key', 'string', $key);
-        $token = $this->request->get('token', 'string', $token);
+        $key = $this->request->get('key', 'string', $this->store['key'] ?? null);
+        $token = $this->request->get('token', 'string', $this->store['token'] ?? null);
         
-        if (!empty($jwt)) {
+        if (!empty($key) && !empty($token)) {
+        
+        }
+        
+        else if (!empty($jwt)) {
             $sessionClaim = $this->getClaim($jwt, $this->sessionKey);
             $key = $sessionClaim->key ?? null;
             $token = $sessionClaim->token ?? null;
@@ -1040,6 +1055,7 @@ class Identity extends Injectable
         }
         
         else if (
+            $this->config->path('identity.sessionFallback', false) &&
             $this->session->has($this->sessionKey)
         ) {
             $sessionStore = $this->session->get($this->sessionKey);
@@ -1057,7 +1073,7 @@ class Identity extends Injectable
      * @param ?string $token
      * @param bool $refresh Pass true to force a session fetch from the database
      *
-     * @return void|bool|Session Return the session by key if the token is valid, false otherwise
+     * @return void|bool|Session Return the session entity by key if the token is valid, false otherwise
      */
     public function getSession(string $key = null, string $token = null, bool $refresh = false)
     {
@@ -1078,10 +1094,10 @@ class Identity extends Injectable
         }
         
         $sessionClass = $this->getSessionClass();
-        $session = $sessionClass::findFirstByKey($this->filter->sanitize($key, 'string'));
+        $sessionEntity = $sessionClass::findFirstByKey($this->filter->sanitize($key, 'string'));
         
-        if ($session && $session->checkHash($session->getToken(), $key . $token)) {
-            $this->currentSession = $session;
+        if ($sessionEntity && $sessionEntity->checkHash($sessionEntity->getToken(), $key . $token)) {
+            $this->currentSession = $sessionEntity;
         }
         
         return $this->currentSession;

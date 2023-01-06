@@ -33,12 +33,12 @@ trait Identity
      * @return bool
      * @throws \Phalcon\Security\Exception
      */
-    public function getAction($request = null)
+    public function getAction($refresh = false)
     {
-        $this->view->setVars($this->identity->getJwt($request === true));
+        $this->view->setVars($this->identity->getJwt($refresh === true));
         $this->view->setVars($this->identity->getIdentity());
         
-        return $this->view->saved && $this->view->stored && $this->view->validated;
+        return $this->view->validated;
     }
     
     /**
