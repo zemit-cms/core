@@ -21,6 +21,9 @@ use Phalcon\Messages\Message;
 use Phalcon\Validation\Validator\PresenceOf;
 use Zemit\Models\Session;
 use Zemit\Models\User;
+use Zemit\Support\ModelClass;
+use Zemit\Support\Options;
+use Zemit\Support\OptionsInterface;
 
 /**
  * Class Identity
@@ -34,8 +37,11 @@ use Zemit\Models\User;
  *
  * @package Zemit
  */
-class Identity extends Injectable
+class Identity extends Injectable implements OptionsInterface
 {
+    use Options;
+    use ModelClass;
+    
     /**
      * Without encryption
      */
@@ -58,14 +64,9 @@ class Identity extends Injectable
     public string $mode = self::MODE_DEFAULT;
     
     /**
-     * @var mixed|string|null
+     * @var string
      */
-    public $sessionKey = 'zemit-identity';
-    
-    /**
-     * @var array
-     */
-    public $options = [];
+    public string $sessionKey = 'zemit-identity';
     
     /**
      * @var array
@@ -92,83 +93,14 @@ class Identity extends Injectable
      */
     public $identity;
     
-    public function __construct($options = [])
+    /**
+     * @return void
+     * @throws \Exception
+     */
+    public function init()
     {
-        $this->setOptions($options);
         $this->sessionKey = $this->getOption('sessionKey', $this->sessionKey);
         $this->setMode($this->getOption('mode', $this->mode));
-//        $this->set($this->getFromSession());
-    }
-    
-    /**
-     * Set default options
-     *
-     * @param array $options
-     */
-    public function setOptions($options = [])
-    {
-        $this->options = $options;
-    }
-    
-    /**
-     * Getting an option value from the key, allowing to specify a default value
-     *
-     * @param $key
-     * @param null $default
-     *
-     * @return mixed|null
-     */
-    public function getOption($key, $default = null)
-    {
-        return $this->options[$key] ?? $default;
-    }
-    
-    /**
-     * @return string|Mvc\Model|\Zemit\Models\Session
-     */
-    public function getSessionClass()
-    {
-        return $this->config->getModelClass(\Zemit\Models\Session::class);
-    }
-    
-    /**
-     * @return string|Mvc\Model|\Zemit\Models\User
-     */
-    public function getUserClass()
-    {
-        return $this->config->getModelClass(\Zemit\Models\User::class);
-    }
-    
-    /**
-     * @return string|Mvc\Model|\Zemit\Models\Group
-     */
-    public function getGroupClass()
-    {
-        return $this->config->getModelClass(\Zemit\Models\Group::class);
-    }
-    
-    /**
-     * @return string|Mvc\Model|\Zemit\Models\Role
-     */
-    public function getRoleClass()
-    {
-        return $this->config->getModelClass(\Zemit\Models\Role::class);
-    }
-    
-    /**
-     * @return string|Mvc\Model|\Zemit\Models\Type
-     */
-    public function getTypeClass()
-    {
-        return $this->config->getModelClass(\Zemit\Models\Type::class);
-    }
-    
-    /**
-     * @return string
-     */
-    public function getEmailClass()
-    {
-        return $this->config->getModelClass(\Zemit\Models\Email::class);
     }
     
     /**
@@ -338,7 +270,7 @@ class Identity extends Injectable
         
         $key ??= $this->security->getRandom()->uuid();
         $token ??= $this->security->getRandom()->hex(512);
-        $newToken = $refresh? $this->security->getRandom()->hex(512) : $token;
+        $newToken = $refresh ? $this->security->getRandom()->hex(512) : $token;
         $date = date('Y-m-d H:i:s');
         
         $sessionClass = $this->getSessionClass();
@@ -354,7 +286,8 @@ class Identity extends Injectable
         // store key & token into the session
         if ($this->config->path('identity.sessionFallback', false) && $saved) {
             $this->session->set($this->sessionKey, $this->store);
-        } else {
+        }
+        else {
             $this->session->remove($this->sessionKey);
         }
         
@@ -1128,7 +1061,7 @@ class Identity extends Injectable
      *
      * @return string
      */
-    public function getJwtToken($claim, $data) : string
+    public function getJwtToken($claim, $data): string
     {
         $uri = $this->request->getScheme() . '://' . $this->request->getHttpHost();
 
