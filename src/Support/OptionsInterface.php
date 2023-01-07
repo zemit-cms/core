@@ -10,11 +10,14 @@
 
 namespace Zemit\Support;
 
-interface OptionsInterface {
+interface OptionsInterface
+{
     
-    public function __construct(array $options = []);
+    public function __construct(array $options = null);
     
-    public function init();
+    public function initializeOptions(array $options = null);
+    
+    public function initialize();
     
     public function setOptions(array $options): void;
     

@@ -15,14 +15,29 @@ trait Options
     protected array $defaultOptions = [];
     protected array $options = [];
     
-    public function __construct(array $options = [])
+    public function __construct(array $options = null)
     {
-        $this->defaultOptions = $options;
-        $this->setOptions($options);
-        $this->init();
+        $this->initializeOptions($options);
     }
     
-    public function init() {
+    /**
+     * Initialize Options
+     * @param array|null $options
+     * @return void
+     */
+    public function initializeOptions(array $options = null) {
+        $options ??= [];
+        $this->defaultOptions = $options;
+        $this->setOptions($options);
+        $this->initialize();
+    }
+    
+    /**
+     * Classes can use this as a constructor after options are initialized
+     * @return void
+     */
+    public function initialize()
+    {
     
     }
     
@@ -48,7 +63,7 @@ trait Options
     /**
      * Set an option value
      * @param string $key
-     * @param $value
+     * @param mixed|null $value
      * @return void
      */
     public function setOption(string $key, $value = null): void

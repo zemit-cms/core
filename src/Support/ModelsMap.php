@@ -10,7 +10,7 @@
 
 namespace Zemit\Support;
 
-use Phalcon\Di;
+use Phalcon\Di\DiInterface;
 use Zemit\Bootstrap\Config;
 use Zemit\Models\Backup;
 use Zemit\Models\Audit;
@@ -61,9 +61,9 @@ trait ModelsMap
     public array $modelsMap;
     
     /**
-     * @return Di
+     * @return DiInterface
      */
-    abstract function getDI(): Di;
+    abstract function getDI(): DiInterface;
     
     /**
      * Retrieve the config from DI

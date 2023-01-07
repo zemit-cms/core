@@ -93,11 +93,7 @@ class Identity extends Injectable implements OptionsInterface
      */
     public $identity;
     
-    /**
-     * @return void
-     * @throws \Exception
-     */
-    public function init()
+    public function initialize(): void
     {
         $this->sessionKey = $this->getOption('sessionKey', $this->sessionKey);
         $this->setMode($this->getOption('mode', $this->mode));
