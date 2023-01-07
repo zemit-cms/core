@@ -72,6 +72,7 @@ class Bootstrap
 
     /**
      * Bootstrap console args
+     * - This variable is currently filled by `docopt`
      * @var array
      */
     public $args;
@@ -181,7 +182,7 @@ DOC;
         $this->services();
         $this->application();
         $this->modules();
-//        $this->router(); // using serviceProvider now
+        $this->router();
     }
 
     /**
