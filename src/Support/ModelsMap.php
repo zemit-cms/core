@@ -55,16 +55,15 @@ use Zemit\Models\Feature;
 trait ModelsMap
 {
     /**
-     * Config from DI
-     * @var Config
-     */
-    public Config $_config;
-    
-    /**
      * Store an array of mapped models
      * @var array
      */
     public array $modelsMap;
+    
+    /**
+     * @return Di
+     */
+    abstract function getDI(): Di;
     
     /**
      * Retrieve the config from DI
@@ -72,14 +71,7 @@ trait ModelsMap
      */
     public function getConfig(): Config
     {
-        if (!isset($this->_config)) {
-            $this->_config =
-                $this->config ??
-                $this->getDI()->get('config') ??
-                Di::getDefault()->get('config') ??
-                new Config();
-        }
-        return $this->_config;
+        return $this->getDI()->get('config');
     }
     
     /**
