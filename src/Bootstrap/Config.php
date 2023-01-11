@@ -139,7 +139,7 @@ class Config extends PhalconConfig
                 'debug' => Env::get('APP_DEBUG', false), // Set true to display debug
                 'cache' => Env::get('APP_CACHE', false), // Set true to activate the cache
                 'minify' => Env::get('APP_MINIFY', false), // Set true to activate minifying
-                'copyright' => Env::get('APP_COPYRIGHT', false), // Set true to activate the cache
+                'copyright' => Env::get('APP_COPYRIGHT', false), // Set true to activate the copyright
                 'profiler' => Env::get('APP_PROFILER', false), // Set true to return the profiler
                 'logger' => Env::get('APP_LOGGER', false), // Set true to enable logging
                 'uri' => Env::get('APP_URI', '/'), // Base URI of your application
@@ -317,55 +317,55 @@ class Config extends PhalconConfig
              */
             'providers' => [
                 // abstract => concrete
-                Provider\Environment\ServiceProvider::class => Provider\Environment\ServiceProvider::class,
-                Provider\Security\ServiceProvider::class => Provider\Security\ServiceProvider::class,
-                Provider\Session\ServiceProvider::class => Provider\Session\ServiceProvider::class,
-                Provider\Cookies\ServiceProvider::class => Provider\Cookies\ServiceProvider::class,
+                Provider\Environment\ServiceProvider::class => Env::get('PROVIDER_ENVIRONMENT', Provider\Environment\ServiceProvider::class),
+                Provider\Security\ServiceProvider::class => Env::get('PROVIDER_SECURITY', Provider\Security\ServiceProvider::class),
+                Provider\Session\ServiceProvider::class => Env::get('PROVIDER_SESSION', Provider\Session\ServiceProvider::class),
+                Provider\Cookies\ServiceProvider::class => Env::get('PROVIDER_COOKIES', Provider\Cookies\ServiceProvider::class),
                 
-                Provider\Locale\ServiceProvider::class => Provider\Locale\ServiceProvider::class,
-                Provider\Translate\ServiceProvider::class => Provider\Translate\ServiceProvider::class,
-                Provider\Url\ServiceProvider::class => Provider\Url\ServiceProvider::class,
-                Provider\Request\ServiceProvider::class => Provider\Request\ServiceProvider::class,
-                Provider\Response\ServiceProvider::class => Provider\Response\ServiceProvider::class,
-                Provider\Router\ServiceProvider::class => Provider\Router\ServiceProvider::class,
-                Provider\Dispatcher\ServiceProvider::class => Provider\Dispatcher\ServiceProvider::class,
-                Provider\VoltTemplate\ServiceProvider::class => Provider\VoltTemplate\ServiceProvider::class,
-                Provider\View\ServiceProvider::class => Provider\View\ServiceProvider::class,
+                Provider\Locale\ServiceProvider::class => Env::get('PROVIDER_LOCALE', Provider\Locale\ServiceProvider::class),
+                Provider\Translate\ServiceProvider::class => Env::get('PROVIDER_TRANSLATE', Provider\Translate\ServiceProvider::class),
+                Provider\Url\ServiceProvider::class => Env::get('PROVIDER_URL', Provider\Url\ServiceProvider::class),
+                Provider\Request\ServiceProvider::class => Env::get('PROVIDER_REQUEST', Provider\Request\ServiceProvider::class),
+                Provider\Response\ServiceProvider::class => Env::get('PROVIDER_RESPONSE', Provider\Response\ServiceProvider::class),
+                Provider\Router\ServiceProvider::class => Env::get('PROVIDER_ROUTER', Provider\Router\ServiceProvider::class),
+                Provider\Dispatcher\ServiceProvider::class => Env::get('PROVIDER_DISPATCHER', Provider\Dispatcher\ServiceProvider::class),
+                Provider\VoltTemplate\ServiceProvider::class => Env::get('PROVIDER_VOLT_TEMPLATE', Provider\VoltTemplate\ServiceProvider::class),
+                Provider\View\ServiceProvider::class => Env::get('PROVIDER_VIEW', Provider\View\ServiceProvider::class),
                 
-                Provider\Profiler\ServiceProvider::class => Provider\Profiler\ServiceProvider::class,
-                Provider\Database\ServiceProvider::class => Provider\Database\ServiceProvider::class,
-                Provider\DatabaseReadOnly\ServiceProvider::class => Provider\DatabaseReadOnly\ServiceProvider::class,
-                Provider\Annotations\ServiceProvider::class => Provider\Annotations\ServiceProvider::class,
-                Provider\ModelsManager\ServiceProvider::class => Provider\ModelsManager\ServiceProvider::class,
-                Provider\ModelsMetadata\ServiceProvider::class => Provider\ModelsMetadata\ServiceProvider::class,
-                Provider\ModelsCache\ServiceProvider::class => Provider\ModelsCache\ServiceProvider::class,
-                Provider\Cache\ServiceProvider::class => Provider\Cache\ServiceProvider::class,
-                Provider\Mailer\ServiceProvider::class => Provider\Mailer\ServiceProvider::class,
-                Provider\Logger\ServiceProvider::class => Provider\Logger\ServiceProvider::class,
-                Provider\FileSystem\ServiceProvider::class => Provider\FileSystem\ServiceProvider::class,
+                Provider\Profiler\ServiceProvider::class => Env::get('PROVIDER_PROFILER', Provider\Profiler\ServiceProvider::class),
+                Provider\Database\ServiceProvider::class => Env::get('PROVIDER_DATABASE', Provider\Database\ServiceProvider::class),
+                Provider\DatabaseReadOnly\ServiceProvider::class => Env::get('PROVIDER_DATABASE_READ_ONLY', Provider\DatabaseReadOnly\ServiceProvider::class),
+                Provider\Annotations\ServiceProvider::class => Env::get('PROVIDER_ANNOTATIONS', Provider\Annotations\ServiceProvider::class),
+                Provider\ModelsManager\ServiceProvider::class => Env::get('PROVIDER_MODELS_MANAGER', Provider\ModelsManager\ServiceProvider::class),
+                Provider\ModelsMetadata\ServiceProvider::class => Env::get('PROVIDER_MODELS_METADATA', Provider\ModelsMetadata\ServiceProvider::class),
+                Provider\ModelsCache\ServiceProvider::class => Env::get('PROVIDER_MODELS_CACHE', Provider\ModelsCache\ServiceProvider::class),
+                Provider\Cache\ServiceProvider::class => Env::get('PROVIDER_CACHE', Provider\Cache\ServiceProvider::class),
+                Provider\Mailer\ServiceProvider::class => Env::get('PROVIDER_MAILER', Provider\Mailer\ServiceProvider::class),
+                Provider\Logger\ServiceProvider::class => Env::get('PROVIDER_LOGGER', Provider\Logger\ServiceProvider::class),
+                Provider\FileSystem\ServiceProvider::class => Env::get('PROVIDER_FILE_SYSTEM', Provider\FileSystem\ServiceProvider::class),
                 
-                Provider\Assets\ServiceProvider::class => Provider\Assets\ServiceProvider::class,
-                Provider\Tag\ServiceProvider::class => Provider\Tag\ServiceProvider::class,
-                Provider\Filter\ServiceProvider::class => Provider\Filter\ServiceProvider::class,
-                Provider\Flash\ServiceProvider::class => Provider\Flash\ServiceProvider::class,
-                Provider\Escaper\ServiceProvider::class => Provider\Escaper\ServiceProvider::class,
-                Provider\Markdown\ServiceProvider::class => Provider\Markdown\ServiceProvider::class,
-                Provider\Utils\ServiceProvider::class => Provider\Utils\ServiceProvider::class,
-                Provider\Crypt\ServiceProvider::class => Provider\Crypt\ServiceProvider::class,
+                Provider\Assets\ServiceProvider::class => Env::get('PROVIDER_ASSETS', Provider\Assets\ServiceProvider::class),
+                Provider\Tag\ServiceProvider::class => Env::get('PROVIDER_TAG', Provider\Tag\ServiceProvider::class),
+                Provider\Filter\ServiceProvider::class => Env::get('PROVIDER_FILTER', Provider\Filter\ServiceProvider::class),
+                Provider\Flash\ServiceProvider::class => Env::get('PROVIDER_FLASH', Provider\Flash\ServiceProvider::class),
+                Provider\Escaper\ServiceProvider::class => Env::get('PROVIDER_ESCAPER', Provider\Escaper\ServiceProvider::class),
+                Provider\Markdown\ServiceProvider::class => Env::get('PROVIDER_MARKDOWN', Provider\Markdown\ServiceProvider::class),
+                Provider\Utils\ServiceProvider::class => Env::get('PROVIDER_UTILS', Provider\Utils\ServiceProvider::class),
+                Provider\Crypt\ServiceProvider::class => Env::get('PROVIDER_CRYPT', Provider\Crypt\ServiceProvider::class),
                 
                 // oauth2
-                Provider\Identity\ServiceProvider::class => Provider\Identity\ServiceProvider::class,
-                Provider\Oauth2Facebook\ServiceProvider::class => Provider\Oauth2Facebook\ServiceProvider::class,
-                Provider\Oauth2Google\ServiceProvider::class => Provider\Oauth2Google\ServiceProvider::class,
+                Provider\Identity\ServiceProvider::class => Env::get('PROVIDER_IDENTITY', Provider\Identity\ServiceProvider::class),
+                Provider\Oauth2Facebook\ServiceProvider::class => Env::get('PROVIDER_OAUTH_2_FACEBOOK', Provider\Oauth2Facebook\ServiceProvider::class),
+                Provider\Oauth2Google\ServiceProvider::class => Env::get('PROVIDER_OAUTH_2_GOOGLE', Provider\Oauth2Google\ServiceProvider::class),
                 
                 // lib
-                Provider\Aws\ServiceProvider::class => Provider\Aws\ServiceProvider::class,
-                Provider\OCR\ServiceProvider::class => Provider\OCR\ServiceProvider::class,
-                Provider\Jwt\ServiceProvider::class => Provider\Jwt\ServiceProvider::class,
-                Provider\V8js\ServiceProvider::class => Provider\V8js\ServiceProvider::class,
-                Provider\Captcha\ServiceProvider::class => Provider\Captcha\ServiceProvider::class,
-                Provider\Gravatar\ServiceProvider::class => Provider\Gravatar\ServiceProvider::class,
-                Provider\Clamav\ServiceProvider::class => Provider\Clamav\ServiceProvider::class,
+                Provider\Aws\ServiceProvider::class => Env::get('PROVIDER_AWS', Provider\Aws\ServiceProvider::class),
+                Provider\OCR\ServiceProvider::class => Env::get('PROVIDER_OCR', Provider\OCR\ServiceProvider::class),
+                Provider\Jwt\ServiceProvider::class => Env::get('PROVIDER_JWT', Provider\Jwt\ServiceProvider::class),
+                Provider\V8js\ServiceProvider::class => Env::get('PROVIDER_V8_JS', Provider\V8js\ServiceProvider::class),
+                Provider\Captcha\ServiceProvider::class => Env::get('PROVIDER_CAPTCHA', Provider\Captcha\ServiceProvider::class),
+                Provider\Gravatar\ServiceProvider::class => Env::get('PROVIDER_GRAVATAR', Provider\Gravatar\ServiceProvider::class),
+                Provider\Clamav\ServiceProvider::class => Env::get('PROVIDER_CLAMAV', Provider\Clamav\ServiceProvider::class),
 //                Snowair\Debugbar\ServiceProvider::class => \Snowair\Debugbar\ServiceProvider::class,
             ],
             
@@ -1216,9 +1216,9 @@ class Config extends PhalconConfig
                     ],
                 ],
             ],
-        ]);
+        ], $insensitive);
         if (!empty($data)) {
-            $this->merge(new PhalconConfig($data));
+            $this->merge(new PhalconConfig($data, $insensitive));
         }
     }
     
