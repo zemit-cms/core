@@ -44,25 +44,24 @@ class ServiceProvider extends AbstractServiceProvider
     public function register(DiInterface $di): void
     {
         $di->setShared($this->getName(), function () use ($di) {
-            $eventsManager = $di->get('eventsManager');
-            
-            /** @var Bootstrap\Config $config */
-            $config = $di->get('config');
-            
             /** @var Bootstrap $bootstrap */
             $bootstrap = $di->get('bootstrap');
-            
-            /**
-             * Router
-             */
-            $router = $bootstrap->isConsole()
+    
+            $router = $bootstrap->router ?? $bootstrap->isConsole()
                 ? new CliRouter(true)
                 : new Router(true, $bootstrap->application);
-    
-            $defaults = $config->path($bootstrap->isConsole()? 'router.cli': 'router.defaults');
+            if (is_string($router) && class_exists($router)) {
+                $router = new $router();
+            }
+            
+            $defaults = $bootstrap->config->path($bootstrap->isConsole()? 'router.cli': 'router.defaults');
             $router->setDefaults($defaults? $defaults->toArray() : []);
-            $router->setEventsManager($eventsManager);
             $router->setDI($di);
+    
+//            // @todo see if this is necessary
+            if ($router instanceof Router) {
+                $router->setEventsManager($di->get('eventsManager'));
+            }
             
             return $router;
         });
