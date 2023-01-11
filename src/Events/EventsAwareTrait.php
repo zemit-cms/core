@@ -109,7 +109,7 @@ trait EventsAwareTrait
      *
      * @throws Exception
      */
-    public function fire($task, $data = null, $cancelable = false)
+    public function fire($task, $data = null, bool $cancelable = false)
     {
         if ($manager = $this->getEventsManager()) {
             $manager->fire($this->getEventsSlug() . ':' . $task, $this, $data, $cancelable);
