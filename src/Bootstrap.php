@@ -377,9 +377,12 @@ DOC;
     public function router()
     {
         if ($this->di->has('router')) {
-            $this->config = $this->di->get('router');
+            $this->router = $this->di->get('router');
         }
-        return $this->fireSet($this->router, $this->isConsole() ? CliRouter::class : Router::class, [true, $this->application]);
+    
+        return $this->isConsole() ?
+            $this->fireSet($this->router, CliRouter::class, [true]) :
+            $this->fireSet($this->router, Router::class, [true, $this->application]);
     }
     
     /**
