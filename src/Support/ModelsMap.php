@@ -109,7 +109,7 @@ trait ModelsMap
      */
     public function getClassMap(string $class): string
     {
-        return $this->modelsMap[$class] ?? $class;
+        return $this->getModelsMap()[$class] ?? $class;
     }
     
     /**
