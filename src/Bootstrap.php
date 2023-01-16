@@ -58,9 +58,9 @@ class Bootstrap
     /**
      * Ideally, only the config service provider should be added here, then it will load other service from itself
      * You can also add new Service Providers here if it's absolutely required to be loaded earlier before
-     * @var array abstract => concrete
+     * @var ?array abstract => concrete
      */
-    public $providers = [
+    public ?array $providers = [
         Provider\Config\ServiceProvider::class => Provider\Config\ServiceProvider::class,
     ];
 
@@ -68,58 +68,63 @@ class Bootstrap
      * Bootstrap mode
      * @var string
      */
-    public $mode;
+    public string $mode;
 
     /**
      * Bootstrap console args
      * - This variable is currently filled by `docopt`
-     * @var array
+     * @var ?array
      */
-    public $args;
-
+    public ?array $args;
+    
     /**
      * Dependencies
-     * @var FactoryDefault|FactoryDefault\Cli
+     * @var null|string|FactoryDefault|FactoryDefault\Cli
      */
     public $di;
 
     /**
-     * @var Dotenv
+     * @var null|string|Dotenv
      */
     public $dotenv;
+    
+    /**
+     * @var null|string|Docopt
+     */
+    public $docopt;
 
     /**
-     * @var Prepare
+     * @var null|string|Prepare
      */
     public $prepare;
 
     /**
-     * @var Config
+     * @var null|string|Config
      */
     public $config;
 
     /**
-     * @var Services
+     * @var null|string|Services
      */
     public $services;
 
     /**
-     * @var Application|\Phalcon\Cli\Console
+     * @var null|string|Application|\Phalcon\Cli\Console
      */
     public $application;
 
     /**
-     * @var Modules
+     * @var null|string|Modules
      */
     public $modules;
 
     /**
-     * @var Router
+     * @var null|string|Router
      */
     public $router;
 
     /**
-     * @var Debug
+     * @var null|string|Debug
      */
     public $debug;
 
@@ -129,14 +134,9 @@ class Bootstrap
     public $response;
 
     /**
-     * @var Docopt
-     */
-    public $docopt;
-
-    /**
      * @var string
      */
-    public $consoleDoc = <<<DOC
+    public string $consoleDoc = <<<DOC
 Zemit Console
 
 Usage:
@@ -146,7 +146,7 @@ Usage:
   zemit (-i | --info)
 
 Options:
-  -c <fds>=<value>       test
+  -c <key>=<value>       test
   -h --help               show this help message
   -v --version            print version number
   -i --info               print information
