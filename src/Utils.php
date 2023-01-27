@@ -38,6 +38,16 @@ class Utils
     }
     
     /**
+     * Set max upload file size and post size
+     * @param string $size
+     * @return void
+     */
+    public static function setMaxUploadFileSize(string $size = '2M') {
+        ini_set('upload_max_filesize', $size);
+        ini_set('post_max_size', $size);
+    }
+    
+    /**
      * @param $class
      *
      * @return bool|string
