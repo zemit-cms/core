@@ -303,6 +303,7 @@ class Identity extends Injectable implements OptionsInterface
      * @param bool $inherit
      *
      * @return array
+     * @throws \Exception
      */
     public function getIdentity(bool $inherit = true)
     {
@@ -362,15 +363,38 @@ class Identity extends Injectable implements OptionsInterface
             if (!empty($inheritedRoleIndexList)) {
                 
                 /** @var \Phalcon\Mvc\Model\Resultset $inheritedRoleEntity */
+                $roleClass = $this->getRoleClass();
                 $inheritedRoleList = $this->getRoleClass()::find([
-                    'index in ({role:array})', // @todo should filter soft-deleted roles?
+                    'index in ({role:array})',
                     'bind' => ['role' => $inheritedRoleIndexList],
                     'bindTypes' => ['role' => Column::BIND_PARAM_STR],
                 ]);
                 
                 /** @var Models\Role $inheritedRoleEntity */
                 foreach ($inheritedRoleList as $inheritedRoleEntity) {
-                    $roleList[$inheritedRoleEntity->getIndex()] = $inheritedRoleEntity;
+                    $inheritedRoleIndex = $inheritedRoleEntity->getIndex();
+                    $roleList[$inheritedRoleIndex] = $inheritedRoleEntity;
+                    if (($key = array_search($inheritedRoleIndex, $inheritedRoleIndexList)) !== false) {
+                        unset($inheritedRoleIndexList[$key]);
+                    }
+                }
+                
+                // unable to find some roles by index
+                if (!empty($inheritedRoleIndexList)) {
+                    
+                    // To avoid breaking stuff in production, create a new role if it doesn't exists
+                    if (!$this->config->path('app.debug', false)) {
+                        foreach ($inheritedRoleIndexList as $inheritedRoleIndex) {
+                            $roleList[$inheritedRoleIndex] = new $roleClass();
+                            $roleList[$inheritedRoleIndex]->setIndex($inheritedRoleIndex);
+                            $roleList[$inheritedRoleIndex]->setLabel(ucfirst($inheritedRoleIndex));
+                        }
+                    }
+                    
+                    // throw an exception under development so it can be fixed
+                    else {
+                        throw new \Exception('Role `' . implode('`, `', $inheritedRoleIndexList) . '` doesn\'t exists in the database `' . $this->getRoleClass() . '`.');
+                    }
                 }
             }
         }
@@ -539,6 +563,14 @@ class Identity extends Injectable implements OptionsInterface
     {
         $roleList ??= $this->getRoleList();
         $aclRoles = [];
+    
+        // Add everyone role
+        $aclRoles['everyone'] = new Role('everyone', 'Everyone');
+    
+        // Add guest role if no roles was detected
+        if (count($roleList) === 0) {
+            $aclRoles['guest'] = new Role('guest', 'Guest without role');
+        }
         
         // Add roles from databases
         foreach ($roleList as $role) {
@@ -547,18 +579,10 @@ class Identity extends Injectable implements OptionsInterface
             }
         }
         
-        // Add guest role if no roles was detected
-        if (count($aclRoles) === 0) {
-            $aclRoles['guest'] = new Role('guest', 'Guest without role');
-        }
-        
         // Add console role
         if ($this->bootstrap->isConsole()) {
             $aclRoles['cli'] = new Role('cli', 'Console mode');
         }
-        
-        // Add everyone role
-        $aclRoles['everyone'] = new Role('everyone', 'Everyone');
         
         return array_filter(array_values(array_unique($aclRoles)));
     }
