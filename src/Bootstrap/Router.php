@@ -58,17 +58,17 @@ class Router extends \Zemit\Mvc\Router
             'action' => 2,
         ])->setName('default-controller-action');
         
-        $this->add('/:controller/:action/:slug', [
-            'controller' => 1,
-            'action' => 2,
-            'slug' => 3,
-        ])->setName('default-controller-action-slug');
-        
-        $this->add('/:controller/:action/:int', [
-            'controller' => 1,
-            'action' => 2,
-            'int' => 3,
-        ])->setName('default-controller-action-int');
+//        $this->add('/:controller/:action/:slug', [
+//            'controller' => 1,
+//            'action' => 2,
+//            'slug' => 3,
+//        ])->setName('default-controller-action-slug');
+//
+//        $this->add('/:controller/:action/:int', [
+//            'controller' => 1,
+//            'action' => 2,
+//            'int' => 3,
+//        ])->setName('default-controller-action-int');
         
         foreach ($this->config->locale->allowed as $locale) {
             $this->add('/' . $locale, [
@@ -86,19 +86,19 @@ class Router extends \Zemit\Mvc\Router
                 'action' => 2,
             ])->setName($locale);
             
-            $this->add('/' . $locale . '/:controller/:action/:slug', [
-                'locale' => $locale,
-                'controller' => 1,
-                'action' => 2,
-                'slug' => 3,
-            ])->setName($locale);
-            
-            $this->add('/' . $locale . '/:controller/:action/:int', [
-                'locale' => $locale,
-                'controller' => 1,
-                'action' => 2,
-                'int' => 3,
-            ])->setName($locale);
+//            $this->add('/' . $locale . '/:controller/:action/:slug', [
+//                'locale' => $locale,
+//                'controller' => 1,
+//                'action' => 2,
+//                'slug' => 3,
+//            ])->setName($locale);
+//
+//            $this->add('/' . $locale . '/:controller/:action/:int', [
+//                'locale' => $locale,
+//                'controller' => 1,
+//                'action' => 2,
+//                'int' => 3,
+//            ])->setName($locale);
         }
         
         if (isset($application)) {

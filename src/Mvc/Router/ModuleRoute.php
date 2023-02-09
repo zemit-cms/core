@@ -87,19 +87,19 @@ class ModuleRoute extends RouterGroup
         ])->setName($prefixName . '-controller-action');
 
         // /admin/user/profile/jturbide
-        $this->add('/:controller/:action/([a-zA-Z0-9\_\-]+)' . $params, [
-            'controller' => $prefixPos + 1,
-            'action' => $prefixPos + 2,
-            'slug' => $prefixPos + 3,
-            'params' => $prefixPos + 4
-        ])->setName($prefixName . '-controller-action-slug');
-
-        // /admin/user/edit/1
-        $this->add('/:controller/:action/:int' . $params, [
-            'controller' => $prefixPos + 1,
-            'action' => $prefixPos + 2,
-            'int' => $prefixPos + 3,
-            'params' => $prefixPos + 4
-        ])->setName($prefixName . '-controller-action-int');
+//        $this->add('/:controller/:action/([a-zA-Z0-9\_\-]+)' . $params, [
+//            'controller' => $prefixPos + 1,
+//            'action' => $prefixPos + 2,
+//            'slug' => $prefixPos + 3,
+//            'params' => $prefixPos + 4
+//        ])->setName($prefixName . '-controller-action-slug');
+//
+//        // /admin/user/edit/1
+//        $this->add('/:controller/:action/:int' . $params, [
+//            'controller' => $prefixPos + 1,
+//            'action' => $prefixPos + 2,
+//            'int' => $prefixPos + 3,
+//            'params' => $prefixPos + 4
+//        ])->setName($prefixName . '-controller-action-int');
     }
 }
