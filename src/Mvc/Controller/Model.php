@@ -1028,7 +1028,7 @@ trait Model
         foreach ($post as $key => $singlePost) {
             $ret = [];
             
-            $singlePostId = (!$single || empty($id)) ? $this->getParam('id', 'int', $this->getParam('int', 'int', $singlePost['id'])) : $id;
+            $singlePostId = (!$single || empty($id)) ? $this->getParam('id', 'int', $this->getParam('int', 'int', $singlePost['id'] ?? null)) : $id;
             if (isset($singlePost['id'])) {
                 unset($singlePost['id']);
             }
