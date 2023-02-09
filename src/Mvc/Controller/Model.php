@@ -1028,7 +1028,7 @@ trait Model
         foreach ($post as $key => $singlePost) {
             $ret = [];
             
-            $singlePostId = (!$single || empty($id)) ? $this->getParam('id', 'int', $this->getParam('int', 'int', null)) : $id;
+            $singlePostId = (!$single || empty($id)) ? $this->getParam('id', 'int', $this->getParam('int', 'int', $singlePost['id'])) : $id;
             if (isset($singlePost['id'])) {
                 unset($singlePost['id']);
             }
@@ -1060,7 +1060,7 @@ trait Model
                 
                 // refetch & expose
                 $fetch = $this->getSingle($singlePostEntity->getId(), $modelName, $with);
-                $ret[$single ? 'single' : 'list'] = $fetch ? $fetch->expose($this->getExpose()) : false;
+                $ret['single'] = $fetch ? $fetch->expose($this->getExpose()) : false;
             }
             
             $retList [] = $ret;
