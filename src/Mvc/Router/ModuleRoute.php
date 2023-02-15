@@ -70,17 +70,20 @@ class ModuleRoute extends RouterGroup
 
         // /admin
         $this->add('' . $params, [
+            'locale' => $prefixPos,
             'params' => $prefixPos + 1
         ])->setName($prefixName);
 
         // /admin/users
         $this->add('/:controller' . $params, [
+            'locale' => $prefixPos,
             'controller' => $prefixPos + 1,
             'params' => $prefixPos + 2
         ])->setName($prefixName . '-controller');
 
         // /admin/user/list
         $this->add('/:controller/:action' . $params, [
+            'locale' => $prefixPos,
             'controller' => $prefixPos + 1,
             'action' => $prefixPos + 2,
             'params' => $prefixPos + 3
