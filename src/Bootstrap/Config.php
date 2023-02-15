@@ -571,7 +571,7 @@ class Config extends PhalconConfig
                     ],
                     'redis' => [
                         'adapter' => Env::get('SESSION_REDIS_ADAPTER', \Phalcon\Session\Adapter\Redis::class),
-                        'defaultSerializer' => Env::get('SESSION_REDIS_DEFAULT_SERIALIZER', Env::get('REDIS_DEFAULT_SERIALIZER', 1)), // \Redis::SERIALIZER_PHP
+                        'defaultSerializer' => Env::get('SESSION_REDIS_DEFAULT_SERIALIZER', Env::get('REDIS_DEFAULT_SERIALIZER', 'php')),
                         'lifetime' => Env::get('SESSION_REDIS_LIFETIME', Env::get('REDIS_LIFETIME', 3600)),
                         'serializer' => Env::get('SESSION_REDIS_SERIALIZER', Env::get('REDIS_SERIALIZER', null)),
                         'host' => Env::get('SESSION_REDIS_HOST', Env::get('REDIS_HOST', '127.0.0.1')),
@@ -660,7 +660,20 @@ class Config extends PhalconConfig
              */
             'security' => [ // phalcon security config
                 'workfactor' => Env::get('SECURITY_WORKFACTOR', 12), // workfactor for the phalcon security service
-                'salt' => Env::get('SECURITY_SALT', 'ZEMIT_CORE_DEFAULT_SALT') // salt for the phalcon security service
+                'salt' => Env::get('SECURITY_SALT', '>mY.Db5fR?k%~<ZWf\}Zh35_IFC]#0Xx'), // salt for the phalcon security service
+                'jwt' => [
+                    'signer' => Env::get('SECURITY_JWT_SIGNER', \Phalcon\Security\JWT\Signer\Hmac::class),
+                    'algo' => Env::get('SECURITY_JWT_ALGO', 'sha512'),
+                    'contentType' => Env::get('SECURITY_JWT_CONTENT_TYPE', 'application/json'),
+                    'expiration' => strtotime(Env::get('SECURITY_JWT_EXPIRATION', '+1 day')),
+                    'notBefore' => strtotime(Env::get('SECURITY_JWT_NOT_BEFORE', 'now')),
+                    'issuedAt' => strtotime(Env::get('SECURITY_JWT_ISSUED_AT', 'now')),
+                    'issuer' => Env::get('SECURITY_JWT_ISSUER', 'ZEMIT_CORE_DEFAULT_ISSUER'),
+                    'audience' => Env::get('SECURITY_JWT_AUDIENCE', 'ZEMIT_CORE_DEFAULT_AUDIENCE'),
+                    'id' => Env::get('SECURITY_JWT_ID', 'ZEMIT_CORE_DEFAULT_ID'),
+                    'subject' => Env::get('SECURITY_JWT_SUBJECT', 'ZEMIT_CORE_DEFAULT_SUBJECT'),
+                    'passphrase' => Env::get('SECURITY_JWT_PASSPHRASE', 'Tf0PHY/^yDdJs*~)?x#xCNj_N[jW/`c*'),
+                ],
             ],
             
             /**
@@ -692,7 +705,7 @@ class Config extends PhalconConfig
                     ],
                     'redis' => [
                         'adapter' => Env::get('CACHE_REDIS_ADAPTER', \Phalcon\Cache\Adapter\Redis::class),
-                        'defaultSerializer' => Env::get('CACHE_REDIS_DEFAULT_SERIALIZER', Env::get('REDIS_DEFAULT_SERIALIZER', 1)), // \Redis::SERIALIZER_PHP
+                        'defaultSerializer' => Env::get('CACHE_REDIS_DEFAULT_SERIALIZER', Env::get('REDIS_DEFAULT_SERIALIZER', 'php')),
                         'lifetime' => Env::get('CACHE_REDIS_LIFETIME', Env::get('REDIS_LIFETIME', 3600)),
                         'serializer' => Env::get('CACHE_REDIS_SERIALIZER', Env::get('REDIS_SERIALIZER', null)),
                         'host' => Env::get('CACHE_REDIS_HOST', Env::get('REDIS_HOST', '127.0.0.1')),
@@ -739,7 +752,7 @@ class Config extends PhalconConfig
                     ],
                     'redis' => [
                         'adapter' => Env::get('METADATA_REDIS_ADAPTER', \Phalcon\Mvc\Model\MetaData\Redis::class),
-                        'defaultSerializer' => Env::get('METADATA_REDIS_DEFAULT_SERIALIZER', Env::get('REDIS_DEFAULT_SERIALIZER', 1)), // \Redis::SERIALIZER_PHP
+                        'defaultSerializer' => Env::get('METADATA_REDIS_DEFAULT_SERIALIZER', Env::get('REDIS_DEFAULT_SERIALIZER', 'php')),
                         'lifetime' => Env::get('METADATA_REDIS_LIFETIME', Env::get('REDIS_LIFETIME', 3600)),
                         'serializer' => Env::get('METADATA_REDIS_SERIALIZER', Env::get('REDIS_SERIALIZER', null)),
                         'host' => Env::get('METADATA_REDIS_HOST', Env::get('REDIS_HOST', '127.0.0.1')),
@@ -793,7 +806,7 @@ class Config extends PhalconConfig
                     ],
                     'redis' => [
                         'adapter' => Env::get('ANNOTATIONS_REDIS_ADAPTER', \Phalcon\Annotations\Adapter\Redis::class),
-                        'defaultSerializer' => Env::get('ANNOTATIONS_REDIS_DEFAULT_SERIALIZER', Env::get('REDIS_DEFAULT_SERIALIZER', 1)), // \Redis::SERIALIZER_PHP
+                        'defaultSerializer' => Env::get('ANNOTATIONS_REDIS_DEFAULT_SERIALIZER', Env::get('REDIS_DEFAULT_SERIALIZER', 'php')),
                         'lifetime' => Env::get('ANNOTATIONS_REDIS_LIFETIME', Env::get('REDIS_LIFETIME', 3600)),
                         'serializer' => Env::get('ANNOTATIONS_REDIS_SERIALIZER', Env::get('REDIS_SERIALIZER', null)),
                         'host' => Env::get('ANNOTATIONS_REDIS_HOST', Env::get('REDIS_HOST', '127.0.0.1')),
