@@ -10,8 +10,8 @@
 
 namespace Zemit\Provider\Jwt;
 
-use Lcobucci\JWT\Builder;
 use Phalcon\Di\DiInterface;
+use Zemit\Bootstrap\Config;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
@@ -41,7 +41,13 @@ class ServiceProvider extends AbstractServiceProvider
     public function register(DiInterface $di): void
     {
         $di->setShared($this->getName(), function() use ($di) {
-            return true; //@todo
+            
+            /** @var Config $config */
+            $config = $di->get('config');
+            $jwtConfig = $config->path('security.jwt');
+            $jwtConfig = $jwtConfig? $jwtConfig->toArray() : [];
+            
+            return new Jwt($jwtConfig);
         });
     }
 }
