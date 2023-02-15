@@ -20,6 +20,7 @@ use Zemit\Http\Request;
 use Zemit\Identity;
 use Zemit\Locale;
 use Zemit\Mvc\Dispatcher;
+use Zemit\Provider\Jwt\Jwt;
 use Zemit\Security;
 use Zemit\Tag;
 use Zemit\Utils;
@@ -48,10 +49,11 @@ use Zemit\Utils;
  * @property Utils $utils
  * @property Profiler $profiler
  * @property Logger $logger
+ * @property Jwt $jwt
  *
  * @package Zemit\Di
  */
 class Injectable extends \Phalcon\Di\Injectable implements \Phalcon\Di\InjectionAwareInterface
 {
-    
+
 }
