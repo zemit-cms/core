@@ -73,18 +73,18 @@ class Router extends \Zemit\Mvc\Router
         foreach ($this->config->locale->allowed as $locale) {
             $this->add('/' . $locale, [
                 'locale' => $locale,
-            ])->setName($locale);
+            ])->setName($locale . '-default');
             
             $this->add('/' . $locale . '/:controller', [
                 'locale' => $locale,
                 'controller' => 1,
-            ])->setName($locale);
+            ])->setName($locale . '-default-controller');
             
             $this->add('/' . $locale . '/:controller/:action', [
                 'locale' => $locale,
                 'controller' => 1,
                 'action' => 2,
-            ])->setName($locale);
+            ])->setName($locale . '-default-controller-action');
             
 //            $this->add('/' . $locale . '/:controller/:action/:slug', [
 //                'locale' => $locale,
