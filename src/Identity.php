@@ -10,9 +10,6 @@
 
 namespace Zemit;
 
-use Lcobucci\JWT\Builder;
-use Lcobucci\JWT\Parser;
-use Lcobucci\JWT\Signer\Ecdsa\Sha512;
 use Phalcon\Acl\Role;
 use Phalcon\Db\Column;
 use Phalcon\Validation\Validator\Confirmation;
@@ -254,7 +251,7 @@ class Identity extends Injectable implements OptionsInterface
     }
     
     /**
-     * Create a refresh a session
+     * Create or refresh a session
      *
      * @param bool $refresh
      *
@@ -287,13 +284,15 @@ class Identity extends Injectable implements OptionsInterface
             $this->session->remove($this->sessionKey);
         }
         
+        $now = new \DateTimeImmutable();
         return [
             'saved' => $saved,
             'hasSession' => $this->session->has($this->sessionKey),
             'refreshed' => $saved && $refresh,
-            'validated' => $session->checkHash($session->getToken(), $session->getKey() . $token),
+            'validated' => $session->checkHash($session->getToken(), $session->getKey() . $newToken),
             'messages' => $session->getMessages(),
-            'jwt' => $this->getJwtToken($this->sessionKey, $this->store),
+            'jwt' => $this->getJwtToken($this->sessionKey, $this->store, ['expiration' => $now->modify('+1 day')->getTimestamp()]),
+            'refreshToken' => $this->getJwtToken($this->sessionKey . '-refresh', $this->store, ['expiration' => $now->modify('+10 day')->getTimestamp()]),
         ];
     }
     
@@ -976,13 +975,21 @@ class Identity extends Injectable implements OptionsInterface
         $authorization = array_filter(explode(' ', $this->request->getHeader(
             $this->config->path('identity.authorizationHeader', 'Authorization')
         ) ?: ''));
-        
-        $jwt = $this->request->get('jwt', 'string', $jwt);
+    
+//        $refreshToken = $this->request->getPost('refreshToken');
+        $jwt = $this->request->get('jwt', '', $jwt);
         $key = $this->request->get('key', 'string', $this->store['key'] ?? null);
         $token = $this->request->get('token', 'string', $this->store['token'] ?? null);
+        $refreshToken = null;
         
         if (!empty($key) && !empty($token)) {
         
+        }
+        
+        else if (!empty($refreshToken)) {
+            $sessionClaim = $this->getClaim($refreshToken, $this->sessionKey . '-refresh');
+            $key = $sessionClaim->key ?? null;
+            $token = $sessionClaim->token ?? null;
         }
         
         else if (!empty($jwt)) {
@@ -1057,8 +1064,7 @@ class Identity extends Injectable implements OptionsInterface
     }
     
     /**
-     * Get a claim
-     * @TODO generate private & public keys
+     * Get a claim from JWT Token
      *
      * @param string $token
      * @param string|null $claim
@@ -1067,41 +1073,45 @@ class Identity extends Injectable implements OptionsInterface
      */
     public function getClaim(string $token, string $claim = null)
     {
-        $jwt = (new Parser())->parse((string)$token);
+        $uri = $this->request->getScheme() . '://' . $this->request->getHttpHost();
+        $token = $this->jwt->parseToken($token);
+        try {
+            $this->jwt->validateToken($token, 0, [
+                'issuer' => $uri,
+                'audience' => $uri,
+                'id' => $claim,
+            ]);
+            $claims = $token->getClaims();
+            if ($claims->has('sub')) {
+                return json_decode($claims->get('sub'));
+            }
+        } catch (\Exception $e) {
+            if ($e->getMessage() !== 'Validation: the token has expired') {
+                dd($e);
+            }
+            return ['message' => $e->getMessage()];
+        }
         
-        return $claim ? $jwt->getClaim($claim) : $jwt->getClaims();
+        return [];
     }
     
     /**
-     * Generate a new JWT
-     * @TODO generate private & public keys and use them
+     * Generate a new JWT Token (string)
      *
      * @param $claim
      * @param $data
      *
      * @return string
      */
-    public function getJwtToken($claim, $data): string
+    public function getJwtToken(string $claim, array $data = [], array $options = []): string
     {
         $uri = $this->request->getScheme() . '://' . $this->request->getHttpHost();
-
-//        $privateKey = new Key('file://{path to your private key}');
-        $signer = new Sha512();
-        $time = time();
-        
-        $token = (new Builder())
-            ->issuedBy($uri) // Configures the issuer (iss claim)
-            ->permittedFor($uri) // Configures the audience (aud claim)
-            ->identifiedBy($claim, true) // Configures the id (jti claim), replicating as a header item
-            ->issuedAt($time) // Configures the time that the token was issue (iat claim)
-            ->canOnlyBeUsedAfter($time + 60) // Configures the time that the token can be used (nbf claim)
-            ->expiresAt($time + 3600) // Configures the expiration time of the token (exp claim)
-            ->withClaim($claim, $data) // Configures a new claim, called "uid"
-            ->getToken($signer) // Retrieves the generated token
-//            ->getToken($signer,  $privateKey); // Retrieves the generated token
-        ;
-        
-        return (string)$token;
+        $options['issuer'] ??= $uri;
+        $options['audience'] ??= $uri;
+        $options['id'] ??= $claim;
+        $options['subject'] ??= json_encode($data);
+        $builder = $this->jwt->builder($options);
+        return $builder->getToken()->getToken();
     }
     
     /**

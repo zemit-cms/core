@@ -90,6 +90,8 @@ class Config extends PhalconConfig
     {
         $this->defineConst();
         
+        $now = new \DateTimeImmutable();
+        
         parent::__construct([
             
             /**
@@ -665,9 +667,9 @@ class Config extends PhalconConfig
                     'signer' => Env::get('SECURITY_JWT_SIGNER', \Phalcon\Security\JWT\Signer\Hmac::class),
                     'algo' => Env::get('SECURITY_JWT_ALGO', 'sha512'),
                     'contentType' => Env::get('SECURITY_JWT_CONTENT_TYPE', 'application/json'),
-                    'expiration' => strtotime(Env::get('SECURITY_JWT_EXPIRATION', '+1 day')),
-                    'notBefore' => strtotime(Env::get('SECURITY_JWT_NOT_BEFORE', 'now')),
-                    'issuedAt' => strtotime(Env::get('SECURITY_JWT_ISSUED_AT', 'now')),
+                    'expiration' => $now->modify(Env::get('SECURITY_JWT_EXPIRATION', '+1 day'))->getTimestamp(),
+                    'notBefore' => $now->modify(Env::get('SECURITY_JWT_NOT_BEFORE', '-1 minute'))->getTimestamp(),
+                    'issuedAt' => $now->modify(Env::get('SECURITY_JWT_ISSUED_AT', 'now'))->getTimestamp(),
                     'issuer' => Env::get('SECURITY_JWT_ISSUER', 'ZEMIT_CORE_DEFAULT_ISSUER'),
                     'audience' => Env::get('SECURITY_JWT_AUDIENCE', 'ZEMIT_CORE_DEFAULT_AUDIENCE'),
                     'id' => Env::get('SECURITY_JWT_ID', 'ZEMIT_CORE_DEFAULT_ID'),

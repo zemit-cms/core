@@ -137,9 +137,10 @@ class Jwt
     public function validateToken(Token $token = null, int $timeShift = 0, array $options = [], AbstractSigner $signer = null): void {
         $token ??= $this->token;
         $signer ??= $this->signer;
-        $options['expiration'] ??= strtotime('now');
-        $options['notBefore'] ??= strtotime('+5 sec');
-        $options['issuedAt'] ??= strtotime('+5 sec');
+        $now = new \DateTimeImmutable();
+        $options['expiration'] ??= $now->getTimestamp();
+        $options['notBefore'] ??= $now->modify('-10 second')->getTimestamp();
+        $options['issuedAt'] ??= $now->modify('+10 second')->getTimestamp();
         $options = $this->getDefaultOptions($options);
         
         $this->validator = $this->validator($token, $timeShift);
