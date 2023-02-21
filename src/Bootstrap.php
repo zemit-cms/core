@@ -227,10 +227,8 @@ DOC;
     public function dotenv()
     {
         try {
-            $loader = new Loader([dirname(APP_PATH)], new DotenvFactory(), true);
-            $this->fireSet($this->dotenv, Dotenv::class, [$loader], function (Bootstrap $bootstrap) {
-                $bootstrap->dotenv->load();
-            });
+            $this->dotenv = Dotenv::createMutable(dirname(APP_PATH));
+            $this->dotenv->load();
         } catch (\Dotenv\Exception\InvalidPathException|\Dotenv\Exception\InvalidFileException $e) {
             // just ignore and run the application anyway
         }

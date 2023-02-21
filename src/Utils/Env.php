@@ -35,28 +35,16 @@ use Dotenv\Dotenv;
  */
 class Env
 {
-    /**
-     * @var array
-     */
-    public static $vars;
+    public static Dotenv $dotenv;
+    public static array $vars;
     
-    /**
-     * Dotenv loader to manage the environment varialbe
-     * @var \Dotenv\Loader
-     */
-    public static $dotenv;
-    
-    /**
-     * Get the dotenv loader
-     * @return \Dotenv\Loader
-     */
-    public static function getDotenv(array $filePath = null)
+    public static function getDotenv(array $filePath = null): Dotenv
     {
         $filePath ??= self::getCurrentPath();
         $envFilePath = $filePath . '/.env';
         
         if (is_readable($envFilePath)) {
-            self::$dotenv ??= Dotenv::create($filePath);
+            self::$dotenv ??= Dotenv::createMutable($filePath);
             self::$vars ??= self::$dotenv->load();
         }
     
@@ -111,17 +99,17 @@ class Env
     }
     
     /**
-     * Gets the value of an environment variable. Passe the $default for fallback value.
+     * Gets the value of an environment variable. Pass the $default for fallback value.
      * @param string $key Key to get
      * @param mixed $default Value to fallback if the key can't be found
      * @return mixed Return the environment variable value or the default value
      */
-    public static function get($key, $default = null)
+    public static function get(string $key, $default = null)
     {
         self::getDotenv();
         
         $ret = self::$vars[$key] ?? null;
-        $ret ??= ($default instanceof Closure) ? $default() : $default;
+        $ret ??= is_callable($default)? $default() : $default;
         
         if (is_string($ret)) {
             switch (strtolower($ret)) {
@@ -145,29 +133,29 @@ class Env
     
     /**
      * Set an environment variable
-     * @param $key string Key to set
-     * @param $value mixed Value to set
+     * @param string $key Key to set
+     * @param mixed $value Value to set
      */
-    public static function set($key, $value)
+    public static function set(string $key, $value)
     {
-        $dotenv = self::getDotenv();
-        $dotenv? $dotenv->setEnvironmentVariable($key, $value) : $_ENV[$key] = $value;
+        self::$vars[$key] = $value;
+        $_ENV[$key] = $value;
     }
     
     /**
-     * Return the environnement variable
-     * @param $name Env key to fetch
+     * Return the environment variable
+     * @param string $name Env key to fetch
      * @return mixed Env value
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         return self::get($name);
     }
     
     /**
-     * Set the environnement variable
-     * @param $name string Env key to set
-     * @param $value mixed Value to set
+     * Set the environment variable
+     * @param string $name Env key to set
+     * @param mixed $value Value to set
      */
     public function __set(string $name, $value)
     {
