@@ -57,12 +57,12 @@ class Env
      */
     public static function getCurrentPath() {
         
-        if (!empty($_SERVER['DOCUMENT_ROOT'])) {
-            return dirname($_SERVER['DOCUMENT_ROOT']);
-        }
-        
         if (defined('ENV_PATH')) {
             return constant('ENV_PATH');
+        }
+        
+        if (defined('APP_PATH')) {
+            return constant('APP_PATH');
         }
         
         return getcwd();
