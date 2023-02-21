@@ -62,7 +62,7 @@ class Env
         }
         
         if (defined('APP_PATH')) {
-            return constant('APP_PATH');
+            return dirname(constant('APP_PATH'));
         }
         
         return getcwd();
