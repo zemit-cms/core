@@ -27,6 +27,20 @@ use Phalcon\Cli\Dispatcher as CliDispatcher;
 trait DispatcherTrait
 {
     /**
+     * @param $handler
+     * @param string $actionMethod
+     * @param array $params
+     * @return mixed
+     */
+    public function callActionMethod($handler, string $actionMethod, array $params = [])
+    {
+        return call_user_func_array(
+            [$handler, $actionMethod],
+            array_filter($params, 'is_int', ARRAY_FILTER_USE_KEY)
+        );
+    }
+    
+    /**
      * Extending forwarding event to prevent cyclic routing when forwarding under dispatcher events
      * - @TODO handle params and other possible route parameters too
      * {@inheritDoc}
