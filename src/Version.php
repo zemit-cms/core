@@ -34,8 +34,8 @@ class Version extends \Phalcon\Version
      * D - Special release: 1 = Alpha, 2 = Beta, 3 = RC, 4 = Stable
      * E - Special release version i.e. RC1, Beta2 etc.
      */
-    protected static function _getVersion() : array
+    protected static function getVersion() : array
     {
-        return [0, 0, 1, 9, 0];
+        return [0, 1, 31, 2, 0];
     }
 }
