@@ -72,8 +72,8 @@ class Config extends PhalconConfig
     public function defineConst()
     {
         defined('VENDOR_PATH') || define('VENDOR_PATH', Env::get('ROOT_PATH', 'vendor/'));
-        defined('ROOT_PATH') || define('ROOT_PATH', Env::get('ROOT_PATH', null));
-        defined('APP_PATH') || define('APP_PATH', Env::get('APP_PATH', null));
+        defined('ROOT_PATH') || define('ROOT_PATH', Env::get('ROOT_PATH'));
+        defined('APP_PATH') || define('APP_PATH', Env::get('APP_PATH'));
         defined('APPLICATION_ENV') || define('APPLICATION_ENV', Env::get('APPLICATION_ENV', 'development'));
         defined('CORE_PATH') || define('CORE_PATH', Env::get('CORE_PATH', mb_substr(__DIR__, 0, mb_strlen(basename(__DIR__)) * -1)));
         defined('PRIVATE_PATH') || define('PRIVATE_PATH', Env::get('APP_PRIVATE_PATH', constant('APP_PATH') . '/private/'));
@@ -1188,6 +1188,7 @@ class Config extends PhalconConfig
                     'guest' => [
                         'features' => [
                             'login',
+                            'logout',
                             'register',
                         ],
                     ],
