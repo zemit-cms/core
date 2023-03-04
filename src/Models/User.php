@@ -73,8 +73,8 @@ class User extends AbstractUser
     {
         $validator = $this->genericValidation();
 
-        $validator->add('username', new PresenceOf(['message' => $this->_('username') . ': ' . $this->_('required')]));
-        $validator->add('email', new Max(['max' => 120, 'message' => $this->_('email') . ': ' . $this->_('length-exceeded')]));
+        $validator->add('username', new PresenceOf(['message' => $this->_('required')]));
+        $validator->add('email', new Max(['max' => 120, 'message' => $this->_('length-exceeded')]));
 
         $validator->add('firstName', new PresenceOf(['message' => $this->_('first-name') . ': ' . $this->_('required')]));
         $validator->add('firstName', new Max(['max' => 60, 'message' => $this->_('first-name') . ': ' . $this->_('length-exceeded')]));
@@ -82,10 +82,10 @@ class User extends AbstractUser
         $validator->add('lastName', new PresenceOf(['message' => $this->_('last-name') . ': ' . $this->_('required')]));
         $validator->add('lastName', new Max(['max' => 60, 'message' => $this->_('last-name') . ': ' . $this->_('length-exceeded')]));
 
-        $validator->add('email', new PresenceOf(['message' => $this->_('email') . ': ' . $this->_('required')]));
-        $validator->add('email', new Email(['message' => $this->_('email') . ': ' . 'email-not-valid']));
-        $validator->add('email', new Uniqueness(['message' => $this->_('email') . ': ' . $this->_('not-unique')]));
-        $validator->add('email', new Max(['max' => 191, 'message' => $this->_('email') . ': ' . $this->_('length-exceeded')]));
+        $validator->add('email', new PresenceOf(['message' => $this->_('required')]));
+        $validator->add('email', new Email(['message' => 'email-not-valid']));
+        $validator->add('email', new Uniqueness(['message' => $this->_('not-unique')]));
+        $validator->add('email', new Max(['max' => 191, 'message' => $this->_('length-exceeded')]));
 
         $validator->add('gender', new Between(["minimum" => 0, "maximum" => 1, 'message' => $this->_('boolean-not-valid')]));
 

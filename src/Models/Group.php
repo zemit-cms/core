@@ -61,10 +61,7 @@ class Group extends AbstractGroup
     public function beforeValidation()
     {
         if (!$this->index) {
-            $this->setIndex($this->getLabelFr());
-        }
-        if (!$this->labelEn) {
-            $this->setLabelEn($this->getLabelFr());
+            $this->setIndex($this->getLabel());
         }
     }
 
@@ -72,14 +69,11 @@ class Group extends AbstractGroup
     {
         $validator = $this->genericValidation();
 
-        $validator->add('index', new Max(['max' => 50, 'message' => $this->_('index') .': '. $this->_('length-exceeded')]));
-        $validator->add('index', new PresenceOf(['message' => $this->_('index') .': '. $this->_('required')]));
+        $validator->add('index', new Max(['max' => 50, 'message' => $this->_('length-exceeded')]));
+        $validator->add('index', new PresenceOf(['message' => $this->_('required')]));
 
-        $validator->add('labelFr', new PresenceOf(['message' => $this->_('label-fr') .': '. $this->_('required')]));
-        $validator->add('labelFr', new Max(['max' => 100, 'message' => $this->_('label-fr') .': '. $this->_('length-exceeded')]));
-
-        $validator->add('labelEn', new PresenceOf(['message' => $this->_('label-en') .': '. $this->_('required')]));
-        $validator->add('labelFr', new Max(['max' => 100, 'message' => $this->_('label-en') .': '. $this->_('length-exceeded')]));
+        $validator->add('label', new PresenceOf(['message' => $this->_('required')]));
+        $validator->add('label', new Max(['max' => 100, 'message' => $this->_('length-exceeded')]));
 
         return $this->validate($validator);
     }

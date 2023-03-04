@@ -38,17 +38,17 @@ class Template extends AbstractTemplate
     {
         $validator = $this->genericValidation();
 
-        $validator->add('index', new PresenceOf(['message' => $this->_('index') .': '. $this->_('required')]));
-        $validator->add('index', new Max(['max' => 50, 'message' => $this->_('index') .': '. $this->_('length-exceeded')]));
+        $validator->add('index', new PresenceOf(['message' => $this->_('required')]));
+        $validator->add('index', new Max(['max' => 50, 'message' => $this->_('length-exceeded')]));
 
-        $validator->add('label', new PresenceOf(['message' => $this->_('label') .': '. $this->_('required')]));
-        $validator->add('label', new Max(['max' => 100, 'message' => $this->_('label') .': '. $this->_('length-exceeded')]));
+        $validator->add('label', new PresenceOf(['message' => $this->_('required')]));
+        $validator->add('label', new Max(['max' => 100, 'message' => $this->_('length-exceeded')]));
 
-        $validator->add('subjectFr', new PresenceOf(['message' => $this->_('subject-fr') .': '. $this->_('required')]));
-        $validator->add('subjectFr', new Max(['max' => 100, 'message' => $this->_('subject-fr') .': '. $this->_('length-exceeded')]));
+        $validator->add('subjectFr', new PresenceOf(['message' => $this->_('required')]));
+        $validator->add('subjectFr', new Max(['max' => 100, 'message' => $this->_('length-exceeded')]));
 
-        $validator->add('subjectEn', new PresenceOf(['message' => $this->_('subject-en') .': '. $this->_('required')]));
-        $validator->add('subjectEn', new Max(['max' => 100, 'message' => $this->_('subject-en') .': '. $this->_('length-exceeded')]));
+        $validator->add('subjectEn', new PresenceOf(['message' => $this->_('required')]));
+        $validator->add('subjectEn', new Max(['max' => 100, 'message' => $this->_('length-exceeded')]));
 
         return $this->validate($validator);
     }

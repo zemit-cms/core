@@ -40,8 +40,7 @@ class Setting extends AbstractSetting
 
         $validator->add('category', new Max(['max' => 255, 'message' => $this->_('length-exceeded')]));
 
-        $validator->add('labelFr', new Max(['max' => 255, 'message' => $this->_('length-exceeded')]));
-        $validator->add('labelEn', new Max(['max' => 255, 'message' => $this->_('length-exceeded')]));
+        $validator->add('label', new Max(['max' => 255, 'message' => $this->_('length-exceeded')]));
 
         return $this->validate($validator);
     }
