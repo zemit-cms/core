@@ -31,6 +31,7 @@ use Zemit\Cli\Router as CliRouter;
 
 use Dotenv\Dotenv;
 use Docopt;
+use Zemit\Utils\Env;
 
 /**
  * Class Bootstrap
@@ -226,14 +227,9 @@ DOC;
      */
     public function dotenv()
     {
-        try {
-            $this->dotenv = Dotenv::createMutable(dirname(APP_PATH));
-            $this->dotenv->load();
-        } catch (\Dotenv\Exception\InvalidPathException|\Dotenv\Exception\InvalidFileException $e) {
-            // just ignore and run the application anyway
-        }
-
-        return $this->dotenv;
+        return $this->fireSet($this->dotenv, Env::class, [], function (Bootstrap $bootstrap) {
+            $bootstrap->dotenv = Env::getDotenv();
+        });
     }
 
     /**
