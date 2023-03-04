@@ -11,6 +11,7 @@
 namespace Zemit\Utils;
 
 use Dotenv\Dotenv;
+use Phalcon\Text;
 
 /**
  * Class Env
@@ -35,37 +36,146 @@ use Dotenv\Dotenv;
  */
 class Env
 {
+    public static bool $initialized = false;
+    
     public static Dotenv $dotenv;
-    public static array $vars;
+    public static array $vars = [];
     
-    public static function getDotenv(array $filePath = null): Dotenv
-    {
-        $filePath ??= self::getCurrentPath();
-        $envFilePath = $filePath . '/.env';
-        
-        if (is_readable($envFilePath)) {
-            self::$dotenv ??= Dotenv::createMutable($filePath);
-            self::$vars ??= self::$dotenv->load();
+    public static ?array $paths = null;
+    public static array $names = ['.env'];
+    public static string $type = 'mutable';
+    public static bool $shortCircuit = true;
+    public static ?string $fileEncoding = null;
+    
+    /**
+     * Get .env directories
+     * @return array
+     */
+    public static function getPaths() {
+        if (is_null(self::$paths)) {
+            self::$paths = [];
+            foreach (['ENV_PATH', 'ROOT_PATH', 'APP_PATH'] as $constant) {
+                if (defined($constant)) {
+                    $path = constant($constant);
+                    if (!is_null($path)) {
+                        self::$paths []= $constant === 'APP_PATH'? dirname($path) : $path;
+                        break;
+                    }
+                }
+            }
+            if (empty(self::$paths)) {
+                self::$paths []= getcwd();
+            }
         }
+        return self::$paths;
+    }
     
-        self::$vars ??= getenv();
+    /**
+     * Set .env directories
+     * @param $paths
+     * @return void
+     */
+    public static function setPaths(array $paths = null): void {
+        self::$paths = $paths;
+    }
+    
+    /**
+     * Get .env file names
+     * @return string|string[]
+     */
+    public static function getNames() {
+        return self::$names;
+    }
+    
+    /**
+     * Set .env file names
+     * @param $names
+     * @return void
+     */
+    public static function setNames($names = null): void {
+        self::$names = $names;
+    }
+    
+    /**
+     * Get Dotenv type
+     * @return string
+     */
+    public static function getType() {
+        return ucfirst(Text::camelize(strtolower(self::$type ?? 'mutable')));
+    }
+    
+    /**
+     * Set Dotenv type
+     * @param string|null $type
+     * @return void
+     */
+    public static function setType(?string $type = null): void {
+        $domain = ['mutable', 'immutable', 'unsafe-mutable', 'unsafe-immutable'];
+        self::$type = (!in_array(strtolower($type), $domain, true)) ? strtolower($type) : 'mutable';
+    }
+    
+    /**
+     * @return boolean
+     */
+    public static function getShortCircuit(): bool {
+        return self::$shortCircuit;
+    }
+    
+    /**
+     * @param bool $shortCircuit
+     * @return void
+     */
+    public static function setShortCircuit(bool $shortCircuit = true): void {
+        self::$shortCircuit = (bool)$shortCircuit;
+    }
+    
+    /**
+     * @return ?string
+     */
+    public static function getFileEncoding(): ?string {
+        return self::$fileEncoding;
+    }
+    
+    /**
+     * @param ?string $fileEncoding
+     * @return void
+     */
+    public static function setFileEncoding(?string $fileEncoding = null): void {
+        self::$fileEncoding = $fileEncoding;
+    }
+    
+    /**
+     *
+     * @param $paths
+     * @param $names
+     * @param bool $shortCircuit
+     * @param string|null $fileEncoding
+     * @param $type
+     * @return Dotenv
+     */
+    public static function initialize($paths = null, $names = null, bool $shortCircuit = null, string $fileEncoding = null, $type = null): Dotenv
+    {
+        if (!self::$initialized) {
+            $type ??= self::getType();
+            $paths ??= self::getPaths();
+            $names ??= self::getNames();
+            $shortCircuit ??= self::getShortCircuit();
+            $fileEncoding ??= self::getFileEncoding();
+            
+            self::$dotenv = Dotenv::{'create'. $type}($paths, $names, $shortCircuit, $fileEncoding);
+            self::$vars = self::$dotenv->load();
+    
+            self::$initialized = true;
+        }
+        
         return self::$dotenv;
     }
     
     /**
-     * @return false|mixed|string
+     * @return Dotenv
      */
-    public static function getCurrentPath() {
-        
-        if (defined('ENV_PATH')) {
-            return constant('ENV_PATH');
-        }
-        
-        if (defined('APP_PATH')) {
-            return dirname(constant('APP_PATH'));
-        }
-        
-        return getcwd();
+    public static function getDotenv() {
+        return self::$dotenv ?? self::initialize();
     }
     
     /**
