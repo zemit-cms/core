@@ -924,7 +924,9 @@ trait Model
     {
         $params ??= $this->getParams();
         
-        return $this->filter->sanitize($params[$key] ?? $this->dispatcher->getParam($key, $filters, $default), $filters);
+        return isset($params[$key])
+            ? $this->filter->sanitize($params[$key], $filters)
+            : $this->dispatcher->getParam($key, $filters, $default);
     }
     
     /**
