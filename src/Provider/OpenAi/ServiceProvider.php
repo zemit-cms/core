@@ -40,8 +40,14 @@ class ServiceProvider extends AbstractServiceProvider
         $di->setShared($this->getName(), function() use ($di) {
             /** @var Config $config */
             $config = $di->get('config');
+            $openAiConfig = $config->path('openai');
 
-            return new OpenAi($config->path('openai.secretKey'));
+            $openAi = new OpenAi($openAiConfig['secretKey']);
+            if (!empty($openAiConfig['organizationId'])) {
+                $openAi->setORG($openAiConfig['organizationId']);
+            }
+            
+            return $openAi;
         });
     }
 }
