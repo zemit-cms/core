@@ -961,6 +961,24 @@ class Config extends PhalconConfig
                 
                 ],
             ],
+    
+            'openai' => [
+                'secretKey' => Env::get('OPENAI_SECRET_KEY'),
+            ],
+    
+            /**
+             * Imap
+             * https://packagist.org/packages/php-imap/php-imap
+             */
+            'imap' => [
+                'path' => Env::get('IMAP_PATH'), // IMAP server and mailbox folder
+                'login' => Env::get('IMAP_LOGIN'), // Username for the before configured mailbox
+                'password' => Env::get('IMAP_PASSWORD'), // Password for the before configured username
+                'attachmentsDir' => Env::get('IMAP_ATTACHMENTS_DIR'), // Server encoding (optional)
+                'serverEncoding' => Env::get('IMAP_SERVER_ENCODING', 'UTF-8'), // Directory, where attachments will be saved (optional)
+                'trimImapPath' => Env::get('IMAP_TRIM_IMAP_PATH', true),   // Trim leading/ending whitespaces of IMAP path (optional)
+                'attachmentFilenameMode' => Env::get('IMAP_ATTACHMENT_FILENAME_MODE', false), // Attachment filename mode (optional; false = random filename; true = original filename)
+            ],
             
             /**
              * Dotenv
