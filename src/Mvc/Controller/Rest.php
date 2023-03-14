@@ -13,6 +13,7 @@ namespace Zemit\Mvc\Controller;
 use League\Csv\CharsetConverter;
 use Phalcon\Events\Manager;
 use Phalcon\Http\Response;
+use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\Model\Resultset;
 use League\Csv\Writer;
@@ -50,7 +51,7 @@ class Rest extends \Zemit\Mvc\Controller
     /**
      * Rest bootstrap forwarding
      *
-     * @return \Phalcon\Http\ResponseInterface
+     * @return ResponseInterface
      */
     protected function restForwarding($id = null)
     {
@@ -75,11 +76,10 @@ class Rest extends \Zemit\Mvc\Controller
     /**
      * Retrieving a single record
      * Alias of method getAction()
+     *
      * @param null $id
-     *
-     * @return bool|\Phalcon\Http\ResponseInterface
      * @deprecated Should use getAction() method instead
-     *
+     * @return bool|ResponseInterface
      */
     public function getSingleAction($id = null)
     {
@@ -91,32 +91,34 @@ class Rest extends \Zemit\Mvc\Controller
      *
      * @param null $id
      *
-     * @return bool|\Phalcon\Http\ResponseInterface
+     * @return bool|ResponseInterface
      */
     public function getAction($id = null)
     {
         $modelName = $this->getModelClassName();
         $single = $this->getSingle($id, $modelName, null);
         
-        $this->view->single = $single ? $single->expose($this->getExpose()) : false;
-        $this->view->model = $modelName;
-        $this->view->source = $single ? $single->getSource() : false;
+        $ret = [];
+        $ret['single'] = $single ? $this->expose($single) : false;
+        $ret['model'] = $modelName;
+        $ret['source'] = $single ? $single->getSource() : false;
+        $this->view->setVars($ret);
         
         if (!$single) {
             $this->response->setStatusCode(404, 'Not Found');
-            
             return false;
         }
         
-        return $this->setRestResponse();
+        return $this->setRestResponse((bool)$single);
     }
     
     /**
      * Retrieving a record list
      * Alias of method getListAction()
-     * @return \Phalcon\Http\ResponseInterface
-     * @deprecated Should use getListAction() method instead
      *
+     * @deprecated Should use getListAction() method instead
+     * @return ResponseInterface
+     * @throws \Exception
      */
     public function getAllAction()
     {
@@ -126,7 +128,7 @@ class Rest extends \Zemit\Mvc\Controller
     /**
      * Retrieving a record list
      *
-     * @return \Phalcon\Http\ResponseInterface
+     * @return ResponseInterface
      * @throws \Exception
      */
     public function getListAction()
@@ -136,18 +138,9 @@ class Rest extends \Zemit\Mvc\Controller
         /** @var Resultset $with */
         $find = $this->getFind();
         $with = $model::with($this->getListWith() ?: [], $find ?: []);
-        
-        /**
-         * Expose the list
-         * @var int $key
-         * @var \Zemit\Mvc\Model $item
-         */
-        $list = [];
-        foreach ($with as $key => $item) {
-            $list[$key] = $item->expose($this->getListExpose());
-        }
-        
-        $list = is_array($list) ? array_values(array_filter($list)) : $list;
+        $list = $this->listExpose($with);
+
+//        $list = is_array($list) ? array_values(array_filter($list)) : $list; // @todo do we really need to do this?
         $this->view->list = $list;
         $this->view->listCount = count($list);
         $this->view->totalCount = $model::find($this->getFindCount($find));
@@ -162,34 +155,38 @@ class Rest extends \Zemit\Mvc\Controller
     /**
      * Exporting a record list into a CSV stream
      *
-     * @return \Phalcon\Http\ResponseInterface
-     * @throws \League\Csv\CannotInsertRecord
-     * @throws \Zemit\Exception
+     * @return ResponseInterface|null
+     * @throws \Exception
      */
     public function exportAction()
     {
         $model = $this->getModelClassName();
-        $params = $this->view->getParamsToView();
-        $contentType = $this->getContentType();
-        $fileName = ucfirst(Slug::generate(basename(str_replace('\\', '/', $this->getModelClassName())))) . ' List (' . date('Y-m-d') . ')';
         
-        /** @var Resultset $with */
         $find = $this->getFind();
-        $with = $model::with($this->getListWith() ?: [], $find ?: []);
+        $with = $model::with($this->getExportWith() ?: [], $find ?: []);
+        $list = $this->exportExpose($with);
         
-        /**
-         * Expose the list
-         * @var int $key
-         * @var \Zemit\Mvc\Model $item
-         */
-        $list = [];
-        foreach ($with as $key => $item) {
-            $list[$key] = $item->expose($this->getExportExpose());
-        }
-        
-        $list = is_array($list) ? array_values(array_filter($list)) : $list;
         $this->flatternArrayForCsv($list);
         $this->formatColumnText($list);
+        
+        return $this->download($list);
+    }
+    
+    /**
+     * Download a JSON / CSV / XLSX
+     * @param $list
+     * @param $fileName
+     * @param $contentType
+     * @param $params
+     * @return ResponseInterface|void
+     * @throws \League\Csv\CannotInsertRecord
+     * @throws \League\Csv\InvalidArgument
+     * @throws \Zemit\Exception
+     */
+    public function download($list = [], $fileName = null, $contentType = null, $params = null) {
+        $params ??= $this->getParams();
+        $contentType ??= $this->getContentType();
+        $fileName ??= ucfirst(Slug::generate(basename(str_replace('\\', '/', $this->getModelClassName())))) . ' List (' . date('Y-m-d') . ')';
         
         if ($contentType === 'json') {
 //            $this->response->setJsonContent($list);
@@ -198,10 +195,10 @@ class Rest extends \Zemit\Mvc\Controller
             $this->response->setHeader('Content-disposition', 'attachment; filename="' . addslashes($fileName) . '.json"');
             return $this->response->send();
         }
-        
+    
         // CSV
         if ($contentType === 'csv') {
-            
+        
             // Get CSV custom request parameters
             $mode = $params['mode'] ?? null;
             $delimiter = $params['delimiter'] ?? null;
@@ -212,7 +209,7 @@ class Rest extends \Zemit\Mvc\Controller
 
 //            $csv = Writer::createFromFileObject(new \SplTempFileObject());
             $csv = Writer::createFromStream(fopen('php://memory', 'r+'));
-            
+        
             // CSV - MS Excel on MacOS
             if ($mode === 'mac') {
                 $csv->setOutputBOM(Writer::BOM_UTF16_LE); // utf-16
@@ -220,7 +217,7 @@ class Rest extends \Zemit\Mvc\Controller
                 $csv->setNewline("\r\n"); // new lines
                 CharsetConverter::addTo($csv, 'UTF-8', 'UTF-16');
             }
-            
+        
             // CSV - MS Excel on Windows
             else {
                 $csv->setOutputBOM(Writer::BOM_UTF8); // utf-8
@@ -228,7 +225,7 @@ class Rest extends \Zemit\Mvc\Controller
                 $csv->setNewline("\n"); // new line windows
                 CharsetConverter::addTo($csv, 'UTF-8', 'UTF-8');
             }
-            
+        
             // Apply forced params from request
             if (isset($outputBOM)) {
                 $csv->setOutputBOM($outputBOM);
@@ -248,21 +245,23 @@ class Rest extends \Zemit\Mvc\Controller
             else {
                 $csv->includeInputBOM();
             }
-            
+        
             // CSV
-            $csv->insertOne(array_keys($list[0]));
-            $csv->insertAll($list);
+            if (isset($list[0])) {
+                $csv->insertOne(array_keys($list[0]));
+                $csv->insertAll($list);
+            }
             $csv->output($fileName . '.csv');
             die;
         }
-        
+    
         // XLSX
         if ($contentType === 'xlsx') {
             $xlsxArray = [];
+            if (isset($list[0])) {
+                $xlsxArray [] = array_keys($list[0]);
+            }
             foreach ($list as $array) {
-                if (empty($xlsxArray)) {
-                    $xlsxArray [] = array_keys($array);
-                }
                 $xlsxArray [] = array_values($array);
             }
             $xlsx = \SimpleXLSXGen::fromArray($xlsxArray);
@@ -272,6 +271,40 @@ class Rest extends \Zemit\Mvc\Controller
         
         // Something went wrong
         throw new \Exception('Failed to export `' . $this->getModelClassName() . '` using content-type `' . $contentType . '`', 400);
+    }
+    
+    /**
+     * Expose a single model
+     */
+    public function expose(\Zemit\Mvc\Model $item, $expose = null)
+    {
+        $expose ??= $this->getExpose();
+        return $item->expose($expose);
+    }
+    
+    /**
+     * Expose a list of model
+     */
+    public function listExpose(iterable $items, $listExpose = null): array
+    {
+        $listExpose ??= $this->getListExpose();
+        $ret = [];
+        
+        /** @var \Zemit\Mvc\Model $item */
+        foreach ($items as $item) {
+            $ret [] = $this->expose($item, $listExpose);
+        }
+        
+        return $ret;
+    }
+    
+    /**
+     * Expose a list of model
+     */
+    public function exportExpose(iterable $items, $exportExpose = null): array
+    {
+        $exportExpose ??= $this->getExportExpose();
+        return $this->listExpose($items, $exportExpose);
     }
     
     /**
@@ -438,7 +471,7 @@ class Rest extends \Zemit\Mvc\Controller
      * Count a record list
      * @TODO add total count / deleted count / active count
      *
-     * @return \Phalcon\Http\ResponseInterface
+     * @return ResponseInterface
      */
     public function countAction()
     {
@@ -458,7 +491,7 @@ class Rest extends \Zemit\Mvc\Controller
     /**
      * Prepare a new model for the frontend
      *
-     * @return \Phalcon\Http\ResponseInterface
+     * @return ResponseInterface
      */
     public function newAction()
     {
@@ -470,7 +503,7 @@ class Rest extends \Zemit\Mvc\Controller
         
         $this->view->model = get_class($entity);
         $this->view->source = $entity->getSource();
-        $this->view->single = $entity->expose($this->getExpose());
+        $this->view->single = $this->expose($entity);
         
         return $this->setRestResponse();
     }
@@ -478,7 +511,7 @@ class Rest extends \Zemit\Mvc\Controller
     /**
      * Prepare a new model for the frontend
      *
-     * @return \Phalcon\Http\ResponseInterface
+     * @return ResponseInterface
      */
     public function validateAction($id = null)
     {
@@ -536,7 +569,7 @@ class Rest extends \Zemit\Mvc\Controller
         
         $this->view->model = get_class($entity);
         $this->view->source = $entity->getSource();
-        $this->view->single = $entity->expose($this->getExpose());
+        $this->view->single = $this->expose($entity);
         $this->view->messages = $entity->getMessages();
         $this->view->events = $events;
         $this->view->validated = empty($this->view->messages);
@@ -545,19 +578,18 @@ class Rest extends \Zemit\Mvc\Controller
     }
     
     /**
-     * Saving a record
-     * - Create
-     * - Update
+     * Saving a record (create & update)
      *
-     * @param null $id
+     * @param null|int $id
      *
-     * @return array
+     * @return ResponseInterface
      */
     public function saveAction($id = null)
     {
-        $this->view->setVars($this->save($id));
+        $ret = $this->save($id);
+        $this->view->setVars($ret);
         
-        return $this->setRestResponse($this->view->saved);
+        return $this->setRestResponse($ret['saved']);
     }
     
     /**
@@ -565,23 +597,24 @@ class Rest extends \Zemit\Mvc\Controller
      *
      * @param null|int $id
      *
-     * @return bool|\Phalcon\Http\ResponseInterface
+     * @return bool|ResponseInterface
      */
     public function deleteAction($id = null)
     {
-        $single = $this->getSingle($id);
+        $entity = $this->getSingle($id);
         
-        $this->view->deleted = $single && $single->delete();
-        $this->view->single = $single ? $single->expose($this->getExpose()) : false;
-        $this->view->messages = $single ? $single->getMessages() : false;
+        $ret = [];
+        $ret['deleted'] = $entity && $entity->delete();
+        $ret['single'] = $entity ? $this->expose($entity) : false;
+        $ret['messages'] = $entity ? $entity->getMessages() : false;
+        $this->view->setVars($ret);
         
-        if (!$single) {
+        if (!$entity) {
             $this->response->setStatusCode(404, 'Not Found');
-            
             return false;
         }
         
-        return $this->setRestResponse($this->view->deleted);
+        return $this->setRestResponse($ret['deleted']);
     }
     
     /**
@@ -589,23 +622,24 @@ class Rest extends \Zemit\Mvc\Controller
      *
      * @param null $id
      *
-     * @return bool|\Phalcon\Http\ResponseInterface
+     * @return bool|ResponseInterface
      */
     public function restoreAction($id = null)
     {
-        $single = $this->getSingle($id);
-        
-        $this->view->restored = $single && $single->restore();
-        $this->view->single = $single ? $single->expose($this->getExpose()) : false;
-        $this->view->messages = $single ? $single->getMessages() : false;
-        
-        if (!$single) {
-            $this->response->setStatusCode(404, 'Not Found');
+        $entity = $this->getSingle($id);
     
+        $ret = [];
+        $ret['restored'] = $entity && $entity->restore();
+        $ret['single'] = $entity ? $this->expose($entity) : false;
+        $ret['messages'] = $entity ? $entity->getMessages() : false;
+        $this->view->setVars($ret);
+        
+        if (!$entity) {
+            $this->response->setStatusCode(404, 'Not Found');
             return false;
         }
         
-        return $this->setRestResponse($this->view->restored);
+        return $this->setRestResponse($ret['restored']);
     }
     
     /**
@@ -614,25 +648,25 @@ class Rest extends \Zemit\Mvc\Controller
      * @param null $id
      * @param null $position
      *
-     * @return bool|\Phalcon\Http\ResponseInterface
+     * @return bool|ResponseInterface
      */
-    public function reorderAction($id = null)
+    public function reorderAction($id = null, $position = null)
     {
-        $single = $this->getSingle($id);
+        $entity = $this->getSingle($id);
+        $position = $this->getParam('position', 'int', $position);
         
-        $position = $this->getParam('position', 'int');
+        $ret = [];
+        $ret['reordered'] = $entity ? $entity->reorder($position) : false;
+        $ret['single'] = $entity ? $this->expose($entity) : false;
+        $ret['messages'] = $entity ? $entity->getMessages() : false;
+        $this->view->setVars($ret);
         
-        $this->view->reordered = $single ? $single->reorder($position) : false;
-        $this->view->single = $single ? $single->expose($this->getExpose()) : false;
-        $this->view->messages = $single ? $single->getMessages() : false;
-        
-        if (!$single) {
+        if (!$entity) {
             $this->response->setStatusCode(404, 'Not Found');
-            
             return false;
         }
         
-        return $this->setRestResponse($this->view->reordered);
+        return $this->setRestResponse($ret['reordered']);
     }
     
     /**
@@ -641,7 +675,7 @@ class Rest extends \Zemit\Mvc\Controller
      * @param null $error
      * @param null $response
      *
-     * @return \Phalcon\Http\ResponseInterface
+     * @return ResponseInterface
      */
     public function setRestErrorResponse($code = 400, $status = 'Bad Request', $response = null)
     {
@@ -657,7 +691,7 @@ class Rest extends \Zemit\Mvc\Controller
      * @param int $jsonOptions
      * @param int $depth
      *
-     * @return \Phalcon\Http\ResponseInterface
+     * @return ResponseInterface
      */
     public function setRestResponse($response = null, $code = null, $status = null, $jsonOptions = 0, $depth = 512)
     {
@@ -743,7 +777,7 @@ class Rest extends \Zemit\Mvc\Controller
         $roleList = $permissions['roles'] ?? [];
         
         foreach ($roleList as $role => $rolePermission) {
-    
+            
             if (isset($rolePermission['features'])) {
                 foreach ($rolePermission['features'] as $feature) {
                     $rolePermission = array_merge_recursive($rolePermission, $featureList[$feature] ?? []);

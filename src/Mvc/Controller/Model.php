@@ -52,7 +52,7 @@ trait Model
     /**
      * Get the current Model Class Name
      *
-     * @return string|null
+     * @return string|null|\Zemit\Mvc\Model
      */
     public function getModelClassName()
     {
@@ -132,6 +132,16 @@ trait Model
     protected function getListWith()
     {
         return $this->getWith();
+    }
+    
+    /**
+     * Get relationship eager loading definition for a listing
+     *
+     * @return null|array
+     */
+    protected function getExportWith()
+    {
+        return $this->getListWith();
     }
     
     /**
@@ -1106,7 +1116,7 @@ trait Model
      * @param ?array $namespaces
      * @param string $needle
      *
-     * @return string|null
+     * @return string|null|\Zemit\Mvc\Model
      */
     public function getModelNameFromController(string $controllerName = null, array $namespaces = null, string $needle = 'Models'): ?string
     {
