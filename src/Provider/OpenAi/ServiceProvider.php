@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Provider\OpenAi;
+namespace Zemit\Provider\OpenAi;
 
 use Orhanerday\OpenAi\OpenAi;
 use Phalcon\Di\DiInterface;

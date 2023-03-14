@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Provider\Imap;
+namespace Zemit\Provider\Imap;
 
 use Phalcon\Di\DiInterface;
 use Zemit\Bootstrap\Config;

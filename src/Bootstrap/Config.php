@@ -355,6 +355,7 @@ class Config extends PhalconConfig
                 Provider\Utils\ServiceProvider::class => Env::get('PROVIDER_UTILS', Provider\Utils\ServiceProvider::class),
                 Provider\Crypt\ServiceProvider::class => Env::get('PROVIDER_CRYPT', Provider\Crypt\ServiceProvider::class),
                 
+                
                 // oauth2
                 Provider\Identity\ServiceProvider::class => Env::get('PROVIDER_IDENTITY', Provider\Identity\ServiceProvider::class),
                 Provider\Oauth2Facebook\ServiceProvider::class => Env::get('PROVIDER_OAUTH_2_FACEBOOK', Provider\Oauth2Facebook\ServiceProvider::class),
@@ -368,6 +369,8 @@ class Config extends PhalconConfig
                 Provider\Captcha\ServiceProvider::class => Env::get('PROVIDER_CAPTCHA', Provider\Captcha\ServiceProvider::class),
                 Provider\Gravatar\ServiceProvider::class => Env::get('PROVIDER_GRAVATAR', Provider\Gravatar\ServiceProvider::class),
                 Provider\Clamav\ServiceProvider::class => Env::get('PROVIDER_CLAMAV', Provider\Clamav\ServiceProvider::class),
+                Provider\Imap\ServiceProvider::class =>  Env::get('PROVIDER_IMAP', Provider\Imap\ServiceProvider::class),
+                Provider\OpenAi\ServiceProvider::class =>  Env::get('PROVIDER_OPENAI', Provider\OpenAi\ServiceProvider::class),
 //                Snowair\Debugbar\ServiceProvider::class => \Snowair\Debugbar\ServiceProvider::class,
             ],
             
