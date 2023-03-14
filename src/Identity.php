@@ -976,11 +976,11 @@ class Identity extends Injectable implements OptionsInterface
             $this->config->path('identity.authorizationHeader', 'Authorization')
         ) ?: ''));
     
-//        $refreshToken = $this->request->getPost('refreshToken');
-        $jwt = $this->request->get('jwt', '', $jwt);
-        $key = $this->request->get('key', 'string', $this->store['key'] ?? null);
-        $token = $this->request->get('token', 'string', $this->store['token'] ?? null);
-        $refreshToken = null;
+        $json = $this->request->getJsonRawBody();
+        $refreshToken = $this->request->get('refreshToken', 'string', $json->refreshToken ?? null);
+        $jwt ??= $this->request->get('jwt', 'string', $json->jwt ?? null);
+        $key ??= $this->request->get('key', 'string', $this->store['key'] ?? $json->key ?? null);
+        $token ??= $this->request->get('token', 'string', $this->store['token'] ?? $json->token ?? null);
         
         if (!empty($key) && !empty($token)) {
         
