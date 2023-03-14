@@ -964,6 +964,7 @@ class Config extends PhalconConfig
     
             'openai' => [
                 'secretKey' => Env::get('OPENAI_SECRET_KEY'),
+                'organizationId' => Env::get('OPENAI_ORGANIZATION_ID'),
             ],
     
             /**
