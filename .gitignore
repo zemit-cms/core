@@ -9,6 +9,7 @@
 .phalcon/*
 
 # PHP
+composer.phar
 composer.lock
 vendor/*
 
