@@ -355,7 +355,6 @@ class Config extends PhalconConfig
                 Provider\Utils\ServiceProvider::class => Env::get('PROVIDER_UTILS', Provider\Utils\ServiceProvider::class),
                 Provider\Crypt\ServiceProvider::class => Env::get('PROVIDER_CRYPT', Provider\Crypt\ServiceProvider::class),
                 
-                
                 // oauth2
                 Provider\Identity\ServiceProvider::class => Env::get('PROVIDER_IDENTITY', Provider\Identity\ServiceProvider::class),
                 Provider\Oauth2Facebook\ServiceProvider::class => Env::get('PROVIDER_OAUTH_2_FACEBOOK', Provider\Oauth2Facebook\ServiceProvider::class),
