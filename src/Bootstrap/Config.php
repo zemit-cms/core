@@ -370,6 +370,7 @@ class Config extends PhalconConfig
                 Provider\Clamav\ServiceProvider::class => Env::get('PROVIDER_CLAMAV', Provider\Clamav\ServiceProvider::class),
                 Provider\Imap\ServiceProvider::class =>  Env::get('PROVIDER_IMAP', Provider\Imap\ServiceProvider::class),
                 Provider\OpenAi\ServiceProvider::class =>  Env::get('PROVIDER_OPENAI', Provider\OpenAi\ServiceProvider::class),
+                Provider\LoremIpsum\ServiceProvider::class =>  Env::get('PROVIDER_LOREM_IPSUM', Provider\LoremIpsum\ServiceProvider::class),
 //                Snowair\Debugbar\ServiceProvider::class => \Snowair\Debugbar\ServiceProvider::class,
             ],
             

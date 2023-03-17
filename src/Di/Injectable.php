@@ -10,6 +10,8 @@
 
 namespace Zemit\Di;
 
+use joshtronic\LoremIpsum;
+use Orhanerday\OpenAi\OpenAi;
 use Phalcon\Logger;
 use Zemit\Bootstrap;
 use Zemit\Db\Profiler;
@@ -50,6 +52,8 @@ use Zemit\Utils;
  * @property Profiler $profiler
  * @property Logger $logger
  * @property Jwt $jwt
+ * @property OpenAi $openAi
+ * @property LoremIpsum $loremIpsum
  *
  * @package Zemit\Di
  */
