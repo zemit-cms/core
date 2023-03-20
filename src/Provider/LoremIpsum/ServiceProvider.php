@@ -27,20 +27,11 @@ use joshtronic\LoremIpsum;
  */
 class ServiceProvider extends AbstractServiceProvider
 {
-    /**
-     * The Service name.
-     * @var string
-     */
     protected $serviceName = 'loremIpsum';
     
-    /**
-     * {@inheritdoc}
-     *
-     * @return void
-     */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function() {
+        $di->setShared($this->getName(), function () {
             return new LoremIpsum();
         });
     }
