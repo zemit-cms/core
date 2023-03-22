@@ -405,7 +405,8 @@ DOC;
                 $content = $this->handleApplication($this->application);
             }
             else {
-                throw new \Exception('Application \'' . get_class($this->application) . '\' not supported', 400);
+                $className = is_object($this->application)? get_class($this->application) : $this->application;
+                throw new \Exception('Application \'' . $className . '\' not supported', 400);
             }
         }
         else {

@@ -103,8 +103,8 @@ trait EventsAwareTrait
     /**
      * Checking if event manager is defined - fire event
      *
-     * @param $task
-     * @param null $data
+     * @param mixed $task
+     * @param mixed $data
      * @param bool $cancelable
      *
      * @throws Exception
