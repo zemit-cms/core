@@ -17,6 +17,7 @@ use Phalcon\Messages\Message;
 use Phalcon\Mvc\Model\Manager;
 use Phalcon\Mvc\Model\ManagerInterface;
 use Phalcon\Mvc\Model\MetaData;
+use Phalcon\Mvc\Model\MetaDataInterface;
 use Phalcon\Mvc\Model\Relation;
 use Phalcon\Mvc\Model\RelationInterface;
 use Phalcon\Mvc\Model\ResultsetInterface;
@@ -38,6 +39,10 @@ use Zemit\Utils\Sprintf;
  */
 trait Relationship
 {
+    abstract public function readAttribute(string $attribute);
+    
+    abstract public function getModelsMetaData(): MetaDataInterface;
+    
     protected array $_keepMissingRelated = [];
     protected array $_relationshipContext = [];
     
@@ -155,7 +160,7 @@ trait Relationship
                         'readFields' => $fields,
                         'type' => $type,
                         'whiteList' => $whiteList,
-                        'dataColumnMap'=> $dataColumnMap,
+                        'dataColumnMap' => $dataColumnMap,
                     ];
                     
                     if (empty($relationData) && !in_array($type, [Relation::HAS_MANY_THROUGH, Relation::HAS_MANY])) {
@@ -170,7 +175,7 @@ trait Relationship
                                 // Using bool as behaviour to delete missing relationship or keep them
                                 // @TODO find a better way... :(
                                 // if [alias => [true, ...]
-                                switch($traversedData) {
+                                switch ($traversedData) {
                                     case 'false':
                                         $traversedData = false;
                                         break;
@@ -219,7 +224,7 @@ trait Relationship
                 
                 // we got something to assign
                 if (!empty($assign) || $this->_keepMissingRelated[$alias] === false) {
-    
+                    
                     $assign = is_array($assign) ? array_values(array_filter($assign)) : $assign;
                     $this->$alias = $assign;
                     
@@ -243,10 +248,10 @@ trait Relationship
     /**
      * Saves related records that must be stored prior to save the master record
      *
-     * @todo Remove in v5.0
+     * @param \Phalcon\Mvc\ModelInterface[] related
      * @deprecated Use preSaveRelatedRecords()
      *
-     * @param \Phalcon\Mvc\ModelInterface[] related
+     * @todo Remove in v5.0
      */
     protected function _preSaveRelatedRecords(AdapterInterface $connection, $related): bool
     {
@@ -362,11 +367,11 @@ trait Relationship
     /**
      * Save the related records assigned in the has-one/has-many relations
      *
+     * @param \Phalcon\Mvc\ModelInterface[] related
+     * @return bool
      * @todo Remove in v5.0
      * @deprecated Use postSaveRelatedRecords()
      *
-     * @param \Phalcon\Mvc\ModelInterface[] related
-     * @return bool
      */
     protected function _postSaveRelatedRecords(AdapterInterface $connection, $related): bool
     {
@@ -424,6 +429,7 @@ trait Relationship
                         $originFields = $relation->getFields();
                         $originFields = is_array($originFields) ? $originFields : [$originFields];
                         
+                        /** @var ModelInterface|string $intermediateModelClass */
                         $intermediateModelClass = $relation->getIntermediateModel();
                         $intermediateFields = $relation->getIntermediateFields();
                         $intermediateFields = is_array($intermediateFields) ? $intermediateFields : [$intermediateFields];
@@ -434,8 +440,6 @@ trait Relationship
                         $referencedFields = $relation->getReferencedFields();
                         $referencedFields = is_array($referencedFields) ? $referencedFields : [$referencedFields];
                         
-                        /** @var ModelInterface $intermediate */
-                        /** @var ModelInterface|string $intermediateModelClass */
                         $intermediate = new $intermediateModelClass();
                         $intermediatePrimaryKeyAttributes = $intermediate->getModelsMetaData()->getPrimaryKeyAttributes($intermediate);
                         $intermediateBindTypes = $intermediate->getModelsMetaData()->getBindTypes($intermediate);
@@ -702,9 +706,9 @@ trait Relationship
      * @param array $configuration
      *
      * @return ModelInterface
+     * @return ModelInterface
      * @todo unit test for this
      *
-     * @return ModelInterface
      */
     public function _getEntityFromData(array $data, array $configuration = []): ModelInterface
     {
@@ -732,7 +736,6 @@ trait Relationship
                     }
                 }
             }
-            
         }
         
         // array_keys_exists (if $referencedFields keys exists)
@@ -742,8 +745,7 @@ trait Relationship
         if (count($dataKeys) === count($fields)) {
             
             if ($type === Relation::HAS_MANY) {
-    
-                /** @var MetaData $modelMetaData */
+                
                 $modelsMetaData = $this->getModelsMetaData();
                 $primaryKeys = $modelsMetaData->getPrimaryKeyAttributes($this);
                 
@@ -751,38 +753,33 @@ trait Relationship
                 foreach ($primaryKeys as $primaryKey) {
                     if (!in_array($primaryKey, $fields, true)) {
                         $dataKeys [$primaryKey] = $data[$primaryKey] ?? null;
-                        $fields []= $primaryKey;
+                        $fields [] = $primaryKey;
                     }
                 }
             }
             
-            /** @var ModelInterface $entity */
             /** @var ModelInterface|string $modelClass */
+            $className = is_string($modelClass)? $modelClass : get_class($modelClass);
             $entity = $modelClass::findFirst([
-                'conditions' => Sprintf::implodeArrayMapSprintf($fields, ' and ', '[' . $modelClass . '].[%s] = ?%s'),
+                'conditions' => Sprintf::implodeArrayMapSprintf($fields, ' and ', '[' . $className . '].[%s] = ?%s'),
                 'bind' => array_values($dataKeys),
                 'bindTypes' => array_fill(0, count($dataKeys), Column::BIND_PARAM_STR),
             ]);
         }
         
         if (!$entity) {
-            /** @var ModelInterface $entity */
             $entity = new $modelClass();
         }
         
         // assign new values
-        if ($entity) {
-            
-            // can be null to bypass, empty array for nothing or filled array
-            $assignWhiteList = isset($whiteList[$modelClass]) || isset($whiteList[$alias]);
-            $assignColumnMap = isset($dataColumnMap[$modelClass]) || isset($dataColumnMap[$alias]);
-            $assignWhiteList = $assignWhiteList? array_merge_recursive($whiteList[$modelClass] ?? [], $whiteList[$alias] ?? []) : null;
-            $assignColumnMap = $assignColumnMap? array_merge_recursive($dataColumnMap[$modelClass] ?? [], $dataColumnMap[$alias] ?? []) : null;
-            
-            $entity->assign($data, $assignWhiteList, $assignColumnMap);
-//            $entity->setDirtyState(self::DIRTY_STATE_TRANSIENT);
-        }
+        // can be null to bypass, empty array for nothing or filled array
+        $assignWhiteList = isset($whiteList[$modelClass]) || isset($whiteList[$alias]);
+        $assignColumnMap = isset($dataColumnMap[$modelClass]) || isset($dataColumnMap[$alias]);
+        $assignWhiteList = $assignWhiteList ? array_merge_recursive($whiteList[$modelClass] ?? [], $whiteList[$alias] ?? []) : null;
+        $assignColumnMap = $assignColumnMap ? array_merge_recursive($dataColumnMap[$modelClass] ?? [], $dataColumnMap[$alias] ?? []) : null;
         
+        $entity->assign($data, $assignWhiteList, $assignColumnMap);
+//        $entity->setDirtyState(self::DIRTY_STATE_TRANSIENT);
         
         return $entity;
     }
