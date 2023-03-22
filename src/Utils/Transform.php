@@ -43,7 +43,7 @@ class Transform
         
         $ret = [];
         
-        if (!is_array($array) || !is_object($array)) {
+        if (!is_array($array)) {
             $array = [$array];
         }
         

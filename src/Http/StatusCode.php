@@ -16,7 +16,7 @@ namespace Zemit\Http;
  *
  * Example:
  * ```php
- *  StatusCode::getMEssage[StatusCode::OK] // 'OK'
+ *  StatusCode::getMessage[StatusCode::OK] // 'OK'
  *  StatusCode::getMessage[200] // 'OK'
  *  StatusCode::CODE[200] // 'OK'
  *  StatusCode::OK // 200
@@ -189,40 +189,37 @@ class StatusCode
     const NETWORK_CONNECT_TIMEOUT_ERROR = 599;
     
     /**
-     * Convenience constantes
+     * Developer friendly constants
      */
     const FATAL_ERROR = 500;
     const MAINTENANCE = 503;
+    const OVERLOADED = 503;
+    const BUSY = 503;
     
     /**
      * Get the HTTP status message for the specified HTTP status code
-     *
-     * @param int $code Http Status Code
-     *
-     * @return string|null Return the message or null
+     * getMessage(200) -> 'OK'
      */
     public static function getMessage(int $code): ?string
     {
-        return self::CODE[(int)$code] ?? null;
+        return self::CODE[$code] ?? null;
     }
     
     /**
-     * Forward undefined instance method to static calls
-     *
-     * @param string $name
-     * @param array $params
+     * Get the HTTP code from the specified HTTP status message
+     * getCode('OK') -> 200
      */
-    public function __call(string $name, array $params) {
-        return self::$name(...$params);
+    public static function getCode(string $status): ?int
+    {
+        return array_flip(self::CODE)[$status] ?? null;
     }
     
     /**
-     * Forward undefined instance method to static calls
-     *
-     * @param string $name
-     * @param array $params
+     * Get the HTTP code from the specified HTTP status message
+     * getStatus(200) -> '200 OK'
      */
-    public function __get(string $name) {
-        return __get($name);
+    public static function getStatus(int $code): ?string
+    {
+        return trim($code . ' ' . self::getMessage($code));
     }
 }

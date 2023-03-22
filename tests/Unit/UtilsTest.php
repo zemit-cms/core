@@ -144,8 +144,8 @@ class UtilsTest extends AbstractUnit
         foreach ($this->collection as $key => $item) {
             $this->assertEquals(
                 $item['assert'],
-                Transform::_flattenKeys($item['transform']),
-                'Transform::_flattenKeys failed for key `' . $key . '`'
+                Transform::flattenKeys($item['transform']),
+                'Transform::flattenKeys failed for key `' . $key . '`'
             );
         }
     }

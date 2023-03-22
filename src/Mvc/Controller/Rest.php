@@ -22,6 +22,7 @@ use Zemit\Db\Profiler;
 use Zemit\Di\Injectable;
 use Zemit\Utils;
 use Zemit\Utils\Slug;
+use Zemit\Http\StatusCode;
 
 /**
  * Class Rest
@@ -685,23 +686,23 @@ class Rest extends \Zemit\Mvc\Controller
     /**
      * Sending rest response as an http response
      *
-     * @param array|null $response
-     * @param null $status
-     * @param null $code
+     * @param mixed $response
+     * @param ?int $code
+     * @param ?string $status
      * @param int $jsonOptions
      * @param int $depth
      *
      * @return ResponseInterface
      */
-    public function setRestResponse($response = null, $code = null, $status = null, $jsonOptions = 0, $depth = 512)
+    public function setRestResponse($response = null, int $code = null, string $status = null, int $jsonOptions = 0, int $depth = 512): ResponseInterface
     {
         $debug = $this->config->app->debug ?? false;
         
         // keep forced status code or set our own
         $responseStatusCode = $this->response->getStatusCode();
         $reasonPhrase = $this->response->getReasonPhrase();
-        $status ??= $reasonPhrase ?: 'OK';
         $code ??= (int)$responseStatusCode ?: 200;
+        $status ??= $reasonPhrase ?: StatusCode::getMessage($code);
         $view = $this->view->getParamsToView();
         $hash = hash('sha512', json_encode($view));
         
@@ -719,14 +720,15 @@ class Rest extends \Zemit\Mvc\Controller
         $profiler = $debug && $this->profiler ? $this->profiler->toArray() : null;
         $dispatcher = $debug ? $this->dispatcher->toArray() : null;
         $router = $debug ? $this->router->toArray() : null;
-        
+    
+        $coreConfig = $this->config->core->toArray();
         $api = $debug ? [
             'php' => phpversion(),
             'phalcon' => Version::get(),
-            'zemit' => $this->config->core->version,
-            'core' => $this->config->core->name,
-            'app' => $this->config->app->version,
-            'name' => $this->config->app->name,
+            'zemit' => $coreConfig['version'],
+            'core' => $coreConfig['name'],
+            'app' => $coreConfig['version'],
+            'name' => $coreConfig['name'],
         ] : [];
         $api['version'] = '0.1';
         
@@ -746,22 +748,26 @@ class Rest extends \Zemit\Mvc\Controller
             $this->response->setHeader('Cache-Control', 'no-cache, max-age=0');
         }
         
-        return $this->response->setJsonContent(array_merge([
-            'api' => $api,
-            'timestamp' => date('c'),
-            'hash' => $hash,
-            'status' => $status,
-            'code' => $code,
-            'response' => $response,
-            'view' => $view,
-        ], $debug ? [
-            'identity' => $identity,
-            'profiler' => $profiler,
-            'request' => $request,
-            'dispatcher' => $dispatcher,
-            'router' => $router,
-            'memory' => Utils::getMemoryUsage(),
-        ] : []), $jsonOptions, $depth);
+        $ret = [];
+        
+        $ret['api'] = $api;
+        $ret['timestamp'] = date('c');
+        $ret['hash'] = $hash;
+        $ret['status'] = $status;
+        $ret['code'] = $code;
+        $ret['response'] = $response;
+        $ret['view'] = $view;
+        
+        if ($debug) {
+            $ret['identity'] = $identity;
+            $ret['profiler'] = $profiler;
+            $ret['request'] = $request;
+            $ret['dispatcher'] = $dispatcher;
+            $ret['router'] = $router;
+            $ret['memory'] = Utils::getMemoryUsage();
+        }
+        
+        return $this->response->setJsonContent($ret, $jsonOptions, $depth);
     }
     
     public function beforeExecuteRoute(Dispatcher $dispatcher)

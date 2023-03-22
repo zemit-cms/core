@@ -24,7 +24,7 @@ use Zemit\Utils\Env;
  */
 abstract class AbstractUnit extends TestCase
 {
-    private bool $loaded = false;
+    protected bool $loaded = false;
     
     protected ?Bootstrap $bootstrap;
     
