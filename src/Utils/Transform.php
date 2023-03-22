@@ -34,7 +34,7 @@ class Transform
      *
      * @return array|null
      */
-    final public static function _flattenKeys($array = null, ?string $delimiter = '.', ?bool $lowerKey = true, ?string $context = null) : ?array
+    final public static function flattenKeys($array = null, ?string $delimiter = '.', ?bool $lowerKey = true, ?string $context = null) : ?array
     {
         // nothing passed
         if (!isset($array)) {
@@ -43,7 +43,7 @@ class Transform
         
         $ret = [];
         
-        if (!is_array($array) || is_object($array)) {
+        if (!is_array($array) || !is_object($array)) {
             $array = [$array];
         }
         
@@ -80,8 +80,10 @@ class Transform
             $currentKey = (!empty($context) ? $context . (!empty($key) ? $delimiter : null) : null) . $key;
             
             if (is_array($value) || is_object($value)) {
-                $subRet = self::_flattenKeys(is_callable($value)? $value() : $value, $delimiter, $lowerKey, $currentKey);
-                $ret = array_merge_recursive($ret, $subRet);
+                $subRet = self::flattenKeys(is_callable($value)? $value() : $value, $delimiter, $lowerKey, $currentKey);
+                if (is_array($subRet)) {
+                    $ret = array_merge_recursive($ret, $subRet);
+                }
                 
                 if (!isset($ret[$currentKey])) {
                     $ret[$currentKey] = false;
