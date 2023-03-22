@@ -15,6 +15,7 @@ use Zemit\Bootstrap\Config;
 use Zemit\Db\Profiler;
 use Zemit\Escaper;
 use Zemit\Filter;
+use Zemit\Http\Request;
 use Zemit\Identity;
 use Zemit\Tag;
 use Zemit\Utils;
@@ -41,6 +42,7 @@ use Zemit\Cache;
  * @property Dispatcher $dispatcher
  * @property Router $router
  * @property Cache $cache
+ * @property Request $request
  */
 class Controller extends \Phalcon\Mvc\Controller
 {
