@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,10 +11,9 @@
 
 namespace Zemit\Di;
 
-use joshtronic\LoremIpsum;
-use Orhanerday\OpenAi\OpenAi;
-use Phalcon\Logger;
 use Zemit\Bootstrap;
+use Zemit\Cli\Router as CliRouter;
+use Zemit\MVc\Router as MvcRouter;
 use Zemit\Db\Profiler;
 use Zemit\Debug;
 use Zemit\Escaper;
@@ -26,18 +26,15 @@ use Zemit\Provider\Jwt\Jwt;
 use Zemit\Security;
 use Zemit\Tag;
 use Zemit\Utils;
+use Phalcon\Logger;
+use joshtronic\LoremIpsum;
+use Orhanerday\OpenAi\OpenAi;
 
 /**
- * Class Injectable
  * {@inheritDoc}
  *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
  * @property Bootstrap\Config $config
+ * @property CliRouter|MvcRouter $router
  * @property Bootstrap $bootstrap
  * @property Debug $debug
  * @property Escaper $escaper
@@ -54,10 +51,7 @@ use Zemit\Utils;
  * @property Jwt $jwt
  * @property OpenAi $openAi
  * @property LoremIpsum $loremIpsum
- *
- * @package Zemit\Di
  */
 class Injectable extends \Phalcon\Di\Injectable implements \Phalcon\Di\InjectionAwareInterface
 {
-
 }
