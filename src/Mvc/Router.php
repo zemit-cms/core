@@ -58,8 +58,8 @@ class Router extends \Phalcon\Mvc\Router
         $this->removeExtraSlashes(true);
         $this->setDefaults($this->config->router->defaults->toArray() ?: $this->defaults);
         $this->notFound($this->config->router->notFound->toArray() ?: $this->notFound);
-        $this->mount(new ModuleRoute($this->getDefaults(), true));
-        $this->mount(new ModuleRoute($this->getDefaults(), true, true));
+        $locale = $this->config->locale->toArray();
+        $this->mount(new ModuleRoute($this->getDefaults(), $locale['allowed'], true));
     }
     
     /**
@@ -75,8 +75,8 @@ class Router extends \Phalcon\Mvc\Router
             if (!isset($hostnameRoute['module']) || !is_string($hostnameRoute['module'])) {
                 throw new \InvalidArgumentException('Router hostname config parameter "module" must be a string under "' . $hostname . '"');
             }
-            $this->mount((new ModuleRoute(array_merge($defaults, $hostnameRoute), true))->setHostname($hostname));
-            $this->mount((new ModuleRoute(array_merge($defaults, $hostnameRoute), true, true))->setHostname($hostname));
+            $locale = $this->config->locale->toArray();
+            $this->mount((new ModuleRoute(array_merge($defaults, $hostnameRoute), $locale['allowed'], true))->setHostname($hostname));
         }
     }
     
@@ -91,9 +91,9 @@ class Router extends \Phalcon\Mvc\Router
             if (!isset($module['className'])) {
                 throw new \InvalidArgumentException('Module parameter "className" must be a string under "' . $key . '"');
             }
+            $locale = $this->config->locale->toArray();
             $namespace = rtrim($module['className'], 'Module') . 'Controllers';
-            $this->mount(new ModuleRoute(array_merge($defaults, ['namespace' => $namespace, 'module' => $key])));
-            $this->mount(new ModuleRoute(array_merge($defaults, ['namespace' => $namespace, 'module' => $key]), false, true));
+            $this->mount(new ModuleRoute(array_merge($defaults, ['namespace' => $namespace, 'module' => $key]), $locale['allowed'], true));
         }
     }
     

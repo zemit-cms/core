@@ -56,7 +56,7 @@ class ServiceProvider extends AbstractServiceProvider
             $ini = $config->ini->toArray();
             
             foreach ($ini as $key => $value) {
-                ini_set($key, $value);
+                @ini_set($key, $value);
             }
             
             // Create the new session manager

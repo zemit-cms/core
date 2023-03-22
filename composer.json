@@ -123,7 +123,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Zemit\\Test\\": "tests/unit"
+      "Zemit\\Tests\\Unit\\": "tests/Unit"
     }
   },
   "bin": [

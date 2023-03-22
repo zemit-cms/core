@@ -53,54 +53,53 @@ class Router extends \Zemit\Mvc\Router
             'controller' => 1,
         ])->setName('default-controller');
         
-        $this->add('/:controller/:action', [
+        $this->add('/:controller/:action/:params', [
             'controller' => 1,
             'action' => 2,
+            'params' => 3,
         ])->setName('default-controller-action');
         
-//        $this->add('/:controller/:action/:slug', [
-//            'controller' => 1,
-//            'action' => 2,
-//            'slug' => 3,
-//        ])->setName('default-controller-action-slug');
-//
-//        $this->add('/:controller/:action/:int', [
-//            'controller' => 1,
-//            'action' => 2,
-//            'int' => 3,
-//        ])->setName('default-controller-action-int');
-        
-        foreach ($this->config->locale->allowed as $locale) {
-            $this->add('/' . $locale, [
-                'locale' => $locale,
-            ])->setName($locale . '-default');
+        $localeConfig = $this->config->locale->toArray();
+        if (!empty($localeConfig['allowed'])) {
+            $localeRegex = '{locale:(' . implode('|', $localeConfig['allowed']) . ')}';
             
-            $this->add('/' . $locale . '/:controller', [
+            $this->add('/' . $localeRegex, [
+                'locale' => 1,
+            ])->setName('locale');
+    
+            $this->add('/' . $localeRegex . '/:controller', [
+                'locale' => 1,
+                'controller' => 2,
+            ])->setName('locale-controller');
+    
+            $this->add('/' . $localeRegex . '/:controller/:action/:params', [
+                'locale' => 1,
+                'controller' => 2,
+                'action' => 3,
+                'params' => 4,
+            ])->setName('locale-controller-action');
+        }
+        
+        foreach ($localeConfig['allowed'] as $locale) {
+            $localeRegex = $locale;
+            
+            $this->add('/' . $localeRegex, [
+                'locale' => $locale,
+            ])->setName($locale);
+            
+            $this->add('/' . $localeRegex . '/:controller', [
                 'locale' => $locale,
                 'controller' => 1,
-            ])->setName($locale . '-default-controller');
+            ])->setName($locale . '-controller');
             
-            $this->add('/' . $locale . '/:controller/:action', [
+            $this->add('/' . $localeRegex . '/:controller/:action/:params', [
                 'locale' => $locale,
                 'controller' => 1,
                 'action' => 2,
-            ])->setName($locale . '-default-controller-action');
-            
-//            $this->add('/' . $locale . '/:controller/:action/:slug', [
-//                'locale' => $locale,
-//                'controller' => 1,
-//                'action' => 2,
-//                'slug' => 3,
-//            ])->setName($locale);
-//
-//            $this->add('/' . $locale . '/:controller/:action/:int', [
-//                'locale' => $locale,
-//                'controller' => 1,
-//                'action' => 2,
-//                'int' => 3,
-//            ])->setName($locale);
+                'params' => 3,
+            ])->setName($locale . '-controller-action');
         }
-        
+    
         if (isset($application)) {
             $this->hostnamesRoutes();
             $this->modulesRoutes($application);

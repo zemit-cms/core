@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit;
+namespace Zemit\Tests\Unit;
 
 //use Zemit\Utils\Transform;
 use Zemit\Utils\Transform;
@@ -19,7 +19,7 @@ use Zemit\Utils\Transform;
  * Class ProviderTest
  * @package Tests\Unit
  */
-class UtilsTest extends AbstractUnitTest
+class UtilsTest extends AbstractUnit
 {
     public $collection = [
     

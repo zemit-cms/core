@@ -28,10 +28,10 @@ class Url extends \Phalcon\Url
     /**
      * {@inheritdoc}
      *
-     * @param null $uri
-     * @param null $args
+     * @param array|string|null $uri
+     * @param mixed $args
      * @param bool|null $local
-     * @param null $baseUri
+     * @param mixed $baseUri
      *
      * @return string
      */
@@ -45,7 +45,7 @@ class Url extends \Phalcon\Url
      *
      * @return string
      */
-    public static function getAbsolutePath(string $path) : string
+    public static function getAbsolutePath(string $path): string
     {
         if (strpos($path, 'https://') === 0) {
             return $path;
@@ -59,14 +59,15 @@ class Url extends \Phalcon\Url
         
         $path = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
         $parts = array_filter(explode(DIRECTORY_SEPARATOR, $path), 'mb_strlen');
-        $absolutes = array();
+        $absolutes = [];
         foreach ($parts as $part) {
             if ('.' === $part) {
                 continue;
             }
             if ('..' === $part) {
                 array_pop($absolutes);
-            } else {
+            }
+            else {
                 $absolutes[] = $part;
             }
         }

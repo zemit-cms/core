@@ -10,15 +10,16 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit;
+namespace Zemit\Tests\Unit;
 
+use Zemit\Bootstrap\Config;
 use Zemit\Version;
 
 /**
  * Class VersionTest
  * @package Tests\Unit
  */
-class VersionTest extends AbstractUnitTest
+class VersionTest extends AbstractUnit
 {
     /**
      * Testing the version class

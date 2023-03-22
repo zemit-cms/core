@@ -25,84 +25,88 @@ use Phalcon\Mvc\Router\Group as RouterGroup;
  */
 class ModuleRoute extends RouterGroup
 {
-    public $locale;
-    public $default;
-    public $params;
-
+    public array $locale;
+    public bool $params;
+    
     /**
      * ModuleRoute constructor.
      * The module routing is segmented in order to give more control over
      * the route for specific modules
      *
-     * @param null $paths
-     * @param bool $default
-     * @param bool $locale
+     * @param mixed $paths
+     * @param array $locale
      * @param bool $params
      */
-    public function __construct($paths = null, $default = false, $locale = false, $params = true)
+    public function __construct($paths = null, array $locale = [], bool $params = true)
     {
-        $this->default = $default;
         $this->params = $params;
         $this->locale = $locale;
         parent::__construct($paths);
     }
-
+    
     public function initialize()
     {
         $path = $this->getPaths();
         $module = $path['module'];
-        $params = $this->params ? '/:params' : null;
-
-        if ($this->default) {
-            $module = 'zemit';
+        
+        $routePrefix = '/' . $module;
+        $namePrefix = $module;
+        
+        $this->add($routePrefix, [
+        ])->setName($namePrefix);
+        
+        $this->add($routePrefix . '/:controller', [
+            'controller' => 1,
+        ])->setName($namePrefix . '-controller');
+        
+        $this->add($routePrefix . '/:controller/:action/:params', [
+            'controller' => 1,
+            'action' => 2,
+            'params' => 3,
+        ])->setName($namePrefix . '-controller-action');
+        
+        if (!empty($this->locale)) {
+            $localeRegex = '{locale:(' . implode('|', $this->locale) . ')}';
+            $routePrefix = '/' . $localeRegex . '/' . $module;
+            $namePrefix = 'locale-' . $module;
+            
+            $this->add($routePrefix, [
+                'locale' => 1,
+            ])->setName($namePrefix);
+            
+            $this->add($routePrefix . '/:controller', [
+                'locale' => 1,
+                'controller' => 2,
+            ])->setName($namePrefix . '-controller');
+            
+            $this->add($routePrefix . '/:controller/:action/:params', [
+                'locale' => 1,
+                'controller' => 2,
+                'action' => 3,
+                'params' => 4,
+            ])->setName($namePrefix . '-controller-action');
         }
-
-        /**
-         * /admin/
-         * /fr/admin/
-         * /fr-FR/admin/
-         * /fr_FR/admin/
-         */
-        $prefix = ($this->locale? '/{locale:([a-z]{2,3})}' : null) . ($this->default ? null : '/' . $module);
-        $this->setPrefix($prefix);
-        $prefixName = ($this->locale? 'locale-' : null) . $module;
-        $prefixPos = $this->locale? 1 : 0;
-
-        // /admin
-        $this->add('' . $params, [
-            'locale' => $prefixPos,
-            'params' => $prefixPos + 1
-        ])->setName($prefixName);
-
-        // /admin/users
-        $this->add('/:controller' . $params, [
-            'locale' => $prefixPos,
-            'controller' => $prefixPos + 1,
-            'params' => $prefixPos + 2
-        ])->setName($prefixName . '-controller');
-
-        // /admin/user/list
-        $this->add('/:controller/:action' . $params, [
-            'locale' => $prefixPos,
-            'controller' => $prefixPos + 1,
-            'action' => $prefixPos + 2,
-            'params' => $prefixPos + 3
-        ])->setName($prefixName . '-controller-action');
-
-        // /admin/user/profile/jturbide
-//        $this->add('/:controller/:action/([a-zA-Z0-9\_\-]+)' . $params, [
-//            'controller' => $prefixPos + 1,
-//            'action' => $prefixPos + 2,
-//            'slug' => $prefixPos + 3,
-//            'params' => $prefixPos + 4
-//        ])->setName($prefixName . '-controller-action-slug');
-//
-//        // /admin/user/edit/1
-//        $this->add('/:controller/:action/:int' . $params, [
-//            'controller' => $prefixPos + 1,
-//            'action' => $prefixPos + 2,
-//            'int' => $prefixPos + 3,
-//            'params' => $prefixPos + 4
-//        ])->setName($prefixName . '-controller-action-int');
+        
+        foreach ($this->locale as $locale) {
+            $localeRegex = $locale;
+            $routePrefix = '/' . $localeRegex . '/' . $module;
+            $namePrefix = $locale . '-' . $module;
+            
+            $this->add($routePrefix, [
+                'locale' => $locale,
+            ])->setName($namePrefix);
+            
+            $this->add($routePrefix . '/:controller', [
+                'locale' => $locale,
+                'controller' => 1,
+            ])->setName($namePrefix . '-controller');
+            
+            $this->add($routePrefix . '/:controller/:action/:params', [
+                'locale' => $locale,
+                'controller' => 1,
+                'action' => 2,
+                'params' => 3,
+            ])->setName($namePrefix . '-controller-action');
+        }
     }
 }

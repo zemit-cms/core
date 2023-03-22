@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit;
+namespace Zemit\Tests\Unit;
 
 use Zemit\Provider\ServiceProviderInterface;
 
@@ -18,24 +18,23 @@ use Zemit\Provider\ServiceProviderInterface;
  * Class ProviderTest
  * @package Tests\Unit
  */
-class ProviderTest extends AbstractUnitTest
+class ProviderTest extends AbstractUnit
 {
     /**
      * Testing the bootstrap service
      */
     public function testProvider() {
         $this->assertTrue(true);
-//        $providers = $this->bootstrap->config->path('providers', []);
-//        $this->assertIsArray($providers);
-//
-//        foreach ($providers as $assumption => $concrete) {
-//            $this->assertIsString($assumption);
-//            $this->assertIsString($concrete);
-//
-//            var_dump($concrete);
-//            $provider = new $concrete();
-//            $this->assertInstanceOf(ServiceProviderInterface::class, $provider);
-//        }
+        $providers = $this->bootstrap->config->providers->toArray();
+        $this->assertIsArray($providers);
+
+        foreach ($providers as $assumption => $concrete) {
+            $this->assertIsString($assumption);
+            $this->assertIsString($concrete);
+            
+            $provider = new $concrete($this->di);
+            $this->assertInstanceOf(ServiceProviderInterface::class, $provider);
+        }
     }
     
 }

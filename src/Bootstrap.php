@@ -168,7 +168,7 @@ DOC;
      *
      * @throws Exception
      */
-    public function __construct($mode = self::MODE_DEFAULT)
+    public function __construct(string $mode = self::MODE_DEFAULT)
     {
         $this->mode = $mode;
         $this->setEventsManager(new Events\Manager());
