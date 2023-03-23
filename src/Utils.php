@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -11,26 +12,17 @@
 namespace Zemit;
 
 use Phalcon\Debug\Dump;
-use Phalcon\Text;
 
 /**
  * Class Utils
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit
  */
 class Utils
 {
     /**
      * Remove time and memory limits
-     * @return void
      */
-    public static function setUnlimitedRuntime() {
+    public static function setUnlimitedRuntime(): void
+    {
         ini_set('memory_limit', -1);
         ini_set('max_execution_time', 0);
         ini_set('max_input_time', 0);
@@ -39,141 +31,70 @@ class Utils
     
     /**
      * Set max upload file size and post size
-     * @param string $size
-     * @return void
+     * @link https://www.php.net/manual/en/ini.list.php
+     * @link https://www.php.net/manual/en/configuration.changes.modes.php
+     * @deprecated This setting must be changed at the system level
+     * @throws \Exception
      */
-    public static function setMaxUploadFileSize(string $size = '2M') {
-        ini_set('upload_max_filesize', $size);
-        ini_set('post_max_size', $size);
+    public static function setMaxUploadFileSize(string $size = '2M'): void
+    {
+        throw new \Exception('This setting must be changed at the system level.');
     }
     
     /**
-     * @param $class
-     *
-     * @return bool|string
+     * Get the Namespace from a class object
      */
     public static function getNamespace(object $class): string
     {
-        return substr(get_class($class), 0, strrpos(get_class($class), "\\"));
+        return (new \ReflectionClass($class))->getNamespaceName();
     }
     
     /**
-     * @param object|string $class
-     * @return string
+     * Get the directory from a class object
      */
-    public static function getDirname($class): string
+    public static function getDirname(object $class): string
     {
         return dirname((new \ReflectionClass($class))->getFileName());
     }
     
     /**
-     * Return a human readable memory usage array (in MB)
-     * @return string[]
+     * Return an array of the current memory usage in MB
      */
     public static function getMemoryUsage(): array
     {
-        $toMb = 1048576.2;
+        $toMB = 1048576.2;
         return [
-            'memory' => (memory_get_usage() / $toMb) . ' MB',
-            'memoryPeak' => (memory_get_peak_usage() / $toMb) . ' MB',
-            'realMemory' => (memory_get_usage(true) / $toMb) . ' MB',
-            'realMemoryPeak' => (memory_get_peak_usage(true) / $toMb) . ' MB',
+            'memory' => (memory_get_usage() / $toMB) . ' MB',
+            'memoryPeak' => (memory_get_peak_usage() / $toMB) . ' MB',
+            'realMemory' => (memory_get_usage(true) / $toMB) . ' MB',
+            'realMemoryPeak' => (memory_get_peak_usage(true) / $toMB) . ' MB',
         ];
-    }
-    
-    /**
-     * Dump the passed variables and end the script.
-     *
-     * @param mixed
-     * @return void
-     */
-    public static function dd()
-    {
-        call_user_func_array('dd', func_get_args());
-    }
-    
-    /**
-     * Dump the passed variables without end the script.
-     *
-     * @param mixed
-     * @return void
-     */
-    public static function dump()
-    {
-        call_user_func_array('dump', func_get_args());
-    }
-    
-    /**
-     * Call a function
-     * - Uncamelize the method name
-     *
-     * @param $name string
-     * @param $arguments array
-     *
-     * @return mixed
-     * @throws \Exception Throw exception if function name can't be found
-     */
-    public function __call(string $name, array $arguments)
-    {
-        return self::__callStatic($name, $arguments);
-    }
-    
-    /**
-     * Call a function
-     * - Uncamelize the method name
-     *
-     * @param $name string
-     * @param $arguments array
-     *
-     * @return mixed
-     * @throws \Exception Throw exception if function name can't be found
-     */
-    public static function __callStatic(string $name, array $arguments)
-    {
-        $functionName = Text::uncamelize($name);
-        if (function_exists($functionName)) {
-            return call_user_func_array($functionName, func_get_args());
-        }
-        else {
-            throw new \Exception("Function {$functionName} does not exists.");
-        }
     }
 }
 
 if (!function_exists('dd')) {
-    
     /**
      * Dump the passed variables and end the script.
-     *
-     * @param mixed
-     * @return void
      */
-    function dd()
+    function dd(...$params): void
     {
-        call_user_func_array('dump', func_get_args());
+        dump(...$params);
         exit(1);
     }
 }
 
 if (!function_exists('dump')) {
     /**
-     * Dump the passed variables without end the script.
-     *
-     * @param mixed
-     * @return void
+     * Dump the passed variables without ending the script.
      */
-    function dump()
+    function dump(...$params): void
     {
-        array_map(
-            function ($variable) {
-                $dump = new Dump([], true);
-                $ret = $dump->variable($variable);
-                if (PHP_SAPI === 'cli') {
-                    $ret = strip_tags($ret) . PHP_EOL;
-                }
-                echo $ret;
-            },
-            func_get_args()
-        );
+        foreach ($params as $param) {
+            $ret = (new Dump([], true))->variable($param);
+            if (PHP_SAPI === 'cli') {
+                $ret = strip_tags($ret) . PHP_EOL;
+            }
+            echo $ret;
+        }
     }
 }
