@@ -37,8 +37,9 @@ build:
             memory_limit: -1
       dependencies:
         before:
-          - git clone -b v4.1.3 --depth=1 "https://github.com/phalcon/cphalcon.git" ~/cphalcon && cd ~/cphalcon/build && ./install && echo "extension=phalcon.so" > ~/.phpenv/versions/$(phpenv global)/etc/conf.d/phalcon.ini
           - composer self-update
+        override:
+          - git clone -b v4.1.3 --depth=1 "https://github.com/phalcon/cphalcon.git" ~/cphalcon && cd ~/cphalcon/build && ./install && echo "extension=phalcon.so" > ~/.phpenv/versions/$(phpenv global)/etc/conf.d/phalcon.ini
         after:
           - composer require --dev phalcon/ide-stubs:4.1.0
           - composer require --dev phpunit/phpunit
