@@ -11,13 +11,6 @@
 
 namespace Zemit\Modules\Admin;
 
-/**
- * Class Module
- *
- *
- *
- * @package Zemit\Modules\Admin
- */
 class Module extends \Zemit\Mvc\Module
 {
     public string $name = self::NAME_ADMIN;

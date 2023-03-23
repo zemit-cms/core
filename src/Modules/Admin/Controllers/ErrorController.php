@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -11,19 +12,10 @@
 namespace Zemit\Modules\Admin\Controllers;
 
 use Zemit\Mvc\Controller\StatusCode;
+use Zemit\Mvc\Controller\Errors;
 
-/**
- * Class ErrorController
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Modules\Admin\Controllers
- */
 class ErrorController extends AbstractController
 {
     use StatusCode;
+    use Errors;
 }
