@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,34 +11,15 @@
 
 namespace Zemit\Provider\Assets;
 
+use Phalcon\Di\DiInterface;
 use Zemit\Assets\Manager;
 use Zemit\Provider\AbstractServiceProvider;
 
-/**
- * Class ServiceProvider
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Provider\Assets
- */
 class ServiceProvider extends AbstractServiceProvider
 {
-    /**
-     * The Service name.
-     * @var string
-     */
-    protected $serviceName = 'assets';
+    protected string $serviceName = 'assets';
     
-    /**
-     * {@inheritdoc}
-     *
-     * @return void
-     */
-    public function register(\Phalcon\Di\DiInterface $di): void
+    public function register(DiInterface $di): void
     {
         $di->setShared($this->getName(), Manager::class);
     }
