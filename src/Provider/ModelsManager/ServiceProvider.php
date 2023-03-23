@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,36 +11,18 @@
 
 namespace Zemit\Provider\ModelsManager;
 
+use Phalcon\Di\DiInterface;
 use Phalcon\Mvc\Model\Manager;
 use Zemit\Provider\AbstractServiceProvider;
 
-/**
- * Class ServiceProvider
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Provider\ModelsManager
- */
 class ServiceProvider extends AbstractServiceProvider
 {
-    /**
-     * The Service name.
-     * @var string
-     */
-    protected $serviceName = 'modelsManager';
+    protected string $serviceName = 'modelsManager';
     
-    /**
-     * {@inheritdoc}
-     *
-     * @return void
-     */
-    public function register(\Phalcon\Di\DiInterface $di): void
+    public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function() use ($di) {
+        $di->setShared($this->getName(), function () use ($di) {
+            
             $modelsManager = new Manager();
             $modelsManager->setEventsManager($di->get('eventsManager'));
             
