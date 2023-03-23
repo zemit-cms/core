@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -14,24 +15,14 @@ use Zemit\Provider\AbstractServiceProvider;
 use Phalcon\Di\DiInterface;
 use joshtronic\LoremIpsum;
 
-/**
- * Class ServiceProvider
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Provider\Mailer
- */
 class ServiceProvider extends AbstractServiceProvider
 {
-    protected $serviceName = 'loremIpsum';
+    protected string $serviceName = 'loremIpsum';
     
     public function register(DiInterface $di): void
     {
         $di->setShared($this->getName(), function () {
+            
             return new LoremIpsum();
         });
     }
