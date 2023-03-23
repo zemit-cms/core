@@ -21,18 +21,13 @@ class Filter extends \Phalcon\Filter
 {
     public ?ConfigInterface $config;
     
-    
     public const FILTER_MD5 = 'md5';
-    
     
     public const FILTER_JSON = 'json';
     
-    
     public const FILTER_IPV4 = 'ipv4';
     
-    
     public const FILTER_IPV6 = 'ipv6';
-    
     
     /**
      * Key value pairs with name as the key and a callable as the value for
