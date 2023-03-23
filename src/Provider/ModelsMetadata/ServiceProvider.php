@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -11,52 +12,41 @@
 namespace Zemit\Provider\ModelsMetadata;
 
 use Phalcon\Cache\AdapterFactory;
+use Phalcon\Config\ConfigInterface;
+use Phalcon\Di\DiInterface;
 use Phalcon\Mvc\Model\MetaData\Memory;
 use Phalcon\Mvc\Model\MetaData\Stream;
 use Phalcon\Storage\SerializerFactory;
+use Zemit\Bootstrap;
 use Zemit\Provider\AbstractServiceProvider;
 
-/**
- * Class ServiceProvider
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Provider\ModelsMetadata
- */
 class ServiceProvider extends AbstractServiceProvider
 {
-    /**
-     * The Service name.
-     * @var string
-     */
-    protected $serviceName = 'modelsMetadata';
+    protected string $serviceName = 'modelsMetadata';
     
-    /**
-     * {@inheritdoc}
-     *
-     * @return void
-     */
-    public function register(\Phalcon\Di\DiInterface $di): void
+    public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function() use ($di) {
+        $di->setShared($this->getName(), function () use ($di) {
             
-            $config = $di->get('config')->metadata;
-            $driverName = $di->get('bootstrap')->getMode() === 'console'? 'cli' : 'driver';
-            $driver = $config->drivers->{$config->$driverName};
-            $adapter = $driver->adapter;
+            $bootstrap = $di->get('bootstrap');
+            assert($bootstrap instanceof Bootstrap);
             
-            $options = array_merge($config->default->toArray(), $driver->toArray());
+            $config = $di->get('config');
+            assert($config instanceof ConfigInterface);
+            
+            $metadataConfig = $config->get('metadata')->toArray();
+            
+            $driverName = $bootstrap->isCli() ? 'cli' : 'driver';
+            $driver = $metadataConfig['drivers'][$metadataConfig[$driverName]] ?? [];
+            $options = array_merge($config['default'], $driver);
+            
+            $adapter = $driver['adapter'] ?? '';
             if (in_array($adapter, [Memory::class, Stream::class])) {
                 return new $adapter($options);
             }
-            
+
             $serializerFactory = new SerializerFactory();
             $adapterFactory = new AdapterFactory($serializerFactory);
-            
             return new $adapter($adapterFactory, $options);
         });
     }
