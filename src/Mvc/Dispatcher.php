@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -14,16 +15,7 @@ use Zemit\Dispatcher\DispatcherInterface;
 use Zemit\Dispatcher\DispatcherTrait;
 
 /**
- * Class Dispatcher
  * {@inheritDoc}
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Mvc
  */
 class Dispatcher extends \Phalcon\Mvc\Dispatcher implements DispatcherInterface
 {
