@@ -26,6 +26,7 @@ trait Errors
      */
     public function errorAction(?int $code = null, ?string $message = null): void
     {
+        $code ??= 500;
         $this->setStatusCode($code, $message);
     }
     
