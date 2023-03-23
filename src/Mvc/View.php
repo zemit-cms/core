@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -11,56 +12,30 @@
 namespace Zemit\Mvc;
 
 use Phalcon\Text;
-use phpDocumentor\Reflection\Types\Boolean;
 use Zemit\Utils\Slug;
 
 /**
- * Class View
  * {@inheritdoc}
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Mvc
  */
 class View extends \Phalcon\Mvc\View
 {
-    /**
-     * @var bool Minify view
-     */
-    private $_minify;
+    private bool $minify = false;
     
-    /**
-     * @param $minify bool Set true to minify
-     */
-    public function setMinify($minify)
+    public function getMinify(): bool
     {
-        $this->_minify = $minify ? true : false;
+        return $this->minify;
     }
     
-    /**
-     * @return bool Minify
-     */
-    public function getMinify()
+    public function setMinify(bool $minify): void
     {
-        return $this->_minify ? true : false;
+        $this->minify = $minify;
     }
     
     /**
      * {@inheritdoc}
-     * @param string $controllerName
-     * @param string $actionName
-     * @param array $params
-     *
-     * @return bool|\Phalcon\Mvc\View
-     * @throws \Zemit\Exception
      */
-    public function render($controllerName, $actionName, $params = [])
+    public function render(string $controllerName, string $actionName, array $params = []): bool|View
     {
-        // fix @todo check if we still have this issue
         if (!$this->exists($controllerName . (empty($actionName) ? null : '/' . $actionName))) {
             $controllerName = Slug::generate(Text::uncamelize($controllerName));
             $actionName = Slug::generate(Text::uncamelize($actionName));
@@ -69,36 +44,26 @@ class View extends \Phalcon\Mvc\View
     }
     
     /**
-     * {@inheritdoc}
-     * @param string $controllerName
-     * @param string $actionName
-     * @param null $params
-     * @param null $configCallback
-     *
-     * @return String
-     * @throws \Zemit\Exception
+     * {@inheritDoc}
      */
-    public function getRender($controllerName, $actionName, $params = null, $configCallback = null): string
+    public function getRender(string $controllerName, string $actionName, array $params = [], $configCallback = null): string
     {
-        // fix @todo check if we still have this issue
         if (!$this->exists($controllerName . (empty($actionName) ? null : '/' . $actionName))) {
             $controllerName = Slug::generate(Text::uncamelize($controllerName));
             $actionName = Slug::generate(Text::uncamelize($actionName));
         }
-        return parent::getRender($controllerName, $actionName, $params);
+        return parent::getRender($controllerName, $actionName, $params, $configCallback);
     }
     
     /**
      * {@inheritdoc}
-     * Also automatically minify content
-     * @return string
+     * Also minify content
      */
-    public function getContent(): string
+    public function getContent(?bool $minify = null): string
     {
-        // Don't worry
         $content = parent::getContent();
-        
-        if ($this->getMinify()) {
+        if ($minify ?? $this->getMinify()) {
+            
             // Clean comments
             $content = preg_replace('/<!--([^\[|(<!)].*)/', null, $content);
             $content = preg_replace('/(?<!\S)\/\/\s*[^\r\n]*/', null, $content);
@@ -108,7 +73,6 @@ class View extends \Phalcon\Mvc\View
             $content = preg_replace('/(\r?\n)/', null, $content);
         }
         
-        // Be happy
         return $content ?? '';
     }
 }
