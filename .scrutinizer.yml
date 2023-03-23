@@ -14,12 +14,12 @@ build:
           use_latest: true
         timezone: 'America/New_York'
         hosts:
-          zemit.local: 127.0.0.1
+          core.zemit.local: 127.0.0.1
         apache2:
           modules: ['rewrite']
           sites:
             zemit:
-              host: zemit.local # also make sure to add under "hosts" above
+              host: core.zemit.local # also make sure to add under "hosts" above
               web_root: public/
               rules:
                 - 'RewriteEngine On'
@@ -27,7 +27,7 @@ build:
                 - 'RewriteCond %{REQUEST_FILENAME} !-f'
                 - 'RewriteRule ^(.*)$ index.php?_url=/$1 [QSA,L]'
         php:
-          version: 7.4.14
+          version: 7.4
           # @link https://pecl.php.net/
           pecl_extensions:
             - phalcon-4.1.2
@@ -38,6 +38,7 @@ build:
             memory_limit: -1
       dependencies:
         before:
+          - pecl install phalcon-4.1.2
           - composer self-update
         after:
           - composer require --dev phalcon/ide-stubs:4.1.0
