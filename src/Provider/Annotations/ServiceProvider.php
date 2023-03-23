@@ -22,22 +22,21 @@ class ServiceProvider extends AbstractServiceProvider
     
     public function register(DiInterface $di): void
     {
-        // config
-        $config = $di->get('config');
-        assert($config instanceof ConfigInterface);
-        $annotationsConfig = $config->pathToArray('annotations');
+        $di->setShared($this->getName(), function () use ($di) {
     
-        // options
-        $driverName = $annotationsConfig['driver'] ?? 'memory';
-        $driverOptions = $annotationsConfig['drivers'][$driverName] ?? [];
-        $defaultOptions = $annotationsConfig['default'] ?? [];
-        $options = array_merge($defaultOptions, $driverOptions);
-        
-        // adapter
-        $adapter = $driverOptions['adapter'] ?: Memory::class;
-        
-        $di->setShared($this->getName(), function () use ($adapter, $options) {
-            
+            // config
+            $config = $di->get('config');
+            assert($config instanceof ConfigInterface);
+            $annotationsConfig = $config->pathToArray('annotations', []);
+    
+            // options
+            $driverName = $annotationsConfig['driver'] ?? 'memory';
+            $driverOptions = $annotationsConfig['drivers'][$driverName] ?? [];
+            $defaultOptions = $annotationsConfig['default'] ?? [];
+            $options = array_merge($defaultOptions, $driverOptions);
+    
+            // adapter
+            $adapter = $driverOptions['adapter'] ?: Memory::class;
             return new $adapter($options);
         });
     }

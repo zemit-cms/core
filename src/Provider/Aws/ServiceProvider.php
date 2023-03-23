@@ -22,12 +22,15 @@ class ServiceProvider extends AbstractServiceProvider
     
     public function register(DiInterface $di): void
     {
-        $config = $di->get('config');
-        assert($config instanceof ConfigInterface);
-        
-        $di->setShared($this->getName(), function () use ($config) {
-            
+        $di->setShared($this->getName(), function () use ($di) {
+    
+            // config
+            $config = $di->get('config');
+            assert($config instanceof ConfigInterface);
+    
+            // options
             $options = $config->pathToArray('aws', []);
+            
             return new Sdk($options);
         });
     }
