@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,47 +11,34 @@
 
 namespace Zemit\Provider\Annotations;
 
+use Phalcon\Annotations\Adapter\Memory;
 use Phalcon\Di\DiInterface;
+use Zemit\Config\ConfigInterface;
 use Zemit\Provider\AbstractServiceProvider;
 
-/**
- * Class ServiceProvider
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Provider\Annotations
- */
 class ServiceProvider extends AbstractServiceProvider
 {
-    /**
-     * The Service name.
-     * @var string
-     */
-    protected $serviceName = 'annotations';
+    protected string $serviceName = 'annotations';
     
-    /**
-     * {@inheritdoc}
-     *
-     * @return void
-     */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function() use ($di) {
-            $config = $di->get('config')->annotations;
+        // config
+        $config = $di->get('config');
+        assert($config instanceof ConfigInterface);
+        $annotationsConfig = $config->pathToArray('annotations');
+    
+        // options
+        $driverName = $annotationsConfig['driver'] ?? 'memory';
+        $driverOptions = $annotationsConfig['drivers'][$driverName] ?? [];
+        $defaultOptions = $annotationsConfig['default'] ?? [];
+        $options = array_merge($defaultOptions, $driverOptions);
+        
+        // adapter
+        $adapter = $driverOptions['adapter'] ?: Memory::class;
+        
+        $di->setShared($this->getName(), function () use ($adapter, $options) {
             
-            $driver = $config->drivers->{$config->default};
-            $className = $driver->adapter;
-            
-            $default = [
-                'lifetime' => $config->lifetime,
-                'prefix' => $config->prefix,
-            ];
-            
-            return new $className(array_merge($driver->toArray(), $default));
+            return new $adapter($options);
         });
     }
 }
