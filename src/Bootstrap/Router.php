@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,31 +11,22 @@
 
 namespace Zemit\Bootstrap;
 
-use Zemit\Mvc\Application;
+use Phalcon\Config\ConfigInterface;
 
 /**
- * Class Router
- * Default Bootstrap Phalcon Zemit Router Implementation
+ * Zemit Router
  * {@inheritDoc}
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Bootstrap
  */
 class Router extends \Zemit\Mvc\Router
 {
-    public $defaults = [
+    public array $defaults = [
         'namespace' => \Zemit\Modules\Frontend\Controller::class,
         'module' => 'frontend',
         'controller' => 'index',
         'action' => 'index',
     ];
     
-    public $notFound = [
+    public array $notFound = [
         'controller' => 'error',
         'action' => 'notFound',
     ];
@@ -42,10 +34,13 @@ class Router extends \Zemit\Mvc\Router
     /**
      * Router constructor.
      */
-    public function __construct($defaultRoutes = true, $application = null)
+    public function __construct($defaultRoutes = true, ?ConfigInterface $config = null)
     {
-        parent::__construct($defaultRoutes, $application);
-        
+        parent::__construct($defaultRoutes, $config);
+    }
+    
+    public function baseRoutes(): void
+    {
         $this->add('/', [
         ])->setName('default');
         
@@ -59,19 +54,20 @@ class Router extends \Zemit\Mvc\Router
             'params' => 3,
         ])->setName('default-controller-action');
         
-        $localeConfig = $this->config->locale->toArray();
+        $localeConfig = $this->getConfig()->get('locale')->toArray();
+        
         if (!empty($localeConfig['allowed'])) {
             $localeRegex = '{locale:(' . implode('|', $localeConfig['allowed']) . ')}';
             
             $this->add('/' . $localeRegex, [
                 'locale' => 1,
             ])->setName('locale');
-    
+            
             $this->add('/' . $localeRegex . '/:controller', [
                 'locale' => 1,
                 'controller' => 2,
             ])->setName('locale-controller');
-    
+            
             $this->add('/' . $localeRegex . '/:controller/:action/:params', [
                 'locale' => 1,
                 'controller' => 2,
@@ -98,11 +94,6 @@ class Router extends \Zemit\Mvc\Router
                 'action' => 2,
                 'params' => 3,
             ])->setName($locale . '-controller-action');
-        }
-    
-        if (isset($application)) {
-            $this->hostnamesRoutes();
-            $this->modulesRoutes($application);
         }
     }
 }
