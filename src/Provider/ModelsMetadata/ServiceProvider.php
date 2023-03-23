@@ -38,9 +38,12 @@ class ServiceProvider extends AbstractServiceProvider
             
             $driverName = $bootstrap->isCli() ? 'cli' : 'driver';
             $driver = $metadataConfig['drivers'][$metadataConfig[$driverName]] ?? [];
-            $options = array_merge($config['default'], $driver);
+            $default = $config['default'] ?? [];
+            $options = array_merge($default, $driver);
             
-            $adapter = $driver['adapter'] ?? '';
+            assert(is_string($driver['adapter']));
+            
+            $adapter = $driver['adapter'];
             if (in_array($adapter, [Memory::class, Stream::class])) {
                 return new $adapter($options);
             }
