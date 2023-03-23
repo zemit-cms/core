@@ -23,12 +23,12 @@ class ServiceProvider extends AbstractServiceProvider
     
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function () use ($di) {
-            
-            $config = $di->get('config');
-            assert($config instanceof ConfigInterface);
-            
-            $mailerConfig = $config->get('mailer')->toArray() ?? [];
+        $config = $di->get('config');
+        assert($config instanceof ConfigInterface);
+    
+        $mailerConfig = (array)$config->get('mailer');
+        
+        $di->setShared($this->getName(), function () use ($di, $mailerConfig) {
             
             $driver = $mailerConfig['driver'] ?? '';
             $defaultOptions = $mailerConfig['defaults'] ?? [];

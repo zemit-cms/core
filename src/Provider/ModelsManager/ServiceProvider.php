@@ -12,6 +12,7 @@
 namespace Zemit\Provider\ModelsManager;
 
 use Phalcon\Di\DiInterface;
+use Phalcon\Events\ManagerInterface;
 use Phalcon\Mvc\Model\Manager;
 use Zemit\Provider\AbstractServiceProvider;
 
@@ -23,10 +24,14 @@ class ServiceProvider extends AbstractServiceProvider
     {
         $di->setShared($this->getName(), function () use ($di) {
             
-            $modelsManager = new Manager();
-            $modelsManager->setEventsManager($di->get('eventsManager'));
+            $manager = new Manager();
+    
+            $eventsManager = $di->get('eventsManager');
+            if ($eventsManager instanceof ManagerInterface) {
+                $manager->setEventsManager($eventsManager);
+            }
             
-            return $modelsManager;
+            return $manager;
         });
     }
 }

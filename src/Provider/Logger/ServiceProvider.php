@@ -31,12 +31,12 @@ class ServiceProvider extends AbstractServiceProvider
     
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function () use ($di) {
-            
-            $config = $di->get('config');
-            assert($config instanceof ConfigInterface);
-            
-            $loggerConfig = $config->get('logger')->toArray() ?? [];
+        $config = $di->get('config');
+        assert($config instanceof ConfigInterface);
+    
+        $loggerConfig = (array)$config->path('logger');
+        
+        $di->setShared($this->getName(), function () use ($loggerConfig) {
             
             // Can be a string or an array
             if (!is_array($loggerConfig['driver'])) {
