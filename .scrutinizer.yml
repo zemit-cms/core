@@ -30,16 +30,17 @@ build:
           version: 7.4
           # @link https://pecl.php.net/
           pecl_extensions:
+            - psr
             - redis
             - memcached
             - apcu
+            - phalcon-4.1.2
           ini:
             memory_limit: -1
       dependencies:
         before:
-          - composer self-update
-        override:
           - command: 'git clone -b v4.1.3 --depth=1 "https://github.com/phalcon/cphalcon.git" ~/cphalcon && cd ~/cphalcon/build && ./install && echo "extension=phalcon.so" > ~/.phpenv/versions/$(phpenv global)/etc/conf.d/phalcon.ini'
+          - composer self-update
         after:
           - composer require --dev phalcon/ide-stubs:4.1.0
           - composer require --dev phpunit/phpunit
