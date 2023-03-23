@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -24,12 +25,6 @@ use Zemit\Cache;
 /**
  * Class Controller
  *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
  * @property Application $application
  * @property Bootstrap $bootstrap
  * @property Utils $utils
@@ -46,5 +41,4 @@ use Zemit\Cache;
  */
 class Controller extends \Phalcon\Mvc\Controller
 {
-
 }
