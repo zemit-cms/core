@@ -16,13 +16,6 @@ use Phalcon\Di\DiInterface;
 use Zemit\Locale;
 use Zemit\Provider\AbstractServiceProvider;
 
-/**
- * Class ServiceProvider
- *
- *
- *
- * @package Zemit\Provider\Locale
- */
 class ServiceProvider extends AbstractServiceProvider
 {
     /**
