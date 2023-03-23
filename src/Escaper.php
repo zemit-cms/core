@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -11,20 +12,10 @@
 namespace Zemit;
 
 /**
- * Class Escaper
  * {@inheritDoc}
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit
  */
 class Escaper extends \Phalcon\Escaper
 {
-    
     /**
      * Execute the rawurlencode function on the json string
      * Will also encode the parameter in json format if the passed
@@ -36,23 +27,22 @@ class Escaper extends \Phalcon\Escaper
      * @param mixed|string $json Json string or anything else
      * @return string
      */
-    public function escapeJson($json = null)
+    public function escapeJson($json = null): string
     {
         
         // if it's a not empty string
         if (is_string($json) && !empty($json)) {
+            
             // check if it's a valid json
             $ret = (new Filters\Json())->filter($json);
         }
-    
-        // not a valid json, encode it, yolo
+        
+        // not a valid json, json encode it
         if (empty($ret)) {
             $ret = json_encode($json);
         }
-    
-        // rawurlencode trick
-        $ret = rawurlencode($ret);
         
-        return $ret;
+        // raw url encode
+        return rawurlencode($ret);
     }
 }
