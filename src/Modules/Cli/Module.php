@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -21,54 +22,38 @@ use Zemit\Utils;
 /**
  * Class Module
  *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
  *
- * @since 1.0
- * @version 1.0
  *
  * @package Zemit\Modules\Cli
  */
 class Module implements ModuleDefinitionInterface
 {
-    const NAME_CLI = 'cli';
     
-    /**
-     * Module name to register
-     * @var string Module name
-     */
-    public $name = self::NAME_CLI;
+    public const NAME_CLI = 'cli';
     
-    /**
-     * @var Config
-     */
-    public $config;
     
-    /**
-     * @var Dispatcher
-     */
-    public $dispatcher;
+    public string $name = self::NAME_CLI;
     
-    /**
-     * @var Loader
-     */
-    public $loader;
     
-    /**
-     * @var Router
-     */
-    public $router;
+    public Config $config;
+    
+    
+    public Dispatcher $dispatcher;
+    
+    
+    public Loader $loader;
+    
+    
+    public Router $router;
     
     
     /**
      * Registers an autoloader related to the frontend module
-     *
-     * @param DiInterface $di
      */
-    public function registerAutoloaders(DiInterface $di = null)
+    public function registerAutoloaders(DiInterface $container = null): void
     {
         //get services
-        $this->getServices($di);
+        $this->getServices($container);
         
         // register namespaces
         $this->loader->registerNamespaces($this->getNamespaces(), true);
@@ -77,18 +62,16 @@ class Module implements ModuleDefinitionInterface
         $this->loader->register();
         
         // save services
-        $this->setServices($di);
+        $this->setServices($container);
     }
     
     /**
      * Registers services related to the module
-     *
-     * @param DiInterface $di
      */
-    public function registerServices(DiInterface $di)
+    public function registerServices(DiInterface $container): void
     {
         // get services
-        $this->getServices($di);
+        $this->getServices($container);
         
         // Caller namespace
         $namespace = Utils::getNamespace($this);
@@ -106,10 +89,10 @@ class Module implements ModuleDefinitionInterface
         ]);
         
         // save services
-        $this->setServices($di);
+        $this->setServices($container);
     }
     
-    public function getNamespaces()
+    public function getNamespaces(): array
     {
         $namespaces = [];
         
@@ -125,22 +108,21 @@ class Module implements ModuleDefinitionInterface
         return $namespaces;
     }
     
-    public function getServices(DiInterface $di = null)
+    public function getServices(DiInterface $container = null): void
     {
-        // Config
-        $this->config = $this->config ?? $di['config'] ?? new Config();
+        $this->config = $this->config ?? $container['config'] ?? new Config();
         $this->config->app->module = mb_strtolower($this->name);
         $this->config->app->dir->module = $this->config->app->dir->modules . $this->name . '/';
-        $this->loader = $this->loader ?? $di['loader'] ?? new Loader();
-        $this->router = $this->router ?? $di['router'] ?? new Router();
-        $this->dispatcher = $this->dispatcher ?? $di['dispatcher'] ?? new Dispatcher();
+        $this->loader = $this->loader ?? $container['loader'] ?? new Loader();
+        $this->router = $this->router ?? $container['router'] ?? new Router();
+        $this->dispatcher = $this->dispatcher ?? $container['dispatcher'] ?? new Dispatcher();
     }
     
-    public function setServices(DiInterface $di = null)
+    public function setServices(DiInterface $container = null): void
     {
-        $di['config'] = $this->config;
-        $di['dispatcher'] = $this->dispatcher;
-        $di['loader'] = $this->loader;
-        $di['router'] = $this->router;
+        $container['config'] = $this->config;
+        $container['dispatcher'] = $this->dispatcher;
+        $container['loader'] = $this->loader;
+        $container['router'] = $this->router;
     }
 }

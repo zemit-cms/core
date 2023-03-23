@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -15,77 +16,42 @@ use Phalcon\Loader;
 use Phalcon\Mvc\RouterInterface;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\ModuleDefinitionInterface;
-use Phalcon\Text;
 use Zemit\Bootstrap\Config;
-use Zemit\Bootstrap\Router;
 use Zemit\Utils;
 use Zemit\Url;
 
 /**
- * Class Module
  * {@inheritDoc}
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Mvc
  */
 class Module implements ModuleDefinitionInterface
 {
-    const NAME_FRONTEND = 'frontend';
-    const NAME_ADMIN = 'admin';
-    const NAME_API = 'api';
-    const NAME_CLI = 'cli';
-    const NAME_OAUTH2 = 'oauth2';
+    public const NAME_FRONTEND = 'frontend';
+    public const NAME_ADMIN = 'admin';
+    public const NAME_API = 'api';
+    public const NAME_CLI = 'cli';
+    public const NAME_OAUTH2 = 'oauth2';
     
-    /**
-     * Module name to register
-     * @var string Module name
-     */
-    public $name;
+    public string $name;
     
-    /**
-     * @var Config
-     */
-    public $config;
+    public Config $config;
     
-    /**
-     * @var Dispatcher
-     */
-    public $dispatcher;
+    public Dispatcher $dispatcher;
     
-    /**
-     * @var Loader
-     */
-    public $loader;
+    public Loader $loader;
     
-    /**
-     * @var Router
-     */
-    public $router;
+    public Router $router;
     
-    /**
-     * @var View
-     */
-    public $view;
+    public View $view;
     
-    /**
-     * @var Url
-     */
-    public $url;
+    public Url $url;
     
     /**
      * Registers an autoloader related to the frontend module
-     *
-     * @param DiInterface $di
      */
-    public function registerAutoloaders(DiInterface $di = null)
+    public function registerAutoloaders(DiInterface $container = null): void
     {
         //get services
-        $this->getServices($di);
+        $this->getServices($container);
         
         // register namespaces
         $this->loader->registerNamespaces($this->getNamespaces(), true);
@@ -94,18 +60,16 @@ class Module implements ModuleDefinitionInterface
         $this->loader->register();
         
         // save services
-        $this->setServices($di);
+        $this->setServices($container);
     }
     
     /**
      * Registers services related to the module
-     *
-     * @param DiInterface $di
      */
-    public function registerServices(DiInterface $di)
+    public function registerServices(DiInterface $container): void
     {
         // get services
-        $this->getServices($di);
+        $this->getServices($container);
         
         // Caller namespace
         $namespace = Utils::getNamespace($this);
@@ -119,7 +83,6 @@ class Module implements ModuleDefinitionInterface
         // url settings
         $this->url->setBasePath('/' . $this->name . '/');
         $this->url->setStaticBaseUri('/' . $this->name . '/');
-        
         $this->router->setDefaults([
             'namespace' => $this->dispatcher->getDefaultNamespace(),
             'module' => $this->name,
@@ -133,22 +96,21 @@ class Module implements ModuleDefinitionInterface
                 'controller' => 'error',
                 'action' => 'notFound',
             ]);
-            
             $this->router->removeExtraSlashes(true);
         }
         
         // save services
-        $this->setServices($di);
+        $this->setServices($container);
     }
     
-    public function getViewsDir()
+    public function getViewsDir(): array
     {
         return [
-            Utils::getDirname(get_class($this)) . '/Views/',
+            Utils::getDirname($this) . '/Views/',
         ];
     }
     
-    public function getNamespaces()
+    public function getNamespaces(): array
     {
         $namespaces = [];
         
@@ -163,26 +125,25 @@ class Module implements ModuleDefinitionInterface
         return $namespaces;
     }
     
-    public function getServices(DiInterface $di = null)
+    public function getServices(DiInterface $container = null): void
     {
-        // Config
-        $this->config = $this->config ?? $di['config'] ?? new Config();
+        $this->config = $this->config ?? $container['config'] ?? new Config();
         $this->config->app->module = mb_strtolower($this->name);
         $this->config->app->dir->module = $this->config->app->dir->modules . $this->name . '/';
-        $this->loader = $this->loader ?? $di['loader'] ?? new Loader();
-        $this->router = $this->router ?? $di['router'] ?? new Router();
-        $this->dispatcher = $this->dispatcher ?? $di['dispatcher'] ?? new Dispatcher();
-        $this->view = $this->view ?? $di['view'] ?? new View();
-        $this->url = $this->url ?? $di['url'] ?? new Url();
+        $this->loader = $this->loader ?? $container['loader'] ?? new Loader();
+        $this->router = $this->router ?? $container['router'] ?? new Router();
+        $this->dispatcher = $this->dispatcher ?? $container['dispatcher'] ?? new Dispatcher();
+        $this->view = $this->view ?? $container['view'] ?? new View();
+        $this->url = $this->url ?? $container['url'] ?? new Url();
     }
     
-    public function setServices(DiInterface $di = null)
+    public function setServices(DiInterface $container = null): void
     {
-        $di['config'] = $this->config;
-        $di['dispatcher'] = $this->dispatcher;
-        $di['loader'] = $this->loader;
-        $di['router'] = $this->router;
-        $di['view'] = $this->view;
-        $di['url'] = $this->url;
+        $container['config'] = $this->config;
+        $container['dispatcher'] = $this->dispatcher;
+        $container['loader'] = $this->loader;
+        $container['router'] = $this->router;
+        $container['view'] = $this->view;
+        $container['url'] = $this->url;
     }
 }
