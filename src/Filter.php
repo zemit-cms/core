@@ -19,7 +19,7 @@ use Phalcon\Config\ConfigInterface;
  */
 class Filter extends \Phalcon\Filter
 {
-    public ?ConfigInterface $config;
+    public ConfigInterface $config;
     
     public const FILTER_MD5 = 'md5';
     
@@ -39,7 +39,7 @@ class Filter extends \Phalcon\Filter
     public function __construct(array $mapper = [], ?ConfigInterface $config = null)
     {
         parent::__construct($mapper);
-        $this->setConfig($config);
+        $this->setConfig($config ?? Di::getDefault()->get('config'));
     }
     
     protected function init(array $mapper): void
@@ -78,8 +78,8 @@ class Filter extends \Phalcon\Filter
         return $this->config;
     }
     
-    public function setConfig(?ConfigInterface $config = null): void
+    public function setConfig(ConfigInterface $config): void
     {
-        $this->config = $config ?? Di::getDefault()->get('config');
+        $this->config = $config;
     }
 }
