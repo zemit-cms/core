@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -26,15 +27,9 @@ use Zemit\Mvc\Controller\Behavior;
 use Phalcon\Config as PhalconConfig;
 
 /**
- * Class Config
+ * Zemit\Bootstrap\Config
  *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Bootstrap
+ * Global Zemit Configuration
  *
  * @property Config $core
  * @property Config $app
@@ -66,8 +61,7 @@ use Phalcon\Config as PhalconConfig;
  * @property Config $client
  * @property Config $permissions
  */
-
-class Config extends PhalconConfig
+class Config extends \Zemit\Config\Config
 {
     public function defineConst()
     {
@@ -89,9 +83,7 @@ class Config extends PhalconConfig
     public function __construct(array $data = [], bool $insensitive = true)
     {
         $this->defineConst();
-        
         $now = new \DateTimeImmutable();
-        
         parent::__construct([
             
             /**
@@ -176,6 +168,12 @@ class Config extends PhalconConfig
                     'tmp' => Env::get('APP_TMP_PATH', PRIVATE_PATH . '/tmp/'),
                     'migrations' => Env::get('APP_MIGRATION_PATH', PRIVATE_PATH . '/migrations/'),
                 ],
+            ],
+            
+            'url' => [
+                'staticBaseUri' => Env::get('URL_STATIC_BASE_URI', null),
+                'baseUri' => Env::get('URL_BASE_URI', '/'),
+                'basePath' => Env::get('URL_BASE_PATH', '/'),
             ],
             
             'php' => [
@@ -319,7 +317,7 @@ class Config extends PhalconConfig
              */
             'providers' => [
                 // abstract => concrete
-                Provider\Environment\ServiceProvider::class => Env::get('PROVIDER_ENVIRONMENT', Provider\Environment\ServiceProvider::class),
+                Provider\Env\ServiceProvider::class => Env::get('PROVIDER_ENVIRONMENT', Provider\Env\ServiceProvider::class),
                 Provider\Security\ServiceProvider::class => Env::get('PROVIDER_SECURITY', Provider\Security\ServiceProvider::class),
                 Provider\Session\ServiceProvider::class => Env::get('PROVIDER_SESSION', Provider\Session\ServiceProvider::class),
                 Provider\Cookies\ServiceProvider::class => Env::get('PROVIDER_COOKIES', Provider\Cookies\ServiceProvider::class),
@@ -365,12 +363,12 @@ class Config extends PhalconConfig
                 Provider\OCR\ServiceProvider::class => Env::get('PROVIDER_OCR', Provider\OCR\ServiceProvider::class),
                 Provider\Jwt\ServiceProvider::class => Env::get('PROVIDER_JWT', Provider\Jwt\ServiceProvider::class),
                 Provider\V8js\ServiceProvider::class => Env::get('PROVIDER_V8_JS', Provider\V8js\ServiceProvider::class),
-                Provider\Captcha\ServiceProvider::class => Env::get('PROVIDER_CAPTCHA', Provider\Captcha\ServiceProvider::class),
+                Provider\ReCaptcha\ServiceProvider::class => Env::get('PROVIDER_CAPTCHA', Provider\ReCaptcha\ServiceProvider::class),
                 Provider\Gravatar\ServiceProvider::class => Env::get('PROVIDER_GRAVATAR', Provider\Gravatar\ServiceProvider::class),
                 Provider\Clamav\ServiceProvider::class => Env::get('PROVIDER_CLAMAV', Provider\Clamav\ServiceProvider::class),
-                Provider\Imap\ServiceProvider::class =>  Env::get('PROVIDER_IMAP', Provider\Imap\ServiceProvider::class),
-                Provider\OpenAi\ServiceProvider::class =>  Env::get('PROVIDER_OPENAI', Provider\OpenAi\ServiceProvider::class),
-                Provider\LoremIpsum\ServiceProvider::class =>  Env::get('PROVIDER_LOREM_IPSUM', Provider\LoremIpsum\ServiceProvider::class),
+                Provider\Imap\ServiceProvider::class => Env::get('PROVIDER_IMAP', Provider\Imap\ServiceProvider::class),
+                Provider\OpenAi\ServiceProvider::class => Env::get('PROVIDER_OPENAI', Provider\OpenAi\ServiceProvider::class),
+                Provider\LoremIpsum\ServiceProvider::class => Env::get('PROVIDER_LOREM_IPSUM', Provider\LoremIpsum\ServiceProvider::class),
 //                Snowair\Debugbar\ServiceProvider::class => \Snowair\Debugbar\ServiceProvider::class,
             ],
             
@@ -512,6 +510,20 @@ class Config extends PhalconConfig
                     'action' => Env::get('ROUTER_ERROR_ACTION', 'index'),
                 ],
             ],
+    
+            /**
+             * View Configuration
+             */
+            'view' => [
+                'minify' => Env::get('VIEW_MINIFY', false),
+                'engines' => Env::get('VIEW_ENGINES', [
+                    '.phtml' => \Phalcon\Mvc\View\Engine\Php::class,
+                    '.volt' => \Phalcon\Mvc\View\Engine\Volt::class,
+//                    '.mhtml' => \Phalcon\Mvc\View\Engine\Mustache::class,
+//                    '.twig' => \Phalcon\Mvc\View\Engine\Twig::class,
+//                    '.tpl' => \Phalcon\Mvc\View\Engine\Smarty::class
+                ]),
+            ],
             
             /**
              * Gravatar Configuration
@@ -529,6 +541,10 @@ class Config extends PhalconConfig
             'reCaptcha' => [
                 'siteKey' => Env::get('RECAPTCHA_KEY'),
                 'secret' => Env::get('RECAPTCHA_SECRET'),
+                'expectedHostname' => Env::get('RECAPTCHA_EXPECTED_HOSTNAME'),
+                'expectedApkPackageName' => Env::get('RECAPTCHA_EXPECTED_APK_PACKAGE_NAME'),
+                'expectedAction' => Env::get('RECAPTCHA_EXPECTED_ACTION', null),
+                'scoreThreshold' => Env::get('RECAPTCHA_SCORE_THRESHOLD', 0.5),
             ],
             
             /**
@@ -680,6 +696,14 @@ class Config extends PhalconConfig
                     'passphrase' => Env::get('SECURITY_JWT_PASSPHRASE', 'Tf0PHY/^yDdJs*~)?x#xCNj_N[jW/`c*'),
                 ],
             ],
+    
+            /**
+             * Default crypt settings
+             */
+            'crypt' => [
+                'cipher' => Env::get('CRYPT_CIPHER', 'aes-256-cfb'),
+                'useSigning' => Env::get('CRYPT_USE_SIGNING', false),
+            ],
             
             /**
              * Cache drivers configs
@@ -732,7 +756,7 @@ class Config extends PhalconConfig
              * Metadata Configuration
              */
             'metadata' => [
-                'cli' => Env::get('METADATA_DRIVER_CLI', 'memory'),
+                'driverCli' => Env::get('METADATA_DRIVER_CLI', 'memory'),
                 'driver' => Env::get('METADATA_DRIVER', 'memory'),
                 'drivers' => [
                     'apcu' => [
@@ -787,7 +811,7 @@ class Config extends PhalconConfig
              * - Aerospike
              */
             'annotations' => [
-                'default' => Env::get('ANNOTATIONS_DRIVER', 'memory'),
+                'driver' => Env::get('ANNOTATIONS_DRIVER', 'memory'),
                 'drivers' => [
                     'memory' => [
                         'adapter' => Env::get('ANNOTATIONS_MEMORY_ADAPTER', \Phalcon\Annotations\Adapter\Memory::class),
@@ -825,8 +849,10 @@ class Config extends PhalconConfig
                         'adapter' => Env::get('ANNOTATIONS_AEROSPIKE_ADAPTER', \Phalcon\Annotations\Adapter\Aerospike::class),
                     ],
                 ],
-                'prefix' => Env::get('ANNOTATIONS_PREFIX', 'zemit_annotations_'),
-                'lifetime' => Env::get('ANNOTATIONS_LIFETIME', 86400),
+                'default' => [
+                    'prefix' => Env::get('ANNOTATIONS_PREFIX', 'zemit_annotations_'),
+                    'lifetime' => Env::get('ANNOTATIONS_LIFETIME', 86400),
+                ],
             ],
             
             /**
@@ -909,7 +935,7 @@ class Config extends PhalconConfig
                 'useEncryption' => Env::get('COOKIES_USE_ENCRYPTION', true),
                 'signKey' => Env::get('COOKIES_SIGN_KEY', ''),
             ],
-    
+            
             /**
              * AWS - Amazon Web Service
              */
@@ -920,6 +946,13 @@ class Config extends PhalconConfig
                     'key' => Env::get('AWS_CREDENTIALS_KEY', ''),
                     'secret' => Env::get('AWS_CREDENTIALS_SECRET', ''),
                 ],
+            ],
+    
+            /**
+             * Facebook SDK
+             */
+            'facebook' => [
+            
             ],
             
             /**
@@ -964,12 +997,12 @@ class Config extends PhalconConfig
                 
                 ],
             ],
-    
+            
             'openai' => [
                 'secretKey' => Env::get('OPENAI_SECRET_KEY'),
                 'organizationId' => Env::get('OPENAI_ORGANIZATION_ID'),
             ],
-    
+            
             /**
              * Imap
              * https://packagist.org/packages/php-imap/php-imap
@@ -1138,7 +1171,7 @@ class Config extends PhalconConfig
                             ],
                         ],
                     ],
-    
+                    
                     'manageSiteList' => [
                         'components' => [
                             Api\Controllers\SiteController::class => ['*'],
@@ -1152,7 +1185,7 @@ class Config extends PhalconConfig
                             ],
                         ],
                     ],
-    
+                    
                     'managePageList' => [
                         'components' => [
                             Api\Controllers\PageController::class => ['*'],
@@ -1268,10 +1301,9 @@ class Config extends PhalconConfig
      *
      * @return Config $this Return the merged current config
      */
-    public function mergeEnvConfig(?string $env = null) : self
+    public function mergeEnvConfig(?string $env = null): self
     {
         $configFile = $this->app->dir->config . (isset($env) ? $env : $this->app->env) . '.php';
-        
         if (file_exists($configFile)) {
             $envConfig = require_once $configFile;
             if (!empty($envConfig)) {
@@ -1283,17 +1315,6 @@ class Config extends PhalconConfig
         }
         
         return $this;
-    }
-    
-    /**
-     * Return the mapped model class name from $this->models->$class
-     *
-     * @param string $class
-     * @return string
-     */
-    public function getModelClass(string $class) : string
-    {
-        return $this->path('models.' . $class) ?: $class;
     }
 }
 
