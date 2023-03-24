@@ -56,14 +56,4 @@ abstract class AbstractUnit extends TestCase
         $this->di = null;
         parent::tearDown();
     }
-    
-    /**
-     * Warn user
-     */
-    public function __destruct()
-    {
-        if (!$this->loaded) {
-            throw new IncompleteTestError('Please run parent::setUp().');
-        }
-    }
 }

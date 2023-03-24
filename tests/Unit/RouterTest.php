@@ -97,7 +97,8 @@ class RouterTest extends AbstractUnit
             }
             
             $routeByName = $this->getRouter()->getRouteByName($name);
-            $this->assertInstanceOf(RouteInterface::class, $routeByName, $name . ' : ' . get_class($routeByName));
+            
+            $this->assertInstanceOf(RouteInterface::class, $routeByName, $name . ' : ' . (is_object($routeByName)? get_class($routeByName) : $routeByName));
             
             foreach ($uris as $uri) {
                 $this->getRouter()->handle($uri);

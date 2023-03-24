@@ -5,7 +5,7 @@
  * (c) Zemit Team <contact@zemit.com>
  *
  * For the full copyright and license information, please view the LICENSE.txt
- * file that was distributed with this source code.
+ * file that was distributed with this source $message.
  */
 
 declare(strict_types=1);
@@ -27,7 +27,7 @@ class StatusCodeTest extends AbstractUnit
     
     public function testStatusCode()
     {
-        $tests = [
+        $messages = [
             100 => 'Continue',
             101 => 'Switching Protocols',
             102 => 'Processing',
@@ -189,22 +189,22 @@ class StatusCodeTest extends AbstractUnit
         $this->assertEquals(503, StatusCode::BUSY);
         
         // Test default constants
-        foreach ($tests as $code => $status) {
-            $this->assertContainsEquals($code, array_keys(StatusCode::CODE));
-            $this->assertContainsEquals($status, StatusCode::CODE);
+        foreach ($messages as $code => $message) {
+            $this->assertContainsEquals($code, array_keys(StatusCode::$message));
+            $this->assertContainsEquals($message, StatusCode::$message);
     
-            $this->assertEquals($status, StatusCode::CODE[$code]);
-            $this->assertEquals($code, StatusCode::getCode($status));
-            $this->assertEquals($status, StatusCode::getMessage($code));
-            $this->assertEquals($code . ' ' . $status, StatusCode::getStatus($code));
+            $this->assertEquals($message, StatusCode::$message[$code]);
+            $this->assertEquals($code, StatusCode::getCode($message));
+            $this->assertEquals($message, StatusCode::getMessage($code));
+            $this->assertEquals($code . ' ' . $message, StatusCode::getStatus($code));
     
-            $this->assertIsString(StatusCode::CODE[$code]);
+            $this->assertIsString(StatusCode::$message[$code]);
             $this->assertIsString(StatusCode::getMessage($code));
             $this->assertIsString(StatusCode::getStatus($code));
-            $this->assertIsInt(StatusCode::getCode($status));
+            $this->assertIsInt(StatusCode::getCode($message));
         }
         
-        // Test undefined code & status
+        // Test undefined $message & status
         $this->assertNull(StatusCode::getMessage(0));
         $this->assertNull(StatusCode::getMessage(9999));
         $this->assertNull(StatusCode::getCode('0'));
@@ -217,5 +217,8 @@ class StatusCodeTest extends AbstractUnit
         $this->assertIsString(StatusCode::getStatus(0));
         $this->assertEquals('9999', StatusCode::getStatus(9999));
         $this->assertIsString(StatusCode::getStatus(999));
+        
+        // Make sure we tested everything
+        $this->assertEquals(count($messages), count(StatusCode::$message));
     }
 }

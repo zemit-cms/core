@@ -12,22 +12,16 @@ declare(strict_types=1);
 
 namespace Zemit\Tests\Unit;
 
+use League\Flysystem\Filesystem;
 use Zemit\Provider\ServiceProviderInterface;
 
-/**
- * Class ProviderTest
- * @package Tests\Unit
- */
 class ProviderTest extends AbstractUnit
 {
-    /**
-     * Testing the bootstrap service
-     */
-    public function testProvider() {
-        $this->assertTrue(true);
+    public function testProvider(): void
+    {
         $providers = $this->bootstrap->config->providers->toArray();
         $this->assertIsArray($providers);
-
+        
         foreach ($providers as $assumption => $concrete) {
             $this->assertIsString($assumption);
             $this->assertIsString($concrete);
@@ -37,4 +31,13 @@ class ProviderTest extends AbstractUnit
         }
     }
     
+    public function testFileSystemProvider(): void
+    {
+        $fileSystem = $this->di->get('fileSystem');
+        assert($fileSystem instanceof Filesystem);
+        
+        $this->assertInstanceOf(Filesystem::class, $fileSystem);
+        $contents = $fileSystem->listContents('.');
+        $this->assertIsArray($contents->toArray());
+    }
 }
