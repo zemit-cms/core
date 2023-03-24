@@ -11,13 +11,6 @@
 
 namespace Zemit\Modules\Api;
 
-/**
- * Class Module
- *
- *
- *
- * @package Zemit\Modules\Api
- */
 class Module extends \Zemit\Mvc\Module
 {
     public string $name = self::NAME_API;
