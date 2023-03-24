@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -12,17 +13,6 @@ namespace Zemit\Mvc\Router;
 
 use Phalcon\Mvc\Router\Group as RouterGroup;
 
-/**
- * Class ModuleRoute
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Mvc\Router
- */
 class ModuleRoute extends RouterGroup
 {
     public array $locale;
@@ -44,11 +34,10 @@ class ModuleRoute extends RouterGroup
         parent::__construct($paths);
     }
     
-    public function initialize()
+    public function initialize(): void
     {
         $path = $this->getPaths();
         $module = $path['module'];
-        
         $routePrefix = '/' . $module;
         $namePrefix = $module;
         
@@ -67,6 +56,7 @@ class ModuleRoute extends RouterGroup
         
         if (!empty($this->locale)) {
             $localeRegex = '{locale:(' . implode('|', $this->locale) . ')}';
+            
             $routePrefix = '/' . $localeRegex . '/' . $module;
             $namePrefix = 'locale-' . $module;
             
@@ -89,6 +79,7 @@ class ModuleRoute extends RouterGroup
         
         foreach ($this->locale as $locale) {
             $localeRegex = $locale;
+            
             $routePrefix = '/' . $localeRegex . '/' . $module;
             $namePrefix = $locale . '-' . $module;
             
