@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,33 +11,17 @@
 
 namespace Zemit\Filters;
 
-/**
- * Class Json
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Filters
- */
 class Json
 {
-    /**
-     * @param $value
-     *
-     * @return mixed
-     */
-    public function filter($value)
+    public function filter(?string $value = null): ?string
     {
         try {
             $before = json_decode($value);
-            $valid = empty($before)? false : true;
+            $valid = !empty($before);
         } catch (\Exception $e) {
             $valid = false;
         }
-        
-        return $valid? $value : null;
+
+        return $valid ? $value : null;
     }
 }
