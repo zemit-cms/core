@@ -15,6 +15,10 @@ class Json
 {
     public function filter(?string $value = null): ?string
     {
+        if (is_null($value)) {
+            return $value;
+        }
+        
         try {
             $before = json_decode($value);
             $valid = !empty($before);
