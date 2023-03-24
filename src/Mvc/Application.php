@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -14,25 +15,14 @@ use Phalcon\Di\DiInterface;
 use Phalcon\Http\ResponseInterface;
 
 /**
- * Class Application
- * Switches default Phalcon MVC into a simple HMVC to allow requests
- * between different namespaces and modules
+ * Simple HMVC - allow requests with namespaces and modules
  * {@inheritdoc}
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Mvc
  */
 class Application extends \Phalcon\Mvc\Application
 {
     /**
      * HMVC Application
      * {@inheritdoc}
-     * @param \Phalcon\Di\DiInterface
      */
     public function __construct(DiInterface $di)
     {
@@ -40,16 +30,12 @@ class Application extends \Phalcon\Mvc\Application
         $di->setShared('application', $this);
         parent::__construct($di);
     }
-    
+
     /**
      * HMVC request
      * You can request call any module/namespace
-     *
-     * @param array $location
-     *
-     * @return string
      */
-    public function request(array $location = [])
+    public function request(array $location = []): string
     {
         // Get a unique dispatcher
         $dispatcher = clone $this->getDI()->get('dispatcher');
@@ -67,6 +53,7 @@ class Application extends \Phalcon\Mvc\Application
         if ($response instanceof ResponseInterface) {
             return $response->getContent();
         }
+        
         return $response;
     }
 }
