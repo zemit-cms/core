@@ -21,11 +21,17 @@ class View extends \Phalcon\Mvc\View
 {
     private bool $minify = false;
     
+    /**
+     * True if content minifier is enabled
+     */
     public function getMinify(): bool
     {
         return $this->minify;
     }
     
+    /**
+     * Set true to enable content minifier
+     */
     public function setMinify(bool $minify): void
     {
         $this->minify = $minify;
@@ -34,7 +40,7 @@ class View extends \Phalcon\Mvc\View
     /**
      * {@inheritdoc}
      */
-    public function render(string $controllerName, string $actionName, array $params = []): bool|View
+    public function render(string $controllerName, string $actionName, array $params = [])
     {
         if (!$this->exists($controllerName . (empty($actionName) ? null : '/' . $actionName))) {
             $controllerName = Slug::generate(Text::uncamelize($controllerName));
@@ -57,7 +63,7 @@ class View extends \Phalcon\Mvc\View
     
     /**
      * {@inheritdoc}
-     * Also minify content
+     * Can also minify the content
      */
     public function getContent(?bool $minify = null): string
     {
