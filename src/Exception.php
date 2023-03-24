@@ -15,6 +15,6 @@ namespace Zemit;
  * Zemit\Exception
  * All framework exceptions should use or extend this exception
  */
-class Exception extends \Phalcon\Exception
+class Exception extends \Exception implements \Throwable
 {
 }
