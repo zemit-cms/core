@@ -11,28 +11,16 @@
 namespace Zemit\Modules\Api\Controllers;
 
 use Zemit\Modules\Api\Controller;
-use Zemit\Mvc\Model\Expose\Builder;
 
-/**
- * Class SiteController
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Modules\Api\Controllers
- */
 class SiteController extends Controller
 {
 
-    public function getWith()
+    public function getWith(): ?array
     {
         return ['LangList'];
     }
     
-    public function getSearchWhiteList()
+    public function getSearchWhiteList(): ?array
     {
         return [
             'id',
@@ -42,7 +30,7 @@ class SiteController extends Controller
         ];
     }
     
-    public function getExpose()
+    public function getExpose(): ?array
     {
         return [
             'Site' => true

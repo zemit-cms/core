@@ -12,42 +12,32 @@ namespace Zemit\Modules\Api\Controllers;
 
 use Zemit\Modules\Api\Controller;
 
-/**
- * Class IndexController
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Modules\Api\Controllers
- */
 class UserController extends Controller
 {
-
-    public function getWith() {
+    
+    public function getWith(): ?array
+    {
         return [
-            'RoleList'
+            'RoleList',
         ];
     }
     
-    public function getSearchWhiteList()
+    public function getSearchWhiteList(): ?array
     {
         return [
             'id',
             'email',
             'firstName',
-            'lastName'
+            'lastName',
         ];
     }
     
-    public function getExpose() {
+    public function getExpose(): ?array
+    {
         return [
             'User' => [
                 true,
             ],
         ];
     }
-    
 }
