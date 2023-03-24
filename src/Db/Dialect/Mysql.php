@@ -14,15 +14,8 @@ namespace Zemit\Db\Dialect;
  * Class MySQL
  * - Registering custom functions
  * -- Regexp: " %s REGEXP $s"
- * -- Distance:
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Db\Dialect
+ * -- Distance: " ST_Distance_Sphere(%s, %s) "
+ * -- point: " point(%s, %s) "
  */
 class Mysql extends \Phalcon\Db\Dialect\Mysql
 {
@@ -36,9 +29,8 @@ class Mysql extends \Phalcon\Db\Dialect\Mysql
     
     /**
      * Register Regexp function
-     * @return void
      */
-    public function registerRegexpFunction()
+    public function registerRegexpFunction(): void
     {
         $this->registerCustomFunction('regexp', function ($dialect, $expression) {
             $arguments = $expression['arguments'];
@@ -52,9 +44,8 @@ class Mysql extends \Phalcon\Db\Dialect\Mysql
     
     /**
      * Register ST_Distance_Sphere function
-     * @return void
      */
-    public function registerDistanceSphereFunction()
+    public function registerDistanceSphereFunction(): void
     {
         $this->registerCustomFunction('ST_Distance_Sphere', function ($dialect, $expression) {
             $arguments = $expression['arguments'];
@@ -67,10 +58,9 @@ class Mysql extends \Phalcon\Db\Dialect\Mysql
     }
     
     /**
-     * Register ST_Distance_Sphere function
-     * @return void
+     * Register point function
      */
-    public function registerPointFunction()
+    public function registerPointFunction(): void
     {
         $this->registerCustomFunction('point', function ($dialect, $expression) {
             $arguments = $expression['arguments'];
@@ -81,5 +71,4 @@ class Mysql extends \Phalcon\Db\Dialect\Mysql
             );
         });
     }
-    
 }
