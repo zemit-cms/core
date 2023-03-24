@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -15,38 +16,13 @@ use Phalcon\Dispatcher\AbstractDispatcher;
 use Phalcon\Events\Event;
 use Phalcon\Text;
 
-/**
- * Class Camelize
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Mvc\Dispatcher
- */
 class Camelize extends Injectable
 {
     /**
      * Automagically camelize the action name
-     *
-     * @see Text::camelize()
-     * @see Text::uncamelize()
-     *
-     * @param Event $event
-     * @param AbstractDispatcher $dispatcher
      */
-    public function beforeDispatchLoop(Event $event, AbstractDispatcher $dispatcher)
+    public function beforeDispatchLoop(Event $event, AbstractDispatcher $dispatcher): void
     {
-        $dispatcher->setActionName(
-            lcfirst(
-                Text::camelize(
-                    Text::uncamelize(
-                        $dispatcher->getActionName()
-                    )
-                )
-            )
-        );
+        $dispatcher->setActionName(lcfirst(Text::camelize(Text::uncamelize($dispatcher->getActionName()))));
     }
 }
