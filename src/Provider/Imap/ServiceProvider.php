@@ -11,45 +11,30 @@
 namespace Zemit\Provider\Imap;
 
 use Phalcon\Di\DiInterface;
-use Zemit\Bootstrap\Config;
+use Zemit\Config\ConfigInterface;
 use Zemit\Provider\AbstractServiceProvider;
 
-/**
- * Zemit\Provider\Imap\ServiceProvider
- *
- * @package Zemit\Provider\Imap
- */
 class ServiceProvider extends AbstractServiceProvider
 {
-    /**
-     * The Service name.
-     * @var string
-     */
-    protected $serviceName = 'imap';
-
-    /**
-     * {@inheritdoc}
-     *
-     * Register the Flash Service with the Twitter Bootstrap classes.
-     *
-     * @return void
-     */
+    protected string $serviceName = 'imap';
+    
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function() use ($di) {
-            /** @var Config $config */
+        $di->setShared($this->getName(), function (?array $options = null) use ($di) {
+    
             $config = $di->get('config');
-
-            $defaults = $config->path('imap')->toArray();
+            assert($config instanceof ConfigInterface);
+    
+            $options ??= $config->pathToArray('imap', []);
 
             return new \PhpImap\Mailbox(
-                $defaults['path'] ?? '',
-                $defaults['login'] ?? '',
-                $defaults['password'] ?? '',
-                $defaults['attachmentsDir'] ?? '',
-                $defaults['serverEncoding'] ?? 'UTF-8',
-                $defaults['trimImapPath'] ?? true,
-                $defaults['attachmentFilenameMode'] ?? false,
+                $options['path'] ?? '',
+                $options['login'] ?? '',
+                $options['password'] ?? '',
+                $options['attachmentsDir'] ?? '',
+                $options['serverEncoding'] ?? 'UTF-8',
+                $options['trimImapPath'] ?? true,
+                $options['attachmentFilenameMode'] ?? false,
             );
         });
     }
