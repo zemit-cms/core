@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -12,19 +13,6 @@ namespace Zemit\Exception;
 
 use Zemit\Exception;
 
-/**
- * Class CliException
- * {@inheritDoc}
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Exception
- */
 class CliException extends Exception
 {
-
 }
