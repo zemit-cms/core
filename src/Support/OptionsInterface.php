@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -12,12 +13,11 @@ namespace Zemit\Support;
 
 interface OptionsInterface
 {
-    
     public function __construct(array $options = null);
     
-    public function initializeOptions(array $options = null);
+    public function initializeOptions(array $options = null): void;
     
-    public function initialize();
+    public function initialize(): void;
     
     public function setOptions(array $options): void;
     
