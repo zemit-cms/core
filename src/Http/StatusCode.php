@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -11,30 +12,21 @@
 namespace Zemit\Http;
 
 /**
- * Class StatusCode
  * According to Wikipedia List of HTTP status codes
  *
  * Example:
  * ```php
  *  StatusCode::getMessage[StatusCode::OK] // 'OK'
  *  StatusCode::getMessage[200] // 'OK'
- *  StatusCode::CODE[200] // 'OK'
+ *  StatusCode::$message[200] // 'OK'
  *  StatusCode::OK // 200
  * ```
  *
  * @link https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Http
  */
 class StatusCode
 {
-    const CODE = [
+    public static array $message = [
         100 => 'Continue',
         101 => 'Switching Protocols',
         102 => 'Processing',
@@ -112,89 +104,89 @@ class StatusCode
         599 => 'Network connect timeout error',
     ];
     
-    const CONTINUE = 100;
-    const SWITCHING_PROTOCOLS = 101;
-    const PROCESSING = 102;
-    const OK = 200;
-    const CREATED = 201;
-    const ACCEPTED = 202;
-    const NON_AUTHORITATIVE_INFORMATION = 203;
-    const NO_CONTENT = 204;
-    const RESET_CONTENT = 205;
-    const PARTIAL_CONTENT = 206;
-    const MULTI_STATUS = 207;
-    const ALREADY_REPORTED = 208;
-    const IM_USED = 226;
-    const MULTIPLE_CHOICES = 300;
-    const MOVED_PERMANENTLY = 301;
-    const FOUND = 302;
-    const SEE_OTHER = 303;
-    const NOT_MODIFIED = 304;
-    const USE_PROXY = 305;
-    const SWITCH_PROXY = 306;
-    const TEMPORARY_REDIRECT = 307;
-    const PERMANENT_REDIRECT = 308;
-    const BAD_REQUEST = 400;
-    const UNAUTHORIZED = 401;
-    const PAYMENT_REQUIRED = 402;
-    const FORBIDDEN = 403;
-    const NOT_FOUND = 404;
-    const METHOD_NOT_ALLOWED = 405;
-    const NOT_ACCEPTABLE = 406;
-    const PROXY_AUTHENTICATION_REQUIRED = 407;
-    const REQUEST_TIMEOUT = 408;
-    const CONFLICT = 409;
-    const GONE = 410;
-    const LENGTH_REQUIRED = 411;
-    const PRECONDITION_FAILED = 412;
-    const REQUEST_ENTITY_TOO_LARGE = 413;
-    const REQUEST_URI_TOO_LONG = 414;
-    const UNSUPPORTED_MEDIA_TYPE = 415;
-    const REQUESTED_RANGE_NOT_SATISFIABLE = 416;
-    const EXPECTATION_FAILED = 417;
-    const IM_A_TEAPOT = 418;
-    const AUTHENTICATION_TIMEOUT = 419;
-    const METHOD_FAILURE = 420;
-    const UNPROCESSABLE_ENTITY = 422;
-    const LOCKED = 423;
-    const FAILED_DEPENDENCY = 424;
-    const UPGRADE_REQUIRED = 426;
-    const PRECONDITION_REQUIRED = 428;
-    const TOO_MANY_REQUESTS = 429;
-    const REQUEST_HEADER_FIELDS_TOO_LARGE = 431;
-    const LOGIN_TIMEOUT = 440;
-    const NO_RESPONSE = 444;
-    const RETRY_WITH = 449;
-    const BLOCKED_BY_WINDOWS_PARENTAL_CONTROLS = 450;
-    const UNAVAILABLE_FOR_LEGAL_REASONS = 451;
-    const REQUEST_HEADER_TOO_LARGE = 494;
-    const CERT_ERROR = 495;
-    const NO_CERT = 496;
-    const HTTP_TO_HTTPS = 497;
-    const TOKEN_EXPIREDINVALID = 498;
-    const CLIENT_CLOSED_REQUEST = 499;
-    const INTERNAL_SERVER_ERROR = 500;
-    const NOT_IMPLEMENTED = 501;
-    const BAD_GATEWAY = 502;
-    const SERVICE_UNAVAILABLE = 503;
-    const GATEWAY_TIMEOUT = 504;
-    const HTTP_VERSION_NOT_SUPPORTED = 505;
-    const VARIANT_ALSO_NEGOTIATES = 506;
-    const INSUFFICIENT_STORAGE = 507;
-    const LOOP_DETECTED = 508;
-    const BANDWIDTH_LIMIT_EXCEEDED = 509;
-    const NOT_EXTENDED = 510;
-    const NETWORK_AUTHENTICATION_REQUIRED = 511;
-    const NETWORK_READ_TIMEOUT_ERROR = 598;
-    const NETWORK_CONNECT_TIMEOUT_ERROR = 599;
+    public const CONTINUE = 100;
+    public const SWITCHING_PROTOCOLS = 101;
+    public const PROCESSING = 102;
+    public const OK = 200;
+    public const CREATED = 201;
+    public const ACCEPTED = 202;
+    public const NON_AUTHORITATIVE_INFORMATION = 203;
+    public const NO_CONTENT = 204;
+    public const RESET_CONTENT = 205;
+    public const PARTIAL_CONTENT = 206;
+    public const MULTI_STATUS = 207;
+    public const ALREADY_REPORTED = 208;
+    public const IM_USED = 226;
+    public const MULTIPLE_CHOICES = 300;
+    public const MOVED_PERMANENTLY = 301;
+    public const FOUND = 302;
+    public const SEE_OTHER = 303;
+    public const NOT_MODIFIED = 304;
+    public const USE_PROXY = 305;
+    public const SWITCH_PROXY = 306;
+    public const TEMPORARY_REDIRECT = 307;
+    public const PERMANENT_REDIRECT = 308;
+    public const BAD_REQUEST = 400;
+    public const UNAUTHORIZED = 401;
+    public const PAYMENT_REQUIRED = 402;
+    public const FORBIDDEN = 403;
+    public const NOT_FOUND = 404;
+    public const METHOD_NOT_ALLOWED = 405;
+    public const NOT_ACCEPTABLE = 406;
+    public const PROXY_AUTHENTICATION_REQUIRED = 407;
+    public const REQUEST_TIMEOUT = 408;
+    public const CONFLICT = 409;
+    public const GONE = 410;
+    public const LENGTH_REQUIRED = 411;
+    public const PRECONDITION_FAILED = 412;
+    public const REQUEST_ENTITY_TOO_LARGE = 413;
+    public const REQUEST_URI_TOO_LONG = 414;
+    public const UNSUPPORTED_MEDIA_TYPE = 415;
+    public const REQUESTED_RANGE_NOT_SATISFIABLE = 416;
+    public const EXPECTATION_FAILED = 417;
+    public const IM_A_TEAPOT = 418;
+    public const AUTHENTICATION_TIMEOUT = 419;
+    public const METHOD_FAILURE = 420;
+    public const UNPROCESSABLE_ENTITY = 422;
+    public const LOCKED = 423;
+    public const FAILED_DEPENDENCY = 424;
+    public const UPGRADE_REQUIRED = 426;
+    public const PRECONDITION_REQUIRED = 428;
+    public const TOO_MANY_REQUESTS = 429;
+    public const REQUEST_HEADER_FIELDS_TOO_LARGE = 431;
+    public const LOGIN_TIMEOUT = 440;
+    public const NO_RESPONSE = 444;
+    public const RETRY_WITH = 449;
+    public const BLOCKED_BY_WINDOWS_PARENTAL_CONTROLS = 450;
+    public const UNAVAILABLE_FOR_LEGAL_REASONS = 451;
+    public const REQUEST_HEADER_TOO_LARGE = 494;
+    public const CERT_ERROR = 495;
+    public const NO_CERT = 496;
+    public const HTTP_TO_HTTPS = 497;
+    public const TOKEN_EXPIREDINVALID = 498;
+    public const CLIENT_CLOSED_REQUEST = 499;
+    public const INTERNAL_SERVER_ERROR = 500;
+    public const NOT_IMPLEMENTED = 501;
+    public const BAD_GATEWAY = 502;
+    public const SERVICE_UNAVAILABLE = 503;
+    public const GATEWAY_TIMEOUT = 504;
+    public const HTTP_VERSION_NOT_SUPPORTED = 505;
+    public const VARIANT_ALSO_NEGOTIATES = 506;
+    public const INSUFFICIENT_STORAGE = 507;
+    public const LOOP_DETECTED = 508;
+    public const BANDWIDTH_LIMIT_EXCEEDED = 509;
+    public const NOT_EXTENDED = 510;
+    public const NETWORK_AUTHENTICATION_REQUIRED = 511;
+    public const NETWORK_READ_TIMEOUT_ERROR = 598;
+    public const NETWORK_CONNECT_TIMEOUT_ERROR = 599;
     
     /**
      * Developer friendly constants
      */
-    const FATAL_ERROR = 500;
-    const MAINTENANCE = 503;
-    const OVERLOADED = 503;
-    const BUSY = 503;
+    public const FATAL_ERROR = 500;
+    public const MAINTENANCE = 503;
+    public const OVERLOADED = 503;
+    public const BUSY = 503;
     
     /**
      * Get the HTTP status message for the specified HTTP status code
@@ -202,16 +194,16 @@ class StatusCode
      */
     public static function getMessage(int $code): ?string
     {
-        return self::CODE[$code] ?? null;
+        return self::$message[$code] ?? null;
     }
     
     /**
      * Get the HTTP code from the specified HTTP status message
      * getCode('OK') -> 200
      */
-    public static function getCode(string $status): ?int
+    public static function getCode(string $message): ?int
     {
-        return array_flip(self::CODE)[$status] ?? null;
+        return array_flip(self::$message)[$message] ?? null;
     }
     
     /**
