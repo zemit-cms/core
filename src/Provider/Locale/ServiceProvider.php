@@ -11,10 +11,10 @@
 
 namespace Zemit\Provider\Locale;
 
-use Phalcon\Config\ConfigInterface;
 use Phalcon\Di\DiInterface;
-use Zemit\Locale;
 use Zemit\Provider\AbstractServiceProvider;
+use Zemit\Config\ConfigInterface;
+use Zemit\Locale;
 
 class ServiceProvider extends AbstractServiceProvider
 {
@@ -32,12 +32,14 @@ class ServiceProvider extends AbstractServiceProvider
     
     public function register(DiInterface $di): void
     {
-        $config = $di->get('config');
-        assert($config instanceof ConfigInterface);
-    
-        $options = (array)$config->path('locale', $this->defaultOptions);
+        $defaultOptions = $this->defaultOptions;
         
-        $di->setShared($this->getName(), function () use ($options) {
+        $di->setShared($this->getName(), function (?array $options = null) use ($di, $defaultOptions) {
+            
+            $config = $di->get('config');
+            assert($config instanceof ConfigInterface);
+            
+            $options ??= $config->pathToArray('locale', $defaultOptions);
             
             return new Locale($options);
         });
