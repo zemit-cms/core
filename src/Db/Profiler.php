@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,32 +11,13 @@
 
 namespace Zemit\Db;
 
-use Phalcon\Di;
-
 /**
- * Class Profiler
  * {@inheritdoc}
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Db
  */
 class Profiler extends \Phalcon\Db\Profiler
 {
-    /**
-     * @return array
-     */
-    public function toArray()
+    public function toArray(): array
     {
-        $config = Di::getDefault()->get('config');
-        if (!$config->app->profiler) {
-            return false;
-        }
-    
         $profiles = [];
         $profilerProfiles = $this->getProfiles();
         if ($profilerProfiles) {
@@ -50,7 +32,7 @@ class Profiler extends \Phalcon\Db\Profiler
                 ];
             }
         }
-    
+
         return [
             'profiles' => $profiles,
             'numberTotalStatements' => $this->getNumberTotalStatements(),
