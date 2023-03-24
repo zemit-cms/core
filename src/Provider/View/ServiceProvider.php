@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,56 +11,40 @@
 
 namespace Zemit\Provider\View;
 
-use Phalcon\Mvc\View;
-use Phalcon\Mvc\View\Simple;
-use InvalidArgumentException;
-use Phalcon\Mvc\View\Engine\Php;
-use Zemit\Listener\ViewListener;
+use Phalcon\Di\DiInterface;
+use Phalcon\Events\Manager;
+use Zemit\Mvc\View;
 use Zemit\Mvc\View\Error as ViewError;
+use Zemit\Config\ConfigInterface;
 use Zemit\Provider\AbstractServiceProvider;
 
-/**
- * Class ServiceProvider
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Provider\View
- */
 class ServiceProvider extends AbstractServiceProvider
 {
-    /**
-     * The Service name.
-     * @var string
-     */
-    protected $serviceName = 'view';
+    protected string $serviceName = 'view';
     
-    /**
-     * {@inheritdoc}
-     *
-     * @return void
-     */
-    public function register(\Phalcon\Di\DiInterface $di): void
+    public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function() use ($di) {
+        $di->setShared($this->getName(), function (?array $options = null) use ($di) {
+    
             $config = $di->get('config');
+            assert($config instanceof ConfigInterface);
+            
             $eventsManager = $di->get('eventsManager');
+            assert($eventsManager instanceof Manager);
+            
+            $options ??= $config->pathToArray('view', []);
             
             $error = new ViewError();
             $error->setDI($di);
+            
             $eventsManager->attach('view', $error);
             
-            $view = new \Zemit\Mvc\View();
-            $view->setMinify($config->app->minify);
-            $view->registerEngines([
+            $view = new View();
+            $view->setMinify($options['minify'] ?? false);
+            
+            $view->registerEngines($options['engines'] ?? [
                 '.phtml' => 'Phalcon\Mvc\View\Engine\Php',
                 '.volt' => 'Phalcon\Mvc\View\Engine\Volt',
-//                '.mhtml' => 'Phalcon\Mvc\View\Engine\Mustache',
-//                '.twig' => 'Phalcon\Mvc\View\Engine\Twig', // @TODO fix for non-existing viewdir
-//                '.tpl' => 'Phalcon\Mvc\View\Engine\Smarty'
             ]);
             
             $view->setEventsManager($eventsManager);
