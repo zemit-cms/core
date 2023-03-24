@@ -11,10 +11,10 @@
 
 namespace Zemit\Provider\Mailer;
 
-use Phalcon\Config\ConfigInterface;
 use Phalcon\Di\DiInterface;
 use Phalcon\Events\ManagerInterface;
 use Phalcon\Mailer\Manager;
+use Zemit\Config\ConfigInterface;
 use Zemit\Provider\AbstractServiceProvider;
 
 class ServiceProvider extends AbstractServiceProvider
@@ -23,12 +23,12 @@ class ServiceProvider extends AbstractServiceProvider
     
     public function register(DiInterface $di): void
     {
-        $config = $di->get('config');
-        assert($config instanceof ConfigInterface);
+        $di->setShared($this->getName(), function () use ($di) {
     
-        $mailerConfig = (array)$config->get('mailer');
-        
-        $di->setShared($this->getName(), function () use ($di, $mailerConfig) {
+            $config = $di->get('config');
+            assert($config instanceof ConfigInterface);
+    
+            $mailerConfig = $config->pathToArray('mailer', []);
             
             $driver = $mailerConfig['driver'] ?? '';
             $defaultOptions = $mailerConfig['defaults'] ?? [];
