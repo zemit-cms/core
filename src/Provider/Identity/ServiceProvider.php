@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -11,45 +12,24 @@
 namespace Zemit\Provider\Identity;
 
 use Phalcon\Di\DiInterface;
+use Zemit\Config\ConfigInterface;
 use Zemit\Identity;
 use Zemit\Provider\AbstractServiceProvider;
 
-/**
- * Class ServiceProvider
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Provider\Identity
- */
 class ServiceProvider extends AbstractServiceProvider
 {
-    /**
-     * The Service name.
-     * @var string
-     */
-    protected $serviceName = 'identity';
+    protected string $serviceName = 'identity';
     
-    /**
-     * {@inheritdoc}
-     *
-     * Register the Flash Service with the Twitter Bootstrap classes.
-     *
-     * @return void
-     */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function() use ($di) {
+        $di->setShared($this->getName(), function (?array $options = null) use ($di) {
+            
             $config = $di->get('config');
+            assert($config instanceof ConfigInterface);
             
-            if ($config && $config->has('identity')) {
-                $options = $config->identity->toArray();
-            }
+            $options ??= $config->pathToArray('identity');
             
-            return new Identity($options ?? null);
+            return new Identity($options);
         });
     }
 }
