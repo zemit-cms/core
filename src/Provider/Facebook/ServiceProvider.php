@@ -27,7 +27,7 @@ class ServiceProvider extends AbstractServiceProvider
             $config = $di->get('config');
             assert($config instanceof ConfigInterface);
             
-            $options ??= $config->pathToArray('facebook', []);
+            $options ??= $config->pathToArray('facebook') ?? [];
             
             return new Facebook($options);
         });
