@@ -29,7 +29,7 @@ class ServiceProvider extends AbstractServiceProvider
             assert($config instanceof ConfigInterface);
     
             // options
-            $options = $config->pathToArray('aws', []);
+            $options = $config->pathToArray('aws') ?? [];
             
             return new Sdk($options);
         });
