@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -11,34 +12,17 @@
 namespace Zemit\Provider\Filter;
 
 use Phalcon\Di\DiInterface;
-
 use Phalcon\Filter\FilterFactory;
-use Zemit\Filter;
 use Zemit\Provider\AbstractServiceProvider;
 
-/**
- * Class ServiceProvider
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Provider\Filter
- */
 class ServiceProvider extends AbstractServiceProvider
 {
-    protected $serviceName = 'filter';
+    protected string $serviceName = 'filter';
     
-    /**
-     * {@inheritdoc}
-     *
-     * @param DiInterface $di
-     */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function() use ($di) {
+        $di->setShared($this->getName(), function () use ($di) {
+
             $factory = new FilterFactory();
             
             return $factory->newInstance();
