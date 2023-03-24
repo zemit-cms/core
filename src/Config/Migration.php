@@ -1,39 +1,29 @@
 <?php
 
+/**
+ * This file is part of the Zemit Framework.
+ *
+ * (c) Zemit Team <contact@zemit.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
+
 namespace Zemit\Config;
 
-use Zemit\Bootstrap\Config;
+use Zemit\Bootstrap\Config as BootstrapConfig;
 
-/**
- * Class Config
- * Configuration collection extending the base config
- * Added a fix for the phalcon migration commands
- * Presetting the database driver and removing options
- *
- * {@inheritDoc}
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package App\Config
- */
-class Migration extends Config
+class Migration extends BootstrapConfig
 {
-    /**
-     * Migration constructor.
-     * {@inheritDoc}
-     *
-     * @param array $config
-     */
-    public function __construct($config = [])
+    public function __construct(array $data = [], bool $insensitive = true)
     {
-        $config = parent::__construct($config);
-        $this->database = $this->database->drivers->{$this->database->default};
-        unset($this->database->options);
-        unset($this->database->readOnly);
+        parent::__construct($data, $insensitive);
+        
+        $driver = $this->path('database.default');
+        $database = $this->path('database.drivers.' . $driver);
+        $this->set('database', $database);
+        $this->get('database')->remove('options');
+        $this->get('database')->remove('readOnly');
     }
 }
 
