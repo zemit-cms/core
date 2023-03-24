@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -11,20 +12,12 @@
 namespace Zemit\Db\Events;
 
 use Phalcon\Db\Adapter\AbstractAdapter;
-use Zemit\Di\Injectable;
 use Phalcon\Events\EventInterface;
+use Zemit\Di\Injectable;
 
 /**
- * Class Security
  * Database Events Security
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Db\Events
+ * @todo
  */
 class Security extends Injectable
 {
