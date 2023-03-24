@@ -11,12 +11,12 @@
 
 namespace Zemit\Provider\Logger;
 
-use Phalcon\Config\ConfigInterface;
 use Phalcon\Di\DiInterface;
 use Phalcon\Logger;
 use Phalcon\Logger\Adapter\Noop;
 use Phalcon\Logger\Formatter\Line;
 use Phalcon\Logger\Formatter\Json;
+use Zemit\Config\ConfigInterface;
 use Zemit\Provider\AbstractServiceProvider;
 
 class ServiceProvider extends AbstractServiceProvider
@@ -31,16 +31,16 @@ class ServiceProvider extends AbstractServiceProvider
     
     public function register(DiInterface $di): void
     {
-        $config = $di->get('config');
-        assert($config instanceof ConfigInterface);
+        $di->setShared($this->getName(), function () use ($di) {
     
-        $loggerConfig = (array)$config->path('logger');
-        
-        $di->setShared($this->getName(), function () use ($loggerConfig) {
+            $config = $di->get('config');
+            assert($config instanceof ConfigInterface);
+    
+            $loggerConfig = $config->pathToArray('logger', []);
             
             // Can be a string or an array
             if (!is_array($loggerConfig['driver'])) {
-                $loggerConfig['driver'] = [$loggerConfig['driver']];
+                $loggerConfig['driver'] = [$loggerConfig['driver'] ?? null];
             }
             
             $adapters = [];
