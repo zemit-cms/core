@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -12,58 +13,39 @@ namespace Zemit\Mvc\Dispatcher;
 
 use Phalcon\Events\Event;
 use Phalcon\Http\Response;
-use Zemit\Bootstrap\Config;
 use Zemit\Di\Injectable;
 use Zemit\Dispatcher\DispatcherInterface;
-use Zemit\Http\Request;
 
-/**
- * Class Preflight
- */
 class Preflight extends Injectable
 {
     /**
-     * @param Event $event
-     * @param DispatcherInterface $dispatcher
+     * Set cors headers for cors request and send no content for preflight request
      */
-    public function beforeExecuteRoute(Event $event, DispatcherInterface $dispatcher)
+    public function beforeExecuteRoute(Event $event, DispatcherInterface $dispatcher): void
     {
-        $di = $dispatcher->getDI();
-        
-        /** @var Response $response */
-        $response = $di->get('response');
-        
-        /** @var Request $request */
-        $request = $di->get('request');
-        
-        if ($request->isCors()) {
+        if ($this->request->isCors()) {
             
-            /** @var Config $request */
-            $config = $di->get('config');
-            
-            $this->setCorsHeaders($response,
-                $request->getHeader('Origin'),
-                $config->path('response.corsHeaders', [])->toArray()
-            );
+            $origin = $this->request->getHeader('Origin');
+            $headers = $this->config->pathToArray('response.corsHeaders') ?? [];
+            $this->setCorsHeaders($this->response, $origin, $headers);
         }
         
-        if ($request->isPreflight()) {
-            $this->sendNoContent($response);
+        if ($this->request->isPreflight()) {
+            $this->sendNoContent($this->response);
         }
     }
     
-    public function setCorsHeaders(Response $response, string $origin, array $headers = [])
+    public function setCorsHeaders(Response $response, string $origin, array $headers = []): void
     {
-        // Set default cors headers
-        if (!empty($headers)) {
-            foreach ($headers as $headerKey => $headerValue) {
-                if (!$response->hasHeader($headerKey) && !is_array($headerValue)) {
-                    $response->setHeader($headerKey, $headerValue);
-                }
+        // Set cors headers
+        foreach ($headers as $headerKey => $headerValue) {
+            if (!$response->hasHeader($headerKey) && !is_array($headerValue)) {
+                $response->setHeader($headerKey, $headerValue);
             }
         }
         
-        // Set default origin value if allowed
+        
+        // Set origin value if origin is allowed
         $originKey = 'Access-Control-Allow-Origin';
         if (!$response->hasHeader($originKey)
             && is_array($headers[$originKey])
@@ -74,13 +56,11 @@ class Preflight extends Injectable
     }
     
     /**
-     * Send 204 no content response & exit application
-     * @param Response $response
-     * @return void
+     * Send 204 no content response & exit application successfully
      */
-    public function sendNoContent(Response $response)
+    public function sendNoContent(Response $response): void
     {
         $response->setStatusCode(204)->send();
-        exit;
+        exit(0);
     }
 }
