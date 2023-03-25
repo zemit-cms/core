@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -7,40 +8,39 @@
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
+
 namespace Zemit\Bootstrap;
 
 use Phalcon\DI\FactoryDefault;
+use Phalcon\Di\ServiceProviderInterface;
 use Zemit\Di\Injectable;
+use Zemit\Exception;
 
-/**
- * Class Services
- * {@inheritDoc}
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Bootstrap
- */
 class Services extends Injectable
 {
-    public function __construct(FactoryDefault $di, Config $config = null)
+    /**
+     * @throws Exception
+     */
+    public function __construct(FactoryDefault $di, ?array $providers = null)
     {
         $this->setDI($di);
-        $config ??= $this->config;
+    
+        // fetch providers from config
+        $providers ??= $this->config->pathToArray('providers') ?? [];
         
-        // Register providers from config
-        if ($config && $config->has('providers')) {
-            foreach ($config->providers as $abstractProvider => $concreteProvider) {
-                if ($concreteProvider) {
-                    if (class_exists($concreteProvider)) {
-                        $di->register(new $concreteProvider($di));
-                    } else {
-                        throw new \Exception('Provider Class \''.$concreteProvider.'\' not found. Unable to register abstract provider \''.$abstractProvider.'\'', 404);
-                    }
+        // Register providers
+        foreach ($providers as $expected => $actual) {
+            if (is_string($actual)) {
+                if (class_exists($actual)) {
+                    $di->register(new $actual($di));
+                } else {
+                    throw new Exception('Service Provider Class `' . $actual . '` not found. Unable to register Service Provider `' . $expected . '`', 404);
                 }
+            }
+            elseif ($actual instanceof ServiceProviderInterface) {
+                $di->register($actual);
+            } else {
+                throw new Exception('Unable to register Service Provider `' . $expected . '`. Type `' . gettype($actual) . '` is not valid.', 400);
             }
         }
     }
