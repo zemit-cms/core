@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,42 +11,28 @@
 
 namespace Zemit\Provider\Oauth2Client;
 
-use League\OAuth2\Client\Provider\Google;
+use League\OAuth2\Client\Provider\GenericProvider;
 use Phalcon\Di\DiInterface;
-
+use Zemit\Config\ConfigInterface;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Class ServiceProvider
- *
  * @link https://github.com/tegaphilip/padlock
  * @link https://oauth2.thephpleague.com/framework-integrations/
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Provider\Oauth2Client
  */
 class ServiceProvider extends AbstractServiceProvider
 {
-    protected $serviceName = 'oauth2Client';
+    protected string $serviceName = 'oauth2Client';
     
-    /**
-     * {@inheritdoc}
-     *
-     * @param DiInterface $di
-     */
     public function register(DiInterface $di): void
     {
-        $config = $di->get('config');
-        $session = $di->get('session');
-        $di->setShared($this->getName(), function() use ($config, $session) {
-            $oauthClient = new \League\OAuth2\Client\Provider\GenericProvider($config->oauth2->client->toArray());
+        $di->setShared($this->getName(), function () use ($di) {
+    
+            $config = $di->get('config');
+            assert($config instanceof ConfigInterface);
+            $oauthConfig = $config->pathToArray('oauth2') ?? [];
             
-            return $oauthClient;
+            return new GenericProvider($oauthConfig['client'] ?? []);
         });
     }
 }
