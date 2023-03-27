@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -11,31 +12,22 @@
 namespace Zemit\Bootstrap;
 
 use Phalcon\Application\AbstractApplication;
+use Phalcon\Config\ConfigInterface;
 
 /**
- * Class Modules
- * Registering a list of module
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Bootstrap
+ * Register modules from the config
  */
 class Modules
 {
-    public $modulesDir;
-    
-    public function __construct(AbstractApplication $application = null)
+    public function __construct(AbstractApplication $application, ?array $modules, ?string $defaultModule)
     {
-        /**
-         * Register application modules
-         */
         $config = $application->getDI()->get('config');
-        $application->registerModules($config->modules->toArray());
-//        $application->registerModules($config->core->modules->toArray(), true); // @todo disable router for these default modules as it may cause security issues, therefor we should consider only allowing dispatching
-        $application->setDefaultModule($config->router->defaults->module);
+        assert($config instanceof ConfigInterface);
+        
+        $modules ??= $config->get('modules')->toArray();
+        $application->registerModules($modules);
+        
+        $defaultModule ??= $config->path('router.defaults.module');
+        $application->setDefaultModule($defaultModule);
     }
 }
