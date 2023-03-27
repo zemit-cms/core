@@ -14,7 +14,6 @@ namespace Zemit\Provider\Oauth2Facebook;
 use League\OAuth2\Client\Provider\Facebook;
 use Phalcon\Di\DiInterface;
 use Phalcon\Session\Manager;
-use Phalcon\Config;
 use Zemit\Config\ConfigInterface;
 use Zemit\Http\Request;
 use Zemit\Provider\AbstractServiceProvider;
@@ -27,9 +26,6 @@ class ServiceProvider extends AbstractServiceProvider
 {
     protected string $serviceName = 'oauth2Facebook';
     
-    /**
-     * {@inheritdoc}
-     */
     public function register(DiInterface $di): void
     {
         $di->setShared($this->getName(), function () use ($di) {
