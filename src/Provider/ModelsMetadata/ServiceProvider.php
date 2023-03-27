@@ -12,12 +12,12 @@
 namespace Zemit\Provider\ModelsMetadata;
 
 use Phalcon\Cache\AdapterFactory;
-use Phalcon\Config\ConfigInterface;
 use Phalcon\Di\DiInterface;
 use Phalcon\Mvc\Model\MetaData\Memory;
 use Phalcon\Mvc\Model\MetaData\Stream;
 use Phalcon\Storage\SerializerFactory;
 use Zemit\Bootstrap;
+use Zemit\Config\ConfigInterface;
 use Zemit\Provider\AbstractServiceProvider;
 
 class ServiceProvider extends AbstractServiceProvider
@@ -34,16 +34,17 @@ class ServiceProvider extends AbstractServiceProvider
             $config = $di->get('config');
             assert($config instanceof ConfigInterface);
             
-            $metadataConfig = $config->get('metadata')->toArray();
+            $metadataConfig = $config->pathToArray('metadata') ?? [];
             
-            $driverName = $bootstrap->isCli() ? 'cli' : 'driver';
-            $driver = $metadataConfig['drivers'][$metadataConfig[$driverName]] ?? [];
-            $default = $config['default'] ?? [];
+            $driverKey = $bootstrap->isCli() ? 'driverCli' : 'driver';
+            $driverName = $metadataConfig[$driverKey] ?? 'memory';
+            $driver = $metadataConfig['drivers'][$driverName] ?? [];
+            $default = $metadataConfig['default'] ?? [];
             $options = array_merge($default, $driver);
             
             assert(is_string($driver['adapter']));
             
-            $adapter = $driver['adapter'];
+            $adapter = $driver['adapter'] ?? Memory::class;
             if (in_array($adapter, [Memory::class, Stream::class])) {
                 return new $adapter($options);
             }
