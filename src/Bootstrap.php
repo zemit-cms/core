@@ -303,7 +303,7 @@ DOC;
         return $this->fireSet($this->debug, Debug::class, [], function (Bootstrap $bootstrap) {
             
             $config = $bootstrap->config->debug->toArray();
-            $debug = $bootstrap->config->app->get('debug') || $config['enable'];
+            $debug = $bootstrap->config->app->get('debug') || $config['enable'] ?? false;
             $bootstrap->prepare->debug($debug);
             
             // @todo review on phalcon5 php8+ because phalcon4 php8+ debug is doing cyclic error
