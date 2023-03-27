@@ -86,7 +86,6 @@ class ServiceProvider extends AbstractServiceProvider
              * CLI Dispatcher
              */
             if ($bootstrap->isCli()) {
-                
                 $dispatcher = new CliDispatcher();
             }
             
