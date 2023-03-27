@@ -17,23 +17,11 @@ use Zemit\Bootstrap\Router;
 use Zemit\Cli\Router as CliRouter;
 use Zemit\Provider\AbstractServiceProvider;
 
-/**
- * Class ServiceProvider
- *
- *
- *
- * @package Zemit\Provider\Router
- */
 class ServiceProvider extends AbstractServiceProvider
 {
-    /**
-     * The Service name.
-     */
-    protected $serviceName = 'router';
     
-    /**
-     * {@inheritdoc}
-     */
+    protected string $serviceName = 'router';
+    
     public function register(DiInterface $di): void
     {
         $di->setShared($this->getName(), function () use ($di) {
@@ -41,7 +29,7 @@ class ServiceProvider extends AbstractServiceProvider
             $bootstrap = $di->get('bootstrap');
             assert($bootstrap instanceof Bootstrap);
             
-            $router = $bootstrap->router ?? $bootstrap->isConsole()
+            $router = $bootstrap->router ?? $bootstrap->isCli()
                 ? new CliRouter(true)
                 : new Router(true, $bootstrap->config);
             
@@ -49,7 +37,7 @@ class ServiceProvider extends AbstractServiceProvider
                 $router = new $router();
             }
             
-            $defaults = $bootstrap->config->path($bootstrap->isConsole() ? 'router.cli' : 'router.defaults');
+            $defaults = $bootstrap->config->path($bootstrap->isCli() ? 'router.cli' : 'router.defaults');
             $router->setDefaults($defaults->toArray() ?? []);
             $router->setDI($di);
             
