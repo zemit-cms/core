@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -7,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
-
 
 namespace Zemit\Provider\Session;
 
@@ -18,51 +18,39 @@ use Phalcon\Session\Adapter\Noop;
 use Phalcon\Session\Adapter\Stream;
 use Phalcon\Storage\AdapterFactory;
 use Phalcon\Storage\SerializerFactory;
+use Zemit\Config\ConfigInterface;
 use Zemit\Provider\AbstractServiceProvider;
 
-/**
- * Class ServiceProvider
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Provider\Session
- */
 class ServiceProvider extends AbstractServiceProvider
 {
-    /**
-     * The Service name.
-     * @var string
-     */
-    protected $serviceName = 'session';
+    protected string $serviceName = 'session';
     
-    /**
-     * {@inheritdoc}
-     *
-     * @return void
-     */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function() use ($di) {
-            $config = $di->get('config')->session;
-            $driver = $config->drivers->{$config->driver};
-            $adapter = $driver->adapter;
+        $di->setShared($this->getName(), function () use ($di) {
             
-            // Merge default config with driver config
-            $options = array_merge($config->default->toArray(), $driver->toArray());
-            $ini = $config->ini->toArray();
+            $config = $di->get('config');
+            assert($config instanceof ConfigInterface);
             
-            foreach ($ini as $key => $value) {
-                @ini_set($key, $value);
+            $sessionConfig = $config->pathToArray('session');
+            
+            $driverName = $sessionConfig['driver'] ?? '';
+            
+            $defaultOptions = $sessionConfig['default'] ?? [];
+            $driverOptions = $sessionConfig['drivers'][$driverName] ?? [];
+            $options = array_merge($defaultOptions, $driverOptions);
+            
+            // ini_set
+            $sessionIniConfig = $sessionConfig['ini'] ?? [];
+            foreach ($sessionIniConfig as $sessionIniKey => $sessionIniValue) {
+                @ini_set($sessionIniKey, $sessionIniValue); // @todo remove @ and avoid this during unit testing
             }
             
             // Create the new session manager
             $session = new Manager();
-    
+            
             // Set the storage adapter
+            $adapter = $options['adapter'];
             if (in_array($adapter, [Noop::class, Stream::class])) {
                 $session->setAdapter(new $adapter($options));
             }
@@ -71,6 +59,7 @@ class ServiceProvider extends AbstractServiceProvider
                 $adapterFactory = new AdapterFactory($serializerFactory);
                 $session->setAdapter(new $adapter($adapterFactory, $options));
                 
+                // ini_set save_handler and save_path for redis
                 if ($adapter instanceof Redis) {
                     ini_set('session.save_handler', 'redis');
                     ini_set('session.save_path', $options['host'] . ':' . $options['port'] . '?' . http_build_query($options));
@@ -79,7 +68,6 @@ class ServiceProvider extends AbstractServiceProvider
             
             // Start and return the session
             $session->start();
-            
             return $session;
         });
     }
