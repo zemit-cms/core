@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -15,34 +16,20 @@ use Phalcon\Di\DiInterface;
 use Zemit\Bootstrap\Config;
 use Zemit\Provider\AbstractServiceProvider;
 
-/**
- * Zemit\Provider\OpenAi\ServiceProvider
- *
- * @package Zemit\Provider\OpenAi
- */
 class ServiceProvider extends AbstractServiceProvider
 {
-    /**
-     * The Service name.
-     * @var string
-     */
-    protected $serviceName = 'openai';
-
-    /**
-     * {@inheritdoc}
-     *
-     * Register the Flash Service with the Twitter Bootstrap classes.
-     *
-     * @return void
-     */
+    protected string $serviceName = 'openai';
+    
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function() use ($di) {
-            /** @var Config $config */
+        $di->setShared($this->getName(), function () use ($di) {
+            
             $config = $di->get('config');
-            $openAiConfig = $config->path('openai');
-
-            $openAi = new OpenAi($openAiConfig['secretKey']);
+            assert($config instanceof Config);
+            $openAiConfig = $config->pathToArray('openai') ?? [];
+            
+            $openAi = new OpenAi($openAiConfig['secretKey'] ?? null);
+            
             if (!empty($openAiConfig['organizationId'])) {
                 $openAi->setORG($openAiConfig['organizationId']);
             }
