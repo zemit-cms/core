@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -12,40 +13,28 @@ namespace Zemit\Provider\Oauth2Google;
 
 use League\OAuth2\Client\Provider\Google;
 use Phalcon\Di\DiInterface;
-
+use Zemit\Bootstrap\Config;
 use Zemit\Provider\AbstractServiceProvider;
 
 /**
- * Class ServiceProvider
- *
  * @link https://github.com/tegaphilip/padlock
  * @link https://oauth2.thephpleague.com/framework-integrations/
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Provider\Oauth2Google
  */
 class ServiceProvider extends AbstractServiceProvider
 {
-    protected $serviceName = 'oauth2Google';
+    protected string $serviceName = 'oauth2Google';
     
-    /**
-     * {@inheritdoc}
-     *
-     * @param DiInterface $di
-     */
     public function register(DiInterface $di): void
     {
-        $config = $di->get('config');
-        $session = $di->get('session');
-        $di->setShared($this->getName(), function() use ($config, $session) {
-            $google = new Google($config->oauth2->google->toArray());
+        $di->setShared($this->getName(), function () use ($di) {
+    
+            $config = $di->get('config');
+            assert($config instanceof Config);
+
+            $oauthConfig = $config->pathToArray('oauth2') ?? [];
+            $oauthGoogleConfig = $oauthConfig['google'];
             
-            return $google;
+            return new Google($oauthGoogleConfig);
         });
     }
 }
