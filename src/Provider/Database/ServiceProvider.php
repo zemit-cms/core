@@ -12,6 +12,7 @@
 namespace Zemit\Provider\Database;
 
 use Phalcon\Db\Adapter\Pdo\AbstractPdo;
+use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Di\DiInterface;
 use Phalcon\Events\ManagerInterface;
 use Zemit\Config\ConfigInterface;
@@ -22,34 +23,42 @@ use Zemit\Provider\AbstractServiceProvider;
 
 class ServiceProvider extends AbstractServiceProvider
 {
+    protected bool $readonly = false;
     protected string $serviceName = 'db';
     
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function () use ($di) {
+        $readonly = $this->readonly;
+        $di->setShared($this->getName(), function () use ($di, $readonly) {
 
             $config = $di->get('config');
             assert($config instanceof ConfigInterface);
     
+            // database config
             $databaseConfig = $config->pathToArray('database') ?? [];
-            $driverName = $databaseConfig['default'];
-            $driverOptions = $databaseConfig['drivers'][$driverName];
-            $adapter = $driverOptions['adapter'] ?? 'Mysql';
+            $driverName = $databaseConfig['default'] ?? 'mysql';
+            $driverOptions = $databaseConfig['drivers'][$driverName] ?? [];
             
-            // unset some unsupported variables
-            unset($driverOptions['adapter']);
-            unset($driverOptions['readOnly']);
+            // readonly
+            if (!$readonly) {
+                $driverOptions = array_merge($driverOptions, $driverOptions['readonly']);
+                unset($driverOptions['readonly']);
+            }
             
-            // set dialect class
+            // dialect
             if (!empty($driverOptions['dialectClass'])) {
                 $dialectClass = $driverOptions['dialectClass'];
                 assert(class_exists($dialectClass));
                 $driverOptions['dialectClass'] = new $dialectClass();
             }
+    
+            // adapter
+            $adapter = $driverOptions['adapter'] ?? Mysql::class;
+            assert(class_exists($adapter));
+            unset($driverOptions['adapter']);
 
-            // prepare the new connection
-            $adapterClass = '\Phalcon\Db\Adapter\Pdo\\' . $adapter;
-            $connection = new $adapterClass($driverOptions);
+            // connection
+            $connection = new $adapter($driverOptions);
             assert($connection instanceof AbstractPdo);
             
             // attach events

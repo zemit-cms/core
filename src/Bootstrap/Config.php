@@ -889,7 +889,7 @@ class Config extends \Zemit\Config\Config
                 'default' => Env::get('DATABASE_ADAPTER', 'mysql'),
                 'drivers' => [
                     'mysql' => [
-                        'adapter' => 'Mysql',
+                        'adapter' => Env::get('DATABASE_MYSQL_ADAPTER', \Phalcon\Db\Adapter\Pdo\Mysql::class),
                         'dialectClass' => Env::get('DATABASE_DIALECT_CLASS', \Zemit\Db\Dialect\Mysql::class),
                         'host' => Env::get('DATABASE_HOST', 'localhost'),
                         'port' => Env::get('DATABASE_PORT', 3306),
@@ -904,9 +904,9 @@ class Config extends \Zemit\Config\Config
                             PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => Env::get('MYSQL_ATTR_SSL_VERIFY_SERVER_CERT', true),
                         ],
                         /**
-                         * ReadOnly Configuration
+                         * Readonly Configuration
                          */
-                        'readOnly' => [
+                        'readonly' => [
                             'enable' => Env::get('DATABASE_READONLY_ENABLE', false),
                             'host' => Env::get('DATABASE_READONLY_HOST'),
                             'port' => Env::get('DATABASE_READONLY_PORT'),
