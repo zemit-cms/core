@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,24 +11,14 @@
 
 namespace Zemit\Mvc\Controller\Behavior\Skip;
 
-/**
- * Class SkipOrder
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Mvc\Controller\Behavior\Skip
- */
 class SkipOrder
 {
     /**
      * Stop operation
      * @return false
      */
-    public function getOrder() {
+    public function getOrder(): bool
+    {
         return false;
     }
 }
