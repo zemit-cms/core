@@ -18,7 +18,7 @@ namespace Zemit\Http;
  * ```php
  *  StatusCode::getMessage[StatusCode::OK] // 'OK'
  *  StatusCode::getMessage[200] // 'OK'
- *  StatusCode::$message[200] // 'OK'
+ *  StatusCode::$messages[200] // 'OK'
  *  StatusCode::OK // 200
  * ```
  *
@@ -26,84 +26,6 @@ namespace Zemit\Http;
  */
 class StatusCode
 {
-    public static array $message = [
-        100 => 'Continue',
-        101 => 'Switching Protocols',
-        102 => 'Processing',
-        200 => 'OK',
-        201 => 'Created',
-        202 => 'Accepted',
-        203 => 'Non-Authoritative Information',
-        204 => 'No Content',
-        205 => 'Reset Content',
-        206 => 'Partial Content',
-        207 => 'Multi-Status',
-        208 => 'Already Reported',
-        226 => 'IM Used',
-        300 => 'Multiple Choices',
-        301 => 'Moved Permanently',
-        302 => 'Found',
-        303 => 'See Other',
-        304 => 'Not Modified',
-        305 => 'Use Proxy',
-        306 => 'Switch Proxy',
-        307 => 'Temporary Redirect',
-        308 => 'Permanent Redirect',
-        400 => 'Bad Request',
-        401 => 'Unauthorized',
-        402 => 'Payment Required',
-        403 => 'Forbidden',
-        404 => 'Not Found',
-        405 => 'Method Not Allowed',
-        406 => 'Not Acceptable',
-        407 => 'Proxy Authentication Required',
-        408 => 'Request Timeout',
-        409 => 'Conflict',
-        410 => 'Gone',
-        411 => 'Length Required',
-        412 => 'Precondition Failed',
-        413 => 'Request Entity Too Large',
-        414 => 'Request-URI Too Long',
-        415 => 'Unsupported Media Type',
-        416 => 'Requested Range Not Satisfiable',
-        417 => 'Expectation Failed',
-        418 => 'I\'m a teapot',
-        419 => 'Authentication Timeout',
-        420 => 'Method Failure',
-        422 => 'Unprocessable Entity',
-        423 => 'Locked',
-        424 => 'Failed Dependency',
-        426 => 'Upgrade Required',
-        428 => 'Precondition Required',
-        429 => 'Too Many Requests',
-        431 => 'Request Header Fields Too Large',
-        440 => 'Login Timeout',
-        444 => 'No Response',
-        449 => 'Retry With',
-        450 => 'Blocked by Windows Parental Controls',
-        451 => 'Unavailable For Legal Reasons',
-        494 => 'Request Header Too Large',
-        495 => 'Cert Error',
-        496 => 'No Cert',
-        497 => 'HTTP to HTTPS',
-        498 => 'Token expired/invalid',
-        499 => 'Client Closed Request',
-        500 => 'Internal Server Error',
-        501 => 'Not Implemented',
-        502 => 'Bad Gateway',
-        503 => 'Service Unavailable',
-        504 => 'Gateway Timeout',
-        505 => 'HTTP Version Not Supported',
-        506 => 'Variant Also Negotiates',
-        507 => 'Insufficient Storage',
-        508 => 'Loop Detected',
-        509 => 'Bandwidth Limit Exceeded',
-        510 => 'Not Extended',
-        511 => 'Network Authentication Required',
-        598 => 'Network read timeout error',
-        599 => 'Network connect timeout error',
-    ];
-    
     public const CONTINUE = 100;
     public const SWITCHING_PROTOCOLS = 101;
     public const PROCESSING = 102;
@@ -180,13 +102,88 @@ class StatusCode
     public const NETWORK_READ_TIMEOUT_ERROR = 598;
     public const NETWORK_CONNECT_TIMEOUT_ERROR = 599;
     
-    /**
-     * Developer friendly constants
-     */
     public const FATAL_ERROR = 500;
     public const MAINTENANCE = 503;
     public const OVERLOADED = 503;
     public const BUSY = 503;
+    
+    public static array $messages = [
+        self::CONTINUE => 'Continue',
+        self::SWITCHING_PROTOCOLS => 'Switching Protocols',
+        self::PROCESSING => 'Processing',
+        self::OK => 'OK',
+        self::CREATED => 'Created',
+        self::ACCEPTED => 'Accepted',
+        self::NON_AUTHORITATIVE_INFORMATION => 'Non-Authoritative Information',
+        self::NO_CONTENT => 'No Content',
+        self::RESET_CONTENT => 'Reset Content',
+        self::PARTIAL_CONTENT => 'Partial Content',
+        self::MULTI_STATUS => 'Multi-Status',
+        self::ALREADY_REPORTED => 'Already Reported',
+        self::IM_USED => 'IM Used',
+        self::MULTIPLE_CHOICES => 'Multiple Choices',
+        self::MOVED_PERMANENTLY => 'Moved Permanently',
+        self::FOUND => 'Found',
+        self::SEE_OTHER => 'See Other',
+        self::NOT_MODIFIED => 'Not Modified',
+        self::USE_PROXY => 'Use Proxy',
+        self::SWITCH_PROXY => 'Switch Proxy',
+        self::TEMPORARY_REDIRECT => 'Temporary Redirect',
+        self::PERMANENT_REDIRECT => 'Permanent Redirect',
+        self::BAD_REQUEST => 'Bad Request',
+        self::UNAUTHORIZED => 'Unauthorized',
+        self::PAYMENT_REQUIRED => 'Payment Required',
+        self::FORBIDDEN => 'Forbidden',
+        self::NOT_FOUND => 'Not Found',
+        self::METHOD_NOT_ALLOWED => 'Method Not Allowed',
+        self::NOT_ACCEPTABLE => 'Not Acceptable',
+        self::PROXY_AUTHENTICATION_REQUIRED => 'Proxy Authentication Required',
+        self::REQUEST_TIMEOUT => 'Request Timeout',
+        self::CONFLICT => 'Conflict',
+        self::GONE => 'Gone',
+        self::LENGTH_REQUIRED => 'Length Required',
+        self::PRECONDITION_FAILED => 'Precondition Failed',
+        self::REQUEST_ENTITY_TOO_LARGE => 'Request Entity Too Large',
+        self::REQUEST_URI_TOO_LONG => 'Request-URI Too Long',
+        self::UNSUPPORTED_MEDIA_TYPE => 'Unsupported Media Type',
+        self::REQUESTED_RANGE_NOT_SATISFIABLE => 'Requested Range Not Satisfiable',
+        self::EXPECTATION_FAILED => 'Expectation Failed',
+        self::IM_A_TEAPOT => 'I\'m a teapot',
+        self::AUTHENTICATION_TIMEOUT => 'Authentication Timeout',
+        self::METHOD_FAILURE => 'Method Failure',
+        self::UNPROCESSABLE_ENTITY => 'Unprocessable Entity',
+        self::LOCKED => 'Locked',
+        self::FAILED_DEPENDENCY => 'Failed Dependency',
+        self::UPGRADE_REQUIRED => 'Upgrade Required',
+        self::PRECONDITION_REQUIRED => 'Precondition Required',
+        self::TOO_MANY_REQUESTS => 'Too Many Requests',
+        self::REQUEST_HEADER_FIELDS_TOO_LARGE => 'Request Header Fields Too Large',
+        self::LOGIN_TIMEOUT => 'Login Timeout',
+        self::NO_RESPONSE => 'No Response',
+        self::RETRY_WITH => 'Retry With',
+        self::BLOCKED_BY_WINDOWS_PARENTAL_CONTROLS => 'Blocked by Windows Parental Controls',
+        self::UNAVAILABLE_FOR_LEGAL_REASONS => 'Unavailable For Legal Reasons',
+        self::REQUEST_HEADER_TOO_LARGE => 'Request Header Too Large',
+        self::CERT_ERROR => 'Cert Error',
+        self::NO_CERT => 'No Cert',
+        self::HTTP_TO_HTTPS => 'HTTP to HTTPS',
+        self::TOKEN_EXPIREDINVALID => 'Token expired/invalid',
+        self::CLIENT_CLOSED_REQUEST => 'Client Closed Request',
+        self::INTERNAL_SERVER_ERROR => 'Internal Server Error',
+        self::NOT_IMPLEMENTED => 'Not Implemented',
+        self::BAD_GATEWAY => 'Bad Gateway',
+        self::SERVICE_UNAVAILABLE => 'Service Unavailable',
+        self::GATEWAY_TIMEOUT => 'Gateway Timeout',
+        self::HTTP_VERSION_NOT_SUPPORTED => 'HTTP Version Not Supported',
+        self::VARIANT_ALSO_NEGOTIATES => 'Variant Also Negotiates',
+        self::INSUFFICIENT_STORAGE => 'Insufficient Storage',
+        self::LOOP_DETECTED => 'Loop Detected',
+        self::BANDWIDTH_LIMIT_EXCEEDED => 'Bandwidth Limit Exceeded',
+        self::NOT_EXTENDED => 'Not Extended',
+        self::NETWORK_AUTHENTICATION_REQUIRED => 'Network Authentication Required',
+        self::NETWORK_READ_TIMEOUT_ERROR => 'Network read timeout error',
+        self::NETWORK_CONNECT_TIMEOUT_ERROR => 'Network connect timeout error',
+    ];
     
     /**
      * Get the HTTP status message for the specified HTTP status code
@@ -194,7 +191,7 @@ class StatusCode
      */
     public static function getMessage(int $code): ?string
     {
-        return self::$message[$code] ?? null;
+        return self::$messages[$code] ?? null;
     }
     
     /**
@@ -203,7 +200,7 @@ class StatusCode
      */
     public static function getCode(string $message): ?int
     {
-        return array_flip(self::$message)[$message] ?? null;
+        return array_flip(self::$messages)[$message] ?? null;
     }
     
     /**
