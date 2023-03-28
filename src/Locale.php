@@ -12,12 +12,15 @@
 namespace Zemit;
 
 use Zemit\Di\Injectable;
+use Zemit\Support\Options;
 
 /**
  * Allow to manage and lookup the locale for the localisation
  */
 class Locale extends Injectable
 {
+    use Options;
+    
     /**
      * Router -> http
      */
@@ -40,10 +43,10 @@ class Locale extends Injectable
     
     /**
      * Locale mode
-     * Locale::MODE_DEFAULT 'default' (Router, http)
-     * Locale::MODE_SESSION 'session' (Router, session, http)
-     * Locale::MODE_GEOIP 'geoip' (Router, geoip, http)
-     * Locale::MODE_SESSION_GEOIP 'session_geoip' (Router, session, geoip, http)
+     * Locale::MODE_DEFAULT 'default' (Router -> http)
+     * Locale::MODE_SESSION 'session' (Router -> session -> http)
+     * Locale::MODE_GEOIP 'geoip' (Router -> geoip -> http)
+     * Locale::MODE_SESSION_GEOIP 'session_geoip' (Router -> session -> geoip -> http)
      */
     public string $mode = self::MODE_DEFAULT;
     
@@ -69,33 +72,15 @@ class Locale extends Injectable
     public array $allowed = ['en'];
     
     /**
-     * Options
+     * Set options and prepare locale
      */
-    public array $options = [];
-    
-    public function __construct($options = [])
+    public function initialize(): void
     {
-        $this->setOptions($options);
         $this->sessionKey = $this->getOption('sessionKey', $this->sessionKey);
         $this->setAllowed($this->getOption('allowed', $this->allowed));
         $this->setDefault($this->getOption('default', $this->default));
         $this->setMode($this->getOption('mode', $this->mode));
-        
-        // @TODO
         $this->prepare($this->getDefault());
-    }
-    
-    public function setOptions($options = [])
-    {
-        $this->options = $options;
-    }
-    
-    public function getOption($key, $default = null)
-    {
-        if (isset($this->options[$key])) {
-            return $this->options[$key];
-        }
-        return $default;
     }
     
     /**
@@ -117,8 +102,6 @@ class Locale extends Injectable
     
     /**
      * Set the current locale value
-     * @param null|string $locale
-     * @return void
      */
     public function setLocale(?string $locale = null): void
     {
@@ -127,26 +110,22 @@ class Locale extends Injectable
     
     /**
      * Get the default locale
-     * @return null|string Return the default locale
      */
-    public function getDefault(): string
+    public function getDefault(): ?string
     {
         return $this->default;
     }
     
     /**
      * Set the default locale value
-     * @param null|string $locale
-     * @return void
      */
-    public function setDefault($locale = null): void
+    public function setDefault(?string $locale = null): void
     {
         $this->default = $locale;
     }
     
     /**
      * Get the list of possible locale
-     * @return array
      */
     public function getAllowed(): array
     {
@@ -217,8 +196,9 @@ class Locale extends Injectable
                 break;
         }
         
-        $this->setLocale($locale, $this->locale);
-//        $this->session->set($this->sessionKey, $this->getLocale());
+        $locale ??= $this->locale;
+        $this->setLocale($locale);
+        $this->saveIntoSession($locale);
         return $this->getLocale();
     }
     
@@ -246,8 +226,9 @@ class Locale extends Injectable
         return $this->lookup($this->session->get($this->sessionKey, $default));
     }
     
+    
     /**
-     * Retrieves the locale from the geolocalisation
+     * Retrieves the locale from the geolocation
      * @todo not ready yet
      */
     public function getFromGeoIP(?string $default = null): ?string
@@ -269,13 +250,27 @@ class Locale extends Injectable
     }
     
     /**
-     * @param string $locale The locale to use as the language range when matching.
+     * Save locale into session if mode contain session handling
+     */
+    public function saveIntoSession(?string $locale = null, bool $force = null): void
+    {
+        $locale ??= $this->getLocale();
+        
+        // save into session
+        $force = $force || $this->mode === self::MODE_SESSION || $this->mode === self::MODE_SESSION_GEOIP;
+        if ($force) {
+            $this->session->set($this->sessionKey, $locale);
+        }
+    }
+    
+    /**
+     * @param string|null $locale The locale to use as the language range when matching.
      * @param array|null $allowed An array containing a list of language tags to compare to locale. Maximum 100 items allowed.
      * @param bool $canonicalize If true, the arguments will be converted to canonical form before matching.
      * @param string|null $default The locale to use if no match is found.
      * @return string|null The closest matching language tag or default value.
      */
-    public function lookup(string $locale, ?array $allowed = null, bool $canonicalize = false, ?string $default = null): ?string
+    public function lookup(?string $locale, ?array $allowed = null, bool $canonicalize = false, ?string $default = null): ?string
     {
         $allowed ??= $this->getAllowed();
         
