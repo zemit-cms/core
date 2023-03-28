@@ -35,7 +35,7 @@ class Logger extends Injectable
                     $session = $this->identity->getSession();
                     assert($session instanceof ModelInterface);
                     
-                    $sessionId = $session ? $session->readAttribute('id') : null;
+                    $sessionId = $session->readAttribute('id');
                     $userId = $this->identity->getUserId() ?: null;
                     $userAsId = $this->identity->getUserAsId() ?: null;
                     
