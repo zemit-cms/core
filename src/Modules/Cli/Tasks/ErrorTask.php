@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,27 +11,17 @@
 
 namespace Zemit\Modules\Cli\Tasks;
 
+use Zemit\Http\StatusCode;
 use Zemit\Modules\Cli\Task;
-use Zemit\Mvc\Controller\StatusCode;
+use Zemit\Mvc\Controller\Errors;
 
-/**
- * Class ErrorsTask
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Modules\Cli\Tasks
- */
 class ErrorTask extends Task
 {
-    use StatusCode;
+    use Errors;
     
-    public function setStatusCode($code)
+    public function setStatusCode(?int $code = 500): void
     {
-        echo 'Error: ' . $code . ' - ' . \Zemit\Http\StatusCode::getMessage($code);
-        exit(PHP_EOL);
+        echo 'Error: ' . $code . ' - ' . StatusCode::getMessage($code);
+        exit(1);
     }
 }

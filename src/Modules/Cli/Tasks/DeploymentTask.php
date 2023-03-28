@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,34 +11,22 @@
 
 namespace Zemit\Modules\Cli\Tasks;
 
-use Phalcon\Db\Adapter\Pdo\Mysql;
+use Phalcon\Mvc\ModelInterface;
+use Zemit\Exception\CliException;
 use Zemit\Models\Lang;
 use Zemit\Models\Site;
-use Zemit\Models\UserRole;
 use Zemit\Modules\Cli\Task;
 use Zemit\Models\Role;
-use Zemit\Models\User;
 use Zemit\Models\Setting;
 use Zemit\Models\Template;
 use Zemit\Utils;
 
-/**
- * Class DeploymentTask
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Modules\Cli\Tasks
- */
 class DeploymentTask extends Task
 {
     /**
      * @var string
      */
-    public $consoleDoc = <<<DOC
+    public string $cliDoc = <<<DOC
 Usage:
   php zemit cli deployment <action> [<params> ...]
 
@@ -48,11 +37,13 @@ Options:
 
 DOC;
     
+    public array $drops = [];
+    
     /**
      * Tables to truncate
      * @var array Raw DB table sources
      */
-    private $_truncates = [
+    private array $truncates = [
         'audit',
         'audit_detail',
         'category',
@@ -92,24 +83,21 @@ DOC;
         'validator',
     ];
     
-    /**
-     * Deprecated tables
-     * @var array Raw DB tables sources to drop
-     */
-    private $_drops = [
-    ];
+    private array $engines = [];
     
-    public $_insert = [
+    public array $insert = [
         Role::class => [
-            ['index' => 'everyone', 'label' => 'Everyone'],
-            ['index' => 'guest', 'label' => 'Guest'],
-            ['index' => 'user', 'label' => 'User'],
+            ['index' => 'dev', 'label' => 'Developer', 'userlist' => [
+                ['username' => 'dev', 'email' => 'dev@zemit.com', 'firstName' => 'Developer', 'lastName' => 'Zemit'],
+            ]],
             ['index' => 'admin', 'label' => 'Administrator'],
-            ['index' => 'dev', 'label' => 'Developer'],
+            ['index' => 'user', 'label' => 'User'],
+            ['index' => 'guest', 'label' => 'Guest'],
+            ['index' => 'everyone', 'label' => 'Everyone'],
         ],
-        User::class => [
-            ['username' => 'dev', 'email' => 'dev@zemit.com', 'firstName' => 'Developer', 'lastName' => 'Zemit'],
-        ],
+//        User::class => [
+//            ['username' => 'dev', 'email' => 'dev@zemit.com', 'firstName' => 'Developer', 'lastName' => 'Zemit'],
+//        ],
         Lang::class => [
             ['label' => 'Francais', 'code' => 'fr'],
             ['label' => 'English', 'code' => 'en'],
@@ -124,115 +112,136 @@ DOC;
         ],
     ];
     
-    public function initialize()
+    public function initialize(): void
     {
         Utils::setUnlimitedRuntime();
-        
-        // force migration status to the config
-        $this->config->app['migration'] = true;
-        
-        // force permissions to the config
-        $permissions = [];
-        $permissions[Site::class] = ['*'];
-        $permissions[Lang::class] = ['*'];
-        $permissions[User::class] = ['*'];
-        $permissions[Role::class] = ['*'];
-        $permissions[UserRole::class] = ['*'];
-        $permissions[Template::class] = ['*'];
-        $permissions[Setting::class] = ['*'];
-        $this->config->permissions->roles->everyone->models = $permissions;
-    }
-    
-    public function helpAction()
-    {
-        echo $this->consoleDoc;
+        $this->addModelsPermissions();
     }
     
     /**
-     *
-     * @return array
+     * Default action
+     * @throws CliException
      */
-    public function mainAction()
+    public function mainAction(): ?array
     {
         $response = [];
         
         $response ['truncate'] = $this->truncateAction();
+        $response ['drop'] = $this->dropAction();
+        $response ['engine'] = $this->fixEngineAction();
         $response ['insert'] = $this->insertAction();
         
         return $response;
     }
     
     /**
-     * Truncate tables before inserts
-     * @return array
+     * Truncate tables
      */
-    public function truncateAction()
+    public function truncateAction(): array
     {
         $response = [];
         
-        /** @var Mysql $db */
-        $db = $this->getDi()->getShared('db');
-    
-        foreach ($this->_truncates as $table) {
-            $response [] = $db->execute('TRUNCATE TABLE ' . $db->escapeIdentifier($table));
+        foreach ($this->truncates as $table) {
+            $response [] = $this->db->execute('TRUNCATE TABLE ' . $this->db->escapeIdentifier($table));
         }
-        
-        // double loop for possible fk dependencies
-//        foreach ($this->_truncates as $table1) {
-//            foreach ($this->_truncates as $table2) {
-//                $response [] = $db->execute('TRUNCATE TABLE ' . $db->escapeIdentifier($table1));
-//                $response [] = $db->execute('TRUNCATE TABLE ' . $db->escapeIdentifier($table2));
-//            }
-//        }
-//
-//        // double loop for possible fk dependencies
-//        foreach ($this->_drops as $table1) {
-//            foreach ($this->_drops as $table2) {
-//                $response [] = $db->execute('DROP TABLE IF EXISTS ' . $db->escapeIdentifier($table1));
-//                $response [] = $db->execute('DROP TABLE IF EXISTS ' . $db->escapeIdentifier($table2));
-//            }
-//        }
         
         return $response;
     }
     
     /**
-     * Insert default data
-     * @return array[]
+     * Drops tables
      */
-    public function insertAction()
+    public function dropAction(): array
+    {
+        $response = [];
+        
+        foreach ($this->drops as $table) {
+            $response [] = $this->db->execute('DROP TABLE IF EXISTS ' . $this->db->escapeIdentifier($table));
+        }
+        
+        return $response;
+    }
+    
+    /**
+     * Fix tables engine
+     */
+    public function fixEngineAction(): array
+    {
+        $response = [];
+        
+        foreach ($this->engines as $table => $engine) {
+            $response [] = $this->db->execute('ALTER TABLE ' . $this->db->escapeIdentifier($table) . ' ENGINE = ' . $engine);
+        }
+        
+        return $response;
+    }
+    
+    /**
+     * Insert records
+     * @throws CliException
+     */
+    public function insertAction(): array
     {
         $response = [
-            'saved' => [],
+            'saved' => 0,
             'error' => [],
             'message' => [],
         ];
         
-        foreach ($this->_insert as $modelName => $insert) {
+        foreach ($this->insert as $modelName => $insert) {
             
-            foreach ($insert as $row) {
+            foreach ($insert as $key => $row) {
                 $entity = new $modelName();
-                $entity->assign($row);
+                assert($entity instanceof ModelInterface);
                 
-                if ($modelName === User::class) {
+                $assign = isset($row[0]) ? array_combine($entity->columnMap(), $row) : $row;
+                if (!$assign) {
+                    throw new CliException('Can\'t assign row #' . $key . ' for model `' . $modelName . '`.');
+                } else {
+                    $entity->assign($assign);
+                }
+                
+                // Automagically fill passwords
+                if (property_exists($entity, 'password')) {
                     if (empty($row['password'])) {
                         $entity->assign(['password' => $row['username'], 'passwordConfirm' => $row['username']]);
                     }
-                    $entity->RoleList = [Role::findFirstByIndex($entity->getUsername())];
+                    elseif (empty($row['passwordConfirm'])) {
+                        $entity->assign(['passwordConfirm' => $row['password']]);
+                    }
                 }
                 
-                $saved = $entity->save();
-//                $response ['saved'] [] = $saved;
-                
-                if (!$saved) {
-                    $response['error'] [] = $entity->toArray();
+                if (!$entity->save()) {
+                    $response['error'][$modelName][] = $entity->toArray();
+                    
                     foreach ($entity->getMessages() as $message) {
-                        $response['message'][] = $message;
+                        $response['message'][$modelName][] = $message;
                     }
+                }
+                else {
+                    $response['saved']++;
                 }
             }
         }
         
         return $response;
+    }
+    
+    public function addModelsPermissions(?array $tables = null): void
+    {
+        $permissions = [];
+        $tables ??= $this->insert;
+        foreach ($tables as $model => $entity) {
+            $permissions[$model] = ['*'];
+        }
+        $this->config->merge([
+            'permissions' => [
+                'roles' => [
+                    'cli' => [
+                        'models' => $permissions
+                    ],
+                ]
+            ]
+        ]);
     }
 }
