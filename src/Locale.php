@@ -226,7 +226,6 @@ class Locale extends Injectable
         return $this->lookup($this->session->get($this->sessionKey, $default));
     }
     
-    
     /**
      * Retrieves the locale from the geolocation
      * @todo not ready yet
