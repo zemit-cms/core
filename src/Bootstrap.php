@@ -169,9 +169,9 @@ DOC;
      *
      * @throws \Exception
      */
-    public function __construct(string $mode = self::MODE_DEFAULT)
+    public function __construct(string $mode = null)
     {
-        $this->mode = $mode;
+        $this->mode = $mode ?? PHP_SAPI === 'cli'? 'cli' : self::MODE_MVC;
         $this->setEventsManager(new Events\Manager());
         $this->initialize();
         $this->dotenv();
