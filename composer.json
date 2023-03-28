@@ -121,7 +121,8 @@
       "Zemit\\": "src/"
     },
     "files": [
-      "src/Utils.php"
+      "src/Functions/Dump.php",
+      "src/Functions/Sprintf.php"
     ]
   },
   "autoload-dev": {

@@ -11,11 +11,6 @@
 
 namespace Zemit;
 
-use Phalcon\Debug\Dump;
-
-/**
- * Class Utils
- */
 class Utils
 {
     /**
@@ -38,7 +33,7 @@ class Utils
      */
     public static function setMaxUploadFileSize(string $size = '2M'): void
     {
-        throw new \Exception('This setting must be changed at the system level.');
+        throw new Exception('This setting must be changed at the system level.');
     }
     
     /**
@@ -60,41 +55,13 @@ class Utils
     /**
      * Return an array of the current memory usage in MB
      */
-    public static function getMemoryUsage(): array
+    public static function getMemoryUsage(float $divider = 1048576.2, string $suffix = ' MB'): array
     {
-        $toMB = 1048576.2;
         return [
-            'memory' => (memory_get_usage() / $toMB) . ' MB',
-            'memoryPeak' => (memory_get_peak_usage() / $toMB) . ' MB',
-            'realMemory' => (memory_get_usage(true) / $toMB) . ' MB',
-            'realMemoryPeak' => (memory_get_peak_usage(true) / $toMB) . ' MB',
+            'memory' => (memory_get_usage() / $divider) . $suffix,
+            'memoryPeak' => (memory_get_peak_usage() / $divider) . $suffix,
+            'realMemory' => (memory_get_usage(true) / $divider) . $suffix,
+            'realMemoryPeak' => (memory_get_peak_usage(true) / $divider) . $suffix,
         ];
-    }
-}
-
-if (!function_exists('dd')) {
-    /**
-     * Dump the passed variables and end the script.
-     */
-    function dd(...$params): void
-    {
-        dump(...$params);
-        exit(1);
-    }
-}
-
-if (!function_exists('dump')) {
-    /**
-     * Dump the passed variables without ending the script.
-     */
-    function dump(...$params): void
-    {
-        foreach ($params as $param) {
-            $ret = (new Dump([], true))->variable($param);
-            if (PHP_SAPI === 'cli') {
-                $ret = strip_tags($ret) . PHP_EOL;
-            }
-            echo $ret;
-        }
     }
 }
