@@ -18,9 +18,9 @@ use League\OAuth2\Client\Token\AccessToken;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 use Phalcon\Http\ResponseInterface;
 
-class GoogleController extends AbstractController
+class LinkedinController extends AbstractController
 {
-    public string $providerName = self::PROVIDER_GOOGLE;
+    public string $providerName = self::PROVIDER_LINKEDIN;
     
-    public string $sessionKey = 'oauth2-google-state';
+    public string $sessionKey = 'oauth2-linkedin-state';
 }
