@@ -142,7 +142,7 @@ DOC;
                 break;
             
             case 'json':
-                echo json_encode($ret, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+                echo json_encode($ret, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . PHP_EOL;
                 break;
             
             case 'string':
@@ -159,7 +159,7 @@ DOC;
                     echo $ret;
                 }
                 else {
-                    echo json_encode($ret, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+                    echo json_encode($ret, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . PHP_EOL;
                 }
                 break;
                 
@@ -168,7 +168,7 @@ DOC;
                     echo $ret;
                 }
                 else {
-                    echo json_encode($ret, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+                    echo json_encode($ret, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . PHP_EOL;
                 }
                 break;
             
