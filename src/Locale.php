@@ -13,11 +13,12 @@ namespace Zemit;
 
 use Zemit\Di\Injectable;
 use Zemit\Support\Options;
+use Zemit\Support\OptionsInterface;
 
 /**
  * Allow to manage and lookup the locale for the localisation
  */
-class Locale extends Injectable
+class Locale extends Injectable implements OptionsInterface
 {
     use Options;
     
