@@ -12,6 +12,7 @@
 namespace Zemit\Bootstrap;
 
 use PDO;
+use Phalcon\Security;
 use Zemit\Filter;
 use Zemit\Filters;
 use Zemit\Locale;
@@ -31,35 +32,35 @@ use Phalcon\Config as PhalconConfig;
  *
  * Global Zemit Configuration
  *
- * @property Config $core
- * @property Config $app
- * @property Config $php
- * @property Config $debug
- * @property Config $response
- * @property Config $identity
- * @property Config $models
- * @property Config $providers
- * @property Config $logger
- * @property Config $filters
- * @property Config $modules
- * @property Config $router
- * @property Config $gravatar
- * @property Config $reCaptcha
- * @property Config $aws
- * @property Config $locale
- * @property Config $translate
- * @property Config $session
- * @property Config $module
- * @property Config $security
- * @property Config $cache
- * @property Config $metadata
- * @property Config $annotations
- * @property Config $mailer
- * @property Config $cookies
- * @property Config $oauth2
- * @property Config $dotenv
- * @property Config $client
- * @property Config $permissions
+ * @property PhalconConfig $core
+ * @property PhalconConfig $app
+ * @property PhalconConfig $php
+ * @property PhalconConfig $debug
+ * @property PhalconConfig $response
+ * @property PhalconConfig $identity
+ * @property PhalconConfig $models
+ * @property PhalconConfig $providers
+ * @property PhalconConfig $logger
+ * @property PhalconConfig $filters
+ * @property PhalconConfig $modules
+ * @property PhalconConfig $router
+ * @property PhalconConfig $gravatar
+ * @property PhalconConfig $reCaptcha
+ * @property PhalconConfig $aws
+ * @property PhalconConfig $locale
+ * @property PhalconConfig $translate
+ * @property PhalconConfig $session
+ * @property PhalconConfig $module
+ * @property PhalconConfig $security
+ * @property PhalconConfig $cache
+ * @property PhalconConfig $metadata
+ * @property PhalconConfig $annotations
+ * @property PhalconConfig $mailer
+ * @property PhalconConfig $cookies
+ * @property PhalconConfig $oauth2
+ * @property PhalconConfig $dotenv
+ * @property PhalconConfig $client
+ * @property PhalconConfig $permissions
  */
 class Config extends \Zemit\Config\Config
 {
@@ -142,7 +143,6 @@ class Config extends \Zemit\Config\Config
                 'timezone' => Env::get('APP_TIMEZONE', 'America/Montreal'), // allow to set timezone to use with the application
                 'timeoutLimit' => Env::get('APP_TIMEOUT_LIMIT', 60), // allow to set timeout limit to use with the application
                 'memoryLimit' => Env::get('APP_MEMORY_LIMIT', '256M'), // allow to set timeout limit to use with the application
-                'postLimit' => Env::get('APP_POST_LIMIT', '20M'), // allow to set timeout limit to use with the application
                 'sendEmail' => Env::get('APP_SEND_EMAIL', false), // allow to send real email or not
                 
                 'dir' => [
@@ -177,6 +177,13 @@ class Config extends \Zemit\Config\Config
             ],
             
             'php' => [
+                'locale' => [
+                    'category' => Env::get('PHP_LOCALE_CATEGORY', LC_ALL),
+                    'rest' => explode(',', Env::get('PHP_LOCALE_REST', 'fr_CA.UTF-8,French_Canada.1252')),
+                ],
+                'date' => [
+                    'timezone' => Env::get('PHP_DATE_TIMEZONE', 'America/Montreal'),
+                ],
                 'ini' => [
                     'zend.exception_ignore_args' => Env::get('PHP_INI_ZEND_EXCEPTION_IGNORE_ARGS', 'On'),
                 ],
@@ -209,7 +216,7 @@ class Config extends \Zemit\Config\Config
                         'DATABASE_PASS',
                         'DATABASE_PASSWD',
                         'DATABASE_PASSWORD',
-                        'SECURITY_WORKFACTOR',
+                        'SECURITY_WORK_FACTOR',
                         'SECURITY_SALT',
                         'PASSPHRASE',
                         'SECRET',
@@ -252,6 +259,12 @@ class Config extends \Zemit\Config\Config
                 'mode' => Env::get('IDENTITY_SESSION_MODE', 'jwt'), // jwt | string
                 'sessionKey' => Env::get('IDENTITY_SESSION_KEY', 'zemit-identity'),
                 'sessionFallback' => Env::get('IDENTITY_SESSION_FALLBACK', false),
+                'token' => [
+                    'expiration' => $now->modify(Env::get('IDENTITY_TOKEN_EXPIRATION', '+1 day'))->getTimestamp(),
+                ],
+                'refreshToken' => [
+                    'expiration' => $now->modify(Env::get('IDENTITY_REFRESH_TOKEN_EXPIRATION', '+7 day'))->getTimestamp(),
+                ],
             ],
             
             /**
@@ -329,7 +342,7 @@ class Config extends \Zemit\Config\Config
                 Provider\Response\ServiceProvider::class => Env::get('PROVIDER_RESPONSE', Provider\Response\ServiceProvider::class),
                 Provider\Router\ServiceProvider::class => Env::get('PROVIDER_ROUTER', Provider\Router\ServiceProvider::class),
                 Provider\Dispatcher\ServiceProvider::class => Env::get('PROVIDER_DISPATCHER', Provider\Dispatcher\ServiceProvider::class),
-                Provider\VoltTemplate\ServiceProvider::class => Env::get('PROVIDER_VOLT_TEMPLATE', Provider\VoltTemplate\ServiceProvider::class),
+                Provider\Volt\ServiceProvider::class => Env::get('PROVIDER_VOLT', Provider\Volt\ServiceProvider::class),
                 Provider\View\ServiceProvider::class => Env::get('PROVIDER_VIEW', Provider\View\ServiceProvider::class),
                 
                 Provider\Profiler\ServiceProvider::class => Env::get('PROVIDER_PROFILER', Provider\Profiler\ServiceProvider::class),
@@ -524,6 +537,19 @@ class Config extends \Zemit\Config\Config
 //                    '.tpl' => \Phalcon\Mvc\View\Engine\Smarty::class
                 ]),
             ],
+    
+            /**
+             * Volt Configuration
+             */
+            'volt' => [
+                'autoescape' => Env::get('VOLT_AUTOESCAPE', false),
+                'always' => Env::get('VOLT_ALWAYS', false),
+                'extension' => Env::get('VOLT_EXTENSION', '.php'),
+                'separator' => Env::get('VOLT_SEPARATOR', '%%'),
+                'path' => Env::get('VOLT_PATH', './'),
+                'prefix' => Env::get('VOLT_PREFIX', null),
+                'stat' => Env::get('VOLT_STAT', true), // Whether Phalcon must check if there are differences between the template file and its compiled path
+            ],
             
             /**
              * Gravatar Configuration
@@ -680,7 +706,8 @@ class Config extends \Zemit\Config\Config
              * Default security settings
              */
             'security' => [ // phalcon security config
-                'workfactor' => Env::get('SECURITY_WORKFACTOR', 12), // workfactor for the phalcon security service
+                'workFactor' => Env::get('SECURITY_WORK_FACTOR', 12), // workfactor for the phalcon security service
+                'hash' => Env::get('SECURITY_HASH', Security::CRYPT_SHA512), // set default hash to sha512
                 'salt' => Env::get('SECURITY_SALT', '>mY.Db5fR?k%~<ZWf\}Zh35_IFC]#0Xx'), // salt for the phalcon security service
                 'jwt' => [
                     'signer' => Env::get('SECURITY_JWT_SIGNER', \Phalcon\Security\JWT\Signer\Hmac::class),
