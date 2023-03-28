@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -13,23 +14,12 @@ namespace Zemit\Modules\Frontend\Controllers;
 use Zemit\Modules\Frontend\Controller;
 use Zemit\Tag;
 
-/**
- * Class AbstractController
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Modules\Frontend\Controllers
- */
 abstract class AbstractController extends Controller
 {
     public function initialize()
     {
         Tag::setAttr('html', ['lang' => $this->dispatcher->getParam('language', 'string', 'en')]);
-        Tag::setTitle($this->config->core->name);
+        Tag::setTitle($this->config->path('core.name', 'Zemit Frontend'));
         
         $this->assets->collection('head')
             ->addCss('/head.css', true, true, [], true, true)

@@ -11,13 +11,6 @@
 
 namespace Zemit\Modules\Frontend;
 
-/**
- * Class Module
- *
- *
- *
- * @package Zemit\Modules\Frontend
- */
 class Module extends \Zemit\Mvc\Module
 {
     public string $name = self::NAME_FRONTEND;

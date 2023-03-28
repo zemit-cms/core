@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -14,7 +15,6 @@ use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Http\Response;
 use Phalcon\Messages\Message;
 use Phalcon\Validation;
-
 use Zemit\Bootstrap;
 use Zemit\Bootstrap\Config;
 use Zemit\Escaper;
@@ -28,32 +28,15 @@ use Zemit\Mvc\Router;
 use Zemit\Url;
 use Zemit\Utils;
 
-/**
- * Class CheckController
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Modules\Frontend\Controllers
- */
 class CheckController extends AbstractController
 {
-    /**
-     * @var string[] System Base Versions
-     */
-    public $versionList = [
+    public array $versionList = [
         'php' => '7.4',
         'phalcon' => '4.0',
         'zemit' => '0.4',
     ];
     
-    /**
-     * @var string[] Extensions
-     */
-    public $phpExtensionList = [
+    public array $phpExtensionList = [
         // lel
         'Core',
         'phalcon',
@@ -103,11 +86,10 @@ class CheckController extends AbstractController
         'libxml',
         'date',
     ];
-    
     /**
      * @var string[] Service Classes
      */
-    public $serviceList = [
+    public array $serviceList = [
         // system
         'bootstrap' => Bootstrap::class,
         'config' => Config::class,
@@ -131,7 +113,7 @@ class CheckController extends AbstractController
      */
     public function getVersionList(): array
     {
-        return $this->versionList ? : [];
+        return $this->versionList ?: [];
     }
     
     /**
@@ -139,7 +121,7 @@ class CheckController extends AbstractController
      */
     public function getPhpExtensionList(): array
     {
-        return $this->phpExtensionList ? : [];
+        return $this->phpExtensionList ?: [];
     }
     
     /**
@@ -147,7 +129,7 @@ class CheckController extends AbstractController
      */
     public function getServiceList(): array
     {
-        return $this->serviceList ? : [];
+        return $this->serviceList ?: [];
     }
     
     /**
@@ -173,15 +155,10 @@ class CheckController extends AbstractController
                      'php' => PHP_VERSION,
                      'phalcon' => \Phalcon\Version::get(),
                      'zemit' => \Zemit\Version::get(),
-                 ] as $what => $version) {
-            
+                 ] as $what => $version
+        ) {
             if (!version_compare($version, $versionList[$what], '>=')) {
-                $validation->appendMessage(new Message(
-                    'PHP Version Failed `' . $version . '` received but `' . $this->version[$what] . '` >= expected',
-                    $what,
-                    'PhpVersionMismatch',
-                    404
-                ));
+                $validation->appendMessage(new Message('PHP Version Failed `' . $version . '` received but `' . $this->version[$what] . '` >= expected', $what, 'PhpVersionMismatch', 404));
             }
         }
         
@@ -189,12 +166,7 @@ class CheckController extends AbstractController
         $phpExtensionList = $this->getPhpExtensionList();
         foreach ($phpExtensionList as $phpExtension) {
             if (!extension_loaded($phpExtension)) {
-                $validation->appendMessage(new Message(
-                    'PHP Extension Failed `' . $phpExtension . '`',
-                    $phpExtension,
-                    'MissingPhpExtension',
-                    404
-                ));
+                $validation->appendMessage(new Message('PHP Extension Failed `' . $phpExtension . '`', $phpExtension, 'MissingPhpExtension', 404));
             }
         }
         
@@ -205,23 +177,12 @@ class CheckController extends AbstractController
             
             // Check if service provider exist
             if (!$di->has($providerName)) {
-                $validation->appendMessage(new Message(
-                    'Provider `' . $providerName . '` not found on `' . $toClassName . '`',
-                    $providerName,
-                    'NotFound',
-                    404
-                ));
+                $validation->appendMessage(new Message('Provider `' . $providerName . '` not found on `' . $toClassName . '`', $providerName, 'NotFound', 404));
             }
             else {
-                
                 // Check if we can load the service provider
                 if (!$di->get($providerName)) {
-                    $validation->appendMessage(new Message(
-                        'Provider `' . $providerName . '` not loaded on `' . $toClassName . '`',
-                        $providerName,
-                        'BadRequest',
-                        400
-                    ));
+                    $validation->appendMessage(new Message('Provider `' . $providerName . '` not loaded on `' . $toClassName . '`', $providerName, 'BadRequest', 400));
                 }
             }
         }
@@ -230,12 +191,7 @@ class CheckController extends AbstractController
         $serviceList = $this->getServiceList();
         foreach ($serviceList as $name => $className) {
             if (!($this->$name instanceof $className)) {
-                $validation->appendMessage(new Message(
-                    '`' . $name . '` must be an instance of `' . $className . '`',
-                    $name,
-                    'NotValid',
-                    400
-                ));
+                $validation->appendMessage(new Message('`' . $name . '` must be an instance of `' . $className . '`', $name, 'NotValid', 400));
             }
         }
         
