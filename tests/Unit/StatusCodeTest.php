@@ -190,15 +190,15 @@ class StatusCodeTest extends AbstractUnit
         
         // Test default constants
         foreach ($messages as $code => $message) {
-            $this->assertContainsEquals($code, array_keys(StatusCode::$message));
-            $this->assertContainsEquals($message, StatusCode::$message);
+            $this->assertContainsEquals($code, array_keys(StatusCode::$messages));
+            $this->assertContainsEquals($message, StatusCode::$messages);
     
-            $this->assertEquals($message, StatusCode::$message[$code]);
+            $this->assertEquals($message, StatusCode::$messages[$code]);
             $this->assertEquals($code, StatusCode::getCode($message));
             $this->assertEquals($message, StatusCode::getMessage($code));
             $this->assertEquals($code . ' ' . $message, StatusCode::getStatus($code));
     
-            $this->assertIsString(StatusCode::$message[$code]);
+            $this->assertIsString(StatusCode::$messages[$code]);
             $this->assertIsString(StatusCode::getMessage($code));
             $this->assertIsString(StatusCode::getStatus($code));
             $this->assertIsInt(StatusCode::getCode($message));
@@ -219,6 +219,6 @@ class StatusCodeTest extends AbstractUnit
         $this->assertIsString(StatusCode::getStatus(999));
         
         // Make sure we tested everything
-        $this->assertEquals(count($messages), count(StatusCode::$message));
+        $this->assertEquals(count($messages), count(StatusCode::$messages));
     }
 }
