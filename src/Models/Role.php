@@ -15,26 +15,24 @@ use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength\Max;
 
 /**
- * Class Role
- *
  * @property UserRole[] $UserNode
  * @property User[] $UserList
  * @property Group[] $GroupList
  * @property GroupRole[] $GroupNode
  *
- * @method UserRole[] getUserNode($params = null)
- * @method User[] getUserList($params = null)
- * @method GroupRole[] getGroupNode($params = null)
- * @method Group[] getGroupList($params = null)
+ * @method UserRole[] getUserNode(?array $params = null)
+ * @method User[] getUserList(?array $params = null)
+ * @method GroupRole[] getGroupNode(?array $params = null)
+ * @method Group[] getGroupList(?array $params = null)
  *
  * @package Zemit\Models
  */
-class Role extends AbstractRole
+class Role extends AbstractRole implements RoleInterface
 {
     protected $position = 0;
     protected $deleted = self::NO;
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -47,7 +45,7 @@ class Role extends AbstractRole
             'groupId', Group::class, 'id', ['alias' => 'GroupList']);
     }
 
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
 
