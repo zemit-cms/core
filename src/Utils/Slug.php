@@ -18,7 +18,7 @@ class Slug
     /**
      * Creates a slug to be used for pretty URLs
      */
-    public static function generate(?string $string, array $replace = [], string $delimiter = '-'): string
+    public static function generate(string $string, array $replace = [], string $delimiter = '-'): string
     {
         // Save the old locale and set the new locale to UTF-8
         $oldLocale = setlocale(LC_ALL, '0');
