@@ -14,7 +14,7 @@ namespace Zemit;
 use Phalcon\Acl\Adapter\Memory;
 use Phalcon\Acl\Component;
 use Phalcon\Acl\Role;
-use Zemit\Bootstrap\Config;
+use Zemit\Config\ConfigInterface;
 
 /**
  * {@inheritDoc}
@@ -23,27 +23,31 @@ class Security extends \Phalcon\Security
 {
     protected ?array $permissions;
     
-    public function getConfig(): Config
+    public function getPermissionsConfig(): array
+    {
+        return $this->getConfig()->pathToArray('permissions') ?? [];
+    }
+    
+    public function getConfig(): ConfigInterface
     {
         return $this->getDI()->get('config');
     }
     
     /**
      * Return an ACL for the specified components name
-     * @todo cache the ACL
-     * @todo move to its own ACL class, shouldn't be in the Phalcon\Security
-     *
      * @param array $componentsName
      * @param array|null $permissions
      * @param string $inherit
      * @return Memory
+     * @todo cache the ACL
+     * @todo move to its own ACL class, shouldn't be in the Phalcon\Security
      */
     public function getAcl(array $componentsName = ['components'], ?array $permissions = null, string $inherit = 'inherit'): Memory
     {
         $acl = new Memory();
         $aclRoleList = [];
         
-        $this->permissions ??= $this->getConfig()->permissions->toArray();
+        $this->permissions = $this->getPermissionsConfig();
         
         $featureList = $this->permissions['features'] ?? [];
         $roleList = $this->permissions['roles'] ?? [];
