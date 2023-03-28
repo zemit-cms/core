@@ -10,40 +10,34 @@
 
 namespace Zemit\Models;
 
-use Phalcon\Di;
-use Phalcon\Session\Manager;
 use Zemit\Models\Base\AbstractSession;
+use Phalcon\Di;
+use Phalcon\Db\Column;
+use Phalcon\Mvc\ModelInterface;
+use Phalcon\Session\ManagerInterface;
 use Phalcon\Mvc\Model\Behavior\Timestampable;
-use Phalcon\Security;
 use Phalcon\Validation\Validator\Date;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\Uniqueness;
 use Phalcon\Validation\Validator\StringLength\Max;
 
 /**
- * Class Session
- *
  * @property User $User
  * @property User $UserAs
  *
- * @method User getUser($params = null)
- * @method User getUserAs($params = null)
- *
- * @package Zemit\Models
+ * @method User getUser(?array $params = null)
+ * @method User getUserAs(?array $params = null)
  */
-class Session extends AbstractSession
+class Session extends AbstractSession implements SessionInterface
 {
     protected $deleted = self::NO;
-
-    public function initialize()
+    
+    public function initialize(): void
     {
         parent::initialize();
-
-        /** @var Security $security */
-        $security = $this->getDI()->get('security');
-
+        
         $this->belongsTo('asUserId', User::class, 'id', ['alias' => 'UserAsEntity']);
-
+        
         // refresh date
         $this->addBehavior(new Timestampable([
             'beforeValidation' => [
@@ -52,43 +46,61 @@ class Session extends AbstractSession
             ],
         ]));
     }
-
-    public function validation()
+    
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
-
+        
         $validator->add('key', new PresenceOf(['message' => $this->_('required')]));
         $validator->add('key', new Uniqueness(['message' => $this->_('not-unique')]));
         $validator->add('key', new Max(['max' => 60, 'message' => $this->_('length-exceeded')]));
-
+        
         $validator->add('token', new PresenceOf(['message' => $this->_('required')]));
         $validator->add('token', new Max(['max' => 128, 'message' => $this->_('length-exceeded')]));
-
+        
         $validator->add('date', new PresenceOf(['message' => $this->_('required')]));
         $validator->add('date', new Date(['format' => 'Y-m-d H:i:s', 'message' => $this->_('date-not-valid')]));
-
+        
         return $this->validate($validator);
     }
     
-    public function save(): bool {
-        return self::_isSessionAdapter()? $this->_saveIntoSession() : parent::save();
+    public function save(): bool
+    {
+        return self::isSessionAdapter()
+            ? $this->saveIntoSession()
+            : parent::save();
     }
     
-    public function update(): bool {
-        return self::_isSessionAdapter()? $this->_saveIntoSession() : parent::update();
+    public function update(): bool
+    {
+        return self::isSessionAdapter()
+            ? $this->saveIntoSession()
+            : parent::update();
     }
     
-    public function create(): bool {
-        return self::_isSessionAdapter()? $this->_saveIntoSession() : parent::create();
+    public function create(): bool
+    {
+        return self::isSessionAdapter()
+            ? $this->saveIntoSession()
+            : parent::create();
     }
     
-    public function delete(): bool {
-        return self::_isSessionAdapter()? $this->_removeFromSession() : parent::delete();
+    public function delete(): bool
+    {
+        return self::isSessionAdapter()
+            ? $this->removeFromSession()
+            : parent::delete();
     }
     
-    static public function findFirstByKey($key) {
-        $session = Di::getDefault()->get('session');
-        if (self::_isSessionAdapter()) {
+    public static function findFirstByKey(?string $key = null): ?ModelInterface
+    {
+        if (empty($key)) {
+            return null;
+        }
+        
+        // query the session manager adapter
+        if (self::isSessionAdapter()) {
+            $session = self::getSessionManager();
             if ($session->has('zemit-session-' . $key)) {
                 $sessionStore = $session->get('zemit-session-' . $key);
                 $model = new self();
@@ -99,38 +111,38 @@ class Session extends AbstractSession
                 $model->setAsUserId($sessionStore['asUserId'] ?? null);
                 return $model;
             }
-            return false;
+            return null;
         }
-        return parent::findFirstByKey($key);
+        
+        // query the database
+        return parent::findFirst([
+            'key = :key:',
+            'bind' => ['key' => $key],
+            'bindTypes' => ['key' => Column::BIND_PARAM_STR],
+        ]);
     }
     
-    /**
-     * Check if we should save into the database or the session
-     * @return bool
-     */
-    static public function _isSessionAdapter() {
+    public static function isSessionAdapter(): bool
+    {
         return true;
     }
     
-    /**
-     * Save the key into the session
-     * @return bool
-     */
-    public function _saveIntoSession() {
-        /** @var Manager $session */
-        $session = $this->getDI()->get('session');
+    public function saveIntoSession(): bool
+    {
+        $session = $this->getSessionManager();
         $session->set('zemit-session-' . $this->getKey(), $this->toArray());
         return true;
     }
     
-    /**
-     * Save the key into the session
-     * @return bool
-     */
-    public function _removeFromSession() {
-        /** @var Manager $session */
-        $session = $this->getDI()->get('session');
+    public function removeFromSession(): bool
+    {
+        $session = $this->getSessionManager();
         $session->remove('zemit-session-' . $this->getKey());
         return true;
+    }
+    
+    public static function getSessionManager(): ManagerInterface
+    {
+        return Di::getDefault()->get('session');
     }
 }
