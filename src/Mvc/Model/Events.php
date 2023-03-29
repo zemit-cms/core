@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -11,107 +12,67 @@
 namespace Zemit\Mvc\Model;
 
 use Phalcon\Mvc\Model\ResultsetInterface;
-use Zemit\Mvc\Model;
+use Phalcon\Text;
 
-/**
- * Trait Events
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Mvc\Model
- */
 trait Events
 {
-//    /**
-//     * @param null $parameters
-//     *
-//     * @return ResultsetInterface|bool
-//     */
-//    public static function findIn($parameters = null): ResultsetInterface
-//    {
-//        return self::fireEventCancelCall(__FUNCTION__, func_get_args());
-//    }
-    
     /**
-     * @param null $parameters
-     *
      * @return ResultsetInterface|bool
      */
-    public static function find($parameters = null): ResultsetInterface
+    public static function find(array ...$arguments): ResultsetInterface
+    {
+        return self::fireEventCancelCall(__FUNCTION__, $arguments);
+    }
+
+    /**
+     * @return ResultsetInterface|bool
+     */
+    public static function findFirst(array ...$arguments)
+    {
+        return self::fireEventCancelCall(__FUNCTION__, func_get_args());
+    }
+
+    /**
+     * @return ResultsetInterface|int|false
+     */
+    public static function count(array ...$arguments)
+    {
+        return self::fireEventCancelCall(__FUNCTION__, func_get_args());
+    }
+
+    /**
+     * @return ResultsetInterface|float|false
+     */
+    public static function sum(array ...$arguments)
     {
         return self::fireEventCancelCall(__FUNCTION__, func_get_args());
     }
     
     /**
-     * @param null $parameters
-     *
-     * @return ResultsetInterface|bool
+     * @return ResultsetInterface|float|false
      */
-    public static function findFirst($parameters = null)
+    public static function average(array ...$arguments)
     {
         return self::fireEventCancelCall(__FUNCTION__, func_get_args());
     }
-    
+
     /**
-     * @param null $parameters
-     *
-     * @return ResultsetInterface|bool
+     * Call the before & after events
+     * @return mixed|false
      */
-    public static function count($parameters = null)
+    public static function fireEventCancelCall(string $method, array $arguments = [])
     {
-        return self::fireEventCancelCall(__FUNCTION__, func_get_args());
-    }
-    
-    /**
-     * @param null $parameters
-     *
-     * @return ResultsetInterface|bool
-     */
-    public static function sum($parameters = null)
-    {
-        return self::fireEventCancelCall(__FUNCTION__, func_get_args());
-    }
-    
-    /**
-     * @param null $parameters
-     *
-     * @return ResultsetInterface|bool
-     */
-    public static function average($parameters = null)
-    {
-        return self::fireEventCancelCall(__FUNCTION__, func_get_args());
-    }
-    
-    /**
-     * Call the before events
-     * - find
-     * - findFirst
-     * - count
-     * - sum
-     * - average
-     *
-     * @param $call
-     * @param $params
-     *
-     * @return bool
-     */
-    public static function fireEventCancelCall($call, $params) {
-        
         $class = get_called_class();
         $that = new $class();
+        $event = ucfirst(Text::camelize($method));
         
-        if ($that->fireEventCancel('before' . ucfirst($call)) === false) {
-//            throw new \Exception('Not allowed to `' . $call . '` on model `' . get_called_class() . '`');
+        if ($that->fireEventCancel('before' . $event) === false) {
             return false;
         }
+
+        $ret = parent::$method(...$arguments);
         
-        $ret = parent::$call(...$params);
-    
-        $that->fireEvent('after' . ucfirst($call));
+        $that->fireEvent('after' . $event);
         
         return $ret;
     }
