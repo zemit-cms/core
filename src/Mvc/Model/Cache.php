@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -11,79 +12,79 @@
 namespace Zemit\Mvc\Model;
 
 use Phalcon\Mvc\ModelInterface;
-use Zemit\Bootstrap\Config;
+use Zemit\Config\ConfigInterface;
 use Zemit\Models\Audit;
 use Zemit\Models\AuditDetail;
 use Zemit\Models\Session;
 
 /**
- * Trait Cache
  * Flush Cache on changes
+ *
+ * @todo set cache keys
  * @todo improve to delete only necessary keys
  * @todo improve whiteList system
- * @todo precache
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Mvc\Model
+ * @todo precache system
  */
 trait Cache
 {
     /**
+     * Set true to avoid flushing cache for the current instance
+     */
+    public bool $preventFlushCache = false;
+    
+    /**
+     * Whitelisted classes to not force global cache flush on change
+     */
+    public array $flushModelsCacheBlackList = [];
+    
+    /**
+     * Get modelsCache service from default DI
+     */
+    public function getModelsCache(): \Phalcon\Cache
+    {
+        return $this->getDI()->get('modelsCache');
+    }
+    
+    /**
      * Initializing Cache
      */
-    public function initializeCache()
+    public function initializeCache(): void
     {
-        $this->addCacheBehavior();
+        $config = $this->getDI()->get('config');
+        assert($config instanceof ConfigInterface);
+        
+        $this->flushModelsCacheBlackList [] = $config->getModelClass(Session::class);
+        $this->flushModelsCacheBlackList [] = $config->getModelClass(Audit::class);
+        $this->flushModelsCacheBlackList [] = $config->getModelClass(AuditDetail::class);
+        
+        $this->addFlushCacheBehavior($this->flushModelsCacheBlackList);
     }
     
     /**
      * Adding Cache Behavior
-     *
-     * @param null $modelsCacheService
-     * @param null $whiteList
      */
-    public function addCacheBehavior($modelsCacheService = null, $whiteList = null): void
+    public function addFlushCacheBehavior(?array $flushModelsCacheBlackList = null): void
     {
-        $modelsCacheService ??= 'modelsCache';
-        $whiteList ??= [];
+        $flushModelsCacheBlackList ??= $this->flushModelsCacheBlackList;
         
-        /** @var Config $config */
-        $config = $this->getDI()->get('config');
-        
-        // Set default whiteList
-        $whiteList = array_merge($whiteList, [
-            $config->getModelClass(Session::class),
-            $config->getModelClass(Audit::class),
-            $config->getModelClass(AuditDetail::class),
-        ]);
-        
-        // Prevent adding behavior to whiteListed models
-        foreach ($whiteList as $className) {
-            if ($this instanceof $className) {
-                return;
-            }
+        // flush cache prevented by current instance
+        if ($this->preventFlushCache) {
+            return;
         }
         
-        $actions = [
-            'flush' => function(ModelInterface $model, $action) use ($modelsCacheService) {
-            
-                // Do not flush cache if nothing has changed
-                if ($this->hasSnapshotData() && !($this->hasUpdated() || $this->hasChanged())) {
-                    return false;
-                }
-            
-                /** @var \Phalcon\Cache $modelsCache */
-                $modelsCache = $this->getDI()->get($modelsCacheService);
-                
-                // Flush the entire cache
-                return $modelsCache->clear();
-            },
-        ];
+        // flush cache prevented if current instance class is blacklisted
+        if ($this->isThisInstanceOf($flushModelsCacheBlackList)) {
+            return;
+        }
+        
+        $modelsCache = $this->getModelsCache();
+        $flushAction = function (ModelInterface $model) use ($modelsCache) {
+            // Do not flush cache if nothing has changed
+            return ($model->hasSnapshotData() && !($model->hasUpdated() || $model->hasChanged()))
+                && $modelsCache->clear();
+        };
+        
+        $actions = ['flush' => $flushAction];
         $this->addBehavior(new Behavior\Action([
             'afterSave' => $actions,
             'afterCreate' => $actions,
@@ -92,5 +93,20 @@ trait Cache
             'afterRestore' => $actions,
             'afterReorder' => $actions,
         ]));
+    }
+    
+    /**
+     * Check whether the current instance is any of the classes
+     */
+    public function isThisInstanceOf(array $classes = []): bool
+    {
+        // Prevent adding behavior to whiteListed models
+        foreach ($classes as $class) {
+            if ($this instanceof $class) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 }
