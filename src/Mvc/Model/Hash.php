@@ -11,13 +11,13 @@
 
 namespace Zemit\Mvc\Model;
 
-use Phalcon\Di;
+use Phalcon\Di\DiInterface;
 use Phalcon\Security;
 use Zemit\Config\ConfigInterface;
 
 trait Hash
 {
-    abstract public function getDI(): Di;
+    abstract public function getDI(): DiInterface;
     
     /**
      * Hash string

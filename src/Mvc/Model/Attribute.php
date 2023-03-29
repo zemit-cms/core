@@ -11,13 +11,13 @@
 
 namespace Zemit\Mvc\Model;
 
-use Phalcon\Mvc\Model\MetaData;
+use Phalcon\Mvc\Model\MetaDataInterface;
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Text;
 
 trait Attribute
 {
-    abstract public function getModelsMetaData(): MetaData;
+    abstract public function getModelsMetaData(): MetaDataInterface;
     
     /**
      * Method to get attribute from getters or the readAttribute
