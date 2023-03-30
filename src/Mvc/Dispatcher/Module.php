@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -14,35 +15,13 @@ use Zemit\Di\Injectable;
 use Phalcon\Dispatcher\DispatcherInterface;
 use Phalcon\Events\Event;
 
-/**
- * Class Module
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Mvc\Dispatcher
- */
 class Module extends Injectable
 {
-    public function beforeDispatchLoop(Event $event, DispatcherInterface $dispatcher)
-    {
-        // @todo use module this way instead?
-//        $module = $this->getDI()->get('config')->modules->{$dispatcher->getModuleName()};
-//        if (is_array($module) || $module instanceof \Traversable) {
-//            foreach ($module as $module) {
-//                if (is_callable($module)) {
-//                }
-//            }
-//        }
-    }
-
-    public function beforeForward(Event $event, DispatcherInterface $dispatcher, array $forward)
+    public function beforeForward(Event $event, DispatcherInterface $dispatcher, array $forward): void
     {
         if (!empty($forward['module'])) {
             $dispatcher->setModuleName($forward['module']);
+            // @todo automatically add namepsace https://docs.phalcon.io/3.4/en/dispatcher#using-the-events-manager
         }
     }
 }
