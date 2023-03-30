@@ -107,13 +107,13 @@ class Config extends \Zemit\Config\Config
                         'className' => \Zemit\Modules\Api\Module::class,
                         'path' => CORE_PATH . 'Modules/Api/Module.php',
                     ],
-                    'zemit-' . \Zemit\Mvc\Module::NAME_CLI => [
-                        'className' => \Zemit\Modules\Cli\Module::class,
-                        'path' => CORE_PATH . 'Modules/Cli/Module.php',
-                    ],
                     'zemit-' . \Zemit\Mvc\Module::NAME_OAUTH2 => [
                         'className' => \Zemit\Modules\Oauth2\Module::class,
                         'path' => CORE_PATH . 'Modules/Oauth2/Module.php',
+                    ],
+                    'zemit-' . \Zemit\Cli\Module::NAME_CLI => [
+                        'className' => \Zemit\Modules\Cli\Module::class,
+                        'path' => CORE_PATH . 'Modules/Cli/Module.php',
                     ],
                 ],
                 'dir' => [
@@ -446,13 +446,13 @@ class Config extends \Zemit\Config\Config
                     'className' => \Zemit\Modules\Api\Module::class,
                     'path' => CORE_PATH . 'Modules/Api/Module.php',
                 ],
-                \Zemit\Mvc\Module::NAME_CLI => [
-                    'className' => \Zemit\Modules\Cli\Module::class,
-                    'path' => CORE_PATH . 'Modules/Cli/Module.php',
-                ],
                 \Zemit\Mvc\Module::NAME_OAUTH2 => [
                     'className' => \Zemit\Modules\Oauth2\Module::class,
                     'path' => CORE_PATH . 'Modules/Oauth2/Module.php',
+                ],
+                \Zemit\Cli\Module::NAME_CLI => [
+                    'className' => \Zemit\Modules\Cli\Module::class,
+                    'path' => CORE_PATH . 'Modules/Cli/Module.php',
                 ],
                 /**
                  * @TODO support this way too
