@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,82 +11,76 @@
 
 namespace Zemit\Mvc\Dispatcher;
 
-use \Exception;
+use Exception;
 use Phalcon\Dispatcher\Exception as DispatchException;
 use Zemit\Di\Injectable;
 use Phalcon\Events\Event;
 use Zemit\Mvc\Dispatcher;
 
-/**
- * Class Error
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Mvc\Dispatcher
- */
 class Error extends Injectable
 {
+    public array $defaultNotFoundRoute = [
+        'module' => null,
+        'namespace' => null,
+        'controller' => 'error',
+        'action' => 'notFound',
+    ];
+    
+    public array $defaultErrorRoute = [
+        'module' => null,
+        'namespace' => null,
+        'controller' => 'error',
+        'action' => 'fatal',
+    ];
+    
     /**
-     * Error -> not-found - 404
-     */
-    const DEFAULT_404_MODULE = null;
-    const DEFAULT_404_NAMESPACE = null;
-    const DEFAULT_404_CONTROLLER = 'error';
-    const DEFAULT_404_ACTION = 'notFound';
-
-    /**
-     * Error -> fatal - 500
-     */
-    const DEFAULT_500_MODULE = null;
-    const DEFAULT_500_NAMESPACE = null;
-    const DEFAULT_500_CONTROLLER = 'error';
-    const DEFAULT_500_ACTION = 'fatal';
-
-    /**
-     * Dispatcher Error Plugin
-     * - Forward to 404 or 500 error controller
-     *
-     * @param Event $event
-     * @param Dispatcher $dispatcher
-     * @param Exception $exception
-     *
-     * @return bool
+     * Forward to 404 or 500 error controller
      * @throws Exception
      */
-    public function beforeException(Event $event, Dispatcher $dispatcher, Exception $exception)
+    public function beforeException(Event $event, Dispatcher $dispatcher, Exception $exception): bool
     {
         switch ($exception->getCode()) {
+            
             case DispatchException::EXCEPTION_HANDLER_NOT_FOUND:
             case DispatchException::EXCEPTION_ACTION_NOT_FOUND:
-                if ($exception instanceof \Phalcon\Dispatcher\Exception) {
-                    $route = $this->config->router->notFound->toArray() ?? [];
-                    $route['module'] ??= self::DEFAULT_404_MODULE;
-                    $route['namespace'] ??= self::DEFAULT_404_NAMESPACE;
-                    $route['controller'] ??= self::DEFAULT_404_CONTROLLER;
-                    $route['action'] ??= self::DEFAULT_404_ACTION;
+                if ($exception instanceof DispatchException) {
+                    $route = $this->config->pathToArray('router.notFound') ?? [];
+                    
+                    $this->appendDefaultToRoute($route, $this->defaultNotFoundRoute);
                     $route['params']['exception'] = $exception;
+                    
                     $dispatcher->forward($route, true);
                     return false;
                 }
                 break;
+            
             default:
                 http_response_code(500);
+                
                 // Everything else, if debug is false, forward to fatal error 500
-                if (!$this->config->app->debug && !$this->config->debug->enable) {
-                    $route = $this->config->router->error->toArray() ?? [];
-                    $route['module'] ??= self::DEFAULT_500_MODULE;
-                    $route['namespace'] ??= self::DEFAULT_500_NAMESPACE;
-                    $route['controller'] ??= self::DEFAULT_500_CONTROLLER;
-                    $route['action'] ??= self::DEFAULT_500_ACTION;
+                $appDebug = $this->config->path('app.debug', false);
+                $debugEnable = $this->config->path('debug.enable', false);
+                
+                if (!$appDebug && !$debugEnable) {
+                    $route = $this->config->pathToArray('router.error') ?? [];
+                    
+                    $this->appendDefaultToRoute($route, $this->defaultErrorRoute);
                     $route['params']['exception'] = $exception;
+                    
                     $dispatcher->forward($route, true);
                     return false;
                 }
+                break;
         }
         throw $exception;
+    }
+    
+    public function appendDefaultToRoute(array $route, array $default): array
+    {
+        $route['module'] ??= $default['module'] ?? null;
+        $route['namespace'] ??= $default['namespace'] ?? null;
+        $route['controller'] ??= $default['controller'] ?? null;
+        $route['action'] ??= $default['action'] ?? null;
+        return $route;
     }
 }
