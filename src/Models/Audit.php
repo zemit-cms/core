@@ -16,25 +16,23 @@ use Phalcon\Validation\Validator\InclusionIn;
 use Phalcon\Validation\Validator\StringLength\Max;
 
 /**
- * Class Audit
- *
  * @property AuditDetail[] $AuditDetailList
  * @property User $CreatedByEntity
  * @property User $UpdatedByEntity
  *
- * @method AuditDetail[] getAuditDetailList($params = null)
- * @method User getCreatedByEntity($params = null)
- * @method User getUpdatedByEntity($params = null)
+ * @method AuditDetail[] getAuditDetailList(?array $params = null)
+ * @method User getCreatedByEntity(?array $params = null)
+ * @method User getUpdatedByEntity(?array $params = null)
  *
  * @package Zemit\Models
  */
-class Audit extends AbstractAudit
+class Audit extends AbstractAudit implements AuditInterface
 {
-    const EVENT_CREATE = 'create';
-    const EVENT_UPDATE = 'update';
-    const EVENT_DELETE = 'delete';
-    const EVENT_RESTORE = 'restore';
-    const EVENT_OTHER = 'other';
+    public const EVENT_CREATE = 'create';
+    public const EVENT_UPDATE = 'update';
+    public const EVENT_DELETE = 'delete';
+    public const EVENT_RESTORE = 'restore';
+    public const EVENT_OTHER = 'other';
 
     protected $event = self::EVENT_OTHER;
     protected $deleted = self::NO;

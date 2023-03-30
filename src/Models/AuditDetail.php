@@ -20,7 +20,7 @@ use Phalcon\Validation\Validator\StringLength\Max;
  *
  * @property Audit $AuditEntity
  *
- * @method Audit getAuditEntity($params = null)
+ * @method Audit getAuditEntity(?array $params = null)
  *
  * @package Zemit\Models
  */
