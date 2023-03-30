@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,68 +11,40 @@
 
 namespace Zemit\Mvc\Dispatcher;
 
-use Phalcon\Acl\Resource;
-use Phalcon\Dispatcher\AbstractDispatcher;
 use Phalcon\Events\Event;
-use Phalcon\Mvc\ModelInterface;
+use Zemit\Dispatcher\AbstractDispatcher;
 use Zemit\Di\Injectable;
-use Zemit\Events\Identity;
-use Zemit\Mvc\Dispatcher;
 
-/**
- * SecurityPlugin
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * This is the security plugin which controls that users only have access to the modules they're assigned to
- */
 class Logger extends Injectable
 {
     /**
      * Check if the logger is currently enabled or not from the config
-     *
-     * @return bool
      */
     public function isEnabled(): bool
     {
-        return (
-                $this->config->has('app') &&
-                $this->config->get('app')->logger
-            ) || (
-                $this->config->has('logger') &&
-                $this->config->get('logger')->enable
-            );
+        return ($this->config->path('app.logger') || $this->config->path('logger.enable'))
+            && $this->config->path('logger.dispatcher');
     }
     
     /**
      * This action is executed before execute any action in the application
      * Keeping a log of the dispatch event
-     *
-     * @param Event $event
-     * @param \Phalcon\Mvc\Dispatcher|\Zemit\Mvc\Dispatcher $dispatcher
      */
-    public function beforeDispatchLoop(Event $event, AbstractDispatcher $dispatcher)
+    public function beforeDispatchLoop(Event $event, AbstractDispatcher $dispatcher): void
     {
         if ($this->isEnabled()) {
-            
-            if ($this->config->has('logger') &&
-                $this->config->get('logger')->dispatcher) {
+            if ($this->config->path('logger.dispatcher')) {
                 
-                /** @var ModelInterface $session */
                 $session = $this->identity->getSession();
                 $sessionId = $session ? $session->readAttribute('id') : null;
-                $userId = $this->identity->getUserId(false) ? : null;
-                $userIdAs = $this->identity->getUserId(true) ? : null;
+                $userId = $this->identity->getUserId();
+                $userAsId = $this->identity->getUserAsId();
                 
                 $log = json_encode([
                     'type' => 'dispatch',
                     'sessionId' => $sessionId,
                     'userId' => $userId,
-                    'userIdAs' => $userIdAs,
+                    'userAsId' => $userAsId,
                     'meta' => [
                         'dispatch' => $dispatcher->toArray(),
                     ],
