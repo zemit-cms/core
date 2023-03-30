@@ -18,12 +18,16 @@ class Migration extends BootstrapConfig
     public function __construct(array $data = [], bool $insensitive = true)
     {
         parent::__construct($data, $insensitive);
+    
+        $databaseConfig = $this->pathToArray('database');
+        $driverName = $databaseConfig['default'] ?? 'mysql';
+        $driverOptions = $databaseConfig['drivers'][$driverName];
+    
+        $driverOptions['adapter'] = basename(str_replace('\\', '/', ($driverOptions['adapter'])));
+        unset($driverOptions['readonly']);
+//        unset($driverOptions['options']);
         
-        $driver = $this->path('database.default');
-        $database = $this->path('database.drivers.' . $driver);
-        $this->set('database', $database);
-        $this->get('database')->remove('options');
-        $this->get('database')->remove('readOnly');
+        $this->set('database', $driverOptions);
     }
 }
 
