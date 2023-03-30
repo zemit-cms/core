@@ -83,7 +83,7 @@ class Module implements ModuleDefinitionInterface
         return $namespaces;
     }
     
-    public function getServices(DiInterface $container = null): void
+    public function getServices(DiInterface $container): void
     {
         $this->config ??= $container['config'] ??= new Config();
         $this->loader ??= $container['loader'] ??= new Loader();
@@ -91,7 +91,7 @@ class Module implements ModuleDefinitionInterface
         $this->dispatcher ??= $container['dispatcher'] ??= new Dispatcher();
     }
     
-    public function setServices(DiInterface $container = null): void
+    public function setServices(DiInterface $container): void
     {
         $container->set('config', $this->config);
         $container->set('dispatcher', $this->dispatcher);
