@@ -11,133 +11,48 @@
 
 namespace Zemit;
 
+use Phalcon\Application\AbstractApplication;
 use Phalcon\Di;
+use Phalcon\Di\DiInterface;
 use Phalcon\Di\FactoryDefault;
+use Phalcon\Events;
 use Phalcon\Http\ResponseInterface;
 use Phalcon\Text;
-use Phalcon\Events;
-use Zemit\Utils\Env;
-use Zemit\Bootstrap\Prepare;
-use Zemit\Bootstrap\Config;
-use Zemit\Bootstrap\Services;
-use Zemit\Bootstrap\Modules;
-use Zemit\Bootstrap\Router;
+use Zemit\Config\ConfigInterface;
+use Zemit\Cli\Console;
 use Zemit\Events\EventsAwareTrait;
 use Zemit\Mvc\Application;
-use Zemit\Cli\Console;
-use Zemit\Cli\Router as CliRouter;
-use Dotenv\Dotenv;
+use Zemit\Provider\Config\ServiceProvider as ConfigServiceProvider;
+use Zemit\Provider\Router\ServiceProvider as RouterServiceProvider;
+use Zemit\Router\RouterInterface;
+use Zemit\Support\Php;
 use Docopt;
 
 /**
- * Class Bootstrap
  * Zemit Core's Bootstrap for the MVC Application & CLI Console mode
- *
- * @package Zemit
  */
 class Bootstrap
 {
     use EventsAwareTrait;
     
-    
     public const MODE_CLI = 'cli';
-    
-    
     public const MODE_MVC = 'mvc';
     
-    
     public const MODE_DEFAULT = self::MODE_MVC;
-    
-    
     public const MODE_CONSOLE = self::MODE_CLI;
     
-    
-    /**
-     * Ideally, only the config service provider should be added here, then it will load other service from itself
-     * You can also add new Service Providers here if it's absolutely required to be loaded earlier before
-     * @var ?array abstract => concrete
-     */
-    public array $providers = [
-        Provider\Config\ServiceProvider::class => Provider\Config\ServiceProvider::class,
-    ];
-    
-    /**
-     * Bootstrap mode
-     * @var string
-     */
     public string $mode;
     
-    /**
-     * Bootstrap cli args
-     * - This variable is currently filled by `docopt`
-     * @var ?array
-     */
     public ?array $args;
     
-    /**
-     * Dependencies
-     * @var null|string|FactoryDefault|FactoryDefault\Cli
-     */
-    public $di;
+    public DiInterface $di;
     
-    /**
-     * @var null|string|Dotenv
-     */
-    public $dotenv;
+    public ConfigInterface $config;
     
-    /**
-     * @var null|string|Docopt
-     */
-    public $docopt;
+    public RouterInterface $router;
     
-    /**
-     * @var null|string|Prepare
-     */
-    public $prepare;
+    public ?ResponseInterface $response;
     
-    /**
-     * @var null|string|Config
-     */
-    public $config;
-    
-    /**
-     * @var null|string|Services
-     */
-    public $services;
-    
-    /**
-     * @var null|string|Application
-     */
-    public $application;
-    
-    /**
-     * @var null|string|\Phalcon\Cli\Console
-     */
-    public $console;
-    
-    /**
-     * @var null|string|Modules
-     */
-    public $modules;
-    
-    /**
-     * @var null|string|Router
-     */
-    public $router;
-    
-    /**
-     * @var null|string|Debug
-     */
-    public $debug;
-    
-    /**
-     * @var bool|ResponseInterface
-     */
-    public $response;
-    
-    /**
-     * @var string
-     */
     public string $cliDoc = <<<DOC
 Zemit CLI
 
@@ -148,7 +63,7 @@ Usage:
   zemit (-i | --info)
 
 Options:
-  -c <key>=<value>       test
+  -c <key>=<value>        test
   -h --help               show this help message
   -v --version            print version number
   -i --info               print information
@@ -158,277 +73,197 @@ Options:
   --format=<format>       change output returned value format (json, xml, serialized, raw, dump)
 
 The most commonly used zemit commands are:
-   deployment        Populate the database
+   deployment             Populate the database
 DOC;
     
     /**
-     * Bootstrap constructor.
-     * Setup the di, env, app, config, services, applications, modules and then the router
-     *
-     * @param string $mode Mode for the application 'default' 'cli'
-     *
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct(string $mode = null)
     {
-        $this->mode = $mode ?? PHP_SAPI === 'cli'? 'cli' : self::MODE_MVC;
+        $this->setMode($mode);
         $this->setEventsManager(new Events\Manager());
+        $this->setDI();
         $this->initialize();
-        $this->dotenv();
-        $this->docopt();
-        $this->di();
-        $this->prepare();
-        $this->register();
-        $this->config();
-        $this->debug();
-        $this->services();
-        $this->application();
-        $this->console();
-        $this->modules();
-        $this->router();
+        $this->registerConfig();
+        $this->registerServices();
+        $this->bootServices();
+        $this->registerModules();
+        $this->registerRouter();
     }
     
     /**
      * Initialisation
      */
-    public function initialize()
+    public function initialize(): void
     {
     }
     
     /**
-     * Prepare the DI including itself (Bootstrap) and setup as default DI
-     * Also use the cli factory default for cli mode
-     * @return FactoryDefault|FactoryDefault\Cli Return a factory default DI
-     * @throws \Exception
+     * Set the default DI
      */
-    public function di()
+    public function setDI(?DiInterface $di = null): void
     {
-        // Use the phalcon cli factory default for cli mode
-        $this->fireSet($this->di, $this->isCli() ?
-            FactoryDefault\Cli::class :
-            FactoryDefault::class, [], function (Bootstrap $bootstrap) {
-            
-            // Register bootstrap itself
-                $this->di->setShared('bootstrap', $bootstrap);
-            
-            // Set as the default DI
-                Di::setDefault($this->di);
-            });
+        $di ??= $this->isCli()
+            ? new FactoryDefault\Cli()
+            : new FactoryDefault();
+        
+        $this->di = $di;
+        $this->di->setShared('bootstrap', $this);
+        Di::setDefault($this->di);
+    }
+    
+    public function setMode(?string $mode = null): void
+    {
+        $this->mode = $mode ?? (Php::isCli()
+            ? self::MODE_CLI
+            : self::MODE_MVC
+        );
+    }
+    
+    public function getMode(): string
+    {
+        return $this->mode;
+    }
+    
+    /**
+     * Get the default DI
+     */
+    public function getDI(): DiInterface
+    {
         return $this->di;
     }
     
     /**
-     * Reading .env file
-     * @return Dotenv
-     * @throws \Exception
+     * Set the Config
      */
-    public function dotenv()
+    public function setConfig(ConfigInterface $config): void
     {
-        return $this->fireSet($this->dotenv, Env::class, [], function (Bootstrap $bootstrap) {
-            
-            $bootstrap->dotenv = Env::getDotenv();
-        });
+        $this->config = $config;
     }
     
     /**
-     * Get arguments from command line interface cli
-     * @return Docopt
-     * @throws \Exception
+     * Get the Config
      */
-    public function docopt()
+    public function getConfig(): ConfigInterface
     {
-        return $this->fireSet($this->docopt, Docopt::class, [], function (Bootstrap $bootstrap) {
-            
-            if ($this->isCli()) {
-                $docoptResponse = $bootstrap->docopt->handle($bootstrap->cliDoc, [
-                    'argv' => array_slice($_SERVER['argv'], 1),
-                    'optionsFirst' => true,
-                ]);
-                $bootstrap->args = array_merge($bootstrap->args ?? [], $docoptResponse->args);
-            }
-        });
+        return $this->config;
     }
     
     /**
-     * Preparing some native PHP related stuff
-     * @return Prepare
-     * @throws \Exception
+     * Set the MVC or CLI Router
      */
-    public function prepare()
+    public function setRouter(RouterInterface $router): void
     {
-        return $this->fireSet($this->prepare, Prepare::class);
+        $this->router = $router;
     }
     
     /**
-     * Registering bootstrap providers
+     * Get the MVC or CLI Router
      */
-    public function register(array &$providers = null)
+    public function getRouter(): RouterInterface
     {
-        $providers ??= $this->providers;
-        foreach ($providers as $key => $provider) {
-            if (is_string($provider) && class_exists($provider)) {
-                $provider = new $provider($this->di);
-                $this->di->register($provider);
-                if ($this->di->has($provider->getName())) {
-                    $this->providers[$key] = $this->di->get($provider->getName());
-                }
-            }
+        return $this->router;
+    }
+    
+    /**
+     * Register Config
+     */
+    public function registerConfig(): void
+    {
+        if (!$this->di->has('config')) {
+            $configService = new ConfigServiceProvider($this->di);
+            $configService->register($this->di);
         }
-        
-        return $this->providers;
+        $this->config ??= $this->di->get('config');
     }
     
     /**
-     * Prepare the config service
-     * - Fire events (before & after)
-     * - Apply current bootstrap mode ('default', 'cli')
-     * - Merge with current environment config
-     * @return Config
-     * @throws \Exception
+     * Register Service Providers
+     * @throws Exception
      */
-    public function config()
+    public function registerServices(?array $providers = null): void
     {
-        if ($this->di->has('config')) {
-            $this->config = $this->di->get('config');
+        $providers ??= $this->config->pathToArray('providers') ?? [];
+        foreach ($providers as $provider) {
+            $this->di->register(new $provider($this->di));
         }
-        return $this->fireSet($this->config, Config::class);
     }
     
     /**
-     * @return Debug
-     * @throws \Exception
+     * Register Router
      */
-    public function debug()
+    public function registerRouter(): void
     {
-        return $this->fireSet($this->debug, Debug::class, [], function (Bootstrap $bootstrap) {
-            
-            $config = $bootstrap->config->debug->toArray();
-            $debug = $bootstrap->config->app->get('debug') || $config['enable'] ?? false;
-            $bootstrap->prepare->debug($debug);
-            
-            // @todo review on phalcon5 php8+ because phalcon4 php8+ debug is doing cyclic error
-            $cyclicError =
-                version_compare(PHP_VERSION, '8.0.0', '>=') &&
-                version_compare(\Phalcon\Version::get(), '5.0.0', '<');
-            
-            if (!$this->isCli() && !$cyclicError) {
-                if ($debug) {
-                    $bootstrap->debug->listen($config['exception'] ?? true, $config['lowSeverity'] ?? false);
-                    $bootstrap->debug->setBlacklist($config['blacklist'] ?? []);
-                    $bootstrap->debug->setShowFiles($config['showFiles'] ?? true);
-                    $bootstrap->debug->setShowBackTrace($config['showBackTrace'] ?? true);
-                    $bootstrap->debug->setShowFileFragment($config['showFileFragment'] ?? true);
-                    
-                    if (is_string($config['uri'])) {
-                        $bootstrap->debug->setUri($config['uri']);
-                    }
-                }
-            }
-        });
-    }
-    
-    /**
-     * Prepare procedural services way
-     * - Fire events (before & after)
-     * - Pass the current Di object as well as the current Config object
-     * @return Services
-     * @throws \Exception
-     */
-    public function services()
-    {
-        return $this->fireSet($this->services, Services::class, [$this->di]);
-    }
-    
-    /**
-     * Prepare the application
-     * - Fire events (before & after)
-     * - Pass the current Di object
-     * @return Application
-     * @throws \Exception
-     */
-    public function application()
-    {
-        return $this->fireSet($this->application, Application::class, [$this->di]);
-    }
-    
-    /**
-     * @return mixed|null
-     * @throws \Exception
-     */
-    public function console()
-    {
-        return $this->fireSet($this->console, Console::class, [$this->di]);
-    }
-    
-    /**
-     * Prepare the application for modules
-     * - Fire events (before & after)
-     * - Pass the current Application object
-     * @return Modules
-     * @throws \Exception
-     */
-    public function modules()
-    {
-        $modules = $this->config->modules->toArray();
-        $defaultModule = $this->config->path('router.defaults.module');
-        
-        return $this->fireSet($this->modules, Modules::class, [$this->isMvc() ? $this->application : $this->console, $modules, $defaultModule]);
-    }
-    
-    /**
-     * Prepare the router
-     * @return Router
-     * @throws \Exception
-     */
-    public function router()
-    {
-        if ($this->di->has('router')) {
-            $this->router = $this->di->get('router');
+        if (!$this->di->has('router')) {
+            $configService = new RouterServiceProvider($this->di);
+            $configService->register($this->di);
         }
-        
-        return $this->isCli() ?
-            $this->fireSet($this->router, CliRouter::class, [true]) :
-            $this->fireSet($this->router, Router::class, [true, $this->config]);
+        $this->router ??= $this->di->get('router');
     }
     
     /**
-     * Run the application
-     * - Fire events (before run & after run)
-     * - Handle both console and default application
-     * - Return response string
-     * @return false|string|null
+     * Boot Service Providers
+     */
+    public function bootServices(): void
+    {
+        $this->di->get('debug');
+    }
+    
+    /**
+     * Register modules
+     */
+    public function registerModules(AbstractApplication $application = null, ?array $modules = null, ?string $defaultModule = null): void
+    {
+        $application ??= $this->isMvc()
+            ? $this->di->get('application')
+            : $this->di->get('console');
+        assert($application instanceof AbstractApplication);
+        
+        $modules ??= $this->config->pathToArray('modules') ?? [];
+        $application->registerModules($modules);
+        
+        $defaultModule ??= $this->config->path('router.defaults.module');
+        $application->setDefaultModule($defaultModule);
+    }
+    
+    /**
+     * Handle cli or mvc application
      * @throws \Exception
      */
-    public function run()
+    public function run(): ?string
     {
         $this->fire('beforeRun');
-        if ($this->isMvc() && isset($this->application)) {
+        
+        if ($this->isMvc()) {
             
-            $content = $this->handleApplication($this->application);
+            $application = $this->di->get('application');
+            $content = $this->handleApplication($application);
         }
-        elseif ($this->isCli() && isset($this->console)) {
+        elseif ($this->isCli()) {
             
-            $content = $this->handleConsole($this->console);
+            $console = $this->di->get('console');
+            $content = $this->handleConsole($console);
         }
         else {
             throw new \Exception('Application or Console not found', 404);
         }
         
         $this->fire('afterRun', $content);
+        
         return $content;
     }
     
     /**
-     * @param Console $console
-     * @return false|string|null
+     * Handle Console (For CLI only)
      */
-    public function handleConsole(Console $console)
+    public function handleConsole(Console $console): ?string
     {
         $response = null;
         try {
             ob_start();
-            $console->handle($this->getArguments());
-            $response = ob_get_clean();
+            $console->handle($this->getArgs());
+            $response = ob_get_clean() ?: null;
         }
         catch (\Zemit\Exception $e) {
             new Cli\ExceptionHandler($e);
@@ -444,32 +279,34 @@ DOC;
     }
     
     /**
-     * @param Application $application
-     * @return string
+     * Handle Application
      * @throws \Exception
      */
     public function handleApplication(Application $application): string
     {
-        $this->response = $application->handle($_SERVER['REQUEST_URI'] ?? '/');
+        $this->response = $application->handle($_SERVER['REQUEST_URI'] ?? '/') ?: null;
         return $this->response ? $this->response->getContent() : '';
     }
     
     /**
-     * Get & format arguments from the $this->args property
-     * @return array Key value pair, human-readable
+     * Get & format args from the $this->args property
      */
-    public function getArguments(): array
+    public function getArgs(): array
     {
-        $arguments = [];
-        if (!empty($this->args)) {
-            foreach ($this->args as $key => $value) {
+        $args = [];
+        
+        if ($this->isCli()) {
+            $argv = array_slice($_SERVER['argv'] ?? [], 1);
+            $response = (new Docopt())->handle($this->cliDoc, ['argv' => $argv, 'optionsFirst' => true]);
+            foreach ($response as $key => $value) {
                 if (preg_match('/(<(.*?)>|\-\-(.*))/', $key, $match)) {
                     $key = lcfirst(Text::camelize(Text::uncamelize(array_pop($match))));
-                    $arguments[$key] = $value;
+                    $args[$key] = $value;
                 }
             }
         }
-        return $arguments;
+        
+        return $args;
     }
     
     /**
@@ -504,13 +341,5 @@ DOC;
     public function isDefault(): bool
     {
         return $this->isMvc();
-    }
-    
-    /**
-     * Return the current mode
-     */
-    public function getMode(): string
-    {
-        return $this->mode;
     }
 }
