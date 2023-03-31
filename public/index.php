@@ -11,10 +11,9 @@
 use Zemit\Bootstrap;
 
 // Set your default path and namespace
-const VENDOR_PATH = __DIR__ . '/../vendor';
-const APP_PATH = __DIR__ . '/../src';
-const APP_NAMESPACE = 'Zemit';
+const VENDOR_PATH = __DIR__ . '/../vendor/';
+const APP_PATH = __DIR__ . '/../src/';
 
 // Register autoloader and run bootstrap
-$composer = require_once VENDOR_PATH . '/autoload.php';
+$composer = require_once VENDOR_PATH . 'autoload.php';
 echo (new Bootstrap(Bootstrap::MODE_MVC))->run();
