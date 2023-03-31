@@ -12,10 +12,9 @@ declare(strict_types=1);
 
 namespace Zemit\Tests\Unit;
 
-use Phalcon\Di;
 use PHPUnit\Framework\TestCase;
+use Phalcon\Di\DiInterface;
 use Zemit\Bootstrap;
-use PHPUnit\Framework\IncompleteTestError;
 use Zemit\Utils\Env;
 
 /**
@@ -28,9 +27,9 @@ abstract class AbstractUnit extends TestCase
     
     protected ?Bootstrap $bootstrap;
     
-    protected ?Di $di;
+    protected ?DiInterface $di;
     
-    protected string $mode = Bootstrap::MODE_DEFAULT;
+    protected string $mode = Bootstrap::MODE_MVC;
     
     /**
      * Zemit Setup

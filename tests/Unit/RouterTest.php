@@ -19,14 +19,21 @@ use Phalcon\Mvc\Router\RouteInterface;
  */
 class RouterTest extends AbstractUnit
 {
-    public function getRouter() {
-        return $this->bootstrap->router;
+    public function getRouter()
+    {
+        return $this->di->get('router');
+    }
+    
+    public function getApplication()
+    {
+        return $this->di->get('application');
     }
     
     /**
      * Testing the bootstrap service
      */
-    public function testRouter() {
+    public function testRouter()
+    {
         $routerToArray = $this->getRouter()->toArray();
         $this->assertIsArray($routerToArray);
         $this->assertNull($routerToArray['namespace']);
@@ -37,7 +44,7 @@ class RouterTest extends AbstractUnit
         $this->assertIsArray($routerToArray['defaults']);
         $this->assertNull($routerToArray['matches']);
         $this->assertNull($routerToArray['matched']);
-        
+
 //        $this->assertIsString($routerToArray['matched']['id']);
 //        $this->assertIsString($routerToArray['matched']['name']);
 //        $this->assertIsString($routerToArray['matched']['hostname']);
@@ -47,18 +54,20 @@ class RouterTest extends AbstractUnit
 //        $this->assertIsString($routerToArray['matched']['reversedPaths']);
     }
     
-    public function testDefaultRoutes() {
+    public function testDefaultRoutes()
+    {
         $routeNames = [
             'default',
             'default-controller',
             'default-controller-action',
         ];
-    
-        $applicationModules = $this->bootstrap->application->getModules();
+        
+        $application = $this->di->get('application');
+        $applicationModules = $application->getModules();
         $modules = array_keys($applicationModules);
         $locales = [
             'locale',
-            ...$this->bootstrap->config->locale->allowed->toArray()
+            ...$this->bootstrap->config->locale->allowed->toArray(),
         ];
         
         $routePrefixes = [
@@ -86,9 +95,9 @@ class RouterTest extends AbstractUnit
             
             // add some testing for -action routes
             if (strpos($name, '-action') !== false) {
-                $uris []= $uris[0] . '/params';
-                $uris []= $uris[0] . '/params/1';
-                $uris []= $uris[0] . '/params/1/2';
+                $uris [] = $uris[0] . '/params';
+                $uris [] = $uris[0] . '/params/1';
+                $uris [] = $uris[0] . '/params/1/2';
             }
             
             // can't match locale route, it should match the locale route itself
@@ -98,16 +107,16 @@ class RouterTest extends AbstractUnit
             
             $routeByName = $this->getRouter()->getRouteByName($name);
             
-            $this->assertInstanceOf(RouteInterface::class, $routeByName, $name . ' : ' . (is_object($routeByName)? get_class($routeByName) : $routeByName));
+            $this->assertInstanceOf(RouteInterface::class, $routeByName, $name . ' : ' . (is_object($routeByName) ? get_class($routeByName) : $routeByName));
             
             foreach ($uris as $uri) {
                 $this->getRouter()->handle($uri);
                 $matchedRoute = $this->getRouter()->getMatchedRoute();
                 $this->assertInstanceOf(RouteInterface::class, $matchedRoute, get_class($matchedRoute));
-    
+                
                 $message = $uri . ' : ' . json_encode($matchedRoute->getPaths());
                 $this->assertEquals($name, $matchedRoute->getName(), $message);
-    
+                
                 foreach ($modules as $module) {
                     if (strpos($name, $module) !== false) {
                         $this->assertEquals($module, $this->getRouter()->getModuleName(), $message);
@@ -124,5 +133,4 @@ class RouterTest extends AbstractUnit
             }
         }
     }
-    
 }
