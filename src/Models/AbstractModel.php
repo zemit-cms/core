@@ -21,8 +21,7 @@ use Zemit\Validation;
 
 /**
  * Class Base
- *
- * @package Zemit\Models
+
  */
 abstract class AbstractModel extends \Zemit\Mvc\Model
 {
@@ -34,7 +33,7 @@ abstract class AbstractModel extends \Zemit\Mvc\Model
     /**
      * Initialize method for model.
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         $this->addDefaultRelationships();

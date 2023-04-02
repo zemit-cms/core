@@ -11,26 +11,22 @@
 namespace Zemit\Models;
 
 use Phalcon\Validation\Validator\Between;
-use Zemit\Models\Base\AbstractPage;
+use Zemit\Models\Abstracts\AbstractPage;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength\Max;
+use Zemit\Models\Interfaces\PageInterface;
 
-/**
- * Class Page
- *
- * @package Zemit\Models
- */
-class Page extends AbstractPage
+class Page extends AbstractPage implements PageInterface
 {
     protected $deleted = self::NO;
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         // @todo relationships
     }
 
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
     

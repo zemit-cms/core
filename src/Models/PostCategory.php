@@ -10,26 +10,22 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractPostCategory;
+use Zemit\Models\Abstracts\AbstractPostCategory;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength\Max;
+use Zemit\Models\Interfaces\PostCategoryInterface;
 
-/**
- * Class PostCategory
- *
- * @package Zemit\Models
- */
-class PostCategory extends AbstractPostCategory
+class PostCategory extends AbstractPostCategory implements PostCategoryInterface
 {
     protected $deleted = self::NO;
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         // @todo relationships
     }
 
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
 

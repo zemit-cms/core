@@ -10,26 +10,22 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractMenu;
+use Zemit\Models\Abstracts\AbstractMenu;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength\Max;
+use Zemit\Models\Interfaces\MenuInterface;
 
-/**
- * Class Menu
- *
- * @package Zemit\Models
- */
-class Menu extends AbstractMenu
+class Menu extends AbstractMenu implements MenuInterface
 {
     protected $deleted = self::NO;
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         // @todo relationships
     }
 
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
 

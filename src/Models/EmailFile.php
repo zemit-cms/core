@@ -10,26 +10,22 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractEmailFile;
+use Zemit\Models\Abstracts\AbstractEmailFile;
 use Phalcon\Validation\Validator\PresenceOf;
+use Zemit\Models\Interfaces\EmailFileInterface;
 
 /**
- * Class EmailFile
- *
  * @property Email $EmailEntity
  * @property File $FileEntity
  *
- * @method Email getEmailEntity($params = null)
- * @method File getFileEntity($params = null)
- *
- * @package Zemit\Models
+ * @method Email getEmailEntity(?array $params = null)
+ * @method File getFileEntity(?array $params = null)
  */
-class EmailFile extends AbstractEmailFile
+class EmailFile extends AbstractEmailFile implements EmailFileInterface
 {
     protected $deleted = self::NO;
-    protected $position = self::NO;
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -37,7 +33,7 @@ class EmailFile extends AbstractEmailFile
         $this->hasOne('fileId', File::class, 'id', ['alias' => 'FileEntity']);
     }
 
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
         $validator->add('emailId', new PresenceOf(['message' => $this->_('required')]));

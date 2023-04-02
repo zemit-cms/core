@@ -10,31 +10,25 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractCategory;
-use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\StringLength\Max;
+use Zemit\Models\Abstracts\AbstractCategory;
+use Zemit\Models\Interfaces\CategoryInterface;
 
-/**
- * Class Category
- *
- * @package Zemit\Models
- */
-class Category extends AbstractCategory
+class Category extends AbstractCategory implements CategoryInterface
 {
     protected $deleted = self::NO;
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         // @todo relationships
     }
 
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
-
+        
         // @todo validations
-
+        
         return $this->validate($validator);
     }
 }

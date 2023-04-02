@@ -10,27 +10,20 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractTranslate;
-use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\StringLength\Max;
-use Phalcon\Validation\Validator\Uniqueness;
+use Zemit\Models\Abstracts\AbstractTranslate;
+use Zemit\Models\Interfaces\TranslateInterface;
 
-/**
- * Class Setting
- *
-* @package Zemit\Models
-*/
-class Translate extends AbstractTranslate
+class Translate extends AbstractTranslate implements TranslateInterface
 {
     protected $deleted = self::NO;
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         // @todo relationships
     }
 
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
 

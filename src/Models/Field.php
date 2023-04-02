@@ -10,26 +10,22 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractField;
+use Zemit\Models\Abstracts\AbstractField;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength\Max;
+use Zemit\Models\Interfaces\FieldInterface;
 
-/**
- * Class Field
- *
- * @package Zemit\Models
- */
-class Field extends AbstractField
+class Field extends AbstractField implements FieldInterface
 {
     protected $deleted = self::NO;
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         // @todo relationships
     }
 
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
 

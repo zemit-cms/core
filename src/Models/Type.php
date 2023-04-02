@@ -10,31 +10,28 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractType;
+use Zemit\Models\Abstracts\AbstractType;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength\Max;
+use Zemit\Models\Interfaces\TypeInterface;
 
 /**
- * Class Type
- *
  * @property UserType[] $UserNode
  * @property User[] $UserList
  * @property GroupType $GroupNode
  * @property Group[] $GroupList
  *
- * @method UserType[] getUserNode($params = null)
- * @method User[] getUserList($params = null)
- * @method GroupType getGroupNode($params = null)
- * @method Group[] getGroupList($params = null)
- *
- * @package Zemit\Models
+ * @method UserType[] getUserNode(?array $params = null)
+ * @method User[] getUserList(?array $params = null)
+ * @method GroupType getGroupNode(?array $params = null)
+ * @method Group[] getGroupList(?array $params = null)
  */
-class Type extends AbstractType
+class Type extends AbstractType implements TypeInterface
 {
     protected $deleted = self::NO;
     protected $position = self::NO;
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -49,7 +46,7 @@ class Type extends AbstractType
             'groupId', Group::class, 'id', ['alias' => 'GroupList']);
     }
 
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
 

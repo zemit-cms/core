@@ -10,30 +10,27 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractSiteLang;
+use Zemit\Models\Abstracts\AbstractSiteLang;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\Uniqueness;
+use Zemit\Models\Interfaces\SiteLangInterface;
 
 /**
- * Class SiteLang
- *
  * @property Site $Site
  * @property Lang $Lang
  * @property Site $SiteEntity
  * @property Lang $LangEntity
  *
- * @method Site getSite($params = null)
- * @method Lang getLang($params = null)
- * @method Site getSiteEntity($params = null)
- * @method Lang getLangEntity($params = null)
- *
- * @package Zemit\Models
+ * @method Site getSite(?array $params = null)
+ * @method Lang getLang(?array $params = null)
+ * @method Site getSiteEntity(?array $params = null)
+ * @method Lang getLangEntity(?array $params = null)
  */
-class SiteLang extends AbstractSiteLang
+class SiteLang extends AbstractSiteLang implements SiteLangInterface
 {
     protected $deleted = self::NO;
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -41,7 +38,7 @@ class SiteLang extends AbstractSiteLang
         $this->hasOne('langId', Lang::class, 'id', ['alias' => 'LangEntity']);
     }
 
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
 

@@ -10,27 +10,24 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractUserRole;
+use Zemit\Models\Abstracts\AbstractUserRole;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\Uniqueness;
+use Zemit\Models\Interfaces\UserRoleInterface;
 
 /**
- * Class UserRole
- *
  * @property User $UserEntity
  * @property Role $RoleEntity
  *
- * @method User getUserEntity($params = null)
- * @method Role getRoleEntity($params = null)
- *
- * @package Zemit\Models
+ * @method User getUserEntity(?array $params = null)
+ * @method Role getRoleEntity(?array $params = null)
  */
-class UserRole extends AbstractUserRole
+class UserRole extends AbstractUserRole implements UserRoleInterface
 {
     protected $deleted = self::NO;
     protected $position = self::NO;
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -38,9 +35,10 @@ class UserRole extends AbstractUserRole
         $this->hasOne('roleId', Role::class, 'id', ['alias' => 'RoleEntity']);
     }
 
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
+        
         $validator->add('userId', new PresenceOf(['message' => $this->_('required')]));
         $validator->add('roleId', new PresenceOf(['message' => $this->_('required')]));
         $validator->add(['userId', 'roleId'], new Uniqueness(['message' => $this->_('not-unique')]));

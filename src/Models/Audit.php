@@ -10,10 +10,11 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractAudit;
-use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\InclusionIn;
+use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength\Max;
+use Zemit\Models\Abstracts\AbstractAudit;
+use Zemit\Models\Interfaces\AuditInterface;
 
 /**
  * @property AuditDetail[] $AuditDetailList
@@ -23,8 +24,6 @@ use Phalcon\Validation\Validator\StringLength\Max;
  * @method AuditDetail[] getAuditDetailList(?array $params = null)
  * @method User getCreatedByEntity(?array $params = null)
  * @method User getUpdatedByEntity(?array $params = null)
- *
- * @package Zemit\Models
  */
 class Audit extends AbstractAudit implements AuditInterface
 {
@@ -37,7 +36,7 @@ class Audit extends AbstractAudit implements AuditInterface
     protected $event = self::EVENT_OTHER;
     protected $deleted = self::NO;
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -46,7 +45,7 @@ class Audit extends AbstractAudit implements AuditInterface
         $this->belongsTo('updatedBy', User::class, 'id', ['alias' => 'UpdatedByEntity']);
     }
 
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
         $eventInclusions = [self::EVENT_CREATE, self::EVENT_UPDATE, self::EVENT_DELETE, self::EVENT_RESTORE, self::EVENT_OTHER];

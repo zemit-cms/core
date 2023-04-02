@@ -10,27 +10,22 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractSetting;
+use Zemit\Models\Abstracts\AbstractSetting;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength\Max;
 use Phalcon\Validation\Validator\Uniqueness;
+use Zemit\Models\Interfaces\SettingInterface;
 
-
-/**
- * Class Setting
- *
- * @package Zemit\Models
- */
-class Setting extends AbstractSetting
+class Setting extends AbstractSetting implements SettingInterface
 {
     protected $deleted = self::NO;
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
     }
 
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
 

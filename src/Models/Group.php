@@ -10,13 +10,12 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractGroup;
+use Zemit\Models\Abstracts\AbstractGroup;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength\Max;
+use Zemit\Models\Interfaces\GroupInterface;
 
 /**
- * Class Group
- *
  * @property UserGroup[] $UserNode
  * @property User[] $UserList
  * @property GroupRole[] $RoleNode
@@ -24,21 +23,19 @@ use Phalcon\Validation\Validator\StringLength\Max;
  * @property GroupType[] $TypeNode
  * @property Type[] $TypeList
  *
- * @method UserGroup[] getUserNode($params = null)
- * @method User[] getUserList($params = null)
- * @method GroupRole[] getRoleNode($params = null)
- * @method Role[] getRoleList($params = null)
- * @method GroupType[] getTypeNode($params = null)
- * @method Type[] getTypeList($params = null)
- *
- * @package Zemit\Models
+ * @method UserGroup[] getUserNode(?array $params = null)
+ * @method User[] getUserList(?array $params = null)
+ * @method GroupRole[] getRoleNode(?array $params = null)
+ * @method Role[] getRoleList(?array $params = null)
+ * @method GroupType[] getTypeNode(?array $params = null)
+ * @method Type[] getTypeList(?array $params = null)
  */
-class Group extends AbstractGroup
+class Group extends AbstractGroup implements GroupInterface
 {
     protected $deleted = self::NO;
     protected $position = self::NO;
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -65,7 +62,7 @@ class Group extends AbstractGroup
         }
     }
 
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
 

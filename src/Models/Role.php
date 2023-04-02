@@ -10,9 +10,10 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractRole;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength\Max;
+use Zemit\Models\Abstracts\AbstractRole;
+use Zemit\Models\Interfaces\RoleInterface;
 
 /**
  * @property UserRole[] $UserNode
@@ -24,8 +25,6 @@ use Phalcon\Validation\Validator\StringLength\Max;
  * @method User[] getUserList(?array $params = null)
  * @method GroupRole[] getGroupNode(?array $params = null)
  * @method Group[] getGroupList(?array $params = null)
- *
- * @package Zemit\Models
  */
 class Role extends AbstractRole implements RoleInterface
 {

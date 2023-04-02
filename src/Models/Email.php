@@ -10,38 +10,33 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractEmail;
+use Zemit\Models\Abstracts\AbstractEmail;
 use Phalcon\Mailer\Manager;
 use Phalcon\Messages\Message;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength\Max;
 use Phalcon\Validation\Validator\Uniqueness;
 use Phalcon\Validation\Validator\Numericality;
+use Zemit\Models\Interfaces\EmailInterface;
 
 /**
- * Class Email
- *
  * @property Template $TemplateEntity
  * @property EmailFile $FileNode
  * @property File $FileList
  *
- * @method Template getTemplateEntity($params = null)
- * @method EmailFile getFileNode($params = null)
- * @method File getFileList($params = null)
- *
- * @package Zemit\Models
+ * @method Template getTemplateEntity(?array $params = null)
+ * @method EmailFile getFileNode(?array $params = null)
+ * @method File getFileList(?array $params = null)
  */
-class Email extends AbstractEmail
+class Email extends AbstractEmail implements EmailInterface
 {
     protected $deleted = self::NO;
     protected $sent = self::NO;
 
     /**
-     * @param string|null $index
-     *
      * @return mixed
      */
-    public function setTemplateByIndex(string $index = null)
+    public function setTemplateByIndex(?string $index = null)
     {
         $template = Template::findFirstByIndex($index);
         if ($template) {
@@ -214,7 +209,7 @@ class Email extends AbstractEmail
      * Initialize
      * - Relationships
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -229,7 +224,7 @@ class Email extends AbstractEmail
      * Basic default validation
      * @return bool
      */
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
 
