@@ -8,6 +8,7 @@
     <!-- Use PSR-2 with some changes -->
     <rule ref="PSR2">
         <exclude name="Generic.Files.LineLength"/>
+        <exclude name="PSR2.Methods.MethodDeclaration.Underscore"/>
         <exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace"/>
         <exclude name="Squiz.WhiteSpace.ControlStructureSpacing.SpacingAfterOpen"/>
         <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndLine"/>
