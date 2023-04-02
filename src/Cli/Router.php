@@ -11,7 +11,9 @@
 
 namespace Zemit\Cli;
 
-class Router extends \Phalcon\Cli\Router
+use Zemit\Router\RouterInterface;
+
+class Router extends \Phalcon\Cli\Router implements RouterInterface
 {
     public function toArray(): array
     {
