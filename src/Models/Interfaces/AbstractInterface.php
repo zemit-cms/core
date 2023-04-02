@@ -8,16 +8,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Models;
+namespace Zemit\Models\Interfaces;
 
 use Phalcon\Mvc\ModelInterface;
-use Phalcon\Session\ManagerInterface;
 
-interface RoleInterface extends ModelInterface
+interface AbstractInterface extends ModelInterface
 {
-    public function getIndex();
-    
-    public function setIndex(string $index);
-    
-    public function setLabel(string $label);
+
 }

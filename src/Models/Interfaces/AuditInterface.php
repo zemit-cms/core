@@ -8,11 +8,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Models;
+namespace Zemit\Models\Interfaces;
 
 use Phalcon\Mvc\ModelInterface;
 
-interface AuditInterface extends ModelInterface
+interface AuditInterface extends AbstractInterface
 {
     public function setId($id);
     public function getId();

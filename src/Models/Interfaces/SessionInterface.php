@@ -8,12 +8,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Models;
+namespace Zemit\Models\Interfaces;
 
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Session\ManagerInterface;
 
-interface SessionInterface extends ModelInterface
+interface SessionInterface extends AbstractInterface
 {
     public static function findFirstByKey(?string $key = null): ?ModelInterface;
     
