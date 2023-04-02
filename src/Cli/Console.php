@@ -15,8 +15,8 @@ use Phalcon\Di\DiInterface;
 
 class Console extends \Phalcon\Cli\Console
 {
-    public function __construct(DiInterface $dependencyInjector = null)
+    public function __construct(DiInterface $container = null)
     {
-        parent::__construct($dependencyInjector);
+        parent::__construct($container);
     }
 }
