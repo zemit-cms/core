@@ -33,12 +33,8 @@ class ServiceProvider extends AbstractServiceProvider
                 ? new CliRouter(true)
                 : new Router(true, $bootstrap->config);
             
-            if (is_string($router) && class_exists($router)) {
-                $router = new $router();
-            }
-            
-            $defaults = $bootstrap->config->path($bootstrap->isCli() ? 'router.cli' : 'router.defaults');
-            $router->setDefaults($defaults->toArray() ?? []);
+            $defaults = $bootstrap->config->pathToArray($bootstrap->isCli() ? 'router.cli' : 'router.defaults') ?? [];
+            $router->setDefaults($defaults);
             $router->setDI($di);
             
             if ($router instanceof Router) {
@@ -46,7 +42,7 @@ class ServiceProvider extends AbstractServiceProvider
                 $router->setConfig($bootstrap->config);
                 $router->baseRoutes();
                 $router->hostnamesRoutes();
-                $router->modulesRoutes($bootstrap->application);
+                $router->modulesRoutes($di->get('application'));
             }
             
             return $router;
