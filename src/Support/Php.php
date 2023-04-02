@@ -9,30 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Bootstrap;
+namespace Zemit\Support;
 
-use Zemit\Di\Injectable;
-
-class Prepare extends Injectable
+class Php
 {
-    public function __construct()
+    public static function isCli(): bool
     {
-        $this->initialize();
-        $this->trustForwardedProto();
+        return PHP_SAPI === 'cli';
     }
-
-    /**
-     * Initialisation
-     */
-    public function initialize(): void
-    {
-    }
-
+    
     /**
      * Trust forwarded protocol and force $_SERVER['https'] to 'on'
-     * @todo move this to request?
      */
-    public function trustForwardedProto(): void
+    public static function trustForwardedProto(): void
     {
         if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '', 'https') !== false) {
             $_SERVER['HTTPS'] = 'on';
@@ -40,28 +29,27 @@ class Prepare extends Injectable
     }
 
     /**
-     * Prepare debugging
-     * @todo review this
+     * Set debugging values
      */
-    public function debug(?bool $debug = null): void
+    public static function debug(?bool $debug = null): void
     {
-        $debug ??= $this->config->get('app.debug') || $this->config->get('debug.enable');
         if ($debug) {
             // Enabling error reporting and display
             error_reporting(E_ALL);
-            ini_set('display_errors', 1);
+            ini_set('display_startup_errors', '1');
+            ini_set('display_errors', '1');
         } else {
             // Disabling error reporting and display
             error_reporting(-1);
-            ini_set('display_errors', 0);
+            ini_set('display_startup_errors', '0');
+            ini_set('display_errors', '0');
         }
     }
 
     /**
      * Prepare some PHP config
-     * @todo review this
      */
-    public function php(array $config = []): void
+    public static function set(array $config = []): void
     {
         date_default_timezone_set($config['timezone'] ?? 'America/Montreal');
         
