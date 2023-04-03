@@ -15,7 +15,7 @@ trait Json
 {
     /**
      * JSON Encode or fallback to value
-     * @return string|false
+     * @see json_encode
      */
     public function jsonEncode($value, int $flags = JSON_UNESCAPED_SLASHES, int $depth = 512)
     {
@@ -24,7 +24,7 @@ trait Json
     
     /**
      * JSON Decode or fallback to value
-     * @return mixed|string
+     * @see json_decode
      */
     public function jsonDecode(string $json, ?bool $associative = null, int $depth = 512, int $flags = 0)
     {
