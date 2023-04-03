@@ -16,6 +16,7 @@ use Zemit\Config\ConfigInterface;
 use Zemit\Models\Audit;
 use Zemit\Models\AuditDetail;
 use Zemit\Models\Session;
+use Zemit\Mvc\Model\AbstractTrait\AbstractModelsCache;
 
 /**
  * Flush Cache on changes
@@ -27,6 +28,8 @@ use Zemit\Models\Session;
  */
 trait Cache
 {
+    use AbstractModelsCache;
+    
     /**
      * Set true to avoid flushing cache for the current instance
      */
@@ -36,14 +39,6 @@ trait Cache
      * Whitelisted classes to not force global cache flush on change
      */
     public array $flushModelsCacheBlackList = [];
-    
-    /**
-     * Get modelsCache service from default DI
-     */
-    public function getModelsCache(): \Phalcon\Cache
-    {
-        return $this->getDI()->get('modelsCache');
-    }
     
     /**
      * Initializing Cache
@@ -73,7 +68,7 @@ trait Cache
         }
         
         // flush cache prevented if current instance class is blacklisted
-        if ($this->isThisInstanceOf($flushModelsCacheBlackList)) {
+        if ($this->isInstanceOf($flushModelsCacheBlackList)) {
             return;
         }
         
@@ -98,11 +93,13 @@ trait Cache
     /**
      * Check whether the current instance is any of the classes
      */
-    public function isThisInstanceOf(array $classes = []): bool
+    public function isInstanceOf(array $classes = [], ?ModelInterface $that = null): bool
     {
+        $that ??= $this;
+        
         // Prevent adding behavior to whiteListed models
         foreach ($classes as $class) {
-            if ($this instanceof $class) {
+            if ($that instanceof $class) {
                 return true;
             }
         }
