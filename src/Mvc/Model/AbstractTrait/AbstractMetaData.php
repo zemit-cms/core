@@ -15,5 +15,7 @@ use Phalcon\Mvc\Model\MetaDataInterface;
 
 trait AbstractMetaData
 {
+    use AbstractInjectable;
+    
     abstract public function getModelsMetaData(): MetaDataInterface;
 }
