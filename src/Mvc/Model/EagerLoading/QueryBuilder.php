@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,32 +11,31 @@
 
 namespace Zemit\Mvc\Model\EagerLoading;
 
-use Phalcon\Di\InjectionAwareInterface;
 use Phalcon\Mvc\Model\Query\Builder;
 use Phalcon\Mvc\Model\Query\BuilderInterface;
 
-final class QueryBuilder extends Builder implements BuilderInterface, InjectionAwareInterface
+final class QueryBuilder extends Builder
 {
-    const E_NOT_ALLOWED_METHOD_CALL = 'When eager loading relations queries must return full entities';
+    public const E_NOT_ALLOWED_METHOD_CALL = 'When eager loading relations queries must return full entities';
     
     /**
      * @param mixed $distinct
-     * @throws \LogicException
      * @return BuilderInterface
+     * @throws \LogicException
      */
-    public function distinct($distinct) : BuilderInterface
+    public function distinct($distinct): BuilderInterface
     {
-        throw new \LogicException(static::E_NOT_ALLOWED_METHOD_CALL);
+        throw new \LogicException(self::E_NOT_ALLOWED_METHOD_CALL);
     }
     
     /**
-     * @param array|mixed|string $columns
-     * @throws \LogicException
+     * @param mixed $columns
      * @return BuilderInterface
+     * @throws \LogicException
      */
-    public function columns($columns) : BuilderInterface
+    public function columns($columns): BuilderInterface
     {
-        throw new \LogicException(static::E_NOT_ALLOWED_METHOD_CALL);
+        throw new \LogicException(self::E_NOT_ALLOWED_METHOD_CALL);
     }
     
     /**
@@ -46,15 +46,11 @@ final class QueryBuilder extends Builder implements BuilderInterface, InjectionA
      *
      * @return BuilderInterface
      */
-    public function where(string $conditions, array $bindParams = [], array $bindTypes = []) : BuilderInterface
+    public function where(string $conditions, array $bindParams = [], array $bindTypes = []): BuilderInterface
     {
-        /**
-         * Nest the condition to current ones or set as unique
-         */
         if (!empty($this->conditions)) {
-            $conditions = "(" . $this->conditions . ") AND (" . $conditions . ")";
+            $conditions = '(' . $this->conditions . ') AND (' . $conditions . ')';
         }
-        
         return parent::where($conditions, $bindParams, $bindTypes);
     }
 }

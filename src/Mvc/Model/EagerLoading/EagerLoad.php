@@ -1,6 +1,7 @@
 <?php namespace Zemit\Mvc\Model\EagerLoading;
 
 use Phalcon\Mvc\Model\Relation;
+use Phalcon\Mvc\Model\RelationInterface;
 use Phalcon\Mvc\Model\Resultset;
 use Phalcon\Version;
 
@@ -9,16 +10,16 @@ use Phalcon\Version;
  */
 final class EagerLoad
 {
-    /** @var RelationInterface */
-    private $relation;
+    private RelationInterface $relation;
+    
     /** @var null|callable */
     private $constraints;
+    
     /** @var Loader|EagerLoad */
     private $parent;
+    
     /** @var null|\Phalcon\Mvc\ModelInterface[] */
-    private $subject;
-    /** @var boolean */
-    private static $isPhalcon2;
+    private ?array $subject = null;
     
     /**
      * @param Relation $relation
@@ -27,13 +28,9 @@ final class EagerLoad
      */
     public function __construct(Relation $relation, $constraints, $parent)
     {
-        if (static::$isPhalcon2 === null) {
-            static::$isPhalcon2 = version_compare(Version::get(), '2.0.0') >= 0;
-        }
-        
-        $this->relation    = $relation;
+        $this->relation = $relation;
         $this->constraints = is_callable($constraints) ? $constraints : null;
-        $this->parent      = $parent;
+        $this->parent = $parent;
     }
     
     /**
@@ -64,13 +61,13 @@ final class EagerLoad
         
         $relation = $this->relation;
         
-        $alias                = $relation->getOptions();
-        $alias                = strtolower($alias['alias']);
-        $relField             = $relation->getFields();
-        $relReferencedModel   = $relation->getReferencedModel();
-        $relReferencedField   = $relation->getReferencedFields();
-        $relIrModel           = $relation->getIntermediateModel();
-        $relIrField           = $relation->getIntermediateFields();
+        $options = $relation->getOptions();
+        $alias = strtolower($options['alias']);
+        $relField = $relation->getFields();
+        $relReferencedModel = $relation->getReferencedModel();
+        $relReferencedField = $relation->getReferencedFields();
+        $relIrModel = $relation->getIntermediateModel();
+        $relIrField = $relation->getIntermediateFields();
         $relIrReferencedField = $relation->getIntermediateReferencedFields();
         
         // PHQL has problems with this slash
@@ -79,21 +76,21 @@ final class EagerLoad
         }
         
         $bindValues = [];
-        
         foreach ($parentSubject as $record) {
             $bindValues[$record->readAttribute($relField)] = true;
         }
+        unset($record);
         
         $bindValues = array_keys($bindValues);
         
-        $subjectSize         = count($parentSubject);
+        $subjectCount = count($parentSubject);
         $isManyToManyForMany = false;
         
-        $builder = new QueryBuilder;
+        $builder = new QueryBuilder();
         $builder->from($relReferencedModel);
-    
+        
         if ($isThrough = $relation->isThrough()) {
-            if ($subjectSize === 1) {
+            if ($subjectCount === 1) {
                 // The query is for a single model
                 $builder
                     ->innerJoin(
@@ -106,47 +103,49 @@ final class EagerLoad
                             $relReferencedField
                         )
                     )
-                    ->where('['.$relIrModel.'].[deleted] <> 1') // @todo do this correctly
+                    ->where('[' . $relIrModel . '].[deleted] <> 1') // @todo do this correctly
                     ->inWhere("[{$relIrModel}].[{$relIrField}]", $bindValues)
                 ;
-            } else {
+            }
+            else {
                 // The query is for many models, so it's needed to execute an
                 // extra query
                 $isManyToManyForMany = true;
                 
-                $relIrValues = new QueryBuilder;
+                $relIrValues = new QueryBuilder();
                 $relIrValues = $relIrValues
                     ->from($relIrModel)
-                    ->where('['.$relIrModel.'].[deleted] <> 1') // @todo do this correctly
+                    ->where('[' . $relIrModel . '].[deleted] <> 1') // @todo do this correctly
                     ->inWhere("[{$relIrModel}].[{$relIrField}]", $bindValues)
                     ->getQuery()
                     ->execute()
-                    ->setHydrateMode(Resultset::HYDRATE_ARRAYS)
                 ;
                 
-                $bindValues = $modelReferencedModelValues = [];
-                
+                $bindValues = [];
+                $modelReferencedModelValues = [];
                 foreach ($relIrValues as $row) {
-                    $bindValues[$row[$relIrReferencedField]] = true;
-                    $modelReferencedModelValues[$row[$relIrField]][$row[$relIrReferencedField]] = true;
+                    $bindValues[$row->readAttribute($relIrReferencedField)] = true;
+                    $modelReferencedModelValues[$row->readAttribute($relIrField)][$row->readAttribute($relIrReferencedField)] = true;
                 }
-                
-                unset($relIrValues, $row);
+                unset($relIrValues);
+                unset($row);
                 
                 $builder->inWhere(
                     "[{$relReferencedModel}].[{$relReferencedField}]",
                     array_keys($bindValues)
                 );
             }
-        } else {
+        }
+        else {
             $builder->inWhere(
                 "[{$relReferencedModel}].[{$relReferencedField}]",
                 $bindValues
             );
         }
         
-        if ($this->constraints) {
-            call_user_func($this->constraints, $builder);
+        $constraint = $this->constraints;
+        if (is_callable($constraint)) {
+            $constraint($builder);
         }
         
         $records = [];
@@ -155,6 +154,7 @@ final class EagerLoad
             foreach ($builder->getQuery()->execute() as $record) {
                 $records[$record->readAttribute($relReferencedField)] = $record;
             }
+            unset($record);
             
             foreach ($parentSubject as $record) {
                 $referencedFieldValue = $record->readAttribute($relField);
@@ -163,56 +163,53 @@ final class EagerLoad
                     $referencedModels = [];
                     
                     foreach ($modelReferencedModelValues[$referencedFieldValue] as $idx => $_) {
-                        // @TODO why
                         if (isset($records[$idx])) {
                             $referencedModels[] = $records[$idx];
                         }
                     }
                     
                     $record->{$alias} = $referencedModels;
-                    
-                    if (static::$isPhalcon2) {
-                        $record->{$alias} = null;
-                        $record->{$alias} = $referencedModels;
-                    }
-                } else {
+                    $record->{$alias} = null;
+                    $record->{$alias} = $referencedModels;
+                }
+                else {
                     $record->{$alias} = null;
                     $record->{$alias} = [];
                 }
             }
+            unset($record);
             
             $records = array_values($records);
-        } else {
+        }
+        else {
             // We expect a single object or a set of it
             $isSingle = !$isThrough && (
                     $relation->getType() === Relation::HAS_ONE ||
                     $relation->getType() === Relation::BELONGS_TO
                 );
             
-            if ($subjectSize === 1) {
+            if ($subjectCount === 1) {
                 // Keep all records in memory
                 foreach ($builder->getQuery()->execute() as $record) {
                     $records[] = $record;
                 }
+                unset($record);
                 
                 $record = $parentSubject[0];
-                
                 if ($isSingle) {
                     $record->{$alias} = empty($records) ? null : $records[0];
-                } else {
-                    if (empty($records)) {
-                        $record->{$alias} = null;
-                        $record->{$alias} = [];
-                    } else {
-                        $record->{$alias} = $records;
-                        
-                        if (static::$isPhalcon2) {
-                            $record->{$alias} = null;
-                            $record->{$alias} = $records;
-                        }
-                    }
                 }
-            } else {
+                elseif (empty($records)) {
+                    $record->{$alias} = null;
+                    $record->{$alias} = [];
+                }
+                else {
+                    $record->{$alias} = $records;
+                    $record->{$alias} = null;
+                    $record->{$alias} = $records;
+                }
+            }
+            else {
                 $indexedRecords = [];
                 
                 // Keep all records in memory
@@ -221,7 +218,8 @@ final class EagerLoad
                     
                     if ($isSingle) {
                         $indexedRecords[$record->readAttribute($relReferencedField)] = $record;
-                    } else {
+                    }
+                    else {
                         $indexedRecords[$record->readAttribute($relReferencedField)][] = $record;
                     }
                 }
@@ -232,18 +230,19 @@ final class EagerLoad
                     if (isset($indexedRecords[$referencedFieldValue])) {
                         $record->{$alias} = $indexedRecords[$referencedFieldValue];
                         
-                        if (static::$isPhalcon2 && is_array($indexedRecords[$referencedFieldValue])) {
+                        if (is_array($indexedRecords[$referencedFieldValue])) {
                             $record->{$alias} = null;
                             $record->{$alias} = $indexedRecords[$referencedFieldValue];
                         }
-                    } else {
+                    }
+                    else {
                         $record->{$alias} = null;
-                        
                         if (!$isSingle) {
                             $record->{$alias} = [];
                         }
                     }
                 }
+                unset($record);
             }
         }
         
