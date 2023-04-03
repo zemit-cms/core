@@ -53,7 +53,7 @@ trait Attribute
             
             $method = 'set' . ucfirst(Text::camelize($attribute));
             if (method_exists($this, $method)) {
-                $this->$method();
+                $this->$method($value);
             }
             
             $this->writeAttribute($attribute, $value);
