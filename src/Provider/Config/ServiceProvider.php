@@ -34,9 +34,6 @@ class ServiceProvider extends AbstractServiceProvider
             
             $bootstrap->config ??= new Config();
             
-            // Merge config with current environment
-            $bootstrap->config->mergeEnvConfig();
-            
             // Launch bootstrap prepare raw php configs
             Php::set($bootstrap->config->pathToArray('app') ?? []);
             
