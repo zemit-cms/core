@@ -11,11 +11,16 @@
 
 namespace Zemit\Mvc\Model;
 
+use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\ModelInterface;
 use Zemit\Mvc\Model\EagerLoading\Loader;
 
 trait EagerLoading
 {
+    abstract public static function find($parameters = null): ResultsetInterface;
+    
+    abstract public static function findFirst($parameters = null): ?ModelInterface;
+    
     /**
      * <code>
      * <?php
@@ -113,6 +118,7 @@ trait EagerLoading
     {
         $parameters = self::getParametersFromArguments($arguments);
         $entity = parent::$forwardMethod($parameters);
+        assert($entity instanceof ModelInterface);
     
         if ($entity) {
             return Loader::fromModel($entity, ...$arguments);
@@ -128,6 +134,7 @@ trait EagerLoading
     {
         $parameters = self::getParametersFromArguments($arguments);
         $list = parent::$forwardMethod($parameters);
+        assert($list instanceof ResultsetInterface);
     
         if ($list->count()) {
             return Loader::fromResultset($list, ...$arguments);
@@ -154,6 +161,7 @@ trait EagerLoading
      */
     public function load(array ...$arguments)
     {
+        assert($this instanceof ModelInterface);
         return Loader::fromModel($this, ...$arguments);
     }
     
