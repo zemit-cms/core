@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,29 +11,31 @@
 
 namespace Zemit\Mvc\Model;
 
-/**
- * Trait Snapshots
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Mvc\Model
- */
+use Zemit\Mvc\Model\AbstractTrait\AbstractEventsManager;
+
 trait Snapshots
 {
-    protected function _setSnapshots($keepSnapshots = true)
+    use AbstractEventsManager;
+    
+    abstract protected function keepSnapshots(bool $keepSnapshot): void;
+    
+    public function initializeSnapshots(): void
     {
-        $this->keepSnapshots($keepSnapshots);
+        $this->keepSnapshots(true);
+        $this->attachSnapshotEvent(true);
+    }
+    
+    protected function attachSnapshotEvent(bool $keepSnapshots = true): void
+    {
         if ($keepSnapshots) {
             $this->getEventsManager()->attach('model', function ($event, $entity) {
+                
                 switch ($event->getType()) {
                     case 'beforeCreate':
                         $entity->setSnapshotData($entity->toArray());
                         break;
                 }
+                
                 return true;
             });
         }
