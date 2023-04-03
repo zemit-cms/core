@@ -14,11 +14,12 @@ namespace Zemit\Mvc;
 use Phalcon\Config\ConfigInterface;
 use Phalcon\Di;
 use Zemit\Mvc\Router\ModuleRoute;
+use Zemit\Router\RouterInterface;
 
 /**
  * {@inheritDoc}
  */
-class Router extends \Phalcon\Mvc\Router
+class Router extends \Phalcon\Mvc\Router implements RouterInterface
 {
     public ConfigInterface $config;
     
@@ -63,7 +64,7 @@ class Router extends \Phalcon\Mvc\Router
         $localeConfig = $this->getConfig()->get('locale')->toArray();
         
         $this->setDefaults($routerConfig['defaults'] ?? $this->getDefaults());
-        $this->notFound($routerConfig['notFound'] ?? $this->notFoundPaths);
+        $this->notFound($routerConfig['notFound'] ?? $this->notFoundPaths ?? []);
         $this->mount(new ModuleRoute($this->getDefaults(), $localeConfig['allowed'] ?? [], true));
     }
     
