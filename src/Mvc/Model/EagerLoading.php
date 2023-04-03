@@ -11,6 +11,7 @@
 
 namespace Zemit\Mvc\Model;
 
+use Phalcon\Mvc\ModelInterface;
 use Zemit\Mvc\Model\EagerLoading\Loader;
 
 trait EagerLoading
@@ -85,7 +86,6 @@ trait EagerLoading
     /**
      * Call magic method to make the with works in an implicit way
      * @todo change it to behavior missingMethods()
-     * @todo change it
      */
     public static function __callStatic(string $method, array $arguments = [])
     {
@@ -93,31 +93,47 @@ trait EagerLoading
         if (strpos($method, 'findFirstWithBy') === 0 || strpos($method, 'firstWithBy') === 0) {
             
             $forwardMethod = str_replace(['findFirstWithBy', 'firstWithBy'], 'findFirstBy', $method);
-            $parameters = self::getParametersFromArguments($arguments);
-            $entity = parent::$forwardMethod($parameters);
-            
-            if ($entity) {
-                return Loader::fromModel($entity, ...$arguments);
-            }
-            
-            return $entity;
+            return self::findFirstWithBy($forwardMethod, $arguments);
         }
         
         // List - FindWithBy...
         elseif (strpos($method, 'findWithBy') === 0 || strpos($method, 'withBy') === 0) {
-            
+    
             $forwardMethod = str_replace(['findWithBy', 'withBy'], 'findBy', $method);
-            $parameters = self::getParametersFromArguments($arguments);
-            $list = parent::$forwardMethod($parameters);
-            
-            if ($list->count()) {
-                return Loader::fromResultset($list, ...$arguments);
-            }
-            
-            return $list;
+            return self::findWithBy($forwardMethod, $arguments);
         }
     
         return parent::$method(...$arguments);
+    }
+    
+    /**
+     * Call native Phalcon FindFirstBy function then eager load relationships from the model
+     */
+    private static function findFirstWithBy(string $forwardMethod, array $arguments): ModelInterface
+    {
+        $parameters = self::getParametersFromArguments($arguments);
+        $entity = parent::$forwardMethod($parameters);
+    
+        if ($entity) {
+            return Loader::fromModel($entity, ...$arguments);
+        }
+    
+        return $entity;
+    }
+    
+    /**
+     * Call native Phalcon findBy function then eager load relationships from the resultset
+     */
+    private static function findWithBy(string $forwardMethod, array $arguments): ?array
+    {
+        $parameters = self::getParametersFromArguments($arguments);
+        $list = parent::$forwardMethod($parameters);
+    
+        if ($list->count()) {
+            return Loader::fromResultset($list, ...$arguments);
+        }
+    
+        return $list;
     }
     
     /**
