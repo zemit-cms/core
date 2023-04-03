@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,83 +11,65 @@
 
 namespace Zemit\Mvc\Model;
 
-/**
- * Trait Identity
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Mvc\Model
- */
+use Zemit\Models\Interfaces\UserInterface;
+
 trait Identity
 {
     /**
-     * Get the current identity instance from the DI
-     *
-     * @return \Zemit\Identity
+     * Get the current identity service from the DI
      */
-    public function getIdentity() {
-        
-        /** @var \Zemit\Identity $identity */
-        $identity = $this->getDI()->get('identity');
-        
-        return $identity;
+    public function getIdentity(): \Zemit\Identity
+    {
+        return $this->getDI()->get('identity');
     }
-    
+
     /**
      * Return true or false whether a user is logged in or not into the current session
-     *
-     * @return bool
      */
-    public function isLoggedIn($as = false) {
+    public function isLoggedIn(bool $as = false): bool
+    {
         return $this->getIdentity()->isLoggedIn($as);
     }
-    
+
     /**
      * Return true or false whether a user is logged in as or not into the current session
-     *
-     * @return bool
      */
-    public function isLoggedInAs() {
+    public function isLoggedInAs(): bool
+    {
         return $this->isLoggedIn(true);
     }
-    
+
     /**
      * Get the current active user using the identity service
-     *
-     * @param bool $as
-     *
-     * @return bool|\Zemit\Models\User
      */
-    public function getCurrentUser($as = false)
+    public function getCurrentUser(bool $as = false): ?UserInterface
     {
         return $this->getIdentity()->getUser($as);
     }
     
     /**
-     * Get the current user id
-     *
-     * @param bool $as
-     *
-     * @return |null
+     * Get the current active user using the identity service
      */
-    public function getCurrentUserId($as = false)
+    public function getCurrentUserAs(): ?UserInterface
+    {
+        return $this->getCurrentUser(true);
+    }
+
+    /**
+     * Get the current user id
+     */
+    public function getCurrentUserId(bool $as = false): ?int
     {
         $user = $this->getCurrentUser($as);
-        
-        return $user ? $user->getId() : null;
+        return $user? $user->getId() : null;
     }
     
     /**
-     * @return \Closure
+     * Get current user id callable (used for events behaviors)
      */
-    public function getCurrentUserIdCallback($as = false)
+    public function getCurrentUserIdCallback($as = false): \Closure
     {
         return function () use ($as) {
-            
             return $this->getCurrentUserId($as);
         };
     }
