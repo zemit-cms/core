@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,33 +11,29 @@
 
 namespace Zemit\Mvc\Model;
 
+use Phalcon\Config\ConfigInterface;
+use Phalcon\Db\Adapter\AdapterInterface;
+use Phalcon\Db\Adapter\Pdo\AbstractPdo;
 use Phalcon\Db\Adapter\Pdo\Mysql;
+use Zemit\Mvc\Model\AbstractTrait\AbstractInjectable;
 
 /**
  * Trait Replication
  * Replica Lag Workaround
  * Prevents Phalcon to use read connection while
  * it might be lagging behind the db master
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Mvc\Model
  */
 trait Replication
 {
+    use AbstractInjectable;
+    
     /**
      * Replica Lag in milliseconds
-     * @var int|null
      */
     protected static ?int $_replicationLag = null;
     
     /**
      * Timestamp until we can use replication
-     * @var int|null
      */
     protected static ?int $_replicationReadyAt = null;
     
@@ -50,8 +47,6 @@ trait Replication
     
     /**
      * Set the replication lag value in milliseconds
-     *
-     * @param int|null $replicationLag
      */
     public static function setReplicationLag(?int $replicationLag = null): void
     {
@@ -68,8 +63,6 @@ trait Replication
     
     /**
      * Set the replication lag value in milliseconds
-     *
-     * @param int|null $replicationReadyAt
      */
     public static function setReplicationReadyAt(?int $replicationReadyAt = null): void
     {
@@ -82,11 +75,12 @@ trait Replication
      * - Set Read & Write Connection Service
      * - Add Replication Behavior
      */
-    public function initializeReplication($force = false)
+    public function initializeReplication(bool $force = false): void
     {
-        $di = $this->getDI();
-        $enabled = $force || $di->get('config')->path('database.drivers.mysql.readonly.enable', false);
+        $config = $this->getDI()->get('config');
+        assert($config instanceof ConfigInterface);
         
+        $enabled = $force || $config->path('database.drivers.mysql.readonly.enable', false);
         if ($enabled) {
             self::setReplicationLag(1000);
             $this->setConnectionService('db');
@@ -99,14 +93,9 @@ trait Replication
     /**
      * Dynamically selects a shard
      * - Prefer to read on the write master during the replica delay
-     *
-     * @param array $intermediate
-     * @param array $bindParams
-     * @param array $bindTypes
-     *
-     * @return Mysql
+     * @return AdapterInterface
      */
-    public function selectReadConnection($intermediate, $bindParams, $bindTypes)
+    public function selectReadConnection(?array $intermediate = null, array $bindParams = [], array $bindTypes = [])
     {
         $di = $this->getDI();
         
@@ -117,18 +106,19 @@ trait Replication
             $di->get($this->getReadConnectionService());
         }
         
-        // Use the write connection service
+        // Use write connection service
         return $this->getDI()->get($this->getWriteConnectionService());
     }
     
     /**
-     * Force the write connection service to master if the model was previously saved
+     * Force write connection service to master if the model was previously saved
      */
     public function addReadWriteConnectionBehavior(): void
     {
-        $forceMasterConnectionService = function() {
+        $forceMasterConnectionService = function () {
             self::setReplicationReadyAt(round(microtime(true) * 1000) + self::REPLICA_DELAY);
         };
+        
         $eventsManager = $this->getEventsManager();
         $eventsManager->attach('model:afterSave', $forceMasterConnectionService);
         $eventsManager->attach('model:afterCreate', $forceMasterConnectionService);
@@ -139,7 +129,6 @@ trait Replication
     
     /**
      * Check whether the replica should be ready or not
-     *
      * @return bool true if replica should be ready
      */
     public function isReplicationReady(): bool
@@ -147,7 +136,6 @@ trait Replication
         $replicationReadyAt = self::getReplicationReadyAt();
         if (empty($replicationReadyAt) || $replicationReadyAt < microtime(true) * 1000) {
             self::setReplicationReadyAt(null);
-            
             return true;
         }
         
