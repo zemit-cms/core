@@ -44,7 +44,7 @@ DOC;
     
     public function normalizeResponse(bool $response = true, ?int $code = null, ?string $status = null): array
     {
-        $debug = $this->config->path('app.debug') || $this->dispatcher->getParam('debug');
+        $debug = $this->config->path('app.debug') ?? false;
         
         // keep forced status code or set our own
         $statusCode = $this->response->getStatusCode();
@@ -60,7 +60,7 @@ DOC;
         
         $ret = [];
         $ret['api'] = [];
-        $ret['api']['version'] = ['0.1'];
+        $ret['api']['version'] = ['0.1']; // @todo
         $ret['timestamp'] = date('c');
         $ret['hash'] = $hash;
         $ret['status'] = $status;
@@ -104,12 +104,7 @@ DOC;
         }
         
         // Normalize response
-        if (is_array($response)) {
-            $this->view->setVars($response, true);
-        }
-        else {
-            $this->view->setVars((array)$response, true);
-        }
+        $this->view->setVars((array)$response);
         $normalizedResponse = $this->normalizeResponse((bool)$response);
         $dispatcher->setReturnedValue($normalizedResponse);
         
@@ -123,10 +118,6 @@ DOC;
         switch (strtolower($format)) {
             case 'dump':
                 dump($ret);
-                break;
-                
-            case 'var_dump':
-                var_dump($ret);
                 break;
                 
             case 'var_export':
