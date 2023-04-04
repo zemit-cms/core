@@ -24,24 +24,26 @@ use Zemit\Locale;
 use Zemit\Provider\Jwt\Jwt;
 use Zemit\Security;
 use Zemit\Utils;
+use Zemit\Mvc\View;
 
 /**
  * @property Bootstrap\Config $config
- * @property Router $router
  * @property Bootstrap $bootstrap
  * @property Debug $debug
+ * @property Router $router
+ * @property Dispatcher $dispatcher
+ * @property View $view
+ * @property Security $security
+ * @property Profiler $profiler
+ * @property Jwt $jwt
  * @property Escaper $escaper
  * @property Filter $filter
  * @property Identity $identity
  * @property Locale $locale
- * @property Dispatcher $dispatcher
- * @property Security $security
- * @property Utils $utils
- * @property Profiler $profiler
  * @property Logger $logger
- * @property Jwt $jwt
- * @property OpenAi $openAi
+ * @property Utils $utils
  * @property LoremIpsum $loremIpsum
+ * @property OpenAi $openAi
  */
 class Task extends \Phalcon\Cli\Task implements TaskInterface
 {
