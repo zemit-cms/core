@@ -14,5 +14,6 @@ use Phalcon\Mvc\ModelInterface;
 
 interface AbstractInterface extends ModelInterface
 {
-
+    public function setId($id);
+    public function getId();
 }

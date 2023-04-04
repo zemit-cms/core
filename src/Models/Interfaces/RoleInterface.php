@@ -10,8 +10,6 @@
 
 namespace Zemit\Models\Interfaces;
 
-use Phalcon\Mvc\ModelInterface;
-
 interface RoleInterface extends AbstractInterface
 {
     public function getIndex();
