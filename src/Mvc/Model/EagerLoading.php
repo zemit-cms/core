@@ -118,9 +118,9 @@ trait EagerLoading
     {
         $parameters = self::getParametersFromArguments($arguments);
         $entity = parent::$forwardMethod($parameters);
-        assert($entity instanceof ModelInterface);
     
         if ($entity) {
+            assert($entity instanceof ModelInterface);
             return Loader::fromModel($entity, ...$arguments);
         }
     
@@ -140,7 +140,7 @@ trait EagerLoading
             return Loader::fromResultset($list, ...$arguments);
         }
     
-        return $list;
+        return iterator_to_array($list);
     }
     
     /**
