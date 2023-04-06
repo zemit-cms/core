@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -22,6 +23,8 @@ use Phalcon\Mvc\Model\Behavior;
  */
 class Conditional extends Behavior
 {
+    use SkippableTrait;
+    
     /**
      * Listens for notifications from the models manager
      *
@@ -32,16 +35,19 @@ class Conditional extends Behavior
      */
     public function notify(string $type, ModelInterface $model)
     {
+        if (!$this->isEnabled()) {
+            return;
+        }
+        
         if (!$this->mustTakeAction($type)) {
             return null;
         }
-        
+
         $options = $this->getOptions($type);
-        
         if (empty($options)) {
             return;
         }
-    
+
         $field = $this->getOption('field', $options, [$type, $model]);
         $condition = $this->getOption('condition', $options, [$type, $model, $field]);
         if ($condition) {
@@ -50,7 +56,7 @@ class Conditional extends Behavior
             $model->assign([$field => $transformedValue]);
         }
     }
-    
+
     /**
      * @param string $key
      * @param array $options
@@ -61,11 +67,10 @@ class Conditional extends Behavior
     public function getOption(string $key, array $options, array $params = null)
     {
         $ret = $options[$key] ?? null;
-        
         if (is_callable($ret)) {
             $ret = $ret(...$params);
         }
-        
+
         return $ret;
     }
 }

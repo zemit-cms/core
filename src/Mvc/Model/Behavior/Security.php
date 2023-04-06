@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -16,46 +17,27 @@ use Phalcon\Mvc\Model\Behavior\Exception;
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Text;
-use Zemit\Models\Group;
-use Zemit\Models\Role;
-use Zemit\Models\Session;
-use Zemit\Models\Type;
-use Zemit\Mvc\Model\User;
+use Zemit\Config\Config;
+use Zemit\Config\ConfigInterface;
+use Zemit\Identity;
 
 /**
- * Zemit\Mvc\Model\Behavior\Security
- *
  * Allows to check if the current identity is allowed to run some model actions
  * this behavior will stop operations if not allowed
  */
 class Security extends Behavior
 {
-    /**
-     * @var \Zemit\Bootstrap\Config
-     */
-    protected $config = null;
     
-    /**
-     * @var \Zemit\Security
-     */
-    protected $security = null;
+    protected Config $config;
     
-    /**
-     * @var \Zemit\Identity
-     */
-    protected $identity = null;
+    protected \Zemit\Security $security;
     
-    /**
-     * Security constructor.
-     *
-     * @param array|null $options
-     *
-     * @throws Exception
-     */
-    public function __construct($options = null)
+    protected Identity $identity;
+    
+    
+    public function __construct(?array $options = null)
     {
         parent::__construct($options);
-        
         $this->config ??= Di::getDefault()->get('config');
         $this->security ??= Di::getDefault()->get('security');
         $this->identity ??= Di::getDefault()->get('identity');
@@ -69,14 +51,11 @@ class Security extends Behavior
      * - beforeRestore
      *
      * {@inheritdoc}
-     *
-     * @param string $eventType
-     * @param \Phalcon\Mvc\ModelInterface $model
      */
-    public function notify($eventType, ModelInterface $model)
+    public function notify(string $type, ModelInterface $model): bool
     {
         $this->security->getAcl();
-        switch ($eventType) {
+        switch ($type) {
             case 'beforeFind': // @todo implement this
             case 'beforeFindFirst': // @todo implement this
             case 'beforeCount':  // @todo implement this
@@ -87,34 +66,43 @@ class Security extends Behavior
             case 'beforeDelete':
             case 'beforeRestore':
             case 'beforeReorder':
-                $type = lcfirst(Text::camelize(str_replace(['before_', 'after_'], [null, null], Text::uncamelize($eventType))));
+                $type = lcfirst(Text::camelize(str_replace(['before_', 'after_'], [null, null], Text::uncamelize($type))));
                 return $this->isAllowed($type, $model);
         }
         
         return true;
     }
     
-    public function isAllowed($eventType, $model)
+    public function isAllowed(string $type, ModelInterface $model): bool
     {
         $acl = $this->security->getAcl(['models', 'components']);
-        
         $modelClass = get_class($model);
         
         // component not found
         if (!$acl->isComponent($modelClass)) {
-            $model->appendMessage(new Message('Model permission not found for `' . $modelClass . '`', 'id', 'NotFound', 404));
+            $model->appendMessage(new Message(
+                'Model permission not found for `' . $modelClass . '`',
+                'id',
+                'NotFound',
+                404
+            ));
             return false;
         }
         
         // allowed for roles
         $roles = $this->identity->getAclRoles();
         foreach ($roles as $role) {
-            if ($acl->isAllowed($role, $modelClass, $eventType)) {
+            if ($acl->isAllowed($role, $modelClass, $type)) {
                 return true;
             }
         }
         
-        $model->appendMessage(new Message('Current identity forbidden to execute `' . $eventType . '` on `' . $modelClass . '`', 'id', 'NotFound', 403));
+        $model->appendMessage(new Message(
+            'Current identity forbidden to execute `' . $type . '` on `' . $modelClass . '`',
+            'id',
+            'NotFound',
+            403
+        ));
         return false;
     }
 }

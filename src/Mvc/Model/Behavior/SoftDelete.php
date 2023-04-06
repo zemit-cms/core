@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,17 +11,25 @@
 
 namespace Zemit\Mvc\Model\Behavior;
 
-use Closure;
-use Phalcon\Mvc\ModelInterface;
 use Phalcon\Mvc\Model\Behavior;
+use Phalcon\Mvc\ModelInterface;
 
 /**
- * Zemit\Mvc\Model\Behavior\SoftDelete
- *
- * Allows to automatically update a model’s attribute saving the datetime when a
- * record is created or updated
+ * {@inheritDoc}
  */
 class SoftDelete extends Behavior\SoftDelete
 {
-
+    use SkippableTrait;
+    
+    /**
+     * @return mixed
+     */
+    public function notify(string $type, ModelInterface $model)
+    {
+        if (!$this->isEnabled()) {
+            return;
+        }
+        
+        return parent::notify($type, $model);
+    }
 }
