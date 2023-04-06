@@ -11,27 +11,33 @@
 
 namespace Zemit\Mvc\Model;
 
-use Zemit\Support\OptionsManager;
+use Zemit\Support\Options\Manager;
 
 trait Options
 {
-    public ?OptionsManager $optionsManager = null;
+    public Manager $optionsManager;
     
     /**
-     * Return the existing or a new OptionsManager of the current instance
+     * Initialize Options Manager
      */
-    public function getOptionsManager(): OptionsManager
+    public function initializeOptions(): void
     {
-        if (!isset($this->optionsManager)) {
-            $this->setOptionsManager(new OptionsManager());
-        }
+        $manager = new Manager();
+        $this->setOptionsManager($manager);
+    }
+    
+    /**
+     * Return the existing or a new Options Manager of the current instance
+     */
+    public function getOptionsManager(): Manager
+    {
         return $this->optionsManager;
     }
     
     /**
-     * Set an OptionsManager for the current instance
+     * Set an Options Manager for the current instance
      */
-    public function setOptionsManager(OptionsManager $optionsManager = null): void
+    public function setOptionsManager(Manager $optionsManager = null): void
     {
         $this->optionsManager = $optionsManager;
     }
