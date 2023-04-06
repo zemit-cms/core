@@ -17,32 +17,53 @@ use Zemit\Models\AuditDetail;
 use Zemit\Models\User;
 use Zemit\Mvc\Model\AbstractTrait\AbstractBehavior;
 use Zemit\Mvc\Model\AbstractTrait\AbstractInjectable;
+use Zemit\Mvc\Model\Behavior\Blameable as BlameableBehavior;
 
 trait Blameable
 {
     use AbstractBehavior;
     use AbstractInjectable;
     
+    use Options;
+    
+    use Blameable\Created;
+    use Blameable\Updated;
+    use Blameable\Deleted;
+    use Blameable\Restored;
+    
+    public BlameableBehavior $blameableBehavior;
+    
     /**
      * Initializing Blameable
      */
-    public function initializeBlameable(): void
+    public function initializeBlameable(?array $options = null): void
     {
-        $this->addBlameableBehavior();
-    }
-    
-    /**
-     * Blameable Audit Behavior
-     */
-    public function addBlameableBehavior(): void
-    {
+        $options ??= $this->getOptionsManager()->get('blameable') ?? [];
+        
         $config = $this->getDI()->get('config');
         assert($config instanceof ConfigInterface);
         
-        $this->addBehavior(new Behavior\Blameable([
-            'auditClass' => $config->getModelClass(Audit::class),
-            'auditDetailClass' => $config->getModelClass(AuditDetail::class),
-            'userClass' => $config->getModelClass(User::class),
-        ]));
+        $options['auditClass'] ??= $config->getModelClass(Audit::class);
+        $options['auditDetailClass'] ??= $config->getModelClass(AuditDetail::class);
+        $options['userClass'] ??= $config->getModelClass(User::class);
+        
+        $this->setBlameableBehavior(new BlameableBehavior($options));
+    }
+    
+    /**
+     * Set Blameable Behavior
+     */
+    public function setBlameableBehavior(BlameableBehavior $blameableBehavior): void
+    {
+        $this->blameableBehavior = $blameableBehavior;
+        $this->addBehavior($this->blameableBehavior);
+    }
+    
+    /**
+     * Get Blameable Behavior
+     */
+    public function getBlameableBehavior(): BlameableBehavior
+    {
+        return $this->blameableBehavior;
     }
 }
