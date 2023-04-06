@@ -15,7 +15,7 @@ use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\ModelInterface;
 use Zemit\Mvc\Model\EagerLoading\Loader;
 
-trait EagerLoading
+trait EagerLoad
 {
     abstract public static function find($parameters = null): ResultsetInterface;
     
