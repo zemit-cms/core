@@ -29,9 +29,9 @@ final class Loader
     
     protected array $options = [];
     
+    private const E_INVALID_SUBJECT = 'Expected value of `subject` to be either a ModelInterface object, a Simple object or an array of ModelInterface objects';
+    
     /**
-     * @param ModelInterface|ModelInterface[]|Simple $from
-     * @param ...$arguments
      * @throws \InvalidArgumentException
      */
     public function __construct($from, array ...$arguments)
@@ -49,24 +49,24 @@ final class Loader
         
         // Handle Simple Resultset
         elseif ($from instanceof Simple) {
-            $new = [];
-            foreach ($from as $record) {
-                $className ??= get_class($record);
-                $new[] = $record;
+            $from = iterator_to_array($from);
+            if (isset($from[0])) {
+                $className ??= get_class($from[0]);
             }
-            if (empty($from)) {
-                $new = null;
+            else {
+                $from = null;
             }
-            $from = $new;
         }
         
         // Handle array
         elseif (is_array($from)) {
             $from = array_filter($from);
+            if (isset($from[0])) {
+                $className ??= get_class($from[0]);
+            }
             foreach ($from as $el) {
                 if ($el instanceof ModelInterface) {
                     // elements must be all the same model class
-                    $className ??= get_class($el);
                     if ($className !== get_class($el)) {
                         $error = true;
                         break;
@@ -94,7 +94,7 @@ final class Loader
         }
         
         if ($error) {
-            throw new Exception('Expected value of `subject` to be either a ModelInterface object, a Simple object or an array of ModelInterface objects');
+            throw new \InvalidArgumentException(self::E_INVALID_SUBJECT);
         }
         
         $this->subject = $from;
@@ -102,7 +102,10 @@ final class Loader
         $this->eagerLoads = ($from === null || empty($arguments)) ? [] : self::parseArguments($arguments);
     }
     
-    public function setOptions($options)
+    /**
+     * Set Options
+     */
+    public function setOptions(array $options = []): self
     {
         $this->options = $options;
         return $this;
@@ -119,13 +122,13 @@ final class Loader
     public static function from($subject, array ...$arguments)
     {
         if ($subject instanceof ModelInterface) {
-            return self::fromModel(...$arguments);
+            return self::fromModel($subject, ...$arguments);
         }
         elseif ($subject instanceof Simple) {
-            return self::fromResultset(...$arguments);
+            return self::fromResultset($subject, ...$arguments);
         }
         elseif (is_array($subject)) {
-            return self::fromArray(...$arguments);
+            return self::fromArray($subject, ...$arguments);
         }
         
         throw new \InvalidArgumentException(self::E_INVALID_SUBJECT);
@@ -268,7 +271,6 @@ final class Loader
         $mM = $di['modelsManager'];
         
         $eagerLoads = $resolvedRelations = [];
-        $cache = new Cache();
         
         foreach ($this->eagerLoads as $relationAliases => $queryConstraints) {
             $nestingLevel = 0;
@@ -330,10 +332,10 @@ final class Loader
                     throw new \RuntimeException('Relations with composite keys are not supported');
                 }
                 
-                $parent = $nestingLevel > 0 ? $eagerLoads[$parentName] : $this;
+                $parent = $nestingLevel > 0 && isset($parentName)? $eagerLoads[$parentName] : $this;
                 $constraints = $nestingLevel + 1 === $nestingLevels ? $queryConstraints : null;
                 
-                $eagerLoads[$name] = new EagerLoad($relation, $constraints, $parent, $cache);
+                $eagerLoads[$name] = new EagerLoad($relation, $constraints, $parent);
             }
             while (++$nestingLevel < $nestingLevels);
         }
