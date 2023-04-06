@@ -12,13 +12,11 @@
 namespace Zemit\Mvc\Model\Behavior;
 
 use Phalcon\Di;
+use Phalcon\Text;
 use Phalcon\Messages\Message;
-use Phalcon\Mvc\Model\Behavior\Exception;
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Mvc\Model\Behavior;
-use Phalcon\Text;
 use Zemit\Config\Config;
-use Zemit\Config\ConfigInterface;
 use Zemit\Identity;
 
 /**
@@ -27,6 +25,7 @@ use Zemit\Identity;
  */
 class Security extends Behavior
 {
+    use SkippableTrait;
     
     protected Config $config;
     
@@ -34,7 +33,10 @@ class Security extends Behavior
     
     protected Identity $identity;
     
-    
+    /**
+     * @todo avoid using DI
+     * @param array|null $options
+     */
     public function __construct(?array $options = null)
     {
         parent::__construct($options);
@@ -54,6 +56,10 @@ class Security extends Behavior
      */
     public function notify(string $type, ModelInterface $model): bool
     {
+        if (!$this->isEnabled()) {
+            return true;
+        }
+        
         $this->security->getAcl();
         switch ($type) {
             case 'beforeFind': // @todo implement this
