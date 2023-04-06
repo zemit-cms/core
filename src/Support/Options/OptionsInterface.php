@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Support;
+namespace Zemit\Support\Options;
 
 interface OptionsInterface
 {

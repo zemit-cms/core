@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Support;
+namespace Zemit\Support\Options;
 
-class OptionsManager
+class Manager
 {
     use Options;
     
