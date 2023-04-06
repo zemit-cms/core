@@ -42,9 +42,9 @@ trait Options
     /**
      * Set options array
      */
-    public function setOptions(array $options): void
+    public function setOptions(array $options, bool $merge = false): void
     {
-        $this->options = $options;
+        $this->options = $merge? array_merge($this->options, $options) : $options;
     }
 
     /**
