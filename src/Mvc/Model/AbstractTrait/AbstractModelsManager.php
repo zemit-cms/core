@@ -11,15 +11,11 @@
 
 namespace Zemit\Mvc\Model\AbstractTrait;
 
-use Phalcon\Events\ManagerInterface;
+use Phalcon\Mvc\Model\ManagerInterface;
 
-trait AbstractEventsManager
+trait AbstractModelsManager
 {
     use AbstractInjectable;
     
-    abstract public function getEventsManager(): ?ManagerInterface;
-    
-    abstract public function fireEventCancel(string $eventName): bool;
-    
-    abstract public function fireEvent(string $eventName): bool;
+    abstract public function getModelsManager(): ?ManagerInterface;
 }
