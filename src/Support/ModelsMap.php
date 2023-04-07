@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -11,6 +12,7 @@
 namespace Zemit\Support;
 
 use Phalcon\Di\DiInterface;
+use Phalcon\Mvc\ModelInterface;
 use Zemit\Bootstrap\Config;
 use Zemit\Models\Backup;
 use Zemit\Models\Audit;
@@ -56,18 +58,13 @@ trait ModelsMap
 {
     /**
      * Store an array of mapped models
-     * @var array
      */
-    public array $modelsMap;
+    public ?array $modelsMap = null;
     
-    /**
-     * @return DiInterface
-     */
-    abstract function getDI(): DiInterface;
+    abstract public function getDI(): DiInterface;
     
     /**
      * Retrieve the config from DI
-     * @return Config
      */
     public function getConfig(): Config
     {
@@ -76,7 +73,6 @@ trait ModelsMap
     
     /**
      * Get an array of mapped models
-     * @return array
      */
     public function getModelsMap(): array
     {
@@ -88,24 +84,30 @@ trait ModelsMap
     
     /**
      * Set the models mapping or retrieve the mapped models from the config
-     * @param array|null $modelsMap
-     * @return void
      */
-    public function setModelsMap(array $modelsMap = null)
+    public function setModelsMap(?array $modelsMap = null): void
     {
-        if (isset($modelsMap)) {
-            $this->modelsMap = $modelsMap;
-        }
-        else {
-            $models = $this->getConfig()->path('models');
-            $this->modelsMap = $models ? $models->toArray() : [];
-        }
+        $this->modelsMap = $modelsMap ?? $this->getConfig()->pathToArray('models') ?? [];
+    }
+    
+    /**
+     * Map a new class
+     */
+    public function setClassMap(string $map, ?string $class): void
+    {
+        $this->modelsMap[$map] = $class;
+    }
+    
+    /**
+     * Remove an existing class
+     */
+    public function removeClassMap(string $map): void
+    {
+        unset($this->modelsMap[$map]);
     }
     
     /**
      * Return the class mapping
-     * @param string $class
-     * @return string
      */
     public function getClassMap(string $class): string
     {
@@ -113,8 +115,16 @@ trait ModelsMap
     }
     
     /**
+     * Return an instance of the class
+     */
+    public function getObjectMap(string $class): ModelInterface
+    {
+        $class = $this->getClassMap($class);
+        return new $class();
+    }
+    
+    /**
      * Return the mapped class name of \Zemit\Models\Backup::class
-     * @return string
      */
     public function getBackupClass(): string
     {
@@ -123,7 +133,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\Audit::class
-     * @return string
      */
     public function getAuditClass(): string
     {
@@ -132,7 +141,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\AuditDetail::class
-     * @return string
      */
     public function getAuditDetailClass(): string
     {
@@ -141,7 +149,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\Log::class
-     * @return string
      */
     public function getLogClass(): string
     {
@@ -150,7 +157,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\Email::class
-     * @return string
      */
     public function getEmailClass(): string
     {
@@ -159,7 +165,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\Job::class
-     * @return string
      */
     public function getJobClass(): string
     {
@@ -168,7 +173,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\File::class
-     * @return string
      */
     public function getFileClass(): string
     {
@@ -177,7 +181,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\Session::class
-     * @return string
      */
     public function getSessionClass(): string
     {
@@ -186,7 +189,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\Flag::class
-     * @return string
      */
     public function getFlagClass(): string
     {
@@ -195,7 +197,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\Setting::class
-     * @return string
      */
     public function getSettingClass(): string
     {
@@ -204,7 +205,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\Lang::class
-     * @return string
      */
     public function getLangClass(): string
     {
@@ -213,7 +213,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\Translate::class
-     * @return string
      */
     public function getTranslateClass(): string
     {
@@ -222,7 +221,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\TranslateField::class
-     * @return string
      */
     public function getTranslateFieldClass(): string
     {
@@ -231,7 +229,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\TranslateTable::class
-     * @return string
      */
     public function getTranslateTableClass(): string
     {
@@ -240,7 +237,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\Site::class
-     * @return string
      */
     public function getSiteClass(): string
     {
@@ -249,7 +245,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\SiteLang::class
-     * @return string
      */
     public function getSiteLangClass(): string
     {
@@ -258,7 +253,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\Page::class
-     * @return string
      */
     public function getPageClass(): string
     {
@@ -267,7 +261,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\Post::class
-     * @return string
      */
     public function getPostClass(): string
     {
@@ -276,7 +269,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\Template::class
-     * @return string
      */
     public function getTemplateClass(): string
     {
@@ -285,7 +277,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\Channel::class
-     * @return string
      */
     public function getChannelClass(): string
     {
@@ -294,7 +285,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\Field::class
-     * @return string
      */
     public function getFieldClass(): string
     {
@@ -303,7 +293,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\Profile::class
-     * @return string
      */
     public function getProfileClass(): string
     {
@@ -312,7 +301,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\User::class
-     * @return string
      */
     public function getUserClass(): string
     {
@@ -321,7 +309,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\UserType::class
-     * @return string
      */
     public function getUserTypeClass(): string
     {
@@ -330,7 +317,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\UserGroup::class
-     * @return string
      */
     public function getUserGroupClass(): string
     {
@@ -339,7 +325,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\UserRole::class
-     * @return string
      */
     public function getUserRoleClass(): string
     {
@@ -348,7 +333,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\UserFeature::class
-     * @return string
      */
     public function getUserFeatureClass(): string
     {
@@ -357,7 +341,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\Role::class
-     * @return string
      */
     public function getRoleClass(): string
     {
@@ -366,7 +349,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\RoleRole::class
-     * @return string
      */
     public function getRoleRoleClass(): string
     {
@@ -375,7 +357,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\RoleFeature::class
-     * @return string
      */
     public function getRoleFeatureClass(): string
     {
@@ -384,7 +365,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\Group::class
-     * @return string
      */
     public function getGroupClass(): string
     {
@@ -393,7 +373,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\GroupRole::class
-     * @return string
      */
     public function getGroupRoleClass(): string
     {
@@ -402,7 +381,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\GroupType::class
-     * @return string
      */
     public function getGroupTypeClass(): string
     {
@@ -411,7 +389,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\GroupFeature::class
-     * @return string
      */
     public function getGroupFeatureClass(): string
     {
@@ -420,7 +397,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\Type::class
-     * @return string
      */
     public function getTypeClass(): string
     {
@@ -429,7 +405,6 @@ trait ModelsMap
     
     /**
      * Return the mapped class name of \Zemit\Models\Feature::class
-     * @return string
      */
     public function getFeatureClass(): string
     {
