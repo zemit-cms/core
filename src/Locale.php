@@ -12,8 +12,8 @@
 namespace Zemit;
 
 use Zemit\Di\Injectable;
-use Zemit\Support\Options;
-use Zemit\Support\OptionsInterface;
+use Zemit\Support\Options\Options;
+use Zemit\Support\Options\OptionsInterface;
 
 /**
  * Allow to manage and lookup the locale for the localisation
