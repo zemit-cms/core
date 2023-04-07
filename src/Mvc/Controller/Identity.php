@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,111 +11,80 @@
 
 namespace Zemit\Mvc\Controller;
 
+use Phalcon\Security\Exception;
+
 /**
- * Trait Identity
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @property \Phalcon\Mvc\View|\Phalcon\Mvc\ViewInterface $view
  * @property \Zemit\Identity $identity
- * @package Zemit\Mvc\Controller
  */
 trait Identity
 {
     /**
      * Create a refresh a session
-     *
-     * @param bool $refresh
-     *
-     * @return bool
-     * @throws \Phalcon\Security\Exception
      */
-    public function getAction($refresh = false)
+    public function getAction(bool $refresh = false): bool
     {
         $this->view->setVars($this->identity->getJwt($refresh === true));
         $this->view->setVars($this->identity->getIdentity());
-        
-        return $this->view->validated;
+        return $this->view->getVar('validated') ?? false;
     }
     
     /**
      * Refresh or create a session
-     *
-     * @return bool
-     * @throws \Phalcon\Security\Exception
+     * @throws Exception
      */
-    public function refreshAction()
+    public function refreshAction(): bool
     {
         return $this->getAction(true);
     }
-    
+
     /**
      * Login Action
      * - Require an active session to bind the logged in userId
-     *
-     * @return bool
      */
-    public function loginAction()
+    public function loginAction(): bool
     {
         $this->view->setVars($this->identity->getJwt());
         $this->view->setVars($this->identity->login($this->getParams()));
         $this->view->setVars($this->identity->getIdentity());
-        
-        return $this->view->loggedIn;
+        return $this->view->getVar('loggedIn') ?? false;
     }
-    
+
     /**
      * Login As Action
-     * - Require an active session to bind the logged in userId
-     *
-     * @return bool
+     * - Requires an active session to bind the logged in userId
      */
-    public function loginAsAction()
+    public function loginAsAction(): bool
     {
         $this->view->setVars($this->identity->loginAs($this->getParams()));
-        
-        return $this->view->loggedInAs;
+        return $this->view->getVar('loggedInAs') ?? false;
     }
-    
+
     /**
      * Log the user out from the database session
-     *
-     * @return bool
      */
-    public function logoutAction()
+    public function logoutAction(): bool
     {
         $this->view->setVars($this->identity->logout());
-        
-        return !$this->view->loggedIn;
+        return !$this->view->getVar('loggedIn') ?? false;
     }
-    
+
     /**
      * Login Action
-     * - Require an active session to bind the logged in userId
-     *
-     * @return bool
+     * - Requires an active session to bind the logged in userId
      */
-    public function logoutAsAction()
+    public function logoutAsAction(): bool
     {
         $this->view->setVars($this->identity->logoutAs());
-        
-        return $this->view->loggedInAs;
+        return $this->view->getVar('loggedInAs') ?? false;
     }
-    
+
     /**
      * Reset Action
-     * - Require an active session to bind the logged in userId
-     *
-     * @return bool
+     * - Requires an active session to bind the logged in userId
      */
-    public function resetAction()
+    public function resetAction(): bool
     {
         $this->view->setVars($this->identity->reset($this->getParams()));
-        
-        return $this->view->reset;
+        return $this->view->getVar('reset') ?? false;
     }
 }
