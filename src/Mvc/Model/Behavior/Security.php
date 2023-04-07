@@ -12,12 +12,10 @@
 namespace Zemit\Mvc\Model\Behavior;
 
 use Phalcon\Di;
-use Phalcon\Text;
+use Phalcon\Acl\Adapter\Memory;
 use Phalcon\Messages\Message;
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Mvc\Model\Behavior;
-use Zemit\Config\Config;
-use Zemit\Identity;
 
 /**
  * Allows to check if the current identity is allowed to run some model actions
@@ -26,33 +24,61 @@ use Zemit\Identity;
 class Security extends Behavior
 {
     use SkippableTrait;
+    use ProgressTrait;
     
-    protected Config $config;
+    public static ?array $roles = null;
     
-    protected \Zemit\Security $security;
-    
-    protected Identity $identity;
+    public static ?Memory $acl = null;
     
     /**
-     * @todo avoid using DI
-     * @param array|null $options
+     * Set the ACL
      */
-    public function __construct(?array $options = null)
+    public static function setAcl(?Memory $acl = null): void
     {
-        parent::__construct($options);
-        $this->config ??= Di::getDefault()->get('config');
-        $this->security ??= Di::getDefault()->get('security');
-        $this->identity ??= Di::getDefault()->get('identity');
+        self::$acl = $acl;
     }
     
     /**
-     * Handling security on some model events
-     * - beforeCreate
-     * - beforeUpdate
-     * - beforeDelete
-     * - beforeRestore
-     *
-     * {@inheritdoc}
+     * Get the ACL
+     */
+    public static function getAcl(): Memory
+    {
+        if (is_null(self::$acl)) {
+            $security = Di::getDefault()->get('security');
+            assert($security instanceof \Zemit\Security);
+            self::setAcl($security->getAcl(['models', 'components']));
+        }
+        return self::$acl;
+    }
+    
+    /**
+     * Set the current identity's roles
+     */
+    public static function setRoles(?array $roles = null): void
+    {
+        self::$roles = $roles;
+    }
+    
+    /**
+     * Return the current identity's acl roles
+     */
+    public static function getRoles(): array
+    {
+        if (is_null(self::$roles)) {
+            $identity = Di::getDefault()->get('identity');
+            assert($identity instanceof \Zemit\Identity);
+            self::setRoles($identity->getAclRoles());
+        }
+        return self::$roles;
+    }
+    
+    public function __construct(?array $options = null)
+    {
+        parent::__construct($options);
+    }
+    
+    /**
+     * Handling security (acl) on before model's events
      */
     public function notify(string $type, ModelInterface $model): bool
     {
@@ -60,28 +86,41 @@ class Security extends Behavior
             return true;
         }
         
-        $this->security->getAcl();
-        switch ($type) {
-            case 'beforeFind': // @todo implement this
-            case 'beforeFindFirst': // @todo implement this
-            case 'beforeCount':  // @todo implement this
-            case 'beforeSum': // @todo implement this
-            case 'beforeAverage': // @todo implement this
-            case 'beforeCreate':
-            case 'beforeUpdate':
-            case 'beforeDelete':
-            case 'beforeRestore':
-            case 'beforeReorder':
-                $type = lcfirst(Text::camelize(str_replace(['before_', 'after_'], [null, null], Text::uncamelize($type))));
-                return $this->isAllowed($type, $model);
+        // skip check while still in progress
+        // needed to retrieve roles for itself
+        if ($this->inProgress()) {
+            return true;
+        }
+        
+        $beforeEvents = [
+            'beforeFind',
+            'beforeFindFirst',
+            'beforeCount',
+            'beforeSum',
+            'beforeAverage',
+            'beforeCreate',
+            'beforeUpdate',
+            'beforeDelete',
+            'beforeRestore',
+            'beforeReorder',
+        ];
+        
+        if (in_array($type, $beforeEvents, true)) {
+            self::staticStart();
+            
+            $type = (strpos($type, 'before') === 0) ? lcfirst(substr($type, 6)) : $type;
+            $isAllowed = $this->isAllowed($type, $model);
+            
+            self::staticStop();
+            return $isAllowed;
         }
         
         return true;
     }
     
-    public function isAllowed(string $type, ModelInterface $model): bool
+    public function isAllowed(string $type, ModelInterface $model, ?Memory $acl = null, ?array $roles = null): bool
     {
-        $acl = $this->security->getAcl(['models', 'components']);
+        $acl ??= self::getAcl();
         $modelClass = get_class($model);
         
         // component not found
@@ -96,7 +135,7 @@ class Security extends Behavior
         }
         
         // allowed for roles
-        $roles = $this->identity->getAclRoles();
+        $roles ??= self::getRoles();
         foreach ($roles as $role) {
             if ($acl->isAllowed($role, $modelClass, $type)) {
                 return true;
