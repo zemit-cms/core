@@ -39,12 +39,7 @@ final class QueryBuilder extends Builder
     }
     
     /**
-     * @inheritDoc Builder
-     * @param string $conditions
-     * @param null $bindParams
-     * @param null $bindTypes
-     *
-     * @return BuilderInterface
+     * Replacing where to andWhere in order to avoid loosing relationship conditions
      */
     public function where(string $conditions, array $bindParams = [], array $bindTypes = []): BuilderInterface
     {
