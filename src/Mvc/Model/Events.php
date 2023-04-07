@@ -12,54 +12,38 @@
 namespace Zemit\Mvc\Model;
 
 use Phalcon\Mvc\Model\ResultsetInterface;
+use Phalcon\Mvc\ModelInterface;
 use Phalcon\Text;
 
 trait Events
 {
-    /**
-     * @return ResultsetInterface|bool
-     */
-    public static function find(array ...$arguments): ResultsetInterface
-    {
-        return self::fireEventCancelCall(__FUNCTION__, $arguments);
-    }
-
-    /**
-     * @return ResultsetInterface|bool
-     */
-    public static function findFirst(array ...$arguments)
+    abstract public function fireEventCancel(string $eventName): bool;
+    
+    public static function find($parameters = null): ResultsetInterface
     {
         return self::fireEventCancelCall(__FUNCTION__, func_get_args());
     }
 
-    /**
-     * @return ResultsetInterface|int|false
-     */
-    public static function count(array ...$arguments)
+    public static function findFirst($parameters = null): ?ModelInterface
     {
         return self::fireEventCancelCall(__FUNCTION__, func_get_args());
     }
 
-    /**
-     * @return ResultsetInterface|float|false
-     */
-    public static function sum(array ...$arguments)
+    public static function count($parameters = null)
+    {
+        return self::fireEventCancelCall(__FUNCTION__, func_get_args());
+    }
+
+    public static function sum($parameters = null)
     {
         return self::fireEventCancelCall(__FUNCTION__, func_get_args());
     }
     
-    /**
-     * @return ResultsetInterface|float|false
-     */
-    public static function average(array ...$arguments)
+    public static function average($parameters = null)
     {
         return self::fireEventCancelCall(__FUNCTION__, func_get_args());
     }
 
-    /**
-     * Call the before & after events
-     * @return mixed|false
-     */
     public static function fireEventCancelCall(string $method, array $arguments = [])
     {
         $class = get_called_class();
