@@ -12,6 +12,7 @@
 namespace Zemit\Bootstrap;
 
 use PDO;
+use Phalcon\Db\Column;
 use Phalcon\Security;
 use Zemit\Filter;
 use Zemit\Filters;
@@ -20,16 +21,12 @@ use Zemit\Version;
 use Zemit\Provider;
 use Zemit\Utils\Env;
 use Zemit\Models;
-use Zemit\Modules\Admin;
-use Zemit\Modules\Frontend;
 use Zemit\Modules\Cli;
 use Zemit\Modules\Api;
 use Zemit\Mvc\Controller\Behavior;
 use Phalcon\Config as PhalconConfig;
 
 /**
- * Zemit\Bootstrap\Config
- *
  * Global Zemit Configuration
  *
  * @property PhalconConfig $core
@@ -77,9 +74,6 @@ class Config extends \Zemit\Config\Config
     /**
      * Config Constructor
      * {@inheritDoc}
-     *
-     * @param array $data
-     * @param bool $insensitive
      */
     public function __construct(array $data = [], bool $insensitive = true)
     {
@@ -325,64 +319,99 @@ class Config extends \Zemit\Config\Config
                 Models\Feature::class => Models\Feature::class,
             ],
             
+            'dataLifeCycle' => [
+                'models' => [
+                    Models\Log::class => Env::get('DATA_LIFE_CYCLE_LOG', 'default'),
+                    Models\Email::class => Env::get('DATA_LIFE_CYCLE_EMAIL', 'default'),
+                    Models\Session::class => Env::get('DATA_LIFE_CYCLE_SESSION', 'default'),
+                    Models\Audit::class => Env::get('DATA_LIFE_CYCLE_AUDIT', 'default'),
+                    Models\AuditDetail::class => Env::get('DATA_LIFE_CYCLE_AUDIT_DETAIL', 'default'),
+                ],
+                'policies' => [
+                    'default' => [
+                        'query' => [
+                            'condition' => 'createdAt < :createdAt:',
+                            'bind' => ['createdAt' => $now->modify('-3 month')],
+                            'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
+                        ],
+                    ],
+                ],
+            ],
+            
             /**
              * Service Provider Configuration
+             * expected => actual
              */
             'providers' => [
-                // abstract => concrete
+                // Application
+                Provider\Application\ServiceProvider::class => Env::get('PROVIDER_APPLICATION', Provider\Application\ServiceProvider::class),
+                Provider\Console\ServiceProvider::class => Env::get('PROVIDER_CONSOLE', Provider\Console\ServiceProvider::class),
+                Provider\Debug\ServiceProvider::class => Env::get('PROVIDER_CONSOLE', Provider\Debug\ServiceProvider::class),
                 Provider\Env\ServiceProvider::class => Env::get('PROVIDER_ENVIRONMENT', Provider\Env\ServiceProvider::class),
+                Provider\Router\ServiceProvider::class => Env::get('PROVIDER_ROUTER', Provider\Router\ServiceProvider::class),
+                Provider\Dispatcher\ServiceProvider::class => Env::get('PROVIDER_DISPATCHER', Provider\Dispatcher\ServiceProvider::class),
+                Provider\Request\ServiceProvider::class => Env::get('PROVIDER_REQUEST', Provider\Request\ServiceProvider::class),
+                Provider\Response\ServiceProvider::class => Env::get('PROVIDER_RESPONSE', Provider\Response\ServiceProvider::class),
+                
+                // Security
                 Provider\Security\ServiceProvider::class => Env::get('PROVIDER_SECURITY', Provider\Security\ServiceProvider::class),
                 Provider\Session\ServiceProvider::class => Env::get('PROVIDER_SESSION', Provider\Session\ServiceProvider::class),
                 Provider\Cookies\ServiceProvider::class => Env::get('PROVIDER_COOKIES', Provider\Cookies\ServiceProvider::class),
+                Provider\Crypt\ServiceProvider::class => Env::get('PROVIDER_CRYPT', Provider\Crypt\ServiceProvider::class),
+                Provider\Filter\ServiceProvider::class => Env::get('PROVIDER_FILTER', Provider\Filter\ServiceProvider::class),
+                Provider\Jwt\ServiceProvider::class => Env::get('PROVIDER_JWT', Provider\Jwt\ServiceProvider::class),
+                Provider\ReCaptcha\ServiceProvider::class => Env::get('PROVIDER_CAPTCHA', Provider\ReCaptcha\ServiceProvider::class),
                 
+                // Language
                 Provider\Locale\ServiceProvider::class => Env::get('PROVIDER_LOCALE', Provider\Locale\ServiceProvider::class),
                 Provider\Translate\ServiceProvider::class => Env::get('PROVIDER_TRANSLATE', Provider\Translate\ServiceProvider::class),
-                Provider\Url\ServiceProvider::class => Env::get('PROVIDER_URL', Provider\Url\ServiceProvider::class),
-                Provider\Request\ServiceProvider::class => Env::get('PROVIDER_REQUEST', Provider\Request\ServiceProvider::class),
-                Provider\Response\ServiceProvider::class => Env::get('PROVIDER_RESPONSE', Provider\Response\ServiceProvider::class),
-                Provider\Router\ServiceProvider::class => Env::get('PROVIDER_ROUTER', Provider\Router\ServiceProvider::class),
-                Provider\Dispatcher\ServiceProvider::class => Env::get('PROVIDER_DISPATCHER', Provider\Dispatcher\ServiceProvider::class),
-                Provider\Volt\ServiceProvider::class => Env::get('PROVIDER_VOLT', Provider\Volt\ServiceProvider::class),
+                
+                // View
                 Provider\View\ServiceProvider::class => Env::get('PROVIDER_VIEW', Provider\View\ServiceProvider::class),
-                
-                Provider\Profiler\ServiceProvider::class => Env::get('PROVIDER_PROFILER', Provider\Profiler\ServiceProvider::class),
-                Provider\Database\ServiceProvider::class => Env::get('PROVIDER_DATABASE', Provider\Database\ServiceProvider::class),
-                Provider\DatabaseReadOnly\ServiceProvider::class => Env::get('PROVIDER_DATABASE_READ_ONLY', Provider\DatabaseReadOnly\ServiceProvider::class),
-                Provider\Annotations\ServiceProvider::class => Env::get('PROVIDER_ANNOTATIONS', Provider\Annotations\ServiceProvider::class),
-                Provider\ModelsManager\ServiceProvider::class => Env::get('PROVIDER_MODELS_MANAGER', Provider\ModelsManager\ServiceProvider::class),
-                Provider\ModelsMetadata\ServiceProvider::class => Env::get('PROVIDER_MODELS_METADATA', Provider\ModelsMetadata\ServiceProvider::class),
-                Provider\ModelsCache\ServiceProvider::class => Env::get('PROVIDER_MODELS_CACHE', Provider\ModelsCache\ServiceProvider::class),
-                Provider\Cache\ServiceProvider::class => Env::get('PROVIDER_CACHE', Provider\Cache\ServiceProvider::class),
-                Provider\Mailer\ServiceProvider::class => Env::get('PROVIDER_MAILER', Provider\Mailer\ServiceProvider::class),
-                Provider\Logger\ServiceProvider::class => Env::get('PROVIDER_LOGGER', Provider\Logger\ServiceProvider::class),
-                Provider\FileSystem\ServiceProvider::class => Env::get('PROVIDER_FILE_SYSTEM', Provider\FileSystem\ServiceProvider::class),
-                
-                Provider\Assets\ServiceProvider::class => Env::get('PROVIDER_ASSETS', Provider\Assets\ServiceProvider::class),
+                Provider\Url\ServiceProvider::class => Env::get('PROVIDER_URL', Provider\Url\ServiceProvider::class),
+                Provider\Volt\ServiceProvider::class => Env::get('PROVIDER_VOLT', Provider\Volt\ServiceProvider::class),
                 Provider\Tag\ServiceProvider::class => Env::get('PROVIDER_TAG', Provider\Tag\ServiceProvider::class),
-                Provider\Filter\ServiceProvider::class => Env::get('PROVIDER_FILTER', Provider\Filter\ServiceProvider::class),
+                Provider\Assets\ServiceProvider::class => Env::get('PROVIDER_ASSETS', Provider\Assets\ServiceProvider::class),
                 Provider\Flash\ServiceProvider::class => Env::get('PROVIDER_FLASH', Provider\Flash\ServiceProvider::class),
                 Provider\Escaper\ServiceProvider::class => Env::get('PROVIDER_ESCAPER', Provider\Escaper\ServiceProvider::class),
                 Provider\Markdown\ServiceProvider::class => Env::get('PROVIDER_MARKDOWN', Provider\Markdown\ServiceProvider::class),
-                Provider\Utils\ServiceProvider::class => Env::get('PROVIDER_UTILS', Provider\Utils\ServiceProvider::class),
-                Provider\Crypt\ServiceProvider::class => Env::get('PROVIDER_CRYPT', Provider\Crypt\ServiceProvider::class),
                 
-                // oauth2
+                // Database & Models
+                Provider\Database\ServiceProvider::class => Env::get('PROVIDER_DATABASE', Provider\Database\ServiceProvider::class),
+                Provider\DatabaseReadOnly\ServiceProvider::class => Env::get('PROVIDER_DATABASE_READ_ONLY', Provider\DatabaseReadOnly\ServiceProvider::class),
+                Provider\ModelsManager\ServiceProvider::class => Env::get('PROVIDER_MODELS_MANAGER', Provider\ModelsManager\ServiceProvider::class),
+                
+                // Profiling & Logging
+                Provider\Profiler\ServiceProvider::class => Env::get('PROVIDER_PROFILER', Provider\Profiler\ServiceProvider::class),
+                Provider\Logger\ServiceProvider::class => Env::get('PROVIDER_LOGGER', Provider\Logger\ServiceProvider::class),
+                
+                // Caching
+                Provider\Annotations\ServiceProvider::class => Env::get('PROVIDER_ANNOTATIONS', Provider\Annotations\ServiceProvider::class),
+                Provider\ModelsMetadata\ServiceProvider::class => Env::get('PROVIDER_MODELS_METADATA', Provider\ModelsMetadata\ServiceProvider::class),
+                Provider\ModelsCache\ServiceProvider::class => Env::get('PROVIDER_MODELS_CACHE', Provider\ModelsCache\ServiceProvider::class),
+                Provider\Cache\ServiceProvider::class => Env::get('PROVIDER_CACHE', Provider\Cache\ServiceProvider::class),
+                
+                // Identity & Auth
                 Provider\Identity\ServiceProvider::class => Env::get('PROVIDER_IDENTITY', Provider\Identity\ServiceProvider::class),
+                Provider\Oauth2Client\ServiceProvider::class => Env::get('PROVIDER_OAUTH_2_FACEBOOK', Provider\Oauth2Client\ServiceProvider::class),
+                Provider\Oauth2Server\ServiceProvider::class => Env::get('PROVIDER_OAUTH_2_FACEBOOK', Provider\Oauth2Server\ServiceProvider::class),
                 Provider\Oauth2Facebook\ServiceProvider::class => Env::get('PROVIDER_OAUTH_2_FACEBOOK', Provider\Oauth2Facebook\ServiceProvider::class),
                 Provider\Oauth2Google\ServiceProvider::class => Env::get('PROVIDER_OAUTH_2_GOOGLE', Provider\Oauth2Google\ServiceProvider::class),
+    
+                // Mailing
+                Provider\Mailer\ServiceProvider::class => Env::get('PROVIDER_MAILER', Provider\Mailer\ServiceProvider::class),
+                Provider\Imap\ServiceProvider::class => Env::get('PROVIDER_IMAP', Provider\Imap\ServiceProvider::class),
                 
-                // lib
+                // Others
+                Provider\FileSystem\ServiceProvider::class => Env::get('PROVIDER_FILE_SYSTEM', Provider\FileSystem\ServiceProvider::class),
+                Provider\Utils\ServiceProvider::class => Env::get('PROVIDER_UTILS', Provider\Utils\ServiceProvider::class),
                 Provider\Aws\ServiceProvider::class => Env::get('PROVIDER_AWS', Provider\Aws\ServiceProvider::class),
                 Provider\OCR\ServiceProvider::class => Env::get('PROVIDER_OCR', Provider\OCR\ServiceProvider::class),
-                Provider\Jwt\ServiceProvider::class => Env::get('PROVIDER_JWT', Provider\Jwt\ServiceProvider::class),
                 Provider\V8js\ServiceProvider::class => Env::get('PROVIDER_V8_JS', Provider\V8js\ServiceProvider::class),
-                Provider\ReCaptcha\ServiceProvider::class => Env::get('PROVIDER_CAPTCHA', Provider\ReCaptcha\ServiceProvider::class),
                 Provider\Gravatar\ServiceProvider::class => Env::get('PROVIDER_GRAVATAR', Provider\Gravatar\ServiceProvider::class),
                 Provider\Clamav\ServiceProvider::class => Env::get('PROVIDER_CLAMAV', Provider\Clamav\ServiceProvider::class),
-                Provider\Imap\ServiceProvider::class => Env::get('PROVIDER_IMAP', Provider\Imap\ServiceProvider::class),
                 Provider\OpenAi\ServiceProvider::class => Env::get('PROVIDER_OPENAI', Provider\OpenAi\ServiceProvider::class),
                 Provider\LoremIpsum\ServiceProvider::class => Env::get('PROVIDER_LOREM_IPSUM', Provider\LoremIpsum\ServiceProvider::class),
-//                Snowair\Debugbar\ServiceProvider::class => \Snowair\Debugbar\ServiceProvider::class,
             ],
             
             /**
@@ -431,7 +460,6 @@ class Config extends \Zemit\Config\Config
             
             /**
              * Default modules
-             * @todo change this to class => [class => '', path => '']
              */
             'modules' => [
                 \Zemit\Mvc\Module::NAME_FRONTEND => [
@@ -454,13 +482,6 @@ class Config extends \Zemit\Config\Config
                     'className' => \Zemit\Modules\Cli\Module::class,
                     'path' => CORE_PATH . 'Modules/Cli/Module.php',
                 ],
-                /**
-                 * @TODO support this way too
-                 */
-//                \Zemit\Modules\Frontend\Module::class => \Zemit\Modules\Frontend\Module::class,
-//                \Zemit\Modules\Admin\Module::class => \Zemit\Modules\Admin\Module::class,
-//                \Zemit\Modules\Api\Module::class => \Zemit\Modules\Api\Module::class,
-//                \Zemit\Modules\Cli\Module::class => \Zemit\Modules\Cli\Module::class,
             ],
             
             /**
@@ -558,7 +579,7 @@ class Config extends \Zemit\Config\Config
                 'default_image' => Env::get('GRAVATAR_DEFAULT_IMAGE', 'identicon'),
                 'size' => Env::get('GRAVATAR_SIZE', 24),
                 'rating' => Env::get('GRAVATAR_RATING', 'pg'),
-                'use_https' => Env::get('GRAVATAR_HTPPS', true),
+                'use_https' => Env::get('GRAVATAR_USE_HTTPS', true),
             ],
             
             /**
@@ -726,9 +747,11 @@ class Config extends \Zemit\Config\Config
     
             /**
              * Default crypt settings
+             * @todo
              */
             'crypt' => [
                 'cipher' => Env::get('CRYPT_CIPHER', 'aes-256-cfb'),
+                'hash' => Env::get('CRYPT_HASH', 'sha256'),
                 'useSigning' => Env::get('CRYPT_USE_SIGNING', false),
             ],
             
@@ -1315,37 +1338,9 @@ class Config extends \Zemit\Config\Config
                 ],
             ],
         ], $insensitive);
+        
         if (!empty($data)) {
             $this->merge(new PhalconConfig($data, $insensitive));
         }
     }
-    
-    /**
-     * Merge the specified environment config with this one
-     * This should be used to overwrite specific values only
-     *
-     * @param null|string $env If null, will fetch the current environement from $this->app->env
-     *
-     * @return Config $this Return the merged current config
-     */
-    public function mergeEnvConfig(?string $env = null): self
-    {
-        $configFile = $this->app->dir->config . (isset($env) ? $env : $this->app->env) . '.php';
-        if (file_exists($configFile)) {
-            $envConfig = require_once $configFile;
-            if (!empty($envConfig)) {
-                $envConfig = is_callable($envConfig) ? $envConfig() : $envConfig;
-                if (is_array($envConfig)) {
-                    $this->merge(new PhalconConfig($envConfig));
-                }
-            }
-        }
-        
-        return $this;
-    }
 }
-
-//if (php_sapi_name() === 'cli') {
-//    $devtoolConfig = new Config();
-//    return $devtoolConfig->mergeEnvConfig();
-//}
