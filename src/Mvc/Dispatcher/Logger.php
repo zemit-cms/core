@@ -12,8 +12,8 @@
 namespace Zemit\Mvc\Dispatcher;
 
 use Phalcon\Events\Event;
-use Zemit\Dispatcher\AbstractDispatcher;
 use Zemit\Di\Injectable;
+use Zemit\Dispatcher\DispatcherInterface;
 
 class Logger extends Injectable
 {
@@ -30,7 +30,7 @@ class Logger extends Injectable
      * This action is executed before execute any action in the application
      * Keeping a log of the dispatch event
      */
-    public function beforeDispatchLoop(Event $event, AbstractDispatcher $dispatcher): void
+    public function beforeDispatchLoop(Event $event, DispatcherInterface $dispatcher): void
     {
         if ($this->isEnabled()) {
             if ($this->config->path('logger.dispatcher')) {
@@ -46,7 +46,7 @@ class Logger extends Injectable
                     'userId' => $userId,
                     'userAsId' => $userAsId,
                     'meta' => [
-                        'dispatch' => $dispatcher->toArray(),
+                        'dispatcher' => $dispatcher->toArray(),
                     ],
                 ]);
                 
