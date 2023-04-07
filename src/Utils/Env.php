@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,11 +11,11 @@
 
 namespace Zemit\Utils;
 
-use Dotenv\Dotenv;
+use Phalcon\Di\DiInterface;
 use Phalcon\Text;
+use Dotenv\Dotenv;
 
 /**
- * Class Env
  * Allow to access environment variable easily
  *
  * Example usage:
@@ -24,15 +25,7 @@ use Phalcon\Text;
  * $this->GET_APPLICATION_ENV('default'); // GET APPLICATION_ENV value or 'default'
  * self::GET_APPLICATION_ENV('default'); // GET APPLICATION_ENV value or 'default'
  * ```
- *
  * @todo fix dotenv mandatory file
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Utils
  */
 class Env
 {
@@ -47,101 +40,9 @@ class Env
     public static bool $shortCircuit = true;
     public static ?string $fileEncoding = null;
     
-    /**
-     * Get .env directories
-     * @return array
-     */
-    public static function getPaths() {
-        if (is_null(self::$paths)) {
-            self::$paths = [];
-            foreach (['ENV_PATH', 'ROOT_PATH', 'APP_PATH'] as $constant) {
-                if (defined($constant)) {
-                    $path = constant($constant);
-                    if (!is_null($path)) {
-                        self::$paths []= $constant === 'APP_PATH'? dirname($path) : $path;
-                        break;
-                    }
-                }
-            }
-            if (empty(self::$paths)) {
-                self::$paths []= getcwd();
-            }
-        }
-        return self::$paths;
-    }
-    
-    /**
-     * Set .env directories
-     * @param $paths
-     * @return void
-     */
-    public static function setPaths(array $paths = null): void {
-        self::$paths = $paths;
-    }
-    
-    /**
-     * Get .env file names
-     * @return string|string[]
-     */
-    public static function getNames() {
-        return self::$names;
-    }
-    
-    /**
-     * Set .env file names
-     * @param $names
-     * @return void
-     */
-    public static function setNames($names = null): void {
-        self::$names = $names;
-    }
-    
-    /**
-     * Get Dotenv type
-     * @return string
-     */
-    public static function getType() {
-        return ucfirst(Text::camelize(strtolower(self::$type ?? 'mutable')));
-    }
-    
-    /**
-     * Set Dotenv type
-     * @param string|null $type
-     * @return void
-     */
-    public static function setType(?string $type = null): void {
-        $domain = ['mutable', 'immutable', 'unsafe-mutable', 'unsafe-immutable'];
-        self::$type = (!in_array(strtolower($type), $domain, true)) ? strtolower($type) : 'mutable';
-    }
-    
-    /**
-     * @return boolean
-     */
-    public static function getShortCircuit(): bool {
-        return self::$shortCircuit;
-    }
-    
-    /**
-     * @param bool $shortCircuit
-     * @return void
-     */
-    public static function setShortCircuit(bool $shortCircuit = true): void {
-        self::$shortCircuit = (bool)$shortCircuit;
-    }
-    
-    /**
-     * @return ?string
-     */
-    public static function getFileEncoding(): ?string {
-        return self::$fileEncoding;
-    }
-    
-    /**
-     * @param ?string $fileEncoding
-     * @return void
-     */
-    public static function setFileEncoding(?string $fileEncoding = null): void {
-        self::$fileEncoding = $fileEncoding;
+    public function __construct(DiInterface $di)
+    {
+        self::initialize();
     }
     
     /**
@@ -161,10 +62,8 @@ class Env
             $names ??= self::getNames();
             $shortCircuit ??= self::getShortCircuit();
             $fileEncoding ??= self::getFileEncoding();
-            
-            self::$dotenv = Dotenv::{'create'. $type}($paths, $names, $shortCircuit, $fileEncoding);
+            self::$dotenv = Dotenv::{'create' . $type}($paths, $names, $shortCircuit, $fileEncoding);
             self::$vars = self::$dotenv->load();
-    
             self::$initialized = true;
         }
         
@@ -172,9 +71,118 @@ class Env
     }
     
     /**
+     * Get .env directories
+     * @return array
+     */
+    public static function getPaths()
+    {
+        if (is_null(self::$paths)) {
+            self::$paths = [];
+            foreach (['ENV_PATH', 'ROOT_PATH', 'APP_PATH'] as $constant) {
+                if (defined($constant)) {
+                    $path = constant($constant);
+                    if (!is_null($path)) {
+                        self::$paths [] = $constant === 'APP_PATH' ? dirname($path) : $path;
+                        break;
+                    }
+                }
+            }
+            if (empty(self::$paths)) {
+                self::$paths [] = getcwd();
+            }
+        }
+        return self::$paths;
+    }
+    
+    /**
+     * Set .env directories
+     * @param $paths
+     * @return void
+     */
+    public static function setPaths(array $paths = null): void
+    {
+        self::$paths = $paths;
+    }
+    
+    /**
+     * Get .env file names
+     * @return string|string[]
+     */
+    public static function getNames()
+    {
+        return self::$names;
+    }
+    
+    /**
+     * Set .env file names
+     * @param $names
+     * @return void
+     */
+    public static function setNames($names = null): void
+    {
+        self::$names = $names;
+    }
+    
+    /**
+     * Get Dotenv type
+     * @return string
+     */
+    public static function getType()
+    {
+        return ucfirst(Text::camelize(strtolower(self::$type ?? 'mutable')));
+    }
+    
+    /**
+     * Set Dotenv type
+     * @param string|null $type
+     * @return void
+     */
+    public static function setType(?string $type = null): void
+    {
+        $domain = ['mutable', 'immutable', 'unsafe-mutable', 'unsafe-immutable'];
+        self::$type = (!in_array(strtolower($type), $domain, true)) ? strtolower($type) : 'mutable';
+    }
+    
+    /**
+     * @return boolean
+     */
+    public static function getShortCircuit(): bool
+    {
+        return self::$shortCircuit;
+    }
+    
+    /**
+     * @param bool $shortCircuit
+     * @return void
+     */
+    public static function setShortCircuit(bool $shortCircuit = true): void
+    {
+        self::$shortCircuit = (bool)$shortCircuit;
+    }
+    
+    /**
+     * @return ?string
+     */
+    public static function getFileEncoding(): ?string
+    {
+        return self::$fileEncoding;
+    }
+    
+    /**
+     * @param ?string $fileEncoding
+     * @return void
+     */
+    public static function setFileEncoding(?string $fileEncoding = null): void
+    {
+        self::$fileEncoding = $fileEncoding;
+    }
+    
+    
+    /**
      * @return Dotenv
      */
-    public static function getDotenv() {
+    public static function getDotenv()
+    {
         return self::$dotenv ?? self::initialize();
     }
     
@@ -192,19 +200,26 @@ class Env
      */
     public static function call($name, $arguments)
     {
-        $ret = null;
         $getSet = 'set';
+        
         if (strpos($name, 'SET_') === 0) {
             $name = substr($name, 0, 4);
-        } elseif (strpos($name, 'set') === 0) {
+        }
+        
+        elseif (strpos($name, 'set') === 0) {
             $name = substr($name, 0, 3);
-        } elseif (strpos($name, 'GET_') === 0) {
+        }
+        
+        elseif (strpos($name, 'GET_') === 0) {
             $getSet = 'get';
             $name = substr($name, 0, 4);
-        } elseif (strpos($name, 'get') === 0) {
+        }
+        
+        elseif (strpos($name, 'get') === 0) {
             $getSet = 'get';
             $name = substr($name, 0, 3);
         }
+        
         return self::$getSet($name, array_pop($arguments));
     }
     
@@ -226,18 +241,21 @@ class Env
                 case 'true':
                     $ret = true;
                     break;
+                    
                 case 'false':
                     $ret = false;
                     break;
+                    
                 case 'empty':
                     $ret = '';
                     break;
+                    
                 case 'null':
                     $ret = null;
                     break;
             }
         }
-    
+        
         return $ret;
     }
     
