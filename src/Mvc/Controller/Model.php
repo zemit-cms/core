@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -18,17 +19,13 @@ use Phalcon\Mvc\ModelInterface;
 use Phalcon\Text;
 use Zemit\Http\Request;
 use Zemit\Identity;
-use Zemit\Mvc\Model\Expose\Expose;
+use Zemit\Support\Exposer\Exposer;
 use Zemit\Utils\Slug;
 
 /**
  * Trait Model
  *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
  *
- * @since 1.0
- * @version 1.0
  *
  * @package Zemit\Mvc\Controller
  */
@@ -80,7 +77,7 @@ trait Model
     public function getFlatWhiteList(?array $whiteList = null)
     {
         $whiteList ??= $this->getWhiteList();
-        $ret = Expose::_parseColumnsRecursive($whiteList);
+        $ret = Exposer::parseColumnsRecursive($whiteList);
         return $ret ? array_keys($ret) : null;
     }
     
@@ -447,7 +444,7 @@ trait Model
         return null;
     }
     
-    function arrayMapRecursive($callback, $array)
+    public function arrayMapRecursive(callable $callback, array $array): array
     {
         $func = function ($item) use (&$func, &$callback) {
             return is_array($item) ? array_map($func, $item) : call_user_func($callback, $item);
@@ -557,7 +554,7 @@ trait Model
                     default:
                         throw new \Exception('Not allowed to filter using the following operator: `' . $queryOperator . '`', 403);
                 }
-                
+
                 $bind = [];
                 $bindType = [];
 
@@ -565,7 +562,7 @@ trait Model
 //                $bindType[$queryField] = Column::BIND_PARAM_STR;
 //                $queryFieldBinder = ':' . $queryField . ':';
 //                $queryFieldBinder = '{' . $queryField . '}';
-                
+
                 // Add the current model name by default
                 $field = $this->appendModelName($field);
                 
@@ -583,7 +580,7 @@ trait Model
                         $query [] = (($queryOperator === 'not between') ? 'not ' : null) . "$queryFieldBinder between :$queryValue0: and :$queryValue1:";
                     }
                     
-                    else if (in_array($queryOperator, ['contains', 'does not contain'])) {
+                    elseif (in_array($queryOperator, ['contains', 'does not contain'])) {
                         $queryValue0 = '_' . uniqid($uniqid . '_value_') . '_';
                         $queryValue1 = '_' . uniqid($uniqid . '_value_') . '_';
                         $queryValue2 = '_' . uniqid($uniqid . '_value_') . '_';
@@ -593,25 +590,25 @@ trait Model
                         $bindType[$queryValue0] = Column::BIND_PARAM_STR;
                         $bindType[$queryValue1] = Column::BIND_PARAM_STR;
                         $bindType[$queryValue2] = Column::BIND_PARAM_STR;
-                        $query [] = ($queryOperator === 'does not contain'? '!' : '') . "($queryFieldBinder like :$queryValue0: or $queryFieldBinder like :$queryValue1: or $queryFieldBinder like :$queryValue2:)";
+                        $query [] = ($queryOperator === 'does not contain' ? '!' : '') . "($queryFieldBinder like :$queryValue0: or $queryFieldBinder like :$queryValue1: or $queryFieldBinder like :$queryValue2:)";
                     }
                     
-                    else if (in_array($queryOperator, ['is empty', 'is not empty'])) {
-                        $query [] = ($queryOperator === 'is not empty'? '!' : '') . "(TRIM($queryFieldBinder) = '' or $queryFieldBinder is null)";
+                    elseif (in_array($queryOperator, ['is empty', 'is not empty'])) {
+                        $query [] = ($queryOperator === 'is not empty' ? '!' : '') . "(TRIM($queryFieldBinder) = '' or $queryFieldBinder is null)";
                     }
                     
-                    else if (in_array($queryOperator, ['regexp', 'not regexp'])) {
+                    elseif (in_array($queryOperator, ['regexp', 'not regexp'])) {
                         $bind[$queryValue] = $filter['value'];
                         $query [] = $queryOperator . "($queryFieldBinder, $queryValueBinder)";
                     }
                     
-                    else if (in_array($queryOperator, ['contains word', 'does not contain word'])) {
+                    elseif (in_array($queryOperator, ['contains word', 'does not contain word'])) {
                         $bind[$queryValue] = '\\b' . $filter['value'] . '\\b';
                         $regexQueryOperator = str_replace(['contains word', 'does not contain word'], ['regexp', 'not regexp'], $queryOperator);
                         $query [] = $regexQueryOperator . "($queryFieldBinder, $queryValueBinder)";
                     }
                     
-                    else if (in_array($queryOperator, [
+                    elseif (in_array($queryOperator, [
                         'distance sphere equals',
                         'distance sphere greater than',
                         'distance sphere greater than or equal',
@@ -631,45 +628,51 @@ trait Model
                         $bindType[$queryBindValue1] = Column::BIND_PARAM_DECIMAL;
                         $bindType[$queryBindValue2] = Column::BIND_PARAM_DECIMAL;
                         $bindType[$queryBindValue3] = Column::BIND_PARAM_DECIMAL;
-    
                         $queryPointLatBinder0 = $queryBindValue0;
                         $queryPointLonBinder0 = $queryBindValue1;
                         $queryPointLatBinder1 = $queryBindValue2;
                         $queryPointLonBinder1 = $queryBindValue3;
-    
                         $queryLogicalOperator =
-                            (strpos($queryOperator, 'greater') !== false? '>' : null) .
-                            (strpos($queryOperator, 'less') !== false? '<' : null) .
-                            (strpos($queryOperator, 'equal') !== false? '=' : null);
-    
+                            (strpos($queryOperator, 'greater') !== false ? '>' : null) .
+                            (strpos($queryOperator, 'less') !== false ? '<' : null) .
+                            (strpos($queryOperator, 'equal') !== false ? '=' : null);
+                        
                         $bind[$queryValue] = $filter['value'];
                         $query [] = "ST_Distance_Sphere(point($queryPointLatBinder0, $queryPointLonBinder0), point($queryPointLatBinder1, $queryPointLonBinder1)) $queryLogicalOperator $queryValueBinder";
                     }
                     
                     else {
                         $bind[$queryValue] = $filter['value'];
+                        
                         if (is_string($filter['value'])) {
                             $bindType[$queryValue] = Column::BIND_PARAM_STR;
                         }
-                        else if (is_int($filter['value'])) {
+                        
+                        elseif (is_int($filter['value'])) {
                             $bindType[$queryValue] = Column::BIND_PARAM_INT;
                         }
-                        else if (is_bool($filter['value'])) {
+                        
+                        elseif (is_bool($filter['value'])) {
                             $bindType[$queryValue] = Column::BIND_PARAM_BOOL;
                         }
-                        else if (is_float($filter['value'])) {
+                        
+                        elseif (is_float($filter['value'])) {
                             $bindType[$queryValue] = Column::BIND_PARAM_DECIMAL;
                         }
-                        else if (is_double($filter['value'])) {
+                        
+                        elseif (is_double($filter['value'])) {
                             $bindType[$queryValue] = Column::BIND_PARAM_DECIMAL;
                         }
-                        else if (is_array($filter['value'])) {
+                        
+                        elseif (is_array($filter['value'])) {
                             $queryValueBinder = '({' . $queryValue . ':array})';
                             $bindType[$queryValue] = Column::BIND_PARAM_STR;
                         }
+                        
                         else {
                             $bindType[$queryValue] = Column::BIND_PARAM_NULL;
                         }
+                        
                         $query [] = "$queryFieldBinder $queryOperator $queryValueBinder";
                     }
                 }
@@ -716,11 +719,11 @@ trait Model
             if (!strpos($field, '.') !== false) {
                 $field = trim('[' . $modelName . '].[' . array_shift($explode) . '] ' . implode(' ', $explode));
             }
-            else if (strpos($field, ']') === false && strpos($field, '[') === false) {
+            elseif (strpos($field, ']') === false && strpos($field, '[') === false) {
                 $field = trim('[' . implode('].[', explode('.', array_shift($explode))) . ']' . implode(' ', $explode));
             }
         }
-        else if (is_array($field)) {
+        elseif (is_array($field)) {
             foreach ($field as $fieldKey => $fieldValue) {
                 $field[$fieldKey] = $this->appendModelName($fieldValue, $modelName);
             }
@@ -819,7 +822,6 @@ trait Model
         return null;
     }
     
-    
     /**
      * Get requested content type
      * - Default will return csv
@@ -841,26 +843,32 @@ trait Model
             case 'application/html':
                 // html not supported yet
                 break;
+                
             case 'xml':
             case 'text/xml':
             case 'application/xml':
                 // xml not supported yet
                 break;
+                
             case 'text':
             case 'text/plain':
                 // plain text not supported yet
                 break;
+                
             case 'json':
             case 'text/json':
             case 'application/json':
                 return 'json';
+                
             case 'csv':
             case 'text/csv':
                 return 'csv';
+                
             case 'xlsx':
             case 'application/xlsx':
             case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
                 return 'xlsx';
+                
             case 'xls':
             case 'application/vnd.ms-excel':
                 // old xls not supported yet
@@ -985,7 +993,9 @@ trait Model
         $modelName ??= $this->getModelClassName();
         $with ??= $this->getWith();
         $find ??= $this->getFind();
+        
         $condition = '[' . $modelName . '].[id] = ' . (int)$id;
+        
         if ($appendCondition) {
             $find['conditions'] .= (empty($find['conditions']) ? null : ' and ') . $condition;
         }
@@ -1005,19 +1015,9 @@ trait Model
      * If a newly created entity can't be retrieved using the ->getSingle
      * method after it's creation, the entity will be returned directly
      *
-     * @TODO Support Composite Primary Key
-     *
-     * @param null|int|string $id
-     * @param null|\Zemit\Mvc\Model $entity
-     * @param null|mixed $post
-     * @param null|string $modelName
-     * @param null|array $whiteList
-     * @param null|array $columnMap
-     * @param null|array $with
-     *
-     * @return array
+     * @TODO Support Composite Primary Key*
      */
-    protected function save($id = null, $entity = null, $post = null, $modelName = null, $whiteList = null, $columnMap = null, $with = null)
+    protected function save(?int $id = null, ?ModelInterface $entity = null, ?array $post = null, ?string $modelName = null, ?array $whiteList = null, ?array $columnMap = null, ?array $with = null): array
     {
         $single = false;
         $retList = [];
@@ -1038,27 +1038,25 @@ trait Model
         
         // Save each posts
         foreach ($post as $key => $singlePost) {
-            $ret = [];
-            
             $singlePostId = (!$single || empty($id)) ? $this->getParam('id', 'int', $this->getParam('int', 'int', $singlePost['id'] ?? null)) : $id;
             if (isset($singlePost['id'])) {
                 unset($singlePost['id']);
             }
             
             /** @var \Zemit\Mvc\Model $singlePostEntity */
-            $singlePostEntity = (!$single || !isset($entity)) ? $this->getSingle($singlePostId, $modelName) : $entity;
+            $singlePostEntity = (!$single || !isset($entity)) ? $this->getSingle($singlePostId, $modelName, []) : $entity;
             
             // Create entity if not exists
             if (!$singlePostEntity && empty($singlePostId)) {
                 $singlePostEntity = new $modelName();
             }
-            
+
             if (!$singlePostEntity) {
                 $ret = [
                     'saved' => false,
                     'messages' => [new Message('Entity id `' . $singlePostId . '` not found.', $modelName, 'NotFound', 404)],
                     'model' => $modelName,
-                    'source' => (new $modelName)->getSource(),
+                    'source' => (new $modelName())->getSource(),
                 ];
             }
             else {
@@ -1071,41 +1069,45 @@ trait Model
                 $ret = $this->saveEntity($singlePostEntity);
                 
                 // refetch & expose
-                $fetch = $this->getSingle($singlePostEntity->getId(), $modelName, $with);
-                $ret['single'] = $fetch ? $fetch->expose($this->getExpose()) : false;
+//                $fetchWith = $this->getSingle($singlePostEntity->getId(), $modelName, $with);
+//                $ret['single'] = $this->expose($fetchWith);
+                $fetchWith = $singlePostEntity->load($with);
+                $ret['single'] = $this->expose($fetchWith);
             }
-            
-            $retList [] = $ret;
+
+            if ($single) {
+                return $ret;
+            }
+            else {
+                $retList [] = $ret;
+            }
         }
-        
-        return $single ? $retList[0] : $retList;
+
+        return $retList;
     }
-    
+
     /**
      * Allow overrides to add alter variables before entity assign & save
-     * @param ModelInterface $entity
-     * @param array $post
-     * @param array|null $whiteList
-     * @param array|null $columnMap
-     * @return void
      */
-    protected function beforeAssign(ModelInterface &$entity, Array &$post, ?Array &$whiteList, ?Array &$columnMap): void {
-    
+    public function beforeAssign(ModelInterface &$entity, array &$post, ?array &$whiteList, ?array &$columnMap): void
+    {
     }
     
     /**
-     * @param $single
+     * Save an entity and return an array of the result
      *
-     * @return void
      */
-    protected function saveEntity($entity): array
+    public function saveEntity(ModelInterface $entity): array
     {
         $ret = [];
+        
         $ret['saved'] = $entity->save();
         $ret['messages'] = $entity->getMessages();
         $ret['model'] = get_class($entity);
         $ret['source'] = $entity->getSource();
-        $ret['entity'] = $entity->expose($this->getExpose());
+        $ret['entity'] = $entity; // @todo this is to fix a phalcon internal bug (503 segfault during eagerload)
+        $ret['single'] = $this->expose($entity, $this->getExpose());
+        
         return $ret;
     }
     
