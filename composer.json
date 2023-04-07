@@ -47,7 +47,6 @@
     "phalcon/cphalcon": "~4.1",
     "phalcon/incubator": "~4.0",
     "phalcon/devtools": "~4.3",
-    "lcobucci/jwt": "^4.3",
     "vlucas/phpdotenv": "^5.5",
     "docopt/docopt": "^1.0",
     "swiftmailer/swiftmailer": "~5.4.12",
