@@ -48,7 +48,6 @@ class Exposer
         $builder->setColumns(self::parseColumnsRecursive($columns));
         $builder->setExpose($expose);
         $builder->setProtected($protected);
-        $builder->setParent($object);
         $builder->setValue($object);
         return $builder;
     }
@@ -120,8 +119,9 @@ class Exposer
         // Otherwise, check if a parent key exists
         else {
             $parentKey = $fullKey;
-            while ($parentIndex = strrpos($parentKey, '.')) {
-                $parentKey = substr($parentKey, 0, $parentIndex);
+            $parentIndex = false;
+            do {
+                $parentKey = $parentIndex? substr($parentKey, 0, $parentIndex) : '';
                 if (isset($columns[$parentKey])) {
                     $column = $columns[$parentKey];
                     if (is_bool($column)) {
@@ -151,7 +151,7 @@ class Exposer
                     break;
                     // break at the first parent found
                 }
-            }
+            } while ($parentIndex = strrpos($parentKey, '.'));
         }
         
         // Try to find a subentity, or field that has the true value
@@ -182,7 +182,6 @@ class Exposer
     public static function expose(Builder $builder)
     {
         $columns = $builder->getColumns();
-        
         $value = $builder->getValue();
         
         if (is_array($value) || is_object($value)) {
@@ -193,12 +192,8 @@ class Exposer
             elseif (method_exists($value, 'toArray')) {
                 $toParse = $value->toArray();
             }
-            
-            // @TODO fix / refactor this
-            if (isset($value->dirtyRelated)) {
-                foreach ($value->dirtyRelated as $dirtyRelatedKey => $dirtyRelated) {
-                    $toParse[$dirtyRelatedKey] = $dirtyRelated ?? false;
-                }
+            else {
+                $toParse = $value;
             }
             
             // si aucune column demandé et que l'expose est à false

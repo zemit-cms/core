@@ -57,7 +57,7 @@ class Builder implements BuilderInterface
     
     public function setKey(?string $key = null): void
     {
-        $this->key = (is_string($key) ? trim(mb_strtolower($key)) : null);
+        $this->key = self::processKey($key);
     }
     
     public function getContextKey(): ?string
@@ -67,7 +67,7 @@ class Builder implements BuilderInterface
     
     public function setContextKey(?string $contextKey = null): void
     {
-        $this->contextKey = $contextKey;
+        $this->contextKey = self::processKey($contextKey);
     }
     
     public function getField(): string
@@ -115,5 +115,23 @@ class Builder implements BuilderInterface
         $key = $this->getKey();
         $keyContext = $this->getContextKey();
         return $keyContext . (empty($key) ? null : (empty($keyContext) ? $key : '.' . $key));
+    }
+    
+    public static function processKey(?string $key = null): ?string
+    {
+        return empty($key)? $key : mb_strtolower(
+            trim(
+                preg_replace(
+                    '/\.+/',
+                    '.',
+                    preg_replace(
+                        '/\s+/',
+                        '.',
+                        $key
+                    )
+                ),
+                '.'
+            )
+        );
     }
 }
