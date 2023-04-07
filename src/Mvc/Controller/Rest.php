@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -11,60 +12,45 @@
 namespace Zemit\Mvc\Controller;
 
 use League\Csv\CharsetConverter;
+use League\Csv\Writer;
 use Phalcon\Events\Manager;
+use Phalcon\Exception;
 use Phalcon\Http\Response;
 use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\Dispatcher;
-use Phalcon\Mvc\Model\Resultset;
-use League\Csv\Writer;
+use Phalcon\Mvc\ModelInterface;
 use Phalcon\Version;
-use Zemit\Db\Profiler;
 use Zemit\Di\Injectable;
+use Zemit\Http\StatusCode;
 use Zemit\Utils;
 use Zemit\Utils\Slug;
-use Zemit\Http\StatusCode;
 
-/**
- * Class Rest
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- *
- * @property Profiler $profiler
- * @package Zemit\Mvc\Controller
- */
 class Rest extends \Zemit\Mvc\Controller
 {
     use Model;
     
     /**
-     * Rest Bootstrap
+     * @throws Exception
      */
-    public function indexAction($id = null)
+    public function indexAction(?int $id = null)
     {
         $this->restForwarding($id);
     }
     
     /**
      * Rest bootstrap forwarding
-     *
-     * @return ResponseInterface
+     * @throws Exception
      */
-    protected function restForwarding($id = null)
+    protected function restForwarding(?int $id = null): void
     {
         $id ??= $this->getParam('id');
-        
         if ($this->request->isPost() || $this->request->isPut() || $this->request->isPatch()) {
             $this->dispatcher->forward(['action' => 'save']);
         }
-        else if ($this->request->isDelete()) {
+        elseif ($this->request->isDelete()) {
             $this->dispatcher->forward(['action' => 'delete']);
         }
-        else if ($this->request->isGet()) {
+        elseif ($this->request->isGet()) {
             if (is_null($id)) {
                 $this->dispatcher->forward(['action' => 'getList']);
             }
@@ -79,8 +65,8 @@ class Rest extends \Zemit\Mvc\Controller
      * Alias of method getAction()
      *
      * @param null $id
-     * @deprecated Should use getAction() method instead
      * @return bool|ResponseInterface
+     * @deprecated Should use getAction() method instead
      */
     public function getSingleAction($id = null)
     {
@@ -117,9 +103,9 @@ class Rest extends \Zemit\Mvc\Controller
      * Retrieving a record list
      * Alias of method getListAction()
      *
-     * @deprecated Should use getListAction() method instead
      * @return ResponseInterface
      * @throws \Exception
+     * @deprecated Should use getListAction() method instead
      */
     public function getAllAction()
     {
@@ -136,21 +122,28 @@ class Rest extends \Zemit\Mvc\Controller
     {
         $model = $this->getModelClassName();
         
-        /** @var Resultset $with */
-        $find = $this->getFind();
-        $with = $model::with($this->getListWith() ?: [], $find ?: []);
-        $list = $this->listExpose($with);
-
-//        $list = is_array($list) ? array_values(array_filter($list)) : $list; // @todo do we really need to do this?
-        $this->view->list = $list;
-        $this->view->listCount = count($list);
-        $this->view->totalCount = $model::find($this->getFindCount($find));
-        $this->view->totalCount = is_int($this->view->totalCount) ? $this->view->totalCount : count($this->view->totalCount); // @todo fix count to work with rollup when joins
-        $this->view->limit = $find['limit'] ?? false;
-        $this->view->offset = $find['offset'] ?? false;
-        $this->view->find = ($this->config->app->debug || $this->config->debug->enable) ? $find : false;
+        $find = $this->getFind() ?: [];
+        $with = $this->getListWith() ?: [];
         
-        return $this->setRestResponse();
+        $resultset = $model::findWith($with, $find);
+        $list = $this->listExpose($resultset);
+        
+        $ret = [];
+        $ret['list'] = $list;
+        $ret['listCount'] = count($list);
+        $ret['totalCount'] = $model::find($this->getFindCount($find)); // @todo fix count to work with rollup when joins
+        $ret['totalCount'] = is_int($ret['totalCount']) ? $ret['totalCount'] : count($ret['totalCount']);
+        $ret['limit'] = $find['limit'] ?? null;
+        $ret['offset'] = $find['offset'] ?? null;
+        
+        if ($this->isDebugEnabled()) {
+            $ret['find'] = $find;
+            $ret['with'] = $with;
+        }
+        
+        $this->view->setVars($ret);
+        
+        return $this->setRestResponse((bool)$resultset);
     }
     
     /**
@@ -162,14 +155,11 @@ class Rest extends \Zemit\Mvc\Controller
     public function exportAction()
     {
         $model = $this->getModelClassName();
-        
         $find = $this->getFind();
         $with = $model::with($this->getExportWith() ?: [], $find ?: []);
         $list = $this->exportExpose($with);
-        
         $this->flatternArrayForCsv($list);
         $this->formatColumnText($list);
-        
         return $this->download($list);
     }
     
@@ -184,7 +174,8 @@ class Rest extends \Zemit\Mvc\Controller
      * @throws \League\Csv\InvalidArgument
      * @throws \Zemit\Exception
      */
-    public function download($list = [], $fileName = null, $contentType = null, $params = null) {
+    public function download($list = [], $fileName = null, $contentType = null, $params = null)
+    {
         $params ??= $this->getParams();
         $contentType ??= $this->getContentType();
         $fileName ??= ucfirst(Slug::generate(basename(str_replace('\\', '/', $this->getModelClassName())))) . ' List (' . date('Y-m-d') . ')';
@@ -196,7 +187,7 @@ class Rest extends \Zemit\Mvc\Controller
             $this->response->setHeader('Content-disposition', 'attachment; filename="' . addslashes($fileName) . '.json"');
             return $this->response->send();
         }
-    
+        
         // CSV
         if ($contentType === 'csv') {
         
@@ -218,7 +209,7 @@ class Rest extends \Zemit\Mvc\Controller
                 $csv->setNewline("\r\n"); // new lines
                 CharsetConverter::addTo($csv, 'UTF-8', 'UTF-16');
             }
-        
+            
             // CSV - MS Excel on Windows
             else {
                 $csv->setOutputBOM(Writer::BOM_UTF8); // utf-8
@@ -226,7 +217,7 @@ class Rest extends \Zemit\Mvc\Controller
                 $csv->setNewline("\n"); // new line windows
                 CharsetConverter::addTo($csv, 'UTF-8', 'UTF-8');
             }
-        
+            
             // Apply forced params from request
             if (isset($outputBOM)) {
                 $csv->setOutputBOM($outputBOM);
@@ -246,7 +237,7 @@ class Rest extends \Zemit\Mvc\Controller
             else {
                 $csv->includeInputBOM();
             }
-        
+            
             // CSV
             if (isset($list[0])) {
                 $csv->insertOne(array_keys($list[0]));
@@ -255,7 +246,7 @@ class Rest extends \Zemit\Mvc\Controller
             $csv->output($fileName . '.csv');
             die;
         }
-    
+        
         // XLSX
         if ($contentType === 'xlsx') {
             $xlsxArray = [];
@@ -277,7 +268,7 @@ class Rest extends \Zemit\Mvc\Controller
     /**
      * Expose a single model
      */
-    public function expose(\Zemit\Mvc\Model $item, $expose = null)
+    public function expose(ModelInterface $item, ?array $expose = null): array
     {
         $expose ??= $this->getExpose();
         return $item->expose($expose);
@@ -286,12 +277,11 @@ class Rest extends \Zemit\Mvc\Controller
     /**
      * Expose a list of model
      */
-    public function listExpose(iterable $items, $listExpose = null): array
+    public function listExpose(iterable $items, ?array $listExpose = null): array
     {
         $listExpose ??= $this->getListExpose();
         $ret = [];
         
-        /** @var \Zemit\Mvc\Model $item */
         foreach ($items as $item) {
             $ret [] = $this->expose($item, $listExpose);
         }
@@ -324,7 +314,7 @@ class Rest extends \Zemit\Mvc\Controller
                     if (is_array($list[$listKey][$column])) {
                         foreach ($list[$listKey][$column] as $childKey => $childValue) {
                             $list[$listKey][$childKey] = $childValue;
-                            unset ($list[$listKey][$column]);
+                            unset($list[$listKey][$column]);
                         }
                     }
                 }
@@ -332,13 +322,7 @@ class Rest extends \Zemit\Mvc\Controller
         }
     }
     
-    /**
-     * @param array|object $list
-     * @param string|null $seperator
-     *
-     * @return array|object
-     */
-    public function concatListFieldElementForCsv($list, $seperator = ' ')
+    public function concatListFieldElementForCsv(array $list = [], ?string $seperator = ' '): array
     {
         foreach ($list as $valueKey => $element) {
             if (is_array($element) || is_object($element)) {
@@ -358,24 +342,18 @@ class Rest extends \Zemit\Mvc\Controller
         return $list;
     }
     
-    /**
-     * @param array|null $array
-     * @param string|null $alias
-     *
-     * @return array|null
-     */
-    function arrayFlatten(?array $array, ?string $alias = null)
+    public function arrayFlatten(?array $array, ?string $alias = null): array
     {
-        $return = [];
+        $ret = [];
         foreach ($array as $key => $value) {
             if (is_array($value)) {
-                $return = array_merge($return, $this->arrayFlatten($value, $alias));
+                $ret = array_merge($ret, $this->arrayFlatten($value, $alias));
             }
             else {
-                $return[$alias . '.' . $key] = $value;
+                $ret[$alias . '.' . $key] = $value;
             }
         }
-        return $return;
+        return $ret;
     }
     
     /**
@@ -451,13 +429,7 @@ class Rest extends \Zemit\Mvc\Controller
         return $list;
     }
     
-    /**
-     * @param array $arrayToOrder
-     * @param array $orderList
-     *
-     * @return array
-     */
-    function arrayCustomOrder($arrayToOrder, $orderList)
+    public function arrayCustomOrder(array $arrayToOrder, array $orderList): array
     {
         $ordered = [];
         foreach ($orderList as $key) {
@@ -481,10 +453,12 @@ class Rest extends \Zemit\Mvc\Controller
         /** @var \Zemit\Mvc\Model $entity */
         $entity = new $model();
         
-        $this->view->totalCount = $model::count($this->getFindCount($this->getFind()));
-        $this->view->totalCount = is_int($this->view->totalCount) ? $this->view->totalCount : count($this->view->totalCount);
-        $this->view->model = get_class($entity);
-        $this->view->source = $entity->getSource();
+        $ret = [];
+        $ret['totalCount'] = $model::count($this->getFindCount($this->getFind()));
+        $ret['totalCount'] = is_int($ret['totalCount']) ? $ret['totalCount'] : count($ret['totalCount']);
+        $ret['model'] = get_class($entity);
+        $ret['source'] = $entity->getSource();
+        $this->view->setVars($ret);
         
         return $this->setRestResponse();
     }
@@ -567,15 +541,17 @@ class Rest extends \Zemit\Mvc\Controller
                 continue;
             }
         }
+    
+        $ret = [];
+        $ret['model'] = get_class($entity);
+        $ret['source'] = $entity->getSource();
+        $ret['single'] = $this->expose($entity);
+        $ret['messages'] = $entity->getMessages();
+        $ret['events'] = $events;
+        $ret['validated'] = empty($this->view->messages);
+        $this->view->setVars($ret);
         
-        $this->view->model = get_class($entity);
-        $this->view->source = $entity->getSource();
-        $this->view->single = $this->expose($entity);
-        $this->view->messages = $entity->getMessages();
-        $this->view->events = $events;
-        $this->view->validated = empty($this->view->messages);
-        
-        return $this->setRestResponse($this->view->validated);
+        return $this->setRestResponse($ret['validated']);
     }
     
     /**
@@ -590,7 +566,7 @@ class Rest extends \Zemit\Mvc\Controller
         $ret = $this->save($id);
         $this->view->setVars($ret);
         
-        return $this->setRestResponse($ret['saved']);
+        return $this->setRestResponse(true); // @todo set value based on save single or list
     }
     
     /**
@@ -628,7 +604,7 @@ class Rest extends \Zemit\Mvc\Controller
     public function restoreAction($id = null)
     {
         $entity = $this->getSingle($id);
-    
+        
         $ret = [];
         $ret['restored'] = $entity && $entity->restore();
         $ret['single'] = $entity ? $this->expose($entity) : false;
@@ -696,42 +672,18 @@ class Rest extends \Zemit\Mvc\Controller
      */
     public function setRestResponse($response = null, int $code = null, string $status = null, int $jsonOptions = 0, int $depth = 512): ResponseInterface
     {
-        $debug = $this->config->app->debug ?? false;
+        $debug = $this->isDebugEnabled();
         
         // keep forced status code or set our own
-        $responseStatusCode = $this->response->getStatusCode();
+        $statusCode = $this->response->getStatusCode();
         $reasonPhrase = $this->response->getReasonPhrase();
-        $code ??= (int)$responseStatusCode ?: 200;
+        $code ??= (int)$statusCode ?: 200;
         $status ??= $reasonPhrase ?: StatusCode::getMessage($code);
+        
         $view = $this->view->getParamsToView();
         $hash = hash('sha512', json_encode($view));
-        
-        /**
-         * Debug section
-         * - Versions
-         * - Request
-         * - Identity
-         * - Profiler
-         * - Dispatcher
-         * - Router
-         */
-        $request = $debug ? $this->request->toArray() : null;
-        $identity = $debug ? $this->identity->getIdentity() : null;
-        $profiler = $debug && $this->profiler ? $this->profiler->toArray() : null;
-        $dispatcher = $debug ? $this->dispatcher->toArray() : null;
-        $router = $debug ? $this->router->toArray() : null;
     
-        $coreConfig = $this->config->core->toArray();
-        $api = $debug ? [
-            'php' => phpversion(),
-            'phalcon' => Version::get(),
-            'zemit' => $coreConfig['version'],
-            'core' => $coreConfig['name'],
-            'app' => $coreConfig['version'],
-            'name' => $coreConfig['name'],
-        ] : [];
-        $api['version'] = '0.1';
-        
+        // set response status code
         $this->response->setStatusCode($code, $code . ' ' . $status);
         
         // @todo handle this correctly
@@ -749,8 +701,8 @@ class Rest extends \Zemit\Mvc\Controller
         }
         
         $ret = [];
-        
-        $ret['api'] = $api;
+        $ret['api'] = [];
+        $ret['api']['version'] = ['0.1']; // @todo
         $ret['timestamp'] = date('c');
         $ret['hash'] = $hash;
         $ret['status'] = $status;
@@ -759,21 +711,29 @@ class Rest extends \Zemit\Mvc\Controller
         $ret['view'] = $view;
         
         if ($debug) {
-            $ret['identity'] = $identity;
-            $ret['profiler'] = $profiler;
-            $ret['request'] = $request;
-            $ret['dispatcher'] = $dispatcher;
-            $ret['router'] = $router;
+            $ret['api']['php'] = phpversion();
+            $ret['api']['phalcon'] = Version::get();
+            $ret['api']['zemit'] = $this->config->path('core.version');
+            $ret['api']['core'] = $this->config->path('core.name');
+            $ret['api']['app'] = $this->config->path('app.version');
+            $ret['api']['name'] = $this->config->path('app.name');
+    
+            $ret['identity'] = $this->identity ? $this->identity->getIdentity() : null;
+            $ret['profiler'] = $this->profiler ? $this->profiler->toArray() : null;
+            $ret['request'] = $this->request ? $this->request->toArray() : null;
+            $ret['dispatcher'] = $this->dispatcher ? $this->dispatcher->toArray() : null;
+            $ret['router'] = $this->router ? $this->router->toArray() : null;
             $ret['memory'] = Utils::getMemoryUsage();
         }
         
         return $this->response->setJsonContent($ret, $jsonOptions, $depth);
     }
     
-    public function beforeExecuteRoute(Dispatcher $dispatcher)
+    public function beforeExecuteRoute(Dispatcher $dispatcher): void
     {
         // @todo use eventsManager from service provider instead
         $this->eventsManager->enablePriorities(true);
+        
         // @todo see if we can implement receiving an array of responses globally: V2
         // $this->eventsManager->collectResponses(true);
         
@@ -803,26 +763,37 @@ class Rest extends \Zemit\Mvc\Controller
         }
     }
     
-    public function attachBehaviors($behaviors, $eventType = 'rest')
+    /**
+     * Attach a new behavior
+     * @todo review behavior type
+     */
+    public function attachBehavior(string $behavior, string $eventType = 'rest'): void
     {
-        if (!is_array($behaviors)) {
-            $behaviors = [$behaviors];
+        $event = new $behavior();
+        
+        // inject DI
+        if ($event instanceof Injectable || method_exists($event, 'setDI')) {
+            $event->setDI($this->getDI());
         }
+        
+        // attach behavior
+        $this->eventsManager->attach($event->eventType ?? $eventType, $event, $event->priority ?? Manager::DEFAULT_PRIORITY);
+    }
+    
+    /**
+     * Attach new behaviors
+     */
+    public function attachBehaviors(array $behaviors = [], string $eventType = 'rest'): void
+    {
         foreach ($behaviors as $behavior) {
-            $event = new $behavior();
-            if ($event instanceof Injectable) {
-                $event->setDI($this->getDI());
-            }
-            $this->eventsManager->attach($event->eventType ?? $eventType, $event, $event->priority ?? Manager::DEFAULT_PRIORITY);
+            $this->attachBehavior($behavior, $eventType);
         }
     }
     
     /**
      * Handle rest response automagically
-     *
-     * @param Dispatcher $dispatcher
      */
-    public function afterExecuteRoute(Dispatcher $dispatcher)
+    public function afterExecuteRoute(Dispatcher $dispatcher): void
     {
         $response = $dispatcher->getReturnedValue();
         
@@ -838,5 +809,10 @@ class Rest extends \Zemit\Mvc\Controller
         
         // Return our Rest normalized response
         $dispatcher->setReturnedValue($this->setRestResponse(is_array($response) ? null : $response));
+    }
+    
+    public function isDebugEnabled(): bool
+    {
+        return $this->config->path('app.debug') ?? false;
     }
 }
