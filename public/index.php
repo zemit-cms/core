@@ -8,12 +8,15 @@
  * file that was distributed with this source code.
  */
 
-use Zemit\Bootstrap;
+use Phalcon\Loader;
 
 // Set your default path and namespace
 const VENDOR_PATH = __DIR__ . '/../vendor/';
 const APP_PATH = __DIR__ . '/../src/';
 
-// Register autoloader and run bootstrap
-$composer = require_once VENDOR_PATH . 'autoload.php';
-echo (new Bootstrap(Bootstrap::MODE_MVC))->run();
+$loader = new Loader();
+$loader->registerFiles([VENDOR_PATH . 'autoload.php']);
+$loader->registerNamespaces(['Zemit' => APP_PATH]);
+$loader->register();
+
+echo (new Zemit\Bootstrap(Zemit\Bootstrap::MODE_MVC))->run();
