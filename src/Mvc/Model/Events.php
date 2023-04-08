@@ -11,6 +11,7 @@
 
 namespace Zemit\Mvc\Model;
 
+use Phalcon\Mvc\Model\Resultset\Simple;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Text;
@@ -21,12 +22,22 @@ trait Events
     
     public static function find($parameters = null): ResultsetInterface
     {
-        return self::fireEventCancelCall(__FUNCTION__, func_get_args());
+        $ret = self::fireEventCancelCall(__FUNCTION__, func_get_args());
+        
+        if (!$ret) {
+            $that = new self();
+            assert($that instanceof ModelInterface);
+            $columnMap = $that->getModelsMetaData()->getColumnMap($that);
+            return new Simple($columnMap, $that, []);
+        }
+        
+        return $ret;
     }
 
     public static function findFirst($parameters = null): ?ModelInterface
     {
-        return self::fireEventCancelCall(__FUNCTION__, func_get_args());
+        $ret = self::fireEventCancelCall(__FUNCTION__, func_get_args());
+        return $ret ?? null;
     }
 
     public static function count($parameters = null)
