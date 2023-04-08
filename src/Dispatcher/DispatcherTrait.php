@@ -11,7 +11,6 @@
 
 namespace Zemit\Dispatcher;
 
-use Phalcon\Dispatcher\AbstractDispatcher;
 use Phalcon\Mvc\Dispatcher as MvcDispatcher;
 use Phalcon\Cli\Dispatcher as CliDispatcher;
 
