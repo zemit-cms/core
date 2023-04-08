@@ -11,7 +11,9 @@
 
 namespace Zemit\Mvc\Model;
 
+use Exception;
 use Zemit\Mvc\Model\AbstractTrait\AbstractBehavior;
+use Zemit\Mvc\Model\AbstractTrait\AbstractEntity;
 use Zemit\Mvc\Model\AbstractTrait\AbstractEventsManager;
 use Zemit\Mvc\Model\Behavior;
 
@@ -19,7 +21,8 @@ trait SoftDelete
 {
     use AbstractBehavior;
     use AbstractEventsManager;
-    use Attribute;
+    use AbstractEntity;
+    use Options;
     
     public Behavior\SoftDelete $softDeleteBehavior;
     
@@ -35,7 +38,7 @@ trait SoftDelete
     /**
      * Return the soft delete behavior instance
      */
-    public function getSoftDeleteBehavior(): ?Behavior\SoftDelete
+    public function getSoftDeleteBehavior(): Behavior\SoftDelete
     {
         return $this->softDeleteBehavior;
     }
@@ -73,19 +76,19 @@ trait SoftDelete
      */
     public function isDeleted(?string $field = null, ?int $deletedValue = null): bool
     {
-        $field ??= self::DELETED_FIELD;
-        $deletedValue ??= self::YES;
-        return $this->getAttribute($field) === $deletedValue;
+        $softDeleteBehavior = $this->getSoftDeleteBehavior();
+        $field = $softDeleteBehavior->getField();
+        $value = $softDeleteBehavior->getValue();
+        return $this->readAttribute($field) === $value;
     }
     
     /**
-     * Restore a previously Soft-deleted entry
+     * Restore a previously Soft-deleted entry and fire events
      * Events:
      * - beforeRestore
      * - notRestored
      * - afterRestore
      *
-     * @throws \Exception
      * @todo add a check from orm.events setup state
      */
     public function restore(?string $field = null, ?int $notDeletedValue = null): bool
@@ -105,16 +108,15 @@ trait SoftDelete
             }
         }
         
-        // get settings
-        $field ??= self::DELETED_FIELD;
-        $notDeletedValue ??= self::NO;
+        $field ??= $this->getSoftDeleteBehavior()->getField();
+        $notDeletedValue ??= 0;
         
         // restore
-        $this->assign([$field => $notDeletedValue], [$field]);
+        $this->writeAttribute($field, $notDeletedValue);
         $save = $this->save();
         
         // check if the entity was really restored
-        $value = $this->getAttribute($field);
+        $value = $this->readAttribute($field);
         $restored = $save && $value === $notDeletedValue;
         
         // fire events
