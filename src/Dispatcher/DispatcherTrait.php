@@ -16,10 +16,32 @@ use Phalcon\Cli\Dispatcher as CliDispatcher;
 
 trait DispatcherTrait
 {
+    abstract public function getNamespaceName(): string;
+    
+    abstract public function getModuleName(): string;
+    
+    abstract public function getActionName(): string;
+    
+    abstract public function getParams(): array;
+    
+    abstract public function getHandlerClass(): string;
+    
+    abstract public function getHandlerSuffix(): string;
+
+//    abstract public function getTaskName(): string;
+
+//    abstract public function getControllerName(): string;
+    
+    abstract public function getActionSuffix(): string;
+    
+    abstract public function getActiveMethod(): string;
+    
     /**
+     * {@inheritDoc}
+     * The string typed keys are not passed to the action method arguments
+     * Only the int keys will be passed
+     *
      * @param $handler
-     * @param string $actionMethod
-     * @param array $params
      * @return mixed
      */
     public function callActionMethod($handler, string $actionMethod, array $params = [])
@@ -36,36 +58,64 @@ trait DispatcherTrait
      */
     public function forward(array $forward, bool $preventCycle = false): void
     {
+        $forward = $this->unsetForward($forward);
+        
         if (!$preventCycle) {
             parent::forward($forward);
         }
-        elseif ((!isset($forward['namespace']) || $this->getNamespaceName() !== $forward['namespace']) &&
-            (!isset($forward['module']) || $this->getModuleName() !== $forward['module']) &&
-            (!isset($forward['task']) || $this->getControllerName() !== $forward['task']) &&
-            (!isset($forward['controller']) || $this->getControllerName() !== $forward['controller']) &&
-            (!isset($forward['action']) || $this->getActionName() !== $forward['action']) &&
-            (!isset($forward['params']) || $this->getParams() !== $forward['params'])
-        ) {
-            if (!isset($forward['namespace'])) {
-                unset($forward['namespace']);
-            }
-            if (!isset($forward['module'])) {
-                unset($forward['module']);
-            }
-            if (!isset($forward['task'])) {
-                unset($forward['task']);
-            }
-            if (!isset($forward['controller'])) {
-                unset($forward['controller']);
-            }
-            if (!isset($forward['action'])) {
-                unset($forward['action']);
-            }
-            if (!isset($forward['params'])) {
-                unset($forward['params']);
-            }
-            $this->forward($forward);
+        
+        elseif ($this->canForward($forward)) {
+            parent::forward($forward);
         }
+    }
+    
+    public function canForward(array $forward): bool
+    {
+        $canForward = true;
+        
+        if ($this instanceof AbstractDispatcher || $this instanceof MvcDispatcher || $this instanceof CliDispatcher) {
+            $canForward = false;
+            
+            if ((!isset($forward['namespace']) || $this->getNamespaceName() !== $forward['namespace']) &&
+                (!isset($forward['module']) || $this->getModuleName() !== $forward['module']) &&
+                (!isset($forward['action']) || $this->getActionName() !== $forward['action']) &&
+                (!isset($forward['params']) || $this->getParams() !== $forward['params'])
+            ) {
+                if ($this instanceof MvcDispatcher) {
+                    if ((!isset($forward['controller']) || $this->getControllerName() !== $forward['controller'])) {
+                        $canForward = true;
+                    }
+                }
+                
+                if ($this instanceof CliDispatcher) {
+                    if ((!isset($forward['task']) || $this->getTaskName() !== $forward['task'])) {
+                        $canForward = true;
+                    }
+                }
+            }
+        }
+        
+        return $canForward;
+    }
+    
+    public function unsetForward(array $forward, ?array $parts = null): array
+    {
+        $parts ??= [
+            'namespace',
+            'module',
+            'task',
+            'controller',
+            'action',
+            'params',
+        ];
+        
+        foreach ($parts as $part) {
+            if (is_null($forward[$part])) {
+                unset($forward[$part]);
+            }
+        }
+        
+        return $forward;
     }
     
     public function toArray(): array
