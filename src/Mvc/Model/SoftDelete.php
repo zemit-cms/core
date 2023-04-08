@@ -31,7 +31,7 @@ trait SoftDelete
      */
     public function initializeSoftDelete(array $options = []): void
     {
-        $options ??= $this->getOptionsManager()->get('softDelete');
+        $options ??= $this->getOptionsManager()->get('softDelete') ?? [];
         $this->setSoftDeleteBehavior(new Behavior\SoftDelete($options));
     }
     
