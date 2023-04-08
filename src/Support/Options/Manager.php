@@ -11,7 +11,7 @@
 
 namespace Zemit\Support\Options;
 
-class Manager
+class Manager implements ManagerInterface
 {
     use Options;
     
