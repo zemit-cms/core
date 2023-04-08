@@ -11,6 +11,7 @@
 
 namespace Zemit\Dispatcher;
 
+use Phalcon\Dispatcher\AbstractDispatcher;
 use Phalcon\Mvc\Dispatcher as MvcDispatcher;
 use Phalcon\Cli\Dispatcher as CliDispatcher;
 
@@ -71,31 +72,33 @@ trait DispatcherTrait
     
     public function canForward(array $forward): bool
     {
-        $canForward = true;
-        
-        if ($this instanceof AbstractDispatcher || $this instanceof MvcDispatcher || $this instanceof CliDispatcher) {
-            $canForward = false;
-            
-            if ((!isset($forward['namespace']) || $this->getNamespaceName() !== $forward['namespace']) &&
-                (!isset($forward['module']) || $this->getModuleName() !== $forward['module']) &&
-                (!isset($forward['action']) || $this->getActionName() !== $forward['action']) &&
-                (!isset($forward['params']) || $this->getParams() !== $forward['params'])
-            ) {
-                if ($this instanceof MvcDispatcher) {
-                    if ((!isset($forward['controller']) || $this->getControllerName() !== $forward['controller'])) {
-                        $canForward = true;
-                    }
-                }
-                
-                if ($this instanceof CliDispatcher) {
-                    if ((!isset($forward['task']) || $this->getTaskName() !== $forward['task'])) {
-                        $canForward = true;
-                    }
-                }
+        $parts = [
+            'namespace' => $this->getNamespaceName(),
+            'module' => $this->getModuleName(),
+            'action' => $this->getActionName(),
+            'params' => $this->getParams(),
+        ];
+        foreach ($parts as $part => $current) {
+            if (isset($forward[$part]) && $current !== $forward[$part]) {
+                return true;
             }
         }
         
-        return $canForward;
+        if ($this instanceof MvcDispatcher &&
+            isset($forward['controller']) &&
+            $this->getControllerName() !== $forward['controller']
+        ) {
+            return true;
+        }
+        
+        elseif ($this instanceof CliDispatcher &&
+            isset($forward['task']) &&
+            $this->getTaskName() !== $forward['task']
+        ) {
+            return true;
+        }
+        
+        return false;
     }
     
     public function unsetForward(array $forward, ?array $parts = null): array
