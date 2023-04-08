@@ -69,6 +69,10 @@ trait DispatcherTrait
         }
     }
     
+    /**
+     * Check whether the forward attribute can be forwarded
+     * we do additional checks to prevent dispatcher cycling
+     */
     public function canForward(array $forward): bool
     {
         $parts = [
@@ -83,6 +87,17 @@ trait DispatcherTrait
             }
         }
         
+        return $this->canForwardHandler($forward);
+    }
+    
+    /**
+     * Check whether the handler is changed or not
+     * depending on the dispatcher
+     * MVC: controller
+     * CLI: task
+     */
+    public function canForwardHandler(array $forward): bool
+    {
         if ($this instanceof MvcDispatcher &&
             isset($forward['controller']) &&
             $this->getControllerName() !== $forward['controller']
@@ -90,7 +105,7 @@ trait DispatcherTrait
             return true;
         }
         
-        elseif ($this instanceof CliDispatcher &&
+        if ($this instanceof CliDispatcher &&
             isset($forward['task']) &&
             $this->getTaskName() !== $forward['task']
         ) {
