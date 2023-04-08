@@ -58,7 +58,7 @@ trait DispatcherTrait
      */
     public function forward(array $forward, bool $preventCycle = false): void
     {
-        $forward = $this->unsetForward($forward);
+        $forward = $this->unsetForwardNullParts($forward);
         
         if (!$preventCycle) {
             parent::forward($forward);
@@ -96,20 +96,44 @@ trait DispatcherTrait
      * MVC: controller
      * CLI: task
      */
-    public function canForwardHandler(array $forward): bool
+    private function canForwardHandler(array $forward): bool
     {
-        if ($this instanceof MvcDispatcher && $this->getControllerName() !== $forward['controller'] ?? null) {
+        if ($this->canForwardController($forward['controller'] ?? null)) {
             return true;
         }
         
-        if ($this instanceof CliDispatcher && $this->getTaskName() !== $forward['task'] ?? null) {
+        if ($this->canForwardTask($forward['task'] ?? null)) {
             return true;
         }
         
         return false;
     }
     
-    public function unsetForward(array $forward, ?array $parts = null): array
+    /**
+     * Check whether the controller is changed
+     */
+    private function canForwardController(?string $controller = null): bool
+    {
+        if ($this instanceof MvcDispatcher && isset($controller) && $this->getControllerName() !== $controller) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Check whether the task is changed
+     */
+    private function canForwardTask(?string $task = null): bool
+    {
+        if ($this instanceof CliDispatcher && isset($task) && $this->getTaskName() !== $task) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    public function unsetForwardNullParts(array $forward, ?array $parts = null): array
     {
         $parts ??= [
             'namespace',
