@@ -33,6 +33,18 @@ class Session extends AbstractSession implements SessionInterface
 {
     protected $deleted = self::NO;
     
+    private static bool $useSessionManager = true;
+    
+    public static function useSessionManager(?bool $useSessionManager = null): void
+    {
+        self::$useSessionManager = $useSessionManager;
+    }
+    
+    public static function isUsingSessionManager(): bool
+    {
+        return self::$useSessionManager;
+    }
+    
     public function initialize(): void
     {
         parent::initialize();
@@ -67,28 +79,28 @@ class Session extends AbstractSession implements SessionInterface
     
     public function save(): bool
     {
-        return self::isSessionAdapter()
-            ? $this->saveIntoSession()
+        return self::isUsingSessionManager()
+            ? $this->saveToSession()
             : parent::save();
     }
     
     public function update(): bool
     {
-        return self::isSessionAdapter()
-            ? $this->saveIntoSession()
+        return self::isUsingSessionManager()
+            ? $this->saveToSession()
             : parent::update();
     }
     
     public function create(): bool
     {
-        return self::isSessionAdapter()
-            ? $this->saveIntoSession()
+        return self::isUsingSessionManager()
+            ? $this->saveToSession()
             : parent::create();
     }
     
     public function delete(): bool
     {
-        return self::isSessionAdapter()
+        return self::isUsingSessionManager()
             ? $this->removeFromSession()
             : parent::delete();
     }
@@ -100,7 +112,7 @@ class Session extends AbstractSession implements SessionInterface
         }
         
         // query the session manager adapter
-        if (self::isSessionAdapter()) {
+        if (self::isUsingSessionManager()) {
             $session = self::getSessionManager();
             if ($session->has('zemit-session-' . $key)) {
                 $sessionStore = $session->get('zemit-session-' . $key);
@@ -123,12 +135,7 @@ class Session extends AbstractSession implements SessionInterface
         ]);
     }
     
-    public static function isSessionAdapter(): bool
-    {
-        return true;
-    }
-    
-    public function saveIntoSession(): bool
+    public function saveToSession(): bool
     {
         $session = $this->getSessionManager();
         $session->set('zemit-session-' . $this->getKey(), $this->toArray());
