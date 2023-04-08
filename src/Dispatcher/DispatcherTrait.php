@@ -98,17 +98,11 @@ trait DispatcherTrait
      */
     public function canForwardHandler(array $forward): bool
     {
-        if ($this instanceof MvcDispatcher &&
-            isset($forward['controller']) &&
-            $this->getControllerName() !== $forward['controller']
-        ) {
+        if ($this instanceof MvcDispatcher && $this->getControllerName() !== $forward['controller'] ?? null) {
             return true;
         }
         
-        if ($this instanceof CliDispatcher &&
-            isset($forward['task']) &&
-            $this->getTaskName() !== $forward['task']
-        ) {
+        if ($this instanceof CliDispatcher && $this->getTaskName() !== $forward['task'] ?? null) {
             return true;
         }
         
