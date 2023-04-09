@@ -52,9 +52,8 @@ class Model extends \Phalcon\Mvc\Model
     public const DATE_FORMAT = 'Y-m-d';
     public const TIME_FORMAT = 'H:i:s';
     
-    public const REPLICA_DELAY = 1000;
-    
     use \Zemit\Mvc\Model\Options;
+    use \Zemit\Mvc\Model\Events;
     use \Zemit\Mvc\Model\Security;
     use \Zemit\Mvc\Model\EagerLoad;
     use \Zemit\Mvc\Model\Relationship;
@@ -70,14 +69,14 @@ class Model extends \Phalcon\Mvc\Model
     use \Zemit\Mvc\Model\Position;
     use \Zemit\Mvc\Model\Blameable;
     use \Zemit\Mvc\Model\FindIn;
-    use \Zemit\Mvc\Model\Snapshots;
+    use \Zemit\Mvc\Model\Snapshot;
     use \Zemit\Mvc\Model\Retention;
     use \Zemit\Mvc\Model\PrimaryKeys;
     use \Zemit\Mvc\Model\Options;
     use \Zemit\Mvc\Model\Uuid;
     use \Zemit\Mvc\Model\Slug;
     
-    public function initialize()
+    public function initialize(): void
     {
         // Initialize options manager
         $this->initializeOptions();
@@ -89,7 +88,7 @@ class Model extends \Phalcon\Mvc\Model
         
         // Initialize features
         $this->initializeCache();
-        $this->initializeSnapshots();
+        $this->initializeSnapshot();
         $this->initializeReplication();
         $this->initializeSoftDelete();
         $this->initializePosition();
