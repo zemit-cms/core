@@ -16,7 +16,7 @@ use Zemit\Mvc\Model\AbstractTrait\AbstractBehavior;
 use Zemit\Mvc\Model\Behavior\Transformable;
 use Zemit\Mvc\Model\Identity;
 use Zemit\Mvc\Model\Options;
-use Zemit\Mvc\Model\Snapshots;
+use Zemit\Mvc\Model\Snapshot;
 use Zemit\Mvc\Model\SoftDelete;
 
 trait Created
@@ -24,7 +24,7 @@ trait Created
     use AbstractBehavior;
     use Options;
     use Identity;
-    use Snapshots;
+    use Snapshot;
     use SoftDelete;
     
     public Transformable $createdBehavior;
