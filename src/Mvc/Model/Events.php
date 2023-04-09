@@ -37,7 +37,7 @@ trait Events
     public static function findFirst($parameters = null): ?ModelInterface
     {
         $ret = self::fireEventCancelCall(__FUNCTION__, func_get_args());
-        return $ret ?? null;
+        return $ret ?: null;
     }
 
     public static function count($parameters = null)
