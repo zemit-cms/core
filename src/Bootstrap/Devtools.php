@@ -9,11 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Config;
+namespace Zemit\Bootstrap;
 
-use Zemit\Bootstrap\Config as BootstrapConfig;
-
-class Migration extends BootstrapConfig
+class Devtools extends Config
 {
     public function __construct(array $data = [], bool $insensitive = true)
     {
@@ -30,5 +28,3 @@ class Migration extends BootstrapConfig
         $this->set('database', $driverOptions);
     }
 }
-
-return new Migration();
