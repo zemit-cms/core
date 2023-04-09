@@ -19,6 +19,7 @@ use Zemit\Mvc\Model;
 
 class Position extends Behavior
 {
+    use ProgressTrait;
     use SkippableTrait;
     
     public bool $progress = false;
@@ -43,14 +44,9 @@ class Position extends Behavior
         return $this->options['rawSql'];
     }
     
-    public function setProgress(bool $progress): void
+    public function hasProperty(ModelInterface $model, string $field): bool
     {
-        $this->progress = $progress;
-    }
-    
-    public function getProgress(): bool
-    {
-        return $this->progress;
+        return property_exists($model, $field);
     }
     
     public function __construct(array $options = [])
@@ -61,7 +57,8 @@ class Position extends Behavior
     }
     
     /**
-     * @return mixed
+     * Set the default position field value before validation
+     * Shift position+1 and position-1 to other records after save
      */
     public function notify(string $type, ModelInterface $model)
     {
@@ -69,63 +66,87 @@ class Position extends Behavior
             return;
         }
         
-        assert($model instanceof Model);
-        
-        $positionField = $this->getField();
+        $field = $this->getField();
         $rawSql = $this->getRawSql();
+        
+        // skip if the current model doesn't have the position property defined
+        if (!$this->hasProperty($model, $field)) {
+            return;
+        }
         
         switch ($type) {
             case 'beforeValidation':
-                // if position field is empty, force current max(position)+1
-                $lastPosition = $model::findFirst(['order' => $positionField . ' DESC']);
-                if ($lastPosition && assert($lastPosition instanceof $model)) {
-                    $position = (int)$lastPosition->getAttribute($positionField);
-                    $model->setAttribute($positionField, $position + 1);
-                }
+                $this->beforeValidation($model, $field);
                 break;
             
             case 'afterSave':
-                if (!$this->getProgress() && $model->hasSnapshotData() && $model->hasUpdated($positionField)) {
-                    $this->setProgress(true);
-                    
-                    $snapshot = $model->getOldSnapshotData() ?: $model->getSnapshotData();
-                    $modelPosition = $model->getAttribute($positionField);
-                    $modelPrimaryKeys = $model->getPrimaryKeysValues();
-                    
-                    if (!($modelPosition instanceof RawValue)) {
-                        $uField = Text::uncamelize($positionField); // @todo use columnMap
-                        $updatePositionQuery = null;
-                        
-                        if ($snapshot[$positionField] > $modelPosition) {
-                            $updatePositionQuery = $rawSql
-                                ? 'UPDATE `' . $model->getSource() . '` SET `' . $uField . '` = `' . $uField . '`+1 WHERE `' . $uField . '` >= :position and `' . $uField . '` < :oldPosition and `' . $idField . '` <> :id'
-                                : 'UPDATE [' . get_class($model) . '] SET [' . $positionField . '] = [' . $positionField . ']+1 WHERE [' . $positionField . '] >= ?1 and [' . $positionField . '] < ?2 and [' . $idField . '] <> ?0';
-                        }
-                        elseif ($snapshot[$positionField] < $modelPosition) {
-                            $updatePositionQuery = $rawSql
-                                ? 'UPDATE `' . $model->getSource() . '` SET `' . $uField . '` = `' . $uField . '`-1 WHERE `' . $uField . '` > :oldPosition and `' . $uField . '` <= :position and `' . $idField . '` <> :id'
-                                : 'UPDATE [' . get_class($model) . '] SET [' . $positionField . '] = [' . $positionField . ']-1 WHERE [' . $positionField . '] > ?2 and [' . $positionField . '] <= ?1 and [' . $idField . '] <> ?0';
-                        }
-                        
-                        if (!empty($updatePositionQuery)) {
-                            if ($rawSql) {
-                                $model->getWriteConnection()->query($updatePositionQuery, [
-                                    'primaryKeys' => $modelPrimaryKeys,
-                                    'position' => $modelPosition,
-                                    'oldPosition' => $snapshot[$positionField],
-                                ]);
-                            }
-                            else {
-                                $model->getModelsManager()->executeQuery($updatePositionQuery, [$modelId, $modelPosition, $snapshot[$positionField]]);
-                            }
-                        }
-                    }
-                    
-                    $this->setProgress(false);
-                }
+//                $this->afterSave($model, $field, $rawSql);
                 break;
         }
         
         return true;
+    }
+    
+    /**
+     * Force the current position to max(position)+1 if it's empty
+     * will only happen if the position field is present on the current model
+     */
+    public function beforeValidation(ModelInterface $model, string $field): void
+    {
+        if (property_exists($model, $field)) {
+            $positionValue = $model->readAttribute($field);
+            if (is_null($positionValue)) {
+                
+                // if position field is empty, force current max(position)+1
+                $lastPosition = $model::findFirst(['order' => $field . ' DESC']);
+                if ($lastPosition && assert($lastPosition instanceof $model)) {
+                    $position = (int)$lastPosition->readAttribute($field);
+                    $model->writeAttribute($field, $position + 1);
+                }
+            }
+        }
+    }
+    
+    // @todo fix combined primary keys
+    public function afterSave(ModelInterface $model, string $field, bool $rawSql): void
+    {
+        if (!$this->getProgress() && $model->hasSnapshotData() && $model->hasUpdated($field)) {
+            self::staticStart();
+            
+            $snapshot = $model->getOldSnapshotData() ?: $model->getSnapshotData();
+            $modelPosition = $model->readAttribute($field);
+            $modelPrimaryKeys = $model->getPrimaryKeysValues();
+            
+            if (!($modelPosition instanceof RawValue)) {
+                $uField = Text::uncamelize($field); // @todo use columnMap
+                $updatePositionQuery = null;
+                
+                if ($snapshot[$field] > $modelPosition) {
+                    $updatePositionQuery = $rawSql
+                        ? 'UPDATE `' . $model->getSource() . '` SET `' . $uField . '` = `' . $uField . '`+1 WHERE `' . $uField . '` >= :position and `' . $uField . '` < :oldPosition and `' . $idField . '` <> :id'
+                        : 'UPDATE [' . get_class($model) . '] SET [' . $field . '] = [' . $field . ']+1 WHERE [' . $field . '] >= ?1 and [' . $field . '] < ?2 and [' . $idField . '] <> ?0';
+                }
+                elseif ($snapshot[$field] < $modelPosition) {
+                    $updatePositionQuery = $rawSql
+                        ? 'UPDATE `' . $model->getSource() . '` SET `' . $uField . '` = `' . $uField . '`-1 WHERE `' . $uField . '` > :oldPosition and `' . $uField . '` <= :position and `' . $idField . '` <> :id'
+                        : 'UPDATE [' . get_class($model) . '] SET [' . $field . '] = [' . $field . ']-1 WHERE [' . $field . '] > ?2 and [' . $field . '] <= ?1 and [' . $idField . '] <> ?0';
+                }
+                
+                if (!empty($updatePositionQuery)) {
+                    if ($rawSql) {
+                        $model->getWriteConnection()->query($updatePositionQuery, [
+                            'primaryKeys' => $modelPrimaryKeys,
+                            'position' => $modelPosition,
+                            'oldPosition' => $snapshot[$field],
+                        ]);
+                    }
+                    else {
+                        $model->getModelsManager()->executeQuery($updatePositionQuery, [$modelId, $modelPosition, $snapshot[$field]]);
+                    }
+                }
+            }
+            
+            self::staticStop();
+        }
     }
 }
