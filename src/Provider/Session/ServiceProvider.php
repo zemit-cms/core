@@ -43,7 +43,7 @@ class ServiceProvider extends AbstractServiceProvider
             // ini_set
             $sessionIniConfig = $sessionConfig['ini'] ?? [];
             foreach ($sessionIniConfig as $sessionIniKey => $sessionIniValue) {
-                @ini_set($sessionIniKey, $sessionIniValue); // @todo remove @ and avoid this during unit testing
+                ini_set($sessionIniKey, $sessionIniValue);
             }
             
             // Create the new session manager
