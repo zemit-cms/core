@@ -21,6 +21,33 @@ class SoftDelete extends Behavior\SoftDelete
 {
     use SkippableTrait;
     
+    public function setField(string $field): void
+    {
+        $this->options['field'] = $field;
+    }
+    
+    public function getField(): string
+    {
+        return $this->options['field'];
+    }
+    
+    public function setValue(int $value): void
+    {
+        $this->options['value'] = $value;
+    }
+    
+    public function getValue(): int
+    {
+        return $this->options['value'];
+    }
+    
+    public function __construct(array $options = [])
+    {
+        parent::__construct($options);
+        $this->setField($options['field'] ?? 'deleted');
+        $this->setField($options['value'] ?? 1);
+    }
+    
     /**
      * @return mixed
      */

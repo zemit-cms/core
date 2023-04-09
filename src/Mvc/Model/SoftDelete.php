@@ -76,10 +76,9 @@ trait SoftDelete
      */
     public function isDeleted(?string $field = null, ?int $deletedValue = null): bool
     {
-        $softDeleteBehavior = $this->getSoftDeleteBehavior();
-        $field = $softDeleteBehavior->getField();
-        $value = $softDeleteBehavior->getValue();
-        return $this->readAttribute($field) === $value;
+        $field ??= $this->getSoftDeleteBehavior()->getField();
+        $deletedValue ??= $this->getSoftDeleteBehavior()->getValue();
+        return $this->readAttribute($field) === $deletedValue;
     }
     
     /**

@@ -40,25 +40,27 @@ trait Deleted
         $fieldAs = $options['fieldAs'] ?? 'deletedAs';
         $fieldAt = $options['fieldAt'] ?? 'deletedAt';
         
+        $softDeleteBehavior = $this->getSoftDeleteBehavior();
+        
         $this->setDeletedBehavior(new Transformable([
             'beforeDelete' => [
-                $fieldBy => $this->getCurrentUserIdCallback(false),
+                $fieldBy => $this->getCurrentUserIdCallback(),
                 $fieldAs => $this->getCurrentUserIdCallback(true),
                 $fieldAt => date(Model::DATETIME_FORMAT),
             ],
             'beforeValidationOnUpdate' => [
-                $fieldBy => $this->hasChangedCallback(function ($model, $field) {
-                    return $model->isDeleted()
+                $fieldBy => $this->hasChangedCallback(function ($model, $field) use ($softDeleteBehavior) {
+                    return $model->isDeleted($softDeleteBehavior->getField(), $softDeleteBehavior->getValue())
                         ? $this->getCurrentUserIdCallback()()
                         : $model->readAttribute($field);
                 }),
-                $fieldAs => $this->hasChangedCallback(function ($model, $field) {
-                    return $model->isDeleted()
+                $fieldAs => $this->hasChangedCallback(function ($model, $field) use ($softDeleteBehavior) {
+                    return $model->isDeleted($softDeleteBehavior->getField(), $softDeleteBehavior->getValue())
                         ? $this->getCurrentUserIdCallback(true)()
                         : $model->readAttribute($field);
                 }),
-                $fieldAt => $this->hasChangedCallback(function ($model, $field) {
-                    return $model->isDeleted()
+                $fieldAt => $this->hasChangedCallback(function ($model, $field) use ($softDeleteBehavior) {
+                    return $model->isDeleted($softDeleteBehavior->getField(), $softDeleteBehavior->getValue())
                         ? date(Model::DATETIME_FORMAT)
                         : $model->readAttribute($field);
                 }),
