@@ -25,18 +25,6 @@ class Utils
     }
     
     /**
-     * Set max upload file size and post size
-     * @link https://www.php.net/manual/en/ini.list.php
-     * @link https://www.php.net/manual/en/configuration.changes.modes.php
-     * @deprecated This setting must be changed at the system level
-     * @throws \Exception
-     */
-    public static function setMaxUploadFileSize(string $size = '2M'): void
-    {
-        throw new Exception('This setting must be changed at the system level.');
-    }
-    
-    /**
      * Get the Namespace from a class object
      */
     public static function getNamespace(object $class): string
