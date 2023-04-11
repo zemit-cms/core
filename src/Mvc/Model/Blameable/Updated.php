@@ -27,8 +27,6 @@ trait Updated
     use Snapshot;
     use SoftDelete;
     
-    public Transformable $updatedBehavior;
-    
     /**
      * Initializing Updated
      */
@@ -60,8 +58,7 @@ trait Updated
      */
     public function setUpdatedBehavior(Transformable $updatedBehavior): void
     {
-        $this->updatedBehavior = $updatedBehavior;
-        $this->addBehavior($this->updatedBehavior);
+        $this->setBehavior('updated', $updatedBehavior);
     }
     
     /**
@@ -69,6 +66,8 @@ trait Updated
      */
     public function getUpdatedBehavior(): Transformable
     {
-        return $this->updatedBehavior;
+        $behavior = $this->getBehavior('updated');
+        assert($behavior instanceof Transformable);
+        return $behavior;
     }
 }

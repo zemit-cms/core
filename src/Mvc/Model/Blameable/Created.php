@@ -27,8 +27,6 @@ trait Created
     use Snapshot;
     use SoftDelete;
     
-    public Transformable $createdBehavior;
-    
     /**
      * Initializing Created
      */
@@ -54,8 +52,7 @@ trait Created
      */
     public function setCreatedBehavior(Transformable $createdBehavior): void
     {
-        $this->createdBehavior = $createdBehavior;
-        $this->addBehavior($this->createdBehavior);
+        $this->setBehavior('created', $createdBehavior);
     }
     
     /**
@@ -63,6 +60,8 @@ trait Created
      */
     public function getCreatedBehavior(): Transformable
     {
-        return $this->createdBehavior;
+        $behavior = $this->getBehavior('created');
+        assert($behavior instanceof Transformable);
+        return $behavior;
     }
 }

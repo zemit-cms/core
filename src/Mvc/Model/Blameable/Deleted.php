@@ -27,14 +27,15 @@ trait Deleted
     use Snapshot;
     use SoftDelete;
     
-    public Transformable $deletedBehavior;
-    
     /**
      * Initializing Deleted
      */
     public function initializeDeleted(?array $options = null): void
     {
         $options ??= $this->getOptionsManager()->get('deleted') ?? [];
+        
+        $deletedField = $options['field'] ?? 'deleted';
+        $deletedValue = $options['value'] ?? 1;
         
         $fieldBy = $options['fieldBy'] ?? 'deletedBy';
         $fieldAs = $options['fieldAs'] ?? 'deletedAs';
@@ -49,18 +50,18 @@ trait Deleted
                 $fieldAt => date(Model::DATETIME_FORMAT),
             ],
             'beforeValidationOnUpdate' => [
-                $fieldBy => $this->hasChangedCallback(function ($model, $field) use ($softDeleteBehavior) {
-                    return $model->isDeleted($softDeleteBehavior->getField(), $softDeleteBehavior->getValue())
+                $fieldBy => $this->hasChangedCallback(function ($model, $field) use ($deletedField, $deletedValue) {
+                    return $model->isDeleted($deletedField, $deletedValue)
                         ? $this->getCurrentUserIdCallback()()
                         : $model->readAttribute($field);
                 }),
-                $fieldAs => $this->hasChangedCallback(function ($model, $field) use ($softDeleteBehavior) {
-                    return $model->isDeleted($softDeleteBehavior->getField(), $softDeleteBehavior->getValue())
+                $fieldAs => $this->hasChangedCallback(function ($model, $field) use ($deletedField, $deletedValue) {
+                    return $model->isDeleted($deletedField, $deletedValue)
                         ? $this->getCurrentUserIdCallback(true)()
                         : $model->readAttribute($field);
                 }),
-                $fieldAt => $this->hasChangedCallback(function ($model, $field) use ($softDeleteBehavior) {
-                    return $model->isDeleted($softDeleteBehavior->getField(), $softDeleteBehavior->getValue())
+                $fieldAt => $this->hasChangedCallback(function ($model, $field) use ($deletedField, $deletedValue) {
+                    return $model->isDeleted($deletedField, $deletedValue)
                         ? date(Model::DATETIME_FORMAT)
                         : $model->readAttribute($field);
                 }),
@@ -73,8 +74,7 @@ trait Deleted
      */
     public function setDeletedBehavior(Transformable $deletedBehavior): void
     {
-        $this->deletedBehavior = $deletedBehavior;
-        $this->addBehavior($this->deletedBehavior);
+        $this->setBehavior('deleted', $deletedBehavior);
     }
     
     /**
@@ -82,6 +82,8 @@ trait Deleted
      */
     public function getDeletedBehavior(): Transformable
     {
-        return $this->deletedBehavior;
+        $behavior = $this->getBehavior('deleted');
+        assert($behavior instanceof Transformable);
+        return $behavior;
     }
 }

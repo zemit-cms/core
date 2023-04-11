@@ -27,8 +27,6 @@ trait Restored
     use Snapshot;
     use SoftDelete;
     
-    public Transformable $restoredBehavior;
-    
     /**
      * Initializing Restored
      */
@@ -54,8 +52,7 @@ trait Restored
      */
     public function setRestoredBehavior(Transformable $restoredBehavior): void
     {
-        $this->restoredBehavior = $restoredBehavior;
-        $this->addBehavior($this->restoredBehavior);
+        $this->setBehavior('restored', $restoredBehavior);
     }
     
     /**
@@ -63,6 +60,8 @@ trait Restored
      */
     public function getRestoredBehavior(): Transformable
     {
-        return $this->restoredBehavior;
+        $behavior = $this->getBehavior('restored');
+        assert($behavior instanceof Transformable);
+        return $behavior;
     }
 }
