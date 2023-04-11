@@ -14,6 +14,7 @@ namespace Zemit\Mvc\Model;
 use Zemit\Mvc\Model\AbstractTrait\AbstractBehavior;
 use Zemit\Mvc\Model\AbstractTrait\AbstractInjectable;
 use Zemit\Mvc\Model\Behavior\Security as SecurityBehavior;
+use Zemit\Mvc\Model\Behavior\Snapshot as SnapshotBehavior;
 
 trait Security
 {
@@ -21,14 +22,13 @@ trait Security
     use AbstractBehavior;
     use Options;
     
-    public SecurityBehavior $securityBehavior;
-    
     /**
      * Initializing Security
      */
     public function initializeSecurity(?array $options = null): void
     {
         $options ??= $this->getOptionsManager()->get('security') ?? [];
+        
         $this->addBehavior(new SecurityBehavior($options));
     }
     
@@ -37,8 +37,7 @@ trait Security
      */
     public function setSecurityBehavior(SecurityBehavior $securityBehavior): void
     {
-        $this->securityBehavior = $securityBehavior;
-        $this->addBehavior($this->securityBehavior);
+        $this->setBehavior('security', $securityBehavior);
     }
     
     /**
@@ -46,6 +45,8 @@ trait Security
      */
     public function getSecurityBehavior(): SecurityBehavior
     {
-        return $this->securityBehavior;
+        $behavior = $this->getBehavior('security');
+        assert($behavior instanceof SecurityBehavior);
+        return $behavior;
     }
 }
