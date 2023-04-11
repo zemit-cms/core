@@ -19,8 +19,6 @@ trait Snapshot
 {
     use AbstractEventsManager;
     
-    public SnapshotBehavior $snapshotBehavior;
-    
     abstract protected function keepSnapshots(bool $keepSnapshot): void;
     
     /**
@@ -29,8 +27,9 @@ trait Snapshot
     public function initializeSnapshot(?array $options = null): void
     {
         $options ??= $this->getOptionsManager()->get('snapshot') ?? [];
+        
         $this->keepSnapshots($options['keepSnapshots'] ?? true);
-        $this->addBehavior(new SnapshotBehavior($options));
+        $this->setSnapshotBehavior(new SnapshotBehavior($options));
     }
     
     /**
@@ -38,8 +37,7 @@ trait Snapshot
      */
     public function setSnapshotBehavior(SnapshotBehavior $snapshotBehavior): void
     {
-        $this->snapshotBehavior = $snapshotBehavior;
-        $this->addBehavior($this->snapshotBehavior);
+        $this->setBehavior('snapshot', $snapshotBehavior);
     }
     
     /**
@@ -47,7 +45,9 @@ trait Snapshot
      */
     public function getSnapshotBehavior(): SnapshotBehavior
     {
-        return $this->snapshotBehavior;
+        $behavior = $this->getBehavior('snapshot');
+        assert($behavior instanceof SnapshotBehavior);
+        return $behavior;
     }
     
     /**
