@@ -18,6 +18,8 @@ use Zemit\Mvc\Model\Behavior\Snapshot as SnapshotBehavior;
 trait Snapshot
 {
     use AbstractEventsManager;
+    use Options;
+    use Behavior;
     
     abstract protected function keepSnapshots(bool $keepSnapshot): void;
     
