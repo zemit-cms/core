@@ -11,10 +11,10 @@
 
 namespace Zemit\Mvc\Model\Behavior;
 
+use Phalcon\Text;
 use Phalcon\Db\RawValue;
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Mvc\ModelInterface;
-use Phalcon\Text;
 use Zemit\Mvc\Model;
 
 class Position extends Behavior
@@ -60,10 +60,10 @@ class Position extends Behavior
      * Set the default position field value before validation
      * Shift position+1 and position-1 to other records after save
      */
-    public function notify(string $type, ModelInterface $model)
+    public function notify(string $type, ModelInterface $model): ?bool
     {
         if (!$this->isEnabled()) {
-            return;
+            return null;
         }
         
         $field = $this->getField();
@@ -71,7 +71,7 @@ class Position extends Behavior
         
         // skip if the current model doesn't have the position property defined
         if (!$this->hasProperty($model, $field)) {
-            return;
+            return null;
         }
         
         switch ($type) {
@@ -98,18 +98,18 @@ class Position extends Behavior
             if (is_null($positionValue)) {
                 
                 // if position field is empty, force current max(position)+1
-                $lastPosition = $model::findFirst(['order' => $field . ' DESC']);
-                if ($lastPosition && assert($lastPosition instanceof $model)) {
-                    $position = (int)$lastPosition->readAttribute($field);
-                    $model->writeAttribute($field, $position + 1);
+                $lastRecord = $model::findFirst(['order' => $field . ' DESC']);
+                if ($lastRecord && assert($lastRecord instanceof $model)) {
+                    $lastPosition = (int)$lastRecord->readAttribute($field);
+                    $model->writeAttribute($field, $lastPosition + 1);
                 }
             }
         }
     }
     
-    // @todo fix combined primary keys
     public function afterSave(ModelInterface $model, string $field, bool $rawSql): void
     {
+        assert($model instanceof Model);
         if (!$this->getProgress() && $model->hasSnapshotData() && $model->hasUpdated($field)) {
             self::staticStart();
             
@@ -118,30 +118,42 @@ class Position extends Behavior
             $modelPrimaryKeys = $model->getPrimaryKeysValues();
             
             if (!($modelPosition instanceof RawValue)) {
-                $uField = Text::uncamelize($field); // @todo use columnMap
-                $updatePositionQuery = null;
                 
+                $positionField = $field;
+                if (ini_get('phalcon.orm.column_renaming')) {
+                    $columnMap = $model->getModelsMetaData()->getReverseColumnMap($model);
+                    $positionFieldRaw = $columnMap[$field] ?? $field;
+                } else {
+                    $positionFieldRaw = $field;
+                }
+                
+                $primaryKeyConditionRaw = implode_mb_sprintf($modelPrimaryKeys, ' and ', '`' . $model->getSource() . '`.`%s` <> ?%s');
+                $primaryKeyCondition = implode_mb_sprintf($modelPrimaryKeys, ' and ', '[' . get_class($model) . '].[%s] <> ?%s');
+                
+                $updatePositionQuery = null;
                 if ($snapshot[$field] > $modelPosition) {
                     $updatePositionQuery = $rawSql
-                        ? 'UPDATE `' . $model->getSource() . '` SET `' . $uField . '` = `' . $uField . '`+1 WHERE `' . $uField . '` >= :position and `' . $uField . '` < :oldPosition and `' . $idField . '` <> :id'
-                        : 'UPDATE [' . get_class($model) . '] SET [' . $field . '] = [' . $field . ']+1 WHERE [' . $field . '] >= ?1 and [' . $field . '] < ?2 and [' . $idField . '] <> ?0';
+                        ? 'UPDATE `' . $model->getSource() . '` SET `' . $positionFieldRaw . '` = `' . $positionFieldRaw . '`+1 WHERE `' . $positionFieldRaw . '` >= :position and `' . $positionFieldRaw . '` < :oldPosition and ' . $primaryKeyConditionRaw
+                        : 'UPDATE [' . get_class($model) . '] SET [' . $positionField . '] = [' . $positionField . ']+1 WHERE [' . $positionField . '] >= ?1 and [' . $positionField . '] < ?2 and ' . $primaryKeyCondition;
                 }
                 elseif ($snapshot[$field] < $modelPosition) {
                     $updatePositionQuery = $rawSql
-                        ? 'UPDATE `' . $model->getSource() . '` SET `' . $uField . '` = `' . $uField . '`-1 WHERE `' . $uField . '` > :oldPosition and `' . $uField . '` <= :position and `' . $idField . '` <> :id'
-                        : 'UPDATE [' . get_class($model) . '] SET [' . $field . '] = [' . $field . ']-1 WHERE [' . $field . '] > ?2 and [' . $field . '] <= ?1 and [' . $idField . '] <> ?0';
+                        ? 'UPDATE `' . $model->getSource() . '` SET `' . $positionFieldRaw . '` = `' . $positionFieldRaw . '`-1 WHERE `' . $positionFieldRaw . '` > :oldPosition and `' . $positionFieldRaw . '` <= :position and ' . $primaryKeyConditionRaw
+                        : 'UPDATE [' . get_class($model) . '] SET [' . $positionField . '] = [' . $positionField . ']-1 WHERE [' . $positionField . '] > ?2 and [' . $positionField . '] <= ?1 and ' . $primaryKeyCondition;
                 }
                 
                 if (!empty($updatePositionQuery)) {
                     if ($rawSql) {
                         $model->getWriteConnection()->query($updatePositionQuery, [
-                            'primaryKeys' => $modelPrimaryKeys,
                             'position' => $modelPosition,
                             'oldPosition' => $snapshot[$field],
                         ]);
                     }
                     else {
-                        $model->getModelsManager()->executeQuery($updatePositionQuery, [$modelId, $modelPosition, $snapshot[$field]]);
+                        $model->getModelsManager()->executeQuery($updatePositionQuery, [
+                            $modelPosition,
+                            $snapshot[$field]
+                        ]);
                     }
                 }
             }
