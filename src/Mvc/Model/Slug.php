@@ -11,19 +11,16 @@
 
 namespace Zemit\Mvc\Model;
 
-use Phalcon\Security;
-use Zemit\Mvc\Model;
-use Zemit\Mvc\Model\AbstractTrait\AbstractBehavior;
 use Zemit\Mvc\Model\AbstractTrait\AbstractInjectable;
+use Zemit\Mvc\Model\AbstractTrait\AbstractBehavior;
 use Zemit\Mvc\Model\Behavior\Transformable;
+use Zemit\Mvc\Model;
 
 trait Slug
 {
-    use Options;
-    use AbstractBehavior;
     use AbstractInjectable;
-    
-    public Transformable $slugBehavior;
+    use AbstractBehavior;
+    use Options;
     
     /**
      * Initializing Slug
@@ -31,10 +28,8 @@ trait Slug
     public function initializeSlug(?array $options = null): void
     {
         $options ??= $this->getOptionsManager()->get('slug') ?? [];
-        $field = $options['field'] ?? 'slug';
         
-        $security = $this->getDI()->get('security');
-        assert($security instanceof Security);
+        $field = $options['field'] ?? 'slug';
         
         $this->setSlugBehavior(new Transformable([
             'beforeValidation' => [
@@ -51,8 +46,7 @@ trait Slug
      */
     public function setSlugBehavior(Transformable $slugBehavior): void
     {
-        $this->slugBehavior = $slugBehavior;
-        $this->addBehavior($this->slugBehavior);
+        $this->setBehavior('slug', $slugBehavior);
     }
     
     /**
@@ -60,6 +54,8 @@ trait Slug
      */
     public function getSlugBehavior(): Transformable
     {
-        return $this->slugBehavior;
+        $slugBehavior = $this->getBehavior('slug');
+        assert($slugBehavior instanceof Transformable);
+        return $slugBehavior;
     }
 }
