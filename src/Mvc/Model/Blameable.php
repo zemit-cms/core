@@ -31,8 +31,6 @@ trait Blameable
     use Blameable\Deleted;
     use Blameable\Restored;
     
-    public BlameableBehavior $blameableBehavior;
-    
     /**
      * Initializing Blameable
      */
@@ -55,8 +53,7 @@ trait Blameable
      */
     public function setBlameableBehavior(BlameableBehavior $blameableBehavior): void
     {
-        $this->blameableBehavior = $blameableBehavior;
-        $this->addBehavior($this->blameableBehavior);
+        $this->setBehavior('blameable', $blameableBehavior);
     }
     
     /**
@@ -64,6 +61,8 @@ trait Blameable
      */
     public function getBlameableBehavior(): BlameableBehavior
     {
-        return $this->blameableBehavior;
+        $blameableBehavior = $this->getBehavior('blameable');
+        assert($blameableBehavior instanceof BlameableBehavior);
+        return $blameableBehavior;
     }
 }
