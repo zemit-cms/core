@@ -61,9 +61,13 @@ trait Options
      * @param ?mixed $value
      * @return void
      */
-    public function setOption(string $key, $value = null): void
+    public function setOption(string $key, $value = null, bool $merge = false): void
     {
-        $this->options[$key] = $value;
+        if ($merge) {
+            $this->options = array_merge($this->options, [$key => $value]);
+        } else {
+            $this->options[$key] = $value;
+        }
     }
 
     /**
