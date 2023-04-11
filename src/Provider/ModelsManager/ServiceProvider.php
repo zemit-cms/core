@@ -13,7 +13,7 @@ namespace Zemit\Provider\ModelsManager;
 
 use Phalcon\Di\DiInterface;
 use Phalcon\Events\ManagerInterface;
-use Phalcon\Mvc\Model\Manager;
+use Zemit\Mvc\Model\Manager;
 use Zemit\Provider\AbstractServiceProvider;
 
 class ServiceProvider extends AbstractServiceProvider
