@@ -45,7 +45,7 @@ class SoftDelete extends Behavior\SoftDelete
     {
         parent::__construct($options);
         $this->setField($options['field'] ?? 'deleted');
-        $this->setField($options['value'] ?? 1);
+        $this->setValue($options['value'] ?? 1);
     }
     
     /**
