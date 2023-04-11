@@ -15,32 +15,28 @@ use Exception;
 use Zemit\Mvc\Model\AbstractTrait\AbstractBehavior;
 use Zemit\Mvc\Model\AbstractTrait\AbstractEntity;
 use Zemit\Mvc\Model\AbstractTrait\AbstractEventsManager;
-use Zemit\Mvc\Model\Behavior;
+use Zemit\Mvc\Model\AbstractTrait\AbstractModelsManager;
 
 trait SoftDelete
 {
+    use AbstractModelsManager;
     use AbstractBehavior;
     use AbstractEventsManager;
     use AbstractEntity;
     use Options;
-    
-    public Behavior\SoftDelete $softDeleteBehavior;
+    use Behavior;
     
     /**
      * Initializing SoftDelete
      */
-    public function initializeSoftDelete(array $options = []): void
+    public function initializeSoftDelete(?array $options = null): void
     {
         $options ??= $this->getOptionsManager()->get('softDelete') ?? [];
+        
+        $options['field'] ??= 'deleted';
+        $options['value'] ??= 1;
+        
         $this->setSoftDeleteBehavior(new Behavior\SoftDelete($options));
-    }
-    
-    /**
-     * Return the soft delete behavior instance
-     */
-    public function getSoftDeleteBehavior(): Behavior\SoftDelete
-    {
-        return $this->softDeleteBehavior;
     }
     
     /**
@@ -49,8 +45,17 @@ trait SoftDelete
      */
     public function setSoftDeleteBehavior(Behavior\SoftDelete $softDeleteBehavior): void
     {
-        $this->softDeleteBehavior = $softDeleteBehavior;
-        $this->addBehavior($softDeleteBehavior);
+        $this->setBehavior('softDelete', $softDeleteBehavior);
+    }
+    
+    /**
+     * Return the soft delete behavior instance
+     */
+    public function getSoftDeleteBehavior(): Behavior\SoftDelete
+    {
+        $behavior = $this->getBehavior('softDelete');
+        assert($behavior instanceof Behavior\SoftDelete);
+        return $behavior;
     }
     
     /**
@@ -76,8 +81,8 @@ trait SoftDelete
      */
     public function isDeleted(?string $field = null, ?int $deletedValue = null): bool
     {
-        $field ??= $this->getSoftDeleteBehavior()->getField();
-        $deletedValue ??= $this->getSoftDeleteBehavior()->getValue();
+        $field ??= $this->getSoftDeleteBehavior()->getField() ?? 'deleted';
+        $deletedValue ??= $this->getSoftDeleteBehavior()->getValue() ?? 1;
         return $this->readAttribute($field) === $deletedValue;
     }
     
@@ -92,7 +97,7 @@ trait SoftDelete
      */
     public function restore(?string $field = null, ?int $notDeletedValue = null): bool
     {
-        $ormEvents = (bool)ini_get('orm.events');
+        $ormEvents = (bool)ini_get('phalcon.orm.events');
         
         if ($ormEvents) {
             $this->skipped = false;
@@ -110,11 +115,11 @@ trait SoftDelete
         $field ??= $this->getSoftDeleteBehavior()->getField();
         $notDeletedValue ??= 0;
         
-        // restore
+        // restore (unset soft delete value and save)
         $this->writeAttribute($field, $notDeletedValue);
         $save = $this->save();
         
-        // check if the entity was really restored
+        // check if the entity is restored
         $value = $this->readAttribute($field);
         $restored = $save && $value === $notDeletedValue;
         
