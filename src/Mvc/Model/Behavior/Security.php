@@ -145,7 +145,7 @@ class Security extends Behavior
         $model->appendMessage(new Message(
             'Current identity forbidden to execute `' . $type . '` on `' . $modelClass . '`',
             'id',
-            'NotFound',
+            'Forbidden',
             403
         ));
         return false;
