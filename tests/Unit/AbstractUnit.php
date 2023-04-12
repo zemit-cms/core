@@ -12,10 +12,13 @@ declare(strict_types=1);
 
 namespace Zemit\Tests\Unit;
 
+use Phalcon\Db\Adapter\Pdo\Mysql;
 use PHPUnit\Framework\TestCase;
 use Phalcon\Di\DiInterface;
 use Zemit\Bootstrap;
+use Zemit\Bootstrap\Config;
 use Zemit\Utils\Env;
+use Phalcon\Loader;
 
 /**
  * Class AbstractUnitTest
@@ -29,19 +32,36 @@ abstract class AbstractUnit extends TestCase
     
     protected ?DiInterface $di;
     
+    protected ?Loader $loader;
+    
     protected string $mode = Bootstrap::MODE_MVC;
+    
+    public function getDb(): Mysql
+    {
+        return $this->di->get('db');
+    }
+    
+    public function getConfig(): Config
+    {
+        return $this->di->get('config');
+    }
     
     /**
      * Zemit Setup
      */
     protected function setUp(): void
     {
-        // Zemit Setup
+        // Set your default path and namespace
         defined('VENDOR_PATH') || define('VENDOR_PATH', (getenv('VENDOR_PATH') ? getenv('VENDOR_PATH') : dirname(__DIR__) . '/../vendor'));
         defined('APP_NAMESPACE') || define('APP_NAMESPACE', (getenv('APP_NAMESPACE') ? getenv('APP_NAMESPACE') : 'App'));
         defined('APP_PATH') || define('APP_PATH', (getenv('APP_PATH') ? getenv('APP_PATH') : dirname(__DIR__) . '/../app'));
         
         Env::setNames(['.env.testing']);
+        
+        $this->loader = new Loader();
+        $this->loader->registerFiles([VENDOR_PATH . 'autoload.php']);
+        $this->loader->registerNamespaces(['Zemit' => APP_PATH]);
+        $this->loader->register();
         
         $this->bootstrap = new Bootstrap($this->mode);
         $this->di = $this->bootstrap->di;
@@ -51,8 +71,11 @@ abstract class AbstractUnit extends TestCase
     
     protected function tearDown(): void
     {
+        $this->loader->unregister();
+        $this->loader = null;
         $this->bootstrap = null;
         $this->di = null;
+        $this->loaded = false;
         parent::tearDown();
     }
 }
