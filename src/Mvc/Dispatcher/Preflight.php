@@ -44,7 +44,6 @@ class Preflight extends Injectable
             }
         }
         
-        
         // Set origin value if origin is allowed
         $originKey = 'Access-Control-Allow-Origin';
         if (!$response->hasHeader($originKey)
