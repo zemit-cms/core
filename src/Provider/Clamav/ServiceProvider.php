@@ -23,13 +23,13 @@ class ServiceProvider extends AbstractServiceProvider
     
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function (?array $options = []) use ($di) {
+        $di->setShared($this->getName(), function (?array $options = null) use ($di) {
             
             $config = $di->get('config');
             assert($config instanceof ConfigInterface);
             assert(extension_loaded('ext-sockets'));
             
-            $options ??= $config->pathToArray('clamav', []);
+            $options ??= $config->pathToArray('clamav') ?? [];
             $address = $options['address'] ?? 'tcp://127.0.0.1:3310';
             $timeout = $options['timeout'] ?? 30;
             
