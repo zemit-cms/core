@@ -21,14 +21,13 @@ trait Position
     use Attribute;
     use Options;
     
-    public Model\Behavior\Position $positionBehavior;
-    
     /**
      * Initializing Position
      */
     public function initializePosition(?array $options = null): void
     {
         $options ??= $this->getOptionsManager()->get('position') ?? [];
+        
         $this->setPositionBehavior(new PositionBehavior($options));
     }
     
@@ -37,8 +36,7 @@ trait Position
      */
     public function setPositionBehavior(PositionBehavior $positionBehavior): void
     {
-        $this->positionBehavior = $positionBehavior;
-        $this->addBehavior($this->positionBehavior);
+        $this->setBehavior('position', $positionBehavior);
     }
     
     /**
@@ -46,7 +44,9 @@ trait Position
      */
     public function getPositionBehavior(): PositionBehavior
     {
-        return $this->positionBehavior;
+        $behavior = $this->getBehavior('position');
+        assert($behavior instanceof PositionBehavior);
+        return $behavior;
     }
     
     /**
