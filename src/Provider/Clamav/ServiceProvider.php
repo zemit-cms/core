@@ -31,12 +31,12 @@ class ServiceProvider extends AbstractServiceProvider
             
             $options ??= $config->pathToArray('clamav', []);
             $address = $options['address'] ?? 'tcp://127.0.0.1:3310';
-            $timeout = $options['timeout'] ?? null;
+            $timeout = $options['timeout'] ?? 30;
             
             // Create a new socket instance
             $socket = (new Factory())->createClient($address, $timeout);
             
-            return new Client($socket, 30, PHP_NORMAL_READ);
+            return new Client($socket, $timeout, PHP_NORMAL_READ);
         });
     }
 }
