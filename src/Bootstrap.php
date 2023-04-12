@@ -57,13 +57,12 @@ class Bootstrap
 Zemit CLI
 
 Usage:
-  zemit <module> <task> [<action>] [--help | --quiet | --verbose] [--debug] [--format=<format>] [<args>...] [-c <fds>=<value>]
+  zemit <module> <task> [<action>] [--help | --quiet | --verbose] [--debug] [--format=<format>] [<params>...]
   zemit (-h | --help)
   zemit (-v | --version)
   zemit (-i | --info)
 
 Options:
-  -c <key>=<value>        test
   -h --help               show this help message
   -v --version            print version number
   -i --info               print information
