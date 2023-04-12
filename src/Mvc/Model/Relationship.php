@@ -35,7 +35,7 @@ trait Relationship
     
     private array $keepMissingRelated = [];
     
-    private string $relationshipContext;
+    private string $relationshipContext = '';
     
     protected $dirtyRelated;
     
@@ -347,7 +347,10 @@ trait Relationship
                         $referencedFields = is_array($referencedFields) ? $referencedFields : [$referencedFields];
                         
                         // Set the relationship context
-                        $record->setRelationshipContext($this->getRelationshipContext() . '.' . $alias);
+                        // @todo review this
+                        $currentRelationshipContext = $this->getRelationshipContext();
+                        $relationshipPrefix = !empty($currentRelationshipContext)? $currentRelationshipContext . '.' : '';
+                        $record->setRelationshipContext($relationshipPrefix . $alias);
                         
                         /**
                          * If dynamic update is enabled, saving the record must not take any action
