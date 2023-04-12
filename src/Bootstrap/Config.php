@@ -321,17 +321,45 @@ class Config extends \Zemit\Config\Config
             
             'dataLifeCycle' => [
                 'models' => [
-                    Models\Log::class => Env::get('DATA_LIFE_CYCLE_LOG', 'default'),
-                    Models\Email::class => Env::get('DATA_LIFE_CYCLE_EMAIL', 'default'),
-                    Models\Session::class => Env::get('DATA_LIFE_CYCLE_SESSION', 'default'),
-                    Models\Audit::class => Env::get('DATA_LIFE_CYCLE_AUDIT', 'default'),
-                    Models\AuditDetail::class => Env::get('DATA_LIFE_CYCLE_AUDIT_DETAIL', 'default'),
+                    Models\Log::class => Env::get('DATA_LIFE_CYCLE_LOG', 'triennially'),
+                    Models\Email::class => Env::get('DATA_LIFE_CYCLE_EMAIL', 'triennially'),
+                    Models\Session::class => Env::get('DATA_LIFE_CYCLE_SESSION', 'monthly'),
+                    Models\Audit::class => Env::get('DATA_LIFE_CYCLE_AUDIT', 'quarterly'),
+                    Models\AuditDetail::class => Env::get('DATA_LIFE_CYCLE_AUDIT_DETAIL', 'quarterly'),
                 ],
                 'policies' => [
-                    'default' => [
+                    'monthly' => [
                         'query' => [
-                            'condition' => 'createdAt < :createdAt:',
-                            'bind' => ['createdAt' => $now->modify('-3 month')],
+                            'conditions' => 'createdAt < :createdAt:',
+                            'bind' => ['createdAt' => $now->modify('-1 month')->format('Y-m-01 00:00:00')],
+                            'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
+                        ],
+                    ],
+                    'quarterly' => [
+                        'query' => [
+                            'conditions' => 'createdAt < :createdAt:',
+                            'bind' => ['createdAt' => $now->modify('-3 months')->format('Y-m-01 00:00:00')],
+                            'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
+                        ],
+                    ],
+                    'yearly' => [
+                        'query' => [
+                            'conditions' => 'createdAt < :createdAt:',
+                            'bind' => ['createdAt' => $now->modify('-1 year')->format('Y-01-01 00:00:00')],
+                            'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
+                        ],
+                    ],
+                    'biennially' => [
+                        'query' => [
+                            'conditions' => 'createdAt < :createdAt:',
+                            'bind' => ['createdAt' => $now->modify('-2 year')->format('Y-01-01 00:00:00')],
+                            'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
+                        ],
+                    ],
+                    'triennially' => [
+                        'query' => [
+                            'conditions' => 'createdAt < :createdAt:',
+                            'bind' => ['createdAt' => $now->modify('-3 year')->format('Y-01-01 00:00:00')],
                             'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
                         ],
                     ],
@@ -1276,6 +1304,7 @@ class Config extends \Zemit\Config\Config
                             Cli\Tasks\CronTask::class => ['*'],
                             Cli\Tasks\ErrorTask::class => ['*'],
                             Cli\Tasks\DeploymentTask::class => ['*'],
+                            Cli\Tasks\DataLifeCycleTask::class => ['*'],
                             Cli\Tasks\HelpTask::class => ['*'],
                             Cli\Tasks\ScaffoldTask::class => ['*'],
                             Cli\Tasks\TestTask::class => ['*'],
@@ -1286,6 +1315,9 @@ class Config extends \Zemit\Config\Config
                     'everyone' => [
                         'features' => [
                             'base',
+                        ],
+                        'components' => [
+                            Api\Controllers\ClamavController::class => ['*']
                         ],
                     ],
                     
