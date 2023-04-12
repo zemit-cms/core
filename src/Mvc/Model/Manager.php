@@ -60,4 +60,12 @@ class Manager extends PhalconModelsManager implements ManagerInterface
         
         return isset($this->behaviors[$entityName][$behaviorName]);
     }
+    
+    /**
+     * Merge two arrays of find parameters
+     */
+    public function mergeFindParameters(?array $findParamsOne = [], ?array $findParamsTwo = []): array
+    {
+        return $this->_mergeFindParameters($findParamsOne, $findParamsTwo);
+    }
 }
