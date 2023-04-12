@@ -70,7 +70,7 @@ class Model extends \Phalcon\Mvc\Model
     use \Zemit\Mvc\Model\Blameable;
     use \Zemit\Mvc\Model\FindIn;
     use \Zemit\Mvc\Model\Snapshot;
-    use \Zemit\Mvc\Model\Retention;
+    use \Zemit\Mvc\Model\LifeCycle;
     use \Zemit\Mvc\Model\PrimaryKeys;
     use \Zemit\Mvc\Model\Options;
     use \Zemit\Mvc\Model\Uuid;
