@@ -1095,6 +1095,11 @@ class Config extends \Zemit\Config\Config
                 'attachmentFilenameMode' => Env::get('IMAP_ATTACHMENT_FILENAME_MODE', false), // Attachment filename mode (optional; false = random filename; true = original filename)
             ],
             
+            'clamav' => [
+                'address' => Env::get('CLAMAV_ADDRESS', 'unix:///run/clamd.scan/clamd.sock'),
+                'timeout' => Env::get('CLAMAV_TIMEOUT', 30),
+            ],
+            
             /**
              * Dotenv
              */
