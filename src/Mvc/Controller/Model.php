@@ -1071,7 +1071,7 @@ trait Model
                 // refetch & expose
 //                $fetchWith = $this->getSingle($singlePostEntity->getId(), $modelName, $with);
 //                $ret['single'] = $this->expose($fetchWith);
-                $fetchWith = $singlePostEntity->load($with);
+                $fetchWith = $singlePostEntity->load($with ?? []);
                 $ret['single'] = $this->expose($fetchWith);
             }
 
