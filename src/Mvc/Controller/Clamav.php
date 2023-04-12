@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -11,38 +12,67 @@
 namespace Zemit\Mvc\Controller;
 
 use Xenolope\Quahog\Client;
+use Zemit\Mvc\View;
 
 /**
- * Trait Clamav
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
+ * @property View $view
  * @property Client $clamav
- * @package Zemit\Mvc\Controller
  */
 trait Clamav
 {
-    public function getAction($id = null)
+    public function indexAction(): void
     {
         $this->clamav->startSession();
-        $this->view->ping = $this->clamav->ping();
-        $this->view->version = $this->clamav->version();
-        $this->view->stats = explode(PHP_EOL, $this->clamav->stats());
+        $this->pingAction();
+        $this->versionAction();
+        $this->statsAction();
         $this->clamav->endSession();
     }
     
-    public function reloadAction()
+    public function scanAction(?string $filePath = null): bool
     {
-        $this->view->reload = $this->clamav->reload();
+        $this->clamav->startSession();
+        $result = $this->clamav->scanFile($filePath);
+        $this->clamav->endSession();
+        
+        $ret = [];
+        $ret['ok'] = $result->isOk();
+        $ret['error'] = $result->isError();
+        $ret['found'] = $result->isFound();
+        $ret['reason'] = $result->getReason();
+        $ret['id'] = $result->getId();
+        $ret['filename'] = $result->getFilename();
+        
+        $this->view->setVars($ret);
+        
+        return $ret['ok'];
     }
     
-    public function shutdownAction()
+    public function pingAction(): bool
     {
-        $this->getAction();
-        $this->view->shutdown = $this->clamav->shutdown();
+        $ret = $this->clamav->ping();
+        $this->view->setVar('ping', $ret);
+        return $ret;
+    }
+    
+    public function versionAction(): bool
+    {
+        $ret = $this->clamav->version();
+        $this->view->setVar('version', $ret);
+        return !empty($ret);
+    }
+    
+    public function statsAction(): bool
+    {
+        $ret = $this->clamav->stats();
+        $this->view->setVar('stats', $ret);
+        return !empty($ret);
+    }
+    
+    public function reloadAction(): bool
+    {
+        $ret = $this->clamav->reload();
+        $this->view->setVar('reload', $ret);
+        return $ret === 'RELOADING';
     }
 }
