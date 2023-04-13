@@ -203,6 +203,7 @@ class Exposer
             
             // Prépare l'array de retour des fields de l'instance
             $ret = [];
+            $currentContextKey = $builder->getContextKey();
             $builder->setContextKey($builder->getFullKey());
             foreach ($toParse as $fieldKey => $fieldValue) {
                 $builder->setParent($value);
@@ -213,6 +214,7 @@ class Exposer
                     $ret [$fieldKey] = self::expose($builder);
                 }
             }
+            $builder->setContextKey($currentContextKey);
         }
         else {
             $ret = $builder->getExpose() ? $value : false;
