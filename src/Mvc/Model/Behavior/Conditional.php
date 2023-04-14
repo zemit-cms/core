@@ -33,10 +33,10 @@ class Conditional extends Behavior
      *
      * @return void|null
      */
-    public function notify(string $type, ModelInterface $model)
+    public function notify(string $type, ModelInterface $model): ?bool
     {
         if (!$this->isEnabled()) {
-            return;
+            return null;
         }
         
         if (!$this->mustTakeAction($type)) {
@@ -45,7 +45,7 @@ class Conditional extends Behavior
 
         $options = $this->getOptions($type);
         if (empty($options)) {
-            return;
+            return null;
         }
 
         $field = $this->getOption('field', $options, [$type, $model]);
@@ -55,6 +55,8 @@ class Conditional extends Behavior
             $transformedValue = $this->getOption('transform', $options, [$type, $model, $field, $value]);
             $model->assign([$field => $transformedValue]);
         }
+        
+        return true;
     }
 
     /**

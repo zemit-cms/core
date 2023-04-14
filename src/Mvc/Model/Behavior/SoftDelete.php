@@ -51,12 +51,12 @@ class SoftDelete extends Behavior\SoftDelete
     /**
      * @return mixed
      */
-    public function notify(string $type, ModelInterface $model)
+    public function notify(string $type, ModelInterface $model): ?bool
     {
         if (!$this->isEnabled()) {
-            return;
+            return null;
         }
         
-        return parent::notify($type, $model);
+        return parent::notify($type, $model) ?? null;
     }
 }

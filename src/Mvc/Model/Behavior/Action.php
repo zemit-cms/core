@@ -27,7 +27,7 @@ class Action extends Behavior
     public function notify(string $type, ModelInterface $model)
     {
         if (!$this->isEnabled()) {
-            return;
+            return null;
         }
         
         if (!$this->mustTakeAction($type)) {
@@ -36,7 +36,7 @@ class Action extends Behavior
 
         $options = $this->getOptions($type);
         if (empty($options)) {
-            return;
+            return null;
         }
 
         foreach ($options as $action => $value) {

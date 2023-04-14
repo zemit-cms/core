@@ -16,6 +16,7 @@ use Phalcon\Mvc\ModelInterface;
 use Phalcon\Text;
 use Zemit\Models\Audit;
 use Zemit\Models\AuditDetail;
+use Zemit\Models\Interfaces\AuditDetailInterface;
 use Zemit\Models\Interfaces\AuditInterface;
 use Zemit\Models\User;
 
@@ -52,12 +53,12 @@ class Blameable extends Behavior
     public function notify(string $type, ModelInterface $model)
     {
         if ($this->isEnabled()) {
-            return;
+            return null;
         }
         
         // prevent auditing audit & audit_detail tables
         if ($model instanceof $this->auditClass || $model instanceof $this->auditDetailClass) {
-            return;
+            return null;
         }
         
         switch ($type) {
@@ -104,6 +105,7 @@ class Blameable extends Behavior
             $map = empty($columnMap) ? $column : $columnMap[$column];
             $before = $snapshot[$map] ?? null;
             $after = $model->readAttribute($map);
+            
             // skip unchanged
             if ($event === 'update' && $changedFields !== null && $snapshot !== null) {
                 if ($before === $after || !in_array($map, $changedFields, true)) {
@@ -111,8 +113,9 @@ class Blameable extends Behavior
                 }
             }
             
-            /** @var AuditDetail $auditDetail */
             $auditDetail = new $auditDetailClass();
+            assert($auditDetail instanceof AuditDetailInterface);
+            
             $auditDetail->setModel(get_class($model));
             $auditDetail->setTable($model->getSource());
             $auditDetail->setPrimary($model->getId());
@@ -121,6 +124,7 @@ class Blameable extends Behavior
             $auditDetail->setMap($map);
             $auditDetail->setBefore($before);
             $auditDetail->setAfter($after);
+            
             $auditDetailList[] = $auditDetail;
         }
         

@@ -33,10 +33,10 @@ class Transformable extends Behavior
      *
      * @return void|null
      */
-    public function notify(string $type, ModelInterface $model)
+    public function notify(string $type, ModelInterface $model): ?bool
     {
         if (!$this->isEnabled()) {
-            return;
+            return null;
         }
         
         if (!$this->mustTakeAction($type)) {
@@ -45,7 +45,7 @@ class Transformable extends Behavior
 
         $options = $this->getOptions($type);
         if (empty($options)) {
-            return;
+            return null;
         }
 
         foreach ($options as $field => $value) {
@@ -53,5 +53,7 @@ class Transformable extends Behavior
             $model->writeAttribute($field, $value);
 //            $model->assign([$field => $value]);
         }
+        
+        return true;
     }
 }

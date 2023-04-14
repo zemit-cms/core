@@ -18,15 +18,17 @@ class Snapshot extends Behavior
 {
     use SkippableTrait;
     
-    public function notify(string $type, ModelInterface $model): void
+    public function notify(string $type, ModelInterface $model): ?bool
     {
         if (!$this->isEnabled()) {
-            return;
+            return null;
         }
         
         if ($type === 'beforeCreate') {
             $this->beforeCreate($model);
         }
+        
+        return null;
     }
     
     public function beforeCreate(ModelInterface $model): void

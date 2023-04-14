@@ -80,32 +80,32 @@ class Security extends Behavior
     /**
      * Handling security (acl) on before model's events
      */
-    public function notify(string $type, ModelInterface $model): bool
+    public function notify(string $type, ModelInterface $model): ?bool
     {
         if (!$this->isEnabled()) {
-            return true;
+            return null;
         }
         
         // skip check while still in progress
         // needed to retrieve roles for itself
         if ($this->inProgress()) {
-            return true;
+            return null;
         }
         
         $beforeEvents = [
-            'beforeFind',
-            'beforeFindFirst',
-            'beforeCount',
-            'beforeSum',
-            'beforeAverage',
-            'beforeCreate',
-            'beforeUpdate',
-            'beforeDelete',
-            'beforeRestore',
-            'beforeReorder',
+            'beforeFind' => true,
+            'beforeFindFirst' => true,
+            'beforeCount' => true,
+            'beforeSum' => true,
+            'beforeAverage' => true,
+            'beforeCreate' => true,
+            'beforeUpdate' => true,
+            'beforeDelete' => true,
+            'beforeRestore' => true,
+            'beforeReorder' => true,
         ];
         
-        if (in_array($type, $beforeEvents, true)) {
+        if ($beforeEvents[$type] ?? false) {
             self::staticStart();
             
             $type = (strpos($type, 'before') === 0) ? lcfirst(substr($type, 6)) : $type;
