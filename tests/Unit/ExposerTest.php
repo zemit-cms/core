@@ -116,6 +116,8 @@ class ExposerTest extends AbstractUnit
             'test_array' => ['test' => 'test'],
             'test_object' => (object)['test' => 'test'],
             'test_removed' => 'test_removed',
+            'test_removed_two' => 'test_removed_two',
+            'test_after_removed' => 'test_after_removed'
         ];
         $expected = $test;
         $expected['test_empty_object'] = (array)$expected['test_empty_object'];
@@ -125,8 +127,15 @@ class ExposerTest extends AbstractUnit
         $actual = Exposer::expose($builder);
         $this->assertEquals($expected, $actual);
         
+        // @todo
         unset($expected['test_removed']);
-        $builder = Exposer::createBuilder($test, [true, 'test_removed' => false]);
+        unset($expected['test_removed_two']);
+        $builder = Exposer::createBuilder($test, [
+            true,
+            'test_removed' => false,
+            'test_removed_two',
+            'new_value' => 'test'
+        ]);
         $actual = Exposer::expose($builder);
         $this->assertEquals($expected, $actual);
     }

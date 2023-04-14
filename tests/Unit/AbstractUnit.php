@@ -17,6 +17,7 @@ use PHPUnit\Framework\TestCase;
 use Phalcon\Di\DiInterface;
 use Zemit\Bootstrap;
 use Zemit\Bootstrap\Config;
+use Zemit\Exception;
 use Zemit\Utils\Env;
 use Phalcon\Loader;
 
@@ -28,11 +29,11 @@ abstract class AbstractUnit extends TestCase
 {
     protected bool $loaded = false;
     
-    protected ?Bootstrap $bootstrap;
+    protected ?Bootstrap $bootstrap = null;
     
-    protected ?DiInterface $di;
+    protected ?DiInterface $di = null;
     
-    protected ?Loader $loader;
+    protected ?Loader $loader = null;
     
     protected string $mode = Bootstrap::MODE_MVC;
     
@@ -48,6 +49,7 @@ abstract class AbstractUnit extends TestCase
     
     /**
      * Zemit Setup
+     * @throws Exception
      */
     protected function setUp(): void
     {
@@ -71,7 +73,6 @@ abstract class AbstractUnit extends TestCase
     
     protected function tearDown(): void
     {
-        $this->loader->unregister();
         $this->loader = null;
         $this->bootstrap = null;
         $this->di = null;
