@@ -104,7 +104,7 @@ trait DeploymentTrait
                 
                 // Automagically fill passwords
                 if (property_exists($entity, 'password')) {
-                    if (empty($row['password'])) {
+                    if (empty($row['password']) && property_exists($entity, 'username')) {
                         $entity->assign(['password' => $row['username'], 'passwordConfirm' => $row['username']]);
                     }
                     elseif (empty($row['passwordConfirm'])) {
