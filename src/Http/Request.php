@@ -14,7 +14,7 @@ namespace Zemit\Http;
 /**
  * {@inheritDoc}
  */
-class Request extends \Phalcon\Http\Request
+class Request extends \Phalcon\Http\Request implements RequestInterface
 {
     /**
      * Return true if cors request
