@@ -208,6 +208,7 @@ trait Relationship
                 // array | traversable | resultset
                 elseif (is_array($relationData) || $relationData instanceof \Traversable) {
                     $assign = [];
+                    
                     $getEntityParams = [
                         'alias' => $alias,
                         'fields' => $referencedFields,
@@ -217,6 +218,7 @@ trait Relationship
                         'whiteList' => $whiteList,
                         'dataColumnMap' => $dataColumnMap,
                     ];
+                    
                     if (empty($relationData) && !in_array($type, [Relation::HAS_MANY_THROUGH, Relation::HAS_MANY])) {
                         $assign = $this->getEntityFromData($relationData, $getEntityParams);
                     }
@@ -257,7 +259,7 @@ trait Relationship
                                 }
                                 
                                 // if [alias => [[id => 1], [id => 2], [id => 3], ....]]
-                                elseif (is_iterable($traversedData)) {
+                                else if (is_array($traversedData) || $traversedData instanceof \Traversable) {
                                     $entity = $this->getEntityFromData((array)$traversedData, $getEntityParams);
                                 }
                                 
@@ -278,6 +280,7 @@ trait Relationship
                 // we got something to assign
                 $keepMissingRelationship = $this->keepMissingRelated[$alias] ?? null;
                 if (!empty($assign) || $keepMissingRelationship === false) {
+                    
                     $assign = is_array($assign) ? array_values(array_filter($assign)) : $assign;
                     $this->{$alias} = $assign;
                     
@@ -308,69 +311,59 @@ trait Relationship
     {
         $nesting = false;
         
-        /**
-         * Start an implicit transaction
-         */
         $connection->begin($nesting);
         $className = get_class($this);
         
         $modelsManager = $this->getModelsManager();
         
-        /**
-         * @var string $alias alias
-         * @var ModelInterface $record
-         */
-        if ($related && is_iterable($related)) {
-            foreach ($related as $alias => $record) {
+        foreach ($related as $alias => $record) {
+            $relation = $modelsManager->getRelationByAlias($className, $alias);
+            
+            if ($relation) {
+                $type = $relation->getType();
                 
-                // Try to get a relation with the same name
-                $relation = $modelsManager->getRelationByAlias($className, $alias);
-                
-                if ($relation) {
-                    $type = $relation->getType();
+                // Only belongsTo are stored before save the master record
+                if ($type === Relation::BELONGS_TO) {
                     
-                    // Only belongsTo are stored before save the master record
-                    if ($type === Relation::BELONGS_TO) {
-                        
-                        // We only support model interface for the belongs-to relation
-                        if (!($record instanceof ModelInterface)) {
-                            $connection->rollback($nesting);
-                            throw new Exception('Instance of `' . get_class($record) . '` received on model `' . $className . '` in alias `' . $alias .
-                                ', expected instance of `' . ModelInterface::class . '` as part of the belongs-to relation', 400);
-                        }
-                        
-                        // Get relationFields and referencedFields as array
-                        $relationFields = $relation->getFields();
-                        $relationFields = is_array($relationFields) ? $relationFields : [$relationFields];
-                        
-                        $referencedFields = $relation->getReferencedFields();
-                        $referencedFields = is_array($referencedFields) ? $referencedFields : [$referencedFields];
-                        
-                        // Set the relationship context
-                        // @todo review this
-                        $currentRelationshipContext = $this->getRelationshipContext();
-                        $relationshipPrefix = !empty($currentRelationshipContext)? $currentRelationshipContext . '.' : '';
-                        $record->setRelationshipContext($relationshipPrefix . $alias);
-                        
-                        /**
-                         * If dynamic update is enabled, saving the record must not take any action
-                         * Only save if the model is dirty to prevent circular relations causing an infinite loop
-                         */
-                        if ($record->getDirtyState() !== PhalconModel::DIRTY_STATE_PERSISTENT && !$record->save()) {
-                            $this->appendMessagesFromRecord($record, $alias);
-                            $connection->rollback($nesting);
-                            return false;
-                        }
-                        
-                        // Read the attributes from the referenced model and assign it to the current model
-                        foreach ($referencedFields as $key => $referencedField) {
-                            $this->{$relationFields[$key]} = $record->readAttribute($referencedField);
-                        }
+                    // Belongs-to relation: We only support model interface
+                    if (!($record instanceof ModelInterface)) {
+                        $connection->rollback($nesting);
+                        throw new Exception(
+                            'Instance of `' . get_class($record) . '` received on model `' . $className . '` in alias `' . $alias .
+                            ', expected instance of `' . ModelInterface::class . '` as part of the belongs-to relation',
+                            400
+                        );
+                    }
+                    
+                    $relationFields = $relation->getFields();
+                    $relationFields = is_array($relationFields) ? $relationFields : [$relationFields];
+                    
+                    $referencedFields = $relation->getReferencedFields();
+                    $referencedFields = is_array($referencedFields) ? $referencedFields : [$referencedFields];
+                    
+                    // Set the relationship context
+                    // @todo review this
+                    $currentRelationshipContext = $this->getRelationshipContext();
+                    $relationshipPrefix = !empty($currentRelationshipContext)? $currentRelationshipContext . '.' : '';
+                    $record->setRelationshipContext($relationshipPrefix . $alias);
+                    
+                    /**
+                     * If dynamic update is enabled, saving the record must not take any action
+                     * Only save if the model is dirty to prevent circular relations causing an infinite loop
+                     */
+                    if ($record->getDirtyState() !== PhalconModel::DIRTY_STATE_PERSISTENT && !$record->save()) {
+                        $this->appendMessagesFromRecord($record, $alias);
+                        $connection->rollback($nesting);
+                        return false;
+                    }
+                    
+                    // assign referenced value to the current model
+                    foreach ($referencedFields as $key => $referencedField) {
+                        $this->{$relationFields[$key]} = $record->readAttribute($referencedField);
                     }
                 }
             }
         }
-        
         
         return true;
     }
@@ -387,43 +380,37 @@ trait Relationship
     {
         $nesting = false;
         
-        if ($related && is_iterable($related)) {
+        if ($related) {
             foreach ($related as $lowerCaseAlias => $assign) {
                 
                 $modelsManager = $this->getModelsManager();
-                $modelsMetaData = $this->getModelsMetaData();
-                
                 $relation = $modelsManager->getRelationByAlias(get_class($this), $lowerCaseAlias);
                 
-                // Append error if relation is not defined
-                if (!($relation instanceof RelationInterface)) {
-                    $this->appendMessage(new Message(
-                        'There are no defined relations for the model `' . get_class($this) . '` using alias `' . $lowerCaseAlias . '`',
-                        $lowerCaseAlias,
-                        404
-                    ));
-                    continue;
+                if (!$relation) {
+                    if (is_array($assign)) {
+                        $connection->rollback($nesting);
+                        throw new Exception("There are no defined relations for the model '" . get_class($this) . "' using alias '" . $lowerCaseAlias . "'");
+                    }
                 }
                 
-                // Discard belongsTo relations
+                /**
+                 * Discard belongsTo relations
+                 */
                 if ($relation->getType() === Relation::BELONGS_TO) {
                     continue;
                 }
                 
                 if (!is_array($assign) && !is_object($assign)) {
-                    $this->appendMessage(new Message(
-                        'Only objects/arrays can be stored as part of has-many/has-one/has-one-through/has-many-to-many relations',
-                        $lowerCaseAlias,
-                        400
-                    ));
-                    continue;
+                    $connection->rollback($nesting);
+                    throw new Exception('Only objects/arrays can be stored as part of has-many/has-one/has-one-through/has-many-to-many relations');
                 }
                 
-                $relationFields = $relation->getFields();
-                $relationFields = is_array($relationFields) ? $relationFields : [$relationFields];
-                
-                // Custom logic for many-to-many relationships
+                /**
+                 * Custom logic for many-to-many relationships
+                 */
                 if ($relation->getType() === Relation::HAS_MANY_THROUGH) {
+                    $originFields = $relation->getFields();
+                    $originFields = is_array($originFields) ? $originFields : [$originFields];
                     
                     $intermediateModelClass = $relation->getIntermediateModel();
                     $intermediateModel = $modelsManager->load($intermediateModelClass);
@@ -437,27 +424,29 @@ trait Relationship
                     $referencedFields = $relation->getReferencedFields();
                     $referencedFields = is_array($referencedFields) ? $referencedFields : [$referencedFields];
                     
-                    $intermediatePrimaryKeyAttributes = $modelsMetaData->getPrimaryKeyAttributes($intermediateModel);
-                    $intermediateBindTypes = $modelsMetaData->getBindTypes($intermediateModel);
+                    $intermediatePrimaryKeyAttributes = $intermediateModel->getModelsMetaData()->getPrimaryKeyAttributes($intermediateModel);
+                    $intermediateBindTypes = $intermediateModel->getModelsMetaData()->getBindTypes($intermediateModel);
                     
                     // get current model bindings
-                    $relationBind = [];
-                    foreach ($relationFields as $relationField) {
-                        $relationBind [] = $this->readAttribute($relationField) ?? null;
+                    $originBind = [];
+                    foreach ($originFields as $originField) {
+                        $originBind [] = $this->readAttribute($originField);
+//                        $originBind [] = $this->{'get' . ucfirst($originField)} ?? $this->$originField ?? null;
                     }
                     
                     $nodeIdListToKeep = [];
                     foreach ($assign as $key => $entity) {
+                        assert($entity instanceof ModelInterface);
                         
                         // get referenced model bindings
                         $referencedBind = [];
                         foreach ($referencedFields as $referencedField) {
-                            $referencedBind [] = $entity->readAttribute($referencedField) ?? null;
+                            $referencedBind [] = $entity->readAttribute($referencedField);
                         }
                         
                         $nodeEntity = $intermediateModel::findFirst([
-                            'conditions' => implode_mb_sprintf(array_merge($intermediateFields, $intermediateReferencedFields), ' and ', '[' . $intermediateModelClass . '].[%s] = ?%s'),
-                            'bind' => [...$relationBind, ...$referencedBind],
+                            'conditions' => implode_sprintf(array_merge($intermediateFields, $intermediateReferencedFields), ' and ', '[' . $intermediateModelClass . '].[%s] = ?%s'),
+                            'bind' => [...$originBind, ...$referencedBind],
                             'bindTypes' => array_fill(0, count($intermediateFields) + count($intermediateReferencedFields), Column::BIND_PARAM_STR),
                         ]);
                         
@@ -471,7 +460,8 @@ trait Relationship
                             // Restoring node entities if previously soft deleted
                             if (method_exists($nodeEntity, 'restore') && method_exists($nodeEntity, 'isDeleted')) {
                                 if ($nodeEntity->isDeleted() && !$nodeEntity->restore()) {
-                                    $this->appendMessagesFromRecord($nodeEntity, $lowerCaseAlias);
+                                    $this->appendMessagesFromRecord($nodeEntity, $lowerCaseAlias, $key);
+                                    $this->appendMessage(new Message('Unable to restored previously deleted related node `' . $intermediateModelClass . '`', $lowerCaseAlias, 'Bad Request', 400));
                                     $connection->rollback($nesting);
                                     return false;
                                 }
@@ -479,7 +469,8 @@ trait Relationship
                             
                             // save edge record
                             if (!$entity->save()) {
-                                $this->appendMessagesFromRecord($entity, $lowerCaseAlias);
+                                $this->appendMessagesFromRecord($entity, $lowerCaseAlias, $key);
+                                $this->appendMessage(new Message('Unable to save related entity `' . $intermediateModelClass . '`', $lowerCaseAlias, 'Bad Request', 400));
                                 $connection->rollback($nesting);
                                 return false;
                             }
@@ -487,92 +478,108 @@ trait Relationship
                             // remove it
                             unset($assign[$key]);
                             unset($related[$lowerCaseAlias][$key]);
+
+//                            // add to assign
+//                            $nodeAssign [] = $nodeEntity;
                         }
                     }
                     
                     if (!($this->keepMissingRelated[$lowerCaseAlias] ?? true)) {
-                        
-                        // handle if we empty the related
-                        if (empty($nodeIdListToKeep)) {
-                            $nodeIdListToKeep = [0];
-                        }
-                        else {
-                            $nodeIdListToKeep = array_values(array_filter(array_unique($nodeIdListToKeep)));
-                        }
-                        
                         $idBindType = count($intermediatePrimaryKeyAttributes) === 1 ? $intermediateBindTypes[$intermediatePrimaryKeyAttributes[0]] : Column::BIND_PARAM_STR;
-                        
-                        /** @var ModelInterface|string $intermediateModelClass */
-                        $nodeEntityToDeleteList = $intermediateModelClass::find([
-                            'conditions' => implode_mb_sprintf(array_merge($intermediateFields), ' and ', '[' . $intermediateModelClass . '].[%s] = ?%s')
-                                . ' and concat(' . implode_mb_sprintf($intermediatePrimaryKeyAttributes, ', \'.\', ', '[' . $intermediateModelClass . '].[%s]') . ') not in ({id:array})',
-                            'bind' => [...$relationBind, 'id' => $nodeIdListToKeep],
+                        $nodeIdListToKeep = empty($nodeIdListToKeep)? [0] : array_keys(array_flip($nodeIdListToKeep));
+                        $nodeEntityToDeleteResultset = $intermediateModel::find([
+                            'conditions' => implode_sprintf(array_merge($intermediateFields), ' and ', '[' . $intermediateModelClass . '].[%s] = ?%s')
+                                . ' and concat(' . implode_sprintf($intermediatePrimaryKeyAttributes, ', \'.\', ', '[' . $intermediateModelClass . '].[%s]') . ') not in ({id:array})',
+                            'bind' => [...$originBind, 'id' => $nodeIdListToKeep],
                             'bindTypes' => [...array_fill(0, count($intermediateFields), Column::BIND_PARAM_STR), 'id' => $idBindType],
                         ]);
                         
                         // delete missing related
-                        if (!$nodeEntityToDeleteList->delete()) {
-                            $this->appendMessagesFromResultset($nodeEntityToDeleteList, $lowerCaseAlias);
+                        if (!$nodeEntityToDeleteResultset->delete()) {
+                            $this->appendMessagesFromResultset($nodeEntityToDeleteResultset, $lowerCaseAlias);
+                            $this->appendMessage(new Message('Unable to delete node entity `' . $intermediateModelClass . '`', $lowerCaseAlias, 'Bad Request', 400));
                             $connection->rollback($nesting);
                             return false;
                         }
                     }
                 }
                 
-                // Create an implicit array for has-many/has-one records
-                $relatedRecords = $assign instanceof ModelInterface ? [$assign] : $assign;
+                $relationFields = $relation->getFields();
+                $relationFields = is_array($relationFields) ? $relationFields : [$relationFields];
+                
                 foreach ($relationFields as $relationField) {
                     if (!property_exists($this, $relationField)) {
                         $connection->rollback($nesting);
-                        throw new Exception("The column '" . $relationField . "' needs to be present in the model.");
+                        throw new Exception("The column '" . $relationField . "' needs to be present in the model");
                     }
                 }
                 
-                if ($relation->isThrough()) {
-                    if (!$this->saveRelatedThrough($relatedRecords, $lowerCaseAlias, $relation)) {
-                        $connection->rollback($nesting);
-                        return false;
-                    }
+                $relatedRecords = $assign instanceof ModelInterface ? [$assign] : $assign;
+                
+                if ($this->postSaveRelatedThroughAfter($relation, $relatedRecords) === false) {
+                    $this->appendMessage(new Message('Unable to save related through after', $lowerCaseAlias, 'Bad Request', 400));
+                    $connection->rollback($nesting);
+                    return false;
                 }
-                elseif (!$this->saveRelatedRecords($relatedRecords, $lowerCaseAlias, $relation)) {
+                
+                if ($this->postSaveRelatedRecordsAfter($relation, $relatedRecords) === false) {
+                    $this->appendMessage(new Message('Unable to save related records after', $lowerCaseAlias, 'Bad Request', 400));
                     $connection->rollback($nesting);
                     return false;
                 }
             }
         }
         
-        // Commit the implicit transaction
-        return $connection->commit($nesting);
-    }
-    
-    public function saveRelatedRecords(iterable $relatedRecords, string $alias, RelationInterface $relation): bool
-    {
-        $referencedFields = $relation->getReferencedFields();
-        $referencedFields = is_array($referencedFields) ? $referencedFields : [$referencedFields];
-        
-        $relationFields = $relation->getFields();
-        $relationFields = is_array($relationFields) ? $relationFields : [$relationFields];
-        
-        foreach ($relatedRecords as $recordAfter) {
-            foreach ($relationFields as $key => $column) {
-                $recordAfter->writeAttribute($referencedFields[$key], $this->readAttribute($column));
-            }
-            
-            if (!$recordAfter->save()) {
-                $this->appendMessagesFromRecord($recordAfter, $alias);
-                return false;
-            }
-        }
+        /**
+         * Commit the implicit transaction
+         */
+        $connection->commit($nesting);
         return true;
     }
     
-    public function saveRelatedThrough(iterable $relatedRecords, string $alias, RelationInterface $relation): bool
+    public function postSaveRelatedRecordsAfter(RelationInterface $relation, $relatedRecords): ?bool
     {
-        $referencedFields = $relation->getReferencedFields();
-        $referencedFields = is_array($referencedFields) ? $referencedFields : [$referencedFields];
+        if ($relation->isThrough()) {
+            return null;
+        }
+        
+        $lowerCaseAlias = $relation->getOption('alias');
         
         $relationFields = $relation->getFields();
         $relationFields = is_array($relationFields) ? $relationFields : [$relationFields];
+        
+        $referencedFields = $relation->getReferencedFields();
+        $referencedFields = is_array($referencedFields) ? $referencedFields : [$referencedFields];
+        
+        foreach ($relatedRecords as $recordAfter) {
+            foreach ($relationFields as $key => $relationField) {
+                $recordAfter->writeAttribute($referencedFields[$key], $this->readAttribute($relationField));
+            }
+            
+            // Save the record and get messages
+            if (!$recordAfter->save()) {
+                $this->appendMessagesFromRecord($recordAfter, $lowerCaseAlias);
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    public function postSaveRelatedThroughAfter(RelationInterface $relation, $relatedRecords): ?bool
+    {
+        if (!$relation->isThrough()) {
+            return null;
+        }
+        
+        $modelsManager = $this->getModelsManager();
+        $lowerCaseAlias = $relation->getOption('alias');
+        
+        $relationFields = $relation->getFields();
+        $relationFields = is_array($relationFields) ? $relationFields : [$relationFields];
+        
+        $referencedFields = $relation->getReferencedFields();
+        $referencedFields = is_array($referencedFields) ? $referencedFields : [$referencedFields];
         
         $intermediateModelClass = $relation->getIntermediateModel();
         
@@ -582,51 +589,48 @@ trait Relationship
         $intermediateReferencedFields = $relation->getIntermediateReferencedFields();
         $intermediateReferencedFields = is_array($intermediateReferencedFields) ? $intermediateReferencedFields : [$intermediateReferencedFields];
         
-        foreach ($relatedRecords as $recordAfter) {
-            
-            $intermediateModel = $this->getModelsManager()->load($intermediateModelClass);
-            
+        foreach ($relatedRecords as $relatedAfterKey => $recordAfter) {
+            // Save the record and get messages
             if (!$recordAfter->save()) {
-                $this->appendMessagesFromRecord($recordAfter, $alias);
+                $this->appendMessagesFromRecord($recordAfter, $lowerCaseAlias, $relatedAfterKey);
                 return false;
             }
+            
+            // Create a new instance of the intermediate model
+            $intermediateModel = $modelsManager->load($intermediateModelClass);
             
             /**
              *  Has-one-through relations can only use one intermediate model.
              *  If it already exists, it can be updated with the new referenced key.
              */
             if ($relation->getType() === Relation::HAS_ONE_THROUGH) {
-                
                 $bind = [];
-                foreach ($relationFields as $column) {
-                    $bind[] = $this->readAttribute($column);
+                foreach ($relationFields as $relationField) {
+                    $bind[] = $this->readAttribute($relationField);
                 }
                 
                 $existingIntermediateModel = $intermediateModel::findFirst([
-                    'conditions' => implode_mb_sprintf($intermediateFields, ' and ', '[' . $intermediateModelClass . '].[%s] = ?%s'),
+                    'conditions' => implode_sprintf($intermediateFields, ' and ', '[' . $intermediateModelClass . '].[%s] = ?%s'),
                     'bind' => $bind,
                     'bindTypes' => array_fill(0, count($bind), Column::BIND_PARAM_STR),
                 ]);
+                
                 if ($existingIntermediateModel) {
                     $intermediateModel = $existingIntermediateModel;
                 }
             }
             
-            foreach ($relationFields as $key => $column) {
-                
-                // Write value in the intermediate model
-                $intermediateModel->writeAttribute($intermediateFields[$key], $this->readAttribute($column));
-                
-                // Get the value from the referenced model
-                $intermediateValue = $recordAfter->readAttribute($referencedFields[$key]);
-                
-                // Write the intermediate value in the intermediate model
-                $intermediateModel->writeAttribute($intermediateReferencedFields[$key], $intermediateValue);
+            // Set intermediate model columns values
+            foreach ($relationFields as $relationFieldKey => $relationField) {
+                $intermediateModel->writeAttribute($intermediateFields[$relationFieldKey], $this->readAttribute($relationField));
+                $intermediateValue = $recordAfter->readAttribute($referencedFields[$relationFieldKey]);
+                $intermediateModel->writeAttribute($intermediateReferencedFields[$relationFieldKey], $intermediateValue);
             }
             
             // Save the record and get messages
             if (!$intermediateModel->save()) {
-                $this->appendMessagesFromRecord($intermediateModel, $alias);
+                $this->appendMessagesFromRecord($intermediateModel, $lowerCaseAlias);
+                $this->appendMessage(new Message('Unable to save intermediate model `' . $intermediateModelClass . '`', $lowerCaseAlias, 'Bad Request', 400));
                 return false;
             }
         }
@@ -692,9 +696,8 @@ trait Relationship
             }
             
             /** @var ModelInterface|string $modelClass */
-            $className = is_string($modelClass) ? $modelClass : get_class($modelClass);
             $entity = $modelClass::findFirst([
-                'conditions' => implode_mb_sprintf($fields, ' and ', '[' . $className . '].[%s] = ?%s'),
+                'conditions' => implode_sprintf($fields, ' and ', '[' . $modelClass . '].[%s] = ?%s'),
                 'bind' => array_values($dataKeys),
                 'bindTypes' => array_fill(0, count($dataKeys), Column::BIND_PARAM_STR),
             ]);
@@ -716,16 +719,13 @@ trait Relationship
         return $entity;
     }
     
-    /**
-     * Append a message to this model from another record,
-     * also prepend a context to the previous context
-     */
-    public function appendMessagesFromRecord(ModelInterface $record, ?string $context = null, ?int $index = 0): void
+    public function appendMessages(array $messages = [], ?string $context = null, ?int $index = 0): void
     {
-        foreach ($record->getMessages() as $message) {
+        foreach ($messages as $message) {
+            assert($message instanceof Message);
             
             $message->setMetaData([
-                'index' => $index,
+                'index' => $this->rebuildMessageIndex($message, $index),
                 'context' => $this->rebuildMessageContext($message, $context),
             ]);
             
@@ -736,13 +736,14 @@ trait Relationship
     /**
      * Append a message to this model from another record,
      * also prepend a context to the previous context
+     *
+     * @param ResultsetInterface|ModelInterface $record
+     * @param string|null $context
      */
-    public function appendMessagesFromResultset(?ResultsetInterface $recordList = null, ?string $context = null): void
+    public function appendMessagesFromRecord($record, string $context = null, ?int $index = 0): void
     {
-        if ($recordList) {
-            foreach ($recordList as $key => $record) {
-                $this->appendMessagesFromRecord($record, $context, $key);
-            }
+        if ($record) {
+            $this->appendMessages($record->getMessages(), $context, $index);
         }
     }
     
@@ -750,11 +751,22 @@ trait Relationship
      * Append a message to this model from another record,
      * also prepend a context to the previous context
      */
-    public function appendMessagesFromRecordList(?iterable $recordList = null, ?string $context = null): void
+    public function appendMessagesFromResultset(?ResultsetInterface $resultset = null, ?string $context = null, ?int $index = 0): void
+    {
+        if ($resultset) {
+            $this->appendMessages($resultset->getMessages(), $context, $index);
+        }
+    }
+    
+    /**
+     * Append a message to this model from another record,
+     * also prepend a context to the previous context
+     */
+    public function appendMessagesFromRecordList(?iterable $recordList = null, ?string $context = null, ?int $index = 0): void
     {
         if ($recordList) {
             foreach ($recordList as $key => $record) {
-                $this->appendMessagesFromRecord($record, $context, $key);
+                $this->appendMessagesFromRecord($record, $context, $index . '.' . $key);
             }
         }
     }
