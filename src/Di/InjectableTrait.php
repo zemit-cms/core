@@ -13,42 +13,24 @@ namespace Zemit\Di;
 
 use Phalcon\Di;
 use Phalcon\Di\DiInterface;
-use Zemit\Bootstrap;
-use Zemit\Cli\Router as CliRouter;
-use Zemit\MVc\Router as MvcRouter;
-use Zemit\Db\Profiler;
-use Zemit\Debug;
-use Zemit\Escaper;
-use Zemit\Filter;
-use Zemit\Http\Request;
-use Zemit\Identity;
-use Zemit\Locale;
-use Zemit\Mvc\Dispatcher;
-use Zemit\Provider\Jwt\Jwt;
-use Zemit\Security;
-use Zemit\Tag;
-use Zemit\Utils;
-use Phalcon\Logger;
-use joshtronic\LoremIpsum;
-use Orhanerday\OpenAi\OpenAi;
 
 /**
- * @property \Phalcon\Mvc\Dispatcher|\Phalcon\Mvc\DispatcherInterface $dispatcher
- * @property \Phalcon\Mvc\Router|\Phalcon\Mvc\RouterInterface $router
+ * @property \Zemit\Cli\Dispatcher|\Zemit\Mvc\Dispatcher|\Zemit\Dispatcher\DispatcherInterface|\Phalcon\Mvc\Dispatcher|\Phalcon\Mvc\DispatcherInterface $dispatcher
+ * @property \Zemit\Cli\Router|\Zemit\Mvc\Router|\Zemit\Router\RouterInterface|\Phalcon\Mvc\Router|\Phalcon\Mvc\RouterInterface $router
  * @property \Phalcon\Url|\Phalcon\Url\UrlInterface $url
- * @property \Phalcon\Http\Request|\Phalcon\Http\RequestInterface $request
+ * @property \Zemit\Http\Request|\Zemit\Http\RequestInterface|\Phalcon\Http\Request|\Phalcon\Http\RequestInterface $request
  * @property \Phalcon\Http\Response|\Phalcon\Http\ResponseInterface $response
  * @property \Phalcon\Http\Response\Cookies|\Phalcon\Http\Response\CookiesInterface $cookies
- * @property \Phalcon\Filter $filter
+ * @property \Zemit\Filter|\Phalcon\Filter $filter
  * @property \Phalcon\Flash\Direct $flash
  * @property \Phalcon\Flash\Session $flashSession
  * @property \Phalcon\Session\ManagerInterface $session
  * @property \Phalcon\Events\Manager|\Phalcon\Events\ManagerInterface $eventsManager
  * @property \Phalcon\Db\Adapter\AdapterInterface $db
- * @property \Phalcon\Security $security
+ * @property \Zemit\Security|\Phalcon\Security $security
  * @property \Phalcon\Crypt|\Phalcon\CryptInterface $crypt
- * @property \Phalcon\Tag $tag
- * @property \Phalcon\Escaper|\Phalcon\Escaper\EscaperInterface $escaper
+ * @property \Zemit\Tag|\Phalcon\Tag $tag
+ * @property \Zemit\Escaper|\Phalcon\Escaper|\Phalcon\Escaper\EscaperInterface $escaper
  * @property \Phalcon\Annotations\Adapter\Memory|\Phalcon\Annotations\Adapter $annotations
  * @property \Phalcon\Mvc\Model\Manager|\Phalcon\Mvc\Model\ManagerInterface $modelsManager
  * @property \Phalcon\Mvc\Model\MetaData\Memory|\Phalcon\Mvc\Model\MetadataInterface $modelsMetadata
@@ -58,24 +40,17 @@ use Orhanerday\OpenAi\OpenAi;
  * @property \Phalcon\Session\Bag|\Phalcon\Session\BagInterface $persistent
  * @property \Phalcon\Mvc\View|\Phalcon\Mvc\ViewInterface $view
  *
- * @property Bootstrap\Config $config
- * @property CliRouter|MvcRouter $router
- * @property Bootstrap $bootstrap
- * @property Debug $debug
- * @property Escaper $escaper
- * @property Filter $filter
- * @property Request $request
- * @property Identity $identity
- * @property Locale $locale
- * @property Dispatcher $dispatcher
- * @property Security $security
- * @property Tag $tag
- * @property Utils $utils
- * @property Profiler $profiler
- * @property Logger $logger
- * @property Jwt $jwt
- * @property OpenAi $openAi
- * @property LoremIpsum $loremIpsum
+ * @property \Zemit\Bootstrap\Config $config
+ * @property \Zemit\Bootstrap $bootstrap
+ * @property \Zemit\Debug $debug
+ * @property \Zemit\Identity $identity
+ * @property \Zemit\Locale $locale
+ * @property \Zemit\Utils $utils
+ * @property \Zemit\Profiler $profiler
+ * @property \Zemit\Logger $logger
+ * @property \Zemit\Jwt $jwt
+ * @property \Zemit\OpenAi $openAi
+ * @property \Zemit\LoremIpsum $loremIpsum
  */
 trait InjectableTrait
 {
