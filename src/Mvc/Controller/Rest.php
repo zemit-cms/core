@@ -583,10 +583,10 @@ class Rest extends \Zemit\Mvc\Controller
      */
     public function isSaved(array $array): ?bool
     {
-        $saved = $ret['saved'] ?? null;
+        $saved = $array['saved'] ?? null;
         
-        if (isset($ret[0])) {
-            foreach ($ret as $k => $r) {
+        if (isset($array[0])) {
+            foreach ($array as $k => $r) {
                 if (isset($r['saved'])) {
                     if ($r['saved']) {
                         $saved = true;
