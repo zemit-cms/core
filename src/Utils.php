@@ -33,6 +33,22 @@ class Utils
     }
     
     /**
+     * Get the Namespace from a class object
+     */
+    public static function getShortName(object $class): string
+    {
+        return (new \ReflectionClass($class))->getShortName();
+    }
+    
+    /**
+     * Get the Namespace from a class object
+     */
+    public static function getName(object $class): string
+    {
+        return (new \ReflectionClass($class))->getName();
+    }
+    
+    /**
      * Get the directory from a class object
      */
     public static function getDirname(object $class): string
