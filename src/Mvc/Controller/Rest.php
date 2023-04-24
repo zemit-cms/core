@@ -587,12 +587,14 @@ class Rest extends \Zemit\Mvc\Controller
         
         if (isset($ret[0])) {
             foreach ($ret as $k => $r) {
-                if ($r['saved']) {
-                    $saved = true;
-                }
-                else {
-                    $saved = false;
-                    break;
+                if (isset($r['saved'])) {
+                    if ($r['saved']) {
+                        $saved = true;
+                    }
+                    else {
+                        $saved = false;
+                        break;
+                    }
                 }
             }
         }
