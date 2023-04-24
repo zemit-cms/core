@@ -28,6 +28,7 @@ use Zemit\Utils\Slug;
 class Rest extends \Zemit\Mvc\Controller
 {
     use Model;
+    use Rest\Fractal;
     
     /**
      * @throws Exception
@@ -190,7 +191,7 @@ class Rest extends \Zemit\Mvc\Controller
         
         // CSV
         if ($contentType === 'csv') {
-        
+            
             // Get CSV custom request parameters
             $mode = $params['mode'] ?? null;
             $delimiter = $params['delimiter'] ?? null;
@@ -201,7 +202,7 @@ class Rest extends \Zemit\Mvc\Controller
 
 //            $csv = Writer::createFromFileObject(new \SplTempFileObject());
             $csv = Writer::createFromStream(fopen('php://memory', 'r+'));
-        
+            
             // CSV - MS Excel on MacOS
             if ($mode === 'mac') {
                 $csv->setOutputBOM(Writer::BOM_UTF16_LE); // utf-16
@@ -541,7 +542,7 @@ class Rest extends \Zemit\Mvc\Controller
                 continue;
             }
         }
-    
+        
         $ret = [];
         $ret['model'] = get_class($entity);
         $ret['source'] = $entity->getSource();
@@ -556,27 +557,53 @@ class Rest extends \Zemit\Mvc\Controller
     
     /**
      * Saving a record (create & update)
-     *
-     * @param null|int $id
-     *
-     * @return ResponseInterface
      */
-    public function saveAction($id = null)
+    public function saveAction(?int $id = null): ?ResponseInterface
     {
         $ret = $this->save($id);
         $this->view->setVars($ret);
+        $saved = $this->isSaved($ret);
         
-        return $this->setRestResponse(true); // @todo set value based on save single or list
+        if (!$saved) {
+            if (empty($ret['messages'])) {
+                $this->response->setStatusCode(422, 'Unprocessable Entity');
+            }
+            else {
+                $this->response->setStatusCode(400, 'Bad Request');
+            }
+        }
+        
+        return $this->setRestResponse($saved);
+    }
+    
+    /**
+     * Return true if the record or the records where saved
+     * Return false if one record wasn't saved
+     * Return null if nothing was saved
+     */
+    public function isSaved(array $array): ?bool
+    {
+        $saved = $ret['saved'] ?? null;
+        
+        if (isset($ret[0])) {
+            foreach ($ret as $k => $r) {
+                if ($r['saved']) {
+                    $saved = true;
+                }
+                else {
+                    $saved = false;
+                    break;
+                }
+            }
+        }
+        
+        return $saved;
     }
     
     /**
      * Deleting a record
-     *
-     * @param null|int $id
-     *
-     * @return bool|ResponseInterface
      */
-    public function deleteAction($id = null)
+    public function deleteAction(?int $id = null): ?ResponseInterface
     {
         $entity = $this->getSingle($id);
         
@@ -588,7 +615,6 @@ class Rest extends \Zemit\Mvc\Controller
         
         if (!$entity) {
             $this->response->setStatusCode(404, 'Not Found');
-            return false;
         }
         
         return $this->setRestResponse($ret['deleted']);
@@ -682,7 +708,7 @@ class Rest extends \Zemit\Mvc\Controller
         
         $view = $this->view->getParamsToView();
         $hash = hash('sha512', json_encode($view));
-    
+        
         // set response status code
         $this->response->setStatusCode($code, $code . ' ' . $status);
         
@@ -717,7 +743,7 @@ class Rest extends \Zemit\Mvc\Controller
             $ret['api']['core'] = $this->config->path('core.name');
             $ret['api']['app'] = $this->config->path('app.version');
             $ret['api']['name'] = $this->config->path('app.name');
-    
+            
             $ret['identity'] = $this->identity ? $this->identity->getIdentity() : null;
             $ret['profiler'] = $this->profiler ? $this->profiler->toArray() : null;
             $ret['request'] = $this->request ? $this->request->toArray() : null;
