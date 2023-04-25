@@ -94,7 +94,7 @@ trait InjectableTrait
         return $this->container;
     }
     
-    public function setDI(DiInterface $container)
+    public function setDI(DiInterface $container): void
     {
         $this->container = $container;
     }
