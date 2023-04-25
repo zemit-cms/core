@@ -17,6 +17,7 @@ use Phalcon\Messages\Messages;
 use Phalcon\Mvc\Model\Resultset;
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Text;
+use Zemit\Fractal\Transformer;
 use Zemit\Http\Request;
 use Zemit\Identity;
 use Zemit\Support\Exposer\Exposer;
