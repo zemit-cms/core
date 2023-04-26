@@ -562,10 +562,11 @@ class Rest extends \Zemit\Mvc\Controller
     {
         $ret = $this->save($id);
         $this->view->setVars($ret);
-        $saved = $this->isSaved($ret);
+        $saved = $this->saveResultHasKey($ret, 'saved');
+        $messages = $this->saveResultHasKey($ret, 'messages');
         
         if (!$saved) {
-            if (empty($ret['messages'])) {
+            if (!$messages) {
                 $this->response->setStatusCode(422, 'Unprocessable Entity');
             }
             else {
@@ -581,25 +582,25 @@ class Rest extends \Zemit\Mvc\Controller
      * Return false if one record wasn't saved
      * Return null if nothing was saved
      */
-    public function isSaved(array $array): ?bool
+    public function saveResultHasKey(array $array, string $key): bool
     {
-        $saved = $array['saved'] ?? null;
+        $ret = $array[$key] ?? null;
         
         if (isset($array[0])) {
             foreach ($array as $k => $r) {
-                if (isset($r['saved'])) {
-                    if ($r['saved']) {
-                        $saved = true;
+                if (isset($r[$key])) {
+                    if ($r[$key]) {
+                        $ret = true;
                     }
                     else {
-                        $saved = false;
+                        $ret = false;
                         break;
                     }
                 }
             }
         }
         
-        return $saved;
+        return (bool)$ret;
     }
     
     /**
