@@ -17,20 +17,3 @@ if (!function_exists('array_unset_recursive')) {
         return $removeCount;
     }
 }
-
-if (!function_exists('array_search_key_recursive')) {
-    
-    function array_search_key_recursive(array &$array, array $keyList, bool $strict = true): int
-    {
-        foreach ($array as $key => $element) {
-            if (in_array($key, $keyList, $strict)) {
-                return true;
-            }
-            elseif (is_array($element)) {
-                return array_search_key_recursive($array[$key], $keyList, $strict);
-            }
-        }
-        return false;
-    }
-}
-
