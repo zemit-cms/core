@@ -65,7 +65,7 @@ class Router extends \Phalcon\Mvc\Router implements RouterInterface
         
         $this->setDefaults($routerConfig['defaults'] ?? $this->getDefaults());
         $this->notFound($routerConfig['notFound'] ?? $this->notFoundPaths ?? []);
-        $this->mount(new ModuleRoute($this->getDefaults(), $localeConfig['allowed'] ?? [], true));
+        $this->mount(new ModuleRoute($this->getDefaults(), $localeConfig['allowed'] ?? []));
     }
     
     /**
@@ -84,7 +84,7 @@ class Router extends \Phalcon\Mvc\Router implements RouterInterface
                 throw new \InvalidArgumentException('Router hostname config parameter "module" must be a string under "' . $hostname . '"');
             }
             $localeConfig = $this->getConfig()->get('locale')->toArray();
-            $this->mount((new ModuleRoute(array_merge($defaults, $hostnameRoute), $localeConfig['allowed'] ?? [], true))->setHostname($hostname));
+            $this->mount((new ModuleRoute(array_merge($defaults, $hostnameRoute), $localeConfig['allowed'] ?? [], $hostname))->setHostname($hostname));
         }
     }
     
@@ -102,7 +102,7 @@ class Router extends \Phalcon\Mvc\Router implements RouterInterface
             $localeConfig = $this->getConfig()->get('locale')->toArray();
             $namespace = rtrim($module['className'], 'Module') . 'Controllers';
             $moduleDefaults = ['namespace' => $namespace, 'module' => $key];
-            $this->mount(new ModuleRoute(array_merge($defaults, $moduleDefaults), $localeConfig['allowed'] ?? [], true));
+            $this->mount(new ModuleRoute(array_merge($defaults, $moduleDefaults), $localeConfig['allowed'] ?? []));
         }
     }
     
@@ -124,7 +124,6 @@ class Router extends \Phalcon\Mvc\Router implements RouterInterface
                 'paths' => $matchedRoute->getPaths(),
                 'pattern' => $matchedRoute->getPattern(),
                 'httpMethod' => $matchedRoute->getHttpMethods(),
-                'reversedPaths' => $matchedRoute->getReversedPaths(),
             ] : null,
         ];
     }

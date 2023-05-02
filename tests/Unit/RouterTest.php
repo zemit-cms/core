@@ -13,18 +13,20 @@ declare(strict_types=1);
 namespace Zemit\Tests\Unit;
 
 use Phalcon\Mvc\Router\RouteInterface;
+use Zemit\Mvc\Application;
+use Zemit\Router\RouterInterface;
 
 /**
  * Class RouterTest
  */
 class RouterTest extends AbstractUnit
 {
-    public function getRouter()
+    public function getRouter(): RouterInterface
     {
         return $this->di->get('router');
     }
     
-    public function getApplication()
+    public function getApplication(): Application
     {
         return $this->di->get('application');
     }
@@ -32,7 +34,7 @@ class RouterTest extends AbstractUnit
     /**
      * Testing the bootstrap service
      */
-    public function testRouter()
+    public function testRouter(): void
     {
         $routerToArray = $this->getRouter()->toArray();
         $this->assertIsArray($routerToArray);
@@ -54,7 +56,7 @@ class RouterTest extends AbstractUnit
 //        $this->assertIsString($routerToArray['matched']['reversedPaths']);
     }
     
-    public function testDefaultRoutes()
+    public function testDefaultRoutes(): void
     {
         $routeNames = [
             'default',
