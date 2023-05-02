@@ -32,16 +32,20 @@ class ModuleRoute extends RouterGroup
         $hostname = $this->getHostname();
         $path = $this->getPaths();
         $module = $path['module'];
-        $routePrefix = $hostname ? '' : '/' . $module;
-        $namePrefix = $hostname ? Slug::generate($hostname) : $module;
+        
+        $mainRoutePrefix = $hostname ? '' : '/' . $module;
+        $mainNamePrefix = $hostname ? Slug::generate($hostname) : $module;
+        
+        $routePrefix = $mainRoutePrefix;
+        $namePrefix = $mainNamePrefix;
         
         $this->add($routePrefix ?: '/', [
         ])->setName($namePrefix);
-        
-        $this->add($routePrefix . '/:controller', [
+
+        $this->add($routePrefix . '/:controller[/]{0,1}', [
             'controller' => 1,
         ])->setName($namePrefix . '-controller');
-        
+
         $this->add($routePrefix . '/:controller/:action/:params', [
             'controller' => 1,
             'action' => 2,
@@ -49,16 +53,16 @@ class ModuleRoute extends RouterGroup
         ])->setName($namePrefix . '-controller-action');
         
         if (!empty($this->locale)) {
-            $localeRegex = '{locale:(' . implode('|', $this->locale) . ')}';
+            $localeRegex = '{locale:(' . implode('|', array_unique($this->locale)) . ')}';
             
-            $routePrefix = '/' . $localeRegex . '/' . $module;
-            $namePrefix = 'locale-' . $module;
+            $routePrefix = '/' . $localeRegex . $mainRoutePrefix;
+            $namePrefix = 'locale-' . $mainNamePrefix;
             
-            $this->add($routePrefix, [
+            $this->add($routePrefix . '[/]{0,1}', [
                 'locale' => 1,
             ])->setName($namePrefix);
             
-            $this->add($routePrefix . '/:controller', [
+            $this->add($routePrefix . '/:controller[/]{0,1}', [
                 'locale' => 1,
                 'controller' => 2,
             ])->setName($namePrefix . '-controller');
@@ -71,16 +75,14 @@ class ModuleRoute extends RouterGroup
             ])->setName($namePrefix . '-controller-action');
             
             foreach ($this->locale as $locale) {
-                $localeRegex = $locale;
+                $routePrefix = '/' . $locale . $mainRoutePrefix;
+                $namePrefix = $locale . '-' . $mainNamePrefix;
                 
-                $routePrefix = '/' . $localeRegex . '/' . $module;
-                $namePrefix = $locale . '-' . $module;
-                
-                $this->add($routePrefix, [
+                $this->add($routePrefix . '[/]{0,1}', [
                     'locale' => $locale,
                 ])->setName($namePrefix);
                 
-                $this->add($routePrefix . '/:controller', [
+                $this->add($routePrefix . '/:controller[/]{0,1}', [
                     'locale' => $locale,
                     'controller' => 1,
                 ])->setName($namePrefix . '-controller');
