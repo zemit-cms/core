@@ -23,9 +23,15 @@ class Locale extends Injectable implements OptionsInterface
     use Options;
     
     /**
+     * Router
+     */
+    public const MODE_ROUTE = 'route';
+    public const MODE_DEFAULT = 'default';
+    
+    /**
      * Router -> http
      */
-    public const MODE_DEFAULT = 'default';
+    public const MODE_HTTP = 'http';
     
     /**
      * Router -> session -> http
@@ -138,7 +144,7 @@ class Locale extends Injectable implements OptionsInterface
      */
     public function setAllowed(array $allowed): void
     {
-        $this->allowed = $allowed;
+        $this->allowed = array_values(array_unique($allowed));
     }
     
     /**
@@ -187,12 +193,19 @@ class Locale extends Injectable implements OptionsInterface
                     $this->getFromHttp() ??
                     $default;
                 break;
-    
-            case self::MODE_DEFAULT:
-            default:
+                
+            case self::MODE_HTTP:
                 $locale =
                     $this->getFromRoute() ??
                     $this->getFromHttp() ??
+                    $default;
+                break;
+            
+            case self::MODE_DEFAULT:
+            case self::MODE_ROUTE:
+            default:
+                $locale =
+                    $this->getFromRoute() ??
                     $default;
                 break;
         }
@@ -270,8 +283,12 @@ class Locale extends Injectable implements OptionsInterface
      * @param string|null $default The locale to use if no match is found.
      * @return string|null The closest matching language tag or default value.
      */
-    public function lookup(?string $locale, ?array $allowed = null, bool $canonicalize = false, ?string $default = null): ?string
+    public function lookup(?string $locale = null, ?array $allowed = null, bool $canonicalize = false, ?string $default = null): ?string
     {
+        if (is_null($locale)) {
+            return null;
+        }
+        
         $allowed ??= $this->getAllowed();
         
         // lookup first
