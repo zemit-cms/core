@@ -239,7 +239,7 @@ trait Relationship
                                 }
                                 
                                 if (is_bool($traversedData)) {
-                                    $this->keepMissingRelated[$alias] = $traversedData;
+                                    $this->setKeepMissingRelatedAlias($alias, $traversedData);
                                     continue;
                                 }
                                 
@@ -406,9 +406,62 @@ trait Relationship
                 }
                 
                 /**
+                 * Custom logic for single-to-many relationships
+                 */
+                if ($relation->getType() === Relation::HAS_MANY) {
+                    
+                    // auto-delete missing related if keepMissingRelated is false
+                    if (!($this->keepMissingRelated[$lowerCaseAlias] ?? true)) {
+                        $originFields = $relation->getFields();
+                        $originFields = is_array($originFields) ? $originFields : [$originFields];
+                        
+                        $referencedFields = $relation->getReferencedFields();
+                        $referencedFields = is_array($referencedFields) ? $referencedFields : [$referencedFields];
+                        
+                        $referencedModelClass = $relation->getReferencedModel();
+                        $referencedModel = $modelsManager->load($referencedModelClass);
+                        
+                        $referencedPrimaryKeyAttributes = $referencedModel->getModelsMetaData()->getPrimaryKeyAttributes($referencedModel);
+                        $referencedBindTypes = $referencedModel->getModelsMetaData()->getBindTypes($referencedModel);
+                        
+                        $originBind = [];
+                        foreach ($originFields as $originField) {
+                            $originBind [] = $this->readAttribute($originField);
+                        }
+                    
+                        $idBindType = count($referencedPrimaryKeyAttributes) === 1 ? $referencedBindTypes[$referencedPrimaryKeyAttributes[0]] : Column::BIND_PARAM_STR;
+                        
+                        $idListToKeep = [];
+                        foreach ($assign as $entity) {
+                            $buildPrimaryKey = [];
+                            foreach ($referencedPrimaryKeyAttributes as $referencedPrimaryKey => $referencedPrimaryKeyAttribute) {
+                                $buildPrimaryKey [] = $entity->readAttribute($referencedPrimaryKeyAttribute);
+                            }
+                            $idListToKeep [] = implode('.', $buildPrimaryKey);
+                        }
+                        
+                        // fetch missing related entities
+                        $referencedEntityToDeleteResultset = $referencedModel::find([
+                            'conditions' => implode_sprintf(array_merge($referencedFields), ' and ', '[' . $referencedModelClass . '].[%s] = ?%s') .
+                            ' and concat(' . implode_sprintf($referencedPrimaryKeyAttributes, ', \'.\', ', '[' . $referencedModelClass . '].[%s]') . ') not in ({id:array})',
+                            'bind' => [...$originBind, 'id' => $idListToKeep],
+                            'bindTypes' => [...array_fill(0, count($referencedFields), Column::BIND_PARAM_STR), 'id' => $idBindType],
+                        ]);
+                        
+                        // delete missing related entities
+                        if (!$referencedEntityToDeleteResultset->delete()) {
+                            $this->appendMessagesFromResultset($referencedEntityToDeleteResultset, $lowerCaseAlias);
+                            $this->appendMessage(new Message('Unable to delete node entity `' . $referencedModelClass . '`', $lowerCaseAlias, 'Bad Request', 400));
+                            $connection->rollback($nesting);
+                            return false;
+                        }
+                    }
+                }
+                
+                /**
                  * Custom logic for many-to-many relationships
                  */
-                if ($relation->getType() === Relation::HAS_MANY_THROUGH) {
+                elseif ($relation->getType() === Relation::HAS_MANY_THROUGH) {
                     $originFields = $relation->getFields();
                     $originFields = is_array($originFields) ? $originFields : [$originFields];
                     
@@ -537,7 +590,7 @@ trait Relationship
         return true;
     }
     
-    public function postSaveRelatedRecordsAfter(RelationInterface $relation, $relatedRecords): ?bool
+    public function postSaveRelatedRecordsAfter(RelationInterface $relation, array $relatedRecords): ?bool
     {
         if ($relation->isThrough()) {
             return null;
@@ -552,6 +605,7 @@ trait Relationship
         $referencedFields = is_array($referencedFields) ? $referencedFields : [$referencedFields];
         
         foreach ($relatedRecords as $recordAfter) {
+//            $recordAfter->assign($relationFields);
             foreach ($relationFields as $key => $relationField) {
                 $recordAfter->writeAttribute($referencedFields[$key], $this->readAttribute($relationField));
             }
