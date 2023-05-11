@@ -590,7 +590,7 @@ trait Relationship
         return true;
     }
     
-    public function postSaveRelatedRecordsAfter(RelationInterface $relation, array $relatedRecords): ?bool
+    public function postSaveRelatedRecordsAfter(RelationInterface $relation, $relatedRecords): ?bool
     {
         if ($relation->isThrough()) {
             return null;
