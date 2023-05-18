@@ -628,7 +628,7 @@ class Config extends \Zemit\Config\Config
             'locale' => [
                 'default' => Env::get('LOCALE_DEFAULT', 'en'),
                 'sessionKey' => Env::get('LOCALE_SESSION_KEY', 'zemit-locale'),
-                'mode' => Env::get('LOCALE_MODE', Locale::MODE_SESSION_GEOIP),
+                'mode' => Env::get('LOCALE_MODE', Locale::MODE_DEFAULT),
                 'allowed' => explode(',', Env::get('LOCALE_ALLOWED', 'en')),
             ],
             
@@ -638,7 +638,7 @@ class Config extends \Zemit\Config\Config
             'translate' => [
                 'locale' => Env::get('TRANSLATE_LOCALE', 'en_US.utf8'),
                 'defaultDomain' => Env::get('TRANSLATE_DEFAULT_DOMAIN', 'messages'),
-                'category' => Env::get('TRANSLATE_CATEGORY', LC_MESSAGES),
+                'category' => Env::get('TRANSLATE_CATEGORY', defined('LC_MESSAGES')? LC_MESSAGES : 5),
                 'directory' => [
                     Env::get('TRANSLATE_DEFAULT_DOMAIN', 'messages') => Env::get('TRANSLATE_DEFAULT_PATH', CORE_PATH . 'Locales'),
                 ],
