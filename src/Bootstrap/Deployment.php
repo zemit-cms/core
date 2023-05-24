@@ -16,6 +16,8 @@ use Zemit\Models\Role;
 use Zemit\Models\Setting;
 use Zemit\Models\Site;
 use Zemit\Models\Template;
+use Zemit\Models\User;
+use Zemit\Models\UserRole;
 use Zemit\Mvc\Controller\Behavior;
 use Phalcon\Config as PhalconConfig;
 
@@ -127,18 +129,17 @@ class Deployment extends \Zemit\Config\Config
              * Insert records
              */
             'insert' => [
+                UserRole::class => [],
                 Role::class => [
-                    ['index' => 'dev', 'label' => 'Developer', 'userlist' => [
-                        ['username' => 'dev', 'email' => 'dev@zemit.com', 'firstName' => 'Developer', 'lastName' => 'Zemit'],
-                    ]],
+                    ['index' => 'dev', 'label' => 'Developer'],
                     ['index' => 'admin', 'label' => 'Administrator'],
                     ['index' => 'user', 'label' => 'User'],
                     ['index' => 'guest', 'label' => 'Guest'],
                     ['index' => 'everyone', 'label' => 'Everyone'],
                 ],
-//                User::class => [
-//                    ['username' => 'dev', 'email' => 'dev@zemit.com', 'firstName' => 'Developer', 'lastName' => 'Zemit'],
-//                ],
+                User::class => [
+                    ['username' => 'dev', 'email' => 'dev@zemit.com', 'firstName' => 'Developer', 'lastName' => 'Zemit', 'rolelist' => [1]],
+                ],
                 Lang::class => [
                     ['label' => 'Francais', 'code' => 'fr'],
                     ['label' => 'English', 'code' => 'en'],
