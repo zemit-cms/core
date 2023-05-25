@@ -482,6 +482,11 @@ trait Model
         foreach ($filters as $filter) {
             $field = $this->filter->sanitize($filter['field'] ?? null, ['string', 'trim']);
             
+            // @todo logic bitwise operator
+            $logic = $this->filter->sanitize($filter['logic'] ?? null, ['string', 'trim', 'lower']);
+            $logic = $logic ?: ($or? 'or' : 'and');
+            $logic = ' ' . $logic . ' ';
+            
             if (!empty($field)) {
                 $lowercaseField = mb_strtolower($field);
                 
@@ -538,6 +543,10 @@ trait Model
                         break;
                         
                     // advanced filters
+                    case 'start with':
+                    case 'does not start with':
+                    case 'end with':
+                    case 'does not end with':
                     case 'regexp':
                     case 'not regexp':
                     case 'contains':
@@ -592,6 +601,20 @@ trait Model
                         $bindType[$queryValue1] = Column::BIND_PARAM_STR;
                         $bindType[$queryValue2] = Column::BIND_PARAM_STR;
                         $query [] = ($queryOperator === 'does not contain' ? '!' : '') . "($queryFieldBinder like :$queryValue0: or $queryFieldBinder like :$queryValue1: or $queryFieldBinder like :$queryValue2:)";
+                    }
+                    
+                    elseif (in_array($queryOperator, ['starts with', 'does not start with'])) {
+                        $queryValue = '_' . uniqid($uniqid . '_value_') . '_';
+                        $bind[$queryValue] = $filter['value'] . '%';
+                        $bindType[$queryValue] = Column::BIND_PARAM_STR;
+                        $query [] = ($queryOperator === 'does not start with' ? '!' : '') . "($queryFieldBinder like :$queryValue:)";
+                    }
+                    
+                    elseif (in_array($queryOperator, ['ends with', 'does not end with'])) {
+                        $queryValue = '_' . uniqid($uniqid . '_value_') . '_';
+                        $bind[$queryValue] = '%' . $filter['value'];
+                        $bindType[$queryValue] = Column::BIND_PARAM_STR;
+                        $query [] = ($queryOperator === 'does not end with' ? '!' : '') . "($queryFieldBinder like :$queryValue:)";
                     }
                     
                     elseif (in_array($queryOperator, ['is empty', 'is not empty'])) {
