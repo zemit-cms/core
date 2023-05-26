@@ -23,10 +23,14 @@ class Locale extends Injectable implements OptionsInterface
     use Options;
     
     /**
+     * Default (router only)
+     */
+    public const MODE_DEFAULT = 'default';
+    
+    /**
      * Router
      */
     public const MODE_ROUTE = 'route';
-    public const MODE_DEFAULT = 'default';
     
     /**
      * Router -> http
@@ -201,8 +205,8 @@ class Locale extends Injectable implements OptionsInterface
                     $default;
                 break;
             
-            case self::MODE_DEFAULT:
             case self::MODE_ROUTE:
+            case self::MODE_DEFAULT:
             default:
                 $locale =
                     $this->getFromRoute() ??
@@ -229,7 +233,7 @@ class Locale extends Injectable implements OptionsInterface
      */
     public function getFromDispatcher(?string $default = null): ?string
     {
-        return $this->lookup($this->router->getParams()['locale'] ?? $default);
+        return $this->lookup($this->dispatcher->getParams()['locale'] ?? $default);
     }
     
     /**
