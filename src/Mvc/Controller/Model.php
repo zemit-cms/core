@@ -59,9 +59,9 @@ trait Model
     
     /**
      * Get the WhiteList parameters for saving
+     * @return null|array
      * @todo add a whitelist object that would be able to support one configuration for the search, assign, filter
      *
-     * @return null|array
      */
     protected function getWhiteList()
     {
@@ -484,7 +484,7 @@ trait Model
             
             // @todo logic bitwise operator
             $logic = $this->filter->sanitize($filter['logic'] ?? null, ['string', 'trim', 'lower']);
-            $logic = $logic ?: ($or? 'or' : 'and');
+            $logic = $logic ?: ($or ? 'or' : 'and');
             $logic = ' ' . $logic . ' ';
             
             if (!empty($field)) {
@@ -500,7 +500,7 @@ trait Model
 //                $queryField = '_' . uniqid($uniqid . '_field_') . '_';
                 $queryValue = '_' . uniqid($uniqid . '_value_') . '_';
                 $queryOperator = strtolower($filter['operator']);
-    
+                
                 // Map alias query operator
                 $mapAlias = [
                     'equals' => '=',
@@ -541,7 +541,7 @@ trait Model
                     case 'is true': // // Test a value against a boolean
                     case 'is not true': // // Test a value against a boolean
                         break;
-                        
+                    
                     // advanced filters
                     case 'start with':
                     case 'does not start with':
@@ -560,11 +560,11 @@ trait Model
                     case 'is empty':
                     case 'is not empty':
                         break;
-                        
+                    
                     default:
                         throw new \Exception('Not allowed to filter using the following operator: `' . $queryOperator . '`', 403);
                 }
-
+                
                 $bind = [];
                 $bindType = [];
 
@@ -572,13 +572,15 @@ trait Model
 //                $bindType[$queryField] = Column::BIND_PARAM_STR;
 //                $queryFieldBinder = ':' . $queryField . ':';
 //                $queryFieldBinder = '{' . $queryField . '}';
-
+                
                 // Add the current model name by default
                 $field = $this->appendModelName($field);
                 
                 $queryFieldBinder = $field;
                 $queryValueBinder = ':' . $queryValue . ':';
                 if (isset($filter['value'])) {
+                    
+                    
                     // special for between and not between
                     if (in_array($queryOperator, ['between', 'not between'])) {
                         $queryValue0 = '_' . uniqid($uniqid . '_value_') . '_';
@@ -590,55 +592,14 @@ trait Model
                         $query [] = (($queryOperator === 'not between') ? 'not ' : null) . "$queryFieldBinder between :$queryValue0: and :$queryValue1:";
                     }
                     
-                    elseif (in_array($queryOperator, ['contains', 'does not contain'])) {
-                        $queryValue0 = '_' . uniqid($uniqid . '_value_') . '_';
-                        $queryValue1 = '_' . uniqid($uniqid . '_value_') . '_';
-                        $queryValue2 = '_' . uniqid($uniqid . '_value_') . '_';
-                        $bind[$queryValue0] = '%' . $filter['value'] . '%';
-                        $bind[$queryValue1] = '%' . $filter['value'];
-                        $bind[$queryValue2] = $filter['value'] . '%';
-                        $bindType[$queryValue0] = Column::BIND_PARAM_STR;
-                        $bindType[$queryValue1] = Column::BIND_PARAM_STR;
-                        $bindType[$queryValue2] = Column::BIND_PARAM_STR;
-                        $query [] = ($queryOperator === 'does not contain' ? '!' : '') . "($queryFieldBinder like :$queryValue0: or $queryFieldBinder like :$queryValue1: or $queryFieldBinder like :$queryValue2:)";
-                    }
-                    
-                    elseif (in_array($queryOperator, ['starts with', 'does not start with'])) {
-                        $queryValue = '_' . uniqid($uniqid . '_value_') . '_';
-                        $bind[$queryValue] = $filter['value'] . '%';
-                        $bindType[$queryValue] = Column::BIND_PARAM_STR;
-                        $query [] = ($queryOperator === 'does not start with' ? '!' : '') . "($queryFieldBinder like :$queryValue:)";
-                    }
-                    
-                    elseif (in_array($queryOperator, ['ends with', 'does not end with'])) {
-                        $queryValue = '_' . uniqid($uniqid . '_value_') . '_';
-                        $bind[$queryValue] = '%' . $filter['value'];
-                        $bindType[$queryValue] = Column::BIND_PARAM_STR;
-                        $query [] = ($queryOperator === 'does not end with' ? '!' : '') . "($queryFieldBinder like :$queryValue:)";
-                    }
-                    
-                    elseif (in_array($queryOperator, ['is empty', 'is not empty'])) {
-                        $query [] = ($queryOperator === 'is not empty' ? '!' : '') . "(TRIM($queryFieldBinder) = '' or $queryFieldBinder is null)";
-                    }
-                    
-                    elseif (in_array($queryOperator, ['regexp', 'not regexp'])) {
-                        $bind[$queryValue] = $filter['value'];
-                        $query [] = $queryOperator . "($queryFieldBinder, $queryValueBinder)";
-                    }
-                    
-                    elseif (in_array($queryOperator, ['contains word', 'does not contain word'])) {
-                        $bind[$queryValue] = '\\b' . $filter['value'] . '\\b';
-                        $regexQueryOperator = str_replace(['contains word', 'does not contain word'], ['regexp', 'not regexp'], $queryOperator);
-                        $query [] = $regexQueryOperator . "($queryFieldBinder, $queryValueBinder)";
-                    }
-                    
                     elseif (in_array($queryOperator, [
-                        'distance sphere equals',
-                        'distance sphere greater than',
-                        'distance sphere greater than or equal',
-                        'distance sphere less than',
-                        'distance sphere less than or equal',
-                    ])) {
+                            'distance sphere equals',
+                            'distance sphere greater than',
+                            'distance sphere greater than or equal',
+                            'distance sphere less than',
+                            'distance sphere less than or equal',
+                        ])
+                    ) {
                         // Prepare values binding of 2 sphere point to calculate distance
                         $queryBindValue0 = '_' . uniqid($uniqid . '_value_') . '_';
                         $queryBindValue1 = '_' . uniqid($uniqid . '_value_') . '_';
@@ -652,10 +613,10 @@ trait Model
                         $bindType[$queryBindValue1] = Column::BIND_PARAM_DECIMAL;
                         $bindType[$queryBindValue2] = Column::BIND_PARAM_DECIMAL;
                         $bindType[$queryBindValue3] = Column::BIND_PARAM_DECIMAL;
-                        $queryPointLatBinder0 = $queryBindValue0;
-                        $queryPointLonBinder0 = $queryBindValue1;
-                        $queryPointLatBinder1 = $queryBindValue2;
-                        $queryPointLonBinder1 = $queryBindValue3;
+                        $queryPointLatBinder0 = ':' . $queryBindValue0 . ':';
+                        $queryPointLonBinder0 = ':' . $queryBindValue1 . ':';
+                        $queryPointLatBinder1 = ':' . $queryBindValue2 . ':';
+                        $queryPointLonBinder1 = ':' . $queryBindValue3 . ':';
                         $queryLogicalOperator =
                             (strpos($queryOperator, 'greater') !== false ? '>' : null) .
                             (strpos($queryOperator, 'less') !== false ? '<' : null) .
@@ -665,39 +626,104 @@ trait Model
                         $query [] = "ST_Distance_Sphere(point($queryPointLatBinder0, $queryPointLonBinder0), point($queryPointLatBinder1, $queryPointLonBinder1)) $queryLogicalOperator $queryValueBinder";
                     }
                     
-                    else {
+                    elseif (in_array($queryOperator, [
+                            'in',
+                            'not in',
+                        ])
+                    ) {
+                        $queryValueBinder = '({' . $queryValue . ':array})';
                         $bind[$queryValue] = $filter['value'];
-                        
-                        if (is_string($filter['value'])) {
-                            $bindType[$queryValue] = Column::BIND_PARAM_STR;
-                        }
-                        
-                        elseif (is_int($filter['value'])) {
-                            $bindType[$queryValue] = Column::BIND_PARAM_INT;
-                        }
-                        
-                        elseif (is_bool($filter['value'])) {
-                            $bindType[$queryValue] = Column::BIND_PARAM_BOOL;
-                        }
-                        
-                        elseif (is_float($filter['value'])) {
-                            $bindType[$queryValue] = Column::BIND_PARAM_DECIMAL;
-                        }
-                        
-                        elseif (is_double($filter['value'])) {
-                            $bindType[$queryValue] = Column::BIND_PARAM_DECIMAL;
-                        }
-                        
-                        elseif (is_array($filter['value'])) {
-                            $queryValueBinder = '({' . $queryValue . ':array})';
-                            $bindType[$queryValue] = Column::BIND_PARAM_STR;
-                        }
-                        
-                        else {
-                            $bindType[$queryValue] = Column::BIND_PARAM_NULL;
-                        }
-                        
+                        $bindType[$queryValue] = Column::BIND_PARAM_STR;
                         $query [] = "$queryFieldBinder $queryOperator $queryValueBinder";
+                    }
+                    
+                    else {
+                        $queryOr = [];
+                        
+                        $valueList = is_array($filter['value']) ? $filter['value'] : [$filter['value']];
+                        foreach ($valueList as $value) {
+                            
+                            $queryValue = '_' . uniqid($uniqid . '_value_') . '_';
+                            $queryValueBinder = ':' . $queryValue . ':';
+                            
+                            if (in_array($queryOperator, ['contains', 'does not contain'])) {
+                                $queryValue0 = '_' . uniqid($uniqid . '_value_') . '_';
+                                $queryValue1 = '_' . uniqid($uniqid . '_value_') . '_';
+                                $queryValue2 = '_' . uniqid($uniqid . '_value_') . '_';
+                                $bind[$queryValue0] = '%' . $value . '%';
+                                $bind[$queryValue1] = '%' . $value;
+                                $bind[$queryValue2] = $value . '%';
+                                $bindType[$queryValue0] = Column::BIND_PARAM_STR;
+                                $bindType[$queryValue1] = Column::BIND_PARAM_STR;
+                                $bindType[$queryValue2] = Column::BIND_PARAM_STR;
+                                $queryOr [] = ($queryOperator === 'does not contain' ? '!' : '') . "($queryFieldBinder like :$queryValue0: or $queryFieldBinder like :$queryValue1: or $queryFieldBinder like :$queryValue2:)";
+                            }
+                            
+                            elseif (in_array($queryOperator, ['starts with', 'does not start with'])) {
+                                $bind[$queryValue] = $value . '%';
+                                $bindType[$queryValue] = Column::BIND_PARAM_STR;
+                                $queryOr [] = ($queryOperator === 'does not start with' ? '!' : '') . "($queryFieldBinder like :$queryValue:)";
+                            }
+                            
+                            elseif (in_array($queryOperator, ['ends with', 'does not end with'])) {
+                                $bind[$queryValue] = '%' . $value;
+                                $bindType[$queryValue] = Column::BIND_PARAM_STR;
+                                $queryOr [] = ($queryOperator === 'does not end with' ? '!' : '') . "($queryFieldBinder like :$queryValue:)";
+                            }
+                            
+                            elseif (in_array($queryOperator, ['is empty', 'is not empty'])) {
+                                $queryOr [] = ($queryOperator === 'is not empty' ? '!' : '') . "(TRIM($queryFieldBinder) = '' or $queryFieldBinder is null)";
+                            }
+                            
+                            elseif (in_array($queryOperator, ['regexp', 'not regexp'])) {
+                                $bind[$queryValue] = $value;
+                                $queryOr [] = $queryOperator . "($queryFieldBinder, :$queryValue:)";
+                            }
+                            
+                            elseif (in_array($queryOperator, ['contains word', 'does not contain word'])) {
+                                $bind[$queryValue] = '\\b' . $value . '\\b';
+                                $regexQueryOperator = str_replace(['contains word', 'does not contain word'], ['regexp', 'not regexp'], $queryOperator);
+                                $queryOr [] = $regexQueryOperator . "($queryFieldBinder, :$queryValue:)";
+                            }
+                            
+                            else {
+                                $bind[$queryValue] = $value;
+                                
+                                if (is_string($value)) {
+                                    $bindType[$queryValue] = Column::BIND_PARAM_STR;
+                                }
+                                
+                                elseif (is_int($value)) {
+                                    $bindType[$queryValue] = Column::BIND_PARAM_INT;
+                                }
+                                
+                                elseif (is_bool($value)) {
+                                    $bindType[$queryValue] = Column::BIND_PARAM_BOOL;
+                                }
+                                
+                                elseif (is_float($value)) {
+                                    $bindType[$queryValue] = Column::BIND_PARAM_DECIMAL;
+                                }
+                                
+                                elseif (is_double($value)) {
+                                    $bindType[$queryValue] = Column::BIND_PARAM_DECIMAL;
+                                }
+                                
+                                elseif (is_array($value)) {
+                                    $queryValueBinder = '({' . $queryValue . ':array})';
+                                    $bindType[$queryValue] = Column::BIND_PARAM_STR;
+                                }
+                                
+                                else {
+                                    $bindType[$queryValue] = Column::BIND_PARAM_NULL;
+                                }
+                                
+                                $queryOr [] = "$queryFieldBinder $queryOperator $queryValueBinder";
+                            }
+                        }
+                        if (!empty($queryOr)) {
+                            $query [] = '(' . implode(') or (', $queryOr) . ')';
+                        }
                     }
                 }
                 else {
@@ -707,13 +733,11 @@ trait Model
                 $this->setBind($bind);
                 $this->setBindTypes($bindType);
             }
+            elseif (is_array($filter)) {
+                $query [] = $this->getFilterCondition($filter, $whiteList, !$or);
+            }
             else {
-                if (is_array($filter)) {
-                    $query [] = $this->getFilterCondition($filter, $whiteList, !$or);
-                }
-                else {
-                    throw new \Exception('A valid field property is required.', 400);
-                }
+                throw new \Exception('A valid field property is required.', 400);
             }
         }
         
@@ -867,32 +891,32 @@ trait Model
             case 'application/html':
                 // html not supported yet
                 break;
-                
+            
             case 'xml':
             case 'text/xml':
             case 'application/xml':
                 // xml not supported yet
                 break;
-                
+            
             case 'text':
             case 'text/plain':
                 // plain text not supported yet
                 break;
-                
+            
             case 'json':
             case 'text/json':
             case 'application/json':
                 return 'json';
-                
+            
             case 'csv':
             case 'text/csv':
                 return 'csv';
-                
+            
             case 'xlsx':
             case 'application/xlsx':
             case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
                 return 'xlsx';
-                
+            
             case 'xls':
             case 'application/vnd.ms-excel':
                 // old xls not supported yet
@@ -993,7 +1017,7 @@ trait Model
             $request->getFilteredPut(), // $_PUT
             $request->getFilteredPost(), // $_POST
         );
-    
+        
         // @todo see if we can prevent phalcon from returning this
         if (isset($params['_url'])) {
             unset($params['_url']);
@@ -1074,7 +1098,7 @@ trait Model
             if (!$singlePostEntity && empty($singlePostId)) {
                 $singlePostEntity = new $modelName();
             }
-
+            
             if (!$singlePostEntity) {
                 $ret = [
                     'saved' => false,
@@ -1098,7 +1122,7 @@ trait Model
                 $fetchWith = $singlePostEntity->load($with ?? []);
                 $ret['single'] = $this->expose($fetchWith);
             }
-
+            
             if ($single) {
                 return $ret;
             }
@@ -1106,10 +1130,10 @@ trait Model
                 $retList [] = $ret;
             }
         }
-
+        
         return $retList;
     }
-
+    
     /**
      * Allow overrides to add alter variables before entity assign & save
      */
