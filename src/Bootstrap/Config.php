@@ -14,8 +14,6 @@ namespace Zemit\Bootstrap;
 use PDO;
 use Phalcon\Db\Column;
 use Phalcon\Security;
-use Zemit\Filter;
-use Zemit\Filters;
 use Zemit\Locale;
 use Zemit\Version;
 use Zemit\Provider;
@@ -480,10 +478,6 @@ class Config extends \Zemit\Config\Config
              * Default filters
              */
             'filters' => [
-                Filter::FILTER_MD5 => Filters\Md5::class,
-                Filter::FILTER_JSON => Filters\Json::class,
-                Filter::FILTER_IPV4 => Filters\IPv4::class,
-                Filter::FILTER_IPV6 => Filters\IPv6::class,
             ],
             
             /**
@@ -524,51 +518,51 @@ class Config extends \Zemit\Config\Config
                     'action' => Env::get('ROUTER_DEFAULT_ACTION', 'index'),
                 ],
                 'cli' => [
-                    'namespace' => Env::get('ROUTER_DEFAULT_NAMESPACE', 'Zemit\\Modules\\Cli\\Tasks'),
-                    'module' => Env::get('ROUTER_DEFAULT_MODULE', 'cli'),
-                    'task' => Env::get('ROUTER_DEFAULT_TASK', 'help'),
-                    'action' => Env::get('ROUTER_DEFAULT_ACTION', 'main'),
+                    'namespace' => Env::get('ROUTER_CLI_DEFAULT_NAMESPACE', 'Zemit\\Modules\\Cli\\Tasks'),
+                    'module' => Env::get('ROUTER_CLI_DEFAULT_MODULE', 'cli'),
+                    'task' => Env::get('ROUTER_CLI_DEFAULT_TASK', 'help'),
+                    'action' => Env::get('ROUTER_CLI_DEFAULT_ACTION', 'main'),
                 ],
                 'notFound' => [
                     'namespace' => Env::get('ROUTER_NOTFOUND_NAMESPACE', null),
                     'module' => Env::get('ROUTER_NOTFOUND_MODULE', null),
                     'controller' => Env::get('ROUTER_NOTFOUND_CONTROLLER', 'error'),
-                    'task' => Env::get('ROUTER_NOTFOUND_CONTROLLER', 'error'),
+                    'task' => Env::get('ROUTER_NOTFOUND_TASK', 'error'),
                     'action' => Env::get('ROUTER_NOTFOUND_ACTION', 'notFound'),
                 ],
                 'fatal' => [
                     'namespace' => Env::get('ROUTER_FATAL_NAMESPACE', null),
                     'module' => Env::get('ROUTER_FATAL_MODULE', null),
                     'controller' => Env::get('ROUTER_FATAL_CONTROLLER', 'error'),
-                    'task' => Env::get('ROUTER_FATAL_CONTROLLER', 'error'),
+                    'task' => Env::get('ROUTER_FATAL_TASK', 'error'),
                     'action' => Env::get('ROUTER_FATAL_ACTION', 'fatal'),
                 ],
                 'forbidden' => [
-                    'namespace' => Env::get('ROUTER_MAINTENANCE_NAMESPACE', null),
-                    'module' => Env::get('ROUTER_MAINTENANCE_MODULE', null),
-                    'controller' => Env::get('ROUTER_MAINTENANCE_CONTROLLER', 'error'),
-                    'task' => Env::get('ROUTER_MAINTENANCE_CONTROLLER', 'error'),
-                    'action' => Env::get('ROUTER_MAINTENANCE_ACTION', 'forbidden'),
+                    'namespace' => Env::get('ROUTER_FORBIDDEN_NAMESPACE', null),
+                    'module' => Env::get('ROUTER_FORBIDDEN_MODULE', null),
+                    'controller' => Env::get('ROUTER_FORBIDDEN_CONTROLLER', 'error'),
+                    'task' => Env::get('ROUTER_FORBIDDEN_TASK', 'error'),
+                    'action' => Env::get('ROUTER_FORBIDDEN_ACTION', 'forbidden'),
                 ],
                 'unauthorized' => [
-                    'namespace' => Env::get('ROUTER_MAINTENANCE_NAMESPACE', null),
-                    'module' => Env::get('ROUTER_MAINTENANCE_MODULE', null),
-                    'controller' => Env::get('ROUTER_MAINTENANCE_CONTROLLER', 'error'),
-                    'task' => Env::get('ROUTER_MAINTENANCE_CONTROLLER', 'error'),
-                    'action' => Env::get('ROUTER_MAINTENANCE_ACTION', 'unauthorized'),
+                    'namespace' => Env::get('ROUTER_UNAUTHORIZED_NAMESPACE', null),
+                    'module' => Env::get('ROUTER_UNAUTHORIZED_MODULE', null),
+                    'controller' => Env::get('ROUTER_UNAUTHORIZED_CONTROLLER', 'error'),
+                    'task' => Env::get('ROUTER_UNAUTHORIZED_TASK', 'error'),
+                    'action' => Env::get('ROUTER_UNAUTHORIZED_ACTION', 'unauthorized'),
                 ],
                 'maintenance' => [
                     'namespace' => Env::get('ROUTER_MAINTENANCE_NAMESPACE', null),
                     'module' => Env::get('ROUTER_MAINTENANCE_MODULE', null),
                     'controller' => Env::get('ROUTER_MAINTENANCE_CONTROLLER', 'error'),
-                    'task' => Env::get('ROUTER_MAINTENANCE_CONTROLLER', 'error'),
+                    'task' => Env::get('ROUTER_MAINTENANCE_TASK', 'error'),
                     'action' => Env::get('ROUTER_MAINTENANCE_ACTION', 'maintenance'),
                 ],
                 'error' => [
                     'namespace' => Env::get('ROUTER_ERROR_NAMESPACE', null),
                     'module' => Env::get('ROUTER_ERROR_MODULE', null),
                     'controller' => Env::get('ROUTER_ERROR_CONTROLLER', 'error'),
-                    'task' => Env::get('ROUTER_ERROR_CONTROLLER', 'error'),
+                    'task' => Env::get('ROUTER_ERROR_TASK', 'error'),
                     'action' => Env::get('ROUTER_ERROR_ACTION', 'index'),
                 ],
             ],
