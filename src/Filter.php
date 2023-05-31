@@ -13,6 +13,10 @@ namespace Zemit;
 
 use Phalcon\Di;
 use Phalcon\Config\ConfigInterface;
+use Zemit\Filter\Sanitize\Json;
+use Zemit\Filter\Sanitize\Md5;
+use Zemit\Filter\Sanitize\IPv4;
+use Zemit\Filter\Sanitize\IPv6;
 
 /**
  * {@inheritDoc}
@@ -46,30 +50,16 @@ class Filter extends \Phalcon\Filter
     {
         parent::init($mapper);
     
-        $this->set(self::FILTER_MD5, function ($value) {
-            return (new Filters\Md5())->filter($value);
-        });
-    
-        $this->set(self::FILTER_JSON, function ($value) {
-            return (new Filters\Json())->filter($value);
-        });
-    
-        $this->set(self::FILTER_IPV4, function ($value) {
-            return (new Filters\IPv4())->filter($value);
-        });
-    
-        $this->set(self::FILTER_IPV6, function ($value) {
-            return (new Filters\IPv6())->filter($value);
-        });
-    
+        $this->set(self::FILTER_MD5, Md5::class);
+        $this->set(self::FILTER_JSON, Json::class);
+        $this->set(self::FILTER_IPV4, IPv4::class);
+        $this->set(self::FILTER_IPV6, IPv6::class);
+        
         // Adding App Filters defined from the user config
         $config = $this->getConfig();
         $configFilters = $config->get('filters')->toArray() ?? [];
         foreach ($configFilters as $key => $filter) {
-    
-            $this->set($key, function ($value) use ($filter) {
-                return (new $filter())->filter($value);
-            });
+            $this->set($key, $filter);
         }
     }
     

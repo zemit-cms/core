@@ -9,23 +9,23 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Filters;
+namespace Zemit\Filter\Sanitize;
 
 class Json
 {
-    public function filter(?string $value = null): ?string
+    public function __invoke(?string $input = null): ?string
     {
-        if (is_null($value)) {
-            return $value;
+        if (is_null($input)) {
+            return $input;
         }
         
         try {
-            $before = json_decode($value);
+            $before = json_decode($input);
             $valid = !empty($before);
         } catch (\Exception $e) {
             $valid = false;
         }
 
-        return $valid ? $value : null;
+        return $valid ? $input : null;
     }
 }

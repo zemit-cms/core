@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Filters;
+namespace Zemit\Filter\Sanitize;
 
-class Md5
+class IPv4
 {
-    public function filter(?string $value = null): ?string
+    public function __invoke(?string $input = null): ?string
     {
-        return preg_replace('/[^0-9a-f]/', null, $value);
+        return filter_var($input, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
     }
 }
