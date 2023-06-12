@@ -585,10 +585,20 @@ trait Model
                     if (in_array($queryOperator, ['between', 'not between'])) {
                         $queryValue0 = '_' . uniqid($uniqid . '_value_') . '_';
                         $queryValue1 = '_' . uniqid($uniqid . '_value_') . '_';
-                        $bind[$queryValue0] = $filter['value'][0];
-                        $bind[$queryValue1] = $filter['value'][1];
+                        
+                        $first = $filter['value'][0] <= $filter['value'][1]? 0 : 1;
+                        $second = $first? 0 : 1;
+                        
+                        $bind[$queryValue0] = $filter['value'][$first];
+                        $bind[$queryValue1] = $filter['value'][$second];
                         $bindType[$queryValue0] = Column::BIND_PARAM_STR;
                         $bindType[$queryValue1] = Column::BIND_PARAM_STR;
+                        
+                        if ($bind[$queryValue0] > $bind[$queryValue1]) {
+                            $bind[$queryValue0] = $filter['value'][0];
+                            $bind[$queryValue1] = $filter['value'][1];
+                        }
+                        
                         $query [] = (($queryOperator === 'not between') ? 'not ' : null) . "$queryFieldBinder between :$queryValue0: and :$queryValue1:";
                     }
                     
