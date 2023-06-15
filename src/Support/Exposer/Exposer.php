@@ -121,7 +121,7 @@ class Exposer
             $parentKey = $fullKey;
             $parentIndex = false;
             do {
-                $parentKey = $parentIndex? substr($parentKey, 0, $parentIndex) : '';
+                $parentKey = $parentIndex ? substr($parentKey, 0, $parentIndex) : '';
                 if (isset($columns[$parentKey])) {
                     $column = $columns[$parentKey];
                     if (is_bool($column)) {
@@ -151,7 +151,8 @@ class Exposer
                     break;
                     // break at the first parent found
                 }
-            } while ($parentIndex = strrpos($parentKey, '.'));
+            }
+            while ($parentIndex = strrpos($parentKey, '.'));
         }
         
         // Try to find a subentity, or field that has the true value
@@ -185,18 +186,11 @@ class Exposer
         $value = $builder->getValue();
         
         if (is_array($value) || is_object($value)) {
-            $toParse = [];
-            if (is_array($value)) {
-                $toParse = $value;
-            }
-            elseif (method_exists($value, 'toArray')) {
-                $toParse = $value->toArray();
-            }
-            else {
-                $toParse = $value;
-            }
+            $toParse = is_object($value) && method_exists($value, 'toArray')
+                ? $value->toArray()
+                : $value;
             
-            // si aucune column demandé et que l'expose est à false
+            // si accused column demandé et que l'expose est à false
             if (is_null($columns) && !$builder->getExpose()) {
                 return [];
             }
@@ -217,7 +211,7 @@ class Exposer
             $builder->setContextKey($currentContextKey);
         }
         else {
-            $ret = $builder->getExpose() ? $value : false;
+            $ret = $builder->getExpose() ? $value : null;
         }
         
         return $ret;

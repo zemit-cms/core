@@ -119,7 +119,7 @@ class Builder implements BuilderInterface
     
     public static function processKey(?string $key = null): ?string
     {
-        return empty($key)? $key : mb_strtolower(
+        return empty($key) || filter_var($key, FILTER_VALIDATE_INT) ? '' : mb_strtolower(
             trim(
                 preg_replace(
                     '/\.+/',

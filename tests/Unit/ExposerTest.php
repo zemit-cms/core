@@ -122,11 +122,11 @@ class ExposerTest extends AbstractUnit
         $expected = $test;
         $expected['test_empty_object'] = (array)$expected['test_empty_object'];
         $expected['test_object'] = (array)$expected['test_object'];
-        
+
         $builder = Exposer::createBuilder($test);
         $actual = Exposer::expose($builder);
         $this->assertEquals($expected, $actual);
-        
+
         // @todo
         unset($expected['test_removed']);
         unset($expected['test_removed_two']);
@@ -138,5 +138,33 @@ class ExposerTest extends AbstractUnit
         ]);
         $actual = Exposer::expose($builder);
         $this->assertEquals($expected, $actual);
+    }
+    
+    public function testNestedExpose(): void
+    {
+        $array = [
+            'test' => 'test',
+            'nested' => [
+                [
+                    'id' => 1,
+                    'test' => 'test',
+                ],
+                [
+                    'id' => 2,
+                    'test' => 'test',
+                ],
+            ],
+        ];
+        
+        $builder = Exposer::createBuilder($array, [
+            false,
+            'test',
+            'nested' => [
+                'id',
+                'test'
+            ],
+        ]);
+        $actual = Exposer::expose($builder);
+        $this->assertEquals($array, $actual);
     }
 }
