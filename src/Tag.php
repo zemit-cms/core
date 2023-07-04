@@ -244,10 +244,11 @@ class Tag extends \Phalcon\Tag
      */
     public static function getParams(array $params = [], string $format = ' %2$s="%1$s"', ?string $glue = null): string
     {
+        $retParams = [];
         foreach ($params as $param) {
-            $params = array_merge_recursive(self::getAttr($param), $params);
+            $retParams = array_merge_recursive(self::getAttr($param), $retParams);
         }
-        return self::implodeSprintf($params, $format, $glue);
+        return self::implodeSprintf($retParams, $format, $glue);
     }
     
     public static function params(array $params = [], string $format = ' %2$s="%1$s"', ?string $glue = null): void
