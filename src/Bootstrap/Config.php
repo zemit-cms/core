@@ -11,6 +11,25 @@
 
 namespace Zemit\Bootstrap;
 
+use App\Config\Permissions\AiConfig;
+use App\Config\Permissions\ArticleConfig;
+use App\Config\Permissions\AuditConfig;
+use App\Config\Permissions\AuthConfig;
+use App\Config\Permissions\CommentConfig;
+use App\Config\Permissions\CountryConfig;
+use App\Config\Permissions\DatatableStateConfig;
+use App\Config\Permissions\FileConfig;
+use App\Config\Permissions\KeywordConfig;
+use App\Config\Permissions\NotificationConfig;
+use App\Config\Permissions\ProjectConfig;
+use App\Config\Permissions\ProjectStatusReasonConfig;
+use App\Config\Permissions\RecordConfig;
+use App\Config\Permissions\RoleConfig;
+use App\Config\Permissions\SurveyConfig;
+use App\Config\Permissions\SynonymConfig;
+use App\Config\Permissions\TagConfig;
+use App\Config\Permissions\TrackerConfig;
+use App\Config\Permissions\UserConfig;
 use PDO;
 use Phalcon\Db\Column;
 use Phalcon\Security;
@@ -943,7 +962,8 @@ class Config extends \Zemit\Config\Config
                         'password' => Env::get('DATABASE_PASSWORD', ''),
                         'charset' => Env::get('DATABASE_CHARSET', 'utf8'),
                         'options' => [
-                            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . Env::get('DATABASE_CHARSET', 'utf8'),
+                            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . Env::get('DATABASE_CHARSET', 'utf8') .
+                            ', sql_mode = \'' . Env::get('DATABASE_SQL_MODE', 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION') . '\'',
                             PDO::ATTR_EMULATE_PREPARES => Env::get('DATABASE_PDO_EMULATE_PREPARES', false), // https://stackoverflow.com/questions/10113562/pdo-mysql-use-pdoattr-emulate-prepares-or-not
                             PDO::ATTR_STRINGIFY_FETCHES => Env::get('DATABASE_PDO_STRINGIFY_FETCHES', false),
                             PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => Env::get('MYSQL_ATTR_SSL_VERIFY_SERVER_CERT', true),
@@ -1356,6 +1376,19 @@ class Config extends \Zemit\Config\Config
                             ],
                         ],
                     ],
+                    
+                    'managePhalconMigrationsList' => [
+                        'components' => [
+                            Api\Controllers\PhalconMigrationsController::class => ['*'],
+                            Models\PhalconMigrations::class => ['*'],
+                        ],
+                        'behaviors' => [
+                            Api\Controllers\PhalconMigrationsController::class => [
+                                Behavior\Skip\SkipIdentityCondition::class,
+                                Behavior\Skip\SkipSoftDeleteCondition::class,
+                            ],
+                        ],
+                    ],
                 ],
                 
                 /**
@@ -1413,6 +1446,7 @@ class Config extends \Zemit\Config\Config
                             'managePageList',
                             'managePostList',
                             'manageTemplateList',
+                            'managePhalconMigrationsList',
                         ],
                         'inherit' => [
                             'user',
@@ -1441,5 +1475,25 @@ class Config extends \Zemit\Config\Config
         if (!empty($data)) {
             $this->merge(new PhalconConfig($data, $insensitive));
         }
+        
+//        $this->merge(new AiConfig($data, $insensitive));
+//        $this->merge(new ArticleConfig($data, $insensitive));
+//        $this->merge(new AuditConfig($data, $insensitive));
+//        $this->merge(new AuthConfig($data, $insensitive));
+//        $this->merge(new CommentConfig($data, $insensitive));
+//        $this->merge(new CountryConfig($data, $insensitive));
+//        $this->merge(new DatatableStateConfig($data, $insensitive));
+//        $this->merge(new FileConfig($data, $insensitive));
+//        $this->merge(new KeywordConfig($data, $insensitive));
+//        $this->merge(new NotificationConfig($data, $insensitive));
+//        $this->merge(new ProjectConfig($data, $insensitive));
+//        $this->merge(new ProjectStatusReasonConfig($data, $insensitive));
+//        $this->merge(new RecordConfig($data, $insensitive));
+//        $this->merge(new RoleConfig($data, $insensitive));
+//        $this->merge(new SurveyConfig($data, $insensitive));
+//        $this->merge(new SynonymConfig($data, $insensitive));
+//        $this->merge(new TagConfig($data, $insensitive));
+//        $this->merge(new TrackerConfig($data, $insensitive));
+//        $this->merge(new UserConfig($data, $insensitive));
     }
 }
