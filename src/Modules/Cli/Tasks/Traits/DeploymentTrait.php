@@ -81,7 +81,7 @@ trait DeploymentTrait
      * Insert records
      * @throws CliException
      */
-    public function insertAction(): array
+    public function insertAction(?string $models = null): array
     {
         $response = [
             'saved' => 0,
@@ -89,7 +89,12 @@ trait DeploymentTrait
             'message' => [],
         ];
         
+        $models = (!empty($models))? explode(',', $models) : null;
+        
         foreach ($this->insert as $modelName => $insert) {
+            if (is_array($models) && !in_array($modelName, $models, true)) {
+                continue;
+            }
             
             foreach ($insert as $key => $row) {
                 $entity = new $modelName();
