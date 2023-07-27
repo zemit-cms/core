@@ -75,6 +75,8 @@ class Model extends \Phalcon\Mvc\Model
     use \Zemit\Mvc\Model\Options;
     use \Zemit\Mvc\Model\Uuid;
     use \Zemit\Mvc\Model\Slug;
+    use \Zemit\Mvc\Model\Validate;
+    use \Zemit\Mvc\Model\Locale;
     
     public function initialize(): void
     {
