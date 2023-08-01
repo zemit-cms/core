@@ -121,6 +121,7 @@
       "Zemit\\": "src/"
     },
     "files": [
+      "src/Functions/Constants.php",
       "src/Functions/Dump.php",
       "src/Functions/Array.php",
       "src/Functions/Sprintf.php"
