@@ -33,7 +33,7 @@ class Page extends AbstractPage implements PageInterface
         $validator->add('siteId', new PresenceOf(['message' => $this->_('required')]));
         $validator->add('siteId', new Between([
             'minimum' => 0,
-            'maximum' => self::MAX_UNSIGNED_INT,
+            'maximum' => MAX_UNSIGNED_INT,
             'message' => $this->_('not an unsigned integer'),
             'allowEmpty' => false,
         ]));

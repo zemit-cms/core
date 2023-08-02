@@ -1,5 +1,11 @@
 <?php
 
+if (defined('ZEMIT')) {
+    return;
+}
+
+const ZEMIT = 'zemit';
+
 // Boolean
 const YES = 1;
 const NO = 0;

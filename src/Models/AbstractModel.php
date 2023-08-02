@@ -133,7 +133,7 @@ abstract class AbstractModel extends \Zemit\Mvc\Model
             // Must be an unsigned integer
             $validator->add($field, new Between([
                 'minimum' => 0,
-                'maximum' => self::MAX_UNSIGNED_INT,
+                'maximum' => MAX_UNSIGNED_INT,
                 'message' => $this->_('not an unsigned integer'),
                 'allowEmpty' => $allowEmpty,
             ]));
@@ -222,7 +222,7 @@ abstract class AbstractModel extends \Zemit\Mvc\Model
             // Must be an unsigned integer
             $validator->add($userIdField, new Between([
                 'minimum' => 0,
-                'maximum' => self::MAX_UNSIGNED_INT,
+                'maximum' => MAX_UNSIGNED_INT,
                 'message' => $this->_('not an unsigned integer'),
                 'allowEmpty' => $allowEmpty,
             ]));
