@@ -11,17 +11,20 @@
 
 namespace Zemit\Mvc\Model;
 
+use Phalcon\Mvc\Model\Relation;
 use Zemit\Config\ConfigInterface;
 use Zemit\Models\Audit;
 use Zemit\Models\AuditDetail;
 use Zemit\Models\User;
 use Zemit\Mvc\Model\AbstractTrait\AbstractBehavior;
+use Zemit\Mvc\Model\AbstractTrait\AbstractIdentity;
 use Zemit\Mvc\Model\AbstractTrait\AbstractInjectable;
 use Zemit\Mvc\Model\Behavior\Blameable as BlameableBehavior;
 
 trait Blameable
 {
     use AbstractBehavior;
+    use AbstractIdentity;
     use AbstractInjectable;
     
     use Options;
@@ -46,6 +49,9 @@ trait Blameable
         $options['userClass'] ??= $config->getModelClass(User::class);
         
         $this->setBlameableBehavior(new BlameableBehavior($options));
+        
+        $userField = $options['userField'] ?? 'userId';
+        $this->addUserRelationship($userField, 'User');
     }
     
     /**
@@ -64,5 +70,24 @@ trait Blameable
         $blameableBehavior = $this->getBehavior('blameable');
         assert($blameableBehavior instanceof BlameableBehavior);
         return $blameableBehavior;
+    }
+    
+    /**
+     * Add a user relationship
+     */
+    public function addUserRelationship(
+        string $field = 'userId',
+        string $alias = 'UserEntity',
+        array $params = [],
+        string $ref = 'id',
+        string $type = 'belongsTo',
+        ?string $class = null
+    ): ?Relation {
+        if (property_exists($this, $field)) {
+            $class ??= $this->getIdentity()->getUserClass() ?: $this->getDI()->get('config')->getModelClass(\Zemit\Models\User::class);
+            return $this->$type($field, $class, $ref, ['alias' => $alias, 'params ' => $params]);
+        }
+        
+        return null;
     }
 }

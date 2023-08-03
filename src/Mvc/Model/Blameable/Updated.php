@@ -39,6 +39,9 @@ trait Updated
         $fieldAs = $options['fieldAs'] ?? 'updatedAs';
         $fieldAt = $options['fieldAt'] ?? 'updatedAt';
         
+        $this->addUserRelationship($fieldBy, 'UpdatedBy');
+        $this->addUserRelationship($fieldAs, 'UpdatedAs');
+        
         $this->setUpdatedBehavior(new Transformable([
             'beforeValidationOnUpdate' => [
                 $fieldBy => $this->hasChangedCallback(function () {

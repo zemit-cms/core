@@ -38,6 +38,9 @@ trait Created
         $fieldAs = $options['fieldAs'] ?? 'createdAs';
         $fieldAt = $options['fieldAt'] ?? 'createdAt';
         
+        $this->addUserRelationship($fieldBy, 'CreatedBy');
+        $this->addUserRelationship($fieldAs, 'CreatedAs');
+        
         $this->setCreatedBehavior(new Transformable([
             'beforeValidationOnCreate' => [
                 $fieldBy => $this->getCurrentUserIdCallback(),

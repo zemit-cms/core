@@ -38,6 +38,9 @@ trait Restored
         $fieldAs = $options['fieldAs'] ?? 'restoredAs';
         $fieldAt = $options['fieldAt'] ?? 'restoredAt';
         
+        $this->addUserRelationship($fieldBy, 'RestoredBy');
+        $this->addUserRelationship($fieldAs, 'RestoredAs');
+        
         $this->setRestoredBehavior(new Transformable([
             'beforeRestore' => [
                 $fieldBy => $this->getCurrentUserIdCallback(),

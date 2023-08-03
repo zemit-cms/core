@@ -41,7 +41,8 @@ trait Deleted
         $fieldAs = $options['fieldAs'] ?? 'deletedAs';
         $fieldAt = $options['fieldAt'] ?? 'deletedAt';
         
-        $softDeleteBehavior = $this->getSoftDeleteBehavior();
+        $this->addUserRelationship($fieldBy, 'DeletedBy');
+        $this->addUserRelationship($fieldAs, 'DeletedAs');
         
         $this->setDeletedBehavior(new Transformable([
             'beforeDelete' => [
