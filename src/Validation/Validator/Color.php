@@ -45,8 +45,8 @@ class Color extends AbstractValidator implements ValidatorInterface
      */
     private function isValidColor(?string $color): bool
     {
-        // Hexadecimal color regex pattern
-        $pattern = '/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/';
+        // Hexadecimal color regex pattern (supports 3, 4, 6, or 8 digits)
+        $pattern = '/^#([A-Fa-f0-9]{3,4}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})$/';
         
         return preg_match($pattern, $color) === 1;
     }
