@@ -11,6 +11,8 @@
 
 namespace Zemit\Mvc\Model;
 
+use Zemit\Mvc\Model;
+
 trait Locale
 {
     /**
