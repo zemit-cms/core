@@ -11,7 +11,7 @@
 
 namespace Zemit\Mvc\Model\Blameable;
 
-use Zemit\Mvc\Model;
+use Zemit\Db\Column;
 use Zemit\Mvc\Model\AbstractTrait\AbstractBehavior;
 use Zemit\Mvc\Model\Behavior\Transformable;
 use Zemit\Mvc\Model\Identity;
@@ -42,7 +42,7 @@ trait Restored
             'beforeRestore' => [
                 $fieldBy => $this->getCurrentUserIdCallback(),
                 $fieldAs => $this->getCurrentUserIdCallback(true),
-                $fieldAt => date(Model::DATETIME_FORMAT),
+                $fieldAt => date(Column::DATETIME_FORMAT),
             ],
         ]));
     }

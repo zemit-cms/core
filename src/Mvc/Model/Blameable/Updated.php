@@ -11,6 +11,7 @@
 
 namespace Zemit\Mvc\Model\Blameable;
 
+use Zemit\Db\Column;
 use Zemit\Mvc\Model;
 use Zemit\Mvc\Model\AbstractTrait\AbstractBehavior;
 use Zemit\Mvc\Model\Behavior\Transformable;
@@ -47,7 +48,7 @@ trait Updated
                     return $this->getCurrentUserIdCallback(true)();
                 }),
                 $fieldAt => $this->hasChangedCallback(function () {
-                    return date(Model::DATETIME_FORMAT);
+                    return date(Column::DATETIME_FORMAT);
                 }),
             ],
         ]));
