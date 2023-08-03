@@ -13,6 +13,7 @@ namespace Zemit\Mvc\Model;
 
 use Zemit\Db\Column;
 use Zemit\Validation;
+use Zemit\Validation\Validator\Color;
 use Phalcon\Validation\Validator\Between;
 use Phalcon\Validation\Validator\Date;
 use Phalcon\Validation\Validator\InclusionIn;
@@ -258,7 +259,24 @@ trait Validate
         
         $validator->add($field, new Uniqueness([
             'message' => $this->_('not-unique'),
-            'allowEmpty' => false,
+            'allowEmpty' => true,
+        ]));
+        
+        return $validator;
+    }
+    
+    public function addColorValidation(Validation $validator, string $field, bool $allowEmpty = true): Validation
+    {
+        if (!$allowEmpty) {
+            $validator->add($field, new PresenceOf([
+                'message' => $this->_('required'),
+                'allowEmpty' => false,
+            ]));
+        }
+        
+        $validator->add($field, new Color([
+            'message' => $this->_('not-hex-color'),
+            'allowEmpty' => true,
         ]));
         
         return $validator;
