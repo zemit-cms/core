@@ -219,9 +219,10 @@ trait Model
      *
      * @return null|int Default: 1000
      */
-    protected function getLimit(): int
+    protected function getLimit(): ?int
     {
-        return (int)$this->getParam('limit', 'int', 1000);
+        $limit = (int)$this->getParam('limit', 'int', 1000);
+        return $limit === -1? null : abs($limit);
     }
     
     /**
