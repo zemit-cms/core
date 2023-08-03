@@ -18,7 +18,6 @@ use Zemit\Utils;
 trait DeploymentTrait
 {
     
-    
     /**
      * Default action
      * @throws CliException
@@ -89,7 +88,7 @@ trait DeploymentTrait
             'message' => [],
         ];
         
-        $models = (!empty($models))? explode(',', $models) : null;
+        $models = (!empty($models)) ? explode(',', $models) : null;
         
         foreach ($this->insert as $modelName => $insert) {
             if (is_array($models) && !in_array($modelName, $models, true)) {
@@ -103,7 +102,8 @@ trait DeploymentTrait
                 $assign = isset($row[0]) ? array_combine($entity->columnMap(), $row) : $row;
                 if (!$assign) {
                     throw new CliException('Can\'t assign row #' . $key . ' for model `' . $modelName . '`.');
-                } else {
+                }
+                else {
                     $entity->assign($assign);
                 }
                 
@@ -144,10 +144,10 @@ trait DeploymentTrait
             'permissions' => [
                 'roles' => [
                     'cli' => [
-                        'models' => $permissions
+                        'models' => $permissions,
                     ],
-                ]
-            ]
+                ],
+            ],
         ]);
     }
 }
