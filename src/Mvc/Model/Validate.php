@@ -140,6 +140,8 @@ trait Validate
             'message' => $this->_('not-between'),
             'allowEmpty' => true,
         ]));
+        
+        return $validator;
     }
     
     public function addStringLengthValidation(Validation $validator, string $field, int $minChar = 0, int $maxChar = 255, bool $allowEmpty = true): Validation
