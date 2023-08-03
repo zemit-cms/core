@@ -1,0 +1,53 @@
+<?php
+
+namespace Zemit\Validation\Validator;
+
+use Phalcon\Validation;
+use Phalcon\Validation\AbstractValidator;
+use Phalcon\Validation\ValidatorInterface;
+
+class Color extends AbstractValidator implements ValidatorInterface
+{
+    protected $template = 'Field :field must be a valid color in hexadecimal format (e.g., #RRGGBB)';
+    
+    /**
+     * Constructor
+     *
+     * @param array options = [
+     *     'message' => '',
+     *     'template' => '',
+     *     'allowEmpty' => false
+     * ]
+     */
+    public function __construct(array $options = [])
+    {
+        parent::__construct($options);
+    }
+    
+    public function validate(Validation $validation, $field): bool
+    {
+        $value = $validation->getValue($field);
+        
+        if (!$this->isValidColor($value)) {
+            
+            $validation->appendMessage(
+                $this->messageFactory($validation, $field)
+            );
+            
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Check if a given color is in a valid hexadecimal format.
+     */
+    private function isValidColor(?string $color): bool
+    {
+        // Hexadecimal color regex pattern
+        $pattern = '/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/';
+        
+        return preg_match($pattern, $color) === 1;
+    }
+}
