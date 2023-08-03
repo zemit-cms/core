@@ -11,7 +11,7 @@
 
 namespace Zemit\Mvc\Model\Blameable;
 
-use Zemit\Mvc\Model;
+use Zemit\Db\Column;
 use Zemit\Mvc\Model\AbstractTrait\AbstractBehavior;
 use Zemit\Mvc\Model\Behavior\Transformable;
 use Zemit\Mvc\Model\Identity;
@@ -47,7 +47,7 @@ trait Deleted
             'beforeDelete' => [
                 $fieldBy => $this->getCurrentUserIdCallback(),
                 $fieldAs => $this->getCurrentUserIdCallback(true),
-                $fieldAt => date(Model::DATETIME_FORMAT),
+                $fieldAt => date(Column::DATETIME_FORMAT),
             ],
             'beforeValidationOnUpdate' => [
                 $fieldBy => $this->hasChangedCallback(function ($model, $field) use ($deletedField, $deletedValue) {
@@ -62,7 +62,7 @@ trait Deleted
                 }),
                 $fieldAt => $this->hasChangedCallback(function ($model, $field) use ($deletedField, $deletedValue) {
                     return $model->isDeleted($deletedField, $deletedValue)
-                        ? date(Model::DATETIME_FORMAT)
+                        ? date(Column::DATETIME_FORMAT)
                         : $model->readAttribute($field);
                 }),
             ],
