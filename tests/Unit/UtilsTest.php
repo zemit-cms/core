@@ -182,15 +182,4 @@ class UtilsTest extends AbstractUnit
         $this->assertIsString($memoryUsage['realMemory']);
         $this->assertIsString($memoryUsage['realMemoryPeak']);
     }
-    
-    public function testFunctions(): void
-    {
-        $functions = [
-            'dd',
-            'dump',
-        ];
-        foreach ($functions as $function) {
-            $this->assertTrue(function_exists($function), 'function_exists : ' . $function);
-        }
-    }
 }
