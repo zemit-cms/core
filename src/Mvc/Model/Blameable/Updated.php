@@ -51,7 +51,7 @@ trait Updated
                     return $this->getCurrentUserIdCallback(true)();
                 }),
                 $fieldAt => $this->hasChangedCallback(function () {
-                    return date(Column::DATETIME_FORMAT);
+                    return $this->getDateCallback(Column::DATETIME_FORMAT)();
                 }),
             ],
         ]));

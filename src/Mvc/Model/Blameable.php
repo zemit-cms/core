@@ -29,6 +29,7 @@ trait Blameable
     
     use Options;
     
+    use Blameable\BlameAt;
     use Blameable\Created;
     use Blameable\Updated;
     use Blameable\Deleted;

@@ -26,6 +26,7 @@ trait Created
     use Identity;
     use Snapshot;
     use SoftDelete;
+    use BlameAt;
     
     /**
      * Initializing Created
@@ -45,7 +46,7 @@ trait Created
             'beforeValidationOnCreate' => [
                 $fieldBy => $this->getCurrentUserIdCallback(),
                 $fieldAs => $this->getCurrentUserIdCallback(true),
-                $fieldAt => date(Column::DATETIME_FORMAT),
+                $fieldAt => $this->getDateCallback(Column::DATETIME_FORMAT)
             ],
         ]));
     }

@@ -45,7 +45,7 @@ trait Restored
             'beforeRestore' => [
                 $fieldBy => $this->getCurrentUserIdCallback(),
                 $fieldAs => $this->getCurrentUserIdCallback(true),
-                $fieldAt => date(Column::DATETIME_FORMAT),
+                $fieldAt => $this->getDateCallback(Column::DATETIME_FORMAT),
             ],
         ]));
     }

@@ -48,7 +48,7 @@ trait Deleted
             'beforeDelete' => [
                 $fieldBy => $this->getCurrentUserIdCallback(),
                 $fieldAs => $this->getCurrentUserIdCallback(true),
-                $fieldAt => date(Column::DATETIME_FORMAT),
+                $fieldAt => $this->getDateCallback(Column::DATETIME_FORMAT),
             ],
             'beforeValidationOnUpdate' => [
                 $fieldBy => $this->hasChangedCallback(function ($model, $field) use ($deletedField, $deletedValue) {
@@ -63,7 +63,7 @@ trait Deleted
                 }),
                 $fieldAt => $this->hasChangedCallback(function ($model, $field) use ($deletedField, $deletedValue) {
                     return $model->isDeleted($deletedField, $deletedValue)
-                        ? date(Column::DATETIME_FORMAT)
+                        ? $this->getDateCallback(Column::DATETIME_FORMAT)
                         : $model->readAttribute($field);
                 }),
             ],
