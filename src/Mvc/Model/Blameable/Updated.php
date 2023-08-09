@@ -27,6 +27,7 @@ trait Updated
     use Identity;
     use Snapshot;
     use SoftDelete;
+    use BlameAt;
     
     /**
      * Initializing Updated

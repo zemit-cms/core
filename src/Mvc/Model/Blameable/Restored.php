@@ -26,6 +26,7 @@ trait Restored
     use Identity;
     use Snapshot;
     use SoftDelete;
+    use BlameAt;
     
     /**
      * Initializing Restored

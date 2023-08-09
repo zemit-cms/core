@@ -26,6 +26,7 @@ trait Deleted
     use Identity;
     use Snapshot;
     use SoftDelete;
+    use BlameAt;
     
     /**
      * Initializing Deleted

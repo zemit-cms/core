@@ -13,10 +13,10 @@ namespace Zemit\Mvc\Model\Blameable;
 
 trait BlameAt
 {
-    public function getDateCallback(...$args): \Closure
+    public function getDateCallback(string $format, ...$args): \Closure
     {
-        return function () use ($args) {
-            return date(...$args);
+        return function () use ($format, $args) {
+            return date($format, ...$args);
         };
     }
 }
