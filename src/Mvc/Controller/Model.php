@@ -727,7 +727,7 @@ trait Model
                             }
                         }
                         if (!empty($queryOr)) {
-                            $query [] = '(' . implode(') or (', $queryOr) . ')';
+                            $query [] = '((' . implode(') or (', $queryOr) . '))';
                         }
                     }
                 }
