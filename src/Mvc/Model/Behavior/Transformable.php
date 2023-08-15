@@ -50,6 +50,13 @@ class Transformable extends Behavior
 
         foreach ($options as $field => $value) {
             $value = is_callable($value) ? $value($model, $field) : $value;
+            
+            // allow up to 10 callbacks
+            $limit = 10;
+            while (is_callable($value) && --$limit) {
+                $value = $value();
+            }
+            
             $model->writeAttribute($field, $value);
 //            $model->assign([$field => $value]);
         }
