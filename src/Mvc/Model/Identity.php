@@ -13,6 +13,11 @@ namespace Zemit\Mvc\Model;
 
 use Zemit\Models\Interfaces\UserInterface;
 
+/**
+ * This trait provides convenient methods for managing user identity and authentication within a model.
+ * It encapsulates the logic related to user authentication and session management,
+ * making it easier to reuse and maintain in different models.
+ */
 trait Identity
 {
     /**
@@ -67,7 +72,7 @@ trait Identity
     /**
      * Get current user id callable (used for events behaviors)
      */
-    public function getCurrentUserIdCallback($as = false): \Closure
+    public function getCurrentUserIdCallback(bool $as = false): \Closure
     {
         return function () use ($as) {
             return $this->getCurrentUserId($as);
