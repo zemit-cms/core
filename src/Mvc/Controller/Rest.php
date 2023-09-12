@@ -166,6 +166,9 @@ class Rest extends \Zemit\Mvc\Controller
     
     /**
      * Download a JSON / CSV / XLSX
+     *
+     * @TODO optimize this using stream and avoid storage large dataset into variables
+     *
      * @param $list
      * @param $fileName
      * @param $contentType
@@ -188,6 +191,16 @@ class Rest extends \Zemit\Mvc\Controller
             $this->response->setHeader('Content-disposition', 'attachment; filename="' . addslashes($fileName) . '.json"');
             return $this->response->send();
         }
+        
+        $listColumns = [];
+        if ($contentType === 'csv' || $contentType === 'xlsx') {
+            foreach ($list as $row) {
+                foreach (array_keys($row) as $key) {
+                    $listColumns[$key] = true;
+                }
+            }
+        }
+        $listColumns = array_keys($listColumns);
         
         // CSV
         if ($contentType === 'csv') {
@@ -239,11 +252,18 @@ class Rest extends \Zemit\Mvc\Controller
                 $csv->includeInputBOM();
             }
             
-            // CSV
-            if (isset($list[0])) {
-                $csv->insertOne(array_keys($list[0]));
-                $csv->insertAll($list);
+            // Headers
+            $csv->insertOne($listColumns);
+            
+            foreach ($list as $row) {
+                $outputRow = [];
+                foreach ($listColumns as $column) {
+                    $outputRow[$column] = $row[$column] ?? '';
+                }
+                $csv->insertOne($outputRow);
             }
+            
+            // CSV
             $csv->output($fileName . '.csv');
             die;
         }
@@ -251,12 +271,16 @@ class Rest extends \Zemit\Mvc\Controller
         // XLSX
         if ($contentType === 'xlsx') {
             $xlsxArray = [];
-            if (isset($list[0])) {
-                $xlsxArray [] = array_keys($list[0]);
+            $xlsxArray []= $listColumns;
+            
+            foreach ($list as $row) {
+                $outputRow = [];
+                foreach ($listColumns as $column) {
+                    $outputRow[$column] = $row[$column] ?? '';
+                }
+                $xlsxArray [] = array_values($outputRow);
             }
-            foreach ($list as $array) {
-                $xlsxArray [] = array_values($array);
-            }
+            
             $xlsx = \SimpleXLSXGen::fromArray($xlsxArray);
             $xlsx->downloadAs($fileName . '.xlsx');
             die;
