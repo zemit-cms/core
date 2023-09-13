@@ -42,6 +42,8 @@ class ServiceProvider extends AbstractServiceProvider
             if ($eventsManager instanceof ManagerInterface) {
                 $manager->setEventsManager($eventsManager);
             }
+            
+            return $manager;
         });
     }
 }
