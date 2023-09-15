@@ -643,7 +643,7 @@ trait Model
                     }
                     
                     else {
-                        $queryOr = [];
+                        $queryAndOr = [];
                         
                         $valueList = is_array($filter['value']) ? $filter['value'] : [$filter['value']];
                         foreach ($valueList as $value) {
@@ -661,34 +661,34 @@ trait Model
                                 $bindType[$queryValue0] = Column::BIND_PARAM_STR;
                                 $bindType[$queryValue1] = Column::BIND_PARAM_STR;
                                 $bindType[$queryValue2] = Column::BIND_PARAM_STR;
-                                $queryOr [] = ($queryOperator === 'does not contain' ? '!' : '') . "($queryFieldBinder like :$queryValue0: or $queryFieldBinder like :$queryValue1: or $queryFieldBinder like :$queryValue2:)";
+                                $queryAndOr [] = ($queryOperator === 'does not contain' ? '!' : '') . "($queryFieldBinder like :$queryValue0: or $queryFieldBinder like :$queryValue1: or $queryFieldBinder like :$queryValue2:)";
                             }
                             
                             elseif (in_array($queryOperator, ['starts with', 'does not start with'])) {
                                 $bind[$queryValue] = $value . '%';
                                 $bindType[$queryValue] = Column::BIND_PARAM_STR;
-                                $queryOr [] = ($queryOperator === 'does not start with' ? '!' : '') . "($queryFieldBinder like :$queryValue:)";
+                                $queryAndOr [] = ($queryOperator === 'does not start with' ? '!' : '') . "($queryFieldBinder like :$queryValue:)";
                             }
                             
                             elseif (in_array($queryOperator, ['ends with', 'does not end with'])) {
                                 $bind[$queryValue] = '%' . $value;
                                 $bindType[$queryValue] = Column::BIND_PARAM_STR;
-                                $queryOr [] = ($queryOperator === 'does not end with' ? '!' : '') . "($queryFieldBinder like :$queryValue:)";
+                                $queryAndOr [] = ($queryOperator === 'does not end with' ? '!' : '') . "($queryFieldBinder like :$queryValue:)";
                             }
                             
                             elseif (in_array($queryOperator, ['is empty', 'is not empty'])) {
-                                $queryOr [] = ($queryOperator === 'is not empty' ? '!' : '') . "(TRIM($queryFieldBinder) = '' or $queryFieldBinder is null)";
+                                $queryAndOr [] = ($queryOperator === 'is not empty' ? '!' : '') . "(TRIM($queryFieldBinder) = '' or $queryFieldBinder is null)";
                             }
                             
                             elseif (in_array($queryOperator, ['regexp', 'not regexp'])) {
                                 $bind[$queryValue] = $value;
-                                $queryOr [] = $queryOperator . "($queryFieldBinder, :$queryValue:)";
+                                $queryAndOr [] = $queryOperator . "($queryFieldBinder, :$queryValue:)";
                             }
                             
                             elseif (in_array($queryOperator, ['contains word', 'does not contain word'])) {
                                 $bind[$queryValue] = '\\b' . $value . '\\b';
                                 $regexQueryOperator = str_replace(['contains word', 'does not contain word'], ['regexp', 'not regexp'], $queryOperator);
-                                $queryOr [] = $regexQueryOperator . "($queryFieldBinder, :$queryValue:)";
+                                $queryAndOr [] = $regexQueryOperator . "($queryFieldBinder, :$queryValue:)";
                             }
                             
                             else {
@@ -723,11 +723,12 @@ trait Model
                                     $bindType[$queryValue] = Column::BIND_PARAM_NULL;
                                 }
                                 
-                                $queryOr [] = "$queryFieldBinder $queryOperator $queryValueBinder";
+                                $queryAndOr [] = "$queryFieldBinder $queryOperator $queryValueBinder";
                             }
                         }
-                        if (!empty($queryOr)) {
-                            $query [] = '((' . implode(') or (', $queryOr) . '))';
+                        if (!empty($queryAndOr)) {
+                            $andOr = str_contains($queryOperator, ' not ')? 'and' : 'or';
+                            $query [] = '((' . implode(') ' . $andOr . ' (', $queryAndOr) . '))';
                         }
                     }
                 }
