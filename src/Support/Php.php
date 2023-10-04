@@ -48,17 +48,24 @@ class Php
 
     /**
      * Prepare some PHP config
+     * @todo review to implement this properly
      */
     public static function set(array $config = []): void
     {
+        $config['timezone'] ??= 'America/Montreal';
+        $config['encoding'] ??= 'UTF-8';
+        $config['locale'] ??= 'en_CA';
+        $config['memoryLimit'] ??= '256M';
+        $config['timeoutLimit'] ??= '60';
+        
         date_default_timezone_set($config['timezone'] ?? 'America/Montreal');
         
-        setlocale(LC_ALL, 'fr_CA.' . $config['encoding'], 'French_Canada.1252');
-        mb_internal_encoding($config['encoding'] ?? 'UTF-8');
-        mb_http_output($config['encoding'] ?? 'UTF-8');
+        setlocale(LC_ALL, 'en_CA.' . $config['encoding']);
+        mb_internal_encoding($config['encoding']);
+        mb_http_output($config['encoding']);
         
-        ini_set('memory_limit', $config['memoryLimit'] ?? '256M');
-        ini_set('max_execution_time', $config['timeoutLimit'] ?? '60');
-        set_time_limit($config['timeoutLimit'] ?? 60);
+        ini_set('memory_limit', $config['memoryLimit']);
+        ini_set('max_execution_time', (string)$config['timeoutLimit']);
+        set_time_limit((int)$config['timeoutLimit']);
     }
 }
