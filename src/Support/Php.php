@@ -58,9 +58,9 @@ class Php
         $config['memoryLimit'] ??= '256M';
         $config['timeoutLimit'] ??= '60';
         
-        date_default_timezone_set($config['timezone'] ?? 'America/Montreal');
+        date_default_timezone_set($config['timezone']);
         
-        setlocale(LC_ALL, 'en_CA.' . $config['encoding']);
+        setlocale(LC_ALL, $config['locale'] . '.' . $config['encoding']);
         mb_internal_encoding($config['encoding']);
         mb_http_output($config['encoding']);
         
