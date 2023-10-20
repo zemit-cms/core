@@ -13,20 +13,20 @@ namespace Zemit\Modules\Cli\Tasks;
 
 use Zemit\Bootstrap\Deployment;
 use Zemit\Modules\Cli\Task;
-use Zemit\Modules\Cli\Tasks\Traits\DeploymentTrait;
+use Zemit\Modules\Cli\Tasks\Traits\DatabaseTrait;
 use Zemit\Utils;
 
-class DeploymentTask extends Task
+class DatabaseTask extends Task
 {
-    use DeploymentTrait;
+    use DatabaseTrait;
     
     public string $cliDoc = <<<DOC
 Usage:
-  php zemit cli deployment <action> [<params> ...]
+  php zemit cli database <action> [<params> ...]
 
 Options:
-  task: cache
-  action: clear
+  task: database
+  action: drop, truncate, fixEngine, insert, optimize, analyze
 
 
 DOC;
@@ -35,6 +35,8 @@ DOC;
     public ?array $truncate = null;
     public ?array $engine = null;
     public ?array $insert = null;
+    public ?array $optimize = null;
+    public ?array $analyze = null;
     
     public function initialize(): void
     {
@@ -45,6 +47,8 @@ DOC;
         $this->truncate ??= $deploymentConfig->pathToArray('truncate');
         $this->engine ??= $deploymentConfig->pathToArray('engine');
         $this->insert ??= $deploymentConfig->pathToArray('insert');
+        $this->optimize ??= $deploymentConfig->pathToArray('optimize');
+        $this->analyze ??= $deploymentConfig->pathToArray('analyze');
         
         $this->addModelsPermissions();
     }

@@ -138,6 +138,7 @@ class Config extends \Zemit\Config\Config
              * Application configuration
              */
             'app' => [
+                'name' => Env::get('APP_NAME', 'Zemit'), // Name of your application
                 'namespace' => Env::get('APP_NAMESPACE', 'Zemit'), // Namespace of your application
                 'version' => Env::get('APP_VERSION', date('Ymd')), // allow to set and force a specific version
                 'maintenance' => Env::get('APP_MAINTENANCE', false), // Set true to force the maintenance page
@@ -967,6 +968,7 @@ class Config extends \Zemit\Config\Config
                             PDO::ATTR_EMULATE_PREPARES => Env::get('DATABASE_PDO_EMULATE_PREPARES', false), // https://stackoverflow.com/questions/10113562/pdo-mysql-use-pdoattr-emulate-prepares-or-not
                             PDO::ATTR_STRINGIFY_FETCHES => Env::get('DATABASE_PDO_STRINGIFY_FETCHES', false),
                             PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => Env::get('MYSQL_ATTR_SSL_VERIFY_SERVER_CERT', true),
+                            PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => Env::get('MYSQL_ATTR_USE_BUFFERED_QUERY', true),
                         ],
                         /**
                          * Readonly Configuration
@@ -1403,7 +1405,7 @@ class Config extends \Zemit\Config\Config
                             Cli\Tasks\CacheTask::class => ['*'],
                             Cli\Tasks\CronTask::class => ['*'],
                             Cli\Tasks\ErrorTask::class => ['*'],
-                            Cli\Tasks\DeploymentTask::class => ['*'],
+                            Cli\Tasks\DatabaseTask::class => ['*'],
                             Cli\Tasks\DataLifeCycleTask::class => ['*'],
                             Cli\Tasks\HelpTask::class => ['*'],
                             Cli\Tasks\ScaffoldTask::class => ['*'],
