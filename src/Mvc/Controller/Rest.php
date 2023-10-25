@@ -11,6 +11,7 @@
 
 namespace Zemit\Mvc\Controller;
 
+use Shuchkin\SimpleXLSXGen;
 use League\Csv\CharsetConverter;
 use League\Csv\Writer;
 use Phalcon\Events\Manager;
@@ -281,7 +282,7 @@ class Rest extends \Zemit\Mvc\Controller
                 $xlsxArray [] = array_values($outputRow);
             }
             
-            $xlsx = \SimpleXLSXGen::fromArray($xlsxArray);
+            $xlsx = SimpleXLSXGen::fromArray($xlsxArray);
             $xlsx->downloadAs($fileName . '.xlsx');
             die;
         }
