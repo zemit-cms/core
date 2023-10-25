@@ -873,13 +873,13 @@ trait Relationship
             $relatedColumns = $relationFields[$attributeField] ?? null;
             
             // Run toArray on related records
-            if ($related instanceof ModelInterface) {
+            if ($related instanceof ModelInterface && method_exists($related, 'toArray')) {
                 $ret[$attributeField] = $related->toArray($relatedColumns);
             }
             elseif (is_iterable($related)) {
                 $ret[$attributeField] = [];
                 foreach ($related as $entity) {
-                    if ($entity instanceof ModelInterface) {
+                    if ($entity instanceof ModelInterface && method_exists($entity, 'toArray')) {
                         $ret[$attributeField][] = $entity->toArray($relatedColumns);
                     }
                     elseif (is_array($entity)) {
