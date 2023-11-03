@@ -336,24 +336,19 @@ trait Model
     }
     
     /**
-     * @param $field
-     * @param string $sanitizer
-     * @param string $glue
-     *
-     * @return array|string[]
+     * This function will explode the field based using the glue
+     * and sanitize the values and append the model name
      */
-    public function getParamExplodeArrayMapFilter($field, $sanitizer = 'string', $glue = ',')
+    public function getParamExplodeArrayMapFilter(string $field, string $sanitizer = 'string', string $glue = ',', int $limit = PHP_INT_MAX) : ?array
     {
+        $ret = [];
         $filter = $this->filter;
-        $ret = array_filter(array_map(function ($e) use ($filter, $sanitizer) {
-            
-            // allow to run RAND()
-            if (strrpos($e, 'RAND()') === 0) {
-                return $e;
-            }
-            
-            return $this->appendModelName(trim($filter->sanitize($e, $sanitizer)));
-        }, explode($glue, $this->getParam($field, $sanitizer))));
+        $params = $this->getParam($field, $sanitizer);
+        foreach (is_array($params)? $params : [$params] as $param) {
+            $ret = array_filter(array_merge($ret, array_map(function ($e) use ($filter, $sanitizer) {
+                return strrpos(strtoupper($e), 'RAND()') === 0? $e : $this->appendModelName(trim($filter->sanitize($e, $sanitizer)));
+            }, explode($glue, $param, $limit))));
+        }
         
         return empty($ret) ? null : $ret;
     }
@@ -955,7 +950,7 @@ trait Model
         $find['cache'] = $this->fireGet('getCache');
         
         // fix for grouping by multiple fields, phalcon only allow string here
-        foreach (['distinct', 'group'] as $findKey) {
+        foreach (['distinct', 'group', 'order'] as $findKey) {
             if (isset($find[$findKey]) && is_array($find[$findKey])) {
                 $find[$findKey] = implode(', ', $find[$findKey]);
             }
