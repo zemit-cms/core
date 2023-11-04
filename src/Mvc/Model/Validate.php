@@ -50,9 +50,6 @@ trait Validate
         $this->addUpdatedValidation($validator);
         $this->addDeletedValidation($validator);
         $this->addRestoredValidation($validator);
-        $this->addUuidValidation($validator, 'uid');
-        $this->addUuidValidation($validator, 'uuid');
-        $this->addUuidValidation($validator, 'guid');
         
         return $validator;
     }
