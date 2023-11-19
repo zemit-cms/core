@@ -1,6 +1,6 @@
 {
   "name": "zemit-cms/core",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "type": "library",
   "description": "Zemit CMS Core",
   "keywords": ["framework", "phalcon", "cms", "core", "zemit", "zemit-cms", "zemit cms", "zemit cms core"],
