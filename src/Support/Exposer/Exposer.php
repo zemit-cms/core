@@ -119,7 +119,7 @@ class Exposer
         // Otherwise, check if a parent key exists
         else {
             $parentKey = $fullKey;
-            $parentIndex = false;
+            $parentIndex = strrpos($parentKey, '.');
             do {
                 $parentKey = $parentIndex ? substr($parentKey, 0, $parentIndex) : '';
                 if (isset($columns[$parentKey])) {
