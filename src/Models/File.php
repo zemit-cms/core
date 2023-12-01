@@ -10,26 +10,23 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractFile;
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-use Phalcon\Filter\Validation\Validator\StringLength\Max;
+use Zemit\Models\Abstracts\AbstractFile;
+use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Validation\Validator\StringLength\Max;
+use Zemit\Models\Interfaces\FileInterface;
 
 /**
- * Class File
- *
  * @property EmailFile $EmailFileEntity
  * @property User $UserEntity
  *
- * @method EmailFile getEmailFileEntity($params = null)
- * @method User getUserEntity($params = null)
- *
- * @package Zemit\Models
+ * @method EmailFile getEmailFileEntity(?array $params = null)
+ * @method User getUserEntity(?array $params = null)
  */
-class File extends AbstractFile
+class File extends AbstractFile implements FileInterface
 {
     protected $deleted = self::NO;
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -37,7 +34,7 @@ class File extends AbstractFile
         $this->belongsTo('userId', User::class, 'id', ['alias' => 'UserEntity']);
     }
 
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
 
@@ -56,13 +53,8 @@ class File extends AbstractFile
 
     /**
      * Return null if file not found, or the path
-     *
-     * @param $fileName
-     * @param null $category
-     *
-     * @return null|string
      */
-    public function getFilePath($fileName = null)
+    public function getFilePath(?string $fileName = null): ?string
     {
         $fileName ??= $this->getPath();
         $filePath = null;

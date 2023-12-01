@@ -1,5 +1,5 @@
 <?= $this->tag->getDoctype() ?>
-<html<?= $this->tag->getParams('html');?>>
+<html<?= $this->tag->getTagParams('html');?>>
     <head>
         <?= $this->tag->renderTitle();?>
         <?= $this->tag->meta();?>
@@ -7,7 +7,7 @@
         <?= $this->tag->js('head');?>
         <?= $this->partial('layout/head');?>
     </head>
-    <body<?= $this->tag->getParams('body');?>>
+    <body<?= $this->tag->getTagParams('body');?>>
         <?= $this->partial('layout/header');?>
         <?= $this->getContent();?>
         <?= $this->partial('layout/footer');?>

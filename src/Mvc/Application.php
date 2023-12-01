@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -12,27 +13,19 @@ namespace Zemit\Mvc;
 
 use Phalcon\Di\DiInterface;
 use Phalcon\Http\ResponseInterface;
+use Zemit\Dispatcher\AbstractDispatcher;
+use Zemit\Mvc\Dispatcher as MvcDispatcher;
+use Zemit\Cli\Dispatcher as CliDispatcher;
 
 /**
- * Class Application
- * Switches default Phalcon MVC into a simple HMVC to allow requests
- * between different namespaces and modules
+ * Simple HMVC - allow requests with namespaces and modules
  * {@inheritdoc}
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Mvc
  */
 class Application extends \Phalcon\Mvc\Application
 {
     /**
      * HMVC Application
      * {@inheritdoc}
-     * @param \Phalcon\Di\DiInterface
      */
     public function __construct(DiInterface $di)
     {
@@ -40,24 +33,27 @@ class Application extends \Phalcon\Mvc\Application
         $di->setShared('application', $this);
         parent::__construct($di);
     }
-    
+
     /**
      * HMVC request
      * You can request call any module/namespace
-     *
-     * @param array $location
-     *
-     * @return string
      */
-    public function request(array $location = [])
+    public function request(array $location = []): string
     {
         // Get a unique dispatcher
         $dispatcher = clone $this->getDI()->get('dispatcher');
+        assert($dispatcher instanceof AbstractDispatcher);
         
         // Route dispatcher
+        $dispatcher->setDefaultNamespace($location['namespace'] ?? $dispatcher->getNamespaceName());
         $dispatcher->setNamespaceName($location['namespace'] ?? $dispatcher->getNamespaceName());
         $dispatcher->setModuleName($location['module'] ?? $dispatcher->getModuleName());
-        $dispatcher->setControllerName($location['controller'] ?? 'index');
+        if ($dispatcher instanceof MvcDispatcher) {
+            $dispatcher->setControllerName($location['controller'] ?? 'index');
+        }
+        elseif ($dispatcher instanceof CliDispatcher) {
+            $dispatcher->setTaskName($location['task'] ?? 'index');
+        }
         $dispatcher->setActionName($location['action'] ?? 'index');
         $dispatcher->setParams($location['params'] ?? []);
         $dispatcher->dispatch();
@@ -67,6 +63,7 @@ class Application extends \Phalcon\Mvc\Application
         if ($response instanceof ResponseInterface) {
             return $response->getContent();
         }
+        
         return $response;
     }
 }

@@ -10,21 +10,18 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractAuditDetail;
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-use Phalcon\Filter\Validation\Validator\InclusionIn;
-use Phalcon\Filter\Validation\Validator\StringLength\Max;
+use Zemit\Models\Abstracts\AbstractAuditDetail;
+use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Validation\Validator\InclusionIn;
+use Phalcon\Validation\Validator\StringLength\Max;
+use Zemit\Models\Interfaces\AuditDetailInterface;
 
 /**
- * Class AuditDetail
- *
  * @property Audit $AuditEntity
  *
- * @method Audit getAuditEntity($params = null)
- *
- * @package Zemit\Models
+ * @method Audit getAuditEntity(?array $params = null)
  */
-class AuditDetail extends AbstractAuditDetail
+class AuditDetail extends AbstractAuditDetail implements AuditDetailInterface
 {
     const EVENT_CREATE = 'create';
     const EVENT_UPDATE = 'update';
@@ -35,14 +32,14 @@ class AuditDetail extends AbstractAuditDetail
     protected $event = self::EVENT_OTHER;
     protected $deleted = self::NO;
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
         $this->belongsTo('auditId', Audit::class, 'id', ['alias' => 'AuditEntity']);
     }
 
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
         $eventInclusions = [self::EVENT_CREATE, self::EVENT_UPDATE, self::EVENT_DELETE, self::EVENT_RESTORE, self::EVENT_OTHER];

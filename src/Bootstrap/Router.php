@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,31 +11,22 @@
 
 namespace Zemit\Bootstrap;
 
-use Zemit\Mvc\Application;
+use Phalcon\Config\ConfigInterface;
 
 /**
- * Class Router
- * Default Bootstrap Phalcon Zemit Router Implementation
+ * Zemit Router
  * {@inheritDoc}
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Bootstrap
  */
 class Router extends \Zemit\Mvc\Router
 {
-    public $defaults = [
+    public array $defaults = [
         'namespace' => \Zemit\Modules\Frontend\Controller::class,
         'module' => 'frontend',
         'controller' => 'index',
         'action' => 'index',
     ];
     
-    public $notFound = [
+    public array $notFound = [
         'controller' => 'error',
         'action' => 'notFound',
     ];
@@ -42,10 +34,13 @@ class Router extends \Zemit\Mvc\Router
     /**
      * Router constructor.
      */
-    public function __construct($defaultRoutes = true, $application = null)
+    public function __construct($defaultRoutes = true, ?ConfigInterface $config = null)
     {
-        parent::__construct($defaultRoutes, $application);
-        
+        parent::__construct($defaultRoutes, $config);
+    }
+    
+    public function baseRoutes(): void
+    {
         $this->add('/', [
         ])->setName('default');
         
@@ -53,57 +48,52 @@ class Router extends \Zemit\Mvc\Router
             'controller' => 1,
         ])->setName('default-controller');
         
-        $this->add('/:controller/:action', [
+        $this->add('/:controller/:action/:params', [
             'controller' => 1,
             'action' => 2,
+            'params' => 3,
         ])->setName('default-controller-action');
         
-        $this->add('/:controller/:action/:slug', [
-            'controller' => 1,
-            'action' => 2,
-            'slug' => 3,
-        ])->setName('default-controller-action-slug');
+        $localeConfig = $this->getConfig()->get('locale')->toArray();
         
-        $this->add('/:controller/:action/:int', [
-            'controller' => 1,
-            'action' => 2,
-            'int' => 3,
-        ])->setName('default-controller-action-int');
-        
-        foreach ($this->config->locale->allowed as $locale) {
-            $this->add('/' . $locale, [
-                'locale' => $locale,
-            ])->setName($locale);
+        if (!empty($localeConfig['allowed'])) {
+            $localeRegex = '{locale:(' . implode('|', $localeConfig['allowed']) . ')}';
             
-            $this->add('/' . $locale . '/:controller', [
-                'locale' => $locale,
-                'controller' => 1,
-            ])->setName($locale);
+            $this->add('/' . $localeRegex, [
+                'locale' => 1,
+            ])->setName('locale');
             
-            $this->add('/' . $locale . '/:controller/:action', [
-                'locale' => $locale,
-                'controller' => 1,
-                'action' => 2,
-            ])->setName($locale);
+            $this->add('/' . $localeRegex . '/:controller', [
+                'locale' => 1,
+                'controller' => 2,
+            ])->setName('locale-controller');
             
-            $this->add('/' . $locale . '/:controller/:action/:slug', [
-                'locale' => $locale,
-                'controller' => 1,
-                'action' => 2,
-                'slug' => 3,
-            ])->setName($locale);
-            
-            $this->add('/' . $locale . '/:controller/:action/:int', [
-                'locale' => $locale,
-                'controller' => 1,
-                'action' => 2,
-                'int' => 3,
-            ])->setName($locale);
+            $this->add('/' . $localeRegex . '/:controller/:action/:params', [
+                'locale' => 1,
+                'controller' => 2,
+                'action' => 3,
+                'params' => 4,
+            ])->setName('locale-controller-action');
         }
         
-        if (isset($application)) {
-            $this->hostnamesRoutes();
-            $this->modulesRoutes($application);
+        foreach ($localeConfig['allowed'] as $locale) {
+            $localeRegex = $locale;
+            
+            $this->add('/' . $localeRegex, [
+                'locale' => $locale,
+            ])->setName($locale);
+            
+            $this->add('/' . $localeRegex . '/:controller', [
+                'locale' => $locale,
+                'controller' => 1,
+            ])->setName($locale . '-controller');
+            
+            $this->add('/' . $localeRegex . '/:controller/:action/:params', [
+                'locale' => $locale,
+                'controller' => 1,
+                'action' => 2,
+                'params' => 3,
+            ])->setName($locale . '-controller-action');
         }
     }
 }

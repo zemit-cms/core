@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,67 +11,78 @@
 
 namespace Zemit\Bootstrap;
 
+use App\Config\Permissions\AiConfig;
+use App\Config\Permissions\ArticleConfig;
+use App\Config\Permissions\AuditConfig;
+use App\Config\Permissions\AuthConfig;
+use App\Config\Permissions\CommentConfig;
+use App\Config\Permissions\CountryConfig;
+use App\Config\Permissions\DatatableStateConfig;
+use App\Config\Permissions\FileConfig;
+use App\Config\Permissions\KeywordConfig;
+use App\Config\Permissions\NotificationConfig;
+use App\Config\Permissions\ProjectConfig;
+use App\Config\Permissions\ProjectStatusReasonConfig;
+use App\Config\Permissions\RecordConfig;
+use App\Config\Permissions\RoleConfig;
+use App\Config\Permissions\SurveyConfig;
+use App\Config\Permissions\SynonymConfig;
+use App\Config\Permissions\TagConfig;
+use App\Config\Permissions\TrackerConfig;
+use App\Config\Permissions\UserConfig;
 use PDO;
-use Phalcon\Config\Config as PhalconConfig;
-use Zemit\Filter\Filter;
-use Zemit\Filters;
+use Phalcon\Db\Column;
+use Phalcon\Security;
 use Zemit\Locale;
-use Zemit\Models;
-use Zemit\Modules\Api;
-use Zemit\Modules\Cli;
-use Zemit\Modules\Frontend;
-use Zemit\Mvc\Controller\Behavior;
+use Zemit\Version;
 use Zemit\Provider;
 use Zemit\Utils\Env;
+use Zemit\Models;
+use Zemit\Modules\Cli;
+use Zemit\Modules\Api;
+use Zemit\Mvc\Controller\Behavior;
+use Phalcon\Config as PhalconConfig;
 
 /**
- * Class Config
+ * Global Zemit Configuration
  *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Bootstrap
- *
- * @property Config $core
- * @property Config $app
- * @property Config $php
- * @property Config $debug
- * @property Config $response
- * @property Config $identity
- * @property Config $models
- * @property Config $providers
- * @property Config $logger
- * @property Config $filters
- * @property Config $modules
- * @property Config $router
- * @property Config $gravatar
- * @property Config $reCaptcha
- * @property Config $locale
- * @property Config $translate
- * @property Config $session
- * @property Config $module
- * @property Config $security
- * @property Config $cache
- * @property Config $metadata
- * @property Config $annotations
- * @property Config $mailer
- * @property Config $cookies
- * @property Config $oauth2
- * @property Config $dotenv
- * @property Config $client
- * @property Config $permissions
+ * @property PhalconConfig $core
+ * @property PhalconConfig $app
+ * @property PhalconConfig $php
+ * @property PhalconConfig $debug
+ * @property PhalconConfig $response
+ * @property PhalconConfig $identity
+ * @property PhalconConfig $models
+ * @property PhalconConfig $providers
+ * @property PhalconConfig $logger
+ * @property PhalconConfig $filters
+ * @property PhalconConfig $modules
+ * @property PhalconConfig $router
+ * @property PhalconConfig $gravatar
+ * @property PhalconConfig $reCaptcha
+ * @property PhalconConfig $aws
+ * @property PhalconConfig $locale
+ * @property PhalconConfig $translate
+ * @property PhalconConfig $session
+ * @property PhalconConfig $module
+ * @property PhalconConfig $security
+ * @property PhalconConfig $cache
+ * @property PhalconConfig $metadata
+ * @property PhalconConfig $annotations
+ * @property PhalconConfig $mailer
+ * @property PhalconConfig $cookies
+ * @property PhalconConfig $oauth2
+ * @property PhalconConfig $dotenv
+ * @property PhalconConfig $client
+ * @property PhalconConfig $permissions
  */
-
-class Config extends PhalconConfig
+class Config extends \Zemit\Config\Config
 {
     public function defineConst()
     {
         defined('VENDOR_PATH') || define('VENDOR_PATH', Env::get('ROOT_PATH', 'vendor/'));
-        defined('ROOT_PATH') || define('ROOT_PATH', Env::get('ROOT_PATH', null));
-        defined('APP_PATH') || define('APP_PATH', Env::get('APP_PATH', null));
+        defined('ROOT_PATH') || define('ROOT_PATH', Env::get('ROOT_PATH'));
+        defined('APP_PATH') || define('APP_PATH', Env::get('APP_PATH'));
         defined('APPLICATION_ENV') || define('APPLICATION_ENV', Env::get('APPLICATION_ENV', 'development'));
         defined('CORE_PATH') || define('CORE_PATH', Env::get('CORE_PATH', mb_substr(__DIR__, 0, mb_strlen(basename(__DIR__)) * -1)));
         defined('PRIVATE_PATH') || define('PRIVATE_PATH', Env::get('APP_PRIVATE_PATH', constant('APP_PATH') . '/private/'));
@@ -79,14 +91,11 @@ class Config extends PhalconConfig
     /**
      * Config Constructor
      * {@inheritDoc}
-     *
-     * @param array $data
-     * @param bool $insensitive
      */
     public function __construct(array $data = [], bool $insensitive = true)
     {
         $this->defineConst();
-        
+        $now = new \DateTimeImmutable();
         parent::__construct([
             
             /**
@@ -94,7 +103,7 @@ class Config extends PhalconConfig
              */
             'core' => [
                 'name' => 'Zemit Core',
-                'version' => (new \Zemit\Support\Version)->get(),
+                'version' => Version::get(),
                 'package' => 'zemit-cms',
                 'modules' => [
                     'zemit-' . \Zemit\Mvc\Module::NAME_FRONTEND => [
@@ -109,13 +118,13 @@ class Config extends PhalconConfig
                         'className' => \Zemit\Modules\Api\Module::class,
                         'path' => CORE_PATH . 'Modules/Api/Module.php',
                     ],
-                    'zemit-' . \Zemit\Mvc\Module::NAME_CLI => [
-                        'className' => \Zemit\Modules\Cli\Module::class,
-                        'path' => CORE_PATH . 'Modules/Cli/Module.php',
-                    ],
                     'zemit-' . \Zemit\Mvc\Module::NAME_OAUTH2 => [
                         'className' => \Zemit\Modules\Oauth2\Module::class,
                         'path' => CORE_PATH . 'Modules/Oauth2/Module.php',
+                    ],
+                    'zemit-' . \Zemit\Cli\Module::NAME_CLI => [
+                        'className' => \Zemit\Modules\Cli\Module::class,
+                        'path' => CORE_PATH . 'Modules/Cli/Module.php',
                     ],
                 ],
                 'dir' => [
@@ -129,14 +138,15 @@ class Config extends PhalconConfig
              * Application configuration
              */
             'app' => [
+                'name' => Env::get('APP_NAME', 'Zemit'), // Name of your application
                 'namespace' => Env::get('APP_NAMESPACE', 'Zemit'), // Namespace of your application
                 'version' => Env::get('APP_VERSION', date('Ymd')), // allow to set and force a specific version
                 'maintenance' => Env::get('APP_MAINTENANCE', false), // Set true to force the maintenance page
                 'env' => Env::get('APP_ENV', Env::get('APPLICATION_ENV', null)), // Set the current environment
-                'debug' => Env::get('APP_DEBUG', true), // Set true to display debug
+                'debug' => Env::get('APP_DEBUG', false), // Set true to display debug
                 'cache' => Env::get('APP_CACHE', false), // Set true to activate the cache
                 'minify' => Env::get('APP_MINIFY', false), // Set true to activate minifying
-                'copyright' => Env::get('APP_COPYRIGHT', false), // Set true to activate the cache
+                'copyright' => Env::get('APP_COPYRIGHT', false), // Set true to activate the copyright
                 'profiler' => Env::get('APP_PROFILER', false), // Set true to return the profiler
                 'logger' => Env::get('APP_LOGGER', false), // Set true to enable logging
                 'uri' => Env::get('APP_URI', '/'), // Base URI of your application
@@ -145,7 +155,6 @@ class Config extends PhalconConfig
                 'timezone' => Env::get('APP_TIMEZONE', 'America/Montreal'), // allow to set timezone to use with the application
                 'timeoutLimit' => Env::get('APP_TIMEOUT_LIMIT', 60), // allow to set timeout limit to use with the application
                 'memoryLimit' => Env::get('APP_MEMORY_LIMIT', '256M'), // allow to set timeout limit to use with the application
-                'postLimit' => Env::get('APP_POST_LIMIT', '20M'), // allow to set timeout limit to use with the application
                 'sendEmail' => Env::get('APP_SEND_EMAIL', false), // allow to send real email or not
                 
                 'dir' => [
@@ -173,7 +182,20 @@ class Config extends PhalconConfig
                 ],
             ],
             
+            'url' => [
+                'staticBaseUri' => Env::get('URL_STATIC_BASE_URI', null),
+                'baseUri' => Env::get('URL_BASE_URI', '/'),
+                'basePath' => Env::get('URL_BASE_PATH', '/'),
+            ],
+            
             'php' => [
+                'locale' => [
+                    'category' => Env::get('PHP_LOCALE_CATEGORY', LC_ALL),
+                    'rest' => explode(',', Env::get('PHP_LOCALE_REST', 'fr_CA.UTF-8,French_Canada.1252')),
+                ],
+                'date' => [
+                    'timezone' => Env::get('PHP_DATE_TIMEZONE', 'America/Montreal'),
+                ],
                 'ini' => [
                     'zend.exception_ignore_args' => Env::get('PHP_INI_ZEND_EXCEPTION_IGNORE_ARGS', 'On'),
                 ],
@@ -206,7 +228,7 @@ class Config extends PhalconConfig
                         'DATABASE_PASS',
                         'DATABASE_PASSWD',
                         'DATABASE_PASSWORD',
-                        'SECURITY_WORKFACTOR',
+                        'SECURITY_WORK_FACTOR',
                         'SECURITY_SALT',
                         'PASSPHRASE',
                         'SECRET',
@@ -228,6 +250,16 @@ class Config extends PhalconConfig
                     'X-Frame-Options' => Env::get('RESPONSE_HEADER_FRAME_OPTIONS', 'Deny'),
                     'X-XSS-Protection' => Env::get('RESPONSE_HEADER_XSS_PROTECTION', 0),
                 ],
+                'corsHeaders' => [
+                    'Access-Control-Allow-Origin' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_ALLOW_ORIGIN', '*'),
+                    'Access-Control-Allow-Methods' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_ALLOW_METHODS', 'GET, POST, OPTIONS, PUT, PATCH, DELETE'),
+                    'Access-Control-Allow-Headers' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_ALLOW_HEADERS', 'Origin, X-Requested-With, Content-Range, Content-Disposition, Content-Type, Authorization'),
+                    'Access-Control-Allow-Credentials' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_ALLOW_CREDENTIALS', 'true'),
+                    'Access-Control-Max-Age' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_MAX_AGE', '600'),
+//                    'Access-Control-Expose-Headers' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_EXPOSE_HEADERS', '*'),
+//                    'Access-Control-Request-Headers' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_REQUEST_HEADERS', ''),
+//                    'Access-Control-Request-Method' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_REQUEST_METHOD', ''),
+                ],
             ],
             
             /**
@@ -239,6 +271,12 @@ class Config extends PhalconConfig
                 'mode' => Env::get('IDENTITY_SESSION_MODE', 'jwt'), // jwt | string
                 'sessionKey' => Env::get('IDENTITY_SESSION_KEY', 'zemit-identity'),
                 'sessionFallback' => Env::get('IDENTITY_SESSION_FALLBACK', false),
+                'token' => [
+                    'expiration' => $now->modify(Env::get('IDENTITY_TOKEN_EXPIRATION', '+1 day'))->getTimestamp(),
+                ],
+                'refreshToken' => [
+                    'expiration' => $now->modify(Env::get('IDENTITY_REFRESH_TOKEN_EXPIRATION', '+7 day'))->getTimestamp(),
+                ],
             ],
             
             /**
@@ -299,60 +337,127 @@ class Config extends PhalconConfig
                 Models\Feature::class => Models\Feature::class,
             ],
             
+            'dataLifeCycle' => [
+                'models' => [
+                    Models\Log::class => Env::get('DATA_LIFE_CYCLE_LOG', 'triennially'),
+                    Models\Email::class => Env::get('DATA_LIFE_CYCLE_EMAIL', 'triennially'),
+                    Models\Session::class => Env::get('DATA_LIFE_CYCLE_SESSION', 'monthly'),
+                    Models\Audit::class => Env::get('DATA_LIFE_CYCLE_AUDIT', 'quarterly'),
+                    Models\AuditDetail::class => Env::get('DATA_LIFE_CYCLE_AUDIT_DETAIL', 'quarterly'),
+                ],
+                'policies' => [
+                    'monthly' => [
+                        'query' => [
+                            'conditions' => 'createdAt < :createdAt:',
+                            'bind' => ['createdAt' => $now->modify('-1 month')->format('Y-m-01 00:00:00')],
+                            'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
+                        ],
+                    ],
+                    'quarterly' => [
+                        'query' => [
+                            'conditions' => 'createdAt < :createdAt:',
+                            'bind' => ['createdAt' => $now->modify('-3 months')->format('Y-m-01 00:00:00')],
+                            'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
+                        ],
+                    ],
+                    'yearly' => [
+                        'query' => [
+                            'conditions' => 'createdAt < :createdAt:',
+                            'bind' => ['createdAt' => $now->modify('-1 year')->format('Y-01-01 00:00:00')],
+                            'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
+                        ],
+                    ],
+                    'biennially' => [
+                        'query' => [
+                            'conditions' => 'createdAt < :createdAt:',
+                            'bind' => ['createdAt' => $now->modify('-2 year')->format('Y-01-01 00:00:00')],
+                            'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
+                        ],
+                    ],
+                    'triennially' => [
+                        'query' => [
+                            'conditions' => 'createdAt < :createdAt:',
+                            'bind' => ['createdAt' => $now->modify('-3 year')->format('Y-01-01 00:00:00')],
+                            'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
+                        ],
+                    ],
+                ],
+            ],
+            
             /**
              * Service Provider Configuration
+             * expected => actual
              */
             'providers' => [
-                // abstract => concrete
-                Provider\Environment\ServiceProvider::class => Provider\Environment\ServiceProvider::class,
-                Provider\Security\ServiceProvider::class => Provider\Security\ServiceProvider::class,
-                Provider\Session\ServiceProvider::class => Provider\Session\ServiceProvider::class,
-                Provider\Cookies\ServiceProvider::class => Provider\Cookies\ServiceProvider::class,
+                // Application
+                Provider\Application\ServiceProvider::class => Env::get('PROVIDER_APPLICATION', Provider\Application\ServiceProvider::class),
+                Provider\Console\ServiceProvider::class => Env::get('PROVIDER_CONSOLE', Provider\Console\ServiceProvider::class),
+                Provider\Debug\ServiceProvider::class => Env::get('PROVIDER_CONSOLE', Provider\Debug\ServiceProvider::class),
+                Provider\Env\ServiceProvider::class => Env::get('PROVIDER_ENVIRONMENT', Provider\Env\ServiceProvider::class),
+                Provider\Router\ServiceProvider::class => Env::get('PROVIDER_ROUTER', Provider\Router\ServiceProvider::class),
+                Provider\Dispatcher\ServiceProvider::class => Env::get('PROVIDER_DISPATCHER', Provider\Dispatcher\ServiceProvider::class),
+                Provider\Request\ServiceProvider::class => Env::get('PROVIDER_REQUEST', Provider\Request\ServiceProvider::class),
+                Provider\Response\ServiceProvider::class => Env::get('PROVIDER_RESPONSE', Provider\Response\ServiceProvider::class),
                 
-                Provider\Locale\ServiceProvider::class => Provider\Locale\ServiceProvider::class,
-                Provider\Translate\ServiceProvider::class => Provider\Translate\ServiceProvider::class,
-                Provider\Url\ServiceProvider::class => Provider\Url\ServiceProvider::class,
-                Provider\Request\ServiceProvider::class => Provider\Request\ServiceProvider::class,
-                Provider\Response\ServiceProvider::class => Provider\Response\ServiceProvider::class,
-                Provider\Router\ServiceProvider::class => Provider\Router\ServiceProvider::class,
-                Provider\Dispatcher\ServiceProvider::class => Provider\Dispatcher\ServiceProvider::class,
-                Provider\VoltTemplate\ServiceProvider::class => Provider\VoltTemplate\ServiceProvider::class,
-                Provider\View\ServiceProvider::class => Provider\View\ServiceProvider::class,
+                // Security
+                Provider\Security\ServiceProvider::class => Env::get('PROVIDER_SECURITY', Provider\Security\ServiceProvider::class),
+                Provider\Session\ServiceProvider::class => Env::get('PROVIDER_SESSION', Provider\Session\ServiceProvider::class),
+                Provider\Cookies\ServiceProvider::class => Env::get('PROVIDER_COOKIES', Provider\Cookies\ServiceProvider::class),
+                Provider\Crypt\ServiceProvider::class => Env::get('PROVIDER_CRYPT', Provider\Crypt\ServiceProvider::class),
+                Provider\Filter\ServiceProvider::class => Env::get('PROVIDER_FILTER', Provider\Filter\ServiceProvider::class),
+                Provider\Jwt\ServiceProvider::class => Env::get('PROVIDER_JWT', Provider\Jwt\ServiceProvider::class),
+                Provider\ReCaptcha\ServiceProvider::class => Env::get('PROVIDER_CAPTCHA', Provider\ReCaptcha\ServiceProvider::class),
                 
-                Provider\Profiler\ServiceProvider::class => Provider\Profiler\ServiceProvider::class,
-                Provider\Database\ServiceProvider::class => Provider\Database\ServiceProvider::class,
-                Provider\DatabaseReadOnly\ServiceProvider::class => Provider\DatabaseReadOnly\ServiceProvider::class,
-                Provider\Annotations\ServiceProvider::class => Provider\Annotations\ServiceProvider::class,
-                Provider\ModelsManager\ServiceProvider::class => Provider\ModelsManager\ServiceProvider::class,
-                Provider\ModelsMetadata\ServiceProvider::class => Provider\ModelsMetadata\ServiceProvider::class,
-                Provider\ModelsCache\ServiceProvider::class => Provider\ModelsCache\ServiceProvider::class,
-                Provider\Cache\ServiceProvider::class => Provider\Cache\ServiceProvider::class,
-                Provider\Mailer\ServiceProvider::class => Provider\Mailer\ServiceProvider::class,
-                Provider\Logger\ServiceProvider::class => Provider\Logger\ServiceProvider::class,
-                Provider\FileSystem\ServiceProvider::class => Provider\FileSystem\ServiceProvider::class,
+                // Language
+                Provider\Locale\ServiceProvider::class => Env::get('PROVIDER_LOCALE', Provider\Locale\ServiceProvider::class),
+                Provider\Translate\ServiceProvider::class => Env::get('PROVIDER_TRANSLATE', Provider\Translate\ServiceProvider::class),
                 
-                Provider\Assets\ServiceProvider::class => Provider\Assets\ServiceProvider::class,
-                Provider\Tag\ServiceProvider::class => Provider\Tag\ServiceProvider::class,
-                Provider\Filter\ServiceProvider::class => Provider\Filter\ServiceProvider::class,
-                Provider\Flash\ServiceProvider::class => Provider\Flash\ServiceProvider::class,
-                Provider\Escaper\ServiceProvider::class => Provider\Escaper\ServiceProvider::class,
-                Provider\Markdown\ServiceProvider::class => Provider\Markdown\ServiceProvider::class,
-                Provider\Utils\ServiceProvider::class => Provider\Utils\ServiceProvider::class,
-                Provider\Crypt\ServiceProvider::class => Provider\Crypt\ServiceProvider::class,
+                // View
+                Provider\View\ServiceProvider::class => Env::get('PROVIDER_VIEW', Provider\View\ServiceProvider::class),
+                Provider\Url\ServiceProvider::class => Env::get('PROVIDER_URL', Provider\Url\ServiceProvider::class),
+                Provider\Volt\ServiceProvider::class => Env::get('PROVIDER_VOLT', Provider\Volt\ServiceProvider::class),
+                Provider\Tag\ServiceProvider::class => Env::get('PROVIDER_TAG', Provider\Tag\ServiceProvider::class),
+                Provider\Assets\ServiceProvider::class => Env::get('PROVIDER_ASSETS', Provider\Assets\ServiceProvider::class),
+                Provider\Flash\ServiceProvider::class => Env::get('PROVIDER_FLASH', Provider\Flash\ServiceProvider::class),
+                Provider\Escaper\ServiceProvider::class => Env::get('PROVIDER_ESCAPER', Provider\Escaper\ServiceProvider::class),
+                Provider\Markdown\ServiceProvider::class => Env::get('PROVIDER_MARKDOWN', Provider\Markdown\ServiceProvider::class),
                 
-                // oauth2
-                Provider\Identity\ServiceProvider::class => Provider\Identity\ServiceProvider::class,
-                Provider\Oauth2Facebook\ServiceProvider::class => Provider\Oauth2Facebook\ServiceProvider::class,
-                Provider\Oauth2Google\ServiceProvider::class => Provider\Oauth2Google\ServiceProvider::class,
+                // Database & Models
+                Provider\Database\ServiceProvider::class => Env::get('PROVIDER_DATABASE', Provider\Database\ServiceProvider::class),
+                Provider\DatabaseReadOnly\ServiceProvider::class => Env::get('PROVIDER_DATABASE_READ_ONLY', Provider\DatabaseReadOnly\ServiceProvider::class),
+                Provider\ModelsManager\ServiceProvider::class => Env::get('PROVIDER_MODELS_MANAGER', Provider\ModelsManager\ServiceProvider::class),
                 
-                // lib
-                Provider\OCR\ServiceProvider::class => Provider\OCR\ServiceProvider::class,
-                Provider\Jwt\ServiceProvider::class => Provider\Jwt\ServiceProvider::class,
-                Provider\V8js\ServiceProvider::class => Provider\V8js\ServiceProvider::class,
-                Provider\Captcha\ServiceProvider::class => Provider\Captcha\ServiceProvider::class,
-                Provider\Gravatar\ServiceProvider::class => Provider\Gravatar\ServiceProvider::class,
-                Provider\Clamav\ServiceProvider::class => Provider\Clamav\ServiceProvider::class,
-//                Snowair\Debugbar\ServiceProvider::class => \Snowair\Debugbar\ServiceProvider::class,
+                // Profiling & Logging
+                Provider\Profiler\ServiceProvider::class => Env::get('PROVIDER_PROFILER', Provider\Profiler\ServiceProvider::class),
+                Provider\Logger\ServiceProvider::class => Env::get('PROVIDER_LOGGER', Provider\Logger\ServiceProvider::class),
+                
+                // Caching
+                Provider\Annotations\ServiceProvider::class => Env::get('PROVIDER_ANNOTATIONS', Provider\Annotations\ServiceProvider::class),
+                Provider\ModelsMetadata\ServiceProvider::class => Env::get('PROVIDER_MODELS_METADATA', Provider\ModelsMetadata\ServiceProvider::class),
+                Provider\ModelsCache\ServiceProvider::class => Env::get('PROVIDER_MODELS_CACHE', Provider\ModelsCache\ServiceProvider::class),
+                Provider\Cache\ServiceProvider::class => Env::get('PROVIDER_CACHE', Provider\Cache\ServiceProvider::class),
+                
+                // Identity & Auth
+                Provider\Identity\ServiceProvider::class => Env::get('PROVIDER_IDENTITY', Provider\Identity\ServiceProvider::class),
+                Provider\Oauth2Client\ServiceProvider::class => Env::get('PROVIDER_OAUTH_2_FACEBOOK', Provider\Oauth2Client\ServiceProvider::class),
+                Provider\Oauth2Server\ServiceProvider::class => Env::get('PROVIDER_OAUTH_2_FACEBOOK', Provider\Oauth2Server\ServiceProvider::class),
+                Provider\Oauth2Facebook\ServiceProvider::class => Env::get('PROVIDER_OAUTH_2_FACEBOOK', Provider\Oauth2Facebook\ServiceProvider::class),
+                Provider\Oauth2Google\ServiceProvider::class => Env::get('PROVIDER_OAUTH_2_GOOGLE', Provider\Oauth2Google\ServiceProvider::class),
+    
+                // Mailing
+                Provider\Mailer\ServiceProvider::class => Env::get('PROVIDER_MAILER', Provider\Mailer\ServiceProvider::class),
+                Provider\Imap\ServiceProvider::class => Env::get('PROVIDER_IMAP', Provider\Imap\ServiceProvider::class),
+                
+                // Others
+                Provider\FileSystem\ServiceProvider::class => Env::get('PROVIDER_FILE_SYSTEM', Provider\FileSystem\ServiceProvider::class),
+                Provider\Utils\ServiceProvider::class => Env::get('PROVIDER_UTILS', Provider\Utils\ServiceProvider::class),
+                Provider\Aws\ServiceProvider::class => Env::get('PROVIDER_AWS', Provider\Aws\ServiceProvider::class),
+                Provider\OCR\ServiceProvider::class => Env::get('PROVIDER_OCR', Provider\OCR\ServiceProvider::class),
+                Provider\V8js\ServiceProvider::class => Env::get('PROVIDER_V8_JS', Provider\V8js\ServiceProvider::class),
+                Provider\Gravatar\ServiceProvider::class => Env::get('PROVIDER_GRAVATAR', Provider\Gravatar\ServiceProvider::class),
+                Provider\Clamav\ServiceProvider::class => Env::get('PROVIDER_CLAMAV', Provider\Clamav\ServiceProvider::class),
+                Provider\OpenAi\ServiceProvider::class => Env::get('PROVIDER_OPENAI', Provider\OpenAi\ServiceProvider::class),
+                Provider\LoremIpsum\ServiceProvider::class => Env::get('PROVIDER_LOREM_IPSUM', Provider\LoremIpsum\ServiceProvider::class),
             ],
             
             /**
@@ -393,15 +498,10 @@ class Config extends PhalconConfig
              * Default filters
              */
             'filters' => [
-                Filter::FILTER_MD5 => Filters\Md5::class,
-                Filter::FILTER_JSON => Filters\Json::class,
-                Filter::FILTER_IPV4 => Filters\IPv4::class,
-                Filter::FILTER_IPV6 => Filters\IPv6::class,
             ],
             
             /**
              * Default modules
-             * @todo change this to class => [class => '', path => '']
              */
             'modules' => [
                 \Zemit\Mvc\Module::NAME_FRONTEND => [
@@ -416,21 +516,14 @@ class Config extends PhalconConfig
                     'className' => \Zemit\Modules\Api\Module::class,
                     'path' => CORE_PATH . 'Modules/Api/Module.php',
                 ],
-                \Zemit\Mvc\Module::NAME_CLI => [
-                    'className' => \Zemit\Modules\Cli\Module::class,
-                    'path' => CORE_PATH . 'Modules/Cli/Module.php',
-                ],
                 \Zemit\Mvc\Module::NAME_OAUTH2 => [
                     'className' => \Zemit\Modules\Oauth2\Module::class,
                     'path' => CORE_PATH . 'Modules/Oauth2/Module.php',
                 ],
-                /**
-                 * @TODO support this way too
-                 */
-//                \Zemit\Modules\Frontend\Module::class => \Zemit\Modules\Frontend\Module::class,
-//                \Zemit\Modules\Admin\Module::class => \Zemit\Modules\Admin\Module::class,
-//                \Zemit\Modules\Api\Module::class => \Zemit\Modules\Api\Module::class,
-//                \Zemit\Modules\Cli\Module::class => \Zemit\Modules\Cli\Module::class,
+                \Zemit\Cli\Module::NAME_CLI => [
+                    'className' => \Zemit\Modules\Cli\Module::class,
+                    'path' => CORE_PATH . 'Modules/Cli/Module.php',
+                ],
             ],
             
             /**
@@ -442,51 +535,83 @@ class Config extends PhalconConfig
                     'namespace' => Env::get('ROUTER_DEFAULT_NAMESPACE', 'Zemit\\Modules\\Frontend\\Controllers'),
                     'module' => Env::get('ROUTER_DEFAULT_MODULE', 'frontend'),
                     'controller' => Env::get('ROUTER_DEFAULT_CONTROLLER', 'index'),
-                    'task' => Env::get('ROUTER_DEFAULT_CONTROLLER', 'index'),
                     'action' => Env::get('ROUTER_DEFAULT_ACTION', 'index'),
+                ],
+                'cli' => [
+                    'namespace' => Env::get('ROUTER_CLI_DEFAULT_NAMESPACE', 'Zemit\\Modules\\Cli\\Tasks'),
+                    'module' => Env::get('ROUTER_CLI_DEFAULT_MODULE', 'cli'),
+                    'task' => Env::get('ROUTER_CLI_DEFAULT_TASK', 'help'),
+                    'action' => Env::get('ROUTER_CLI_DEFAULT_ACTION', 'main'),
                 ],
                 'notFound' => [
                     'namespace' => Env::get('ROUTER_NOTFOUND_NAMESPACE', null),
                     'module' => Env::get('ROUTER_NOTFOUND_MODULE', null),
                     'controller' => Env::get('ROUTER_NOTFOUND_CONTROLLER', 'error'),
-                    'task' => Env::get('ROUTER_NOTFOUND_CONTROLLER', 'error'),
+                    'task' => Env::get('ROUTER_NOTFOUND_TASK', 'error'),
                     'action' => Env::get('ROUTER_NOTFOUND_ACTION', 'notFound'),
                 ],
                 'fatal' => [
                     'namespace' => Env::get('ROUTER_FATAL_NAMESPACE', null),
                     'module' => Env::get('ROUTER_FATAL_MODULE', null),
                     'controller' => Env::get('ROUTER_FATAL_CONTROLLER', 'error'),
-                    'task' => Env::get('ROUTER_FATAL_CONTROLLER', 'error'),
+                    'task' => Env::get('ROUTER_FATAL_TASK', 'error'),
                     'action' => Env::get('ROUTER_FATAL_ACTION', 'fatal'),
                 ],
                 'forbidden' => [
-                    'namespace' => Env::get('ROUTER_MAINTENANCE_NAMESPACE', null),
-                    'module' => Env::get('ROUTER_MAINTENANCE_MODULE', null),
-                    'controller' => Env::get('ROUTER_MAINTENANCE_CONTROLLER', 'error'),
-                    'task' => Env::get('ROUTER_MAINTENANCE_CONTROLLER', 'error'),
-                    'action' => Env::get('ROUTER_MAINTENANCE_ACTION', 'forbidden'),
+                    'namespace' => Env::get('ROUTER_FORBIDDEN_NAMESPACE', null),
+                    'module' => Env::get('ROUTER_FORBIDDEN_MODULE', null),
+                    'controller' => Env::get('ROUTER_FORBIDDEN_CONTROLLER', 'error'),
+                    'task' => Env::get('ROUTER_FORBIDDEN_TASK', 'error'),
+                    'action' => Env::get('ROUTER_FORBIDDEN_ACTION', 'forbidden'),
                 ],
                 'unauthorized' => [
-                    'namespace' => Env::get('ROUTER_MAINTENANCE_NAMESPACE', null),
-                    'module' => Env::get('ROUTER_MAINTENANCE_MODULE', null),
-                    'controller' => Env::get('ROUTER_MAINTENANCE_CONTROLLER', 'error'),
-                    'task' => Env::get('ROUTER_MAINTENANCE_CONTROLLER', 'error'),
-                    'action' => Env::get('ROUTER_MAINTENANCE_ACTION', 'unauthorized'),
+                    'namespace' => Env::get('ROUTER_UNAUTHORIZED_NAMESPACE', null),
+                    'module' => Env::get('ROUTER_UNAUTHORIZED_MODULE', null),
+                    'controller' => Env::get('ROUTER_UNAUTHORIZED_CONTROLLER', 'error'),
+                    'task' => Env::get('ROUTER_UNAUTHORIZED_TASK', 'error'),
+                    'action' => Env::get('ROUTER_UNAUTHORIZED_ACTION', 'unauthorized'),
                 ],
                 'maintenance' => [
                     'namespace' => Env::get('ROUTER_MAINTENANCE_NAMESPACE', null),
                     'module' => Env::get('ROUTER_MAINTENANCE_MODULE', null),
                     'controller' => Env::get('ROUTER_MAINTENANCE_CONTROLLER', 'error'),
-                    'task' => Env::get('ROUTER_MAINTENANCE_CONTROLLER', 'error'),
+                    'task' => Env::get('ROUTER_MAINTENANCE_TASK', 'error'),
                     'action' => Env::get('ROUTER_MAINTENANCE_ACTION', 'maintenance'),
                 ],
                 'error' => [
                     'namespace' => Env::get('ROUTER_ERROR_NAMESPACE', null),
                     'module' => Env::get('ROUTER_ERROR_MODULE', null),
                     'controller' => Env::get('ROUTER_ERROR_CONTROLLER', 'error'),
-                    'task' => Env::get('ROUTER_ERROR_CONTROLLER', 'error'),
+                    'task' => Env::get('ROUTER_ERROR_TASK', 'error'),
                     'action' => Env::get('ROUTER_ERROR_ACTION', 'index'),
                 ],
+            ],
+    
+            /**
+             * View Configuration
+             */
+            'view' => [
+                'minify' => Env::get('VIEW_MINIFY', false),
+                'engines' => Env::get('VIEW_ENGINES', [
+                    '.phtml' => \Phalcon\Mvc\View\Engine\Php::class,
+                    '.volt' => \Phalcon\Mvc\View\Engine\Volt::class,
+//                    '.mhtml' => \Phalcon\Mvc\View\Engine\Mustache::class,
+//                    '.twig' => \Phalcon\Mvc\View\Engine\Twig::class,
+//                    '.tpl' => \Phalcon\Mvc\View\Engine\Smarty::class
+                ]),
+            ],
+    
+            /**
+             * Volt Configuration
+             */
+            'volt' => [
+                'autoescape' => Env::get('VOLT_AUTOESCAPE', false),
+                'always' => Env::get('VOLT_ALWAYS', false),
+                'extension' => Env::get('VOLT_EXTENSION', '.php'),
+                'separator' => Env::get('VOLT_SEPARATOR', '%%'),
+                'path' => Env::get('VOLT_PATH', './'),
+                'prefix' => Env::get('VOLT_PREFIX', null),
+                'stat' => Env::get('VOLT_STAT', true), // Whether Phalcon must check if there are differences between the template file and its compiled path
             ],
             
             /**
@@ -496,7 +621,7 @@ class Config extends PhalconConfig
                 'default_image' => Env::get('GRAVATAR_DEFAULT_IMAGE', 'identicon'),
                 'size' => Env::get('GRAVATAR_SIZE', 24),
                 'rating' => Env::get('GRAVATAR_RATING', 'pg'),
-                'use_https' => Env::get('GRAVATAR_HTPPS', true),
+                'use_https' => Env::get('GRAVATAR_USE_HTTPS', true),
             ],
             
             /**
@@ -505,6 +630,10 @@ class Config extends PhalconConfig
             'reCaptcha' => [
                 'siteKey' => Env::get('RECAPTCHA_KEY'),
                 'secret' => Env::get('RECAPTCHA_SECRET'),
+                'expectedHostname' => Env::get('RECAPTCHA_EXPECTED_HOSTNAME'),
+                'expectedApkPackageName' => Env::get('RECAPTCHA_EXPECTED_APK_PACKAGE_NAME'),
+                'expectedAction' => Env::get('RECAPTCHA_EXPECTED_ACTION', null),
+                'scoreThreshold' => Env::get('RECAPTCHA_SCORE_THRESHOLD', 0.5),
             ],
             
             /**
@@ -513,7 +642,7 @@ class Config extends PhalconConfig
             'locale' => [
                 'default' => Env::get('LOCALE_DEFAULT', 'en'),
                 'sessionKey' => Env::get('LOCALE_SESSION_KEY', 'zemit-locale'),
-                'mode' => Env::get('LOCALE_MODE', Locale::MODE_SESSION_GEOIP),
+                'mode' => Env::get('LOCALE_MODE', Locale::MODE_DEFAULT),
                 'allowed' => explode(',', Env::get('LOCALE_ALLOWED', 'en')),
             ],
             
@@ -523,7 +652,7 @@ class Config extends PhalconConfig
             'translate' => [
                 'locale' => Env::get('TRANSLATE_LOCALE', 'en_US.utf8'),
                 'defaultDomain' => Env::get('TRANSLATE_DEFAULT_DOMAIN', 'messages'),
-                'category' => Env::get('TRANSLATE_CATEGORY', LC_MESSAGES),
+                'category' => Env::get('TRANSLATE_CATEGORY', defined('LC_MESSAGES')? LC_MESSAGES : 5),
                 'directory' => [
                     Env::get('TRANSLATE_DEFAULT_DOMAIN', 'messages') => Env::get('TRANSLATE_DEFAULT_PATH', CORE_PATH . 'Locales'),
                 ],
@@ -552,7 +681,7 @@ class Config extends PhalconConfig
                     ],
                     'redis' => [
                         'adapter' => Env::get('SESSION_REDIS_ADAPTER', \Phalcon\Session\Adapter\Redis::class),
-                        'defaultSerializer' => Env::get('SESSION_REDIS_DEFAULT_SERIALIZER', Env::get('REDIS_DEFAULT_SERIALIZER', 1)), // \Redis::SERIALIZER_PHP
+                        'defaultSerializer' => Env::get('SESSION_REDIS_DEFAULT_SERIALIZER', Env::get('REDIS_DEFAULT_SERIALIZER', 'php')),
                         'lifetime' => Env::get('SESSION_REDIS_LIFETIME', Env::get('REDIS_LIFETIME', 3600)),
                         'serializer' => Env::get('SESSION_REDIS_SERIALIZER', Env::get('REDIS_SERIALIZER', null)),
                         'host' => Env::get('SESSION_REDIS_HOST', Env::get('REDIS_HOST', '127.0.0.1')),
@@ -640,8 +769,32 @@ class Config extends PhalconConfig
              * Default security settings
              */
             'security' => [ // phalcon security config
-                'workfactor' => Env::get('SECURITY_WORKFACTOR', 12), // workfactor for the phalcon security service
-                'salt' => Env::get('SECURITY_SALT', 'ZEMIT_CORE_DEFAULT_SALT') // salt for the phalcon security service
+                'workFactor' => Env::get('SECURITY_WORK_FACTOR', 12), // workfactor for the phalcon security service
+                'hash' => Env::get('SECURITY_HASH', Security::CRYPT_SHA512), // set default hash to sha512
+                'salt' => Env::get('SECURITY_SALT', '>mY.Db5fR?k%~<ZWf\}Zh35_IFC]#0Xx'), // salt for the phalcon security service
+                'jwt' => [
+                    'signer' => Env::get('SECURITY_JWT_SIGNER', \Phalcon\Security\JWT\Signer\Hmac::class),
+                    'algo' => Env::get('SECURITY_JWT_ALGO', 'sha512'),
+                    'contentType' => Env::get('SECURITY_JWT_CONTENT_TYPE', 'application/json'),
+                    'expiration' => $now->modify(Env::get('SECURITY_JWT_EXPIRATION', '+1 day'))->getTimestamp(),
+                    'notBefore' => $now->modify(Env::get('SECURITY_JWT_NOT_BEFORE', '-1 minute'))->getTimestamp(),
+                    'issuedAt' => $now->modify(Env::get('SECURITY_JWT_ISSUED_AT', 'now'))->getTimestamp(),
+                    'issuer' => Env::get('SECURITY_JWT_ISSUER', 'ZEMIT_CORE_DEFAULT_ISSUER'),
+                    'audience' => Env::get('SECURITY_JWT_AUDIENCE', 'ZEMIT_CORE_DEFAULT_AUDIENCE'),
+                    'id' => Env::get('SECURITY_JWT_ID', 'ZEMIT_CORE_DEFAULT_ID'),
+                    'subject' => Env::get('SECURITY_JWT_SUBJECT', 'ZEMIT_CORE_DEFAULT_SUBJECT'),
+                    'passphrase' => Env::get('SECURITY_JWT_PASSPHRASE', 'Tf0PHY/^yDdJs*~)?x#xCNj_N[jW/`c*'),
+                ],
+            ],
+    
+            /**
+             * Default crypt settings
+             * @todo
+             */
+            'crypt' => [
+                'cipher' => Env::get('CRYPT_CIPHER', 'aes-256-cfb'),
+                'hash' => Env::get('CRYPT_HASH', 'sha256'),
+                'useSigning' => Env::get('CRYPT_USE_SIGNING', false),
             ],
             
             /**
@@ -673,7 +826,7 @@ class Config extends PhalconConfig
                     ],
                     'redis' => [
                         'adapter' => Env::get('CACHE_REDIS_ADAPTER', \Phalcon\Cache\Adapter\Redis::class),
-                        'defaultSerializer' => Env::get('CACHE_REDIS_DEFAULT_SERIALIZER', Env::get('REDIS_DEFAULT_SERIALIZER', 1)), // \Redis::SERIALIZER_PHP
+                        'defaultSerializer' => Env::get('CACHE_REDIS_DEFAULT_SERIALIZER', Env::get('REDIS_DEFAULT_SERIALIZER', 'php')),
                         'lifetime' => Env::get('CACHE_REDIS_LIFETIME', Env::get('REDIS_LIFETIME', 3600)),
                         'serializer' => Env::get('CACHE_REDIS_SERIALIZER', Env::get('REDIS_SERIALIZER', null)),
                         'host' => Env::get('CACHE_REDIS_HOST', Env::get('REDIS_HOST', '127.0.0.1')),
@@ -695,7 +848,7 @@ class Config extends PhalconConfig
              * Metadata Configuration
              */
             'metadata' => [
-                'cli' => Env::get('METADATA_DRIVER_CLI', 'memory'),
+                'driverCli' => Env::get('METADATA_DRIVER_CLI', 'memory'),
                 'driver' => Env::get('METADATA_DRIVER', 'memory'),
                 'drivers' => [
                     'apcu' => [
@@ -720,7 +873,7 @@ class Config extends PhalconConfig
                     ],
                     'redis' => [
                         'adapter' => Env::get('METADATA_REDIS_ADAPTER', \Phalcon\Mvc\Model\MetaData\Redis::class),
-                        'defaultSerializer' => Env::get('METADATA_REDIS_DEFAULT_SERIALIZER', Env::get('REDIS_DEFAULT_SERIALIZER', 1)), // \Redis::SERIALIZER_PHP
+                        'defaultSerializer' => Env::get('METADATA_REDIS_DEFAULT_SERIALIZER', Env::get('REDIS_DEFAULT_SERIALIZER', 'php')),
                         'lifetime' => Env::get('METADATA_REDIS_LIFETIME', Env::get('REDIS_LIFETIME', 3600)),
                         'serializer' => Env::get('METADATA_REDIS_SERIALIZER', Env::get('REDIS_SERIALIZER', null)),
                         'host' => Env::get('METADATA_REDIS_HOST', Env::get('REDIS_HOST', '127.0.0.1')),
@@ -750,7 +903,7 @@ class Config extends PhalconConfig
              * - Aerospike
              */
             'annotations' => [
-                'default' => Env::get('ANNOTATIONS_DRIVER', 'memory'),
+                'driver' => Env::get('ANNOTATIONS_DRIVER', 'memory'),
                 'drivers' => [
                     'memory' => [
                         'adapter' => Env::get('ANNOTATIONS_MEMORY_ADAPTER', \Phalcon\Annotations\Adapter\Memory::class),
@@ -774,7 +927,7 @@ class Config extends PhalconConfig
                     ],
                     'redis' => [
                         'adapter' => Env::get('ANNOTATIONS_REDIS_ADAPTER', \Phalcon\Annotations\Adapter\Redis::class),
-                        'defaultSerializer' => Env::get('ANNOTATIONS_REDIS_DEFAULT_SERIALIZER', Env::get('REDIS_DEFAULT_SERIALIZER', 1)), // \Redis::SERIALIZER_PHP
+                        'defaultSerializer' => Env::get('ANNOTATIONS_REDIS_DEFAULT_SERIALIZER', Env::get('REDIS_DEFAULT_SERIALIZER', 'php')),
                         'lifetime' => Env::get('ANNOTATIONS_REDIS_LIFETIME', Env::get('REDIS_LIFETIME', 3600)),
                         'serializer' => Env::get('ANNOTATIONS_REDIS_SERIALIZER', Env::get('REDIS_SERIALIZER', null)),
                         'host' => Env::get('ANNOTATIONS_REDIS_HOST', Env::get('REDIS_HOST', '127.0.0.1')),
@@ -788,8 +941,10 @@ class Config extends PhalconConfig
                         'adapter' => Env::get('ANNOTATIONS_AEROSPIKE_ADAPTER', \Phalcon\Annotations\Adapter\Aerospike::class),
                     ],
                 ],
-                'prefix' => Env::get('ANNOTATIONS_PREFIX', 'zemit_annotations_'),
-                'lifetime' => Env::get('ANNOTATIONS_LIFETIME', 86400),
+                'default' => [
+                    'prefix' => Env::get('ANNOTATIONS_PREFIX', 'zemit_annotations_'),
+                    'lifetime' => Env::get('ANNOTATIONS_LIFETIME', 86400),
+                ],
             ],
             
             /**
@@ -799,7 +954,7 @@ class Config extends PhalconConfig
                 'default' => Env::get('DATABASE_ADAPTER', 'mysql'),
                 'drivers' => [
                     'mysql' => [
-                        'adapter' => 'Mysql',
+                        'adapter' => Env::get('DATABASE_MYSQL_ADAPTER', \Phalcon\Db\Adapter\Pdo\Mysql::class),
                         'dialectClass' => Env::get('DATABASE_DIALECT_CLASS', \Zemit\Db\Dialect\Mysql::class),
                         'host' => Env::get('DATABASE_HOST', 'localhost'),
                         'port' => Env::get('DATABASE_PORT', 3306),
@@ -808,15 +963,17 @@ class Config extends PhalconConfig
                         'password' => Env::get('DATABASE_PASSWORD', ''),
                         'charset' => Env::get('DATABASE_CHARSET', 'utf8'),
                         'options' => [
-                            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . Env::get('DATABASE_CHARSET', 'utf8'),
+                            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . Env::get('DATABASE_CHARSET', 'utf8') .
+                            ', sql_mode = \'' . Env::get('DATABASE_SQL_MODE', 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION') . '\'',
                             PDO::ATTR_EMULATE_PREPARES => Env::get('DATABASE_PDO_EMULATE_PREPARES', false), // https://stackoverflow.com/questions/10113562/pdo-mysql-use-pdoattr-emulate-prepares-or-not
                             PDO::ATTR_STRINGIFY_FETCHES => Env::get('DATABASE_PDO_STRINGIFY_FETCHES', false),
                             PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => Env::get('MYSQL_ATTR_SSL_VERIFY_SERVER_CERT', true),
+                            PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => Env::get('MYSQL_ATTR_USE_BUFFERED_QUERY', true),
                         ],
                         /**
-                         * ReadOnly Configuration
+                         * Readonly Configuration
                          */
-                        'readOnly' => [
+                        'readonly' => [
                             'enable' => Env::get('DATABASE_READONLY_ENABLE', false),
                             'host' => Env::get('DATABASE_READONLY_HOST'),
                             'port' => Env::get('DATABASE_READONLY_PORT'),
@@ -866,11 +1023,98 @@ class Config extends PhalconConfig
             ],
             
             /**
+             * FileSystem
+             * https://flysystem.thephpleague.com/docs/
+             */
+            'fileSystem' => [
+                'driver' => Env::get('FILE_SYSTEM_DRIVER', 'local'),
+                'drivers' => [
+                    'local' => [
+                        'rootDirectory' => Env::get('FILE_SYSTEM_LOCAL_ROOT_DIRECTORY', ROOT_PATH)
+                    ],
+                    'ftp' => [
+                        'host' => Env::get('FILE_SYSTEM_FTP_HOST'), // required
+                        'root' => Env::get('FILE_SYSTEM_FTP_ROOT'), // required
+                        'username' => Env::get('FILE_SYSTEM_FTP_USERNAME'), // required
+                        'password' => Env::get('FILE_SYSTEM_FTP_PASSWORD'), // required
+                        'port' => Env::get('FILE_SYSTEM_FTP_PORT', 21),
+                        'ssl' => Env::get('FILE_SYSTEM_FTP_SSL', false),
+                        'timeout' => Env::get('FILE_SYSTEM_FTP_TIMEOUT', 10),
+                        'utf8' => Env::get('FILE_SYSTEM_FTP_UTF8', false),
+                        'passive' => Env::get('FILE_SYSTEM_FTP_PASSIVE', true),
+                        'transferMode' => Env::get('FILE_SYSTEM_FTP_TRANSFER_MODE', defined('FTP_BINARY')? FTP_BINARY : 2),
+                        'systemType' => Env::get('FILE_SYSTEM_FTP_SYSTEM_TYPE'), // windows or unix
+                        'ignorePassiveAddress' => Env::get('FILE_SYSTEM_FTP_SYSTEM_IGNORE_PASSIVE_ADDRESS'), // true or false
+                        'timestampsOnUnixListingsEnabled' => Env::get('FILE_SYSTEM_FTP_TIMESTAMPS_ON_UNIX_LISTING_ENABLED', false), // true or false
+                        'recurseManually' => Env::get('FILE_SYSTEM_FTP_RECURSE_MANUALLY', true), // true or false
+                    ],
+                    'sftp' => [
+                        'host' => Env::get('FILE_SYSTEM_SFTP_HOST'), // required
+                        'username' => Env::get('FILE_SYSTEM_SFTP_USERNAME'), // required
+                        'password' => Env::get('FILE_SYSTEM_SFTP_PASSWORD'), // set to null if privateKey is used
+                        'privateKey' => Env::get('FILE_SYSTEM_SFTP_PRIVATE_KEY'), // can be used instead of password, set to null if password is set
+                        'passphrase' => Env::get('FILE_SYSTEM_SFTP_PASSPHRASE'), //  set to null if privateKey is not used or has no passphrase
+                        'port' => Env::get('FILE_SYSTEM_SFTP_PORT', 22),
+                        'useAgent' => Env::get('FILE_SYSTEM_SFTP_USE_AGENT', false),
+                        'timeout' => Env::get('FILE_SYSTEM_SFTP_TIMEOUT', 10),
+                        'maxTries' => Env::get('FILE_SYSTEM_SFTP_MAX_TRIES', 4),
+                        'hostFingerprint' => Env::get('FILE_SYSTEM_SFTP_HOST_FINGERPRINT'),
+                        'connectivityChecker' => Env::get('FILE_SYSTEM_SFTP_CONNECTIVITY_CHECKER'),
+                    ],
+                    'memory' => [
+                        // nothing
+                    ],
+                    'readOnly' => [
+                        // nothing
+                    ],
+                    'awsS3' => [
+                        'bucketName' => Env::get('FILE_SYSTEM_AWS_S3_BUCKET_NAME'),
+                        'pathPrefix' => Env::get('FILE_SYSTEM_AWS_S3_PATH_PREFIX')
+                    ],
+                    'googleCloudStorage' => [
+                        'bucketName' => Env::get('FILE_SYSTEM_GOOGLE_CLOUD_STORAGE_BUCKET_NAME'),
+                        'pathPrefix' => Env::get('FILE_SYSTEM_GOOGLE_CLOUD_STORAGE_PATH_PREFIX')
+                    ],
+                    'azureBlobStorage' => [
+                        'containerName' => Env::get('FILE_SYSTEM_AZURE_BLOB_STORAGE_CONTAINER_NAME'),
+                        'pathPrefix' => Env::get('FILE_SYSTEM_AZURE_BLOB_STORAGE_PATH_PREFIX')
+                    ],
+                    'webdav' => [
+                        'baseUri' => Env::get('FILE_SYSTEM_WEBDAV_BASE_URI'),
+                        'userName' => Env::get('FILE_SYSTEM_WEBDAV_USERNAME'),
+                        'password' => Env::get('FILE_SYSTEM_WEBDAV_PASSWORD'),
+                    ],
+                    'zipArchive' => [
+                        'path' => Env::get('FILE_SYSTEM_ZIP_ARCHIVE_PATH')
+                    ],
+                ],
+            ],
+            
+            /**
              * Cookies
              */
             'cookies' => [
                 'useEncryption' => Env::get('COOKIES_USE_ENCRYPTION', true),
                 'signKey' => Env::get('COOKIES_SIGN_KEY', ''),
+            ],
+            
+            /**
+             * AWS - Amazon Web Service
+             */
+            'aws' => [
+                'region' => Env::get('AWS_REGION', 'ca-central-1'),
+                'version' => Env::get('AWS_VERSION', 'latest'),
+                'credentials' => [
+                    'key' => Env::get('AWS_CREDENTIALS_KEY', ''),
+                    'secret' => Env::get('AWS_CREDENTIALS_SECRET', ''),
+                ],
+            ],
+    
+            /**
+             * Facebook SDK
+             */
+            'facebook' => [
+            
             ],
             
             /**
@@ -916,6 +1160,30 @@ class Config extends PhalconConfig
                 ],
             ],
             
+            'openai' => [
+                'secretKey' => Env::get('OPENAI_SECRET_KEY'),
+                'organizationId' => Env::get('OPENAI_ORGANIZATION_ID'),
+            ],
+            
+            /**
+             * Imap
+             * https://packagist.org/packages/php-imap/php-imap
+             */
+            'imap' => [
+                'path' => Env::get('IMAP_PATH'), // IMAP server and mailbox folder
+                'login' => Env::get('IMAP_LOGIN'), // Username for the before configured mailbox
+                'password' => Env::get('IMAP_PASSWORD'), // Password for the before configured username
+                'attachmentsDir' => Env::get('IMAP_ATTACHMENTS_DIR'), // Server encoding (optional)
+                'serverEncoding' => Env::get('IMAP_SERVER_ENCODING', 'UTF-8'), // Directory, where attachments will be saved (optional)
+                'trimImapPath' => Env::get('IMAP_TRIM_IMAP_PATH', true),   // Trim leading/ending whitespaces of IMAP path (optional)
+                'attachmentFilenameMode' => Env::get('IMAP_ATTACHMENT_FILENAME_MODE', false), // Attachment filename mode (optional; false = random filename; true = original filename)
+            ],
+            
+            'clamav' => [
+                'address' => Env::get('CLAMAV_ADDRESS', 'unix:///run/clamd.scan/clamd.sock'),
+                'timeout' => Env::get('CLAMAV_TIMEOUT', 30),
+            ],
+            
             /**
              * Dotenv
              */
@@ -950,12 +1218,6 @@ class Config extends PhalconConfig
                             Models\Audit::class => ['create'],
                             Models\AuditDetail::class => ['create'],
                             Models\Session::class => ['*'],
-                        ],
-                    ],
-    
-                    'frontend' => [
-                        'components' => [
-                            Frontend\Controllers\IndexController::class => ['index'],
                         ],
                     ],
                     
@@ -1076,7 +1338,7 @@ class Config extends PhalconConfig
                             ],
                         ],
                     ],
-    
+                    
                     'manageSiteList' => [
                         'components' => [
                             Api\Controllers\SiteController::class => ['*'],
@@ -1090,7 +1352,7 @@ class Config extends PhalconConfig
                             ],
                         ],
                     ],
-    
+                    
                     'managePageList' => [
                         'components' => [
                             Api\Controllers\PageController::class => ['*'],
@@ -1116,6 +1378,19 @@ class Config extends PhalconConfig
                             ],
                         ],
                     ],
+                    
+                    'managePhalconMigrationsList' => [
+                        'components' => [
+                            Api\Controllers\PhalconMigrationsController::class => ['*'],
+                            Models\PhalconMigrations::class => ['*'],
+                        ],
+                        'behaviors' => [
+                            Api\Controllers\PhalconMigrationsController::class => [
+                                Behavior\Skip\SkipIdentityCondition::class,
+                                Behavior\Skip\SkipSoftDeleteCondition::class,
+                            ],
+                        ],
+                    ],
                 ],
                 
                 /**
@@ -1130,7 +1405,8 @@ class Config extends PhalconConfig
                             Cli\Tasks\CacheTask::class => ['*'],
                             Cli\Tasks\CronTask::class => ['*'],
                             Cli\Tasks\ErrorTask::class => ['*'],
-                            Cli\Tasks\DeploymentTask::class => ['*'],
+                            Cli\Tasks\DatabaseTask::class => ['*'],
+                            Cli\Tasks\DataLifeCycleTask::class => ['*'],
                             Cli\Tasks\HelpTask::class => ['*'],
                             Cli\Tasks\ScaffoldTask::class => ['*'],
                             Cli\Tasks\TestTask::class => ['*'],
@@ -1141,7 +1417,9 @@ class Config extends PhalconConfig
                     'everyone' => [
                         'features' => [
                             'base',
-                            'frontend',
+                        ],
+                        'components' => [
+                            Api\Controllers\ClamavController::class => ['*']
                         ],
                     ],
                     
@@ -1149,6 +1427,7 @@ class Config extends PhalconConfig
                     'guest' => [
                         'features' => [
                             'login',
+                            'logout',
                             'register',
                         ],
                     ],
@@ -1169,6 +1448,7 @@ class Config extends PhalconConfig
                             'managePageList',
                             'managePostList',
                             'manageTemplateList',
+                            'managePhalconMigrationsList',
                         ],
                         'inherit' => [
                             'user',
@@ -1192,50 +1472,30 @@ class Config extends PhalconConfig
                     ],
                 ],
             ],
-        ]);
+        ], $insensitive);
+        
         if (!empty($data)) {
-            $this->merge(new PhalconConfig($data));
-        }
-    }
-    
-    /**
-     * Merge the specified environment config with this one
-     * This should be used to overwrite specific values only
-     *
-     * @param null|string $env If null, will fetch the current environement from $this->app->env
-     *
-     * @return Config $this Return the merged current config
-     */
-    public function mergeEnvConfig(?string $env = null) : self
-    {
-        $configFile = $this->app->dir->config . (isset($env) ? $env : $this->app->env) . '.php';
-        
-        if (file_exists($configFile)) {
-            $envConfig = require_once $configFile;
-            if (!empty($envConfig)) {
-                $envConfig = is_callable($envConfig) ? $envConfig() : $envConfig;
-                if (is_array($envConfig)) {
-                    $this->merge(new PhalconConfig($envConfig));
-                }
-            }
+            $this->merge(new PhalconConfig($data, $insensitive));
         }
         
-        return $this;
-    }
-    
-    /**
-     * Return the mapped model class name from $this->models->$class
-     *
-     * @param string $class
-     * @return string
-     */
-    public function getModelClass(string $class) : string
-    {
-        return $this->path('models.' . $class) ?: $class;
+//        $this->merge(new AiConfig($data, $insensitive));
+//        $this->merge(new ArticleConfig($data, $insensitive));
+//        $this->merge(new AuditConfig($data, $insensitive));
+//        $this->merge(new AuthConfig($data, $insensitive));
+//        $this->merge(new CommentConfig($data, $insensitive));
+//        $this->merge(new CountryConfig($data, $insensitive));
+//        $this->merge(new DatatableStateConfig($data, $insensitive));
+//        $this->merge(new FileConfig($data, $insensitive));
+//        $this->merge(new KeywordConfig($data, $insensitive));
+//        $this->merge(new NotificationConfig($data, $insensitive));
+//        $this->merge(new ProjectConfig($data, $insensitive));
+//        $this->merge(new ProjectStatusReasonConfig($data, $insensitive));
+//        $this->merge(new RecordConfig($data, $insensitive));
+//        $this->merge(new RoleConfig($data, $insensitive));
+//        $this->merge(new SurveyConfig($data, $insensitive));
+//        $this->merge(new SynonymConfig($data, $insensitive));
+//        $this->merge(new TagConfig($data, $insensitive));
+//        $this->merge(new TrackerConfig($data, $insensitive));
+//        $this->merge(new UserConfig($data, $insensitive));
     }
 }
-
-//if (php_sapi_name() === 'cli') {
-//    $devtoolConfig = new Config();
-//    return $devtoolConfig->mergeEnvConfig();
-//}

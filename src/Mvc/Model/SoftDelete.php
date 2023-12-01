@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,72 +11,95 @@
 
 namespace Zemit\Mvc\Model;
 
-use Phalcon\Mvc\Model\Behavior;
-use Phalcon\Db\RawValue;
+use Exception;
+use Zemit\Mvc\Model\AbstractTrait\AbstractBehavior;
+use Zemit\Mvc\Model\AbstractTrait\AbstractEntity;
+use Zemit\Mvc\Model\AbstractTrait\AbstractEventsManager;
+use Zemit\Mvc\Model\AbstractTrait\AbstractModelsManager;
 
-/**
- * Trait SoftDelete
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Mvc\Model
- */
 trait SoftDelete
 {
+    use AbstractModelsManager;
+    use AbstractBehavior;
+    use AbstractEventsManager;
+    use AbstractEntity;
+    use Options;
+    use Behavior;
+    
     /**
-     * Helper method to check if the row is soft deleted
-     * @param null $field
-     * @param null $deletedValue
-     * @param null $notDeletedValue
-     *
-     * @return bool|null Bool if we know for sure, null if abnormal
+     * Initializing SoftDelete
      */
-    public function isDeleted($field = null, $deletedValue = null, $notDeletedValue = null)
+    public function initializeSoftDelete(?array $options = null): void
     {
-        $field ??= self::DELETED_FIELD;
-        $deletedValue ??= self::YES;
-        $notDeletedValue ??= self::NO;
+        $options ??= $this->getOptionsManager()->get('softDelete') ?? [];
         
-        if (property_exists($this, $field)) {
-            if ($this->$field === $deletedValue) {
-                return true;
-            }
-            if ($this->$field === $notDeletedValue) {
-                return false;
-            }
-            if ((int)$this->$field === (int)$deletedValue && intval($this->$field) === intval($deletedValue)) {
-                return true;
-            }
-            if ((int)$this->$field === (int)$notDeletedValue && intval($this->$field) === intval($notDeletedValue)) {
-                return false;
-            }
-            
-            return null;
-        }
+        $options['field'] ??= 'deleted';
+        $options['value'] ??= 1;
         
-        return false;
+        $this->setSoftDeleteBehavior(new Behavior\SoftDelete($options));
     }
     
     /**
-     * Restore a previously Soft-deleted entry
-     * @todo add a check from orm.events setup state
+     * Set the SoftDeleteBehavior variable
+     * Attach the SoftDelete behavior class
+     */
+    public function setSoftDeleteBehavior(Behavior\SoftDelete $softDeleteBehavior): void
+    {
+        $this->setBehavior('softDelete', $softDeleteBehavior);
+    }
+    
+    /**
+     * Return the soft delete behavior instance
+     */
+    public function getSoftDeleteBehavior(): Behavior\SoftDelete
+    {
+        $behavior = $this->getBehavior('softDelete');
+        assert($behavior instanceof Behavior\SoftDelete);
+        return $behavior;
+    }
+    
+    /**
+     * Disable the soft delete for the current instance
+     * Note: Zemit SoftDelete behavior must be attached
+     */
+    public function disableSoftDelete(): void
+    {
+        $this->getSoftDeleteBehavior()->disable();
+    }
+    
+    /**
+     * Enable the soft delete for the current instance
+     * Note: Zemit SoftDelete behavior must be attached
+     */
+    public function enableSoftDelete(): void
+    {
+        $this->getSoftDeleteBehavior()->enable();
+    }
+    
+    /**
+     * Helper method to check if the row is soft deleted
+     */
+    public function isDeleted(?string $field = null, ?int $deletedValue = null): bool
+    {
+        $field ??= $this->getSoftDeleteBehavior()->getField() ?? 'deleted';
+        $deletedValue ??= $this->getSoftDeleteBehavior()->getValue() ?? 1;
+        return $this->readAttribute($field) === $deletedValue;
+    }
+    
+    /**
+     * Restore a previously Soft-deleted entry and fire events
      * Events:
      * - beforeRestore
      * - notRestored
      * - afterRestore
      *
-     * @param null $field
-     * @param null $notDeletedValue
-     *
-     * @return bool
+     * @todo add a check from orm.events setup state
      */
-    public function restore($field = null, $notDeletedValue = null)
+    public function restore(?string $field = null, ?int $notDeletedValue = null): bool
     {
-        if (true || ini_get('orm.events')) {
+        $ormEvents = (bool)ini_get('phalcon.orm.events');
+        
+        if ($ormEvents) {
             $this->skipped = false;
             
             // fire event, allowing to stop options or skip the current operation
@@ -88,23 +112,23 @@ trait SoftDelete
             }
         }
         
-        // get settings
-        $field ??= self::DELETED_FIELD;
-        $notDeletedValue ??= self::NO;
+        $field ??= $this->getSoftDeleteBehavior()->getField();
+        $notDeletedValue ??= 0;
         
-        // restore
-        $this->assign([$field => $notDeletedValue], [$field]);
+        // restore (unset soft delete value and save)
+        $this->writeAttribute($field, $notDeletedValue);
         $save = $this->save();
         
-        // check if the entity was really restored
-        $value = $this->{'get' . ucfirst($field)}() ?? $this->$field;
+        // check if the entity is restored
+        $value = $this->readAttribute($field);
         $restored = $save && $value === $notDeletedValue;
-    
+        
         // fire events
-        if (true || ini_get('orm.events')) {
+        if ($ormEvents) {
             if (!$restored) {
                 $this->fireEvent('notRestored');
-            } else {
+            }
+            else {
                 $this->fireEvent('afterRestore');
             }
         }

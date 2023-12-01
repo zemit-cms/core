@@ -10,28 +10,23 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit;
+namespace Zemit\Tests\Unit;
 
 //use Zemit\Utils\Transform;
+use Zemit\Utils;
 use Zemit\Utils\Transform;
 
 /**
  * Class ProviderTest
  * @package Tests\Unit
  */
-class UtilsTest extends AbstractUnitTest
+class UtilsTest extends AbstractUnit
 {
-    public $collection = [
-    
-    ];
-    
-    /**
-     * Testing the bootstrap service
-     */
-    public function testProvider() {
+    public function testProvider(): void
+    {
         $this->assertTrue(true);
         
-        $this->collection = [
+        $collection = [
             [
                 'transform' => [
                     'test.test',
@@ -53,26 +48,26 @@ class UtilsTest extends AbstractUnitTest
             [
                 'transform' => [
                     'test' => [
-                        'test'
-                    ]
+                        'test',
+                    ],
                 ],
                 'assert' => [
                     'test' => false,
-                    'test.test' => true
+                    'test.test' => true,
                 ],
             ],
             [
                 'transform' => [
                     'test' => [
                         'test' => [
-                            'test'
+                            'test',
                         ],
-                    ]
+                    ],
                 ],
                 'assert' => [
                     'test' => false,
                     'test.test' => false,
-                    'test.test.test' => true
+                    'test.test.test' => true,
                 ],
             ],
             [
@@ -85,10 +80,10 @@ class UtilsTest extends AbstractUnitTest
                             'test',
                             'test2' => false,
                             'test3' => [
-                                'test'
-                            ]
+                                'test',
+                            ],
                         ],
-                    ]
+                    ],
                 ],
                 'assert' => [
                     '' => true,
@@ -141,13 +136,50 @@ class UtilsTest extends AbstractUnitTest
             ],
         ];
         
-        foreach ($this->collection as $key => $item) {
+        foreach ($collection as $key => $item) {
             $this->assertEquals(
                 $item['assert'],
-                Transform::_flattenKeys($item['transform']),
-                'Transform::_flattenKeys failed for key `' . $key . '`'
+                Transform::flattenKeys($item['transform']),
+                'Transform::flattenKeys failed for key `' . $key . '`'
             );
         }
     }
     
+    public function testSetUnlimitedRuntime(): void
+    {
+        Utils::setUnlimitedRuntime();
+        $this->assertEquals('-1', ini_get('memory_limit'), 'memory_limit');
+        $this->assertEquals('0', ini_get('max_execution_time'), 'max_execution_time');
+        $this->assertEquals('-1', ini_get('max_input_time'), 'max_input_time');
+    }
+    
+    public function testGetNamespace(): void
+    {
+        $namespace = Utils::getNamespace($this);
+        $this->assertIsString($namespace);
+        $this->assertEquals(__NAMESPACE__, $namespace);
+        
+        $namespace = Utils::getNamespace(new Utils());
+        $this->assertEquals('Zemit', $namespace);
+    }
+    
+    public function testGetDirname(): void
+    {
+        $dirname = Utils::getDirname($this);
+        $this->assertIsString($dirname);
+        $this->assertEquals(__DIR__, $dirname);
+        
+        $dirname = Utils::getDirname(new Utils());
+        $this->assertEquals(dirname(__DIR__, 2) . '/src', $dirname);
+    }
+    
+    public function testGetMemoryUsage(): void
+    {
+        $memoryUsage = Utils::getMemoryUsage();
+        
+        $this->assertIsString($memoryUsage['memory']);
+        $this->assertIsString($memoryUsage['memoryPeak']);
+        $this->assertIsString($memoryUsage['realMemory']);
+        $this->assertIsString($memoryUsage['realMemoryPeak']);
+    }
 }

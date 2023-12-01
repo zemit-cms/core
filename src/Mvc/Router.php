@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,37 +11,39 @@
 
 namespace Zemit\Mvc;
 
-use Zemit\Bootstrap\Config;
+use Phalcon\Config\ConfigInterface;
+use Phalcon\Di;
 use Zemit\Mvc\Router\ModuleRoute;
+use Zemit\Router\RouterInterface;
 
 /**
- * Class Router
  * {@inheritDoc}
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Mvc
  */
-class Router extends \Phalcon\Mvc\Router
+class Router extends \Phalcon\Mvc\Router implements RouterInterface
 {
-    /**
-     * @var Config
-     */
-    public $config;
+    public ConfigInterface $config;
+    
+    public function getConfig(): ConfigInterface
+    {
+        return $this->config;
+    }
+    
+    public function setConfig(ConfigInterface $config): void
+    {
+        $this->config = $config;
+    }
     
     /**
      * Router constructor.
      */
-    public function __construct($defaultRoutes = true, $application = null)
+    public function __construct(bool $defaultRoutes = true, ?ConfigInterface $config = null)
     {
         parent::__construct(false);
-        if (isset($application)) {
-            $this->config = $application->getDI()->get('config');
-        }
+        
+        // set the config
+        $this->setConfig($config ?? Di::getDefault()->get('config'));
+        
+        // Set default routes
         if ($defaultRoutes) {
             $this->defaultRoutes();
         }
@@ -53,13 +56,16 @@ class Router extends \Phalcon\Mvc\Router
      * - Default action
      * - Default notFound
      */
-    public function defaultRoutes()
+    public function defaultRoutes(): void
     {
         $this->removeExtraSlashes(true);
-        $this->setDefaults($this->config->router->defaults->toArray() ?: $this->defaults);
-        $this->notFound($this->config->router->notFound->toArray() ?: $this->notFound);
-        $this->mount(new ModuleRoute($this->getDefaults(), true));
-        $this->mount(new ModuleRoute($this->getDefaults(), true, true));
+        
+        $routerConfig = $this->getConfig()->get('router')->toArray();
+        $localeConfig = $this->getConfig()->get('locale')->toArray();
+        
+        $this->setDefaults($routerConfig['defaults'] ?? $this->getDefaults());
+        $this->notFound($routerConfig['notFound'] ?? $this->notFoundPaths ?? []);
+        $this->mount(new ModuleRoute($this->getDefaults(), $localeConfig['allowed'] ?? []));
     }
     
     /**
@@ -67,16 +73,18 @@ class Router extends \Phalcon\Mvc\Router
      * @param array|null $defaults
      * @return void
      */
-    public function hostnamesRoutes(array $hostnames = null, array $defaults = null)
+    public function hostnamesRoutes(array $hostnames = null, array $defaults = null): void
     {
+        $routerConfig = $this->getConfig()->get('router')->toArray();
+        $hostnames ??= $routerConfig['hostnames'] ?? [];
         $defaults ??= $this->getDefaults();
-        $hostnames ??= $this->config->router->hostnames->toArray() ?: [];
+        
         foreach ($hostnames as $hostname => $hostnameRoute) {
             if (!isset($hostnameRoute['module']) || !is_string($hostnameRoute['module'])) {
                 throw new \InvalidArgumentException('Router hostname config parameter "module" must be a string under "' . $hostname . '"');
             }
-            $this->mount((new ModuleRoute(array_merge($defaults, $hostnameRoute), true))->setHostname($hostname));
-            $this->mount((new ModuleRoute(array_merge($defaults, $hostnameRoute), true, true))->setHostname($hostname));
+            $localeConfig = $this->getConfig()->get('locale')->toArray();
+            $this->mount((new ModuleRoute(array_merge($defaults, $hostnameRoute), $localeConfig['allowed'] ?? [], $hostname))->setHostname($hostname));
         }
     }
     
@@ -84,26 +92,23 @@ class Router extends \Phalcon\Mvc\Router
      * Defines our frontend routes
      * /controller/action/params
      */
-    public function modulesRoutes($application)
+    public function modulesRoutes(\Phalcon\Mvc\Application $application, array $defaults = null): void
     {
-        $defaults = $this->getDefaults();
+        $defaults ??= $this->getDefaults();
         foreach ($application->getModules() as $key => $module) {
             if (!isset($module['className'])) {
                 throw new \InvalidArgumentException('Module parameter "className" must be a string under "' . $key . '"');
             }
+            $localeConfig = $this->getConfig()->get('locale')->toArray();
             $namespace = rtrim($module['className'], 'Module') . 'Controllers';
-            $this->mount(new ModuleRoute(array_merge($defaults, ['namespace' => $namespace, 'module' => $key])));
-            $this->mount(new ModuleRoute(array_merge($defaults, ['namespace' => $namespace, 'module' => $key]), false, true));
+            $moduleDefaults = ['namespace' => $namespace, 'module' => $key];
+            $this->mount(new ModuleRoute(array_merge($defaults, $moduleDefaults), $localeConfig['allowed'] ?? []));
         }
     }
     
-    /**
-     * Router toArray
-     * @return array
-     */
-    public function toArray()
+    public function toArray(): array
     {
-        $mathedRoute = $this->getMatchedRoute();
+        $matchedRoute = $this->getMatchedRoute();
         return [
             'namespace' => $this->getNamespaceName(),
             'module' => $this->getModuleName(),
@@ -112,14 +117,13 @@ class Router extends \Phalcon\Mvc\Router
             'params' => $this->getParams(),
             'defaults' => $this->getDefaults(),
             'matches' => $this->getMatches(),
-            'matched' => $mathedRoute ? [
-                'id' => $mathedRoute->getRouteId(),
-                'name' => $mathedRoute->getName(),
-                'hostname' => $mathedRoute->getHostname(),
-                'paths' => $mathedRoute->getPaths(),
-                'pattern' => $mathedRoute->getPattern(),
-                'httpMethod' => $mathedRoute->getHttpMethods(),
-                'reversedPaths' => $mathedRoute->getReversedPaths(),
+            'matched' => $matchedRoute ? [
+                'id' => $matchedRoute->getRouteId(),
+                'name' => $matchedRoute->getName(),
+                'hostname' => $matchedRoute->getHostname(),
+                'paths' => $matchedRoute->getPaths(),
+                'pattern' => $matchedRoute->getPattern(),
+                'httpMethod' => $matchedRoute->getHttpMethods(),
             ] : null,
         ];
     }

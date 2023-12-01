@@ -10,17 +10,13 @@
 
 namespace Zemit\Models;
 
-use Phalcon\Filter\Validation\Validator\InclusionIn;
-use Zemit\Models\Base\AbstractSite;
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-use Phalcon\Filter\Validation\Validator\StringLength\Max;
+use Phalcon\Validation\Validator\InclusionIn;
+use Zemit\Models\Abstracts\AbstractSite;
+use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Validation\Validator\StringLength\Max;
+use Zemit\Models\Interfaces\SiteInterface;
 
-/**
- * Class Site
- *
- * @package Zemit\Models
- */
-class Site extends AbstractSite
+class Site extends AbstractSite implements SiteInterface
 {
     const STATUS_ACTIVE = 'active';
     const STATUS_MAINTENANCE = 'maintenance';
@@ -29,7 +25,7 @@ class Site extends AbstractSite
     protected $deleted = self::NO;
     protected $status = self::STATUS_ACTIVE;
     
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         
@@ -39,7 +35,7 @@ class Site extends AbstractSite
             'langId', Lang::class, 'id', ['alias' => 'LangList']);
     }
     
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
         

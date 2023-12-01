@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -13,57 +14,31 @@ namespace Zemit\Provider\Config;
 use Phalcon\Di\DiInterface;
 use Zemit\Bootstrap;
 use Zemit\Bootstrap\Config;
+use Zemit\Config\ConfigInterface;
 use Zemit\Provider\AbstractServiceProvider;
+use Zemit\Support\Php;
 
-/**
- * Class ServiceProvider
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Provider\Config
- */
 class ServiceProvider extends AbstractServiceProvider
 {
-    protected $serviceName = 'config';
+    protected string $serviceName = 'config';
     
-    /**
-     * {@inheritdoc}
-     *
-     * @param DiInterface $di
-     */
+    protected ConfigInterface $config;
+    
     public function register(DiInterface $di = null): void
     {
         // Set shared service in DI
-        $di->setShared($this->getName(), function() use ($di) {
-            
-            /** @var Bootstrap $bootstrap */
+        $di->setShared($this->getName(), function () use ($di) {
+    
             $bootstrap = $di->get('bootstrap');
+            assert($bootstrap instanceof Bootstrap);
             
-            $config = $bootstrap->config ?? new Config();
-            if (is_string($config) && class_exists($config)) {
-                $config = new $config();
-            }
-            
-            // Inject some dynamic variables
-            $config->mode = $di->get('bootstrap')->getMode();
-            
-            // Merge config with current environment
-            $config->mergeEnvConfig();
+            $bootstrap->config ??= new Config();
             
             // Launch bootstrap prepare raw php configs
-            $bootstrap->prepare->php($config->path('app'));
-            
-            // Register other providers
-//            foreach ($config->providers as $provider) {
-//                $di->register(new $provider($di));
-//            }
+            Php::set($bootstrap->config->pathToArray('app') ?? []);
             
             // Set the config
-            return $config;
+            return $bootstrap->config;
         });
     }
 }

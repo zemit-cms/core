@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -11,26 +12,13 @@
 namespace Zemit\Modules\Cli\Tasks;
 
 use Phalcon\Db\Column;
-use Phalcon\Support\HelperFactory;
+use Phalcon\Text;
 use Zemit\Modules\Cli\Task;
 
-/**
- * Class ScaffoldTask
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Modules\Cli\Tasks
- */
 class ScaffoldTask extends Task
 {
-    /**
-     * @var string
-     */
-    public $consoleDoc = <<<DOC
+    
+    public string $cliDoc = <<<DOC
 Usage:
   php zemit cli scaffold <action> [<params> ...]
 
@@ -41,19 +29,17 @@ Options:
 
 DOC;
     
-    public $modelsPath = 'ts/Models/';
-    public $abstractPath = './Base/';
+    public string $modelsPath = 'ts/Models/';
     
-    public function allModelsAction()
+    public string $abstractPath = './Base/';
+    
+    public function allModelsAction(): array
     {
         $ret = [];
-        
         $tables = $this->db->listTables();
         foreach ($tables as $table) {
-            
-            $className = ucFirst((new HelperFactory)->camelize($table));
+            $className = ucfirst(Text::camelize($table));
             $fileName = $className . '.ts';
-            
             $abstractClassName = 'Abstract' . $className;
             $abstractFileName = $abstractClassName . '.ts';
             
@@ -61,12 +47,14 @@ DOC;
             $output = [];
             $output [] = 'import { AbstractModel } from \'../AbstractModel\';' . PHP_EOL;
             $output [] = 'export class ' . $abstractClassName . ' extends AbstractModel {';
+    
+            $tsType = 'null';
             
             $columns = $this->db->describeColumns($table);
             foreach ($columns as $column) {
-                
                 switch ($column->getType()) {
                     case Column::TYPE_TIMESTAMP:
+                    case Column::TYPE_BIGINTEGER:
                     case Column::TYPE_MEDIUMINTEGER:
                     case Column::TYPE_SMALLINTEGER:
                     case Column::TYPE_TINYINTEGER:
@@ -77,12 +65,8 @@ DOC;
                     case Column::TYPE_BIT:
                         $tsType = 'number';
                         break;
-                    case Column::TYPE_BIGINTEGER:
-                        $tsType = 'bigint';
-                        break;
+                    
                     case Column::TYPE_ENUM:
-//                        $tsType = 'enum';
-//                        break;
                     case Column::TYPE_VARCHAR:
                     case Column::TYPE_CHAR:
                     case Column::TYPE_TEXT:
@@ -96,28 +80,31 @@ DOC;
                     case Column::TYPE_TIME:
                         $tsType = 'string';
                         break;
+                    
                     case Column::TYPE_JSON:
                     case Column::TYPE_JSONB:
                         $tsType = 'object';
                         break;
+                    
                     case Column::TYPE_BOOLEAN:
                         $tsType = 'boolean';
                         break;
+                    
                     default:
-                        $tsType = 'any';
                         break;
                 }
                 
+                // "boolean", "integer", "double", "string", "array", "object", "resource", "NULL", "unknown type", "resource (closed)"
                 $columnDefault = $column->getDefault();
                 switch (getType(strtolower($columnDefault))) {
-                    // "boolean", "integer", "double", "string", "array", "object", "resource", "NULL", "unknown type", "resource (closed)"
-                    case "boolean":
-                    case "integer":
-                    case "double":
-                    case "null":
+                    case 'boolean':
+                    case 'integer':
+                    case 'double':
+                    case 'null':
                         $default = $columnDefault;
                         break;
-                    case "string":
+                        
+                    case 'string':
                         if ($tsType === 'string') {
                             $default = !empty($columnDefault) ? '"' . addslashes($columnDefault) . '"' : null;
                         }
@@ -131,27 +118,26 @@ DOC;
                             $default = '{}';
                         }
                         break;
-                    case "array":
+                        
+                    case 'array':
                         $default = '[]';
                         break;
-                    case "object":
+                        
+                    case 'object':
                         $default = '{}';
                         break;
+                        
                     default:
                         break;
                 }
                 
-                $propertyName = lcfirst((new HelperFactory)->camelize($column->getName()));
+                $propertyName = lcfirst(Text::camelize($column->getName()));
                 $output [] = '    public ' . $propertyName . ': ' . $tsType . (!empty($default) ? ' = ' . $default : null) . ';';
             }
             $output [] = '}';
             
             // Save Abstract Model File
-            $this->saveFile(
-                $this->modelsPath . $this->abstractPath . $abstractFileName,
-                implode(PHP_EOL, $output)
-            );
-            
+            $this->saveFile($this->modelsPath . $this->abstractPath . $abstractFileName, implode(PHP_EOL, $output));
             $ret [] = 'Abstract Model ' . $abstractClassName . ' created';
             
             // Create Model
@@ -162,21 +148,16 @@ DOC;
             $output [] = '}';
             
             // Save Model File
-            $this->saveFile(
-                $this->modelsPath . $fileName,
-                implode(PHP_EOL, $output)
-            );
-            
+            $this->saveFile($this->modelsPath . $fileName, implode(PHP_EOL, $output));
             $ret [] = 'Model ' . $className . ' created';
         }
         
-        dd($ret);
+        return $ret;
     }
     
-    protected function saveFile($file, $text)
+    public function saveFile(string $file, string $text): bool
     {
         $file = fopen($file, 'w');
-        fwrite($file, $text);
-        fclose($file);
+        return fwrite($file, $text) && fclose($file);
     }
 }

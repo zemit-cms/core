@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,31 +11,14 @@
 
 namespace Zemit\Utils;
 
-/**
- * Class Slug
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Utils
- */
 class Transform
 {
     /**
      * Here to parse the columns parameter into some kind of flatten array with
      * the key path separated by dot "my.path" and the value true, false or a callback function
      * including the ExposeBuilder object
-     *
-     * @param mixed $array
-     * @param string|null $context
-     * @param string|null $delimiter
-     *
-     * @return array|null
      */
-    final public static function _flattenKeys($array = null, ?string $delimiter = '.', ?bool $lowerKey = true, ?string $context = null) : ?array
+    public static function flattenKeys(?array $array = [], ?string $delimiter = '.', ?bool $lowerKey = true, ?string $context = null): ?array
     {
         // nothing passed
         if (!isset($array)) {
@@ -42,10 +26,6 @@ class Transform
         }
         
         $ret = [];
-        
-        if (!is_array($array) || is_object($array)) {
-            $array = [$array];
-        }
         
         foreach ($array as $key => $value) {
             
@@ -71,17 +51,22 @@ class Transform
                 $key = trim($lowerKey ? mb_strtolower($key) : $key);
             }
             
-            //
+            // true for empty string
             if (is_string($value) && empty($value)) {
                 $value = true;
             }
             
             // set the key
             $currentKey = (!empty($context) ? $context . (!empty($key) ? $delimiter : null) : null) . $key;
+            if (is_callable($value)) {
+                $value = $value();
+            }
             
-            if (is_array($value) || is_object($value)) {
-                $subRet = self::_flattenKeys(is_callable($value)? $value() : $value, $delimiter, $lowerKey, $currentKey);
-                $ret = array_merge_recursive($ret, $subRet);
+            if (is_array($value)) {
+                $subRet = self::flattenKeys($value, $delimiter, $lowerKey, $currentKey);
+                if (is_array($subRet)) {
+                    $ret = array_merge_recursive($ret, $subRet);
+                }
                 
                 if (!isset($ret[$currentKey])) {
                     $ret[$currentKey] = false;

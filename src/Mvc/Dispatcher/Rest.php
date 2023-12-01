@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,30 +11,17 @@
 
 namespace Zemit\Mvc\Dispatcher;
 
-use Phalcon\Db\Profiler;
 use Zemit\Di\Injectable;
 use Phalcon\Events\Event;
 use Phalcon\Mvc\Dispatcher;
-use Phalcon\Mvc\Model;
-use Phalcon\Mvc\Model\Resultset;
-use Phalcon\Mvc\View;
 
 /**
- * Class Rest
- * @todo ?
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Mvc\Dispatcher
+ * @todo
  */
 class Rest extends Injectable
 {
-    public function beforeDispatch(Event $event, Dispatcher $dispatcher, $exception)
+    public function beforeDispatch(Event $event, Dispatcher $dispatcher): bool
     {
-    
+        return true;
     }
 }

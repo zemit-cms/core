@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -11,57 +12,36 @@
 namespace Zemit\Provider\Locale;
 
 use Phalcon\Di\DiInterface;
-use Zemit\Locale;
 use Zemit\Provider\AbstractServiceProvider;
+use Zemit\Config\ConfigInterface;
+use Zemit\Locale;
 
-/**
- * Class ServiceProvider
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Provider\Locale
- */
 class ServiceProvider extends AbstractServiceProvider
 {
     /**
      * Default values if nothing is provided from the config
-     * Reference: $config->locale
      */
-    const DEFAULT_LOCALE_OPTIONS = [
+    public array $defaultOptions = [
         'default' => 'en',
         'sessionKey' => 'zemit-locale',
         'mode' => Locale::MODE_SESSION_GEOIP,
         'allowed' => ['en'],
     ];
     
-    /**
-     * The Service name.
-     * @var string
-     */
-    protected $serviceName = 'locale';
+    protected string $serviceName = 'locale';
     
-    /**
-     * {@inheritdoc}
-     *
-     * Register the Flash Service with the Twitter Bootstrap classes.
-     *
-     * @return void
-     */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function() use ($di) {
+        $defaultOptions = $this->defaultOptions;
+        
+        $di->setShared($this->getName(), function (?array $options = null) use ($di, $defaultOptions) {
             
-            // get options from config
             $config = $di->get('config');
-            if ($config && $config->has('locale')) {
-                $options = $config->locale->toArray();
-            }
+            assert($config instanceof ConfigInterface);
             
-            return new Locale($options ?? self::DEFAULT_LOCALE_OPTIONS);
+            $options ??= $config->pathToArray('locale', $defaultOptions);
+            
+            return new Locale($options);
         });
     }
 }

@@ -10,34 +10,30 @@
 
 namespace Zemit\Models;
 
-use Phalcon\Filter\Validation\Validator\Between;
-use Zemit\Models\Base\AbstractPage;
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-use Phalcon\Filter\Validation\Validator\StringLength\Max;
+use Phalcon\Validation\Validator\Between;
+use Zemit\Models\Abstracts\AbstractPage;
+use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Validation\Validator\StringLength\Max;
+use Zemit\Models\Interfaces\PageInterface;
 
-/**
- * Class Page
- *
- * @package Zemit\Models
- */
-class Page extends AbstractPage
+class Page extends AbstractPage implements PageInterface
 {
     protected $deleted = self::NO;
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         // @todo relationships
     }
 
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
     
         $validator->add('siteId', new PresenceOf(['message' => $this->_('required')]));
         $validator->add('siteId', new Between([
             'minimum' => 0,
-            'maximum' => self::MAX_UNSIGNED_INT,
+            'maximum' => MAX_UNSIGNED_INT,
             'message' => $this->_('not an unsigned integer'),
             'allowEmpty' => false,
         ]));

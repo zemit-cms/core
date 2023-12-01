@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -8,63 +9,40 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Zemit\Provider\Router;
 
 use Phalcon\Di\DiInterface;
 use Zemit\Bootstrap;
 use Zemit\Bootstrap\Router;
+use Zemit\Cli\Router as CliRouter;
 use Zemit\Provider\AbstractServiceProvider;
 
-/**
- * Class ServiceProvider
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Provider\Router
- */
 class ServiceProvider extends AbstractServiceProvider
 {
-    /**
-     * The Service name.
-     * @var string
-     */
-    protected $serviceName = 'router';
     
-    /**
-     * {@inheritdoc}
-     *
-     * @return void
-     */
+    protected string $serviceName = 'router';
+    
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function() use ($di) {
-            $eventsManager = $di->get('eventsManager');
-            $config = $di->get('config')->router;
+        $di->setShared($this->getName(), function () use ($di) {
             
-            /** @var Bootstrap $bootstrap */
             $bootstrap = $di->get('bootstrap');
+            assert($bootstrap instanceof Bootstrap);
             
-            /**
-             * Router
-             */
-            $router = $bootstrap->isConsole() ? new \Zemit\Cli\Router(true) : new Router(true, $bootstrap->application);
+            $router = $bootstrap->router ?? $bootstrap->isCli()
+                ? new CliRouter(true)
+                : new Router(true, $bootstrap->config);
+            
+            $defaults = $bootstrap->config->pathToArray($bootstrap->isCli() ? 'router.cli' : 'router.defaults') ?? [];
+            $router->setDefaults($defaults);
             $router->setDI($di);
             
-            // Console
-            if ($bootstrap->isConsole()) {
-                // @todo
-            }
-            
-            // Mvc
-            else {
-                $router->setDefaultModule($config->defaults->module);
-                $router->setDefaultNamespace($config->defaults->namespace);
-                $router->setEventsManager($eventsManager);
+            if ($router instanceof Router) {
+                $router->setEventsManager($di->get('eventsManager'));
+                $router->setConfig($bootstrap->config);
+                $router->baseRoutes();
+                $router->hostnamesRoutes();
+                $router->modulesRoutes($di->get('application'));
             }
             
             return $router;

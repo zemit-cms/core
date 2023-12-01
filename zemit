@@ -9,24 +9,15 @@
  * file that was distributed with this source code.
  */
 
-use Zemit\Bootstrap;
+use Phalcon\Loader;
 
-/*
- * Uncomment this part if you want to force those path manually
- */
-//define('APP_NAMESPACE', 'App');
-//define('APP_PATH', ROOT_PATH . '/app');
-//define('VENDOR_PATH', 'vendor');
+// Set your default path and namespace
+const VENDOR_PATH = __DIR__ . '/vendor/';
+const APP_PATH = __DIR__ . '/src/';
 
-// (DO NOT TOUCH THIS PART)
-// Get the fallback root, vendor, app path and default app namespace
-defined('VENDOR_PATH') || define('VENDOR_PATH', (getenv('VENDOR_PATH') ? getenv('VENDOR_PATH') : __DIR__ . '/vendor'));
-defined('APP_NAMESPACE') || define('APP_NAMESPACE', (getenv('APP_NAMESPACE') ? getenv('APP_NAMESPACE') : 'Zemit'));
-defined('APP_PATH') || define('APP_PATH', (getenv('APP_PATH') ? getenv('APP_PATH') : dirname(__DIR__) . '/app'));
+$loader = new Loader();
+$loader->registerFiles([VENDOR_PATH . 'autoload.php']);
+$loader->registerNamespaces(['Zemit' => APP_PATH]);
+$loader->register();
 
-// Register Composer Autoloader
-$composer = require_once VENDOR_PATH . '/autoload.php';
-
-// Run Zemit CMS
-$bootstrap = new Bootstrap('console');
-echo $bootstrap->run();
+echo (new Zemit\Bootstrap(Zemit\Bootstrap::MODE_CLI))->run();

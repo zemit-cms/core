@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -13,68 +14,146 @@ namespace Zemit\Dispatcher;
 use Phalcon\Mvc\Dispatcher as MvcDispatcher;
 use Phalcon\Cli\Dispatcher as CliDispatcher;
 
-/**
- * Class DispatcherTrait
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Dispatcher
- */
 trait DispatcherTrait
 {
+    abstract public function getNamespaceName(): string;
+    
+    abstract public function getModuleName(): string;
+    
+    abstract public function getActionName(): string;
+    
+    abstract public function getParams(): array;
+    
+    abstract public function getHandlerClass(): string;
+    
+    abstract public function getHandlerSuffix(): string;
+
+//    abstract public function getTaskName(): string;
+
+//    abstract public function getControllerName(): string;
+    
+    abstract public function getActionSuffix(): string;
+    
+    abstract public function getActiveMethod(): string;
+    
+    /**
+     * {@inheritDoc}
+     * The string typed keys are not passed to the action method arguments
+     * Only the int keys will be passed
+     *
+     * @param $handler
+     * @return mixed
+     */
+    public function callActionMethod($handler, string $actionMethod, array $params = [])
+    {
+        return call_user_func_array(
+            [$handler, $actionMethod],
+            array_filter($params, 'is_int', ARRAY_FILTER_USE_KEY)
+        );
+    }
+    
     /**
      * Extending forwarding event to prevent cyclic routing when forwarding under dispatcher events
-     * - @TODO handle params and other possible route parameters too
      * {@inheritDoc}
-     *
-     * @param array $route
-     *
-     * @return void
      */
-    public function forward(array $forward, $preventCycle = false): void
+    public function forward(array $forward, bool $preventCycle = false): void
     {
+        $forward = $this->unsetForwardNullParts($forward);
+        
         if (!$preventCycle) {
             parent::forward($forward);
         }
-        else {
-            if ((!isset($forward['namespace']) || $this->getNamespaceName() !== $forward['namespace']) &&
-                (!isset($forward['module']) || $this->getModuleName() !== $forward['module']) &&
-                (!isset($forward['task']) || $this->getControllerName() !== $forward['task']) &&
-                (!isset($forward['controller']) || $this->getControllerName() !== $forward['controller']) &&
-                (!isset($forward['action']) || $this->getActionName() !== $forward['action']) &&
-                (!isset($forward['params']) || $this->getParams() !== $forward['params'])
-            ) {
-                if (!isset($forward['namespace'])) {
-                    unset($forward['namespace']);
-                }
-                if (!isset($forward['module'])) {
-                    unset($forward['module']);
-                }
-                if (!isset($forward['task'])) {
-                    unset($forward['task']);
-                }
-                if (!isset($forward['controller'])) {
-                    unset($forward['controller']);
-                }
-                if (!isset($forward['action'])) {
-                    unset($forward['action']);
-                }
-                if (!isset($forward['params'])) {
-                    unset($forward['params']);
-                }
-                $this->forward($forward);
-            }
+        
+        elseif ($this->canForward($forward)) {
+            parent::forward($forward);
         }
     }
     
     /**
-     * @return array
+     * Check whether the forward attribute can be forwarded
+     * we do additional checks to prevent dispatcher cycling
      */
-    public function toArray()
+    public function canForward(array $forward): bool
+    {
+        $parts = [
+            'namespace' => $this->getNamespaceName(),
+            'module' => $this->getModuleName(),
+            'action' => $this->getActionName(),
+            'params' => $this->getParams(),
+        ];
+        foreach ($parts as $part => $current) {
+            if (isset($forward[$part]) && $current !== $forward[$part]) {
+                return true;
+            }
+        }
+        
+        return $this->canForwardHandler($forward);
+    }
+    
+    /**
+     * Check whether the handler is changed or not
+     * depending on the dispatcher
+     * MVC: controller
+     * CLI: task
+     */
+    private function canForwardHandler(array $forward): bool
+    {
+        if ($this->canForwardController($forward['controller'] ?? null)) {
+            return true;
+        }
+        
+        if ($this->canForwardTask($forward['task'] ?? null)) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Check whether the controller is changed
+     */
+    private function canForwardController(?string $controller = null): bool
+    {
+        if ($this instanceof MvcDispatcher && isset($controller) && $this->getControllerName() !== $controller) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Check whether the task is changed
+     */
+    private function canForwardTask(?string $task = null): bool
+    {
+        if ($this instanceof CliDispatcher && isset($task) && $this->getTaskName() !== $task) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    public function unsetForwardNullParts(array $forward, ?array $parts = null): array
+    {
+        $parts ??= [
+            'namespace',
+            'module',
+            'task',
+            'controller',
+            'action',
+            'params',
+        ];
+        
+        foreach ($parts as $part) {
+            if (is_null($forward[$part] ?? false)) {
+                unset($forward[$part]);
+            }
+        }
+        
+        return $forward;
+    }
+    
+    public function toArray(): array
     {
         $ret = [
             'namespace' => $this->getNamespaceName(),
@@ -86,16 +165,19 @@ trait DispatcherTrait
             'activeMethod' => $this->getActiveMethod(),
             'actionSuffix' => $this->getActionSuffix(),
         ];
+        
         if ($this instanceof MvcDispatcher) {
             $ret['controller'] = $this->getControllerName();
             $ret['previousNamespace'] = $this->getPreviousNamespaceName();
             $ret['previousController'] = $this->getPreviousControllerName();
             $ret['previousAction'] = $this->getPreviousActionName();
         }
+        
         if ($this instanceof CliDispatcher) {
             $ret['task'] = $this->getTaskName();
             $ret['taskSuffix'] = $this->getTaskSuffix();
         }
+        
         return $ret;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -12,18 +13,6 @@ namespace Zemit\Modules\Api;
 
 use Zemit\Mvc\Controller\Rest;
 
-/**
- * Class Controller
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Modules\Api
- */
 class Controller extends Rest
 {
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,67 +11,68 @@
 
 namespace Zemit\Provider\Database;
 
+use Phalcon\Db\Adapter\Pdo\AbstractPdo;
+use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Di\DiInterface;
+use Phalcon\Events\ManagerInterface;
+use Zemit\Config\ConfigInterface;
 use Zemit\Db\Events\Logger;
 use Zemit\Db\Events\Profiler;
 use Zemit\Db\Events\Security;
 use Zemit\Provider\AbstractServiceProvider;
 
-/**
- * Class ServiceProvider
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Provider\Database
- */
 class ServiceProvider extends AbstractServiceProvider
 {
-    /**
-     * The Service name.
-     * @var string
-     */
-    protected $serviceName = 'db';
+    protected bool $readonly = false;
+    protected string $serviceName = 'db';
     
-    /**
-     * {@inheritdoc}
-     * Database connection is created based in the parameters defined in the configuration file.
-     *
-     * @return void
-     */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function() use ($di) {
-            $config = $di->get('config')->database;
-            $eventsManager = $di->get('eventsManager');
+        $readonly = $this->readonly;
+        $di->setShared($this->getName(), function () use ($di, $readonly) {
+
+            $config = $di->get('config');
+            assert($config instanceof ConfigInterface);
+    
+            // database config
+            $databaseConfig = $config->pathToArray('database') ?? [];
+            $driverName = $databaseConfig['default'] ?? 'mysql';
+            $driverOptions = $databaseConfig['drivers'][$driverName] ?? [];
             
-            $driver = $config->drivers->{$config->default};
-            $adapter = '\Phalcon\Db\Adapter\Pdo\\' . $driver->adapter;
-            
-            $config = $driver->toArray();
-            unset($config['adapter']);
-            unset($config['readOnly']);
-            
-            // set dialect class
-            if (!empty($config['dialectClass'])) {
-                $config['dialectClass'] = new $config['dialectClass']();
+            // readonly
+            if (!$readonly) {
+                $readonlyOptions = array_filter($driverOptions['readonly'] ?? [], function ($value) {
+                    return !is_null($value);
+                });
+                $driverOptions = array_merge($driverOptions, $readonlyOptions);
+                unset($driverOptions['readonly']);
+                unset($driverOptions['enable']);
             }
             
-            /** @var \Phalcon\Db\Adapter\Pdo\AbstractPdo $connection */
-            $connection = new $adapter($config);
+            // dialect
+            if (!empty($driverOptions['dialectClass'])) {
+                $dialectClass = $driverOptions['dialectClass'];
+                assert(class_exists($dialectClass));
+                $driverOptions['dialectClass'] = new $dialectClass();
+            }
+    
+            // adapter
+            $adapter = $driverOptions['adapter'] ?? Mysql::class;
+            assert(class_exists($adapter));
+            unset($driverOptions['adapter']);
+
+            // connection
+            $connection = new $adapter($driverOptions);
+            assert($connection instanceof AbstractPdo);
             
             // attach events
+            $eventsManager = $di->get('eventsManager');
+            assert($eventsManager instanceof ManagerInterface);
             $eventsManager->attach('db', new Security());
             $eventsManager->attach('db', new Logger());
             $eventsManager->attach('db', new Profiler());
-            
             $connection->setEventsManager($eventsManager);
 
-//            $connection->setDi($di);
-            
             return $connection;
         });
     }

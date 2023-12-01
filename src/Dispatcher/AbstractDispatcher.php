@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,18 +11,6 @@
 
 namespace Zemit\Dispatcher;
 
-/**
- * Class AbstractDispatcher
- * {@inheritDoc}
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Dispatcher
- */
 class AbstractDispatcher extends \Phalcon\Dispatcher\AbstractDispatcher implements DispatcherInterface
 {
     use DispatcherTrait;

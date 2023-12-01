@@ -10,26 +10,22 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractLang;
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-use Phalcon\Filter\Validation\Validator\StringLength\Max;
+use Zemit\Models\Abstracts\AbstractLang;
+use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Validation\Validator\StringLength\Max;
+use Zemit\Models\Interfaces\LangInterface;
 
-/**
- * Class Lang
- *
- * @package Zemit\Models
- */
-class Lang extends AbstractLang
+class Lang extends AbstractLang implements LangInterface
 {
     protected $deleted = self::NO;
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         // @todo relationships
     }
 
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
 

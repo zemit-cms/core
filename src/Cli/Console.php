@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -12,22 +13,10 @@ namespace Zemit\Cli;
 
 use Phalcon\Di\DiInterface;
 
-/**
- * Class Console
- * {@inheritDoc}
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Cli
- */
 class Console extends \Phalcon\Cli\Console
 {
-    public function __construct(DiInterface $dependencyInjector = null)
+    public function __construct(DiInterface $container = null)
     {
-        parent::__construct($dependencyInjector);
+        parent::__construct($container);
     }
 }

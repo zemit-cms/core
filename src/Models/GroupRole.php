@@ -10,31 +10,28 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractGroupRole;
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-use Phalcon\Filter\Validation\Validator\Uniqueness;
+use Zemit\Models\Abstracts\AbstractGroupRole;
+use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Validation\Validator\Uniqueness;
+use Zemit\Models\Interfaces\GroupRoleInterface;
 
 /**
- * Class GroupRole
- *
  * @property Group $Group
  * @property Role $Role
  * @property Group $GroupEntity
  * @property Role $RoleEntity
  *
- * @method Group getGroup($params = null)
- * @method Role getRole($params = null)
- * @method Group getGroupEntity($params = null)
- * @method Role getRoleEntity($params = null)
- *
- * @package Zemit\Models
+ * @method Group getGroup(?array $params = null)
+ * @method Role getRole(?array $params = null)
+ * @method Group getGroupEntity(?array $params = null)
+ * @method Role getRoleEntity(?array $params = null)
  */
-class GroupRole extends AbstractGroupRole
+class GroupRole extends AbstractGroupRole implements GroupRoleInterface
 {
     protected $deleted = self::NO;
     protected $position = self::NO;
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -42,7 +39,7 @@ class GroupRole extends AbstractGroupRole
         $this->hasOne('roleId', Role::class, 'id', ['alias' => 'RoleEntity']);
     }
 
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
 

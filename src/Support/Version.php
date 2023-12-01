@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -8,21 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Support;
+namespace Zemit;
 
 /**
- * Class Version
  * This class allows to get the installed version of the zemit core
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.9
- *
- * @package Zemit
  */
-class Version extends \Phalcon\Support\Version
+class Version extends \Phalcon\Version
 {
     /**
      * Area where the version number is set. The format is as follows:
@@ -31,13 +23,11 @@ class Version extends \Phalcon\Support\Version
      * A - Major version
      * B - Med version (two digits)
      * C - Min version (two digits)
-     * D - Special release: 1 = alpha, 2 = beta, 3 = RC, 4 = stable
+     * D - Special release: 1 = Alpha, 2 = Beta, 3 = RC, 4 = Stable
      * E - Special release version i.e. RC1, Beta2 etc.
-     *
-     * @return array
      */
-    protected function getVersion() : array
+    protected static function getVersion(): array
     {
-        return [0, 2, 0, 0, 0];
+        return [0, 2, 0, 1, 0];
     }
 }

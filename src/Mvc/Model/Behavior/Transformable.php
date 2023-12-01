@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -22,6 +23,8 @@ use Phalcon\Mvc\Model\Behavior;
  */
 class Transformable extends Behavior
 {
+    use SkippableTrait;
+    
     /**
      * Listens for notifications from the models manager
      *
@@ -30,22 +33,34 @@ class Transformable extends Behavior
      *
      * @return void|null
      */
-    public function notify(string $type, ModelInterface $model)
+    public function notify(string $type, ModelInterface $model): ?bool
     {
-        if (!$this->mustTakeAction($type)) {
+        if (!$this->isEnabled()) {
             return null;
         }
         
-        $options = $this->getOptions($type);
-        
-        if (empty($options)) {
-            return;
+        if (!$this->mustTakeAction($type)) {
+            return null;
         }
-        
+
+        $options = $this->getOptions($type);
+        if (empty($options)) {
+            return null;
+        }
+
         foreach ($options as $field => $value) {
-            $value = is_callable($value)? $value($model, $field) : $value;
+            $value = is_callable($value) ? $value($model, $field) : $value;
+            
+            // allow up to 10 callbacks
+            $limit = 10;
+            while (is_callable($value) && --$limit) {
+                $value = $value();
+            }
+            
             $model->writeAttribute($field, $value);
 //            $model->assign([$field => $value]);
         }
+        
+        return true;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -11,18 +12,9 @@
 namespace Zemit;
 
 /**
- * Class Exception
- * {@inheritDoc}
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit
+ * Zemit\Exception
+ * All framework exceptions should use or extend this exception
  */
-class Exception extends \Phalcon\Exception
+class Exception extends \Exception implements \Throwable
 {
-    
 }

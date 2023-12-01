@@ -16,38 +16,30 @@ use Phalcon\Events\EventInterface;
 
 /**
  * Class Profiler
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Db\Events
  */
 class Profiler extends Injectable
 {
     /**
      * Check if the profiler is currently enabled or not from the config
-     *
-     * @return bool
      */
     public function isEnabled(): bool
     {
-        return (bool)$this->config->path('app.profiler',
-            $this->config->path('profiler.enable',
+        return (bool)$this->config->path(
+            'app.profiler',
+            $this->config->path(
+                'profiler.enable',
                 false
             )
         );
     }
     
     /**
-     * Start the current profile if profiler is enable
+     * Start the current profile if profiler is enabled
      *
      * @param EventInterface $event
      * @param AbstractAdapter $connection
      */
-    public function beforeQuery(EventInterface $event, AbstractAdapter $connection)
+    public function beforeQuery(EventInterface $event, AbstractAdapter $connection): void
     {
         if ($this->isEnabled()) {
             if (!$event->isStopped()) {
@@ -68,7 +60,7 @@ class Profiler extends Injectable
      * @param EventInterface $event
      * @param AbstractAdapter $connection
      */
-    public function afterQuery(EventInterface $event, AbstractAdapter $connection)
+    public function afterQuery(EventInterface $event, AbstractAdapter $connection): void
     {
         if ($this->isEnabled()) {
             $this->profiler->stopProfile();

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -11,45 +12,33 @@
 namespace Zemit\Provider\Dispatcher;
 
 use Phalcon\Di\DiInterface;
-
+use Zemit\Bootstrap;
+use Zemit\Config\ConfigInterface;
 use Zemit\Cli\Dispatcher as CliDispatcher;
 use Zemit\Mvc\Dispatcher as MvcDispatcher;
 use Zemit\Mvc\Dispatcher\Camelize;
+use Zemit\Mvc\Dispatcher\Preflight;
 use Zemit\Mvc\Dispatcher\Error;
 use Zemit\Mvc\Dispatcher\Rest;
 use Zemit\Mvc\Dispatcher\Security;
 use Zemit\Mvc\Dispatcher\Maintenance;
 use Zemit\Provider\AbstractServiceProvider;
 
-/**
- * Class ServiceProvider
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Provider\Dispatcher
- */
 class ServiceProvider extends AbstractServiceProvider
 {
-    /**
-     * The Service name.
-     * @var string
-     */
-    protected $serviceName = 'dispatcher';
+    protected string $serviceName = 'dispatcher';
     
-    /**
-     * {@inheritdoc}
-     *
-     * @return void
-     */
     public function register(DiInterface $di): void
     {
         $di->setShared($this->getName(), function () use ($di) {
+            
             $eventsManager = $di->get('eventsManager');
+            
             $config = $di->get('config');
+            assert($config instanceof ConfigInterface);
+            
+            $bootstrap = $di->get('bootstrap');
+            assert($bootstrap instanceof Bootstrap);
             
             /**
              * Camelize
@@ -57,6 +46,13 @@ class ServiceProvider extends AbstractServiceProvider
 //            $camelize = new Camelize();
 //            $camelize->setDI($di);
 //            $eventsManager->attach('dispatch', $camelize);
+            
+            /**
+             * Cors & Preflight
+             */
+            $security = new Preflight();
+            $security->setDI($di);
+            $eventsManager->attach('dispatch', $security);
             
             /**
              * Security
@@ -86,10 +82,16 @@ class ServiceProvider extends AbstractServiceProvider
             $module->setDI($di);
             $eventsManager->attach('dispatch', $module);
             
-            // CLI Dispatcher
-            if (isset($config->mode) && $config->mode === 'console') {
+            /**
+             * CLI Dispatcher
+             */
+            if ($bootstrap->isCli()) {
                 $dispatcher = new CliDispatcher();
             }
+            
+            /**
+             * MVC Dispatcher
+             */
             else {
                 /**
                  * Error
@@ -110,8 +112,13 @@ class ServiceProvider extends AbstractServiceProvider
             }
             
             $dispatcher->setEventsManager($eventsManager);
-            $dispatcher->setDefaultNamespace($config->router->defaults->namespace);
             $dispatcher->setDI($di);
+    
+            // Set default namespace
+            $routerDefaultNamespace = $config->path('router.defaults.namespace');
+            if (!empty($routerDefaultNamespace)) {
+                $dispatcher->setDefaultNamespace($routerDefaultNamespace);
+            }
             
             return $dispatcher;
         });

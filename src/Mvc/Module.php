@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,177 +11,136 @@
 
 namespace Zemit\Mvc;
 
-use Phalcon\Autoload\Loader;
 use Phalcon\Di\DiInterface;
-use Phalcon\Mvc\ModuleDefinitionInterface;
-use Phalcon\Mvc\RouterInterface;
+use Phalcon\Loader;
 use Phalcon\Mvc\View;
+use Phalcon\Mvc\ModuleDefinitionInterface;
 use Zemit\Bootstrap\Config;
-use Zemit\Bootstrap\Router;
+use Zemit\Di\Injectable;
 use Zemit\Utils;
+use Zemit\Url;
 
 /**
- * Class Module
  * {@inheritDoc}
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Mvc
  */
-class Module implements ModuleDefinitionInterface
+class Module extends Injectable implements ModuleDefinitionInterface
 {
-    const NAME_FRONTEND = 'frontend';
-    const NAME_ADMIN = 'admin';
-    const NAME_API = 'api';
-    const NAME_CLI = 'cli';
-    const NAME_OAUTH2 = 'oauth2';
+    public const NAME_FRONTEND = 'frontend';
+    public const NAME_ADMIN = 'admin';
+    public const NAME_API = 'api';
+    public const NAME_OAUTH2 = 'oauth2';
     
-    /**
-     * Module name to register
-     * @var string Module name
-     */
-    public $name;
+    public string $name;
     
-    /**
-     * @var Config
-     */
-    public $config;
+    public Config $config;
     
-    /**
-     * @var Dispatcher
-     */
-    public $dispatcher;
+    public Dispatcher $dispatcher;
     
-    /**
-     * @var Loader
-     */
-    public $loader;
+    public Loader $loader;
     
-    /**
-     * @var Router
-     */
-    public $router;
+    public Router $router;
     
-    /**
-     * @var View
-     */
-    public $view;
+    public View $view;
     
-    /**
-     * @var Url
-     */
-    public $url;
+    public Url $url;
     
     /**
      * Registers an autoloader related to the frontend module
-     *
-     * @param DiInterface $di
      */
-    public function registerAutoloaders(DiInterface $di = null)
+    public function registerAutoloaders(DiInterface $container = null): void
     {
-        //get services
-        $this->getServices($di);
-        
-        // register namespaces
-        $this->loader->setNamespaces($this->getNamespaces(), true);
-        
-        // register autoloader
+        $this->getServices($container);
+        $this->loader->registerNamespaces($this->getNamespaces(), true);
         $this->loader->register();
-        
-        // save services
-        $this->setServices($di);
     }
     
     /**
      * Registers services related to the module
-     *
-     * @param DiInterface $di
      */
-    public function registerServices(DiInterface $di)
+    public function registerServices(DiInterface $container): void
     {
-        // get services
-        $this->getServices($di);
+        $this->getServices($container);
         
-        // Caller namespace
-        $namespace = Utils::getNamespace($this);
-        
-        // dispatcher settings
-        $this->dispatcher->setDefaultNamespace($namespace . '\\Controllers');
-        
-        // view settings
+        $defaultNamespace = $this->getDefaultNamespace();
+        $this->dispatcher->setDefaultNamespace($defaultNamespace);
+        $this->dispatcher->setNamespaceName($defaultNamespace);
         $this->view->setViewsDir($this->getViewsDir());
         
         // url settings
         $this->url->setBasePath('/' . $this->name . '/');
         $this->url->setStaticBaseUri('/' . $this->name . '/');
-        
         $this->router->setDefaults([
-            'namespace' => $this->dispatcher->getDefaultNamespace(),
+            'namespace' => $defaultNamespace,
             'module' => $this->name,
             'controller' => 'index',
             'action' => 'index',
         ]);
         
         // router settings
-        if ($this->router instanceof RouterInterface) {
-            $this->router->notFound([
-                'controller' => 'error',
-                'action' => 'notFound',
-            ]);
-            
-            $this->router->removeExtraSlashes(true);
-        }
+        $this->router->notFound([
+            'controller' => 'error',
+            'action' => 'notFound',
+        ]);
+        $this->router->removeExtraSlashes(true);
         
-        // save services
-        $this->setServices($di);
+        $this->setServices($container);
     }
     
-    public function getViewsDir()
+    public function getServices(DiInterface $container = null): void
     {
-        return [
-            Utils::getDirname(get_class($this)) . '/Views/',
-        ];
+        $this->config ??= $container['config'] ??= new Config();
+        $this->loader ??= $container['loader'] ??= new Loader();
+        $this->router ??= $container['router'] ??= new Router();
+        $this->dispatcher ??= $container['dispatcher'] ??= new Dispatcher();
+        $this->view ??= $container['view'] ??= new View();
+        $this->url ??= $container['url'] ??= new Url();
     }
     
-    public function getNamespaces()
+    public function setServices(DiInterface $container): void
     {
-        $namespaces = [];
-        
+        $container->set('config', $this->config);
+        $container->set('dispatcher', $this->dispatcher);
+        $container->set('loader', $this->loader);
+        $container->set('router', $this->router);
+        $container->set('view', $this->view);
+        $container->set('url', $this->url);
+    }
+    
+    public function getNamespaces(): array
+    {
         // Caller namespace
-        $namespace = Utils::getNamespace($this);
-        $dirname = Utils::getDirname($this);
+        $namespace = $this->getNamespace();
+        $dirname = $this->getDirname();
         
         // register the vendor module controllers
+        $namespaces = [];
         $namespaces[$namespace . '\\Controllers'] = $dirname . '/Controllers/';
         $namespaces[$namespace . '\\Models'] = $dirname . '/Models/';
-        $namespaces['Zemit\\Models'] = $this->config->core->dir->base . '/Models/';
+        
+        // add zemit core models
+        $corePath = dirname(__DIR__);
+        $namespaces['Zemit\\Models'] = $corePath . '/Models/';
+        
         return $namespaces;
     }
     
-    public function getServices(DiInterface $di = null)
+    public function getDefaultNamespace(): string
     {
-        // Config
-        $this->config = $this->config ?? $di['config'] ?? new Config();
-        $this->config->app->module = mb_strtolower($this->name);
-        $this->config->app->dir->module = $this->config->app->dir->modules . $this->name . '/';
-        $this->loader = $this->loader ?? $di['loader'] ?? new Loader();
-        $this->router = $this->router ?? $di['router'] ?? new Router();
-        $this->dispatcher = $this->dispatcher ?? $di['dispatcher'] ?? new Dispatcher();
-        $this->view = $this->view ?? $di['view'] ?? new View();
-        $this->url = $this->url ?? $di['url'] ?? new Url();
+        return $this->getNamespace() . '\\Controllers';
     }
     
-    public function setServices(DiInterface $di = null)
+    public function getViewsDir(): array
     {
-        $di['config'] = $this->config;
-        $di['dispatcher'] = $this->dispatcher;
-        $di['loader'] = $this->loader;
-        $di['router'] = $this->router;
-        $di['view'] = $this->view;
-        $di['url'] = $this->url;
+        return [$this->getDirname() . '/Views/'];
+    }
+    
+    public function getDirname(): string
+    {
+        return Utils::getDirname($this);
+    }
+    
+    public function getNamespace(): string
+    {
+        return Utils::getNamespace($this);
     }
 }

@@ -10,27 +10,24 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractUserType;
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-use Phalcon\Filter\Validation\Validator\Uniqueness;
+use Zemit\Models\Abstracts\AbstractUserType;
+use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Validation\Validator\Uniqueness;
+use Zemit\Models\Interfaces\UserTypeInterface;
 
 /**
- * Class UserType
- *
  * @property User $UserEntity
  * @property Type $TypeEntity
  *
- * @method User getUserEntity($params = null)
- * @method Type getTypeEntity($params = null)
- *
- * @package Zemit\Models
+ * @method User getUserEntity(?array $params = null)
+ * @method Type getTypeEntity(?array $params = null)
  */
-class UserType extends AbstractUserType
+class UserType extends AbstractUserType implements UserTypeInterface
 {
     protected $deleted = self::NO;
     protected $position = self::NO;
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -38,7 +35,7 @@ class UserType extends AbstractUserType
         $this->hasOne('typeId', Type::class, 'id', ['alias' => 'TypeEntity']);
     }
 
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
 

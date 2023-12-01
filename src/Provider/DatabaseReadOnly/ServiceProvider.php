@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,76 +11,8 @@
 
 namespace Zemit\Provider\DatabaseReadOnly;
 
-use Phalcon\Di\DiInterface;
-use Zemit\Db\Events\Logger;
-use Zemit\Db\Events\Profiler;
-use Zemit\Db\Events\Security;
-use Zemit\Provider\AbstractServiceProvider;
-
-/**
- * Class ServiceProvider
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Provider\DatabaseReadOnly
- */
-class ServiceProvider extends AbstractServiceProvider
+class ServiceProvider extends \Zemit\Provider\Database\ServiceProvider
 {
-    /**
-     * The Service name.
-     * @var string
-     */
-    protected $serviceName = 'dbr';
-    
-    /**
-     * {@inheritdoc}
-     * Database connection is created based in the parameters defined in the configuration file.
-     *
-     * @return void
-     */
-    public function register(DiInterface $di): void
-    {
-        $di->setShared($this->getName(), function() use ($di) {
-            $config = $di->get('config')->database;
-            $eventsManager = $di->get('eventsManager');
-            
-            $driver = $config->drivers->{$config->default};
-            $adapter = '\Phalcon\Db\Adapter\Pdo\\' . $driver->adapter;
-            
-            $config = $driver->toArray();
-            unset($config['adapter']);
-    
-            // set dialect class
-            if (!empty($config['dialectClass'])) {
-                $config['dialectClass'] = new $config['dialectClass']();
-            }
-            
-            // merge readonly config to config
-            if (isset($config['readOnly'])) {
-                foreach ($config['readOnly'] as $key => $value) {
-                    if (isset($value)) {
-                        $config[$key] = $value;
-                    }
-                }
-                unset($config['readOnly']);
-            }
-            
-            /** @var \Phalcon\Db\Adapter\Pdo\AbstractPdo $connection */
-            $connection = new $adapter($config);
-            
-            // attach events
-            $eventsManager->attach('db', new Security());
-            $eventsManager->attach('db', new Logger());
-            $eventsManager->attach('db', new Profiler());
-            
-//            $connection->setEventsManager($eventsManager);
-//            $connection->setDi($di);
-            
-            return $connection;
-        });
-    }
+    protected bool $readonly = true;
+    protected string $serviceName = 'dbr';
 }

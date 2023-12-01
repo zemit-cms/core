@@ -10,36 +10,33 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractAudit;
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-use Phalcon\Filter\Validation\Validator\InclusionIn;
-use Phalcon\Filter\Validation\Validator\StringLength\Max;
+use Phalcon\Validation\Validator\InclusionIn;
+use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Validation\Validator\StringLength\Max;
+use Zemit\Models\Abstracts\AbstractAudit;
+use Zemit\Models\Interfaces\AuditInterface;
 
 /**
- * Class Audit
- *
  * @property AuditDetail[] $AuditDetailList
  * @property User $CreatedByEntity
  * @property User $UpdatedByEntity
  *
- * @method AuditDetail[] getAuditDetailList($params = null)
- * @method User getCreatedByEntity($params = null)
- * @method User getUpdatedByEntity($params = null)
- *
- * @package Zemit\Models
+ * @method AuditDetail[] getAuditDetailList(?array $params = null)
+ * @method User getCreatedByEntity(?array $params = null)
+ * @method User getUpdatedByEntity(?array $params = null)
  */
-class Audit extends AbstractAudit
+class Audit extends AbstractAudit implements AuditInterface
 {
-    const EVENT_CREATE = 'create';
-    const EVENT_UPDATE = 'update';
-    const EVENT_DELETE = 'delete';
-    const EVENT_RESTORE = 'restore';
-    const EVENT_OTHER = 'other';
+    public const EVENT_CREATE = 'create';
+    public const EVENT_UPDATE = 'update';
+    public const EVENT_DELETE = 'delete';
+    public const EVENT_RESTORE = 'restore';
+    public const EVENT_OTHER = 'other';
 
     protected $event = self::EVENT_OTHER;
     protected $deleted = self::NO;
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -48,7 +45,7 @@ class Audit extends AbstractAudit
         $this->belongsTo('updatedBy', User::class, 'id', ['alias' => 'UpdatedByEntity']);
     }
 
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
         $eventInclusions = [self::EVENT_CREATE, self::EVENT_UPDATE, self::EVENT_DELETE, self::EVENT_RESTORE, self::EVENT_OTHER];

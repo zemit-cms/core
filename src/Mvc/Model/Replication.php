@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,52 +11,44 @@
 
 namespace Zemit\Mvc\Model;
 
-use Phalcon\Db\Adapter\Pdo\Mysql;
+use Phalcon\Config\ConfigInterface;
+use Phalcon\Db\Adapter\AdapterInterface;
+use Zemit\Mvc\Model\AbstractTrait\AbstractInjectable;
 
 /**
- * Trait Replication
  * Replica Lag Workaround
  * Prevents Phalcon to use read connection while
- * it might be lagging behind the db master
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Mvc\Model
+ * it might be lagging behind the master db
  */
 trait Replication
 {
+    use AbstractInjectable;
+    use Options;
+    
     /**
      * Replica Lag in milliseconds
-     * @var int|null
      */
-    protected static ?int $_replicationLag = null;
+    protected static ?int $replicationLag = null;
     
     /**
      * Timestamp until we can use replication
-     * @var int|null
      */
-    protected static ?int $_replicationReadyAt = null;
+    protected static ?int $replicationReadyAt = null;
     
     /**
      * Get the replication lag value in milliseconds
      */
     public static function getReplicationLag(): ?int
     {
-        return self::$_replicationLag;
+        return self::$replicationLag;
     }
     
     /**
      * Set the replication lag value in milliseconds
-     *
-     * @param int|null $replicationLag
      */
     public static function setReplicationLag(?int $replicationLag = null): void
     {
-        self::$_replicationLag = $replicationLag;
+        self::$replicationLag = $replicationLag;
     }
     
     /**
@@ -63,35 +56,35 @@ trait Replication
      */
     public static function getReplicationReadyAt(): ?int
     {
-        return self::$_replicationReadyAt;
+        return self::$replicationReadyAt;
     }
     
     /**
      * Set the replication lag value in milliseconds
-     *
-     * @param int|null $replicationReadyAt
      */
     public static function setReplicationReadyAt(?int $replicationReadyAt = null): void
     {
-        self::$_replicationReadyAt = $replicationReadyAt;
+        self::$replicationReadyAt = $replicationReadyAt;
     }
     
     /**
      * Replication Trait Initialization
-     * - @todo get replica lag dynamically using raw SQL query if possible
      * - Set Read & Write Connection Service
      * - Add Replication Behavior
      */
-    public function initializeReplication($force = false)
+    public function initializeReplication(?array $options = null): void
     {
-        $di = $this->getDI();
-        $enabled = $force || $di->get('config')->path('database.drivers.mysql.readonly.enable', false);
+        $options ??= $this->getOptionsManager()->get('replication') ?? [];
         
+        $config = $this->getDI()->get('config');
+        assert($config instanceof ConfigInterface);
+        
+        $enabled = $config->path('database.drivers.mysql.readonly.enable', false);
         if ($enabled) {
-            self::setReplicationLag(1000);
-            $this->setConnectionService('db');
-            $this->setReadConnectionService('dbr');
-            $this->setWriteConnectionService('db');
+            self::setReplicationLag($options['lag'] ?? 1000);
+            $this->setConnectionService($options['connectionService'] ?? 'db');
+            $this->setReadConnectionService($options['readConnectionService'] ?? 'dbr');
+            $this->setWriteConnectionService($options['writeConnectionService'] ?? 'db');
             $this->addReadWriteConnectionBehavior();
         }
     }
@@ -99,14 +92,9 @@ trait Replication
     /**
      * Dynamically selects a shard
      * - Prefer to read on the write master during the replica delay
-     *
-     * @param array $intermediate
-     * @param array $bindParams
-     * @param array $bindTypes
-     *
-     * @return Mysql
+     * @return AdapterInterface
      */
-    public function selectReadConnection($intermediate, $bindParams, $bindTypes)
+    public function selectReadConnection(?array $intermediate = null, array $bindParams = [], array $bindTypes = [])
     {
         $di = $this->getDI();
         
@@ -117,18 +105,20 @@ trait Replication
             $di->get($this->getReadConnectionService());
         }
         
-        // Use the write connection service
+        // Use write connection service
         return $this->getDI()->get($this->getWriteConnectionService());
     }
     
     /**
-     * Force the write connection service to master if the model was previously saved
+     * Force write connection service to master if the model was previously saved
      */
     public function addReadWriteConnectionBehavior(): void
     {
-        $forceMasterConnectionService = function() {
-            self::setReplicationReadyAt(round(microtime(true) * 1000) + self::REPLICA_DELAY);
+        $forceMasterConnectionService = function () {
+            self::setReplicationReadyAt(round(microtime(true) * 1000) + self::getReplicationLag());
         };
+        
+        // @todo change to behavior or check if this is added multiple times
         $eventsManager = $this->getEventsManager();
         $eventsManager->attach('model:afterSave', $forceMasterConnectionService);
         $eventsManager->attach('model:afterCreate', $forceMasterConnectionService);
@@ -139,7 +129,6 @@ trait Replication
     
     /**
      * Check whether the replica should be ready or not
-     *
      * @return bool true if replica should be ready
      */
     public function isReplicationReady(): bool
@@ -147,7 +136,6 @@ trait Replication
         $replicationReadyAt = self::getReplicationReadyAt();
         if (empty($replicationReadyAt) || $replicationReadyAt < microtime(true) * 1000) {
             self::setReplicationReadyAt(null);
-            
             return true;
         }
         

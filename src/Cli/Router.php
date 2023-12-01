@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,25 +11,12 @@
 
 namespace Zemit\Cli;
 
-/**
- * Class Router
- * {@inheritDoc}
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Cli
- */
-class Router extends \Phalcon\Cli\Router
+use Zemit\Router\RouterInterface;
+
+class Router extends \Phalcon\Cli\Router implements RouterInterface
 {
-    /**
-     * Router toArray
-     * @return array
-     */
-    public function toArray() {
+    public function toArray(): array
+    {
         $mathedRoute = $this->getMatchedRoute();
         return [
             'module' => $this->getModuleName(),

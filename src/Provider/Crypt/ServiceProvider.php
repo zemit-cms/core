@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -11,35 +12,26 @@
 namespace Zemit\Provider\Crypt;
 
 use Phalcon\Di\DiInterface;
+use Zemit\Config\ConfigInterface;
 use Zemit\Crypt;
 use Zemit\Provider\AbstractServiceProvider;
 
-/**
- * Class ServiceProvider
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Provider\Crypt
- */
 class ServiceProvider extends AbstractServiceProvider
 {
-    protected $serviceName = 'crypt';
+    protected string $serviceName = 'crypt';
     
-    /**
-     * {@inheritdoc}
-     *
-     * @param DiInterface $di
-     */
-    public function register(\Phalcon\Di\DiInterface $di): void
+    public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function() use ($di) {
-            $crypt = new Crypt();
+        $di->setShared($this->getName(), function (?string $cipher = null, ?bool $useSigning = null) use ($di) {
+    
+            $config = $di->get('config');
+            assert($config instanceof ConfigInterface);
+            $options = $config->pathToArray('crypt', []);
             
-            return $crypt;
+            $cipher ??= $options['cipher'] ?? 'aes-256-cfb';
+            $useSigning ??= $options['useSigning'] ?? false;
+            
+            return new Crypt($cipher, $useSigning);
         });
     }
 }

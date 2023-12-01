@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -11,27 +12,17 @@
 namespace Zemit\Mvc;
 
 /**
- * Class Url
  * {@inheritDoc}
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit
  */
 class Url extends \Phalcon\Mvc\Url
 {
-    
     /**
      * {@inheritdoc}
      *
-     * @param null $uri
-     * @param null $args
+     * @param array|string|null $uri
+     * @param mixed $args
      * @param bool|null $local
-     * @param null $baseUri
+     * @param mixed $baseUri
      *
      * @return string
      */
@@ -45,7 +36,7 @@ class Url extends \Phalcon\Mvc\Url
      *
      * @return string
      */
-    public static function getAbsolutePath(string $path) : string
+    public static function getAbsolutePath(string $path): string
     {
         if (strpos($path, 'https://') === 0) {
             return $path;
@@ -59,14 +50,15 @@ class Url extends \Phalcon\Mvc\Url
         
         $path = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
         $parts = array_filter(explode(DIRECTORY_SEPARATOR, $path), 'mb_strlen');
-        $absolutes = array();
+        $absolutes = [];
         foreach ($parts as $part) {
             if ('.' === $part) {
                 continue;
             }
             if ('..' === $part) {
                 array_pop($absolutes);
-            } else {
+            }
+            else {
                 $absolutes[] = $part;
             }
         }

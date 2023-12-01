@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -8,67 +9,67 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Filter;
+namespace Zemit;
 
-use Phalcon\Config\Config;
-use Phalcon\Di\Di;
-use Phalcon\Di\DiInterface;
-use Zemit\Filters;
+use Phalcon\Di;
+use Phalcon\Config\ConfigInterface;
+use Zemit\Filter\Sanitize\Json;
+use Zemit\Filter\Sanitize\Md5;
+use Zemit\Filter\Sanitize\IPv4;
+use Zemit\Filter\Sanitize\IPv6;
 
 /**
- * Class Filter
  * {@inheritDoc}
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit
  */
-class Filter extends \Phalcon\Filter\Filter
+class Filter extends \Phalcon\Filter
 {
-    const FILTER_MD5 = 'md5';
-    const FILTER_JSON = 'json';
-    const FILTER_IPV4 = 'ipv4';
-    const FILTER_IPV6 = 'ipv6';
+    public ConfigInterface $config;
+    
+    public const FILTER_MD5 = 'md5';
+    
+    public const FILTER_JSON = 'json';
+    
+    public const FILTER_IPV4 = 'ipv4';
+    
+    public const FILTER_IPV6 = 'ipv6';
     
     /**
      * Key value pairs with name as the key and a callable as the value for
      * the service object
      *
      * @param array $mapper
+     * @param ConfigInterface|null $config
      */
-    public function __construct(array $mapper = array())
+    public function __construct(array $mapper = [], ?ConfigInterface $config = null)
     {
         parent::__construct($mapper);
-
-        // Default Filters
-        $this->set(self::FILTER_MD5, function ($value) {
-            return (new Filters\Md5())->filter($value);
-        });
-        $this->set(self::FILTER_JSON, function ($value) {
-            return (new Filters\Json())->filter($value);
-        });
-        $this->set(self::FILTER_IPV4, function ($value) {
-            return (new Filters\IPv4())->filter($value);
-        });
-        $this->set(self::FILTER_IPV6, function ($value) {
-            return (new Filters\IPv6())->filter($value);
-        });
+        $this->setConfig($config ?? Di::getDefault()->get('config'));
+    }
+    
+    protected function init(array $mapper): void
+    {
+        parent::init($mapper);
+    
+        $this->set(self::FILTER_MD5, Md5::class);
+        $this->set(self::FILTER_JSON, Json::class);
+        $this->set(self::FILTER_IPV4, IPv4::class);
+        $this->set(self::FILTER_IPV6, IPv6::class);
         
         // Adding App Filters defined from the user config
-        $di = isset($di)? $di : Di::getDefault();
-        if ($di instanceof DiInterface) {
-            $config = $di->get('config');
-            if ($config instanceof Config && isset($config->filters)) {
-                foreach ($config->filters as $key => $filter) {
-                    $this->set($key, function ($value) use ($filter) {
-                        return (new $filter())->filter($value);
-                    });
-                }
-            }
+        $config = $this->getConfig();
+        $configFilters = $config->get('filters')->toArray() ?? [];
+        foreach ($configFilters as $key => $filter) {
+            $this->set($key, $filter);
         }
+    }
+    
+    public function getConfig(): ConfigInterface
+    {
+        return $this->config;
+    }
+    
+    public function setConfig(ConfigInterface $config): void
+    {
+        $this->config = $config;
     }
 }

@@ -12,17 +12,6 @@ namespace Zemit\Modules\Api\Controllers;
 
 use Zemit\Modules\Api\Controller;
 
-/**
- * Class MetaController
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Modules\Api\Controllers
- */
 class MetaController extends Controller
 {
 

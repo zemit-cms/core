@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -12,23 +13,9 @@ namespace Zemit\Modules\Cli\Tasks;
 
 use Zemit\Modules\Cli\Task;
 
-/**
- * Class CronTask
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Modules\Cli\Tasks
- */
 class CronTask extends Task
 {
-    /**
-     * @var string
-     */
-    public $consoleDoc = <<<DOC
+    public string $cliDoc = <<<DOC
 Usage:
   php zemit cli cron <action> [<params> ...]
 
@@ -38,29 +25,29 @@ Options:
 
 
 DOC;
-    
-    public function helpAction()
+
+    public function mainAction(): ?array
     {
-        echo $this->consoleDoc;
+        return null;
     }
-    
-    public function mainAction()
+
+    public function hourlyAction(): ?array
     {
+        return null;
     }
-    
-    public function hourlyAction()
+
+    public function dailyAction(): ?array
     {
+        return null;
     }
-    
-    public function dailyAction()
+
+    public function weeklyAction(): ?array
     {
+        return null;
     }
-    
-    public function weeklyAction()
+
+    public function monthlyAction(): ?array
     {
-    }
-    
-    public function monthlyAction()
-    {
+        return null;
     }
 }

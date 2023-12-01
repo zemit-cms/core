@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,14 +11,13 @@
 
 namespace Zemit\Mvc\Model\Behavior;
 
-use Closure;
-use Phalcon\Mvc\Model\Behavior\Exception;
-use Phalcon\Mvc\Model\MetaData;
-use Phalcon\Mvc\ModelInterface;
 use Phalcon\Mvc\Model\Behavior;
-use Phalcon\Support\HelperFactory;
+use Phalcon\Mvc\ModelInterface;
+use Phalcon\Text;
 use Zemit\Models\Audit;
 use Zemit\Models\AuditDetail;
+use Zemit\Models\Interfaces\AuditDetailInterface;
+use Zemit\Models\Interfaces\AuditInterface;
 use Zemit\Models\User;
 
 /**
@@ -28,97 +28,67 @@ use Zemit\Models\User;
  */
 class Blameable extends Behavior
 {
-    /**
-     * @var null
-     */
-    protected static $parentId = null;
+    use SkippableTrait;
     
-    /**
-     * @var array
-     */
-    protected $snapshot = null;
+    protected static ?int $parentId = null;
+
+    protected ?array $snapshot = null;
+
+    protected ?array $changedFields = null;
     
-    /**
-     * @var array
-     */
-    protected $changedFields = null;
+    protected string $auditClass = Audit::class;
+
+    protected string $auditDetailClass = AuditDetail::class;
+
+    protected string $userClass = User::class;
     
-    /**
-     * @var string
-     */
-    protected $auditClass = Audit::class;
-    
-    /**
-     * @var string
-     */
-    protected $auditDetailClass = AuditDetail::class;
-    
-    /**
-     * @var string
-     */
-    protected $userClass = User::class;
-    
-    /**
-     * Blameable constructor.
-     *
-     * @param array|null $options
-     *
-     * @throws Exception
-     */
-    public function __construct($options = null)
+    public function __construct(?array $options = null)
     {
         parent::__construct($options);
-        
         $this->userClass = $options['userClass'] ?? $this->userClass;
         $this->auditClass = $options['auditClass'] ?? $this->auditClass;
         $this->auditDetailClass = $options['auditDetailClass'] ?? $this->auditDetailClass;
     }
     
-    /**
-     * {@inheritdoc}
-     *
-     * @param string $eventType
-     * @param \Phalcon\Mvc\ModelInterface $model
-     */
-    public function notify($eventType, ModelInterface $model)
+    public function notify(string $type, ModelInterface $model)
     {
-        // prevent auditing audit & audit_detail tables
-        if ($model instanceof $this->auditClass || $model instanceof $this->auditDetailClass) {
-            return true;
+        if ($this->isEnabled()) {
+            return null;
         }
         
-        switch ($eventType) {
+        // prevent auditing audit & audit_detail tables
+        if ($model instanceof $this->auditClass || $model instanceof $this->auditDetailClass) {
+            return null;
+        }
+        
+        switch ($type) {
             case 'afterCreate':
             case 'afterUpdate':
-                return $this->createAudit($eventType, $model);
+                return $this->createAudit($type, $model);
             case 'beforeUpdate':
-                return $this->collectData($eventType, $model);
+                return $this->collectData($model);
         }
     }
     
     /**
-     * Audits an DELETE operation
-     *
-     * @param \Phalcon\Mvc\ModelInterface $model
-     *
-     * @return boolean
+     * Create new audit
+     * Return true if the audit was created
      */
-    public function createAudit($event, ModelInterface $model)
+    public function createAudit(string $type, ModelInterface $model): bool
     {
-        $event = lcfirst((new HelperFactory)->uncamelize(str_replace(['before', 'after'], ['', ''], $event)));
+        $event = lcfirst(Text::uncamelize(str_replace(['before', 'after'], ['', ''], $type)));
         
         $auditClass = $this->auditClass;
         $auditDetailClass = $this->auditDetailClass;
         
-        /** @var MetaData $metaData */
         $metaData = $model->getModelsMetaData();
         $columns = $metaData->getAttributes($model);
         $columnMap = $metaData->getColumnMap($model);
         $changedFields = $this->changedFields;
         $snapshot = $this->snapshot;
         
-        /** @var Audit $audit */
         $audit = new $auditClass();
+        assert($audit instanceof AuditInterface);
         
         $audit->setModel(get_class($model));
         $audit->setTable($model->getSource());
@@ -130,6 +100,7 @@ class Blameable extends Behavior
         $audit->setParentId(self::$parentId);
         
         $auditDetailList = [];
+        
         foreach ($columns as $column) {
             $map = empty($columnMap) ? $column : $columnMap[$column];
             $before = $snapshot[$map] ?? null;
@@ -142,8 +113,8 @@ class Blameable extends Behavior
                 }
             }
             
-            /** @var AuditDetail $auditDetail */
             $auditDetail = new $auditDetailClass();
+            assert($auditDetail instanceof AuditDetailInterface);
             
             $auditDetail->setModel(get_class($model));
             $auditDetail->setTable($model->getSource());
@@ -158,7 +129,6 @@ class Blameable extends Behavior
         }
         
         $audit->AuditDetailList = $auditDetailList;
-        
         $save = $audit->save();
         foreach ($audit->getMessages() as $message) {
             $message->setField('Audit.' . $message->getField());
@@ -166,22 +136,22 @@ class Blameable extends Behavior
         }
         
         self::$parentId = (!empty($model->hasDirtyRelated())) ? $audit->getId() : null;
-        
         return $save;
     }
     
     /**
-     * @param $event
-     * @param ModelInterface $model
-     * @return bool true if snapshot data exists
+     * Return true if data has been collected
      */
-    protected function collectData($event, ModelInterface $model)
+    protected function collectData(ModelInterface $model): bool
     {
         if ($model->hasSnapshotData()) {
             $this->snapshot = $model->getSnapshotData();
             $this->changedFields = $model->getChangedFields();
             return true;
         }
+    
+        $this->snapshot = null;
+        $this->changedFields = null;
         return false;
     }
 }

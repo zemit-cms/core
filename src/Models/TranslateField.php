@@ -10,27 +10,20 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractTranslateField;
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-use Phalcon\Filter\Validation\Validator\StringLength\Max;
-use Phalcon\Filter\Validation\Validator\Uniqueness;
+use Zemit\Models\Abstracts\AbstractTranslateField;
+use Zemit\Models\Interfaces\TranslateFieldInterface;
 
-/**
- * Class Setting
- *
-* @package Zemit\Models
-*/
-class TranslateField extends AbstractTranslateField
+class TranslateField extends AbstractTranslateField implements TranslateFieldInterface
 {
     protected $deleted = self::NO;
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         // @todo relationships
     }
 
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
 

@@ -12,26 +12,16 @@ namespace Zemit\Modules\Api\Controllers;
 
 use Zemit\Modules\Api\Controller;
 
-/**
- * Class RoleController
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Modules\Api\Controllers
- */
 class RoleController extends Controller
 {
-    public function getWith() {
+    public function getWith(): ?array
+    {
         return [
-            'UserList'
+            'UserList',
         ];
     }
     
-    public function getSearchWhiteList()
+    public function getSearchWhiteList(): ?array
     {
         return [
             'index',
@@ -40,9 +30,10 @@ class RoleController extends Controller
         ];
     }
     
-    public function getExpose() {
+    public function getExpose(): ?array
+    {
         return [
-            'Role' => true
+            'Role' => true,
         ];
     }
 }

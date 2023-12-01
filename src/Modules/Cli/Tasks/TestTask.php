@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -13,23 +14,9 @@ namespace Zemit\Modules\Cli\Tasks;
 use Zemit\Modules\Cli\Task;
 use Zemit\Utils;
 
-/**
- * Class HelpTask
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Modules\Cli\Tasks
- */
 class TestTask extends Task
 {
-    /**
-     * @var string
-     */
-    public $consoleDoc = <<<DOC
+    public string $cliDoc = <<<DOC
 Usage:
   php zemit cli <task> [<action>] [<params> ...]
 
@@ -39,7 +26,7 @@ Options:
 
 DOC;
     
-    public function memoryAction()
+    public function memoryAction(): array
     {
         return Utils::getMemoryUsage();
     }

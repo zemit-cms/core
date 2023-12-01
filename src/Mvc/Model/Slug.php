@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,35 +11,51 @@
 
 namespace Zemit\Mvc\Model;
 
-use Zemit\Utils\Slug as PhalconSlug;
+use Zemit\Mvc\Model\AbstractTrait\AbstractInjectable;
+use Zemit\Mvc\Model\AbstractTrait\AbstractBehavior;
+use Zemit\Mvc\Model\Behavior\Transformable;
+use Zemit\Mvc\Model;
 
-/**
- * Trait Slug
- * @deprecated @todo to be removed
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Mvc\Model
- */
 trait Slug
 {
-    protected function _setSlug($slugField = 'slug', $fromField = 'name')
+    use AbstractInjectable;
+    use AbstractBehavior;
+    use Options;
+    
+    /**
+     * Initializing Slug
+     */
+    public function initializeSlug(?array $options = null): void
     {
-        if (property_exists($this, $slugField) && property_exists($this, $fromField)) {
-            $this->getEventsManager()->attach('model', function ($event, $entity) use ($slugField, $fromField) {
-                switch ($event->getType()) {
-                    case 'beforeValidation':
-                        if (property_exists($entity, $slugField) && property_exists($entity, $fromField) && !empty($entity->$fromField) && is_null($entity->$slugField)) {
-                            $entity->$slugField = PhalconSlug::generate($entity->$fromField);
-                        }
-                        break;
-                }
-                return true;
-            });
-        }
+        $options ??= $this->getOptionsManager()->get('slug') ?? [];
+        
+        $field = $options['field'] ?? 'slug';
+        
+        $this->setSlugBehavior(new Transformable([
+            'beforeValidation' => [
+                $field => function (Model $model, $field) {
+                    $value = $model->readAttribute($field);
+                    return $value && is_string($value) ? \Zemit\Utils\Slug::generate($value) : $value;
+                },
+            ],
+        ]));
+    }
+    
+    /**
+     * Set Slug Behavior
+     */
+    public function setSlugBehavior(Transformable $slugBehavior): void
+    {
+        $this->setBehavior('slug', $slugBehavior);
+    }
+    
+    /**
+     * Get Slug Behavior
+     */
+    public function getSlugBehavior(): Transformable
+    {
+        $slugBehavior = $this->getBehavior('slug');
+        assert($slugBehavior instanceof Transformable);
+        return $slugBehavior;
     }
 }

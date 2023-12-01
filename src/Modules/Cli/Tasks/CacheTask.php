@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -12,23 +13,9 @@ namespace Zemit\Modules\Cli\Tasks;
 
 use Zemit\Modules\Cli\Task;
 
-/**
- * Class CacheTask
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Modules\Cli\Tasks
- */
 class CacheTask extends Task
 {
-    /**
-     * @var string
-     */
-    public $consoleDoc = <<<DOC
+    public string $cliDoc = <<<DOC
 Usage:
   php zemit cli cache <action> [<params> ...]
 
@@ -38,17 +25,4 @@ Options:
 
 
 DOC;
-    
-    public function helpAction()
-    {
-        echo $this->consoleDoc;
-    }
-    
-    public function mainAction()
-    {
-    }
-    
-    public function clearAction()
-    {
-    }
 }

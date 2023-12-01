@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -11,44 +12,29 @@
 namespace Zemit\Provider\Url;
 
 use Phalcon\Di\DiInterface;
-use Phalcon\Mvc\RouterInterface;
-use Zemit\Mvc\Url;
+use Phalcon\Mvc;
+use Zemit\Url;
+use Zemit\Config\ConfigInterface;
 use Zemit\Provider\AbstractServiceProvider;
 
-/**
- * Class ServiceProvider
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Provider\Url
- */
 class ServiceProvider extends AbstractServiceProvider
 {
-    /**
-     * The Service name.
-     * @var string
-     */
-    protected $serviceName = 'url';
+    protected string $serviceName = 'url';
     
-    /**
-     * {@inheritdoc}
-     * The URL component is used to generate all kind of urls in the application.
-     *
-     * @return void
-     */
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function() use ($di) {
-            $config = $di->get('config')->app;
-            $router = $di->get('router');
+        $di->setShared($this->getName(), function () use ($di) {
             
-            $url = new Url($router instanceof RouterInterface ? $router : null);
-            $url->setStaticBaseUri($config->staticUri ?? '/');
-            $url->setBaseUri($config->uri ?? '/');
+            $config = $di->get('config');
+            assert($config instanceof ConfigInterface);
+            $urlConfig = $config->pathToArray('ur') ?? [];
+            
+            $router = $di->get('router');
+            $url = new Url($router instanceof Mvc\RouterInterface ? $router : null);
+            $url->setStaticBaseUri($urlConfig['staticBaseUri'] ?? '/');
+            $url->setBaseUri($urlConfig['baseUri'] ?? '/');
+            $url->setBasePath($urlConfig['basePath'] ?? '/');
+            $url->setDI($di);
             
             return $url;
         });

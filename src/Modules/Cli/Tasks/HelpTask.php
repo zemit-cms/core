@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,25 +11,12 @@
 
 namespace Zemit\Modules\Cli\Tasks;
 
+use Phalcon\Exception;
 use Zemit\Modules\Cli\Task;
 
-/**
- * Class HelpTask
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Modules\Cli\Tasks
- */
 class HelpTask extends Task
 {
-    /**
-     * @var string
-     */
-    public $consoleDoc = <<<DOC
+    public string $cliDoc = <<<DOC
 Usage:
   php zemit cli <task> [<action>] [<params> ...]
 
@@ -38,17 +26,26 @@ Options:
 
 DOC;
     
-    public function buildAction()
+    /**
+     * @throws Exception
+     */
+    public function buildAction(): void
     {
         $this->dispatcher->forward(['task' => 'build', 'action' => 'help']);
     }
     
-    public function cronAction()
+    /**
+     * @throws Exception
+     */
+    public function cronAction(): void
     {
         $this->dispatcher->forward(['task' => 'cron', 'action' => 'help']);
     }
     
-    public function cacheAction()
+    /**
+     * @throws Exception
+     */
+    public function cacheAction(): void
     {
         $this->dispatcher->forward(['task' => 'cache', 'action' => 'help']);
     }

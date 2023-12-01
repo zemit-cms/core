@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -11,26 +12,15 @@
 namespace Zemit\Modules\Cli;
 
 use Phalcon\Cli\Dispatcher;
-use Phalcon\Support\Version;
+use Phalcon\Version;
+use Zemit\Exception\CliException;
+use Zemit\Http\StatusCode;
 use Zemit\Utils;
 
-/**
- * Class Task
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Modules\Cli
- */
-class Task extends \Phalcon\Cli\Task
+class Task extends \Zemit\Cli\Task
 {
-    /**
-     * @var string
-     */
-    public $consoleDoc = <<<DOC
+    
+    public string $cliDoc = <<<DOC
 Usage:
   php zemit cli <task> <action> [<params> ...]
 
@@ -40,140 +30,141 @@ Options:
 
 DOC;
     
-    public function helpAction()
+    public function helpAction(): void
     {
-        echo $this->consoleDoc;
+        echo $this->cliDoc;
     }
     
-    public function mainAction()
+    public function mainAction(): ?array
     {
         $this->helpAction();
+        
+        return null;
     }
     
-    /**
-     * Sending rest response as an http response
-     *
-     * @param array|null $response
-     * @param null $status
-     * @param null $code
-     * @param int $jsonOptions
-     * @param int $depth
-     *
-     * @return array
-     */
-    public function normalizeResponse($response = null, $code = null, $status = null, $jsonOptions = 0, $depth = 512)
+    public function normalizeResponse(bool $response = true, ?int $code = null, ?string $status = null): array
     {
-        $debug = $this->config->app->debug ?: $this->dispatcher->getParam('debug') ?: false;
+        $debug = $this->config->path('app.debug') ?? false;
         
         // keep forced status code or set our own
-        $responseStatusCode = $this->response->getStatusCode();
+        $statusCode = $this->response->getStatusCode();
         $reasonPhrase = $this->response->getReasonPhrase();
-        $status ??= $reasonPhrase ? : 'OK';
-        $code ??= (int)$responseStatusCode ? : 200;
+        $code ??= (int)$statusCode ?: 200;
+        $status ??= $reasonPhrase ?: StatusCode::getMessage($code);
+        
         $view = $this->view->getParamsToView();
         $hash = hash('sha512', json_encode($view));
         
-        /**
-         * Debug section
-         * - Versions
-         * - Request
-         * - Identity
-         * - Profiler
-         * - Dispatcher
-         * - Router
-         */
-        $identity = $debug ? $this->identity->getIdentity() : null;
-        $profiler = $debug && $this->profiler ? $this->profiler->toArray() : null;
-        $dispatcher = $debug ? $this->dispatcher->toArray() : null;
-        $router = $debug ? $this->router->toArray() : null;
+        // set response status code
+        $this->response->setStatusCode($code, $status);
         
-        $api = $debug ? [
-            'php' => phpversion(),
-            'phalcon' => (new Version)->get(),
-            'zemit' => $this->config->core->version,
-            'core' => $this->config->core->name,
-            'app' => $this->config->app->version,
-            'name' => $this->config->app->name,
-        ] : [];
-        $api['version'] = '0.1';
+        $ret = [];
+        $ret['api'] = [];
+        $ret['api']['version'] = ['0.1']; // @todo
+        $ret['timestamp'] = date('c');
+        $ret['hash'] = $hash;
+        $ret['status'] = $status;
+        $ret['code'] = $code;
+        $ret['response'] = $response;
+        $ret['view'] = $view;
         
-        $this->response->setStatusCode($code, $code . ' ' . $status);
+        if ($debug) {
+            $ret['api']['php'] = phpversion();
+            $ret['api']['phalcon'] = Version::get();
+            $ret['api']['zemit'] = $this->config->path('core.version');
+            $ret['api']['core'] = $this->config->path('core.name');
+            $ret['api']['app'] = $this->config->path('app.version');
+            $ret['api']['name'] = $this->config->path('app.name');
+            
+            $ret['identity'] = $this->identity ? $this->identity->getIdentity() : null;
+            $ret['profiler'] = $this->profiler ? $this->profiler->toArray() : null;
+            $ret['dispatcher'] = $this->dispatcher ? $this->dispatcher->toArray() : null;
+            $ret['router'] = $this->router ? $this->router->toArray() : null;
+            $ret['memory'] = Utils::getMemoryUsage();
+        }
         
-        return array_merge([
-            'api' => $api,
-            'timestamp' => date('c'),
-            'hash' => $hash,
-            'status' => $status,
-            'code' => $code,
-            'response' => $response,
-            'view' => $view,
-        ], $debug ? [
-            'identity' => $identity,
-            'profiler' => $profiler,
-            'dispatcher' => $dispatcher,
-            'router' => $router,
-            'memory' => Utils::getMemoryUsage(),
-        ] : []);
+        return $ret;
     }
     
     /**
      * Handle rest response automagically
-     *
      * @param Dispatcher $dispatcher
+     * @return void
+     * @throws CliException
      */
-    public function afterExecuteRoute(Dispatcher $dispatcher)
+    public function afterExecuteRoute(Dispatcher $dispatcher): void
     {
         // Merge response into view variables
         $response = $dispatcher->getReturnedValue();
-    
+        
         // Quiet output
         $quiet = $this->dispatcher->getParam('quiet');
         if ($quiet) {
-            exit(!$response? 1 : 0);
+            exit(!$response ? 1 : 0);
         }
-    
+        
         // Normalize response
-        if (is_array($response)) {
-            $this->view->setVars($response, true);
-        }
-        $normalizedResponse = $this->normalizeResponse(is_array($response) ? null : $response);
+        $this->view->setVars((array)$response);
+        $normalizedResponse = $this->normalizeResponse((bool)$response);
         $dispatcher->setReturnedValue($normalizedResponse);
-    
+        
         // Set response
         $verbose = $this->dispatcher->getParam('verbose');
-        $ret = $verbose? $normalizedResponse : $response;
+        $ret = $verbose ? $normalizedResponse : $response;
         
         // Format response
         $format = $this->dispatcher->getParam('format');
-        $format ??= 'dump';
-        
+        $format ??= 'json';
         switch (strtolower($format)) {
             case 'dump':
-                dd($ret);
-            case 'json':
-                echo json_encode($ret);
+                dump($ret);
                 break;
-            case 'xml':
-                $xml = new \SimpleXMLElement('');
-                array_walk_recursive($ret, array ($xml,'addChild'));
-                echo $xml->asXML();
+                
+            case 'var_export':
+                var_export($ret);
                 break;
+                
+            case 'print_r':
+                print_r($ret);
+                break;
+    
             case 'serialize':
                 echo serialize($ret);
                 break;
-            case 'raw':
-                if (is_array($ret) || is_object($ret)) {
-                    print_r($ret);
+            
+            case 'json':
+                echo json_encode($ret, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . PHP_EOL;
+                break;
+            
+            case 'string':
+                if (is_string($ret)) {
+                    echo $ret;
                 }
-                else if (is_bool($ret)) {
+                elseif (is_bool($ret)) {
                     echo $ret? 'true' : 'false';
                 }
+                elseif (is_null($ret)) {
+                    echo 'null';
+                }
+                elseif (is_numeric($ret)) {
+                    echo $ret;
+                }
                 else {
-                    echo strval($ret);
+                    echo json_encode($ret, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . PHP_EOL;
                 }
                 break;
+                
+            case 'raw':
+                if (is_string($ret) || is_bool($ret) || is_null($ret) || is_numeric($ret)) {
+                    echo $ret;
+                }
+                else {
+                    echo json_encode($ret, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . PHP_EOL;
+                }
+                break;
+            
             default:
-                throw new \Exception('Unknown output format `'.$format.'` expected one of the string value: `json` `xml` `serialize` `dump` `raw`');
+                throw new CliException('Unknown output format `' . $format . '` expected one of the string value: `json` `serialize` `dump` `raw`');
         }
     }
 }

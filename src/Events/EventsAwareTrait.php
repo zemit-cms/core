@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -19,107 +20,69 @@ use Zemit\Utils\Slug;
 /**
  * Trait EventsAwareTrait
  *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
  *
- * @since 1.0
- * @version 1.0
  *
  * @package Zemit\Events
  */
 trait EventsAwareTrait
 {
-    /**
-     * @var Manager
-     */
-    protected $eventsManager = null;
+    protected ?ManagerInterface $eventsManager;
     
-    /**
-     * Set Event Manager Service Provider
-     *
-     * @param Manager $eventsManager
-     */
-    public function setEventsManager(ManagerInterface $manager)
+    public function setEventsManager(ManagerInterface $manager): void
     {
         $this->eventsManager = $manager;
     }
     
-    /**
-     * return event manager
-     *
-     * @return Manager|null
-     */
-    public function getEventsManager() : ?ManagerInterface
+    public function getEventsManager(): ?ManagerInterface
     {
-        if (!empty($this->eventsManager)) {
-            $manager = $this->eventsManager;
-        } elseif (Di::getDefault()->has('eventsManager')) {
-            $manager = Di::getDefault()->get('eventsManager');
-        }
-        if (isset($manager) && $manager instanceof Manager) {
-            return $manager;
-        }
-        
-        return null;
+        $this->eventsManager ??= Di::getDefault()->get('eventsManager');
+        return $this->eventsManager;
     }
     
     /**
-     * Event slug to use as a component
+     * Event prefix to use as a component
      * my-component:beforeSomeTask
      * my-component:afterSomeTask
-     *
-     * @var null|string
      */
-    public static $_eventsSlug = null;
+    public static ?string $eventsPrefix;
     
     /**
-     * Return the event component slug
-     *
-     * @return null|string Component slug
-     * @throws \Zemit\Exception
+     * Return the event component prefix
      */
-    public static function getEventsSlug()
+    public static function getEventsPrefix(): ?string
     {
-        return
-            self::$_eventsSlug ??
-            self::$_eventsSlug =
-                Slug::generate(
-                    basename(
-                        str_replace('\\', '/', __CLASS__)
-                    )
-                );
+        self::$eventsPrefix ??= Slug::generate(basename(str_replace('\\', '/', __CLASS__)));
+        return self::$eventsPrefix;
     }
     
     /**
-     * Set the event component slug
-     *
-     * @param $eventSlug
+     * Set the event component prefix
      */
-    public static function setEventSlug($eventSlug)
+    public static function setEventsPrefix(?string $eventsPrefix): void
     {
-        self::$_eventsSlug = $eventSlug;
+        self::$eventsPrefix = $eventsPrefix;
     }
     
     /**
      * Checking if event manager is defined - fire event
      *
-     * @param $task
-     * @param null $data
+     * @param mixed $task
+     * @param mixed $data
      * @param bool $cancelable
      *
-     * @throws Exception
+     * @return mixed
      */
-    public function fire($task, $data = null, $cancelable = false)
+    public function fire($task, $data = null, bool $cancelable = false)
     {
-        if ($manager = $this->getEventsManager()) {
-            $manager->fire($this->getEventsSlug() . ':' . $task, $this, $data, $cancelable);
-        } else {
-            throw new \Exception('Events Manager Service Provider \'eventsManager\' does not exists in DI of \'' . get_class($this) . '\'');
-        }
+        $eventType = $this->getEventsPrefix() . ':' . $task;
+        return $this->getEventsManager()->fire($eventType, $this, $data, $cancelable);
     }
     
     /**
-     * Add possibility to parse an holder and run a callback after
+     * Fire "before" event
+     * Run class with parameters
+     * Fire "after" event
+     * Return the holder
      *
      * @param $holder
      * @param null $class
@@ -127,7 +90,7 @@ trait EventsAwareTrait
      * @param null $callback
      *
      * @return mixed|null
-     * @throws Exception
+     * @throws \Exception
      */
     public function fireSet(&$holder, $class = null, array $params = [], $callback = null)
     {
@@ -139,31 +102,40 @@ trait EventsAwareTrait
         
         // holder not set, apply class to it
         if (!isset($holder)) {
+            
             // can be a class path
             if (class_exists($class)) {
                 $holder = new $class(...$params);
             }
+            
             // can be a callable
             elseif (is_callable($class)) {
                 $holder = $class(...$params);
             }
+            
             // can be the object
             elseif (is_object($class)) {
                 $holder = $class;
             }
+            
             // class not found
             elseif (is_string($class)) {
                 throw new \Exception('Class "' . $class . '" not found');
             }
+            
             // other error
             else {
                 throw new \Exception('Unknown type "' . $class . '" for "$class"');
             }
-        } elseif (is_string($holder)) {
+        }
+        
+        elseif (is_string($holder)) {
+            
             // can be a class path
             if (class_exists($holder)) {
                 $holder = new $holder(...$params);
             }
+            
             // class not founmd
             else {
                 throw new \Exception('Class "' . $class . '" not found');

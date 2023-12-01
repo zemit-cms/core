@@ -10,27 +10,24 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractUserGroup;
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-use Phalcon\Filter\Validation\Validator\Uniqueness;
+use Zemit\Models\Abstracts\AbstractUserGroup;
+use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Validation\Validator\Uniqueness;
+use Zemit\Models\Interfaces\UserGroupInterface;
 
 /**
- * Class UserGroup
- *
  * @property User $UserEntity
  * @property Group $GroupEntity
  *
- * @method User getUserEntity($params = null)
- * @method Group getGroupEntity($params = null)
- *
- * @package Zemit\Models
+ * @method User getUserEntity(?array $params = null)
+ * @method Group getGroupEntity(?array $params = null)
  */
-class UserGroup extends AbstractUserGroup
+class UserGroup extends AbstractUserGroup implements UserGroupInterface
 {
     protected $deleted = self::NO;
     protected $position = self::NO;
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -38,7 +35,7 @@ class UserGroup extends AbstractUserGroup
         $this->hasOne('groupId', Group::class, 'id', ['alias' => 'GroupEntity']);
     }
 
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
 

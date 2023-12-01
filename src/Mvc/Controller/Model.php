@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -15,20 +16,17 @@ use Phalcon\Messages\Message;
 use Phalcon\Messages\Messages;
 use Phalcon\Mvc\Model\Resultset;
 use Phalcon\Mvc\ModelInterface;
-use Phalcon\Support\HelperFactory;
+use Phalcon\Text;
+use Zemit\Fractal\Transformer;
 use Zemit\Http\Request;
 use Zemit\Identity;
-use Zemit\Mvc\Model\Expose\Expose;
+use Zemit\Support\Exposer\Exposer;
 use Zemit\Utils\Slug;
 
 /**
  * Trait Model
  *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
  *
- * @since 1.0
- * @version 1.0
  *
  * @package Zemit\Mvc\Controller
  */
@@ -52,7 +50,7 @@ trait Model
     /**
      * Get the current Model Class Name
      *
-     * @return string|null
+     * @return string|null|\Zemit\Mvc\Model
      */
     public function getModelClassName()
     {
@@ -80,7 +78,7 @@ trait Model
     public function getFlatWhiteList(?array $whiteList = null)
     {
         $whiteList ??= $this->getWhiteList();
-        $ret = Expose::_parseColumnsRecursive($whiteList);
+        $ret = Exposer::parseColumnsRecursive($whiteList);
         return $ret ? array_keys($ret) : null;
     }
     
@@ -132,6 +130,16 @@ trait Model
     protected function getListWith()
     {
         return $this->getWith();
+    }
+    
+    /**
+     * Get relationship eager loading definition for a listing
+     *
+     * @return null|array
+     */
+    protected function getExportWith()
+    {
+        return $this->getListWith();
     }
     
     /**
@@ -211,9 +219,10 @@ trait Model
      *
      * @return null|int Default: 1000
      */
-    protected function getLimit(): int
+    protected function getLimit(): ?int
     {
-        return (int)$this->getParam('limit', 'int', 1000);
+        $limit = (int)$this->getParam('limit', 'int', 1000);
+        return $limit === -1? null : abs($limit);
     }
     
     /**
@@ -327,24 +336,19 @@ trait Model
     }
     
     /**
-     * @param $field
-     * @param string $sanitizer
-     * @param string $glue
-     *
-     * @return array|string[]
+     * This function will explode the field based using the glue
+     * and sanitize the values and append the model name
      */
-    public function getParamExplodeArrayMapFilter($field, $sanitizer = 'string', $glue = ',')
+    public function getParamExplodeArrayMapFilter(string $field, string $sanitizer = 'string', string $glue = ',', int $limit = PHP_INT_MAX) : ?array
     {
+        $ret = [];
         $filter = $this->filter;
-        $ret = array_filter(array_map(function ($e) use ($filter, $sanitizer) {
-            
-            // allow to run RAND()
-            if (strrpos($e, 'RAND()') === 0) {
-                return $e;
-            }
-            
-            return $this->appendModelName(trim($filter->sanitize($e, $sanitizer)));
-        }, explode($glue, $this->getParam($field, $sanitizer))));
+        $params = $this->getParam($field, $sanitizer);
+        foreach (is_array($params)? $params : [$params] as $param) {
+            $ret = array_filter(array_merge($ret, array_map(function ($e) use ($filter, $sanitizer) {
+                return strrpos(strtoupper($e), 'RAND()') === 0? $e : $this->appendModelName(trim($filter->sanitize($e, $sanitizer)));
+            }, explode($glue, $param, $limit))));
+        }
         
         return empty($ret) ? null : $ret;
     }
@@ -405,11 +409,6 @@ trait Model
      */
     protected function getIdentityCondition(array $columns = null, Identity $identity = null, $roleList = null)
     {
-        // @todo
-        if ($this->request->isOptions()) {
-            return null;
-        }
-        
         $identity ??= $this->identity ?? false;
         $roleList ??= $this->getRoleList();
         $modelName = $this->getModelClassName();
@@ -442,7 +441,7 @@ trait Model
         return null;
     }
     
-    function arrayMapRecursive($callback, $array)
+    public function arrayMapRecursive(callable $callback, array $array): array
     {
         $func = function ($item) use (&$func, &$callback) {
             return is_array($item) ? array_map($func, $item) : call_user_func($callback, $item);
@@ -479,11 +478,16 @@ trait Model
         foreach ($filters as $filter) {
             $field = $this->filter->sanitize($filter['field'] ?? null, ['string', 'trim']);
             
+            // @todo logic bitwise operator
+            $logic = $this->filter->sanitize($filter['logic'] ?? null, ['string', 'trim', 'lower']);
+            $logic = $logic ?: ($or ? 'or' : 'and');
+            $logic = ' ' . $logic . ' ';
+            
             if (!empty($field)) {
                 $lowercaseField = mb_strtolower($field);
                 
                 // whiteList on filter condition
-                if (is_null($whiteList) || !in_array($lowercaseField, $lowercaseWhiteList, true)) {
+                if (is_null($whiteList) || !in_array($lowercaseField, $lowercaseWhiteList ?? [], true)) {
                     // @todo if config is set to throw exception on usage of not allowed filters otherwise continue looping through
                     throw new \Exception('Not allowed to filter using the following field: `' . $field . '`', 403);
                 }
@@ -492,10 +496,11 @@ trait Model
 //                $queryField = '_' . uniqid($uniqid . '_field_') . '_';
                 $queryValue = '_' . uniqid($uniqid . '_value_') . '_';
                 $queryOperator = strtolower($filter['operator']);
-    
+                
                 // Map alias query operator
                 $mapAlias = [
                     'equals' => '=',
+                    'not equal' => '!=',
                     'does not equal' => '!=',
                     'different than' => '<>',
                     'greater than' => '>',
@@ -532,22 +537,26 @@ trait Model
                     case 'is true': // // Test a value against a boolean
                     case 'is not true': // // Test a value against a boolean
                         break;
-                        
+                    
                     // advanced filters
-                    case 'regexp': // @todo
-                    case 'not regexp': // @todo
+                    case 'start with':
+                    case 'does not start with':
+                    case 'end with':
+                    case 'does not end with':
+                    case 'regexp':
+                    case 'not regexp':
                     case 'contains':
                     case 'does not contain':
-                    case 'contains word': // @todo
-                    case 'does not contain word': // @todo
-                    case 'distance sphere greater than'; // @todo
-                    case 'distance sphere greater than or equal'; // @todo
-                    case 'distance sphere less than'; // @todo
-                    case 'distance sphere less than or equal'; // @todo
+                    case 'contains word':
+                    case 'does not contain word':
+                    case 'distance sphere greater than':
+                    case 'distance sphere greater than or equal':
+                    case 'distance sphere less than':
+                    case 'distance sphere less than or equal':
                     case 'is empty':
                     case 'is not empty':
                         break;
-                        
+                    
                     default:
                         throw new \Exception('Not allowed to filter using the following operator: `' . $queryOperator . '`', 403);
                 }
@@ -566,52 +575,31 @@ trait Model
                 $queryFieldBinder = $field;
                 $queryValueBinder = ':' . $queryValue . ':';
                 if (isset($filter['value'])) {
+                    
+                    
                     // special for between and not between
                     if (in_array($queryOperator, ['between', 'not between'])) {
                         $queryValue0 = '_' . uniqid($uniqid . '_value_') . '_';
                         $queryValue1 = '_' . uniqid($uniqid . '_value_') . '_';
-                        $bind[$queryValue0] = $filter['value'][0];
-                        $bind[$queryValue1] = $filter['value'][1];
+                        
+                        $queryValueIndex = $filter['value'][0] <= $filter['value'][1]? 0 : 1;
+                        $bind[$queryValue0] = $filter['value'][$queryValueIndex? 1 : 0];
+                        $bind[$queryValue1] = $filter['value'][$queryValueIndex? 0 : 1];
+                        
                         $bindType[$queryValue0] = Column::BIND_PARAM_STR;
                         $bindType[$queryValue1] = Column::BIND_PARAM_STR;
+                        
                         $query [] = (($queryOperator === 'not between') ? 'not ' : null) . "$queryFieldBinder between :$queryValue0: and :$queryValue1:";
                     }
                     
-                    else if (in_array($queryOperator, ['contains', 'does not contain'])) {
-                        $queryValue0 = '_' . uniqid($uniqid . '_value_') . '_';
-                        $queryValue1 = '_' . uniqid($uniqid . '_value_') . '_';
-                        $queryValue2 = '_' . uniqid($uniqid . '_value_') . '_';
-                        $bind[$queryValue0] = '%' . $filter['value'] . '%';
-                        $bind[$queryValue1] = '%' . $filter['value'];
-                        $bind[$queryValue2] = $filter['value'] . '%';
-                        $bindType[$queryValue0] = Column::BIND_PARAM_STR;
-                        $bindType[$queryValue1] = Column::BIND_PARAM_STR;
-                        $bindType[$queryValue2] = Column::BIND_PARAM_STR;
-                        $query [] = ($queryOperator === 'does not contain'? '!' : '') . "($queryFieldBinder like :$queryValue0: or $queryFieldBinder like :$queryValue1: or $queryFieldBinder like :$queryValue2:)";
-                    }
-                    
-                    else if (in_array($queryOperator, ['is empty', 'is not empty'])) {
-                        $query [] = ($queryOperator === 'is not empty'? '!' : '') . "(TRIM($queryFieldBinder) = '' or $queryFieldBinder is null)";
-                    }
-                    
-                    else if (in_array($queryOperator, ['regexp', 'not regexp'])) {
-                        $bind[$queryValue] = $filter['value'];
-                        $query [] = $queryOperator . "($queryFieldBinder, $queryValueBinder)";
-                    }
-                    
-                    else if (in_array($queryOperator, ['contains word', 'does not contain word'])) {
-                        $bind[$queryValue] = '\\b' . $filter['value'] . '\\b';
-                        $regexQueryOperator = str_replace(['contains word', 'does not contain word'], ['regexp', 'not regexp'], $queryOperator);
-                        $query [] = $regexQueryOperator . "($queryFieldBinder, $queryValueBinder)";
-                    }
-                    
-                    else if (in_array($queryOperator, [
-                        'distance sphere equals',
-                        'distance sphere greater than',
-                        'distance sphere greater than or equal',
-                        'distance sphere less than',
-                        'distance sphere less than or equal',
-                    ])) {
+                    elseif (in_array($queryOperator, [
+                            'distance sphere equals',
+                            'distance sphere greater than',
+                            'distance sphere greater than or equal',
+                            'distance sphere less than',
+                            'distance sphere less than or equal',
+                        ])
+                    ) {
                         // Prepare values binding of 2 sphere point to calculate distance
                         $queryBindValue0 = '_' . uniqid($uniqid . '_value_') . '_';
                         $queryBindValue1 = '_' . uniqid($uniqid . '_value_') . '_';
@@ -625,46 +613,118 @@ trait Model
                         $bindType[$queryBindValue1] = Column::BIND_PARAM_DECIMAL;
                         $bindType[$queryBindValue2] = Column::BIND_PARAM_DECIMAL;
                         $bindType[$queryBindValue3] = Column::BIND_PARAM_DECIMAL;
-    
-                        $queryPointLatBinder0 = $queryBindValue0;
-                        $queryPointLonBinder0 = $queryBindValue1;
-                        $queryPointLatBinder1 = $queryBindValue2;
-                        $queryPointLonBinder1 = $queryBindValue3;
-    
+                        $queryPointLatBinder0 = ':' . $queryBindValue0 . ':';
+                        $queryPointLonBinder0 = ':' . $queryBindValue1 . ':';
+                        $queryPointLatBinder1 = ':' . $queryBindValue2 . ':';
+                        $queryPointLonBinder1 = ':' . $queryBindValue3 . ':';
                         $queryLogicalOperator =
-                            (strpos($queryOperator, 'greater') !== false? '>' : null) .
-                            (strpos($queryOperator, 'less') !== false? '<' : null) .
-                            (strpos($queryOperator, 'equal') !== false? '=' : null);
-    
+                            (strpos($queryOperator, 'greater') !== false ? '>' : null) .
+                            (strpos($queryOperator, 'less') !== false ? '<' : null) .
+                            (strpos($queryOperator, 'equal') !== false ? '=' : null);
+                        
                         $bind[$queryValue] = $filter['value'];
                         $query [] = "ST_Distance_Sphere(point($queryPointLatBinder0, $queryPointLonBinder0), point($queryPointLatBinder1, $queryPointLonBinder1)) $queryLogicalOperator $queryValueBinder";
                     }
                     
-                    else {
+                    elseif (in_array($queryOperator, [
+                            'in',
+                            'not in',
+                        ])
+                    ) {
+                        $queryValueBinder = '({' . $queryValue . ':array})';
                         $bind[$queryValue] = $filter['value'];
-                        if (is_string($filter['value'])) {
-                            $bindType[$queryValue] = Column::BIND_PARAM_STR;
-                        }
-                        else if (is_int($filter['value'])) {
-                            $bindType[$queryValue] = Column::BIND_PARAM_INT;
-                        }
-                        else if (is_bool($filter['value'])) {
-                            $bindType[$queryValue] = Column::BIND_PARAM_BOOL;
-                        }
-                        else if (is_float($filter['value'])) {
-                            $bindType[$queryValue] = Column::BIND_PARAM_DECIMAL;
-                        }
-                        else if (is_double($filter['value'])) {
-                            $bindType[$queryValue] = Column::BIND_PARAM_DECIMAL;
-                        }
-                        else if (is_array($filter['value'])) {
-                            $queryValueBinder = '({' . $queryValue . ':array})';
-                            $bindType[$queryValue] = Column::BIND_PARAM_STR;
-                        }
-                        else {
-                            $bindType[$queryValue] = Column::BIND_PARAM_NULL;
-                        }
+                        $bindType[$queryValue] = Column::BIND_PARAM_STR;
                         $query [] = "$queryFieldBinder $queryOperator $queryValueBinder";
+                    }
+                    
+                    else {
+                        $queryAndOr = [];
+                        
+                        $valueList = is_array($filter['value']) ? $filter['value'] : [$filter['value']];
+                        foreach ($valueList as $value) {
+                            
+                            $queryValue = '_' . uniqid($uniqid . '_value_') . '_';
+                            $queryValueBinder = ':' . $queryValue . ':';
+                            
+                            if (in_array($queryOperator, ['contains', 'does not contain'])) {
+                                $queryValue0 = '_' . uniqid($uniqid . '_value_') . '_';
+                                $queryValue1 = '_' . uniqid($uniqid . '_value_') . '_';
+                                $queryValue2 = '_' . uniqid($uniqid . '_value_') . '_';
+                                $bind[$queryValue0] = '%' . $value . '%';
+                                $bind[$queryValue1] = '%' . $value;
+                                $bind[$queryValue2] = $value . '%';
+                                $bindType[$queryValue0] = Column::BIND_PARAM_STR;
+                                $bindType[$queryValue1] = Column::BIND_PARAM_STR;
+                                $bindType[$queryValue2] = Column::BIND_PARAM_STR;
+                                $queryAndOr [] = ($queryOperator === 'does not contain' ? '!' : '') . "($queryFieldBinder like :$queryValue0: or $queryFieldBinder like :$queryValue1: or $queryFieldBinder like :$queryValue2:)";
+                            }
+                            
+                            elseif (in_array($queryOperator, ['starts with', 'does not start with'])) {
+                                $bind[$queryValue] = $value . '%';
+                                $bindType[$queryValue] = Column::BIND_PARAM_STR;
+                                $queryAndOr [] = ($queryOperator === 'does not start with' ? '!' : '') . "($queryFieldBinder like :$queryValue:)";
+                            }
+                            
+                            elseif (in_array($queryOperator, ['ends with', 'does not end with'])) {
+                                $bind[$queryValue] = '%' . $value;
+                                $bindType[$queryValue] = Column::BIND_PARAM_STR;
+                                $queryAndOr [] = ($queryOperator === 'does not end with' ? '!' : '') . "($queryFieldBinder like :$queryValue:)";
+                            }
+                            
+                            elseif (in_array($queryOperator, ['is empty', 'is not empty'])) {
+                                $queryAndOr [] = ($queryOperator === 'is not empty' ? '!' : '') . "(TRIM($queryFieldBinder) = '' or $queryFieldBinder is null)";
+                            }
+                            
+                            elseif (in_array($queryOperator, ['regexp', 'not regexp'])) {
+                                $bind[$queryValue] = $value;
+                                $queryAndOr [] = $queryOperator . "($queryFieldBinder, :$queryValue:)";
+                            }
+                            
+                            elseif (in_array($queryOperator, ['contains word', 'does not contain word'])) {
+                                $bind[$queryValue] = '\\b' . $value . '\\b';
+                                $regexQueryOperator = str_replace(['contains word', 'does not contain word'], ['regexp', 'not regexp'], $queryOperator);
+                                $queryAndOr [] = $regexQueryOperator . "($queryFieldBinder, :$queryValue:)";
+                            }
+                            
+                            else {
+                                $bind[$queryValue] = $value;
+                                
+                                if (is_string($value)) {
+                                    $bindType[$queryValue] = Column::BIND_PARAM_STR;
+                                }
+                                
+                                elseif (is_int($value)) {
+                                    $bindType[$queryValue] = Column::BIND_PARAM_INT;
+                                }
+                                
+                                elseif (is_bool($value)) {
+                                    $bindType[$queryValue] = Column::BIND_PARAM_BOOL;
+                                }
+                                
+                                elseif (is_float($value)) {
+                                    $bindType[$queryValue] = Column::BIND_PARAM_DECIMAL;
+                                }
+                                
+                                elseif (is_double($value)) {
+                                    $bindType[$queryValue] = Column::BIND_PARAM_DECIMAL;
+                                }
+                                
+                                elseif (is_array($value)) {
+                                    $queryValueBinder = '({' . $queryValue . ':array})';
+                                    $bindType[$queryValue] = Column::BIND_PARAM_STR;
+                                }
+                                
+                                else {
+                                    $bindType[$queryValue] = Column::BIND_PARAM_NULL;
+                                }
+                                
+                                $queryAndOr [] = "$queryFieldBinder $queryOperator $queryValueBinder";
+                            }
+                        }
+                        if (!empty($queryAndOr)) {
+                            $andOr = str_contains($queryOperator, ' not ')? 'and' : 'or';
+                            $query [] = '((' . implode(') ' . $andOr . ' (', $queryAndOr) . '))';
+                        }
                     }
                 }
                 else {
@@ -674,13 +734,11 @@ trait Model
                 $this->setBind($bind);
                 $this->setBindTypes($bindType);
             }
+            elseif (is_array($filter)) {
+                $query [] = $this->getFilterCondition($filter, $whiteList, !$or);
+            }
             else {
-                if (is_array($filter) || $filter instanceof \Traversable) {
-                    $query [] = $this->getFilterCondition($filter, $whiteList, !$or);
-                }
-                else {
-                    throw new \Exception('A valid field property is required.', 400);
-                }
+                throw new \Exception('A valid field property is required.', 400);
             }
         }
         
@@ -710,11 +768,11 @@ trait Model
             if (!strpos($field, '.') !== false) {
                 $field = trim('[' . $modelName . '].[' . array_shift($explode) . '] ' . implode(' ', $explode));
             }
-            else if (strpos($field, ']') === false && strpos($field, '[') === false) {
+            elseif (strpos($field, ']') === false && strpos($field, '[') === false) {
                 $field = trim('[' . implode('].[', explode('.', array_shift($explode))) . ']' . implode(' ', $explode));
             }
         }
-        else if (is_array($field)) {
+        elseif (is_array($field)) {
             foreach ($field as $fieldKey => $fieldValue) {
                 $field[$fieldKey] = $this->appendModelName($fieldValue, $modelName);
             }
@@ -813,7 +871,6 @@ trait Model
         return null;
     }
     
-    
     /**
      * Get requested content type
      * - Default will return csv
@@ -835,26 +892,32 @@ trait Model
             case 'application/html':
                 // html not supported yet
                 break;
+            
             case 'xml':
             case 'text/xml':
             case 'application/xml':
                 // xml not supported yet
                 break;
+            
             case 'text':
             case 'text/plain':
                 // plain text not supported yet
                 break;
+            
             case 'json':
             case 'text/json':
             case 'application/json':
                 return 'json';
+            
             case 'csv':
             case 'text/csv':
                 return 'csv';
+            
             case 'xlsx':
             case 'application/xlsx':
             case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
                 return 'xlsx';
+            
             case 'xls':
             case 'application/vnd.ms-excel':
                 // old xls not supported yet
@@ -887,7 +950,7 @@ trait Model
         $find['cache'] = $this->fireGet('getCache');
         
         // fix for grouping by multiple fields, phalcon only allow string here
-        foreach (['distinct', 'group'] as $findKey) {
+        foreach (['distinct', 'group', 'order'] as $findKey) {
             if (isset($find[$findKey]) && is_array($find[$findKey])) {
                 $find[$findKey] = implode(', ', $find[$findKey]);
             }
@@ -928,7 +991,9 @@ trait Model
     {
         $params ??= $this->getParams();
         
-        return $this->filter->sanitize($params[$key] ?? $this->dispatcher->getParam($key, $filters, $default), $filters);
+        return isset($params[$key])
+            ? $this->filter->sanitize($params[$key], $filters)
+            : $this->dispatcher->getParam($key, $filters, $default);
     }
     
     /**
@@ -953,7 +1018,7 @@ trait Model
             $request->getFilteredPut(), // $_PUT
             $request->getFilteredPost(), // $_POST
         );
-    
+        
         // @todo see if we can prevent phalcon from returning this
         if (isset($params['_url'])) {
             unset($params['_url']);
@@ -977,7 +1042,9 @@ trait Model
         $modelName ??= $this->getModelClassName();
         $with ??= $this->getWith();
         $find ??= $this->getFind();
+        
         $condition = '[' . $modelName . '].[id] = ' . (int)$id;
+        
         if ($appendCondition) {
             $find['conditions'] .= (empty($find['conditions']) ? null : ' and ') . $condition;
         }
@@ -997,19 +1064,9 @@ trait Model
      * If a newly created entity can't be retrieved using the ->getSingle
      * method after it's creation, the entity will be returned directly
      *
-     * @TODO Support Composite Primary Key
-     *
-     * @param null|int|string $id
-     * @param null|\Zemit\Mvc\Model $entity
-     * @param null|mixed $post
-     * @param null|string $modelName
-     * @param null|array $whiteList
-     * @param null|array $columnMap
-     * @param null|array $with
-     *
-     * @return array
+     * @TODO Support Composite Primary Key*
      */
-    protected function save($id = null, $entity = null, $post = null, $modelName = null, $whiteList = null, $columnMap = null, $with = null)
+    protected function save(?int $id = null, ?ModelInterface $entity = null, ?array $post = null, ?string $modelName = null, ?array $whiteList = null, ?array $columnMap = null, ?array $with = null): array
     {
         $single = false;
         $retList = [];
@@ -1030,15 +1087,13 @@ trait Model
         
         // Save each posts
         foreach ($post as $key => $singlePost) {
-            $ret = [];
-            
-            $singlePostId = (!$single || empty($id)) ? $this->getParam('id', 'int', $this->getParam('int', 'int', null)) : $id;
+            $singlePostId = (!$single || empty($id)) ? $this->getParam('id', 'int', $this->getParam('int', 'int', $singlePost['id'] ?? null)) : $id;
             if (isset($singlePost['id'])) {
                 unset($singlePost['id']);
             }
             
             /** @var \Zemit\Mvc\Model $singlePostEntity */
-            $singlePostEntity = (!$single || !isset($entity)) ? $this->getSingle($singlePostId, $modelName) : $entity;
+            $singlePostEntity = (!$single || !isset($entity)) ? $this->getSingle($singlePostId, $modelName, []) : $entity;
             
             // Create entity if not exists
             if (!$singlePostEntity && empty($singlePostId)) {
@@ -1050,7 +1105,7 @@ trait Model
                     'saved' => false,
                     'messages' => [new Message('Entity id `' . $singlePostId . '` not found.', $modelName, 'NotFound', 404)],
                     'model' => $modelName,
-                    'source' => (new $modelName)->getSource(),
+                    'source' => (new $modelName())->getSource(),
                 ];
             }
             else {
@@ -1063,41 +1118,45 @@ trait Model
                 $ret = $this->saveEntity($singlePostEntity);
                 
                 // refetch & expose
-                $fetch = $this->getSingle($singlePostEntity->getId(), $modelName, $with);
-                $ret[$single ? 'single' : 'list'] = $fetch ? $fetch->expose($this->getExpose()) : false;
+//                $fetchWith = $this->getSingle($singlePostEntity->getId(), $modelName, $with);
+//                $ret['single'] = $this->expose($fetchWith);
+                $fetchWith = $singlePostEntity->load($with ?? []);
+                $ret['single'] = $this->expose($fetchWith);
             }
             
-            $retList [] = $ret;
+            if ($single) {
+                return $ret;
+            }
+            else {
+                $retList [] = $ret;
+            }
         }
         
-        return $single ? $retList[0] : $retList;
+        return $retList;
     }
     
     /**
      * Allow overrides to add alter variables before entity assign & save
-     * @param ModelInterface $entity
-     * @param array $post
-     * @param array|null $whiteList
-     * @param array|null $columnMap
-     * @return void
      */
-    protected function beforeAssign(ModelInterface &$entity, Array &$post, ?Array &$whiteList, ?Array &$columnMap): void {
-    
+    public function beforeAssign(ModelInterface &$entity, array &$post, ?array &$whiteList, ?array &$columnMap): void
+    {
     }
     
     /**
-     * @param $single
+     * Save an entity and return an array of the result
      *
-     * @return void
      */
-    protected function saveEntity($entity): array
+    public function saveEntity(ModelInterface $entity): array
     {
         $ret = [];
+        
         $ret['saved'] = $entity->save();
         $ret['messages'] = $entity->getMessages();
         $ret['model'] = get_class($entity);
         $ret['source'] = $entity->getSource();
-        $ret['entity'] = $entity->expose($this->getExpose());
+        $ret['entity'] = $entity; // @todo this is to fix a phalcon internal bug (503 segfault during eagerload)
+        $ret['single'] = $this->expose($entity, $this->getExpose());
+        
         return $ret;
     }
     
@@ -1108,14 +1167,14 @@ trait Model
      * @param ?array $namespaces
      * @param string $needle
      *
-     * @return string|null
+     * @return string|null|\Zemit\Mvc\Model
      */
     public function getModelNameFromController(string $controllerName = null, array $namespaces = null, string $needle = 'Models'): ?string
     {
         $controllerName ??= $this->dispatcher->getControllerName() ?? '';
         $namespaces ??= $this->loader->getNamespaces() ?? [];
         
-        $model = ucfirst((new HelperFactory)->camelize((new HelperFactory)->uncamelize($controllerName)));
+        $model = ucfirst(Text::camelize(Text::uncamelize($controllerName)));
         if (!class_exists($model)) {
             foreach ($namespaces as $namespace => $path) {
                 $possibleModel = $namespace . '\\' . $model;

@@ -10,31 +10,28 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Base\AbstractGroupType;
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-use Phalcon\Filter\Validation\Validator\Uniqueness;
+use Zemit\Models\Abstracts\AbstractGroupType;
+use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Validation\Validator\Uniqueness;
+use Zemit\Models\Interfaces\GroupeTypeInterface;
 
 /**
- * Class GroupType
- *
  * @property Group $Group
  * @property Type $Type
  * @property Group $GroupEntity
  * @property Type $TypeEntity
  *
- * @method Group getGroup($params = null)
- * @method Type getType($params = null)
- * @method Group getGroupEntity($params = null)
- * @method Type getTypeEntity($params = null)
- *
- * @package Zemit\Models
+ * @method Group getGroup(?array $params = null)
+ * @method Type getType(?array $params = null)
+ * @method Group getGroupEntity(?array $params = null)
+ * @method Type getTypeEntity(?array $params = null)
  */
-class GroupType extends AbstractGroupType
+class GroupType extends AbstractGroupType implements GroupeTypeInterface
 {
     protected $deleted = self::NO;
     protected $position = self::NO;
 
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -42,7 +39,7 @@ class GroupType extends AbstractGroupType
         $this->hasOne('typeId', Type::class, 'id', ['alias' => 'TypeEntity']);
     }
 
-    public function validation()
+    public function validation(): bool
     {
         $validator = $this->genericValidation();
 

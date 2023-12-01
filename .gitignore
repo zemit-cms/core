@@ -9,6 +9,7 @@
 .phalcon/*
 
 # PHP
+composer.phar
 composer.lock
 vendor/*
 
@@ -23,3 +24,5 @@ public/dist
 
 # PHPUnit
 phpunit-clover.xml
+.phpunit.result.cache
+.phpunit.cache/

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,111 +11,143 @@
 
 namespace Zemit\Mvc\Model\Behavior;
 
-use Phalcon\Di\Di;
+use Phalcon\Di;
+use Phalcon\Acl\Adapter\Memory;
 use Phalcon\Messages\Message;
-use Phalcon\Mvc\Model\Behavior\Exception;
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Mvc\Model\Behavior;
-use Phalcon\Support\HelperFactory;
-use Zemit\Models\Group;
-use Zemit\Models\Role;
-use Zemit\Models\Session;
-use Zemit\Models\Type;
-use Zemit\Mvc\Model\User;
 
 /**
- * Zemit\Mvc\Model\Behavior\Security
- *
  * Allows to check if the current identity is allowed to run some model actions
  * this behavior will stop operations if not allowed
  */
 class Security extends Behavior
 {
-    /**
-     * @var \Zemit\Bootstrap\Config
-     */
-    protected $config = null;
+    use SkippableTrait;
+    use ProgressTrait;
+    
+    public static ?array $roles = null;
+    
+    public static ?Memory $acl = null;
     
     /**
-     * @var \Zemit\Security
+     * Set the ACL
      */
-    protected $security = null;
-    
-    /**
-     * @var \Zemit\Identity
-     */
-    protected $identity = null;
-    
-    /**
-     * Security constructor.
-     *
-     * @param array|null $options
-     *
-     * @throws Exception
-     */
-    public function __construct($options = null)
+    public static function setAcl(?Memory $acl = null): void
     {
-        parent::__construct($options);
-        
-        $this->config ??= Di::getDefault()->get('config');
-        $this->security ??= Di::getDefault()->get('security');
-        $this->identity ??= Di::getDefault()->get('identity');
+        self::$acl = $acl;
     }
     
     /**
-     * Handling security on some model events
-     * - beforeCreate
-     * - beforeUpdate
-     * - beforeDelete
-     * - beforeRestore
-     *
-     * {@inheritdoc}
-     *
-     * @param string $eventType
-     * @param \Phalcon\Mvc\ModelInterface $model
+     * Get the ACL
      */
-    public function notify($eventType, ModelInterface $model)
+    public static function getAcl(): Memory
     {
-        $this->security->getAcl();
-        switch ($eventType) {
-            case 'beforeFind': // @todo implement this
-            case 'beforeFindFirst': // @todo implement this
-            case 'beforeCount':  // @todo implement this
-            case 'beforeSum': // @todo implement this
-            case 'beforeAverage': // @todo implement this
-            case 'beforeCreate':
-            case 'beforeUpdate':
-            case 'beforeDelete':
-            case 'beforeRestore':
-            case 'beforeReorder':
-                $type = lcfirst((new HelperFactory)->camelize(str_replace(['before_', 'after_'], [null, null], (new HelperFactory)->uncamelize($eventType))));
-                return $this->isAllowed($type, $model);
+        if (is_null(self::$acl)) {
+            $security = Di::getDefault()->get('security');
+            assert($security instanceof \Zemit\Security);
+            self::setAcl($security->getAcl(['models', 'components']));
+        }
+        return self::$acl;
+    }
+    
+    /**
+     * Set the current identity's roles
+     */
+    public static function setRoles(?array $roles = null): void
+    {
+        self::$roles = $roles;
+    }
+    
+    /**
+     * Return the current identity's acl roles
+     */
+    public static function getRoles(): array
+    {
+        if (is_null(self::$roles)) {
+            $identity = Di::getDefault()->get('identity');
+            assert($identity instanceof \Zemit\Identity);
+            self::setRoles($identity->getAclRoles());
+        }
+        return self::$roles;
+    }
+    
+    public function __construct(?array $options = null)
+    {
+        parent::__construct($options);
+    }
+    
+    /**
+     * Handling security (acl) on before model's events
+     */
+    public function notify(string $type, ModelInterface $model): ?bool
+    {
+        if (!$this->isEnabled()) {
+            return null;
+        }
+        
+        // skip check while still in progress
+        // needed to retrieve roles for itself
+        if ($this->inProgress()) {
+            return null;
+        }
+        
+        $beforeEvents = [
+            'beforeFind' => true,
+            'beforeFindFirst' => true,
+            'beforeCount' => true,
+            'beforeSum' => true,
+            'beforeAverage' => true,
+            'beforeCreate' => true,
+            'beforeUpdate' => true,
+            'beforeDelete' => true,
+            'beforeRestore' => true,
+            'beforeReorder' => true,
+        ];
+        
+        if ($beforeEvents[$type] ?? false) {
+            self::staticStart();
+            
+            $type = (strpos($type, 'before') === 0) ? lcfirst(substr($type, 6)) : $type;
+            $isAllowed = $this->isAllowed($type, $model);
+            
+            self::staticStop();
+            return $isAllowed;
         }
         
         return true;
     }
     
-    public function isAllowed($eventType, $model)
+    public function isAllowed(string $type, ModelInterface $model, ?Memory $acl = null, ?array $roles = null): bool
     {
-        $acl = $this->security->getAcl(['models', 'components']);
-        
+        $acl ??= self::getAcl();
         $modelClass = get_class($model);
         
         // component not found
         if (!$acl->isComponent($modelClass)) {
-            $model->appendMessage(new Message('Model permission not found for `' . $modelClass . '`', 'id', 'NotFound', 404));
+            $model->appendMessage(new Message(
+                'Model permission not found for `' . $modelClass . '`',
+                'id',
+                'NotFound',
+                404
+            ));
             return false;
         }
         
         // allowed for roles
-        $roles = $this->identity->getAclRoles();
+        $roles ??= self::getRoles();
         foreach ($roles as $role) {
-            if ($acl->isAllowed($role, $modelClass, $eventType)) {
+            if ($acl->isAllowed($role, $modelClass, $type)) {
                 return true;
             }
         }
         
-        $model->appendMessage(new Message('Current identity forbidden to execute `' . $eventType . '` on `' . $modelClass . '`', 'id', 'NotFound', 403));
+        $model->appendMessage(new Message(
+            'Current identity forbidden to execute `' . $type . '` on `' . $modelClass . '`',
+            'id',
+            'Forbidden',
+            403
+        ));
         return false;
     }
 }

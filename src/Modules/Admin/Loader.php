@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -10,18 +11,6 @@
 
 namespace Zemit\Modules\Admin;
 
-/**
- * Class Loader
- *
- * @author Julien Turbide <jturbide@nuagerie.com>
- * @copyright Zemit Team <contact@zemit.com>
- *
- * @since 1.0
- * @version 1.0
- *
- * @package Zemit\Modules\Admin
- */
-class Loader extends \Phalcon\Autoload\Loader
+class Loader extends \Phalcon\Loader
 {
-
 }
