@@ -12,7 +12,7 @@
 namespace Zemit\Mvc;
 
 use Phalcon\Config\ConfigInterface;
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use Zemit\Mvc\Router\ModuleRoute;
 use Zemit\Router\RouterInterface;
 

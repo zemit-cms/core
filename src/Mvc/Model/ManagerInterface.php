@@ -27,5 +27,5 @@ interface ManagerInterface extends PhalconModelsManagerInterface
     
     public function hasBehavior(ModelInterface $model, string $behaviorName): bool;
     
-    public function mergeFindParameters(array $findParamsOne = [], array $findParamsTwo = []): array;
+//    public function mergeFindParameters(array $findParamsOne = [], array $findParamsTwo = []): array;
 }

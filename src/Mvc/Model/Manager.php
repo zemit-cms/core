@@ -64,8 +64,8 @@ class Manager extends PhalconModelsManager implements ManagerInterface
     /**
      * Merge two arrays of find parameters
      */
-    public function mergeFindParameters(?array $findParamsOne = [], ?array $findParamsTwo = []): array
-    {
-        return $this->_mergeFindParameters($findParamsOne, $findParamsTwo);
-    }
+//    public function _mergeFindParameters(?array $findParamsOne = [], ?array $findParamsTwo = []): array
+//    {
+//        return $this->mergeFindParameters($findParamsOne, $findParamsTwo);
+//    }
 }

@@ -108,7 +108,7 @@ trait EagerLoad
             return self::findWithBy($forwardMethod, $arguments);
         }
     
-        return parent::$method(...$arguments);
+        return @parent::$method(...$arguments); // @todo refactor for php83+
     }
     
     /**
@@ -117,7 +117,7 @@ trait EagerLoad
     private static function findFirstWithBy(string $forwardMethod, array $arguments): ModelInterface
     {
         $parameters = self::getParametersFromArguments($arguments);
-        $entity = parent::$forwardMethod($parameters);
+        $entity = @parent::$forwardMethod($parameters); // @todo refactor for php83+
     
         if ($entity) {
             assert($entity instanceof ModelInterface);

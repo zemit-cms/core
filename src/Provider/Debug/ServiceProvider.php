@@ -12,11 +12,11 @@
 namespace Zemit\Provider\Debug;
 
 use Phalcon\Di\DiInterface;
-use Phalcon\Version;
+use Phalcon\Support\Version;
 use Zemit\Bootstrap;
 use Zemit\Config\ConfigInterface;
-use Zemit\Debug;
 use Zemit\Provider\AbstractServiceProvider;
+use Zemit\Support\Debug;
 use Zemit\Support\Php;
 
 class ServiceProvider extends AbstractServiceProvider
@@ -62,6 +62,6 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return
             version_compare(PHP_VERSION, '8.0.0', '>=') &&
-            version_compare(Version::get(), '5.0.0', '<');
+            version_compare((new Version())->get(), '5.0.0', '<');
     }
 }

@@ -267,7 +267,7 @@ final class Loader
     {
         uksort($this->eagerLoads, 'strcmp');
         
-        $di = \Phalcon\DI::getDefault();
+        $di = \Phalcon\DI\Di::getDefault();
         $mM = $di['modelsManager'];
         
         $eagerLoads = $resolvedRelations = [];

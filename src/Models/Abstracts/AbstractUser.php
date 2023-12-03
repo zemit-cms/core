@@ -43,8 +43,8 @@ namespace Zemit\Models\Abstracts;
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Mvc\Model\ResultInterface;
 use Phalcon\Mvc\Model\ResultsetInterface;
-use Phalcon\Validation;
-use Phalcon\Validation\Validator\Email as EmailValidator;
+use Phalcon\Filter\Validation;
+use Phalcon\Filter\Validation\Validator\Email as EmailValidator;
 use Zemit\Models\AbstractModel;
 
 /**

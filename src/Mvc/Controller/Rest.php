@@ -20,7 +20,7 @@ use Phalcon\Http\Response;
 use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\ModelInterface;
-use Phalcon\Version;
+use Phalcon\Support\Version;
 use Zemit\Di\Injectable;
 use Zemit\Http\StatusCode;
 use Zemit\Utils;
@@ -766,7 +766,7 @@ class Rest extends \Zemit\Mvc\Controller
         
         if ($debug) {
             $ret['api']['php'] = phpversion();
-            $ret['api']['phalcon'] = Version::get();
+            $ret['api']['phalcon'] = $this->config->path('phalcon.version');
             $ret['api']['zemit'] = $this->config->path('core.version');
             $ret['api']['core'] = $this->config->path('core.name');
             $ret['api']['app'] = $this->config->path('app.version');

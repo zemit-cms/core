@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit;
+namespace Zemit\Support;
 
 /**
  * This class allows to get the installed version of the zemit core
  */
-class Version extends \Phalcon\Version
+class Version extends \Phalcon\Support\Version
 {
     /**
      * Area where the version number is set. The format is as follows:
@@ -26,8 +26,8 @@ class Version extends \Phalcon\Version
      * D - Special release: 1 = Alpha, 2 = Beta, 3 = RC, 4 = Stable
      * E - Special release version i.e. RC1, Beta2 etc.
      */
-    protected static function getVersion(): array
+    protected function getVersion(): array
     {
-        return [0, 2, 0, 1, 0];
+        return [5, 4, 0, 1, 0];
     }
 }

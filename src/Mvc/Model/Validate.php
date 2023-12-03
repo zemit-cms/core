@@ -11,17 +11,17 @@
 
 namespace Zemit\Mvc\Model;
 
+use Phalcon\Filter\Validation\Validator\Between;
+use Phalcon\Filter\Validation\Validator\Date;
+use Phalcon\Filter\Validation\Validator\InclusionIn;
+use Phalcon\Filter\Validation\Validator\Numericality;
+use Phalcon\Filter\Validation\Validator\PresenceOf;
+use Phalcon\Filter\Validation\Validator\StringLength\Max;
+use Phalcon\Filter\Validation\Validator\StringLength\Min;
+use Phalcon\Filter\Validation\Validator\Uniqueness;
 use Zemit\Db\Column;
 use Zemit\Validation;
 use Zemit\Validation\Validator\Color;
-use Phalcon\Validation\Validator\Between;
-use Phalcon\Validation\Validator\Date;
-use Phalcon\Validation\Validator\InclusionIn;
-use Phalcon\Validation\Validator\Numericality;
-use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\StringLength\Max;
-use Phalcon\Validation\Validator\StringLength\Min;
-use Phalcon\Validation\Validator\Uniqueness;
 
 trait Validate
 {

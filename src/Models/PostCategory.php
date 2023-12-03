@@ -11,8 +11,8 @@
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\AbstractPostCategory;
-use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\StringLength\Max;
+use Phalcon\Filter\Validation\Validator\PresenceOf;
+use Phalcon\Filter\Validation\Validator\StringLength\Max;
 use Zemit\Models\Interfaces\PostCategoryInterface;
 
 class PostCategory extends AbstractPostCategory implements PostCategoryInterface

@@ -12,7 +12,7 @@
 namespace Zemit\Mvc\Model;
 
 use Phalcon\Db\Column;
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use Phalcon\Mvc\Model\ManagerInterface;
 use Phalcon\Mvc\Model\Query\Builder;
 use Phalcon\Mvc\Model\QueryInterface;

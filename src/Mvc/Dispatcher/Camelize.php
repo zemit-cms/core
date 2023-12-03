@@ -14,7 +14,6 @@ namespace Zemit\Mvc\Dispatcher;
 use Zemit\Di\Injectable;
 use Phalcon\Dispatcher\AbstractDispatcher;
 use Phalcon\Events\Event;
-use Phalcon\Text;
 
 class Camelize extends Injectable
 {
@@ -23,6 +22,14 @@ class Camelize extends Injectable
      */
     public function beforeDispatchLoop(Event $event, AbstractDispatcher $dispatcher): void
     {
-        $dispatcher->setActionName(lcfirst(Text::camelize(Text::uncamelize($dispatcher->getActionName()))));
+        $dispatcher->setActionName(
+            lcfirst(
+                $this->helper->camelize(
+                    $this->helper->uncamelize(
+                        $dispatcher->getActionName()
+                    )
+                )
+            )
+        );
     }
 }

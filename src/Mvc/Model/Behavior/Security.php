@@ -11,7 +11,7 @@
 
 namespace Zemit\Mvc\Model\Behavior;
 
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use Phalcon\Acl\Adapter\Memory;
 use Phalcon\Messages\Message;
 use Phalcon\Mvc\ModelInterface;

@@ -11,8 +11,8 @@
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\AbstractLang;
-use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\StringLength\Max;
+use Phalcon\Filter\Validation\Validator\PresenceOf;
+use Phalcon\Filter\Validation\Validator\StringLength\Max;
 use Zemit\Models\Interfaces\LangInterface;
 
 class Lang extends AbstractLang implements LangInterface

@@ -11,7 +11,7 @@
 
 namespace Zemit\Di;
 
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use Phalcon\Di\DiInterface;
 
 /**
@@ -27,7 +27,7 @@ use Phalcon\Di\DiInterface;
  * @property \Phalcon\Session\ManagerInterface $session
  * @property \Phalcon\Events\Manager|\Phalcon\Events\ManagerInterface $eventsManager
  * @property \Phalcon\Db\Adapter\AdapterInterface $db
- * @property \Zemit\Security|\Phalcon\Security $security
+ * @property \Zemit\Security|\Phalcon\Encryption\Security $security
  * @property \Phalcon\Crypt|\Phalcon\CryptInterface $crypt
  * @property \Zemit\Tag|\Phalcon\Tag $tag
  * @property \Zemit\Escaper|\Phalcon\Escaper|\Phalcon\Escaper\EscaperInterface $escaper

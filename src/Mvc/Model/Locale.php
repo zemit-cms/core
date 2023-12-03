@@ -82,7 +82,7 @@ trait Locale
             }
         }
         
-        parent::__set($property, $value);
+        @parent::__set($property, $value); // @todo refactor for php83+
     }
     
     /**
@@ -107,6 +107,6 @@ trait Locale
             }
         }
         
-        return parent::__get($property);
+        return @parent::__get($property); // @todo refactor for php83+
     }
 }

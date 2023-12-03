@@ -11,14 +11,14 @@
 namespace Zemit\Models;
 
 use Phalcon\Db\Column;
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use Phalcon\Mvc\Model\Behavior\Timestampable;
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Session\ManagerInterface;
-use Phalcon\Validation\Validator\Date;
-use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\StringLength\Max;
-use Phalcon\Validation\Validator\Uniqueness;
+use Phalcon\Filter\Validation\Validator\Date;
+use Phalcon\Filter\Validation\Validator\PresenceOf;
+use Phalcon\Filter\Validation\Validator\StringLength\Max;
+use Phalcon\Filter\Validation\Validator\Uniqueness;
 use Zemit\Models\Abstracts\AbstractSession;
 use Zemit\Models\Interfaces\SessionInterface;
 

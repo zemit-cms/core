@@ -10,10 +10,10 @@
 
 namespace Zemit\Models;
 
-use Phalcon\Validation\Validator\Between;
+use Phalcon\Filter\Validation\Validator\Between;
 use Zemit\Models\Abstracts\AbstractPage;
-use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\StringLength\Max;
+use Phalcon\Filter\Validation\Validator\PresenceOf;
+use Phalcon\Filter\Validation\Validator\StringLength\Max;
 use Zemit\Models\Interfaces\PageInterface;
 
 class Page extends AbstractPage implements PageInterface

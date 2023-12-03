@@ -13,7 +13,7 @@ namespace Zemit\Provider\Url;
 
 use Phalcon\Di\DiInterface;
 use Phalcon\Mvc;
-use Zemit\Url;
+use Zemit\Mvc\Url;
 use Zemit\Config\ConfigInterface;
 use Zemit\Provider\AbstractServiceProvider;
 

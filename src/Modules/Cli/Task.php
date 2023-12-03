@@ -12,7 +12,7 @@
 namespace Zemit\Modules\Cli;
 
 use Phalcon\Cli\Dispatcher;
-use Phalcon\Version;
+use Phalcon\Support\Version;
 use Zemit\Exception\CliException;
 use Zemit\Http\StatusCode;
 use Zemit\Utils;
@@ -70,7 +70,7 @@ DOC;
         
         if ($debug) {
             $ret['api']['php'] = phpversion();
-            $ret['api']['phalcon'] = Version::get();
+            $ret['api']['phalcon'] = $this->config->path('phalcon.version');
             $ret['api']['zemit'] = $this->config->path('core.version');
             $ret['api']['core'] = $this->config->path('core.name');
             $ret['api']['app'] = $this->config->path('app.version');

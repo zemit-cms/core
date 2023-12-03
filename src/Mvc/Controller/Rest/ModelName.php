@@ -3,7 +3,7 @@
 namespace Zemit\Mvc\Controller\Rest;
 
 use Phalcon\Mvc\ModelInterface;
-use Phalcon\Text;
+use Zemit\Support\Helper;
 use Zemit\Mvc\Controller\AbstractTrait\AbstractDispatcher;
 use Zemit\Mvc\Controller\AbstractTrait\AbstractInjectable;
 use Zemit\Mvc\Controller\AbstractTrait\AbstractLoader;
@@ -66,7 +66,7 @@ trait ModelName
      */
     public function getModelNameFromController(?array $namespaces = null, ?string $needle = 'Models'): ?string
     {
-        $model = ucfirst(Text::camelize(Text::uncamelize($this->getControllerName())));
+        $model = ucfirst(Helper::camelize(Helper::uncamelize($this->getControllerName())));
         
         if (class_exists($model)) {
             return $model;

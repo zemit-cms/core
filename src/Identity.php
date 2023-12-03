@@ -15,11 +15,11 @@ use Phalcon\Acl\Role;
 use Phalcon\Db\Column;
 use Phalcon\Messages\Message;
 use Phalcon\Mvc\ModelInterface;
-use Phalcon\Security\Exception;
-use Phalcon\Security\JWT\Exceptions\ValidatorException;
-use Phalcon\Validation\Validator\Confirmation;
-use Phalcon\Validation\Validator\Numericality;
-use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Encryption\Security\Exception;
+use Phalcon\Encryption\Security\JWT\Exceptions\ValidatorException;
+use Phalcon\Filter\Validation\Validator\Confirmation;
+use Phalcon\Filter\Validation\Validator\Numericality;
+use Phalcon\Filter\Validation\Validator\PresenceOf;
 use Zemit\Di\Injectable;
 use Zemit\Models\Interfaces\RoleInterface;
 use Zemit\Models\Interfaces\SessionInterface;
@@ -130,10 +130,10 @@ class Identity extends Injectable implements OptionsInterface
         
         // generate new key & token pair if not set
         $key ??= $this->security->getRandom()->uuid();
-        $token ??= $this->security->getRandom()->hex(512);
+        $token ??= $this->security->getRandom()->hex(128);
         
         // generate a new token if a refresh is requested
-        $newToken = $refresh ? $this->security->getRandom()->hex(512) : $token;
+        $newToken = $refresh ? $this->security->getRandom()->hex(128) : $token;
         
         // save the key token into the store (database or session)
         $sessionClass = $this->getSessionClass();

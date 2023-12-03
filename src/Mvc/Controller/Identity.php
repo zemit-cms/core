@@ -11,7 +11,7 @@
 
 namespace Zemit\Mvc\Controller;
 
-use Phalcon\Security\Exception;
+use Phalcon\Encryption\Security\Exception;
 
 /**
  * @property \Zemit\Identity $identity

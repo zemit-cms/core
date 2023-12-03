@@ -13,7 +13,7 @@ namespace Zemit\Mvc\Model\Behavior;
 
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Mvc\ModelInterface;
-use Phalcon\Text;
+use Zemit\Support\Helper;
 use Zemit\Models\Audit;
 use Zemit\Models\AuditDetail;
 use Zemit\Models\Interfaces\AuditDetailInterface;
@@ -76,7 +76,7 @@ class Blameable extends Behavior
      */
     public function createAudit(string $type, ModelInterface $model): bool
     {
-        $event = lcfirst(Text::uncamelize(str_replace(['before', 'after'], ['', ''], $type)));
+        $event = lcfirst(Helper::uncamelize(str_replace(['before', 'after'], ['', ''], $type)));
         
         $auditClass = $this->auditClass;
         $auditDetailClass = $this->auditDetailClass;

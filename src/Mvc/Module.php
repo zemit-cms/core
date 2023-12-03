@@ -12,13 +12,13 @@
 namespace Zemit\Mvc;
 
 use Phalcon\Di\DiInterface;
-use Phalcon\Loader;
+use Phalcon\Autoload\Loader;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\ModuleDefinitionInterface;
+use Zemit\Mvc\Url;
 use Zemit\Bootstrap\Config;
 use Zemit\Di\Injectable;
 use Zemit\Utils;
-use Zemit\Url;
 
 /**
  * {@inheritDoc}
@@ -50,7 +50,7 @@ class Module extends Injectable implements ModuleDefinitionInterface
     public function registerAutoloaders(DiInterface $container = null): void
     {
         $this->getServices($container);
-        $this->loader->registerNamespaces($this->getNamespaces(), true);
+        $this->loader->setNamespaces($this->getNamespaces(), true);
         $this->loader->register();
     }
     

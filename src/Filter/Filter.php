@@ -11,7 +11,7 @@
 
 namespace Zemit;
 
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use Phalcon\Config\ConfigInterface;
 use Zemit\Filter\Sanitize\Json;
 use Zemit\Filter\Sanitize\Md5;

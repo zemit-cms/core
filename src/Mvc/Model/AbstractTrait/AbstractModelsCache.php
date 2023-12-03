@@ -11,7 +11,7 @@
 
 namespace Zemit\Mvc\Model\AbstractTrait;
 
-use Phalcon\Cache;
+use Phalcon\Cache\Cache;
 
 trait AbstractModelsCache
 {

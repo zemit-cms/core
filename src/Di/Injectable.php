@@ -26,7 +26,7 @@ namespace Zemit\Di;
  * @property \Phalcon\Session\ManagerInterface $session
  * @property \Phalcon\Events\Manager|\Phalcon\Events\ManagerInterface $eventsManager
  * @property \Phalcon\Db\Adapter\AdapterInterface $db
- * @property \Zemit\Security|\Phalcon\Security $security
+ * @property \Zemit\Security|\Phalcon\Encryption\Security $security
  * @property \Phalcon\Crypt|\Phalcon\CryptInterface $crypt
  * @property \Zemit\Tag|\Phalcon\Tag $tag
  * @property \Zemit\Escaper|\Phalcon\Escaper|\Phalcon\Escaper\EscaperInterface $escaper
@@ -35,9 +35,10 @@ namespace Zemit\Di;
  * @property \Phalcon\Mvc\Model\MetaData\Memory|\Phalcon\Mvc\Model\MetadataInterface $modelsMetadata
  * @property \Phalcon\Mvc\Model\Transaction\Manager|\Phalcon\Mvc\Model\Transaction\ManagerInterface $transactionManager
  * @property \Phalcon\Assets\Manager $assets
- * @property \Phalcon\Di|\Phalcon\Di\DiInterface $di
+ * @property \Phalcon\Di\Di|\Phalcon\Di\DiInterface $di
  * @property \Phalcon\Session\Bag|\Phalcon\Session\BagInterface $persistent
  * @property \Phalcon\Mvc\View|\Phalcon\Mvc\ViewInterface $view
+ * @property \Phalcon\Support\HelperFactory $helper
  *
  * @property \Zemit\Bootstrap\Config $config
  * @property \Zemit\Bootstrap $bootstrap

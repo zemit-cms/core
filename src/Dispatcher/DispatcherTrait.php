@@ -16,9 +16,9 @@ use Phalcon\Cli\Dispatcher as CliDispatcher;
 
 trait DispatcherTrait
 {
-    abstract public function getNamespaceName(): string;
+    abstract public function getNamespaceName(): ?string;
     
-    abstract public function getModuleName(): string;
+    abstract public function getModuleName(): ?string;
     
     abstract public function getActionName(): string;
     

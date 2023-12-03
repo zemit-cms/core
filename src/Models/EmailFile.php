@@ -11,7 +11,7 @@
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\AbstractEmailFile;
-use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Filter\Validation\Validator\PresenceOf;
 use Zemit\Models\Interfaces\EmailFileInterface;
 
 /**

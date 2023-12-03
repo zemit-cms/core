@@ -19,7 +19,7 @@ use Zemit\Models\Template;
 use Zemit\Models\User;
 use Zemit\Models\UserRole;
 use Zemit\Mvc\Controller\Behavior;
-use Phalcon\Config as PhalconConfig;
+use Phalcon\Config\Config as PhalconConfig;
 
 /**
  * Zemit Deployment Configuration

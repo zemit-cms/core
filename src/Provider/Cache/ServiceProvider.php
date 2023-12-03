@@ -14,7 +14,7 @@ namespace Zemit\Provider\Cache;
 use Phalcon\Di\DiInterface;
 use Zemit\Config\ConfigInterface;
 use Zemit\Bootstrap;
-use Zemit\Cache;
+use Zemit\Cache\Cache;
 use Phalcon\Cache\AdapterFactory;
 use Phalcon\Storage\SerializerFactory;
 use Zemit\Provider\AbstractServiceProvider;

@@ -11,8 +11,8 @@
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\AbstractTemplate;
-use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\StringLength\Max;
+use Phalcon\Filter\Validation\Validator\PresenceOf;
+use Phalcon\Filter\Validation\Validator\StringLength\Max;
 use Zemit\Models\Interfaces\TemplateInterface;
 
 class Template extends AbstractTemplate implements TemplateInterface

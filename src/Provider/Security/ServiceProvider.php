@@ -12,7 +12,7 @@
 namespace Zemit\Provider\Security;
 
 use Phalcon\Di\DiInterface;
-use Phalcon\Security as PhalconSecurity;
+use Phalcon\Encryption\Security as PhalconSecurity;
 use Zemit\Config\ConfigInterface;
 use Zemit\Provider\AbstractServiceProvider;
 use Zemit\Security;

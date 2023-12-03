@@ -2,20 +2,20 @@
 
 namespace Zemit\Provider\Jwt;
 
-use Phalcon\Security\JWT\Builder;
-use Phalcon\Security\JWT\Exceptions\ValidatorException;
-use Phalcon\Security\JWT\Signer\Hmac;
-use Phalcon\Security\JWT\Token\Parser;
-use Phalcon\Security\JWT\Signer\AbstractSigner;
-use Phalcon\Security\JWT\Token\Token;
-use Phalcon\Security\JWT\Validator;
+use Phalcon\Encryption\Security\JWT\Builder;
+use Phalcon\Encryption\Security\JWT\Exceptions\ValidatorException;
+use Phalcon\Encryption\Security\JWT\Signer\Hmac;
+use Phalcon\Encryption\Security\JWT\Token\Parser;
+use Phalcon\Encryption\Security\JWT\Signer\AbstractSigner;
+use Phalcon\Encryption\Security\JWT\Token\Token;
+use Phalcon\Encryption\Security\JWT\Validator;
 
 /**
  * Issue, parse and validate JSON Web Tokens (JWT) as described in RFC 7519.
  *
- * Builder (Phalcon\Security\JWT\Builder)
- * Parser (Phalcon\Security\JWT\Token\Parser)
- * Validator (Phalcon\Security\JWT\Validator)
+ * Builder (Phalcon\Encryption\Security\JWT\Builder)
+ * Parser (Phalcon\Encryption\Security\JWT\Token\Parser)
+ * Validator (Phalcon\Encryption\Security\JWT\Validator)
  */
 class Jwt
 {

@@ -12,7 +12,7 @@
 namespace Zemit\Mvc\Model;
 
 use Phalcon\Di\DiInterface;
-use Phalcon\Security;
+use Phalcon\Encryption\Security;
 use Zemit\Config\ConfigInterface;
 
 trait Hash
@@ -35,7 +35,7 @@ trait Hash
         $workFactor ??= $config->path('security.workFactor') ?? 10;
         
         // return salted hash
-        return $security->hash($salt . $string, $workFactor);
+        return $security->hash($salt . $string, ['cost' => $workFactor]);
     }
     
     /**

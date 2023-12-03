@@ -11,7 +11,7 @@
 
 namespace Zemit\Mvc\Model;
 
-use Phalcon\Security;
+use Phalcon\Encryption\Security;
 use Zemit\Mvc\Model\AbstractTrait\AbstractBehavior;
 use Zemit\Mvc\Model\AbstractTrait\AbstractInjectable;
 use Zemit\Mvc\Model\Behavior\Transformable;

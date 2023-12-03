@@ -11,7 +11,7 @@
 
 namespace Zemit\Config;
 
-class Config extends \Phalcon\Config implements ConfigInterface
+class Config extends \Phalcon\Config\Config implements ConfigInterface
 {
     /**
      * Return the element as an array
@@ -24,7 +24,7 @@ class Config extends \Phalcon\Config implements ConfigInterface
             return null;
         }
         
-        if ($ret instanceof \Phalcon\Config) {
+        if ($ret instanceof \Phalcon\Config\ConfigInterface) {
             return $ret->toArray();
         }
         

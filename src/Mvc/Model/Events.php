@@ -14,7 +14,7 @@ namespace Zemit\Mvc\Model;
 use Phalcon\Mvc\Model\Resultset\Simple;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\ModelInterface;
-use Phalcon\Text;
+use Zemit\Support\Helper;
 
 trait Events
 {
@@ -59,7 +59,7 @@ trait Events
     {
         $class = get_called_class();
         $that = new $class();
-        $event = ucfirst(Text::camelize($method));
+        $event = ucfirst(Helper::camelize($method));
         
         if ($that->fireEventCancel('before' . $event) === false) {
             return false;

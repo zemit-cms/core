@@ -11,7 +11,7 @@
 
 namespace Zemit\Mvc\Model\Behavior;
 
-use Phalcon\Text;
+use Zemit\Support\Helper;
 use Phalcon\Db\RawValue;
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Mvc\ModelInterface;

@@ -14,7 +14,7 @@ namespace Zemit\Modules\Frontend\Controllers;
 use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Http\Response;
 use Phalcon\Messages\Message;
-use Phalcon\Validation;
+use Phalcon\Filter\Validation;
 use Zemit\Bootstrap;
 use Zemit\Bootstrap\Config;
 use Zemit\Escaper;
@@ -25,15 +25,15 @@ use Zemit\Locale;
 use Zemit\Mvc\Application;
 use Zemit\Mvc\Dispatcher;
 use Zemit\Mvc\Router;
-use Zemit\Url;
+use Zemit\Mvc\Url;
 use Zemit\Utils;
 
 class CheckController extends AbstractController
 {
     public array $versionList = [
-        'php' => '7.4',
-        'phalcon' => '4.0',
-        'zemit' => '0.4',
+        'php' => '8.2',
+        'phalcon' => '5.4',
+        'zemit' => '0.5',
     ];
     
     public array $phpExtensionList = [
@@ -151,10 +151,12 @@ class CheckController extends AbstractController
         
         // check versions
         $versionList = $this->getVersionList();
+        $phalconVersion = new \Phalcon\Support\Version();
+        $zemitVersion = new \Zemit\Support\Version();
         foreach ([
                      'php' => PHP_VERSION,
-                     'phalcon' => \Phalcon\Version::get(),
-                     'zemit' => \Zemit\Version::get(),
+                     'phalcon' => $phalconVersion->get(),
+                     'zemit' => $zemitVersion->get(),
                  ] as $what => $version
         ) {
             if (!version_compare($version, $versionList[$what], '>=')) {

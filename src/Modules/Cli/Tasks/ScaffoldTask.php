@@ -12,7 +12,7 @@
 namespace Zemit\Modules\Cli\Tasks;
 
 use Phalcon\Db\Column;
-use Phalcon\Text;
+use Zemit\Support\Helper;
 use Zemit\Modules\Cli\Task;
 
 class ScaffoldTask extends Task
@@ -38,7 +38,7 @@ DOC;
         $ret = [];
         $tables = $this->db->listTables();
         foreach ($tables as $table) {
-            $className = ucfirst(Text::camelize($table));
+            $className = ucfirst(Helper::camelize($table));
             $fileName = $className . '.ts';
             $abstractClassName = 'Abstract' . $className;
             $abstractFileName = $abstractClassName . '.ts';
@@ -131,7 +131,7 @@ DOC;
                         break;
                 }
                 
-                $propertyName = lcfirst(Text::camelize($column->getName()));
+                $propertyName = lcfirst(Helper::camelize($column->getName()));
                 $output [] = '    public ' . $propertyName . ': ' . $tsType . (!empty($default) ? ' = ' . $default : null) . ';';
             }
             $output [] = '}';

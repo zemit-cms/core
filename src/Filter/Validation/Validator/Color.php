@@ -1,10 +1,10 @@
 <?php
 
-namespace Zemit\Validation\Validator;
+namespace Zemit\Filter\Validation\Validator;
 
-use Phalcon\Validation;
-use Phalcon\Validation\AbstractValidator;
-use Phalcon\Validation\ValidatorInterface;
+use Phalcon\Filter\Validation;
+use Phalcon\Filter\Validation\AbstractValidator;
+use Phalcon\Filter\Validation\ValidatorInterface;
 
 class Color extends AbstractValidator implements ValidatorInterface
 {

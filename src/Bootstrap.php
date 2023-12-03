@@ -12,12 +12,12 @@
 namespace Zemit;
 
 use Phalcon\Application\AbstractApplication;
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use Phalcon\Di\DiInterface;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Events;
 use Phalcon\Http\ResponseInterface;
-use Phalcon\Text;
+use Zemit\Support\Helper;
 use Zemit\Config\ConfigInterface;
 use Zemit\Cli\Console;
 use Zemit\Events\EventsAwareTrait;
@@ -184,7 +184,13 @@ DOC;
     public function registerServices(?array $providers = null): void
     {
         $providers ??= $this->config->pathToArray('providers') ?? [];
-        foreach ($providers as $provider) {
+        foreach ($providers as $key => $provider) {
+            if (!is_string($provider)) {
+                throw new Exception('Service Provider `' . $key . '` class name must be a string.', 400);
+            }
+            if (!class_exists($provider)) {
+                throw new Exception('Service Provider `' . $key . '` class  `' . $provider . '` not found.', 404);
+            }
             $this->di->register(new $provider($this->di));
         }
     }
@@ -299,7 +305,7 @@ DOC;
             $response = (new Docopt())->handle($this->cliDoc, ['argv' => $argv, 'optionsFirst' => true]);
             foreach ($response as $key => $value) {
                 if (preg_match('/(<(.*?)>|\-\-(.*))/', $key, $match)) {
-                    $key = lcfirst(Text::camelize(Text::uncamelize(array_pop($match))));
+                    $key = lcfirst(Helper::camelize(Helper::uncamelize(array_pop($match))));
                     $args[$key] = $value;
                 }
             }

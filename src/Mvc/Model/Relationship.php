@@ -20,6 +20,7 @@ use Phalcon\Mvc\Model\Relation;
 use Phalcon\Mvc\Model\RelationInterface;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\ModelInterface;
+use Phalcon\Support\Collection\CollectionInterface;
 use Zemit\Mvc\Model\AbstractTrait\AbstractEntity;
 use Zemit\Mvc\Model\AbstractTrait\AbstractMetaData;
 use Zemit\Mvc\Model\AbstractTrait\AbstractModelsManager;
@@ -307,7 +308,7 @@ trait Relationship
      * - relationship context within the model messages based on the alias definition
      * @throws Exception
      */
-    protected function preSaveRelatedRecords(AdapterInterface $connection, $related): bool
+    protected function preSaveRelatedRecords(AdapterInterface $connection, $related, CollectionInterface $visited): bool
     {
         $nesting = false;
         
@@ -351,7 +352,7 @@ trait Relationship
                      * If dynamic update is enabled, saving the record must not take any action
                      * Only save if the model is dirty to prevent circular relations causing an infinite loop
                      */
-                    if ($record->getDirtyState() !== PhalconModel::DIRTY_STATE_PERSISTENT && !$record->save()) {
+                    if ($record->getDirtyState() !== PhalconModel::DIRTY_STATE_PERSISTENT && !$record->doSave($visited)) {
                         $this->appendMessagesFromRecord($record, $alias);
                         $connection->rollback($nesting);
                         return false;
@@ -376,7 +377,7 @@ trait Relationship
      * @link http://stackoverflow.com/questions/23374858/update-a-records-n-n-relationships
      * @link https://github.com/phalcon/cphalcon/issues/2871
      */
-    protected function postSaveRelatedRecords(AdapterInterface $connection, $related = null): bool
+    protected function postSaveRelatedRecords(AdapterInterface $connection, $related, CollectionInterface $visited): bool
     {
         $nesting = false;
         
@@ -521,7 +522,7 @@ trait Relationship
                             }
                             
                             // save edge record
-                            if (!$entity->save()) {
+                            if (!$entity->doSave($visited)) {
                                 $this->appendMessagesFromRecord($entity, $lowerCaseAlias, $key);
                                 $this->appendMessage(new Message('Unable to save related entity `' . $intermediateModelClass . '`', $lowerCaseAlias, 'Bad Request', 400));
                                 $connection->rollback($nesting);
@@ -569,13 +570,13 @@ trait Relationship
                 
                 $relatedRecords = $assign instanceof ModelInterface ? [$assign] : $assign;
                 
-                if ($this->postSaveRelatedThroughAfter($relation, $relatedRecords) === false) {
+                if ($this->postSaveRelatedThroughAfter($relation, $relatedRecords, $visited) === false) {
                     $this->appendMessage(new Message('Unable to save related through after', $lowerCaseAlias, 'Bad Request', 400));
                     $connection->rollback($nesting);
                     return false;
                 }
                 
-                if ($this->postSaveRelatedRecordsAfter($relation, $relatedRecords) === false) {
+                if ($this->postSaveRelatedRecordsAfter($relation, $relatedRecords, $visited) === false) {
                     $this->appendMessage(new Message('Unable to save related records after', $lowerCaseAlias, 'Bad Request', 400));
                     $connection->rollback($nesting);
                     return false;
@@ -590,7 +591,7 @@ trait Relationship
         return true;
     }
     
-    public function postSaveRelatedRecordsAfter(RelationInterface $relation, $relatedRecords): ?bool
+    public function postSaveRelatedRecordsAfter(RelationInterface $relation, $relatedRecords, CollectionInterface $visited): ?bool
     {
         if ($relation->isThrough()) {
             return null;
@@ -611,7 +612,7 @@ trait Relationship
             }
             
             // Save the record and get messages
-            if (!$recordAfter->save()) {
+            if (!$recordAfter->doSave($visited)) {
                 $this->appendMessagesFromRecord($recordAfter, $lowerCaseAlias);
                 return false;
             }
@@ -620,7 +621,7 @@ trait Relationship
         return true;
     }
     
-    public function postSaveRelatedThroughAfter(RelationInterface $relation, $relatedRecords): ?bool
+    public function postSaveRelatedThroughAfter(RelationInterface $relation, $relatedRecords, CollectionInterface $visited): ?bool
     {
         if (!$relation->isThrough()) {
             return null;
@@ -645,7 +646,7 @@ trait Relationship
         
         foreach ($relatedRecords as $relatedAfterKey => $recordAfter) {
             // Save the record and get messages
-            if (!$recordAfter->save()) {
+            if (!$recordAfter->doSave($visited)) {
                 $this->appendMessagesFromRecord($recordAfter, $lowerCaseAlias, $relatedAfterKey);
                 return false;
             }
@@ -682,7 +683,7 @@ trait Relationship
             }
             
             // Save the record and get messages
-            if (!$intermediateModel->save()) {
+            if (!$intermediateModel->doSave($visited)) {
                 $this->appendMessagesFromRecord($intermediateModel, $lowerCaseAlias);
                 $this->appendMessage(new Message('Unable to save intermediate model `' . $intermediateModelClass . '`', $lowerCaseAlias, 'Bad Request', 400));
                 return false;

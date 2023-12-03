@@ -1,5 +1,8 @@
 ## ZEMIT CORE CHANGELOG
 
+### @TODO after migrations
+- Change Security Hashing Crypt to Argon2i
+
 ### @TODO 1.0.0
 - Native Database Manager
 - Virtual API Manager

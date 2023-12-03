@@ -11,7 +11,7 @@
 
 namespace Zemit\Mvc;
 
-use Phalcon\Text;
+use Zemit\Support\Helper;
 use Zemit\Utils\Slug;
 
 /**
@@ -43,8 +43,8 @@ class View extends \Phalcon\Mvc\View
     public function render(string $controllerName, string $actionName, array $params = [])
     {
         if (!$this->exists($controllerName . (empty($actionName) ? null : '/' . $actionName))) {
-            $controllerName = Slug::generate(Text::uncamelize($controllerName));
-            $actionName = Slug::generate(Text::uncamelize($actionName));
+            $controllerName = Slug::generate(Helper::uncamelize($controllerName));
+            $actionName = Slug::generate(Helper::uncamelize($actionName));
         }
         return parent::render($controllerName, $actionName, $params);
     }
@@ -55,8 +55,8 @@ class View extends \Phalcon\Mvc\View
     public function getRender(string $controllerName, string $actionName, array $params = [], $configCallback = null): string
     {
         if (!$this->exists($controllerName . (empty($actionName) ? null : '/' . $actionName))) {
-            $controllerName = Slug::generate(Text::uncamelize($controllerName));
-            $actionName = Slug::generate(Text::uncamelize($actionName));
+            $controllerName = Slug::generate(Helper::uncamelize($controllerName));
+            $actionName = Slug::generate(Helper::uncamelize($actionName));
         }
         return parent::getRender($controllerName, $actionName, $params, $configCallback);
     }

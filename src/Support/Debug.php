@@ -9,24 +9,28 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit;
+namespace Zemit\Support;
+
+use Zemit\Support\Version as ZemitVersion;
+use Phalcon\Support\Version as PhalconVersion;
 
 /**
  * {@inheritDoc}
  */
-class Debug extends \Phalcon\Debug
+class Debug extends \Phalcon\Support\Debug
 {
     /**
      * {@inheritDoc}
      */
     public function getVersion(): string
     {
-        $version = Version::get();
+        $zemitVersion = new ZemitVersion();
+        $phalconVersion = new PhalconVersion();
         return
             '<div class="version">' .
-                ' Phalcon Framework <a href="https://docs.phalconphp.com/en/' . $version . '/" target="_new">' . \Phalcon\Version::get() . '</a>' .
+                ' Phalcon Framework <a href="https://docs.phalcon.io/' . PhalconVersion::VERSION_MAJOR . '.0/en/" target="_new">' . $phalconVersion->get() . '</a>' .
                 '&nbsp;&nbsp; – &nbsp;' .
-                ' Zemit CMS <a href="https://docs.zemit.com/en/' . $version . '/" target="_new">' . \Zemit\Version::get() . '</a>' .
+                ' Zemit CMS <a href="https://docs.zemit.com/" target="_new">' . $zemitVersion->get() . '</a>' .
             '</div>'
             ;
     }

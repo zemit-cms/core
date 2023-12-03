@@ -40,7 +40,7 @@ class Security extends \Phalcon\Encryption\Security
      * @param string $inherit
      * @return Memory
      * @todo cache the ACL
-     * @todo move to its own ACL class, shouldn't be in the Phalcon\Security
+     * @todo move to its own ACL class, shouldn't be in the Phalcon\Encryption\Security
      */
     public function getAcl(array $componentsName = ['components'], ?array $permissions = null, string $inherit = 'inherit'): Memory
     {

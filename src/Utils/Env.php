@@ -12,7 +12,7 @@
 namespace Zemit\Utils;
 
 use Phalcon\Di\DiInterface;
-use Phalcon\Text;
+use Zemit\Support\Helper;
 use Dotenv\Dotenv;
 
 /**
@@ -129,7 +129,7 @@ class Env
      */
     public static function getType()
     {
-        return ucfirst(Text::camelize(strtolower(self::$type ?? 'mutable')));
+        return ucfirst(Helper::camelize(strtolower(self::$type ?? 'mutable')));
     }
     
     /**

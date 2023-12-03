@@ -11,37 +11,19 @@
 
 namespace Zemit\Bootstrap;
 
-use App\Config\Permissions\AiConfig;
-use App\Config\Permissions\ArticleConfig;
-use App\Config\Permissions\AuditConfig;
-use App\Config\Permissions\AuthConfig;
-use App\Config\Permissions\CommentConfig;
-use App\Config\Permissions\CountryConfig;
-use App\Config\Permissions\DatatableStateConfig;
-use App\Config\Permissions\FileConfig;
-use App\Config\Permissions\KeywordConfig;
-use App\Config\Permissions\NotificationConfig;
-use App\Config\Permissions\ProjectConfig;
-use App\Config\Permissions\ProjectStatusReasonConfig;
-use App\Config\Permissions\RecordConfig;
-use App\Config\Permissions\RoleConfig;
-use App\Config\Permissions\SurveyConfig;
-use App\Config\Permissions\SynonymConfig;
-use App\Config\Permissions\TagConfig;
-use App\Config\Permissions\TrackerConfig;
-use App\Config\Permissions\UserConfig;
 use PDO;
 use Phalcon\Db\Column;
-use Phalcon\Security;
+use Phalcon\Encryption\Security;
 use Zemit\Locale;
-use Zemit\Version;
+use Zemit\Support\Version;
 use Zemit\Provider;
 use Zemit\Utils\Env;
 use Zemit\Models;
 use Zemit\Modules\Cli;
 use Zemit\Modules\Api;
 use Zemit\Mvc\Controller\Behavior;
-use Phalcon\Config as PhalconConfig;
+use Phalcon\Config\Config as PhalconConfig;
+use Phalcon\Support\Version as PhalconVersion;
 
 /**
  * Global Zemit Configuration
@@ -99,11 +81,19 @@ class Config extends \Zemit\Config\Config
         parent::__construct([
             
             /**
-             * Core only settings
+             * Phalcon settings
+             */
+            'phalcon' => [
+                'name' => 'Phalcon Framework',
+                'version' => (new PhalconVersion())->get(),
+            ],
+            
+            /**
+             * Core settings
              */
             'core' => [
                 'name' => 'Zemit Core',
-                'version' => Version::get(),
+                'version' => (new Version())->get(),
                 'package' => 'zemit-cms',
                 'modules' => [
                     'zemit-' . \Zemit\Mvc\Module::NAME_FRONTEND => [
@@ -449,6 +439,8 @@ class Config extends \Zemit\Config\Config
                 Provider\Imap\ServiceProvider::class => Env::get('PROVIDER_IMAP', Provider\Imap\ServiceProvider::class),
                 
                 // Others
+                Provider\Version\ServiceProvider::class => Env::get('PROVIDER_VERSION', Provider\Version\ServiceProvider::class),
+                Provider\Helper\ServiceProvider::class => Env::get('PROVIDER_HELPER', Provider\Helper\ServiceProvider::class),
                 Provider\FileSystem\ServiceProvider::class => Env::get('PROVIDER_FILE_SYSTEM', Provider\FileSystem\ServiceProvider::class),
                 Provider\Utils\ServiceProvider::class => Env::get('PROVIDER_UTILS', Provider\Utils\ServiceProvider::class),
                 Provider\Aws\ServiceProvider::class => Env::get('PROVIDER_AWS', Provider\Aws\ServiceProvider::class),
@@ -773,7 +765,7 @@ class Config extends \Zemit\Config\Config
                 'hash' => Env::get('SECURITY_HASH', Security::CRYPT_SHA512), // set default hash to sha512
                 'salt' => Env::get('SECURITY_SALT', '>mY.Db5fR?k%~<ZWf\}Zh35_IFC]#0Xx'), // salt for the phalcon security service
                 'jwt' => [
-                    'signer' => Env::get('SECURITY_JWT_SIGNER', \Phalcon\Security\JWT\Signer\Hmac::class),
+                    'signer' => Env::get('SECURITY_JWT_SIGNER', \Phalcon\Encryption\Security\JWT\Signer\Hmac::class),
                     'algo' => Env::get('SECURITY_JWT_ALGO', 'sha512'),
                     'contentType' => Env::get('SECURITY_JWT_CONTENT_TYPE', 'application/json'),
                     'expiration' => $now->modify(Env::get('SECURITY_JWT_EXPIRATION', '+1 day'))->getTimestamp(),
