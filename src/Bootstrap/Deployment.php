@@ -156,7 +156,7 @@ class Deployment extends \Zemit\Config\Config
         ], $insensitive);
         
         if (!empty($data)) {
-            $this->merge(new PhalconConfig($data, $insensitive));
+            $this->merge(new PhalconConfig($data, $insensitive), true);
         }
     }
 }

@@ -296,7 +296,7 @@ trait Model
     {
         $conditions = [];
         
-        $searchList = array_values(array_filter(array_unique(explode(' ', $this->getParam('search', 'string')))));
+        $searchList = array_values(array_filter(array_unique(explode(' ', $this->getParam('search', 'string') ?? ''))));
         
         foreach ($searchList as $searchTerm) {
             $orConditions = [];
@@ -347,7 +347,7 @@ trait Model
         foreach (is_array($params)? $params : [$params] as $param) {
             $ret = array_filter(array_merge($ret, array_map(function ($e) use ($filter, $sanitizer) {
                 return strrpos(strtoupper($e), 'RAND()') === 0? $e : $this->appendModelName(trim($filter->sanitize($e, $sanitizer)));
-            }, explode($glue, $param, $limit))));
+            }, explode($glue, $param ?? '', $limit))));
         }
         
         return empty($ret) ? null : $ret;
@@ -991,7 +991,7 @@ trait Model
     {
         $params ??= $this->getParams();
         
-        return isset($params[$key])
+        return isset($params[$key]) && $filters
             ? $this->filter->sanitize($params[$key], $filters)
             : $this->dispatcher->getParam($key, $filters, $default);
     }
@@ -1169,7 +1169,7 @@ trait Model
      *
      * @return string|null|\Zemit\Mvc\Model
      */
-    public function getModelNameFromController(string $controllerName = null, array $namespaces = null, string $needle = 'Models'): ?string
+    public function getModelNameFromController(string $controllerName = null, array $namespaces = null, string $needle = 'Models\\'): ?string
     {
         $controllerName ??= $this->dispatcher->getControllerName() ?? '';
         $namespaces ??= $this->loader->getNamespaces() ?? [];
@@ -1177,8 +1177,8 @@ trait Model
         $model = ucfirst(Helper::camelize(Helper::uncamelize($controllerName)));
         if (!class_exists($model)) {
             foreach ($namespaces as $namespace => $path) {
-                $possibleModel = $namespace . '\\' . $model;
-                if (strpos($namespace, $needle) !== false && class_exists($possibleModel)) {
+                $possibleModel = preg_replace('/\\\\+/', '\\', $namespace . '\\' . $model); // @todo check if phalcon namespaces are always going to end with a trailing backslash
+                if (str_ends_with($namespace, $needle) && class_exists($possibleModel)) {
                     $model = $possibleModel;
                 }
             }

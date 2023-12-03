@@ -216,6 +216,6 @@ trait DatabaseTrait
                     ],
                 ],
             ],
-        ]);
+        ], true);
     }
 }

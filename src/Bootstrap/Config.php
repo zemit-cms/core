@@ -28,6 +28,7 @@ use Phalcon\Support\Version as PhalconVersion;
 /**
  * Global Zemit Configuration
  *
+ * @property PhalconConfig $phalcon
  * @property PhalconConfig $core
  * @property PhalconConfig $app
  * @property PhalconConfig $php
@@ -1467,27 +1468,27 @@ class Config extends \Zemit\Config\Config
         ], $insensitive);
         
         if (!empty($data)) {
-            $this->merge(new PhalconConfig($data, $insensitive));
+            $this->merge(new PhalconConfig($data, $insensitive), true);
         }
         
-//        $this->merge(new AiConfig($data, $insensitive));
-//        $this->merge(new ArticleConfig($data, $insensitive));
-//        $this->merge(new AuditConfig($data, $insensitive));
-//        $this->merge(new AuthConfig($data, $insensitive));
-//        $this->merge(new CommentConfig($data, $insensitive));
-//        $this->merge(new CountryConfig($data, $insensitive));
-//        $this->merge(new DatatableStateConfig($data, $insensitive));
-//        $this->merge(new FileConfig($data, $insensitive));
-//        $this->merge(new KeywordConfig($data, $insensitive));
-//        $this->merge(new NotificationConfig($data, $insensitive));
-//        $this->merge(new ProjectConfig($data, $insensitive));
-//        $this->merge(new ProjectStatusReasonConfig($data, $insensitive));
-//        $this->merge(new RecordConfig($data, $insensitive));
-//        $this->merge(new RoleConfig($data, $insensitive));
-//        $this->merge(new SurveyConfig($data, $insensitive));
-//        $this->merge(new SynonymConfig($data, $insensitive));
-//        $this->merge(new TagConfig($data, $insensitive));
-//        $this->merge(new TrackerConfig($data, $insensitive));
-//        $this->merge(new UserConfig($data, $insensitive));
+//        $this->merge(new AiConfig($data, $insensitive), true);
+//        $this->merge(new ArticleConfig($data, $insensitive), true);
+//        $this->merge(new AuditConfig($data, $insensitive), true);
+//        $this->merge(new AuthConfig($data, $insensitive), true);
+//        $this->merge(new CommentConfig($data, $insensitive), true);
+//        $this->merge(new CountryConfig($data, $insensitive), true);
+//        $this->merge(new DatatableStateConfig($data, $insensitive), true);
+//        $this->merge(new FileConfig($data, $insensitive), true);
+//        $this->merge(new KeywordConfig($data, $insensitive), true);
+//        $this->merge(new NotificationConfig($data, $insensitive), true);
+//        $this->merge(new ProjectConfig($data, $insensitive), true);
+//        $this->merge(new ProjectStatusReasonConfig($data, $insensitive), true);
+//        $this->merge(new RecordConfig($data, $insensitive), true);
+//        $this->merge(new RoleConfig($data, $insensitive), true);
+//        $this->merge(new SurveyConfig($data, $insensitive), true);
+//        $this->merge(new SynonymConfig($data, $insensitive), true);
+//        $this->merge(new TagConfig($data, $insensitive), true);
+//        $this->merge(new TrackerConfig($data, $insensitive), true);
+//        $this->merge(new UserConfig($data, $insensitive), true);
     }
 }

@@ -11,6 +11,8 @@
 
 namespace Zemit\Config;
 
+use Phalcon\Config\ConfigInterface as PhalconConfigInterface;
+
 class Config extends \Phalcon\Config\Config implements ConfigInterface
 {
     /**
@@ -24,11 +26,47 @@ class Config extends \Phalcon\Config\Config implements ConfigInterface
             return null;
         }
         
-        if ($ret instanceof \Phalcon\Config\ConfigInterface) {
+        if ($ret instanceof PhalconConfigInterface) {
             return $ret->toArray();
         }
         
         return (array)$ret;
+    }
+    
+    public function merge($toMerge, bool $append = false): PhalconConfigInterface
+    {
+        if (!$append) {
+            return parent::merge($toMerge);
+        }
+        
+        $source = $this->toArray();
+        $this->clear();
+        $toMerge = $toMerge instanceof PhalconConfigInterface ? $toMerge->toArray() : $toMerge;
+        
+        if (!is_array($toMerge)) {
+            throw new \Exception('Invalid data type for merge.');
+        }
+        
+        $result = $this->internalMergeAppend($source, $toMerge);
+        $this->init($result);
+        return $this;
+    }
+    
+    final protected function internalMergeAppend(array $source, array $target): array
+    {
+        foreach ($target as $key => $value) {
+            if (is_array($value) && isset($source[$key]) && is_array($source[$key])) {
+                $source[$key] = $this->internalMergeAppend($source[$key], $value);
+            }
+            elseif (is_int($key)) {
+                $source[] = $value;
+            }
+            else {
+                $source[$key] = $value;
+            }
+        }
+        
+        return $source;
     }
     
     /**
