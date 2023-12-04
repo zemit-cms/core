@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Unit;
 
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use Phalcon\Di\DiInterface;
 use Zemit\Bootstrap\Config;
 use Zemit\Support\ModelsMap;

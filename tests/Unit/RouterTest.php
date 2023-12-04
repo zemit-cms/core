@@ -38,13 +38,18 @@ class RouterTest extends AbstractUnit
     {
         $routerToArray = $this->getRouter()->toArray();
         $this->assertIsArray($routerToArray);
-        $this->assertNull($routerToArray['namespace']);
-        $this->assertNull($routerToArray['module']);
-        $this->assertNull($routerToArray['controller']);
-        $this->assertNull($routerToArray['action']);
+        $this->assertIsString($routerToArray['namespace']);
+        $this->assertEmpty($routerToArray['namespace']);
+        $this->assertIsString($routerToArray['module']);
+        $this->assertEmpty($routerToArray['module']);
+        $this->assertIsString($routerToArray['controller']);
+        $this->assertEmpty($routerToArray['controller']);
+        $this->assertIsString($routerToArray['action']);
+        $this->assertEmpty($routerToArray['action']);
         $this->assertIsArray($routerToArray['params']);
         $this->assertIsArray($routerToArray['defaults']);
-        $this->assertNull($routerToArray['matches']);
+        $this->assertIsArray($routerToArray['matches']);
+        $this->assertEmpty($routerToArray['matches']);
         $this->assertNull($routerToArray['matched']);
 
 //        $this->assertIsString($routerToArray['matched']['id']);

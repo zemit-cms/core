@@ -19,7 +19,7 @@ use Zemit\Bootstrap;
 use Zemit\Bootstrap\Config;
 use Zemit\Exception;
 use Zemit\Utils\Env;
-use Phalcon\Loader;
+use Phalcon\Autoload\Loader;
 
 /**
  * Class AbstractUnitTest
@@ -61,8 +61,8 @@ abstract class AbstractUnit extends TestCase
         Env::setNames(['.env.testing']);
         
         $this->loader = new Loader();
-        $this->loader->registerFiles([VENDOR_PATH . 'autoload.php']);
-        $this->loader->registerNamespaces(['Zemit' => APP_PATH]);
+        $this->loader->setFiles([VENDOR_PATH . 'autoload.php']);
+        $this->loader->setNamespaces(['Zemit' => APP_PATH]);
         $this->loader->register();
         
         $this->bootstrap = new Bootstrap($this->mode);

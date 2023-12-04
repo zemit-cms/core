@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Unit;
 
 use Zemit\Tests\Unit\AbstractUnit;
-use Zemit\Url;
+use Zemit\Mvc\Url;
 
 /**
  * Class UrlTest

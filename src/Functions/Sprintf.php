@@ -103,79 +103,43 @@ if (!function_exists('mb_vsprintf')) {
             $encoding = mb_internal_encoding();
         }
         
-        // Use UTF-8 in the format so we can use the u flag in preg_split
         $format = mb_convert_encoding($format, 'UTF-8', $encoding);
         $newFormat = '';
-        
-        // build a new format in UTF-8
         $newArgv = [];
         
-        // unhandled args in unchanged encoding
         while ($format !== '') {
+            // Corrected regular expression pattern
+            $split = preg_split("!(%[0-9]*\$)?%([-+ 0]|'.)?(-?[0-9]*)?(\.\d+)?([bcdeEfFgGosuxX])!u", $format, 2, PREG_SPLIT_DELIM_CAPTURE);
             
-            // Split the format in two parts: $pre and $post by the first %-directive
-            // We get also the matched groups
-            $split = preg_split("!\%(\+?)('.|[0 ]|)(-?)([1-9][0-9]*|)(\.[1-9][0-9]*|)([%a-zA-Z])!u", $format, 2, PREG_SPLIT_DELIM_CAPTURE);
-            $pre = $split[0] ?? null;
-            $sign = $split[1] ?? null;
-            $filler = $split[2] ?? null;
-            $align = $split[3] ?? null;
-            $size = $split[4] ?? null;
-            $precision = $split[5] ?? null;
-            $type = $split[6] ?? null;
-            $post = $split[7] ?? null;
+            if (empty($split) || count($split) < 7) {
+                // If split is empty or does not contain all expected parts, append the rest of the format string as-is.
+                $newFormat .= mb_convert_encoding($format, $encoding, 'UTF-8');
+                break;
+            }
+            
+            $pre = $split[0];
+            $numberedArg = $split[1] ?? '';
+            $sign = $split[2] ?? '';
+            $size = $split[3] ?? '';
+            $precision = $split[4] ?? '';
+            $type = $split[5] ?? '';
+            $post = $split[6] ?? '';
             
             $newFormat .= mb_convert_encoding($pre, $encoding, 'UTF-8');
             
             if ($type === '') {
-                // didn't match. do nothing. this is the last iteration.
-            }
-            elseif ($type === '%') {
-                // an escaped %
+                // Incomplete specifier at the end of the string, escape it.
+                $newFormat .= '%';
+            } elseif ($type === '%') {
                 $newFormat .= '%%';
-            }
-            elseif ($type === 's') {
-                $arg = array_shift($argv);
-                $arg = mb_convert_encoding($arg, 'UTF-8', $encoding);
-                $paddingPre = '';
-                $paddingPost = '';
-                
-                // truncate $arg
-                if ($precision !== '') {
-                    $precision = intval(substr($precision, 1));
-                    if ($precision > 0 && mb_strlen($arg, $encoding) > $precision) {
-                        $arg = mb_substr($precision, 0, $precision, $encoding);
-                    }
-                }
-                
-                // define padding
-                if ($size > 0) {
-                    $argLength = mb_strlen($arg, $encoding);
-                    if ($argLength < $size) {
-                        if ($filler === '') {
-                            $filler = ' ';
-                        }
-                        if ($align === '-') {
-                            $paddingPost = str_repeat($filler, $size - $argLength);
-                        }
-                        else {
-                            $paddingPre = str_repeat($filler, $size - $argLength);
-                        }
-                    }
-                }
-                
-                // escape % and pass it forward
-                $newFormat .= $paddingPre . str_replace('%', '%%', $arg) . $paddingPost;
-            }
-            else {
-                // another type, pass forward
-                $newFormat .= "%$sign$filler$align$size$precision$type";
+            } else {
+                $newFormat .= "%$numberedArg$sign$size$precision$type";
                 $newArgv[] = array_shift($argv);
             }
             
-            $format = strval($post);
+            $format = $post;
         }
-        // Convert new format back from UTF-8 to the original encoding
+        
         $newFormat = mb_convert_encoding($newFormat, $encoding, 'UTF-8');
         return !empty($newArgv) ? vsprintf($newFormat, $newArgv) : $newFormat;
     }

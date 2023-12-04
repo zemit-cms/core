@@ -17,9 +17,9 @@ use Zemit\Config\Config;
 
 class ConfigTest extends AbstractUnit
 {
-    public function setUp(): void
-    {
-    }
+//    public function setUp(): void
+//    {
+//    }
     
     public function testPathToArray(): void
     {
@@ -78,6 +78,7 @@ class ConfigTest extends AbstractUnit
     {
         $config = new \Zemit\Bootstrap\Config();
         $keys = [
+            'phalcon',
             'core',
             'app',
             'url',
@@ -124,9 +125,9 @@ class ConfigTest extends AbstractUnit
         
         foreach ($keys as $key) {
             // Should be a Config object
-            $this->assertInstanceOf(\Phalcon\Config::class, $config->$key);
-            $this->assertInstanceOf(\Phalcon\Config::class, $config->get($key));
-            $this->assertInstanceOf(\Phalcon\Config::class, $config->path($key));
+            $this->assertInstanceOf(\Phalcon\Config\Config::class, $config->$key);
+            $this->assertInstanceOf(\Phalcon\Config\Config::class, $config->get($key));
+            $this->assertInstanceOf(\Phalcon\Config\Config::class, $config->path($key));
             
             // Should be able to extract array
             $this->assertIsArray($config->$key->toArray());

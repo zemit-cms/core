@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Zemit\Tests\Unit;
 
-class FunctionsTest extends \Zemit\Tests\Unit\AbstractUnit
+class FunctionsTest extends AbstractUnit
 {
     public function testFunctions(): void
     {

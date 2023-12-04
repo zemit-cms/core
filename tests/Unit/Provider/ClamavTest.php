@@ -18,6 +18,16 @@ use Xenolope\Quahog\Result;
 
 class ClamavTest extends AbstractUnit
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        try {
+            $clamav = $this->getClamav();
+        } catch (\Exception $e) {
+            $this->markTestSkipped('Failed to initialize clamav socket interaction, skipping tests');
+        }
+    }
+    
     public function getClamav(): Client
     {
         return $this->di->get('clamav');

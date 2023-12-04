@@ -11,6 +11,9 @@
 
 namespace Zemit\Support;
 
+use Phalcon\Di\DiInterface;
+use Phalcon\Support\HelperFactory;
+
 /**
  *  @method static string basename(string $uri, string $suffix = null)
  *  @method static array  blacklist(array $collection, array $blackList)
@@ -71,8 +74,18 @@ namespace Zemit\Support;
  */
 class Helper extends \Phalcon\Di\Injectable
 {
+    // @todo review this fix for unit testing
+    public function getHelper(): HelperFactory
+    {
+        if ($this->container) {
+            return $this->getDI()->get('helper');
+        }
+        
+        return new HelperFactory();
+    }
+    
     public static function __callStatic($name, $arguments)
     {
-        return (new self())->helper->$name(...$arguments);
+        return (new self())->getHelper()->$name(...$arguments);
     }
 }
