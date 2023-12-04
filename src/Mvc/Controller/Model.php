@@ -462,7 +462,7 @@ trait Model
      * @todo escape fields properly
      *
      */
-    protected function getFilterCondition(array $filters = null, array $whiteList = null, $or = false)
+    protected function getFilterCondition(array $filters = null, array $whiteList = null, bool $or = false)
     {
         $filters ??= $this->getParam('filters');
         $whiteList ??= $this->getFilterWhiteList();
@@ -980,6 +980,8 @@ trait Model
     }
     
     /**
+     * @todo refactor this to support new filter->sanitize parameters
+     *
      * @param string $key
      * @param string[]|string|null $filters
      * @param string|null $default
@@ -991,8 +993,8 @@ trait Model
     {
         $params ??= $this->getParams();
         
-        return isset($params[$key]) && $filters
-            ? $this->filter->sanitize($params[$key], $filters)
+        return isset($params[$key])
+            ? ($filters? $this->filter->sanitize($params[$key], $filters) : $params[$key])
             : $this->dispatcher->getParam($key, $filters, $default);
     }
     
