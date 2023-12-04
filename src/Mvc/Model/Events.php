@@ -65,7 +65,7 @@ trait Events
             return false;
         }
 
-        $ret = parent::$method(...$arguments);
+        $ret = @parent::$method(...$arguments); // @todo fix this for php 83+
         
         $that->fireEvent('after' . $event);
         

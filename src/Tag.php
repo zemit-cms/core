@@ -11,6 +11,8 @@
 
 namespace Zemit;
 
+use Phalcon\Html\Escaper;
+use Phalcon\Html\Escaper\EscaperInterface;
 use Zemit\Assets\Manager;
 
 /**
@@ -50,7 +52,7 @@ class Tag extends \Phalcon\Tag
     /**
      * {@inheritDoc}
      */
-    public static function getEscaper(array $params): Escaper
+    public static function getEscaper(array $params): ?EscaperInterface
     {
         $escaper = parent::getEscaper($params);
         assert($escaper instanceof Escaper);
@@ -60,7 +62,7 @@ class Tag extends \Phalcon\Tag
     /**
      * {@inheritDoc}
      */
-    public static function getEscaperService(): Escaper
+    public static function getEscaperService(): EscaperInterface
     {
         $escaper = parent::getEscaperService();
         assert($escaper instanceof Escaper);
