@@ -75,11 +75,11 @@ class Config extends \Zemit\Config\Config
      * Config Constructor
      * {@inheritDoc}
      */
-    public function __construct(array $data = [], bool $insensitive = true)
+    public function __construct(array $data = [], bool $insensitive = false)
     {
         $this->defineConst();
         $now = new \DateTimeImmutable();
-        parent::__construct([
+        $data = $this->internalMergeAppend([
             
             /**
              * Phalcon settings
@@ -1465,30 +1465,28 @@ class Config extends \Zemit\Config\Config
                     ],
                 ],
             ],
-        ], $insensitive);
+        ], $data);
         
-        if (!empty($data)) {
-            $this->merge(new PhalconConfig($data, $insensitive), true);
-        }
+//        $data = $this->internalMergeAppend($data, (new AiConfig())->toArray());
+//        $data = $this->internalMergeAppend($data, (new ArticleConfig())->toArray());
+//        $data = $this->internalMergeAppend($data, (new AuditConfig())->toArray());
+//        $data = $this->internalMergeAppend($data, (new AuthConfig())->toArray());
+//        $data = $this->internalMergeAppend($data, (new CommentConfig())->toArray());
+//        $data = $this->internalMergeAppend($data, (new CountryConfig())->toArray());
+//        $data = $this->internalMergeAppend($data, (new DatatableStateConfig())->toArray());
+//        $data = $this->internalMergeAppend($data, (new FileConfig())->toArray());
+//        $data = $this->internalMergeAppend($data, (new KeywordConfig())->toArray());
+//        $data = $this->internalMergeAppend($data, (new NotificationConfig())->toArray());
+//        $data = $this->internalMergeAppend($data, (new ProjectConfig())->toArray());
+//        $data = $this->internalMergeAppend($data, (new ProjectStatusReasonConfig())->toArray());
+//        $data = $this->internalMergeAppend($data, (new RecordConfig())->toArray());
+//        $data = $this->internalMergeAppend($data, (new RoleConfig())->toArray());
+//        $data = $this->internalMergeAppend($data, (new SurveyConfig())->toArray());
+//        $data = $this->internalMergeAppend($data, (new SynonymConfig())->toArray());
+//        $data = $this->internalMergeAppend($data, (new TagConfig())->toArray());
+//        $data = $this->internalMergeAppend($data, (new TrackerConfig())->toArray());
+//        $data = $this->internalMergeAppend($data, (new UserConfig())->toArray());
         
-//        $this->merge(new AiConfig($data, $insensitive), true);
-//        $this->merge(new ArticleConfig($data, $insensitive), true);
-//        $this->merge(new AuditConfig($data, $insensitive), true);
-//        $this->merge(new AuthConfig($data, $insensitive), true);
-//        $this->merge(new CommentConfig($data, $insensitive), true);
-//        $this->merge(new CountryConfig($data, $insensitive), true);
-//        $this->merge(new DatatableStateConfig($data, $insensitive), true);
-//        $this->merge(new FileConfig($data, $insensitive), true);
-//        $this->merge(new KeywordConfig($data, $insensitive), true);
-//        $this->merge(new NotificationConfig($data, $insensitive), true);
-//        $this->merge(new ProjectConfig($data, $insensitive), true);
-//        $this->merge(new ProjectStatusReasonConfig($data, $insensitive), true);
-//        $this->merge(new RecordConfig($data, $insensitive), true);
-//        $this->merge(new RoleConfig($data, $insensitive), true);
-//        $this->merge(new SurveyConfig($data, $insensitive), true);
-//        $this->merge(new SynonymConfig($data, $insensitive), true);
-//        $this->merge(new TagConfig($data, $insensitive), true);
-//        $this->merge(new TrackerConfig($data, $insensitive), true);
-//        $this->merge(new UserConfig($data, $insensitive), true);
+        parent::__construct($data, $insensitive);
     }
 }
