@@ -19,9 +19,9 @@ use Phalcon\Filter\Validation\Validator\PresenceOf;
 use Phalcon\Filter\Validation\Validator\StringLength\Max;
 use Phalcon\Filter\Validation\Validator\StringLength\Min;
 use Phalcon\Filter\Validation\Validator\Uniqueness;
+use Zemit\Filter\Validation\Validator\Color;
 use Zemit\Db\Column;
 use Zemit\Validation;
-use Zemit\Validation\Validator\Color;
 
 trait Validate
 {

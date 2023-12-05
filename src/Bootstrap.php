@@ -304,7 +304,7 @@ DOC;
             $argv = array_slice($_SERVER['argv'] ?? [], 1);
             $response = (new Docopt())->handle($this->cliDoc, ['argv' => $argv, 'optionsFirst' => true]);
             foreach ($response as $key => $value) {
-                if (preg_match('/(<(.*?)>|\-\-(.*))/', $key, $match)) {
+                if (!is_null($value) && preg_match('/(<(.*?)>|\-\-(.*))/', $key, $match)) {
                     $key = lcfirst(Helper::camelize(Helper::uncamelize(array_pop($match))));
                     $args[$key] = $value;
                 }

@@ -12,7 +12,7 @@
 namespace Zemit\Mvc\Controller\AbstractTrait;
 
 use Zemit\Mvc\Model\AbstractTrait\AbstractInjectable;
-use Phalcon\Loader;
+use Phalcon\Autoload\Loader;
 
 trait AbstractLoader
 {

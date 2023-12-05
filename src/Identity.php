@@ -20,6 +20,7 @@ use Phalcon\Encryption\Security\JWT\Exceptions\ValidatorException;
 use Phalcon\Filter\Validation\Validator\Confirmation;
 use Phalcon\Filter\Validation\Validator\Numericality;
 use Phalcon\Filter\Validation\Validator\PresenceOf;
+use Phalcon\Support\Helper\Str\Random;
 use Zemit\Di\Injectable;
 use Zemit\Models\Interfaces\RoleInterface;
 use Zemit\Models\Interfaces\SessionInterface;
@@ -130,10 +131,8 @@ class Identity extends Injectable implements OptionsInterface
         
         // generate new key & token pair if not set
         $key ??= $this->security->getRandom()->uuid();
-        $token ??= $this->security->getRandom()->hex(128);
-        
-        // generate a new token if a refresh is requested
-        $newToken = $refresh ? $this->security->getRandom()->hex(128) : $token;
+        $token ??= $this->helper->random(Random::RANDOM_ALNUM, rand(111, 222));
+        $newToken = $refresh ? $this->helper->random(Random::RANDOM_ALNUM, rand(111, 222)) : $token;
         
         // save the key token into the store (database or session)
         $sessionClass = $this->getSessionClass();
