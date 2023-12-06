@@ -11,10 +11,12 @@
 
 namespace Zemit\Mvc\Model;
 
-use Zemit\Mvc\Model;
+use Zemit\Mvc\Model\AbstractTrait\AbstractInjectable;
 
 trait Locale
 {
+    use AbstractInjectable;
+    
     /**
      * Returns the translation string of the given key
      *
@@ -65,7 +67,7 @@ trait Locale
      * @param mixed $value value to set
      * @return void
      */
-    public function __set(string $property, $value)
+    public function __set(string $property, $value): void
     {
         $locale = $this->getDI()->get('locale');
         assert($locale instanceof \Zemit\Locale);

@@ -8,16 +8,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Models;
+namespace Zemit\Modules\Api\Controllers;
 
-use Zemit\Db\Column;
+use Zemit\Modules\Api\Controller;
+use Zemit\Mvc\Controller\Clamav;
 
-abstract class AbstractModel extends \Zemit\Mvc\Model
+class ClamavController extends Controller
 {
-    const YES = Column::YES;
-    const NO = Column::NO;
-    
-    const LANG_EN = 'en';
-    const LANG_FR = 'fr';
-    const LANG_SP = 'sp';
+    use Clamav;
 }

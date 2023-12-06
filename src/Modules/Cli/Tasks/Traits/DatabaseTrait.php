@@ -141,16 +141,22 @@ trait DatabaseTrait
                     }
                 }
                 
-                if (!$entity->save()) {
-                    $response['error'][$modelName][] = $entity->toArray();
-                    
-                    foreach ($entity->getMessages() as $message) {
-                        $response['message'][$modelName][] = $message;
+                try {
+                    if (!$entity->save()) {
+                        $response['error'][$modelName][] = $entity->toArray();
+                        
+                        foreach ($entity->getMessages() as $message) {
+                            $response['message'][$modelName][] = $message;
+                        }
                     }
+                    else {
+                        $response['saved']++;
+                    }
+                } catch (\Exception $e) {
+                    $response['error'][$modelName][] = $entity->toArray();
+                    $response['message'][$modelName][] = $e->getMessage();
                 }
-                else {
-                    $response['saved']++;
-                }
+                
             }
         }
         

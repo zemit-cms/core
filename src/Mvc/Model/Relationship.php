@@ -180,6 +180,11 @@ trait Relationship
             
             $relation = $modelsManager->getRelationByAlias($modelClass, $alias);
             
+            // alias is not whitelisted
+            if (!is_null($whiteList) && (!isset($whiteList[$alias]) && !in_array($alias, $whiteList))) {
+                continue;
+            }
+            
             // @todo add a recursive whiteList check & columnMap support
             if ($relation) {
                 $type = $relation->getType();
@@ -432,7 +437,7 @@ trait Relationship
                     
                         $idBindType = count($referencedPrimaryKeyAttributes) === 1 ? $referencedBindTypes[$referencedPrimaryKeyAttributes[0]] : Column::BIND_PARAM_STR;
                         
-                        $idListToKeep = [];
+                        $idListToKeep = [0];
                         foreach ($assign as $entity) {
                             $buildPrimaryKey = [];
                             foreach ($referencedPrimaryKeyAttributes as $referencedPrimaryKey => $referencedPrimaryKeyAttribute) {
@@ -764,11 +769,7 @@ trait Relationship
         
         // assign new values
         // can be null to bypass, empty array for nothing or filled array
-        $assignWhiteList = isset($whiteList[$modelClass]) || isset($whiteList[$alias]);
-        $assignColumnMap = isset($dataColumnMap[$modelClass]) || isset($dataColumnMap[$alias]);
-        $assignWhiteList = $assignWhiteList ? array_merge_recursive($whiteList[$modelClass] ?? [], $whiteList[$alias] ?? []) : null;
-        $assignColumnMap = $assignColumnMap ? array_merge_recursive($dataColumnMap[$modelClass] ?? [], $dataColumnMap[$alias] ?? []) : null;
-        $entity->assign($data, $assignWhiteList, $assignColumnMap);
+        $entity->assign($data, $whiteList[$alias] ?? null, $dataColumnMap[$alias] ?? null);
 //        $entity->setDirtyState(self::DIRTY_STATE_TRANSIENT);
         
         return $entity;

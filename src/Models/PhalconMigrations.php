@@ -10,14 +10,10 @@
 
 namespace Zemit\Models;
 
-use Zemit\Db\Column;
+use Zemit\Models\Abstracts\AbstractPhalconMigrations;
+use Zemit\Models\Interfaces\PhalconMigrationsInterface;
 
-abstract class AbstractModel extends \Zemit\Mvc\Model
+class PhalconMigrations extends AbstractPhalconMigrations implements PhalconMigrationsInterface
 {
-    const YES = Column::YES;
-    const NO = Column::NO;
-    
-    const LANG_EN = 'en';
-    const LANG_FR = 'fr';
-    const LANG_SP = 'sp';
+
 }

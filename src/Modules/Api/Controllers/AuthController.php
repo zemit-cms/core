@@ -10,65 +10,59 @@
 
 namespace Zemit\Modules\Api\Controllers;
 
-use Zemit\Modules\Api\Controller;
+use Phalcon\Security\Exception;
 use Zemit\Mvc\Controller\Identity;
 
-class AuthController extends Controller
+class AuthController extends AbstractController
 {
-    use Identity;
-
-    public function indexAction($id = null)
+    use Identity {
+        getAction as traitGetAction;
+    }
+    
+    public function indexAction($id = null): bool
     {
         return $this->getAction();
     }
-
-    /**
-     *
-     */
-    public function destroyAction() {
-        return $this->session->destroy();
-    }
-
+    
     /**
      * Create a refresh a session
      *
      * @param bool $refresh
      *
      * @return bool
-     * @throws \Phalcon\Encryption\Security\Exception
+     * @throws Exception
      */
-    public function getAction($request = null)
+    public function getAction($refresh = false): bool
     {
-        $this->view->setVars($this->identity->getJwt($request === true));
-        $this->view->setVars($this->identity->getIdentity());
-
-        $indexLabelExpose = [false, 'email', 'label', 'labelFr', 'labelEn', 'addressId'];
+        $ret = $this->traitGetAction($refresh);
+        
+        $indexLabelExpose = [false, 'email', 'label'];
         $expose = [
-            'User' => [false, 'email', 'firstName', 'lastName', 'category', 'addressId', 'id', 'companyId'],
+            'User' => [false, 'id', 'email', 'firstName', 'lastName'],
             'Role' => $indexLabelExpose,
             'Group' => $indexLabelExpose,
             'Type' => $indexLabelExpose,
         ];
-
-        $permissions = $this->config->permissions->roles->toArray() ?? [];
-        $permissionList = ['everyone' => $permissions['everyone']['frontend'] ?? null];
-        $vars = [];
+        
+        // @todo review this
+        $permissions = $this->config->path('permissions.roles', []);
+        $view = ['permissionList' => ['everyone' => $permissions['everyone']['frontend'] ?? null]];
         foreach (['user', 'userAs', 'roleList', 'groupList', 'typeList'] as $var) {
             if (is_array($this->view->$var)) {
                 foreach ($this->view->$var as $key => $role) {
                     if ($role) {
-                        $vars[$var][$key] = $role->expose($expose);
-                        $permissionList[$key] = $permissions[$key]['frontend'] ?? null;
+                        $view[$var][$key] = $role->expose($expose);
+                        $view['permissionList'][$key] = $permissions[$key]['frontend'] ?? null;
                     }
                 }
-            } else if ($this->view->$var) {
-                $vars[$var] = $this->view->$var->expose($expose);
+            }
+            else if ($this->view->$var) {
+                $view[$var] = $this->view->$var->expose($expose);
             }
         }
-        $this->view->setVars($vars);
-
-        $this->view->permissionList = $permissionList;
-
-        return $this->view->saved && $this->view->stored && $this->view->validated;
+        $this->view->setVars($view);
+        
+        return $ret;
     }
 }
+

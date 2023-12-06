@@ -40,7 +40,6 @@ class ServiceProvider extends AbstractServiceProvider
             assert($config instanceof ConfigInterface);
             
             $options ??= $config->pathToArray('locale', $defaultOptions);
-            
             return new Locale($options);
         });
     }

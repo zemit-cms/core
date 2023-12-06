@@ -17,17 +17,21 @@ use Zemit\Models\Interfaces\GroupInterface;
 
 /**
  * @property UserGroup[] $UserNode
- * @property User[] $UserList
- * @property GroupRole[] $RoleNode
- * @property Role[] $RoleList
- * @property GroupType[] $TypeNode
- * @property Type[] $TypeList
- *
  * @method UserGroup[] getUserNode(?array $params = null)
+ *
+ * @property User[] $UserList
  * @method User[] getUserList(?array $params = null)
+ *
+ * @property GroupRole[] $RoleNode
  * @method GroupRole[] getRoleNode(?array $params = null)
+ *
+ * @property Role[] $RoleList
  * @method Role[] getRoleList(?array $params = null)
+ *
+ * @property GroupType[] $TypeNode
  * @method GroupType[] getTypeNode(?array $params = null)
+ *
+ * @property Type[] $TypeList
  * @method Type[] getTypeList(?array $params = null)
  */
 class Group extends AbstractGroup implements GroupInterface
@@ -41,18 +45,39 @@ class Group extends AbstractGroup implements GroupInterface
 
         // User relationship
         $this->hasMany('id', UserGroup::class, 'groupId', ['alias' => 'UserNode']);
-        $this->hasManyToMany('id', UserGroup::Class, 'groupId',
-            'userId', User::class, 'id', ['alias' => 'UserList']);
+        $this->hasManyToMany(
+            'id',
+            UserGroup::Class,
+            'groupId',
+            'userId',
+            User::class,
+            'id',
+            ['alias' => 'UserList']
+        );
 
         // Role relationship
         $this->hasMany('id', GroupRole::class, 'groupId', ['alias' => 'RoleNode']);
-        $this->hasManyToMany('id', GroupRole::class, 'groupId',
-            'roleId', Role::class, 'id', ['alias' => 'RoleList']);
+        $this->hasManyToMany(
+            'id',
+            GroupRole::class,
+            'groupId',
+            'roleId',
+            Role::class,
+            'id',
+            ['alias' => 'RoleList']
+        );
 
         // Type relationship
         $this->hasMany('id', GroupType::class, 'groupId', ['alias' => 'TypeNode']);
-        $this->hasManyToMany('id', GroupType::class, 'groupId',
-            'typeId', Type::class, 'id', ['alias' => 'TypeList']);
+        $this->hasManyToMany(
+            'id',
+            GroupType::class,
+            'groupId',
+            'typeId',
+            Type::class,
+            'id',
+            ['alias' => 'TypeList']
+        );
     }
 
     public function beforeValidation()

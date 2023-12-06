@@ -30,7 +30,7 @@ class ServiceProvider extends AbstractServiceProvider
             $translateConfig = $config->pathToArray('translate') ?? [];
             
             $translate = new Gettext(new InterpolatorFactory(), $translateConfig);
-            $translate->setLocale(LC_MESSAGES, $di->get('locale')->get() . '.utf8');
+            $translate->setLocale(LC_MESSAGES, [$di->get('locale')->get() . '.utf8']);
             
             return $translate;
         });

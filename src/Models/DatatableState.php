@@ -10,27 +10,30 @@
 
 namespace Zemit\Models;
 
-use Zemit\Db\Column;
-use Zemit\Models\Abstracts\AbstractLang;
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-use Phalcon\Filter\Validation\Validator\StringLength\Max;
-use Zemit\Models\Interfaces\LangInterface;
+use Zemit\Models\Abstracts\AbstractDatatableState;
 
-class Lang extends AbstractLang implements LangInterface
+/**
+ * @property User $UserEntity
+ * @method User getUserEntity(?array $params = null)
+ */
+class DatatableState extends AbstractDatatableState
 {
-    protected $deleted = Column::NO;
+    protected $deleted = self::NO;
 
     public function initialize(): void
     {
         parent::initialize();
-        // @todo relationships
+
+        $this->belongsTo('userId', User::class, 'id', ['alias' => 'UserEntity']);
     }
 
     public function validation(): bool
     {
         $validator = $this->genericValidation();
 
-        // @todo validations
+        // Relations
+        $this->addUnsignedIntValidation($validator, 'userId');
+        $this->addStringLengthValidation($validator, 'label', 1, 255, false);
 
         return $this->validate($validator);
     }

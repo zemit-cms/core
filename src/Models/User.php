@@ -43,7 +43,6 @@ use Zemit\Models\Interfaces\UserInterface;
  */
 class User extends AbstractUser implements UserInterface
 {
-    protected $language = self::LANG_FR;
     protected $deleted = self::NO;
 
     public function initialize(): void

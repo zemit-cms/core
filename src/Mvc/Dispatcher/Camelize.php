@@ -11,9 +11,11 @@
 
 namespace Zemit\Mvc\Dispatcher;
 
-use Zemit\Di\Injectable;
 use Phalcon\Dispatcher\AbstractDispatcher;
+use Phalcon\Mvc\Dispatcher as MvcDispatcher;
 use Phalcon\Events\Event;
+use Zemit\Di\Injectable;
+use Zemit\Support\Helper;
 
 class Camelize extends Injectable
 {
@@ -22,10 +24,22 @@ class Camelize extends Injectable
      */
     public function beforeDispatchLoop(Event $event, AbstractDispatcher $dispatcher): void
     {
+        if ($dispatcher instanceof MvcDispatcher) {
+            $dispatcher->setControllerName(
+                ucfirst(
+                    Helper::camelize(
+                        Helper::uncamelize(
+                            $dispatcher->getControllerName()
+                        )
+                    )
+                )
+            );
+        }
+        
         $dispatcher->setActionName(
             lcfirst(
-                $this->helper->camelize(
-                    $this->helper->uncamelize(
+                Helper::camelize(
+                    Helper::uncamelize(
                         $dispatcher->getActionName()
                     )
                 )

@@ -10,6 +10,7 @@
 
 namespace Zemit\Models;
 
+use Zemit\Db\Column;
 use Zemit\Models\Abstracts\AbstractEmail;
 use Phalcon\Mailer\Manager;
 use Phalcon\Messages\Message;
@@ -415,7 +416,7 @@ class Email extends AbstractEmail implements EmailInterface
 
         // Message sent, update time and sender identity
         else {
-            $this->setSentAt(date(self::DATETIME_FORMAT));
+            $this->setSentAt(date(Column::DATETIME_FORMAT));
             $this->setSentBy($this->getCurrentUserId());
         }
 
