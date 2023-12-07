@@ -763,8 +763,13 @@ class Config extends \Zemit\Config\Config
              */
             'security' => [ // phalcon security config
                 'workFactor' => Env::get('SECURITY_WORK_FACTOR', 12), // workfactor for the phalcon security service
-                'hash' => Env::get('SECURITY_HASH', Security::CRYPT_SHA512), // set default hash to sha512
+                'hash' => Env::get('SECURITY_HASH', Security::CRYPT_ARGON2ID), // set default hash to sha512
                 'salt' => Env::get('SECURITY_SALT', '>mY.Db5fR?k%~<ZWf\}Zh35_IFC]#0Xx'), // salt for the phalcon security service
+                'argon2' => [
+                    'memoryCost' => Env::get('SECURITY_ARGON2_MEMORY_COST', PASSWORD_ARGON2_DEFAULT_MEMORY_COST),
+                    'timeCost' => Env::get('SECURITY_ARGON2_TIME_COST', PASSWORD_ARGON2_DEFAULT_TIME_COST),
+                    'threads' => Env::get('SECURITY_ARGON2_THREADS', PASSWORD_ARGON2_DEFAULT_THREADS),
+                ],
                 'jwt' => [
                     'signer' => Env::get('SECURITY_JWT_SIGNER', \Phalcon\Encryption\Security\JWT\Signer\Hmac::class),
                     'algo' => Env::get('SECURITY_JWT_ALGO', 'sha512'),

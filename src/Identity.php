@@ -900,8 +900,6 @@ class Identity extends Injectable implements OptionsInterface
         
         $sessionClass = $this->getSessionClass();
         $sessionEntity = $sessionClass::findFirstByKey($this->filter->sanitize($key, 'string'));
-        
-        $time = microtime(true);
         if ($sessionEntity && $sessionEntity->checkHash($sessionEntity->getToken(), $key . $token)) {
             $this->currentSession = $sessionEntity;
         }

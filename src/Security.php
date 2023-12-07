@@ -11,6 +11,7 @@
 
 namespace Zemit;
 
+use Phalcon\Encryption\Security as PhalconSecurity;
 use Phalcon\Acl\Adapter\Memory;
 use Phalcon\Acl\Component;
 use Phalcon\Acl\Role;
@@ -19,7 +20,7 @@ use Zemit\Config\ConfigInterface;
 /**
  * {@inheritDoc}
  */
-class Security extends \Phalcon\Encryption\Security
+class Security extends PhalconSecurity
 {
     protected ?array $permissions;
     
@@ -31,6 +32,21 @@ class Security extends \Phalcon\Encryption\Security
     public function getConfig(): ConfigInterface
     {
         return $this->getDI()->get('config');
+    }
+    
+    public function hash(string $password, array $options = []) : string
+    {
+        if (in_array($this->getDefaultHash(), [
+            PhalconSecurity::CRYPT_ARGON2I,
+            PhalconSecurity::CRYPT_ARGON2ID
+        ])) {
+            $defaultOptions = $this->getConfig()->pathToArray('security.argon2');
+            $options['memory_cost'] ??= $defaultOptions['memoryCost'];
+            $options['time_cost'] ??= $defaultOptions['timeCost'];
+            $options['threads'] ??= $defaultOptions['threads'];
+        }
+        
+        return parent::hash($password, $options);
     }
     
     /**
