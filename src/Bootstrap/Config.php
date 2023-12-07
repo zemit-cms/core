@@ -689,8 +689,8 @@ class Config extends \Zemit\Config\Config
                     ],
                 ],
                 'default' => [
-                    'prefix' => Env::get('SESSION_PREFIX', 'zemit_session_'),
-                    'uniqueId' => Env::get('SESSION_UNIQUE_ID', 'zemit_'),
+                    'prefix' => Env::get('SESSION_PREFIX', Env::get('GLOBAL_PREFIX', 'zemit_') . 'session_'),
+                    'uniqueId' => Env::get('SESSION_UNIQUE_ID', Env::get('GLOBAL_PREFIX', 'zemit_')),
                     'lifetime' => Env::get('SESSION_LIFETIME', 3600),
                 ],
                 'ini' => [
@@ -721,7 +721,7 @@ class Config extends \Zemit\Config\Config
                     'session.sid_bits_per_character' => Env::get('SESSION_SID_BITS_PER_CHARACTER', '4'),
                     'session.upload_progress.enabled' => Env::get('SESSION_UPLOAD_PROGRESS_ENABLED', '1'),
                     'session.upload_progress.cleanup' => Env::get('SESSION_UPLOAD_PROGRESS_CLEANUP', '1'),
-                    'session.upload_progress.prefix' => Env::get('SESSION_UPLOAD_PROGRESS_PREFIX', 'upload_progress_'),
+                    'session.upload_progress.prefix' => Env::get('SESSION_UPLOAD_PROGRESS_PREFIX', Env::get('GLOBAL_PREFIX', 'zemit_') . 'upload_progress_'),
                     'session.upload_progress.name' => Env::get('SESSION_UPLOAD_PROGRESS_NAME', 'PHP_SESSION_UPLOAD_PROGRESS'),
                     'session.upload_progress.freq' => Env::get('SESSION_UPLOAD_PROGRESS_FREQ', '1%'),
                     'session.upload_progress.min_freq' => Env::get('SESSION_UPLOAD_PROGRESS_MIN_FREQ', '1'),
@@ -836,7 +836,7 @@ class Config extends \Zemit\Config\Config
                     ],
                 ],
                 'default' => [
-                    'prefix' => Env::get('CACHE_PREFIX', 'zemit_cache_'),
+                    'prefix' => Env::get('CACHE_PREFIX', Env::get('GLOBAL_PREFIX', 'zemit_') . 'cache_'),
                     'lifetime' => Env::get('CACHE_LIFETIME', 86400),
                     'defaultSerializer' => Env::get('CACHE_DEFAULT_SERIALIZER', 'Php'),
                 ],
@@ -887,7 +887,7 @@ class Config extends \Zemit\Config\Config
                 ],
                 'default' => [
                     'lifetime' => Env::get('METADATA_LIFETIME', 172800),
-                    'prefix' => Env::get('METADATA_PREFIX', 'zemit_metadata_'),
+                    'prefix' => Env::get('METADATA_PREFIX', Env::get('GLOBAL_PREFIX', 'zemit_') . 'metadata_'),
                 ],
             ],
             
@@ -940,7 +940,7 @@ class Config extends \Zemit\Config\Config
                     ],
                 ],
                 'default' => [
-                    'prefix' => Env::get('ANNOTATIONS_PREFIX', 'zemit_annotations_'),
+                    'prefix' => Env::get('ANNOTATIONS_PREFIX', Env::get('GLOBAL_PREFIX', 'zemit_') . 'annotations_'),
                     'lifetime' => Env::get('ANNOTATIONS_LIFETIME', 86400),
                 ],
             ],
