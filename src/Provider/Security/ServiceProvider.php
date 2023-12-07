@@ -20,14 +20,14 @@ use Zemit\Security;
 class ServiceProvider extends AbstractServiceProvider
 {
     public int $defaultWorkFactor = 12;
-    public int $defaultHash = PhalconSecurity::CRYPT_SHA512;
+    public int $defaultHash = PhalconSecurity::CRYPT_ARGON2ID;
     
     protected string $serviceName = 'security';
     
     public function register(DiInterface $di): void
     {
         $di->setShared($this->getName(), function () use ($di) {
-
+            
             $config = $di->get('config');
             assert($config instanceof ConfigInterface);
             $securityConfig = $config->pathToArray('security') ?? [];
