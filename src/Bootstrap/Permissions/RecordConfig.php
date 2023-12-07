@@ -10,7 +10,7 @@
  */
 
 
-namespace Zemit\Config\Permissions;
+namespace Zemit\Bootstrap\Permissions;
 
 use Zemit\Models\Comment;
 use Zemit\Models\ProjectStatusReason;

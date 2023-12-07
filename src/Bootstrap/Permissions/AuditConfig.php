@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Config\Permissions;
+namespace Zemit\Bootstrap\Permissions;
 
 use Phalcon\Config as PhalconConfig;
 use Zemit\Config\Config as ZemitConfig;

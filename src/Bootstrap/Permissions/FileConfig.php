@@ -10,7 +10,7 @@
  */
 
 
-namespace Zemit\Config\Permissions;
+namespace Zemit\Bootstrap\Permissions;
 
 use Phalcon\Config as PhalconConfig;
 use Zemit\Config\Config as ZemitConfig;

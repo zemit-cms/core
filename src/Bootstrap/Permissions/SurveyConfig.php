@@ -10,7 +10,7 @@
  */
 
 
-namespace Zemit\Config\Permissions;
+namespace Zemit\Bootstrap\Permissions;
 
 use Zemit\Models\SurveyAiAnswer;
 use Zemit\Modules\Api\Controllers\SurveyAiAnswerController;
