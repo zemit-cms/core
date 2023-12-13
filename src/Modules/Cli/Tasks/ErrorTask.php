@@ -11,6 +11,8 @@
 
 namespace Zemit\Modules\Cli\Tasks;
 
+use JetBrains\PhpStorm\NoReturn;
+use Phalcon\Http\ResponseInterface;
 use Zemit\Http\StatusCode;
 use Zemit\Modules\Cli\Task;
 use Zemit\Mvc\Controller\Errors;
@@ -19,7 +21,8 @@ class ErrorTask extends Task
 {
     use Errors;
     
-    public function setStatusCode(?int $code = 500): void
+    #[NoReturn]
+    public function setStatusCode(?int $code = 500, ?string $message = null): ResponseInterface
     {
         echo 'Error: ' . $code . ' - ' . StatusCode::getMessage($code);
         exit(1);
