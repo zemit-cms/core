@@ -43,6 +43,7 @@
     "ext-json": "*",
     "ext-pdo": "*",
     "ext-intl": "*",
+    "ext-sodium": "*",
     "ext-mbstring": "*",
     "phalcon/cphalcon": "^5.4",
     "phalcon/devtools": "~5.0",
