@@ -234,7 +234,7 @@ class Env
         self::getDotenv();
         
         $ret = self::$vars[$key] ?? null;
-        $ret ??= is_callable($default)? $default() : $default;
+        $ret ??= !is_string($default) && is_callable($default)? $default() : $default;
         
         if (is_string($ret)) {
             switch (strtolower($ret)) {
