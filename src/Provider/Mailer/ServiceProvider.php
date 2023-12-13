@@ -13,7 +13,7 @@ namespace Zemit\Provider\Mailer;
 
 use Phalcon\Di\DiInterface;
 use Phalcon\Events\ManagerInterface;
-use Phalcon\Mailer\Manager;
+use Phalcon\Incubator\Mailer\Manager;
 use Zemit\Config\ConfigInterface;
 use Zemit\Provider\AbstractServiceProvider;
 
