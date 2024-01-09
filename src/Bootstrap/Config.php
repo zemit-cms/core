@@ -1138,8 +1138,8 @@ class Config extends \Zemit\Config\Config
                 'google' => [
                     'clientId' => Env::get('OAUTH2_GOOGLE_CLIENT_ID'),
                     'clientSecret' => Env::get('OAUTH2_GOOGLE_CLIENT_SECRET'),
-                    'redirectUri' => Env::get('OAUTH2_FACEBOOK_CLIENT_REDIRECT_URI', '/oauth2/google/callback'),
-                    'hostedDomain' => Env::get('OAUTH2_FACEBOOK_CLIENT_HOSTED_DOMAIN', null), // optional; used to restrict access to users on your G Suite/Google Apps for Business accounts
+                    'redirectUri' => Env::get('OAUTH2_GOOGLE_CLIENT_REDIRECT_URI', '/oauth2/google/callback'),
+                    'hostedDomain' => Env::get('OAUTH2_GOOGLE_CLIENT_HOSTED_DOMAIN', null), // optional; used to restrict access to users on your G Suite/Google Apps for Business accounts
                 ],
                 'instagram' => [
                 
