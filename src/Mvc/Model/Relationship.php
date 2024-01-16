@@ -850,7 +850,7 @@ trait Relationship
     /**
      * Return the related instances as an array representation
      */
-    public function relatedToArray(?array $relationFields = null): array
+    public function relatedToArray(?array $columns = null, $useGetter = true): array
     {
         $ret = [];
         
@@ -867,22 +867,22 @@ trait Relationship
             }
             
             // Skip or set the related columns
-            if ($relationFields) {
-                if (!key_exists($attributeField, $relationFields) && !in_array($attributeField, $relationFields)) {
+            if ($columns) {
+                if (!key_exists($attributeField, $columns) && !in_array($attributeField, $columns)) {
                     continue;
                 }
             }
-            $relatedColumns = $relationFields[$attributeField] ?? null;
+            $relatedColumns = $columns[$attributeField] ?? null;
             
             // Run toArray on related records
             if ($related instanceof ModelInterface && method_exists($related, 'toArray')) {
-                $ret[$attributeField] = $related->toArray($relatedColumns);
+                $ret[$attributeField] = $related->toArray($relatedColumns, $useGetter);
             }
             elseif (is_iterable($related)) {
                 $ret[$attributeField] = [];
                 foreach ($related as $entity) {
                     if ($entity instanceof ModelInterface && method_exists($entity, 'toArray')) {
-                        $ret[$attributeField][] = $entity->toArray($relatedColumns);
+                        $ret[$attributeField][] = $entity->toArray($relatedColumns, $useGetter);
                     }
                     elseif (is_array($entity)) {
                         $ret[$attributeField][] = $entity;
@@ -900,8 +900,8 @@ trait Relationship
     /**
      * {@inheritDoc}
      */
-    public function toArray($relationFields = null): array
+    public function toArray($columns = null, $useGetter = true): array
     {
-        return array_merge(parent::toArray($relationFields), $this->relatedToArray($relationFields));
+        return array_merge(parent::toArray($columns, $useGetter), $this->relatedToArray($columns, $useGetter));
     }
 }
