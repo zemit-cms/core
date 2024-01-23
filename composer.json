@@ -45,7 +45,7 @@
     "ext-intl": "*",
     "ext-sodium": "*",
     "ext-mbstring": "*",
-    "phalcon/cphalcon": "^5.5",
+    "phalcon/cphalcon": "^5.6",
     "phalcon/devtools": "~5.0",
     "phalcon/incubator-mailer": "^2.0",
     "vlucas/phpdotenv": "^5.6",
@@ -82,10 +82,10 @@
     "league/oauth2-github": "^3.1"
   },
   "require-dev": {
-    "phalcon/ide-stubs": "~5.4",
-    "phpspec/phpspec": "^7.4",
-    "squizlabs/php_codesniffer": "^3.7",
-    "phpunit/phpunit": "^10.5.1",
+    "phalcon/ide-stubs": "^5.6",
+    "phpspec/phpspec": "^7.5",
+    "squizlabs/php_codesniffer": "^3.8",
+    "phpunit/phpunit": "^10.5",
     "ext-zend-opcache": "*",
     "ext-apcu": "*",
     "ext-bcmath": "*",
