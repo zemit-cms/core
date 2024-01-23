@@ -12,7 +12,7 @@ namespace Zemit\Models;
 
 use Zemit\Db\Column;
 use Zemit\Models\Abstracts\AbstractEmail;
-use Phalcon\Mailer\Manager;
+use Phalcon\Incubator\Mailer\Manager;
 use Phalcon\Messages\Message;
 use Phalcon\Filter\Validation\Validator\PresenceOf;
 use Phalcon\Filter\Validation\Validator\StringLength\Max;
@@ -382,14 +382,14 @@ class Email extends AbstractEmail implements EmailInterface
         }
 
         // Build the message
-        $message->getMessage()
-            ->setSubject($this->getSubject())
+        $message
+            ->subject($this->getSubject())
             ->setReadReceiptTo($this->getReadReceiptTo())
-            ->setFrom($this->getFrom())
-            ->setCc($this->getCc())
-            ->setBcc($this->getBcc())
-            ->setTo($this->getTo())
-            ->setCharset('utf-8');
+            ->from($this->getFrom())
+            ->cc($this->getCc())
+            ->bcc($this->getBcc())
+            ->to($this->getTo())
+            ->charset('utf-8');
 
         //Attach file to email
         $emailFileNode = $this->getFileNode();
