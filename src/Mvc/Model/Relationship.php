@@ -898,6 +898,33 @@ trait Relationship
     }
     
     /**
+     * Overriding default phalcon getRelated in order to fix an important issue
+     * where the related record is being stored into the "related" property and then
+     * passed from the collectRelatedToSave and is mistakenly saved without the user consent
+     *
+     * @param string $alias
+     * @param $arguments
+     * @return false|int|PhalconModel\Resultset\Simple
+     * @throws Exception
+     */
+    public function getRelated(string $alias, $arguments = null)
+    {
+        $className = get_class($this);
+        $manager = $this->getModelsManager();
+        $lowerAlias = strtolower($alias);
+        
+        $relation = $manager->getRelationByAlias($className, $lowerAlias);
+        if (!$relation) {
+            throw new Exception(
+                "There is no defined relations for the model '"
+                . $className . "' using alias '" . $alias . "'"
+            );
+        }
+
+        return $manager->getRelationRecords($relation, $this, $arguments);
+    }
+    
+    /**
      * {@inheritDoc}
      */
     public function toArray($columns = null, $useGetter = true): array
