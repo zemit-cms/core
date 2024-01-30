@@ -11,6 +11,7 @@
 
 namespace Zemit\Mvc\Controller;
 
+use League\Csv\ByteSequence;
 use Shuchkin\SimpleXLSXGen;
 use League\Csv\CharsetConverter;
 use League\Csv\Writer;
@@ -209,46 +210,66 @@ class Rest extends \Zemit\Mvc\Controller
             // Get CSV custom request parameters
             $mode = $params['mode'] ?? null;
             $delimiter = $params['delimiter'] ?? null;
-            $newline = $params['newline'] ?? null;
-            $escape = $params['escape'] ?? null;
+            $enclosure = $params['enclosure'] ?? null;
+            $endOfLine = $params['endOfLine'] ?? null;
+            $escape = $params['escape'] ?? '';
             $outputBOM = $params['outputBOM'] ?? null;
-            $skipIncludeBOM = $params['skipIncludeBOM'] ?? null;
+            $skipIncludeBOM = $params['skipIncludeBOM'] ?? false;
+            $relaxEnclosure = $params['relaxEnclosure'] ?? false;
+            $keepEndOfLines = $params['keepEndOfLines'] ?? false;
 
 //            $csv = Writer::createFromFileObject(new \SplTempFileObject());
             $csv = Writer::createFromStream(fopen('php://memory', 'r+'));
             
             // CSV - MS Excel on MacOS
             if ($mode === 'mac') {
-                $csv->setOutputBOM(Writer::BOM_UTF16_LE); // utf-16
+                $csv->setOutputBOM(ByteSequence::BOM_UTF16_LE); // utf-16
                 $csv->setDelimiter("\t"); // tabs separated
-                $csv->setNewline("\r\n"); // new lines
+                $csv->setEndOfLine("\r\n"); // end of lines
                 CharsetConverter::addTo($csv, 'UTF-8', 'UTF-16');
             }
             
             // CSV - MS Excel on Windows
             else {
-                $csv->setOutputBOM(Writer::BOM_UTF8); // utf-8
+                $csv->setOutputBOM(ByteSequence::BOM_UTF8); // utf-8
                 $csv->setDelimiter(','); // comma separated
-                $csv->setNewline("\n"); // new line windows
+                $csv->setEndOfLine("\r\n"); // end of lines
                 CharsetConverter::addTo($csv, 'UTF-8', 'UTF-8');
             }
             
-            // Apply forced params from request
+            // relax enclosure
+            if ($relaxEnclosure) {
+                $csv->relaxEnclosure();
+            }
+            // force enclosure
+            else {
+                $csv->forceEnclosure();
+            }
+            // set enclosure
+            if (isset($enclosure)) {
+                $csv->setEnclosure($enclosure);
+            }
+            // set output bom
             if (isset($outputBOM)) {
                 $csv->setOutputBOM($outputBOM);
             }
+            // set delimiter
             if (isset($delimiter)) {
                 $csv->setDelimiter($delimiter);
             }
-            if (isset($newline)) {
-                $csv->setNewline($newline);
+            // send end of line
+            if (isset($endOfLine)) {
+                $csv->setEndOfLine($endOfLine);
             }
+            // set escape
             if (isset($escape)) {
                 $csv->setEscape($escape);
             }
+            // skip include bom
             if ($skipIncludeBOM) {
                 $csv->skipInputBOM();
             }
+            // include bom
             else {
                 $csv->includeInputBOM();
             }
@@ -260,6 +281,12 @@ class Rest extends \Zemit\Mvc\Controller
                 $outputRow = [];
                 foreach ($listColumns as $column) {
                     $outputRow[$column] = $row[$column] ?? '';
+                    
+                    // sometimes excel can't process the cells multiple lines correctly when loading csv
+                    // this is why we remove the new lines by default, user can choose to keep them using $keepEndOfLines
+                    if (!$keepEndOfLines && is_string($outputRow[$column])) {
+                        $outputRow[$column] = trim(preg_replace('/\s+/', ' ', $outputRow[$column]));
+                    }
                 }
                 $csv->insertOne($outputRow);
             }
