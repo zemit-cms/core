@@ -31,7 +31,6 @@
     "issues": "https://github.com/zemit-cms/core/issues",
     "source": "https://github.com/zemit-cms/core"
   },
-  "minimum-stability": "dev",
   "prefer-stable": true,
   "optimize-autoloader": true,
   "apcu-autoloader": true,
