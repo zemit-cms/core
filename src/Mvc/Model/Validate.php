@@ -247,7 +247,7 @@ trait Validate
      * - Must be present (if allowEmpty is false)
      * - Must be unique
      */
-    public function addUniquenessValidation(Validation $validator, string $field, bool $allowEmpty = true): Validation
+    public function addUniquenessValidation(Validation $validator, string|array $field, bool $allowEmpty = true): Validation
     {
         if (!$allowEmpty) {
             $validator->add($field, new PresenceOf([
