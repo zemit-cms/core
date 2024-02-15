@@ -265,6 +265,38 @@ trait Validate
         return $validator;
     }
     
+    public function addDateValidation(Validation $validator, string $field, bool $allowEmpty = true, string $format = Column::DATE_FORMAT) {
+        
+        if (!$allowEmpty) {
+            $validator->add($field, new PresenceOf([
+                'message' => $this->_('required'),
+                'allowEmpty' => false,
+            ]));
+        }
+        
+        $validator->add($field, new Date([
+            'format' => $format,
+            'message' => $this->_('invalid-date-format'),
+            'allowEmpty' => true,
+        ]));
+    }
+    
+    public function addDateTimeValidation(Validation $validator, string $field, bool $allowEmpty = true, string $format = Column::DATETIME_FORMAT) {
+        
+        if (!$allowEmpty) {
+            $validator->add($field, new PresenceOf([
+                'message' => $this->_('required'),
+                'allowEmpty' => false,
+            ]));
+        }
+        
+        $validator->add($field, new Date([
+            'format' => $format,
+            'message' => $this->_('invalid-date-format'),
+            'allowEmpty' => true,
+        ]));
+    }
+    
     public function addJsonValidation(Validation $validator, string $field, bool $allowEmpty = true, int $depth = 512, int $flags = 0)
     {
         if (!$allowEmpty) {
