@@ -20,6 +20,7 @@ use Phalcon\Filter\Validation\Validator\StringLength\Max;
 use Phalcon\Filter\Validation\Validator\StringLength\Min;
 use Phalcon\Filter\Validation\Validator\Uniqueness;
 use Zemit\Filter\Validation\Validator\Color;
+use Zemit\Filter\Validation\Validator\Json;
 use Zemit\Db\Column;
 use Zemit\Validation;
 
@@ -262,6 +263,23 @@ trait Validate
         ]));
         
         return $validator;
+    }
+    
+    public function addJsonValidation(Validation $validator, string $field, bool $allowEmpty = true, int $depth = 512, int $flags = 0)
+    {
+        if (!$allowEmpty) {
+            $validator->add($field, new PresenceOf([
+                'message' => $this->_('required'),
+                'allowEmpty' => false,
+            ]));
+        }
+        
+        $validator->add($field, new Json([
+            'message' => $this->_('not-valid-json'),
+            'depth' => $depth,
+            'flags' => $flags,
+            'allowEmpty' => true,
+        ]));
     }
     
     public function addColorValidation(Validation $validator, string $field, bool $allowEmpty = true): Validation
