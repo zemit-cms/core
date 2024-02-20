@@ -27,14 +27,14 @@ build:
                 - 'RewriteCond %{REQUEST_FILENAME} !-f'
                 - 'RewriteRule ^(.*)$ index.php?_url=/$1 [QSA,L]'
         php:
-          version: 8.3.1
+          version: 8.2
           # @link https://pecl.php.net/
           pecl_extensions:
             - psr
             - redis
             - memcached
             - apcu
-            - imap
+            - imap-1.0.0
             - phalcon-5.6.1
           ini:
             memory_limit: -1
