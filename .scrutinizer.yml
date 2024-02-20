@@ -39,8 +39,7 @@ build:
             memory_limit: -1
       dependencies:
         before:
-          - sudo apt-get update
-          - sudo apt-get install -y php-imap
+          - pecl install imap-1.0.0
           - composer self-update
         after:
           - composer require --dev phalcon/ide-stubs:5.6.1
