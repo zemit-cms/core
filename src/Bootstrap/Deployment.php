@@ -14,7 +14,7 @@ namespace Zemit\Bootstrap;
 use Zemit\Models\Lang;
 use Zemit\Models\Role;
 use Zemit\Models\Setting;
-use Zemit\Models\Site;
+use Zemit\Models\Workspace;
 use Zemit\Models\Template;
 use Zemit\Models\User;
 use Zemit\Models\UserRole;
@@ -145,7 +145,7 @@ class Deployment extends \Zemit\Config\Config
                     ['label' => 'English', 'code' => 'en'],
                     ['label' => 'Spanish', 'code' => 'sp'],
                 ],
-                Site::class => [
+                Workspace::class => [
                     ['name' => 'Zemit CMS', 'title' => 'Zemit CMS', 'description' => ''],
                 ],
                 Template::class => [

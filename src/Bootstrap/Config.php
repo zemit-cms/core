@@ -14,6 +14,9 @@ namespace Zemit\Bootstrap;
 use PDO;
 use Phalcon\Db\Column;
 use Phalcon\Encryption\Security;
+use Zemit\Bootstrap\Permissions\TableConfig;
+use Zemit\Bootstrap\Permissions\UserConfig;
+use Zemit\Bootstrap\Permissions\WorkspaceConfig;
 use Zemit\Locale;
 use Zemit\Support\Version;
 use Zemit\Provider;
@@ -294,12 +297,12 @@ class Config extends \Zemit\Config\Config
                 Models\TranslateTable::class => Models\TranslateTable::class,
                 
                 // Site & CMS
-                Models\Site::class => Models\Site::class,
-                Models\SiteLang::class => Models\SiteLang::class,
+                Models\Workspace::class => Models\Workspace::class,
+                Models\WorkspaceLang::class => Models\WorkspaceLang::class,
                 Models\Page::class => Models\Page::class,
                 Models\Post::class => Models\Post::class,
                 Models\Template::class => Models\Template::class,
-                Models\Channel::class => Models\Channel::class,
+                Models\Table::class => Models\Table::class,
                 Models\Field::class => Models\Field::class,
                 
                 // User & Permissions
@@ -952,7 +955,7 @@ class Config extends \Zemit\Config\Config
                 'default' => Env::get('DATABASE_ADAPTER', 'mysql'),
                 'drivers' => [
                     'mysql' => [
-                        'adapter' => Env::get('DATABASE_MYSQL_ADAPTER', \Phalcon\Db\Adapter\Pdo\Mysql::class),
+                        'adapter' => Env::get('DATABASE_MYSQL_ADAPTER', \Zemit\Db\Adapter\Pdo\Mysql::class),
                         'dialectClass' => Env::get('DATABASE_DIALECT_CLASS', \Zemit\Db\Dialect\Mysql::class),
                         'host' => Env::get('DATABASE_HOST', 'localhost'),
                         'port' => Env::get('DATABASE_PORT', 3306),
@@ -1339,12 +1342,12 @@ class Config extends \Zemit\Config\Config
                     
                     'manageSiteList' => [
                         'components' => [
-                            Api\Controllers\SiteController::class => ['*'],
-                            Models\Site::class => ['*'],
-                            Models\SiteLang::class => ['*'],
+                            Api\Controllers\WorkspaceController::class => ['*'],
+                            Models\Workspace::class => ['*'],
+                            Models\WorkspaceLang::class => ['*'],
                         ],
                         'behaviors' => [
-                            Api\Controllers\SiteController::class => [
+                            Api\Controllers\WorkspaceController::class => [
                                 Behavior\Skip\SkipIdentityCondition::class,
                                 Behavior\Skip\SkipSoftDeleteCondition::class,
                             ],
@@ -1408,6 +1411,7 @@ class Config extends \Zemit\Config\Config
                             Cli\Tasks\HelpTask::class => ['*'],
                             Cli\Tasks\ScaffoldTask::class => ['*'],
                             Cli\Tasks\TestTask::class => ['*'],
+                            Cli\Tasks\UserTask::class => ['*'],
                         ],
                     ],
                     
@@ -1491,6 +1495,8 @@ class Config extends \Zemit\Config\Config
 //        $data = $this->internalMergeAppend($data, (new TagConfig())->toArray());
 //        $data = $this->internalMergeAppend($data, (new TrackerConfig())->toArray());
 //        $data = $this->internalMergeAppend($data, (new UserConfig())->toArray());
+        $data = $this->internalMergeAppend($data, (new WorkspaceConfig())->toArray());
+        $data = $this->internalMergeAppend($data, (new TableConfig())->toArray());
         
         parent::__construct($data, $insensitive);
     }
