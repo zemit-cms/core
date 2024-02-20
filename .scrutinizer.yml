@@ -27,21 +27,21 @@ build:
                 - 'RewriteCond %{REQUEST_FILENAME} !-f'
                 - 'RewriteRule ^(.*)$ index.php?_url=/$1 [QSA,L]'
         php:
-          version: 7.4
+          version: 8.2
           # @link https://pecl.php.net/
           pecl_extensions:
             - psr
             - redis
             - memcached
             - apcu
-            - phalcon-4.1.2
+            - phalcon-5.6.1
           ini:
             memory_limit: -1
       dependencies:
         before:
           - composer self-update
         after:
-          - composer require --dev phalcon/ide-stubs:4.1.0
+          - composer require --dev phalcon/ide-stubs:5.6.1
           - composer require --dev phpunit/phpunit
           - composer require --dev squizlabs/php_codesniffer
       tests:
