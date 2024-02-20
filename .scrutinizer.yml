@@ -34,12 +34,13 @@ build:
             - redis
             - memcached
             - apcu
-            - imap-1.0.0
             - phalcon-5.6.1
           ini:
             memory_limit: -1
       dependencies:
         before:
+          - sudo apt-get update
+          - sudo apt-get install -y php-imap
           - composer self-update
         after:
           - composer require --dev phalcon/ide-stubs:5.6.1
