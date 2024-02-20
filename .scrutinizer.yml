@@ -27,7 +27,7 @@ build:
                 - 'RewriteCond %{REQUEST_FILENAME} !-f'
                 - 'RewriteRule ^(.*)$ index.php?_url=/$1 [QSA,L]'
         php:
-          version: 8.2
+          version: 8.2.15
           # @link https://pecl.php.net/
           pecl_extensions:
             - psr
