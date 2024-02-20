@@ -35,9 +35,7 @@ class UserController extends Controller
     public function getExpose(): ?array
     {
         return [
-            'User' => [
-                true,
-            ],
+            true,
         ];
     }
 }
