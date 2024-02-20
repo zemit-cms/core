@@ -28,6 +28,7 @@ build:
                 - 'RewriteRule ^(.*)$ index.php?_url=/$1 [QSA,L]'
         php:
           version: 8.2.15
+          compile_options: '--with-config-file-path=/home/scrutinizer/.phpenv/versions/8.2.15/etc --with-config-file-scan-dir=/home/scrutinizer/.phpenv/versions/8.2.15/etc/conf.d --prefix=/home/scrutinizer/.phpenv/versions/8.2.15 --libexecdir=/home/scrutinizer/.phpenv/versions/8.2.15/libexec --enable-intl --with-openssl --enable-gd --with-jpeg-dir=/usr --with-png-dir=/usr --with-freetype-dir=/usr --enable-exif --with-libzip --with-zlib --with-zlib-dir=/usr --with-sodium --with-pdo-sqlite --enable-soap --enable-xmlreader --with-xsl --enable-ftp --with-tidy --with-xmlrpc --enable-sysvsem --enable-sysvshm --enable-sysvmsg --enable-shmop --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --enable-pcntl --with-readline --enable-mbstring --with-curl --with-pgsql --with-pdo-pgsql --with-gettext --enable-sockets --with-bz2 --enable-bcmath --enable-calendar --with-libdir=lib --enable-fpm --enable-maintainer-zts --with-gmp --with-kerberos --with-imap --with-imap-ssl --with-apxs2=/usr/bin/apxs --with-ldap --with-pear=/home/scrutinizer/.phpenv/versions/8.2.15/pear'
           # @link https://pecl.php.net/
           pecl_extensions:
             - psr
@@ -39,11 +40,6 @@ build:
             memory_limit: -1
       dependencies:
         before:
-          - sudo apt-get update
-          - sudo apt-get install -y libc-client-dev libkrb5-dev libssl-dev # Install necessary libraries
-          - pecl channel-update pecl.php.net # Update PECL channel
-          - yes '' | pecl install imap-1.0.0 # Install IMAP extension, adjust version as necessary
-          - echo "extension=imap.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
           - composer self-update
         after:
           - composer require --dev phalcon/ide-stubs:5.6.1
