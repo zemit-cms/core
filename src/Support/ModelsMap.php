@@ -28,12 +28,12 @@ use Zemit\Models\Lang;
 use Zemit\Models\Translate;
 use Zemit\Models\TranslateField;
 use Zemit\Models\TranslateTable;
-use Zemit\Models\Site;
-use Zemit\Models\SiteLang;
+use Zemit\Models\Workspace;
+use Zemit\Models\WorkspaceLang;
 use Zemit\Models\Page;
 use Zemit\Models\Post;
 use Zemit\Models\Template;
-use Zemit\Models\Channel;
+use Zemit\Models\Table;
 use Zemit\Models\Field;
 use Zemit\Models\Profile;
 use Zemit\Models\User;
@@ -240,7 +240,7 @@ trait ModelsMap
      */
     public function getSiteClass(): string
     {
-        return $this->getClassMap(Site::class);
+        return $this->getClassMap(Workspace::class);
     }
     
     /**
@@ -248,7 +248,7 @@ trait ModelsMap
      */
     public function getSiteLangClass(): string
     {
-        return $this->getClassMap(SiteLang::class);
+        return $this->getClassMap(WorkspaceLang::class);
     }
     
     /**
@@ -280,7 +280,7 @@ trait ModelsMap
      */
     public function getChannelClass(): string
     {
-        return $this->getClassMap(Channel::class);
+        return $this->getClassMap(Table::class);
     }
     
     /**
