@@ -118,7 +118,8 @@
     "files": [
       "src/Functions/Dump.php",
       "src/Functions/Array.php",
-      "src/Functions/Sprintf.php"
+      "src/Functions/Sprintf.php",
+      "src/Functions/Json.php"
     ]
   },
   "autoload-dev": {
