@@ -39,7 +39,10 @@ build:
             memory_limit: -1
       dependencies:
         before:
-          - pecl install imap-1.0.0
+          - sudo apt-get update
+          - sudo apt-get install -y libc-client-dev libkrb5-dev # Ensure the necessary libraries are installed
+          - yes '' | pecl install imap-1.0.0 # Automate the PECL installation
+          - echo "extension=imap.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
           - composer self-update
         after:
           - composer require --dev phalcon/ide-stubs:5.6.1
