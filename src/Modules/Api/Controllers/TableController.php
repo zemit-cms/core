@@ -12,7 +12,7 @@ namespace Zemit\Modules\Api\Controllers;
 
 use Zemit\Modules\Api\Controller;
 
-class ChannelController extends Controller
+class TableController extends Controller
 {
 
 }

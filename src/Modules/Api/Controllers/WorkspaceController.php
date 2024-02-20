@@ -12,7 +12,7 @@ namespace Zemit\Modules\Api\Controllers;
 
 use Zemit\Modules\Api\Controller;
 
-class SiteController extends Controller
+class WorkspaceController extends Controller
 {
 
     public function getWith(): ?array
@@ -23,9 +23,8 @@ class SiteController extends Controller
     public function getSearchWhiteList(): ?array
     {
         return [
-            'id',
+            'uuid',
             'name',
-            'title',
             'description'
         ];
     }
@@ -33,7 +32,7 @@ class SiteController extends Controller
     public function getExpose(): ?array
     {
         return [
-            'Site' => true
+            true,
         ];
     }
     
