@@ -125,7 +125,8 @@ class Model extends \Phalcon\Mvc\Model
         parent::setup(array_merge([
             'caseInsensitiveColumnMap' => false,
             'castLastInsertIdToInt' => true, // changed from default
-            'castOnHydrate' => true, // changed from default
+//            'castOnHydrate' => true, // changed from default
+            'castOnHydrate' => false, // problems with binary when true
             'columnRenaming' => true,
             'disableAssignSetters' => false,
             'enableImplicitJoins' => true,
