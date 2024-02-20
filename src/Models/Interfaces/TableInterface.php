@@ -10,6 +10,6 @@
 
 namespace Zemit\Models\Interfaces;
 
-interface SiteInterface extends AbstractInterface
+interface TableInterface extends AbstractInterface
 {
 }

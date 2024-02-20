@@ -11,12 +11,12 @@
 namespace Zemit\Models;
 
 use Phalcon\Filter\Validation\Validator\InclusionIn;
-use Zemit\Models\Abstracts\AbstractSite;
+use Zemit\Models\Abstracts\AbstractWorkspace;
 use Phalcon\Filter\Validation\Validator\PresenceOf;
 use Phalcon\Filter\Validation\Validator\StringLength\Max;
-use Zemit\Models\Interfaces\SiteInterface;
+use Zemit\Models\Interfaces\WorkspaceInterface;
 
-class Site extends AbstractSite implements SiteInterface
+class Workspace extends AbstractWorkspace implements WorkspaceInterface
 {
     const STATUS_ACTIVE = 'active';
     const STATUS_MAINTENANCE = 'maintenance';
@@ -30,8 +30,8 @@ class Site extends AbstractSite implements SiteInterface
         parent::initialize();
         
         // Lang relationship
-        $this->hasMany('id', SiteLang::class, 'siteId', ['alias' => 'LangNode']);
-        $this->hasManyToMany('id', SiteLang::class, 'siteId',
+        $this->hasMany('id', WorkspaceLang::class, 'workspaceId', ['alias' => 'LangNode']);
+        $this->hasManyToMany('id', WorkspaceLang::class, 'workspaceId',
             'langId', Lang::class, 'id', ['alias' => 'LangList']);
     }
     

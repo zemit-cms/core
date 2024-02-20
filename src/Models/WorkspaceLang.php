@@ -10,23 +10,23 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Abstracts\AbstractSiteLang;
+use Zemit\Models\Abstracts\AbstractWorkspaceLang;
 use Phalcon\Filter\Validation\Validator\PresenceOf;
 use Phalcon\Filter\Validation\Validator\Uniqueness;
-use Zemit\Models\Interfaces\SiteLangInterface;
+use Zemit\Models\Interfaces\WorkspaceLangInterface;
 
 /**
- * @property Site $Site
+ * @property Workspace $Workspace
  * @property Lang $Lang
- * @property Site $SiteEntity
+ * @property Workspace $WorkspaceEntity
  * @property Lang $LangEntity
  *
- * @method Site getSite(?array $params = null)
+ * @method Workspace getWorkspace(?array $params = null)
  * @method Lang getLang(?array $params = null)
- * @method Site getSiteEntity(?array $params = null)
+ * @method Workspace getWorkspaceEntity(?array $params = null)
  * @method Lang getLangEntity(?array $params = null)
  */
-class SiteLang extends AbstractSiteLang implements SiteLangInterface
+class WorkspaceLang extends AbstractWorkspaceLang implements WorkspaceLangInterface
 {
     protected $deleted = self::NO;
 
@@ -34,7 +34,7 @@ class SiteLang extends AbstractSiteLang implements SiteLangInterface
     {
         parent::initialize();
 
-        $this->hasOne('siteId', Site::class, 'id', ['alias' => 'SiteEntity']);
+        $this->hasOne('workspaceId', Workspace::class, 'id', ['alias' => 'WorkspaceEntity']);
         $this->hasOne('langId', Lang::class, 'id', ['alias' => 'LangEntity']);
     }
 
@@ -42,9 +42,9 @@ class SiteLang extends AbstractSiteLang implements SiteLangInterface
     {
         $validator = $this->genericValidation();
 
-        $validator->add('siteId', new PresenceOf(['message' => $this->_('required')]));
+        $validator->add('workspaceId', new PresenceOf(['message' => $this->_('required')]));
         $validator->add('langId', new PresenceOf(['message' => $this->_('required')]));
-        $validator->add(['siteId', 'langId'], new Uniqueness(['message' => $this->_('not-unique')]));
+        $validator->add(['workspaceId', 'langId'], new Uniqueness(['message' => $this->_('not-unique')]));
 
         return $this->validate($validator);
     }

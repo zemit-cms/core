@@ -10,6 +10,6 @@
 
 namespace Zemit\Models\Interfaces;
 
-interface ChannelInterface extends AbstractInterface
+interface WorkspaceLangInterface extends AbstractInterface
 {
 }

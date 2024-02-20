@@ -10,26 +10,25 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Abstracts\AbstractChannel;
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-use Phalcon\Filter\Validation\Validator\StringLength\Max;
-use Zemit\Models\Interfaces\ChannelInterface;
+use Zemit\Models\Abstracts\AbstractIcon;
+use Zemit\Models\Interfaces\IconInterface;
 
-class Channel extends AbstractChannel implements ChannelInterface
+class Icon extends AbstractIcon implements IconInterface
 {
     protected $deleted = self::NO;
 
     public function initialize(): void
     {
         parent::initialize();
-        // @todo relationships
     }
 
     public function validation(): bool
     {
         $validator = $this->genericValidation();
-
-        // @todo validations
+        
+        $this->addUuidValidation($validator, 'uuid', false);
+        $this->addStringLengthValidation($validator, 'name', 3, 64, false);
+        $this->addJsonValidation($validator, 'meta', true);
 
         return $this->validate($validator);
     }
