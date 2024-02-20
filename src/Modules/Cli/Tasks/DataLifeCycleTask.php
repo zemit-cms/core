@@ -12,14 +12,7 @@
 namespace Zemit\Modules\Cli\Tasks;
 
 use Phalcon\Mvc\Model\ResultsetInterface;
-use Phalcon\Mvc\ModelInterface;
-use Zemit\Exception\CliException;
-use Zemit\Models\Lang;
-use Zemit\Models\Site;
 use Zemit\Modules\Cli\Task;
-use Zemit\Models\Role;
-use Zemit\Models\Setting;
-use Zemit\Models\Template;
 use Zemit\Mvc\Model;
 use Zemit\Utils;
 
