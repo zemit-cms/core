@@ -40,7 +40,7 @@ build:
       dependencies:
         before:
           - sudo apt-get update
-          - sudo apt-get install -y libc-client-dev libkrb5-dev # Install necessary libraries
+          - sudo apt-get install -y libc-client-dev libkrb5-dev libssl-dev # Install necessary libraries
           - pecl channel-update pecl.php.net # Update PECL channel
           - yes '' | pecl install imap-1.0.0 # Install IMAP extension, adjust version as necessary
           - echo "extension=imap.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
