@@ -11,6 +11,7 @@
 
 namespace Zemit\Mvc\Model;
 
+use Zemit\Mvc\Model\AbstractTrait\AbstractInjectable;
 use Zemit\Models\Interfaces\UserInterface;
 
 /**
@@ -20,6 +21,8 @@ use Zemit\Models\Interfaces\UserInterface;
  */
 trait Identity
 {
+    use AbstractInjectable;
+    
     /**
      * Get the current identity service from the DI
      */
@@ -66,7 +69,7 @@ trait Identity
     public function getCurrentUserId(bool $as = false): ?int
     {
         $user = $this->getCurrentUser($as);
-        return $user? $user->getId() : null;
+        return $user?->getId();
     }
     
     /**
