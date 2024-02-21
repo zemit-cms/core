@@ -1476,25 +1476,6 @@ class Config extends \Zemit\Config\Config
             ],
         ], $data);
         
-//        $data = $this->internalMergeAppend($data, (new AiConfig())->toArray());
-//        $data = $this->internalMergeAppend($data, (new ArticleConfig())->toArray());
-//        $data = $this->internalMergeAppend($data, (new AuditConfig())->toArray());
-//        $data = $this->internalMergeAppend($data, (new AuthConfig())->toArray());
-//        $data = $this->internalMergeAppend($data, (new CommentConfig())->toArray());
-//        $data = $this->internalMergeAppend($data, (new CountryConfig())->toArray());
-//        $data = $this->internalMergeAppend($data, (new DatatableStateConfig())->toArray());
-//        $data = $this->internalMergeAppend($data, (new FileConfig())->toArray());
-//        $data = $this->internalMergeAppend($data, (new KeywordConfig())->toArray());
-//        $data = $this->internalMergeAppend($data, (new NotificationConfig())->toArray());
-//        $data = $this->internalMergeAppend($data, (new ProjectConfig())->toArray());
-//        $data = $this->internalMergeAppend($data, (new ProjectStatusReasonConfig())->toArray());
-//        $data = $this->internalMergeAppend($data, (new RecordConfig())->toArray());
-//        $data = $this->internalMergeAppend($data, (new RoleConfig())->toArray());
-//        $data = $this->internalMergeAppend($data, (new SurveyConfig())->toArray());
-//        $data = $this->internalMergeAppend($data, (new SynonymConfig())->toArray());
-//        $data = $this->internalMergeAppend($data, (new TagConfig())->toArray());
-//        $data = $this->internalMergeAppend($data, (new TrackerConfig())->toArray());
-//        $data = $this->internalMergeAppend($data, (new UserConfig())->toArray());
         $data = $this->internalMergeAppend($data, (new WorkspaceConfig())->toArray());
         $data = $this->internalMergeAppend($data, (new TableConfig())->toArray());
         
