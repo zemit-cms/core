@@ -884,9 +884,6 @@ class Config extends \Zemit\Config\Config
                         'persistent' => Env::get('METADATA_REDIS_PERSISTENT', Env::get('REDIS_PERSISTENT', null)),
                         'socket' => Env::get('METADATA_REDIS_SOCKET', Env::get('REDIS_SOCKET', null)),
                     ],
-                    'wincache' => [
-                        'adapter' => Env::get('METADATA_WINCACHE_ADAPTER', \Phalcon\Mvc\Model\MetaData\Wincache::class),
-                    ],
                 ],
                 'default' => [
                     'lifetime' => Env::get('METADATA_LIFETIME', 172800),
