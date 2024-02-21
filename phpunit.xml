@@ -14,10 +14,12 @@
   <testsuites>
     <testsuite name="default">
       <directory suffix=".php">tests</directory>
+      <exclude>tests/Unit/AbstractUnit.php</exclude>
       <exclude>tests/Unit/Provider/ClamavTest.php</exclude>
     </testsuite>
     <testsuite name="unit">
       <directory suffix=".php">tests/Unit</directory>
+      <exclude>tests/Unit/AbstractUnit.php</exclude>
       <exclude>tests/Unit/Provider/ClamavTest.php</exclude>
     </testsuite>
   </testsuites>
