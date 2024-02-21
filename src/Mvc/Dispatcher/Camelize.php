@@ -12,8 +12,8 @@
 namespace Zemit\Mvc\Dispatcher;
 
 use Phalcon\Dispatcher\AbstractDispatcher;
-use Phalcon\Mvc\Dispatcher as MvcDispatcher;
 use Phalcon\Events\Event;
+use Phalcon\Mvc\Dispatcher as MvcDispatcher;
 use Zemit\Di\Injectable;
 use Zemit\Support\Helper;
 

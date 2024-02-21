@@ -11,8 +11,8 @@
 
 namespace Zemit\Mvc\Model;
 
-use Phalcon\Mvc\Model\ManagerInterface as PhalconModelsManagerInterface;
 use Phalcon\Mvc\Model\BehaviorInterface;
+use Phalcon\Mvc\Model\ManagerInterface as PhalconModelsManagerInterface;
 use Phalcon\Mvc\ModelInterface;
 
 interface ManagerInterface extends PhalconModelsManagerInterface

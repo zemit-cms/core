@@ -14,10 +14,10 @@ namespace Zemit\Mvc\Dispatcher;
 use Phalcon\Dispatcher\AbstractDispatcher;
 use Phalcon\Events\Event;
 use Phalcon\Exception;
-use Zemit\Di\Injectable;
-use Zemit\Mvc\Dispatcher;
 use Zemit\Config\ConfigInterface;
+use Zemit\Di\Injectable;
 use Zemit\Exception\HttpException;
+use Zemit\Mvc\Dispatcher;
 
 /**
  * Maintenance Dispatcher Plugin

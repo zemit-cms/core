@@ -11,8 +11,8 @@
 
 namespace Zemit\Cli;
 
-use Phalcon\Di\DiInterface;
 use Phalcon\Autoload\Loader;
+use Phalcon\Di\DiInterface;
 use Phalcon\Mvc\ModuleDefinitionInterface;
 use Zemit\Bootstrap\Config;
 use Zemit\Utils;

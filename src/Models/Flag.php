@@ -11,8 +11,6 @@
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\AbstractFlag;
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-use Phalcon\Filter\Validation\Validator\StringLength\Max;
 use Zemit\Models\Interfaces\FlagInterface;
 
 class Flag extends AbstractFlag implements FlagInterface

@@ -11,8 +11,6 @@
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\AbstractLog;
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-use Phalcon\Filter\Validation\Validator\StringLength\Max;
 use Zemit\Models\Interfaces\LogInterface;
 
 class Log extends AbstractLog implements LogInterface

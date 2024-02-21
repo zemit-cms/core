@@ -11,9 +11,9 @@
 
 namespace Zemit\Mvc\Dispatcher;
 
-use Zemit\Di\Injectable;
 use Phalcon\Events\Event;
 use Phalcon\Mvc\Dispatcher;
+use Zemit\Di\Injectable;
 
 /**
  * @todo

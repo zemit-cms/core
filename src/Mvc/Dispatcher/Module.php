@@ -11,9 +11,9 @@
 
 namespace Zemit\Mvc\Dispatcher;
 
-use Zemit\Di\Injectable;
 use Phalcon\Dispatcher\DispatcherInterface;
 use Phalcon\Events\Event;
+use Zemit\Di\Injectable;
 
 class Module extends Injectable
 {

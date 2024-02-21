@@ -11,11 +11,11 @@
 
 namespace Zemit\Mvc\Dispatcher;
 
+use Phalcon\Cli\Dispatcher as CliDispatcher;
 use Phalcon\Dispatcher\AbstractDispatcher;
 use Phalcon\Events\Event;
 use Phalcon\Exception;
 use Phalcon\Mvc\Dispatcher as MvcDispatcher;
-use Phalcon\Cli\Dispatcher as CliDispatcher;
 use Zemit\Di\Injectable;
 
 /**

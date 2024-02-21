@@ -11,7 +11,6 @@
 
 namespace Zemit\Mvc\Model;
 
-use Exception;
 use Zemit\Mvc\Model\AbstractTrait\AbstractBehavior;
 use Zemit\Mvc\Model\AbstractTrait\AbstractEntity;
 use Zemit\Mvc\Model\AbstractTrait\AbstractEventsManager;

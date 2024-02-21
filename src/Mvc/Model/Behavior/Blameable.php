@@ -13,12 +13,12 @@ namespace Zemit\Mvc\Model\Behavior;
 
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Mvc\ModelInterface;
-use Zemit\Support\Helper;
 use Zemit\Models\Audit;
 use Zemit\Models\AuditDetail;
 use Zemit\Models\Interfaces\AuditDetailInterface;
 use Zemit\Models\Interfaces\AuditInterface;
 use Zemit\Models\User;
+use Zemit\Support\Helper;
 
 /**
  * Zemit\Mvc\Model\Behavior\Blameable

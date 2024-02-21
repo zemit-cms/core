@@ -11,11 +11,8 @@
 
 namespace Zemit\Mvc\Model\Behavior;
 
-use Closure;
-use Phalcon\Di\Di;
-use Phalcon\Messages\Message;
-use Phalcon\Mvc\ModelInterface;
 use Phalcon\Mvc\Model\Behavior;
+use Phalcon\Mvc\ModelInterface;
 
 class Action extends Behavior
 {

@@ -11,14 +11,11 @@
 
 namespace Zemit\Mvc\Model;
 
-use Phalcon\Db\Column;
 use Phalcon\Di\Di;
 use Phalcon\Mvc\Model\ManagerInterface;
 use Phalcon\Mvc\Model\Query\Builder;
 use Phalcon\Mvc\Model\QueryInterface;
 use Phalcon\Mvc\Model\ResultsetInterface;
-use Zemit\Mvc\Model;
-use Zemit\Mvc\Model\AbstractTrait\AbstractEventsManager;
 use Zemit\Mvc\Model\AbstractTrait\AbstractModelsManager;
 
 trait LifeCycle

@@ -16,11 +16,10 @@ use Phalcon\Messages\Message;
 use Phalcon\Messages\Messages;
 use Phalcon\Mvc\Model\Resultset;
 use Phalcon\Mvc\ModelInterface;
-use Zemit\Support\Helper;
-use Zemit\Fractal\Transformer;
 use Zemit\Http\Request;
 use Zemit\Identity;
 use Zemit\Support\Exposer\Exposer;
+use Zemit\Support\Helper;
 use Zemit\Utils\Slug;
 
 /**

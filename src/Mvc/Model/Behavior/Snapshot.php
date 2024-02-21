@@ -11,8 +11,8 @@
 
 namespace Zemit\Mvc\Model\Behavior;
 
-use Phalcon\Mvc\ModelInterface;
 use Phalcon\Mvc\Model\Behavior;
+use Phalcon\Mvc\ModelInterface;
 
 class Snapshot extends Behavior
 {

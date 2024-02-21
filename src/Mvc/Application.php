@@ -13,9 +13,9 @@ namespace Zemit\Mvc;
 
 use Phalcon\Di\DiInterface;
 use Phalcon\Http\ResponseInterface;
+use Zemit\Cli\Dispatcher as CliDispatcher;
 use Zemit\Dispatcher\AbstractDispatcher;
 use Zemit\Mvc\Dispatcher as MvcDispatcher;
-use Zemit\Cli\Dispatcher as CliDispatcher;
 
 /**
  * Simple HMVC - allow requests with namespaces and modules

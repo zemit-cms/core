@@ -12,8 +12,8 @@
 namespace Zemit\Mvc\Model;
 
 use Phalcon\Mvc\ModelInterface;
-use Zemit\Support\Helper;
 use Zemit\Mvc\Model\AbstractTrait\AbstractMetaData;
+use Zemit\Support\Helper;
 
 trait Attribute
 {

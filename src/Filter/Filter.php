@@ -11,12 +11,12 @@
 
 namespace Zemit;
 
-use Phalcon\Di\Di;
 use Phalcon\Config\ConfigInterface;
-use Zemit\Filter\Sanitize\Json;
-use Zemit\Filter\Sanitize\Md5;
+use Phalcon\Di\Di;
 use Zemit\Filter\Sanitize\IPv4;
 use Zemit\Filter\Sanitize\IPv6;
+use Zemit\Filter\Sanitize\Json;
+use Zemit\Filter\Sanitize\Md5;
 
 /**
  * {@inheritDoc}

@@ -12,7 +12,6 @@
 namespace Zemit\Mvc\Model\Blameable;
 
 use Zemit\Db\Column;
-use Zemit\Mvc\Model;
 use Zemit\Mvc\Model\AbstractTrait\AbstractBehavior;
 use Zemit\Mvc\Model\Behavior\Transformable;
 use Zemit\Mvc\Model\Identity;

@@ -11,9 +11,8 @@
 
 namespace Zemit\Mvc\Model\Behavior;
 
-use Closure;
-use Phalcon\Mvc\ModelInterface;
 use Phalcon\Mvc\Model\Behavior;
+use Phalcon\Mvc\ModelInterface;
 
 /**
  * Zemit\Mvc\Model\Behavior\Transformable

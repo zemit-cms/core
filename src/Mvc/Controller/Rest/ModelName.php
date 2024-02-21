@@ -3,12 +3,12 @@
 namespace Zemit\Mvc\Controller\Rest;
 
 use Phalcon\Mvc\ModelInterface;
-use Zemit\Support\Helper;
 use Zemit\Mvc\Controller\AbstractTrait\AbstractDispatcher;
 use Zemit\Mvc\Controller\AbstractTrait\AbstractInjectable;
 use Zemit\Mvc\Controller\AbstractTrait\AbstractLoader;
 use Zemit\Mvc\Controller\AbstractTrait\AbstractModelsManager;
 use Zemit\Mvc\Controller\AbstractTrait\AbstractRouter;
+use Zemit\Support\Helper;
 
 trait ModelName
 {

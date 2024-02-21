@@ -11,9 +11,9 @@
 
 namespace Zemit\Utils;
 
+use Dotenv\Dotenv;
 use Phalcon\Di\DiInterface;
 use Zemit\Support\Helper;
-use Dotenv\Dotenv;
 
 /**
  * Allow to access environment variable easily

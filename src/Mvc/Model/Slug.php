@@ -11,10 +11,10 @@
 
 namespace Zemit\Mvc\Model;
 
-use Zemit\Mvc\Model\AbstractTrait\AbstractInjectable;
-use Zemit\Mvc\Model\AbstractTrait\AbstractBehavior;
-use Zemit\Mvc\Model\Behavior\Transformable;
 use Zemit\Mvc\Model;
+use Zemit\Mvc\Model\AbstractTrait\AbstractBehavior;
+use Zemit\Mvc\Model\AbstractTrait\AbstractInjectable;
+use Zemit\Mvc\Model\Behavior\Transformable;
 
 trait Slug
 {

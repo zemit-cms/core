@@ -11,11 +11,11 @@
 
 namespace Zemit\Mvc\Model\Behavior;
 
-use Phalcon\Di\Di;
 use Phalcon\Acl\Adapter\Memory;
+use Phalcon\Di\Di;
 use Phalcon\Messages\Message;
-use Phalcon\Mvc\ModelInterface;
 use Phalcon\Mvc\Model\Behavior;
+use Phalcon\Mvc\ModelInterface;
 
 /**
  * Allows to check if the current identity is allowed to run some model actions

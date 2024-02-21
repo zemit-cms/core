@@ -11,8 +11,8 @@
 
 namespace Zemit\Mvc\Controller\AbstractTrait;
 
-use Zemit\Mvc\Model\AbstractTrait\AbstractInjectable;
 use Zemit\Mvc\Dispatcher;
+use Zemit\Mvc\Model\AbstractTrait\AbstractInjectable;
 
 trait AbstractRouter
 {

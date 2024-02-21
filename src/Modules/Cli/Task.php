@@ -12,9 +12,9 @@
 namespace Zemit\Modules\Cli;
 
 use Phalcon\Cli\Dispatcher;
-use Phalcon\Support\Version;
 use Zemit\Exception\CliException;
 use Zemit\Http\StatusCode;
+use Zemit\Support\Helper;
 use Zemit\Utils;
 
 class Task extends \Zemit\Cli\Task
@@ -29,6 +29,19 @@ Options:
 
 
 DOC;
+    
+    public function beforeExecuteRoute(): void
+    {
+        $argv = array_slice($_SERVER['argv'] ?? [], 1);
+        $response = (new \Docopt())->handle($this->cliDoc, ['argv' => $argv, 'optionsFirst' => false]);
+        foreach ($response as $key => $value) {
+            if (!is_null($value) && preg_match('/(<(.*?)>|\-\-(.*))/', $key, $match)) {
+                $key = lcfirst(Helper::camelize(Helper::uncamelize(array_pop($match))));
+                $args[$key] = $value;
+                $this->dispatcher->setParam($key, $value);
+            }
+        }
+    }
     
     public function helpAction(): void
     {

@@ -11,8 +11,6 @@
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\AbstractData;
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-use Phalcon\Filter\Validation\Validator\StringLength\Max;
 use Zemit\Models\Interfaces\DataInterface;
 
 class Data extends AbstractData implements DataInterface

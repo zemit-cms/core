@@ -14,7 +14,6 @@ namespace Zemit\Mvc\Model;
 use Zemit\Mvc\Model\AbstractTrait\AbstractBehavior;
 use Zemit\Mvc\Model\AbstractTrait\AbstractInjectable;
 use Zemit\Mvc\Model\Behavior\Security as SecurityBehavior;
-use Zemit\Mvc\Model\Behavior\Snapshot as SnapshotBehavior;
 
 trait Security
 {

@@ -13,8 +13,8 @@ namespace Zemit\Mvc\Dispatcher;
 
 use Exception;
 use Phalcon\Dispatcher\Exception as DispatchException;
-use Zemit\Di\Injectable;
 use Phalcon\Events\Event;
+use Zemit\Di\Injectable;
 use Zemit\Mvc\Dispatcher;
 
 class Error extends Injectable

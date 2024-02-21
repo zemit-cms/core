@@ -13,6 +13,7 @@ namespace Zemit\Mvc;
 
 use Zemit\Bootstrap;
 use Zemit\Bootstrap\Config;
+use Zemit\Cache;
 use Zemit\Db\Profiler;
 use Zemit\Escaper;
 use Zemit\Filter;
@@ -20,7 +21,6 @@ use Zemit\Http\Request;
 use Zemit\Identity;
 use Zemit\Tag;
 use Zemit\Utils;
-use Zemit\Cache;
 
 /**
  * Class Controller

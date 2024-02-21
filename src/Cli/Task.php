@@ -21,10 +21,10 @@ use Zemit\Escaper;
 use Zemit\Filter;
 use Zemit\Identity;
 use Zemit\Locale;
+use Zemit\Mvc\View;
 use Zemit\Provider\Jwt\Jwt;
 use Zemit\Security;
 use Zemit\Utils;
-use Zemit\Mvc\View;
 
 /**
  * @property Bootstrap\Config $config

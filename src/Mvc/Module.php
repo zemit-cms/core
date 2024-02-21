@@ -11,11 +11,10 @@
 
 namespace Zemit\Mvc;
 
-use Phalcon\Di\DiInterface;
 use Phalcon\Autoload\Loader;
-use Phalcon\Mvc\View;
+use Phalcon\Di\DiInterface;
 use Phalcon\Mvc\ModuleDefinitionInterface;
-use Zemit\Mvc\Url;
+use Phalcon\Mvc\View;
 use Zemit\Bootstrap\Config;
 use Zemit\Di\Injectable;
 use Zemit\Utils;

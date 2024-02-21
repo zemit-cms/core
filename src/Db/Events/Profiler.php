@@ -11,8 +11,8 @@
 namespace Zemit\Db\Events;
 
 use Phalcon\Db\Adapter\AbstractAdapter;
-use Zemit\Di\Injectable;
 use Phalcon\Events\EventInterface;
+use Zemit\Di\Injectable;
 
 /**
  * Class Profiler

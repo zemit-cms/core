@@ -10,9 +10,9 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Abstracts\AbstractFile;
 use Phalcon\Filter\Validation\Validator\PresenceOf;
 use Phalcon\Filter\Validation\Validator\StringLength\Max;
+use Zemit\Models\Abstracts\AbstractFile;
 use Zemit\Models\Interfaces\FileInterface;
 
 /**

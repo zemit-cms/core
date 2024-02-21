@@ -12,7 +12,6 @@
 namespace Zemit\Mvc\Controller;
 
 use League\Csv\ByteSequence;
-use Shuchkin\SimpleXLSXGen;
 use League\Csv\CharsetConverter;
 use League\Csv\Writer;
 use Phalcon\Events\Manager;
@@ -21,7 +20,7 @@ use Phalcon\Http\Response;
 use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\ModelInterface;
-use Phalcon\Support\Version;
+use Shuchkin\SimpleXLSXGen;
 use Zemit\Di\Injectable;
 use Zemit\Http\StatusCode;
 use Zemit\Utils;

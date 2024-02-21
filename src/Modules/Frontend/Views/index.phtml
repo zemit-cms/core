@@ -1,7 +1,7 @@
 <?= $this->tag->getDoctype() ?>
 <html<?= $this->tag->getTagParams('html');?>>
     <head>
-        <?= $this->tag->renderTitle();?>
+        <?= @$this->tag->renderTitle();?>
         <?= $this->tag->meta();?>
         <?= $this->tag->css('head');?>
         <?= $this->tag->js('head');?>
