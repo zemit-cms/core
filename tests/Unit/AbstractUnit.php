@@ -24,6 +24,7 @@ use Phalcon\Autoload\Loader;
 /**
  * Class AbstractUnitTest
  * @package Tests\Unit
+ * @coversNothing
  */
 abstract class AbstractUnit extends TestCase
 {
