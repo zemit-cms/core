@@ -54,15 +54,12 @@ abstract class AbstractUnit extends TestCase
      */
     protected function setUp(): void
     {
-        defined('VENDOR_PATH') || define('VENDOR_PATH', (getenv('VENDOR_PATH') ? getenv('VENDOR_PATH') : dirname(__DIR__) . '/../vendor'));
-        defined('APP_NAMESPACE') || define('APP_NAMESPACE', (getenv('APP_NAMESPACE') ? getenv('APP_NAMESPACE') : 'Zemit'));
-        defined('APP_PATH') || define('APP_PATH', (getenv('APP_PATH') ? getenv('APP_PATH') : dirname(__DIR__) . '/../src'));
-        
+        $rootDir = dirname(dirname(__DIR__)) . '/';
         Env::setNames(['.env.testing']);
         
         $loader = new Loader();
-        $loader->setFiles([VENDOR_PATH . '/autoload.php']);
-        $loader->setNamespaces([APP_NAMESPACE => APP_PATH]);
+        $loader->setFiles([$rootDir . '/vendor/autoload.php']);
+        $loader->setNamespaces(['Zemit' => $rootDir . '/src']);
         $loader->setFileCheckingCallback(null);
         $loader->register();
         

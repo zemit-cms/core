@@ -46,9 +46,12 @@ build:
           - composer require --dev phalcon/ide-stubs:5.6.1
           - composer require --dev phpunit/phpunit
           - composer require --dev squizlabs/php_codesniffer
+          - touch .env
       tests:
         stop_on_failure: false
         override:
+          - command: ./bin/migration-list.sh
+          - command: ./bin/migration-run.sh
           - command: php-scrutinizer-run --enable-security-analysis
           - command: phpcs-run
           - command: ./vendor/bin/phpunit
