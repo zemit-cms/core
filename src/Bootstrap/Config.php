@@ -12,11 +12,11 @@
 namespace Zemit\Bootstrap;
 
 use PDO;
+
 use Phalcon\Db\Column;
 use Phalcon\Encryption\Security;
-use Zemit\Bootstrap\Permissions\TableConfig;
-use Zemit\Bootstrap\Permissions\UserConfig;
-use Zemit\Bootstrap\Permissions\WorkspaceConfig;
+use Phalcon\Config\Config as PhalconConfig;
+use Phalcon\Support\Version as PhalconVersion;
 use Zemit\Locale;
 use Zemit\Support\Version;
 use Zemit\Provider;
@@ -25,8 +25,8 @@ use Zemit\Models;
 use Zemit\Modules\Cli;
 use Zemit\Modules\Api;
 use Zemit\Mvc\Controller\Behavior;
-use Phalcon\Config\Config as PhalconConfig;
-use Phalcon\Support\Version as PhalconVersion;
+use Zemit\Bootstrap\Permissions\TableConfig;
+use Zemit\Bootstrap\Permissions\WorkspaceConfig;
 
 /**
  * Global Zemit Configuration
