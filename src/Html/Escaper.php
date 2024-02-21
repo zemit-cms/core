@@ -11,40 +11,23 @@
 
 namespace Zemit\Html;
 
-use Zemit\Filters;
-
 /**
  * {@inheritDoc}
  */
 class Escaper extends \Phalcon\Html\Escaper
 {
     /**
-     * Execute the rawurlencode function on the json string
-     * Will also encode the parameter in json format if the passed
-     * parameter is not a valid json
+     * Escapes a JSON string by raw URL encoding it.
      *
-     * Frontend JS side must:
-     * JSON.parse(decodeURIComponent('<?= $this->escaper->escapeJson([]);?>'));
+     *  JS side could decode and parse this way:
+     *  JSON.parse(decodeURIComponent('<?= $this->escaper->escapeJson([]);?>'));
      *
-     * @param mixed|string $json Json string or anything else
-     * @return string
+     * @param mixed|null $json The JSON string to escape. If null, an empty string is escaped.
+     * @return string Returns the raw URL encoded JSON string.
      */
-    public function escapeJson($json = null): string
+    public function escapeJson(mixed $json = null): string
     {
-        
-        // if it's a not empty string
-        if (is_string($json) && !empty($json)) {
-            
-            // check if it's a valid json
-            $ret = (new Filters\Json())->filter($json);
-        }
-        
-        // not a valid json, json encode it
-        if (empty($ret)) {
-            $ret = json_encode($json);
-        }
-        
         // raw url encode
-        return rawurlencode($ret);
+        return rawurlencode(json_validate($json) ? $json : json_encode($json));
     }
 }
