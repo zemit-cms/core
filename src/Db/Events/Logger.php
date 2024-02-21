@@ -13,9 +13,7 @@ namespace Zemit\Db\Events;
 
 use Phalcon\Db\Adapter\AbstractAdapter;
 use Phalcon\Events\EventInterface;
-use Phalcon\Mvc\ModelInterface;
 use Zemit\Di\Injectable;
-use Zemit\Models\Interfaces\SessionInterface;
 
 /**
  * @todo review
