@@ -47,7 +47,7 @@ build:
           - composer require --dev phpunit/phpunit
           - composer require --dev squizlabs/php_codesniffer
           - chmod +x ./bin/*.sh
-          - touch .phalcon
+          - mkdir .phalcon
           - touch .env
       tests:
         stop_on_failure: false
