@@ -57,7 +57,8 @@ trait Uuid
                     $value = $model->getAttribute($field);
                     if ($binary && !empty($value)) {
                         $hex = bin2hex($value);
-                        $uuid = sprintf('%s-%s-%s-%s-%s',
+                        $uuid = sprintf(
+                            '%s-%s-%s-%s-%s',
                             substr($hex, 0, 8),
                             substr($hex, 8, 4),
                             substr($hex, 12, 4),
@@ -67,7 +68,7 @@ trait Uuid
                         $this->setAttribute($field, $uuid);
                         return $uuid;
                     }
-                }
+                },
             ],
         ]));
     }
