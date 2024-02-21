@@ -109,22 +109,23 @@ class Tag extends PhalconTag
     public static function escapeParam($value = null, ?string $attr = null, string $glue = ' '): array
     {
         $escaper = self::getEscaperService();
+        assert($escaper instanceof \Zemit\Html\Escaper);
         
-        $attr = $escaper->escapeHtmlAttr($attr);
+        $attr = $escaper->attributes($attr);
         switch ($attr) {
             case 'css':
             case 'style':
-                $value = $escaper->escapeCss($value);
+                $value = $escaper->css($value);
                 break;
             
             case 'js':
             case 'javascript':
-                $value = $escaper->escapeJs($value);
+                $value = $escaper->js($value);
                 break;
             
             case 'href':
             case 'url':
-                $value = $escaper->escapeUrl($value);
+                $value = $escaper->url($value);
                 break;
             
             default:
@@ -132,7 +133,7 @@ class Tag extends PhalconTag
                 if (is_array($value)) {
                     if (isset($value[0]) && is_string($value[0])) {
                         foreach ($value as &$v) {
-                            $v = $escaper->escapeHtmlAttr($v);
+                            $v = $escaper->attributes($v);
                         }
                         $value = implode($glue, $value);
                     }
@@ -148,7 +149,7 @@ class Tag extends PhalconTag
                 }
                 // default escaper
                 else {
-                    $value = $escaper->escapeHtmlAttr($value);
+                    $value = $escaper->attributes($value);
                 }
                 break;
         }
