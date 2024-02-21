@@ -9,11 +9,7 @@ if (!function_exists('json_validate')) {
      * @param int $flags Bitmask of JSON decode options.
      * @return bool Returns true if the string is a valid JSON, otherwise false.
      */
-    function json_validate($json, $depth = 512, $flags = 0) {
-        if (!is_string($json)) {
-            return false;
-        }
-        
+    function json_validate(string $json, int $depth = 512, int $flags = 0) {
         try {
             json_decode($json, false, $depth, $flags | JSON_THROW_ON_ERROR);
             return true;
