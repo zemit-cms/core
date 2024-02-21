@@ -10,6 +10,7 @@
         <exclude name="Generic.Files.LineLength"/>
         <exclude name="PSR2.Methods.MethodDeclaration.Underscore"/>
         <exclude name="PSR2.Classes.PropertyDeclaration.Underscore"/>
+        <exclude name="PSR2.Classes.ClassDeclaration.CloseBraceAfterBody"/>
         <exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace"/>
         <exclude name="Squiz.WhiteSpace.ControlStructureSpacing.SpacingAfterOpen"/>
         <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndLine"/>
@@ -17,6 +18,7 @@
 
     <file>src</file>
 
+    <exclude-pattern>src/Migrations/*</exclude-pattern>
     <exclude-pattern>private/*</exclude-pattern>
     <exclude-pattern>storage/*</exclude-pattern>
     <exclude-pattern>public/storage/*</exclude-pattern>
