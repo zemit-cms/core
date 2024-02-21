@@ -28,7 +28,7 @@ class ServiceProvider extends AbstractServiceProvider
         
         $tagFactory = new TagFactory($escaper); // @todo move Zemit\Tag to TagFactory
         
-        $di->setShared($this->getName(), function() use ($tagFactory) {
+        $di->setShared($this->getName(), function () use ($tagFactory) {
             return new Manager($tagFactory);
         });
     }
