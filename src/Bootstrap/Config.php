@@ -896,9 +896,6 @@ class Config extends \Zemit\Config\Config
              * - Memory
              * - Apcu
              * - Stream
-             * - Memcached
-             * - Redis
-             * - Aerospike
              */
             'annotations' => [
                 'driver' => Env::get('ANNOTATIONS_DRIVER', 'memory'),
@@ -912,31 +909,6 @@ class Config extends \Zemit\Config\Config
                     'file' => [
                         'adapter' => Env::get('ANNOTATIONS_STREAM_ADAPTER', \Phalcon\Annotations\Adapter\Stream::class),
                         'annotationsDir' => Env::get('ANNOTATIONS_STREAM_DIR', PRIVATE_PATH . '/cache/annotations'),
-                    ],
-                    'memcached' => [
-                        'adapter' => Env::get('ANNOTATIONS_MEMCACHED_ADAPTER', \Phalcon\Annotations\Adapter\Memcached::class),
-                        'servers' => [
-                            [
-                                'host' => Env::get('ANNOTATIONS_MEMCACHED_HOST', Env::get('MEMCACHED_HOST', '127.0.0.1')),
-                                'port' => Env::get('ANNOTATIONS_MEMCACHED_PORT', Env::get('MEMCACHED_PORT', 11211)),
-                                'weight' => Env::get('ANNOTATIONS_MEMCACHED_WEIGHT', Env::get('MEMCACHED_WEIGHT', 100)),
-                            ],
-                        ],
-                    ],
-                    'redis' => [
-                        'adapter' => Env::get('ANNOTATIONS_REDIS_ADAPTER', \Phalcon\Annotations\Adapter\Redis::class),
-                        'defaultSerializer' => Env::get('ANNOTATIONS_REDIS_DEFAULT_SERIALIZER', Env::get('REDIS_DEFAULT_SERIALIZER', 'php')),
-                        'lifetime' => Env::get('ANNOTATIONS_REDIS_LIFETIME', Env::get('REDIS_LIFETIME', 3600)),
-                        'serializer' => Env::get('ANNOTATIONS_REDIS_SERIALIZER', Env::get('REDIS_SERIALIZER', null)),
-                        'host' => Env::get('ANNOTATIONS_REDIS_HOST', Env::get('REDIS_HOST', '127.0.0.1')),
-                        'port' => Env::get('ANNOTATIONS_REDIS_PORT', Env::get('REDIS_PORT', 6379)),
-                        'index' => Env::get('ANNOTATIONS_REDIS_INDEX', Env::get('REDIS_INDEX', 1)),
-                        'auth' => Env::get('ANNOTATIONS_REDIS_AUTH', Env::get('REDIS_AUTH', null)),
-                        'persistent' => Env::get('ANNOTATIONS_REDIS_PERSISTENT', Env::get('REDIS_PERSISTENT', null)),
-                        'socket' => Env::get('ANNOTATIONS_REDIS_SOCKET', Env::get('REDIS_SOCKET', null)),
-                    ],
-                    'aerospike' => [
-                        'adapter' => Env::get('ANNOTATIONS_AEROSPIKE_ADAPTER', \Phalcon\Annotations\Adapter\Aerospike::class),
                     ],
                 ],
                 'default' => [
