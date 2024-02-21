@@ -11,9 +11,7 @@ class Json extends AbstractValidator implements ValidatorInterface
     protected $template = 'Field :field must be a valid json format';
     
     /**
-     * Constructor
-     *
-     * @param array options = [
+     * @param array $options = [
      *     'message' => '',
      *     'template' => '',
      *     'depth' => 512,
