@@ -12,10 +12,12 @@
 namespace Zemit\Mvc\Controller;
 
 use League\Csv\ByteSequence;
+use League\Csv\CannotInsertRecord;
 use League\Csv\CharsetConverter;
+use League\Csv\InvalidArgument;
 use League\Csv\Writer;
+use Phalcon\Dispatcher\Exception;
 use Phalcon\Events\Manager;
-use Phalcon\Exception;
 use Phalcon\Http\Response;
 use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\Dispatcher;
@@ -32,19 +34,15 @@ class Rest extends \Zemit\Mvc\Controller
     use Rest\Fractal;
     
     /**
-     * @param string|int|null $id
-     * @return void
-     * @throws \Phalcon\Dispatcher\Exception
+     * @throws Exception
      */
-    public function indexAction(string|int $id = null)
+    public function indexAction(string|int $id = null): void
     {
         $this->restForwarding($id);
     }
     
     /**
-     * @param string|int|null $id
-     * @return void
-     * @throws \Phalcon\Dispatcher\Exception
+     * @throws Exception
      */
     protected function restForwarding(string|int $id = null): void
     {
@@ -52,10 +50,10 @@ class Rest extends \Zemit\Mvc\Controller
         if ($this->request->isPost() || $this->request->isPut() || $this->request->isPatch()) {
             $this->dispatcher->forward(['action' => 'save']);
         }
-        elseif ($this->request->isDelete()) {
+        else if ($this->request->isDelete()) {
             $this->dispatcher->forward(['action' => 'delete']);
         }
-        elseif ($this->request->isGet()) {
+        else if ($this->request->isGet()) {
             if (is_null($id)) {
                 $this->dispatcher->forward(['action' => 'getList']);
             }
@@ -66,25 +64,17 @@ class Rest extends \Zemit\Mvc\Controller
     }
     
     /**
-     * Retrieving a single record
-     * Alias of method getAction()
-     *
-     * @param string|int|null $id
-     * @return bool|ResponseInterface
      * @deprecated Should use getAction() method instead
      */
-    public function getSingleAction(string|int $id = null)
+    public function getSingleAction(string|int $id = null): false|ResponseInterface
     {
         return $this->getAction($id);
     }
     
     /**
      * Retrieving a single record
-     *
-     * @param string|int|null $id
-     * @return bool|ResponseInterface
      */
-    public function getAction(string|int $id = null)
+    public function getAction(string|int $id = null): false|ResponseInterface
     {
         $modelName = $this->getModelClassName();
         $single = $this->getSingle($id, $modelName, null);
@@ -104,25 +94,18 @@ class Rest extends \Zemit\Mvc\Controller
     }
     
     /**
-     * Retrieving a record list
-     * Alias of method getListAction()
-     *
-     * @return ResponseInterface
-     * @throws \Exception
      * @deprecated Should use getListAction() method instead
      */
-    public function getAllAction()
+    public function getAllAction(): ResponseInterface
     {
         return $this->getListAction();
     }
     
     /**
      * Retrieving a record list
-     *
-     * @return ResponseInterface
      * @throws \Exception
      */
-    public function getListAction()
+    public function getListAction(): ResponseInterface
     {
         $model = $this->getModelClassName();
         
@@ -152,11 +135,9 @@ class Rest extends \Zemit\Mvc\Controller
     
     /**
      * Exporting a record list into a CSV stream
-     *
-     * @return ResponseInterface|null
      * @throws \Exception
      */
-    public function exportAction()
+    public function exportAction(): ?ResponseInterface
     {
         $model = $this->getModelClassName();
         $find = $this->getFind();
@@ -169,19 +150,12 @@ class Rest extends \Zemit\Mvc\Controller
     
     /**
      * Download a JSON / CSV / XLSX
-     *
      * @TODO optimize this using stream and avoid storage large dataset into variables
-     *
-     * @param $list
-     * @param $fileName
-     * @param $contentType
-     * @param $params
-     * @return ResponseInterface|void
-     * @throws \League\Csv\CannotInsertRecord
-     * @throws \League\Csv\InvalidArgument
-     * @throws \Zemit\Exception
+     * @throws CannotInsertRecord
+     * @throws InvalidArgument
+     * @throws \League\Csv\Exception
      */
-    public function download($list = [], $fileName = null, $contentType = null, $params = null)
+    public function download(array $list = [], string $fileName = null, string $contentType = null, array $params = null): ?ResponseInterface
     {
         $params ??= $this->getParams();
         $contentType ??= $this->getContentType();
@@ -300,7 +274,7 @@ class Rest extends \Zemit\Mvc\Controller
         // XLSX
         if ($contentType === 'xlsx') {
             $xlsxArray = [];
-            $xlsxArray []= $listColumns;
+            $xlsxArray [] = $listColumns;
             
             foreach ($list as $row) {
                 $outputRow = [];
@@ -497,10 +471,8 @@ class Rest extends \Zemit\Mvc\Controller
     /**
      * Count a record list
      * @TODO add total count / deleted count / active count
-     *
-     * @return ResponseInterface
      */
-    public function countAction()
+    public function countAction(): ResponseInterface
     {
         $model = $this->getModelClassName();
         
@@ -519,10 +491,8 @@ class Rest extends \Zemit\Mvc\Controller
     
     /**
      * Prepare a new model for the frontend
-     *
-     * @return ResponseInterface
      */
-    public function newAction()
+    public function newAction(): ResponseInterface
     {
         $model = $this->getModelClassName();
         
@@ -534,7 +504,7 @@ class Rest extends \Zemit\Mvc\Controller
         $this->view->source = $entity->getSource();
         $this->view->single = $this->expose($entity);
         
-        return $this->setRestResponse();
+        return $this->setRestResponse(true);
     }
     
     /**
@@ -611,7 +581,7 @@ class Rest extends \Zemit\Mvc\Controller
     /**
      * Saving a record (create & update)
      */
-    public function saveAction(?int $id = null): ?ResponseInterface
+    public function saveAction(?int $id = null): ResponseInterface
     {
         $ret = $this->save($id);
         $this->view->setVars($ret);
@@ -659,7 +629,7 @@ class Rest extends \Zemit\Mvc\Controller
     /**
      * Deleting a record
      */
-    public function deleteAction(?int $id = null): ?ResponseInterface
+    public function deleteAction(string|int $id = null): false|ResponseInterface
     {
         $entity = $this->getSingle($id);
         
@@ -671,6 +641,7 @@ class Rest extends \Zemit\Mvc\Controller
         
         if (!$entity) {
             $this->response->setStatusCode(404, 'Not Found');
+            return false;
         }
         
         return $this->setRestResponse($ret['deleted']);
@@ -678,12 +649,8 @@ class Rest extends \Zemit\Mvc\Controller
     
     /**
      * Restoring record
-     *
-     * @param null $id
-     *
-     * @return bool|ResponseInterface
      */
-    public function restoreAction($id = null)
+    public function restoreAction(string|int $id = null): false|ResponseInterface
     {
         $entity = $this->getSingle($id);
         
@@ -703,13 +670,9 @@ class Rest extends \Zemit\Mvc\Controller
     
     /**
      * Re-ordering a position
-     *
-     * @param null $id
-     * @param null $position
-     *
-     * @return bool|ResponseInterface
+     * @throws \Exception
      */
-    public function reorderAction($id = null, $position = null)
+    public function reorderAction(string|int $id = null, int $position = null): false|ResponseInterface
     {
         $entity = $this->getSingle($id);
         $position = $this->getParam('position', 'int', $position);
