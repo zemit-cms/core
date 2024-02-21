@@ -54,7 +54,7 @@ if (!function_exists('sprintfn')) {
             
             // programmer did not supply a value for the named argument found in the format string
             if (!array_key_exists($key, $array)) {
-                user_error("sprintfn(): Missing argument '${$key}'", E_USER_WARNING);
+                user_error("sprintfn(): Missing argument '{${$key}}'", E_USER_WARNING);
                 return false;
             }
             
