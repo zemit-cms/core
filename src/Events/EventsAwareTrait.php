@@ -16,27 +16,10 @@ use Phalcon\Events\ManagerInterface;
 use Zemit\Utils\Slug;
 
 /**
- * Trait EventsAwareTrait
- *
- *
- *
- * @package Zemit\Events
+ * The EventsAwareTrait provides methods for managing events within a class.
  */
 trait EventsAwareTrait
 {
-    protected ?ManagerInterface $eventsManager;
-    
-    public function setEventsManager(ManagerInterface $manager): void
-    {
-        $this->eventsManager = $manager;
-    }
-    
-    public function getEventsManager(): ?ManagerInterface
-    {
-        $this->eventsManager ??= Di::getDefault()->get('eventsManager');
-        return $this->eventsManager;
-    }
-    
     /**
      * Event prefix to use as a component
      * my-component:beforeSomeTask
@@ -45,7 +28,32 @@ trait EventsAwareTrait
     public static ?string $eventsPrefix;
     
     /**
-     * Return the event component prefix
+     * The event manager responsible for handling and triggering events.
+     */
+    protected ?ManagerInterface $eventsManager;
+    
+    /**
+     * Set the events manager
+     */
+    public function setEventsManager(ManagerInterface $manager): void
+    {
+        $this->eventsManager = $manager;
+    }
+    
+    /**
+     * Get the events manager.
+     */
+    public function getEventsManager(): ?ManagerInterface
+    {
+        $this->eventsManager ??= Di::getDefault()->get('eventsManager');
+        return $this->eventsManager;
+    }
+    
+    
+    /**
+     * Get the event component prefix
+     *
+     * @return string|null The event component prefix, or null if not set
      */
     public static function getEventsPrefix(): ?string
     {
@@ -54,7 +62,11 @@ trait EventsAwareTrait
     }
     
     /**
-     * Set the event component prefix
+     * Sets the events prefix.
+     *
+     * @param string|null $eventsPrefix The prefix to be used for events. Pass null to remove the prefix.
+     *
+     * @return void
      */
     public static function setEventsPrefix(?string $eventsPrefix): void
     {
@@ -62,35 +74,31 @@ trait EventsAwareTrait
     }
     
     /**
-     * Checking if event manager is defined - fire event
+     * Fire an event.
      *
-     * @param mixed $task
-     * @param mixed $data
-     * @param bool $cancelable
-     *
-     * @return mixed
+     * @param string $task The task to execute.
+     * @param mixed|null $data The optional data to pass to the event.
+     * @param bool $cancelable Whether the event is cancelable or not. Defaults to false.
+     * 
+     * @return bool Returns true if the event was triggered successfully, false otherwise.
      */
-    public function fire($task, $data = null, bool $cancelable = false)
+    public function fire(string $task, mixed $data = null, bool $cancelable = false)
     {
         $eventType = $this->getEventsPrefix() . ':' . $task;
         return $this->getEventsManager()->fire($eventType, $this, $data, $cancelable);
     }
     
     /**
-     * Fire "before" event
-     * Run class with parameters
-     * Fire "after" event
-     * Return the holder
+     * Fire the set event
      *
-     * @param $holder
-     * @param null $class
-     * @param array $params
-     * @param null $callback
-     *
-     * @return mixed|null
-     * @throws \Exception
+     * @param mixed &$holder The referenced variable to be set
+     * @param string|null $class The class name or object to set if $holder is not set
+     * @param array $params The parameters to be passed to the class constructor or callable
+     * @param callable|null $callback The callback to be executed after setting the value
+     * 
+     * @throws \Exception if the class is not found or an unknown type is specified for $class
      */
-    public function fireSet(&$holder, $class = null, array $params = [], $callback = null)
+    public function fireSet(&$holder, string $class = null, array $params = [], callable $callback = null)
     {
         // prepare event name
         $event = basename(str_replace('\\', '//', $class));
