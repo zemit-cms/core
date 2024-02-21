@@ -32,18 +32,21 @@ class Rest extends \Zemit\Mvc\Controller
     use Rest\Fractal;
     
     /**
-     * @throws Exception
+     * @param string|int|null $id
+     * @return void
+     * @throws \Phalcon\Dispatcher\Exception
      */
-    public function indexAction(?int $id = null)
+    public function indexAction(string|int $id = null)
     {
         $this->restForwarding($id);
     }
     
     /**
-     * Rest bootstrap forwarding
-     * @throws Exception
+     * @param string|int|null $id
+     * @return void
+     * @throws \Phalcon\Dispatcher\Exception
      */
-    protected function restForwarding(?int $id = null): void
+    protected function restForwarding(string|int $id = null): void
     {
         $id ??= $this->getParam('id');
         if ($this->request->isPost() || $this->request->isPut() || $this->request->isPatch()) {
@@ -66,11 +69,11 @@ class Rest extends \Zemit\Mvc\Controller
      * Retrieving a single record
      * Alias of method getAction()
      *
-     * @param null $id
+     * @param string|int|null $id
      * @return bool|ResponseInterface
      * @deprecated Should use getAction() method instead
      */
-    public function getSingleAction($id = null)
+    public function getSingleAction(string|int $id = null)
     {
         return $this->getAction($id);
     }
@@ -78,11 +81,10 @@ class Rest extends \Zemit\Mvc\Controller
     /**
      * Retrieving a single record
      *
-     * @param null $id
-     *
+     * @param string|int|null $id
      * @return bool|ResponseInterface
      */
-    public function getAction($id = null)
+    public function getAction(string|int $id = null)
     {
         $modelName = $this->getModelClassName();
         $single = $this->getSingle($id, $modelName, null);
