@@ -156,7 +156,6 @@ trait DatabaseTrait
                     $response['error'][$modelName][] = $entity->toArray();
                     $response['message'][$modelName][] = $e->getMessage();
                 }
-                
             }
         }
         
