@@ -13,10 +13,6 @@ namespace Zemit\Modules\Api\Controllers;
 use Zemit\Modules\Api\Controller;
 use Zemit\Utils;
 
-/**
- * Class TestController
- *
- */
 class TestController extends Controller
 {
     public function memoryAction()
