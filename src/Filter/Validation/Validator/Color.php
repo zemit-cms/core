@@ -11,9 +11,7 @@ class Color extends AbstractValidator implements ValidatorInterface
     protected $template = 'Field :field must be a valid color in hexadecimal format (e.g., #RRGGBB)';
     
     /**
-     * Constructor
-     *
-     * @param array options = [
+     * @param array $options = [
      *     'message' => '',
      *     'template' => '',
      *     'allowEmpty' => false
@@ -28,7 +26,7 @@ class Color extends AbstractValidator implements ValidatorInterface
     {
         $value = $validation->getValue($field);
         
-        if (!$this->isValidColor($value)) {
+        if (!is_string($value) || !$this->isValidColor($value)) {
             
             $validation->appendMessage(
                 $this->messageFactory($validation, $field)
@@ -43,7 +41,7 @@ class Color extends AbstractValidator implements ValidatorInterface
     /**
      * Check if a given color is in a valid hexadecimal format.
      */
-    private function isValidColor(?string $color): bool
+    private function isValidColor(string $color): bool
     {
         // Hexadecimal color regex pattern (supports 3, 4, 6, or 8 digits)
         $pattern = '/^#([A-Fa-f0-9]{3,4}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})$/';
