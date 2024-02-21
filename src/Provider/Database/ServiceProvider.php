@@ -68,7 +68,6 @@ class ServiceProvider extends AbstractServiceProvider
             // attach events
             $eventsManager = $di->get('eventsManager');
             assert($eventsManager instanceof ManagerInterface);
-            $eventsManager->attach('db', new Security());
             $eventsManager->attach('db', new Logger());
             $eventsManager->attach('db', new Profiler());
             $connection->setEventsManager($eventsManager);
