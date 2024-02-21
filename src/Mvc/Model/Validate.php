@@ -22,7 +22,7 @@ use Phalcon\Filter\Validation\Validator\Uniqueness;
 use Zemit\Db\Column;
 use Zemit\Filter\Validation\Validator\Color;
 use Zemit\Filter\Validation\Validator\Json;
-use Zemit\Validation;
+use Zemit\Filter\Validation;
 
 trait Validate
 {
