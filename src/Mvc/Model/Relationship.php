@@ -265,7 +265,7 @@ trait Relationship
                                 }
                                 
                                 // if [alias => [[id => 1], [id => 2], [id => 3], ....]]
-                                else if (is_array($traversedData) || $traversedData instanceof \Traversable) {
+                                elseif (is_array($traversedData) || $traversedData instanceof \Traversable) {
                                     $entity = $this->getEntityFromData((array)$traversedData, $getEntityParams);
                                 }
                                 
