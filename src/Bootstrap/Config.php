@@ -394,6 +394,7 @@ class Config extends \Zemit\Config\Config
                 Provider\Response\ServiceProvider::class => Env::get('PROVIDER_RESPONSE', Provider\Response\ServiceProvider::class),
                 
                 // Security
+                Provider\Acl\ServiceProvider::class => Env::get('PROVIDER_ACL', Provider\Acl\ServiceProvider::class),
                 Provider\Security\ServiceProvider::class => Env::get('PROVIDER_SECURITY', Provider\Security\ServiceProvider::class),
                 Provider\Session\ServiceProvider::class => Env::get('PROVIDER_SESSION', Provider\Session\ServiceProvider::class),
                 Provider\Cookies\ServiceProvider::class => Env::get('PROVIDER_COOKIES', Provider\Cookies\ServiceProvider::class),
@@ -1165,6 +1166,11 @@ class Config extends \Zemit\Config\Config
              * Client config to pass to front-end
              */
             'client' => [],
+            
+            /**
+             * Access Control List (ACL) options
+             */
+            'acl' => [],
             
             /**
              * Application permissions

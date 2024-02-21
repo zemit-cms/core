@@ -9,45 +9,23 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit;
+namespace Zemit\Acl;
 
-use Phalcon\Encryption\Security as PhalconSecurity;
+use Phalcon\Di\AbstractInjectionAware;
 use Phalcon\Acl\Adapter\Memory;
 use Phalcon\Acl\Component;
 use Phalcon\Acl\Role;
-use Zemit\Config\ConfigInterface;
+use Zemit\Support\Options\Options;
 
 /**
- * {@inheritDoc}
+ * Class Acl
+ *
+ * This class represents an Access Control List (ACL) and is used 
+ * to configure and manage access permissions for different components.
  */
-class Security extends PhalconSecurity
+class Acl extends AbstractInjectionAware
 {
-    protected ?array $permissions;
-    
-    public function getPermissionsConfig(): array
-    {
-        return $this->getConfig()->pathToArray('permissions') ?? [];
-    }
-    
-    public function getConfig(): ConfigInterface
-    {
-        return $this->getDI()->get('config');
-    }
-    
-    public function hash(string $password, array $options = []) : string
-    {
-        if (in_array($this->getDefaultHash(), [
-            PhalconSecurity::CRYPT_ARGON2I,
-            PhalconSecurity::CRYPT_ARGON2ID
-        ])) {
-            $defaultOptions = $this->getConfig()->pathToArray('security.argon2');
-            $options['memory_cost'] ??= $defaultOptions['memoryCost'];
-            $options['time_cost'] ??= $defaultOptions['timeCost'];
-            $options['threads'] ??= $defaultOptions['threads'];
-        }
-        
-        return parent::hash($password, $options);
-    }
+    use Options;
     
     /**
      * Return an ACL for the specified components name
@@ -56,17 +34,15 @@ class Security extends PhalconSecurity
      * @param string $inherit
      * @return Memory
      * @todo cache the ACL
-     * @todo move to its own ACL class, shouldn't be in the Phalcon\Encryption\Security
      */
-    public function getAcl(array $componentsName = ['components'], ?array $permissions = null, string $inherit = 'inherit'): Memory
+    public function get(array $componentsName = ['components'], ?array $permissions = null, string $inherit = 'inherit'): Memory
     {
         $acl = new Memory();
         $aclRoleList = [];
         
-        $this->permissions = $this->getPermissionsConfig();
-        
-        $featureList = $this->permissions['features'] ?? [];
-        $roleList = $this->permissions['roles'] ?? [];
+        $permissions = $this->getOption('permissions', []);
+        $featureList = $permissions['features'] ?? [];
+        $roleList = $permissions['roles'] ?? [];
         
         foreach ($roleList as $role => $rolePermission) {
             

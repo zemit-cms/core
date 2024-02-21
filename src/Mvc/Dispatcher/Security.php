@@ -14,7 +14,7 @@ namespace Zemit\Mvc\Dispatcher;
 use Phalcon\Cli\Dispatcher as CliDispatcher;
 use Phalcon\Dispatcher\AbstractDispatcher;
 use Phalcon\Events\Event;
-use Phalcon\Exception;
+use Phalcon\Dispatcher\Exception;
 use Phalcon\Mvc\Dispatcher as MvcDispatcher;
 use Zemit\Di\Injectable;
 
@@ -34,7 +34,6 @@ class Security extends Injectable
     
     /**
      * Check if the current identity is allowed from the dispatcher
-     * @todo task as well
      * @throws Exception
      */
     public function checkAcl(Event $event, ?AbstractDispatcher $dispatcher = null): bool
@@ -65,7 +64,7 @@ class Security extends Injectable
         $actionSuffix = $dispatcher->getActionSuffix();
         
         // Get ACL components (components + task, or components + controllers)
-        $acl = $this->security->getAcl($componentNames);
+        $acl = $this->acl->get($componentNames);
         
         // Security not found
         if (!$acl->isComponent($handlerClass)) {
@@ -77,7 +76,6 @@ class Security extends Injectable
         $allowed = false;
         $roles = $this->identity->getAclRoles();
         foreach ($roles as $role) {
-//            if ($role->getName() === 'admin') dd($role, $handlerClass, $action);
             $allowed = $acl->isAllowed($role, $handlerClass, $action);
             if ($allowed) {
                 break;
@@ -99,7 +97,6 @@ class Security extends Injectable
                 ) {
                     return true;
                 }
-//                dd($dispatcher->toArray());
                 $dispatcher->forward($unauthorizedRoute);
             }
             else {

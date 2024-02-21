@@ -44,9 +44,9 @@ class Security extends Behavior
     public static function getAcl(): Memory
     {
         if (is_null(self::$acl)) {
-            $security = Di::getDefault()->get('security');
-            assert($security instanceof \Zemit\Security);
-            self::setAcl($security->getAcl(['models', 'components']));
+            $acl = Di::getDefault()->get('acl');
+            assert($acl instanceof \Zemit\Acl\Acl);
+            self::setAcl($acl->get(['models', 'components']));
         }
         return self::$acl;
     }

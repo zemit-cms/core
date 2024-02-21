@@ -27,7 +27,7 @@ use Phalcon\Di\DiInterface;
  * @property \Phalcon\Session\ManagerInterface $session
  * @property \Phalcon\Events\Manager|\Phalcon\Events\ManagerInterface $eventsManager
  * @property \Phalcon\Db\Adapter\AdapterInterface $db
- * @property \Zemit\Security|\Phalcon\Encryption\Security $security
+ * @property \Zemit\Encryption\Security|\Phalcon\Encryption\Security $security
  * @property \Phalcon\Crypt|\Phalcon\CryptInterface $crypt
  * @property \Zemit\Tag|\Phalcon\Tag $tag
  * @property \Zemit\Escaper|\Phalcon\Escaper|\Phalcon\Escaper\EscaperInterface $escaper
@@ -89,6 +89,10 @@ trait InjectableTrait
     {
         if (!isset($this->container)) {
             $this->container = Di::getDefault();
+            
+            if (!$this->container) {
+                $this->container = new DI();
+            }    
         }
         
         return $this->container;

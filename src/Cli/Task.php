@@ -17,13 +17,13 @@ use Phalcon\Logger;
 use Zemit\Bootstrap;
 use Zemit\Db\Profiler;
 use Zemit\Debug;
+use Zemit\Encryption\Security;
 use Zemit\Escaper;
 use Zemit\Filter;
 use Zemit\Identity;
 use Zemit\Locale;
 use Zemit\Mvc\View;
 use Zemit\Provider\Jwt\Jwt;
-use Zemit\Security;
 use Zemit\Utils;
 
 /**
