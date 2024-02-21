@@ -53,6 +53,7 @@ build:
           - cp .env.scrutinizer .env
           - ./bin/migration-list.sh
           - ./bin/migration-run.sh
+          - echo "xdebug.mode=coverage" > /home/scrutinizer/.phpenv/versions/8.2.15/etc/conf.d/xdebug.ini
       tests:
         stop_on_failure: false
         override:
