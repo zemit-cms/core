@@ -11,9 +11,8 @@
 
 namespace Zemit\Modules\Cli\Tasks\Traits;
 
-use Phalcon\Mvc\ModelInterface;
+use Phalcon\Mvc\Model;
 use Zemit\Exception\CliException;
-use Zemit\Utils;
 
 trait DatabaseTrait
 {
@@ -121,9 +120,12 @@ trait DatabaseTrait
             
             foreach ($insert as $key => $row) {
                 $entity = new $modelName();
-                assert($entity instanceof ModelInterface);
+                assert($entity instanceof Model);
                 
-                $assign = isset($row[0]) ? array_combine($entity->columnMap(), $row) : $row;
+                $assign = isset($row[0]) && method_exists($entity, 'columnMap')
+                    ? array_combine($entity->columnMap(), $row)
+                    : $row;
+                
                 if (!$assign) {
                     throw new CliException('Can\'t assign row #' . $key . ' for model `' . $modelName . '`.');
                 }
