@@ -15,6 +15,7 @@ use Phalcon\Db\Adapter\AbstractAdapter;
 use Phalcon\Events\EventInterface;
 use Phalcon\Mvc\ModelInterface;
 use Zemit\Di\Injectable;
+use Zemit\Models\Interfaces\SessionInterface;
 
 /**
  * @todo review
@@ -31,11 +32,7 @@ class Logger extends Injectable
                     
                     // deactivate logger
                     $this->inProgress = true;
-    
-                    $session = $this->identity->getSession();
-                    assert($session instanceof ModelInterface);
-                    
-                    $sessionId = $session->readAttribute('id');
+                    $sessionId = $this->identity->getSession()?->getId();
                     $userId = $this->identity->getUserId() ?: null;
                     $userAsId = $this->identity->getUserAsId() ?: null;
                     
@@ -44,10 +41,14 @@ class Logger extends Injectable
                         'sessionId' => $sessionId,
                         'userId' => $userId,
                         'userAsId' => $userAsId,
+                        'event' => [
+                            'type' => $event->getType(),
+                            'data' => $event->getData(),
+                        ],
                         'meta' => [
 //                            'identity' => $this->identity->getIdentity(),
                             'sqlStatement' => $connection->getSQLStatement(),
-                            'sqlVariables' => $connection->getSqlVariables(),
+                            'sqlVariables' => $connection->getSQLVariables(),
                         ],
                     ]);
                     
