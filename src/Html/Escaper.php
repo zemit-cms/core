@@ -27,7 +27,11 @@ class Escaper extends \Phalcon\Html\Escaper
      */
     public function escapeJson(mixed $json = null): string
     {
+        if (is_null($json)) {
+            return 'null';
+        }
+        
         // raw url encode
-        return rawurlencode(json_validate($json) ? $json ?? '' : json_encode($json));
+        return rawurlencode(json_validate($json) ? $json : json_encode($json));
     }
 }
