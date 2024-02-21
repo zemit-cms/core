@@ -40,9 +40,9 @@ class View extends \Phalcon\Mvc\View
     /**
      * {@inheritdoc}
      */
-    public function render(string $controllerName, string $actionName, array $params = [])
+    public function render(string $controllerName, string $actionName, array $params = []): \Phalcon\Mvc\View|bool
     {
-        if (!$this->exists($controllerName . (empty($actionName) ? null : '/' . $actionName))) {
+        if (!$this->has($controllerName . (empty($actionName) ? null : '/' . $actionName))) {
             $controllerName = Slug::generate(Helper::uncamelize($controllerName));
             $actionName = Slug::generate(Helper::uncamelize($actionName));
         }
@@ -54,7 +54,7 @@ class View extends \Phalcon\Mvc\View
      */
     public function getRender(string $controllerName, string $actionName, array $params = [], $configCallback = null): string
     {
-        if (!$this->exists($controllerName . (empty($actionName) ? null : '/' . $actionName))) {
+        if (!$this->has($controllerName . (empty($actionName) ? null : '/' . $actionName))) {
             $controllerName = Slug::generate(Helper::uncamelize($controllerName));
             $actionName = Slug::generate(Helper::uncamelize($actionName));
         }
