@@ -12,10 +12,12 @@
 namespace Zemit\Mvc\Model;
 
 use Zemit\Mvc\Model\AbstractTrait\AbstractInjectable;
+use Zemit\Mvc\Model\AbstractTrait\AbstractEntity;
 
 trait Locale
 {
     use AbstractInjectable;
+    use AbstractEntity;
     
     /**
      * Returns the translation string of the given key
@@ -47,9 +49,9 @@ trait Locale
         $locale = $this->getDI()->get('locale');
         assert($locale instanceof \Zemit\Locale);
         
-        $lang = $locale->getLocale() ?: 'en';
+        $lang = $locale->getLocale();
         
-        if (mb_strrpos($method, ucfirst($lang)) !== mb_strlen($method) - mb_strlen($lang)) {
+        if (!empty($lang)) {
             $call = $method . ucfirst($lang);
             if (method_exists($this, $call)) {
                 return $this->$call(...$arguments);
@@ -74,7 +76,7 @@ trait Locale
         
         $lang = $locale->getLocale();
         
-        if (mb_strrpos($property, ucfirst($lang)) !== mb_strlen($property) - 2) {
+        if (!empty($lang)) {
             $set = $property . ucfirst($lang);
             
             if (property_exists($this, $set)) {
@@ -83,6 +85,7 @@ trait Locale
                 return;
             }
         }
+        
         
         @parent::__set($property, $value); // @todo refactor for php83+
     }
@@ -101,7 +104,7 @@ trait Locale
         
         $lang = $locale->getLocale();
         
-        if (mb_strrpos($property, ucfirst($lang)) !== mb_strlen($property) - 2) {
+        if (!empty($lang)) {
             $set = $property . ucfirst($lang);
             
             if (property_exists($this, $set)) {
