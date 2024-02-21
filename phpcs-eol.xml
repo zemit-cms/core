@@ -1,8 +1,12 @@
 <?xml version="1.0"?>
 <ruleset name="EOL">
     <description>Custom ruleset to fix line endings.</description>
-    <rule ref="Generic.Files.LineEndings"/>
-    <rule ref="Internal.LineEndings.Mixed"/>
+    <rule ref="Generic.Files.LineEndings">
+        <properties>
+            <!-- Set your preferred line ending: \n for LF, \r\n for CRLF -->
+            <property name="eolChar" value="\n"/>
+        </properties>
+    </rule>
 
     <exclude-pattern>private/*</exclude-pattern>
     <exclude-pattern>storage/*</exclude-pattern>
