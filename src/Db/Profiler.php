@@ -20,7 +20,7 @@ class Profiler extends \Phalcon\Db\Profiler
     {
         $profiles = [];
         $profilerProfiles = $this->getProfiles();
-        if ($profilerProfiles) {
+        if (!empty($profilerProfiles)) {
             foreach ($profilerProfiles as $profile) {
                 $profiles [] = [
                     'sqlStatement' => $profile->getSqlStatement(),
