@@ -12,8 +12,8 @@
 namespace Zemit\Provider\Crypt;
 
 use Phalcon\Di\DiInterface;
+use Phalcon\Encryption\Crypt;
 use Zemit\Config\ConfigInterface;
-use Zemit\Crypt;
 use Zemit\Provider\AbstractServiceProvider;
 
 class ServiceProvider extends AbstractServiceProvider
