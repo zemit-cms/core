@@ -80,9 +80,9 @@ trait EventsAwareTrait
      * @param mixed|null $data The optional data to pass to the event.
      * @param bool $cancelable Whether the event is cancelable or not. Defaults to false.
      * 
-     * @return bool Returns true if the event was triggered successfully, false otherwise.
+     * @return mixed
      */
-    public function fire(string $task, mixed $data = null, bool $cancelable = false)
+    public function fire(string $task, mixed $data = null, bool $cancelable = false): mixed
     {
         $eventType = $this->getEventsPrefix() . ':' . $task;
         return $this->getEventsManager()->fire($eventType, $this, $data, $cancelable);
@@ -96,9 +96,10 @@ trait EventsAwareTrait
      * @param array $params The parameters to be passed to the class constructor or callable
      * @param callable|null $callback The callback to be executed after setting the value
      * 
+     * @return mixed
      * @throws \Exception if the class is not found or an unknown type is specified for $class
      */
-    public function fireSet(&$holder, string $class = null, array $params = [], callable $callback = null)
+    public function fireSet(mixed &$holder, string $class = null, array $params = [], callable $callback = null): mixed
     {
         // prepare event name
         $event = basename(str_replace('\\', '//', $class));
