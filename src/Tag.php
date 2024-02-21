@@ -29,7 +29,7 @@ class Tag extends PhalconTag
     
     protected static ?Manager $assetsService = null;
     
-    public static function getAssets(?array $params = null): Manager
+    public static function getAssets(?array $params = null): ?Manager
     {
         self::$assetsService ??= self::getDI()->get('assets', $params);
         return self::$assetsService;
@@ -38,14 +38,16 @@ class Tag extends PhalconTag
     /**
      * Returns an Assets service from the default DI
      */
-    public static function getAssetsService(): Manager
+    public static function getAssetsService(): ?Manager
     {
         self::$assetsService ??= self::getDI()->getService('assets');
         return self::$assetsService;
     }
     
-    
-    public static function setAssetsService(Manager $assets): void
+    /**
+     * Set the Asset Service for Tag
+     */
+    public static function setAssetsService(?Manager $assets): void
     {
         self::$assetsService = $assets;
     }
