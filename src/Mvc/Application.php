@@ -13,8 +13,8 @@ namespace Zemit\Mvc;
 
 use Phalcon\Di\DiInterface;
 use Phalcon\Http\ResponseInterface;
+use Zemit\Dispatcher\DispatcherInterface;
 use Zemit\Cli\Dispatcher as CliDispatcher;
-use Zemit\Dispatcher\AbstractDispatcher;
 use Zemit\Mvc\Dispatcher as MvcDispatcher;
 
 /**
@@ -37,12 +37,13 @@ class Application extends \Phalcon\Mvc\Application
     /**
      * HMVC request
      * You can request call any module/namespace
+     * @throws \Exception
      */
     public function request(array $location = []): string
     {
         // Get a unique dispatcher
         $dispatcher = clone $this->getDI()->get('dispatcher');
-        assert($dispatcher instanceof AbstractDispatcher);
+        assert($dispatcher instanceof DispatcherInterface);
         
         // Route dispatcher
         $dispatcher->setDefaultNamespace($location['namespace'] ?? $dispatcher->getNamespaceName());
