@@ -548,7 +548,6 @@ class Identity extends Injectable implements OptionsInterface
     public function oauth2(string $provider, int $id, string $accessToken, ?array $meta = [])
     {
         $loggedInUser = null;
-        $saved = null;
         
         // retrieve and prepare oauth2 entity
         $oauth2 = Oauth2::findFirst([
@@ -743,7 +742,6 @@ class Identity extends Injectable implements OptionsInterface
     {
         $saved = false;
         $sent = false;
-        $token = null;
         $session = $this->getSession();
         $validation = new Validation();
         $validation->add('email', new PresenceOf(['message' => 'email is required']));
