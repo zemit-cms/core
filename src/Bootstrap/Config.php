@@ -463,6 +463,12 @@ class Config extends \Zemit\Config\Config
             ],
             
             /**
+             * Filter Services
+             */
+            'filters' => [
+            ],
+            
+            /**
              * Logger Configuration
              */
             'logger' => [
@@ -494,12 +500,6 @@ class Config extends \Zemit\Config\Config
                     'date' => Env::get('LOGGER_DATE', 'Y-m-d H:i:s'),
                     'filename' => Env::get('LOGGER_DEFAULT_FILENAME', 'zemit'),
                 ],
-            ],
-            
-            /**
-             * Default filters
-             */
-            'filters' => [
             ],
             
             /**
