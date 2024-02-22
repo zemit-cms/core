@@ -20,6 +20,7 @@ use Zemit\Support\Helper\Str\Slugify;
  * This class extends the Phalcon\Support\HelperFactory class and provides additional helper services.
  * {@inheritdoc}
  * 
+ * # New methods
  * @method string flattenKeys(array $collection = [], string $delimiter = '.', bool $lowerKey = true)
  * @method string slugify(string $string, array $replace = [], string $delimiter = '-')
  */
