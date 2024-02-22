@@ -14,7 +14,7 @@ namespace Zemit\Modules\Cli\Tasks;
 use Zemit\Bootstrap\Deployment;
 use Zemit\Modules\Cli\Task;
 use Zemit\Modules\Cli\Tasks\Traits\DatabaseTrait;
-use Zemit\Utils;
+use Zemit\Support\Utils;
 
 class DatabaseTask extends Task
 {

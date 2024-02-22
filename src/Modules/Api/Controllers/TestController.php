@@ -11,7 +11,7 @@
 namespace Zemit\Modules\Api\Controllers;
 
 use Zemit\Modules\Api\Controller;
-use Zemit\Utils;
+use Zemit\Support\Utils;
 
 class TestController extends Controller
 {

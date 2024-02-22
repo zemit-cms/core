@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Utils\RecursiveIterator\Filter;
+namespace Zemit\Support\RecursiveIterator\Filter;
 
 class Visible extends \RecursiveFilterIterator
 {

@@ -12,7 +12,8 @@
 namespace Zemit\Provider\Helper;
 
 use Phalcon\Di\DiInterface;
-use Phalcon\Support\HelperFactory;
+use Zemit\Support\HelperFactory;
+use Zemit\Config\ConfigInterface;
 use Zemit\Provider\AbstractServiceProvider;
 
 class ServiceProvider extends AbstractServiceProvider
@@ -23,11 +24,11 @@ class ServiceProvider extends AbstractServiceProvider
     {
         $di->setShared($this->getName(), function () use ($di) {
             
-            $helper = new HelperFactory();
+            $config = $di->get('config');
+            assert($config instanceof ConfigInterface);
+            $helperServices = $config->pathToArray('helpers', []);
             
-            // @todo fetch config to allow to push classes into the helper factory
-            
-            return $helper;
+            return new HelperFactory($helperServices);
         });
     }
 }

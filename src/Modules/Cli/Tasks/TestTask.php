@@ -12,7 +12,7 @@
 namespace Zemit\Modules\Cli\Tasks;
 
 use Zemit\Modules\Cli\Task;
-use Zemit\Utils;
+use Zemit\Support\Utils;
 
 class TestTask extends Task
 {

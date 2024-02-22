@@ -12,7 +12,7 @@
 namespace Zemit\Mvc\Router;
 
 use Phalcon\Mvc\Router\Group as RouterGroup;
-use Zemit\Utils\Slug;
+use Zemit\Support\Slug;
 
 class ModuleRoute extends RouterGroup
 {

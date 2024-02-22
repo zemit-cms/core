@@ -10,7 +10,6 @@
 
 namespace Zemit\Modules\Api\Controllers;
 
-use Phalcon\Security\Exception;
 use Zemit\Mvc\Controller\Identity;
 
 class AuthController extends AbstractController
@@ -19,7 +18,7 @@ class AuthController extends AbstractController
         getAction as traitGetAction;
     }
     
-    public function indexAction($id = null): bool
+    public function indexAction(string|int $id = null): bool
     {
         return $this->getAction();
     }
@@ -30,7 +29,6 @@ class AuthController extends AbstractController
      * @param bool $refresh
      *
      * @return bool
-     * @throws Exception
      */
     public function getAction($refresh = false): bool
     {

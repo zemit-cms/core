@@ -35,7 +35,7 @@ trait Slug
             'beforeValidation' => [
                 $field => function (Model $model, $field) {
                     $value = $model->readAttribute($field);
-                    return $value && is_string($value) ? \Zemit\Utils\Slug::generate($value) : $value;
+                    return $value && is_string($value) ? \Zemit\Support\Slug::generate($value) : $value;
                 },
             ],
         ]));

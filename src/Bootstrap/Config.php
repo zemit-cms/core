@@ -12,21 +12,20 @@
 namespace Zemit\Bootstrap;
 
 use PDO;
-
+use Phalcon\Config\Config as PhalconConfig;
 use Phalcon\Db\Column;
 use Phalcon\Encryption\Security;
-use Phalcon\Config\Config as PhalconConfig;
 use Phalcon\Support\Version as PhalconVersion;
-use Zemit\Locale;
-use Zemit\Support\Version;
-use Zemit\Provider;
-use Zemit\Utils\Env;
-use Zemit\Models;
-use Zemit\Modules\Cli;
-use Zemit\Modules\Api;
-use Zemit\Mvc\Controller\Behavior;
 use Zemit\Bootstrap\Permissions\TableConfig;
 use Zemit\Bootstrap\Permissions\WorkspaceConfig;
+use Zemit\Locale;
+use Zemit\Models;
+use Zemit\Modules\Api;
+use Zemit\Modules\Cli;
+use Zemit\Mvc\Controller\Behavior;
+use Zemit\Provider;
+use Zemit\Support\Env;
+use Zemit\Support\Version;
 
 /**
  * Global Zemit Configuration
@@ -455,6 +454,12 @@ class Config extends \Zemit\Config\Config
                 Provider\Clamav\ServiceProvider::class => Env::get('PROVIDER_CLAMAV', Provider\Clamav\ServiceProvider::class),
                 Provider\OpenAi\ServiceProvider::class => Env::get('PROVIDER_OPENAI', Provider\OpenAi\ServiceProvider::class),
                 Provider\LoremIpsum\ServiceProvider::class => Env::get('PROVIDER_LOREM_IPSUM', Provider\LoremIpsum\ServiceProvider::class),
+            ],
+            
+            /**
+             * Helper Services
+             */
+            'helpers' => [
             ],
             
             /**

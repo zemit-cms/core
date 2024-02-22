@@ -17,7 +17,7 @@ use Phalcon\Mvc\ModuleDefinitionInterface;
 use Phalcon\Mvc\View;
 use Zemit\Bootstrap\Config;
 use Zemit\Di\Injectable;
-use Zemit\Utils;
+use Zemit\Support\Utils;
 
 /**
  * {@inheritDoc}

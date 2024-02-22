@@ -15,7 +15,7 @@ use Phalcon\Autoload\Loader;
 use Phalcon\Di\DiInterface;
 use Phalcon\Mvc\ModuleDefinitionInterface;
 use Zemit\Bootstrap\Config;
-use Zemit\Utils;
+use Zemit\Support\Utils;
 
 class Module implements ModuleDefinitionInterface
 {

@@ -9,11 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Utils;
+namespace Zemit\Support;
 
 use Dotenv\Dotenv;
 use Phalcon\Di\DiInterface;
-use Zemit\Support\Helper;
 
 /**
  * Allow to access environment variable easily

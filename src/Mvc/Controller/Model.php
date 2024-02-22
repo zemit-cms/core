@@ -20,7 +20,7 @@ use Zemit\Http\Request;
 use Zemit\Identity;
 use Zemit\Support\Exposer\Exposer;
 use Zemit\Support\Helper;
-use Zemit\Utils\Slug;
+use Zemit\Support\Slug;
 
 /**
  * Trait Model

@@ -13,7 +13,7 @@ namespace Zemit;
 
 /**
  * Zemit\Exception
- * All framework exceptions should use or extend this exception
+ * All Zemit exceptions should use or extend this exception
  */
 class Exception extends \Exception implements \Throwable
 {

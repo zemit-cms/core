@@ -12,13 +12,13 @@
 namespace Zemit\Modules\Frontend\Controllers;
 
 use Phalcon\Db\Adapter\Pdo\Mysql;
+use Phalcon\Filter;
+use Phalcon\Filter\Validation;
 use Phalcon\Http\Response;
 use Phalcon\Messages\Message;
-use Phalcon\Filter\Validation;
 use Zemit\Bootstrap;
 use Zemit\Bootstrap\Config;
 use Zemit\Escaper;
-use Phalcon\Filter;
 use Zemit\Http\Request;
 use Zemit\Identity;
 use Zemit\Locale;
@@ -26,7 +26,7 @@ use Zemit\Mvc\Application;
 use Zemit\Mvc\Dispatcher;
 use Zemit\Mvc\Router;
 use Zemit\Mvc\Url;
-use Zemit\Utils;
+use Zemit\Support\Utils;
 
 class CheckController extends AbstractController
 {

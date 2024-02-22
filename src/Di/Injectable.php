@@ -46,6 +46,7 @@ namespace Zemit\Di;
 // * @property \Zemit\Tag $tag
  * 
  * @property \Zemit\Acl\Acl $acl
+ * @property \Zemit\Support\HelperFactory $helper
  */
 class Injectable extends \Phalcon\Di\Injectable implements \Phalcon\Di\InjectionAwareInterface
 {

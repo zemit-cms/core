@@ -9,25 +9,33 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Utils;
+namespace Zemit\Support\Helper\Arr;
 
-class Transform
+/**
+ * 
+ */
+class FlattenKeys
 {
+    public function __invoke(array $collection = [], string $delimiter = '.', bool $lowerKey = true): array
+    {
+        return self::process($collection, $delimiter, $lowerKey);
+    }
+    
     /**
      * Here to parse the columns parameter into some kind of flatten array with
      * the key path separated by dot "my.path" and the value true, false or a callback function
      * including the ExposeBuilder object
      */
-    public static function flattenKeys(?array $array = [], ?string $delimiter = '.', ?bool $lowerKey = true, ?string $context = null): ?array
+    public static function process(array $collection = [], string $delimiter = '.', bool $lowerKey = true, string $context = null): ?array
     {
         // nothing passed
-        if (!isset($array)) {
+        if (!isset($collection)) {
             return null;
         }
         
         $ret = [];
         
-        foreach ($array as $key => $value) {
+        foreach ($collection as $key => $value) {
             
             // handle our special attribute
             if (is_bool($key)) {
@@ -63,7 +71,7 @@ class Transform
             }
             
             if (is_array($value)) {
-                $subRet = self::flattenKeys($value, $delimiter, $lowerKey, $currentKey);
+                $subRet = self::process($value, $delimiter, $lowerKey, $currentKey);
                 if (is_array($subRet)) {
                     $ret = array_merge_recursive($ret, $subRet);
                 }

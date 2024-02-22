@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Utils;
+namespace Zemit\Support;
 
 use Transliterator;
 

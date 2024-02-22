@@ -25,8 +25,8 @@ use Phalcon\Mvc\ModelInterface;
 use Shuchkin\SimpleXLSXGen;
 use Zemit\Di\Injectable;
 use Zemit\Http\StatusCode;
-use Zemit\Utils;
-use Zemit\Utils\Slug;
+use Zemit\Support\Slug;
+use Zemit\Support\Utils;
 
 class Rest extends \Zemit\Mvc\Controller
 {
@@ -36,7 +36,7 @@ class Rest extends \Zemit\Mvc\Controller
     /**
      * @throws Exception
      */
-    public function indexAction(string|int $id = null): void
+    public function indexAction(string|int $id = null)
     {
         $this->restForwarding($id);
     }
@@ -74,7 +74,7 @@ class Rest extends \Zemit\Mvc\Controller
     /**
      * Retrieving a single record
      */
-    public function getAction(string|int $id = null): false|ResponseInterface
+    public function getAction(string|int $id = null): bool|ResponseInterface
     {
         $modelName = $this->getModelClassName();
         $single = $this->getSingle($id, $modelName, null);
@@ -692,14 +692,14 @@ class Rest extends \Zemit\Mvc\Controller
     }
     
     /**
-     * Sending an error as an http response
+     * Set the REST response error
      *
-     * @param null $error
-     * @param null $response
-     *
-     * @return ResponseInterface
+     * @param int $code The HTTP status code (default: 400)
+     * @param string $status The status message (default: 'Bad Request')
+     * @param mixed $response The response body (default: null)
+     * @return ResponseInterface The REST response object
      */
-    public function setRestErrorResponse($code = 400, $status = 'Bad Request', $response = null)
+    public function setRestErrorResponse(int $code = 400, string $status = 'Bad Request', mixed $response = null): ResponseInterface
     {
         return $this->setRestResponse($response, $code, $status);
     }
@@ -715,7 +715,7 @@ class Rest extends \Zemit\Mvc\Controller
      *
      * @return ResponseInterface
      */
-    public function setRestResponse($response = null, int $code = null, string $status = null, int $jsonOptions = 0, int $depth = 512): ResponseInterface
+    public function setRestResponse(mixed $response = null, int $code = null, string $status = null, int $jsonOptions = 0, int $depth = 512): ResponseInterface
     {
         $debug = $this->isDebugEnabled();
         
@@ -726,7 +726,7 @@ class Rest extends \Zemit\Mvc\Controller
         $status ??= $reasonPhrase ?: StatusCode::getMessage($code);
         
         $view = $this->view->getParamsToView();
-        $hash = hash('sha512', json_encode($view));
+        $hash = hash('sha512', json_encode($view)); // @todo store hash in cache layer with response content
         
         // set response status code
         $this->response->setStatusCode($code, $code . ' ' . $status);

@@ -24,7 +24,7 @@ use Zemit\Identity;
 use Zemit\Locale;
 use Zemit\Mvc\View;
 use Zemit\Provider\Jwt\Jwt;
-use Zemit\Utils;
+use Zemit\Support\Utils;
 
 /**
  * @property Bootstrap\Config $config
@@ -41,7 +41,7 @@ use Zemit\Utils;
  * @property Identity $identity
  * @property Locale $locale
  * @property Logger $logger
- * @property Utils $utils
+ * @property \Zemit\Support\Utils $utils
  * @property LoremIpsum $loremIpsum
  * @property OpenAi $openAi
  */

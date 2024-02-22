@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Utils\RecursiveIterator\Filter;
+namespace Zemit\Support\RecursiveIterator\Filter;
 
-class Files extends \RecursiveFilterIterator
+class Folders extends \RecursiveFilterIterator
 {
     public function accept(): bool
     {
@@ -22,7 +22,7 @@ class Files extends \RecursiveFilterIterator
             return true;
         }
         
-        // filter entries, only allow true files
-        return $iterator->current()->isFile();
+        // filter entries, only allow true folders
+        return !$iterator->current()->isFile();
     }
 }

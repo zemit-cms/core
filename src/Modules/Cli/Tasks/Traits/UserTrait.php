@@ -12,11 +12,10 @@
 namespace Zemit\Modules\Cli\Tasks\Traits;
 
 use Phalcon\Db\Column;
-use Zemit\Models\Interfaces\UserInterface;
 use Zemit\Models\Role;
 use Zemit\Models\User;
 use Zemit\Models\UserRole;
-use Zemit\Utils;
+use Zemit\Support\Utils;
 
 trait UserTrait
 {

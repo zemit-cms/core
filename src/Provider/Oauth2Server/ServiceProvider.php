@@ -11,16 +11,16 @@
 
 namespace Zemit\Provider\Oauth2Server;
 
-use Phalcon\Di\DiInterface;
-use Zemit\Provider\AbstractServiceProvider;
-use Zemit\Utils\Env;
-use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\AuthorizationServer;
+use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
+use League\OAuth2\Server\Grant\ClientCredentialsGrant;
 use League\OAuth2\Server\Grant\ImplicitGrant;
 use League\OAuth2\Server\Grant\PasswordGrant;
 use League\OAuth2\Server\Grant\RefreshTokenGrant;
-use League\OAuth2\Server\Grant\ClientCredentialsGrant;
+use Phalcon\Di\DiInterface;
+use Zemit\Provider\AbstractServiceProvider;
+use Zemit\Support\Env;
 
 /**
  * @todo

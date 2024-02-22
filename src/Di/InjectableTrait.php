@@ -45,7 +45,7 @@ use Phalcon\Di\DiInterface;
  * @property \Zemit\Debug $debug
  * @property \Zemit\Identity $identity
  * @property \Zemit\Locale $locale
- * @property \Zemit\Utils $utils
+ * @property \Zemit\Support\Utils $utils
  * @property \Zemit\Profiler $profiler
  * @property \Zemit\Logger $logger
  * @property \Zemit\Jwt $jwt

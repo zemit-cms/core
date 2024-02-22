@@ -14,10 +14,10 @@ namespace Zemit\Modules\Cli\Tasks;
 use Phalcon\Db\Column;
 use Phalcon\Db\ColumnInterface;
 use Phalcon\Mvc\Model\Relation;
+use Zemit\Modules\Cli\Task;
 use Zemit\Mvc\Model;
 use Zemit\Support\Helper;
-use Zemit\Modules\Cli\Task;
-use Zemit\Utils\Slug;
+use Zemit\Support\Slug;
 
 class ScaffoldTask extends Task
 {

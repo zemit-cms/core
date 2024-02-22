@@ -14,7 +14,7 @@ namespace Zemit\Modules\Cli\Tasks;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Zemit\Modules\Cli\Task;
 use Zemit\Mvc\Model;
-use Zemit\Utils;
+use Zemit\Support\Utils;
 
 class DataLifeCycleTask extends Task
 {

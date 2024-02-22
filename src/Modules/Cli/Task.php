@@ -15,7 +15,7 @@ use Phalcon\Cli\Dispatcher;
 use Zemit\Exception\CliException;
 use Zemit\Http\StatusCode;
 use Zemit\Support\Helper;
-use Zemit\Utils;
+use Zemit\Support\Utils;
 
 class Task extends \Zemit\Cli\Task
 {

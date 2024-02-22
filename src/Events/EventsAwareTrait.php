@@ -13,7 +13,7 @@ namespace Zemit\Events;
 
 use Phalcon\Di\Di;
 use Phalcon\Events\ManagerInterface;
-use Zemit\Utils\Slug;
+use Zemit\Support\Slug;
 
 /**
  * The EventsAwareTrait provides methods for managing events within a class.

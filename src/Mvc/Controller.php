@@ -19,8 +19,8 @@ use Zemit\Escaper;
 use Zemit\Filter;
 use Zemit\Http\Request;
 use Zemit\Identity;
+use Zemit\Support\Utils;
 use Zemit\Tag;
-use Zemit\Utils;
 
 /**
  * Class Controller

@@ -13,7 +13,7 @@ namespace Zemit\Provider\Env;
 
 use Phalcon\Di\DiInterface;
 use Zemit\Provider\AbstractServiceProvider;
-use Zemit\Utils\Env;
+use Zemit\Support\Env;
 
 class ServiceProvider extends AbstractServiceProvider
 {

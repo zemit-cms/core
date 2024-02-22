@@ -12,7 +12,7 @@
 namespace Zemit\Mvc;
 
 use Zemit\Support\Helper;
-use Zemit\Utils\Slug;
+use Zemit\Support\Slug;
 
 /**
  * {@inheritdoc}
