@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Zemit\Tests\Unit;
 
-//use Zemit\Utils\Transform;
-use Zemit\Utils;
-use Zemit\Utils\Transform;
+use Zemit\Support\Helper;
+use Zemit\Support\HelperFactory;
+use Zemit\Support\Utils;
 
 /**
  * Class ProviderTest
@@ -139,7 +139,12 @@ class UtilsTest extends AbstractUnit
         foreach ($collection as $key => $item) {
             $this->assertEquals(
                 $item['assert'],
-                Transform::flattenKeys($item['transform']),
+                Helper::flattenKeys($item['transform']),
+                'Transform::flattenKeys failed for key `' . $key . '`'
+            );
+            $this->assertEquals(
+                $item['assert'],
+                (new HelperFactory())->flattenKeys($item['transform']),
                 'Transform::flattenKeys failed for key `' . $key . '`'
             );
         }
@@ -160,7 +165,7 @@ class UtilsTest extends AbstractUnit
         $this->assertEquals(__NAMESPACE__, $namespace);
         
         $namespace = Utils::getNamespace(new Utils());
-        $this->assertEquals('Zemit', $namespace);
+        $this->assertEquals('Zemit\\Support', $namespace);
     }
     
     public function testGetDirname(): void
@@ -170,7 +175,7 @@ class UtilsTest extends AbstractUnit
         $this->assertEquals(__DIR__, $dirname);
         
         $dirname = Utils::getDirname(new Utils());
-        $this->assertEquals(dirname(__DIR__, 2) . '/src', $dirname);
+        $this->assertEquals(dirname(__DIR__, 2) . '/src/Support', $dirname);
     }
     
     public function testGetMemoryUsage(): void

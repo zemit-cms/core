@@ -12,14 +12,14 @@ declare(strict_types=1);
 
 namespace Zemit\Tests\Unit;
 
+use Phalcon\Autoload\Loader;
 use Phalcon\Db\Adapter\Pdo\Mysql;
-use PHPUnit\Framework\TestCase;
 use Phalcon\Di\DiInterface;
+use PHPUnit\Framework\TestCase;
 use Zemit\Bootstrap;
 use Zemit\Bootstrap\Config;
 use Zemit\Exception;
-use Zemit\Utils\Env;
-use Phalcon\Autoload\Loader;
+use Zemit\Support\Env;
 
 /**
  * Class AbstractUnitTest
