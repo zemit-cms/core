@@ -22,7 +22,7 @@ class DatabaseTask extends Task
     
     public string $cliDoc = <<<DOC
 Usage:
-  php zemit cli database <action> [<params> ...]
+  zemit cli database <action> [<params> ...]
 
 Options:
   task: database

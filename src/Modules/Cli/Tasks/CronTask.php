@@ -17,7 +17,7 @@ class CronTask extends Task
 {
     public string $cliDoc = <<<DOC
 Usage:
-  php zemit cli cron <action> [<params> ...]
+  zemit cli cron <action> [<params> ...]
 
 Options:
   task: cron

@@ -17,7 +17,7 @@ class BuildTask extends Task
 {
     public string $cliDoc = <<<DOC
 Usage:
-  php zemit cli build <action> [<params> ...]
+  zemit cli build <action> [<params> ...]
 
 Options:
   task: build

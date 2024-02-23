@@ -17,7 +17,7 @@ class CacheTask extends Task
 {
     public string $cliDoc = <<<DOC
 Usage:
-  php zemit cli cache <action> [<params> ...]
+  zemit cli cache <action> [<params> ...]
 
 Options:
   task: cache

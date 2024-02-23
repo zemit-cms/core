@@ -20,7 +20,7 @@ class DataLifeCycleTask extends Task
 {
     public string $cliDoc = <<<DOC
 Usage:
-  php zemit cli data-life-cycle <action> [<params> ...]
+  zemit cli data-life-cycle <action> [<params> ...]
 
 Options:
   task: cache

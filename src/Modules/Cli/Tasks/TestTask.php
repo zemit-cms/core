@@ -18,7 +18,7 @@ class TestTask extends Task
 {
     public string $cliDoc = <<<DOC
 Usage:
-  php zemit cli <task> [<action>] [<params> ...]
+  zemit cli <task> [<action>] [<params> ...]
 
 Options:
   task: memory

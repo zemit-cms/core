@@ -20,7 +20,7 @@ class UserTask extends Task
     
     public string $cliDoc = <<<DOC
 Usage:
-  php zemit cli user <action> [<params> ...]
+  zemit cli user <action> [<params> ...]
 
 Options:
   task: user
