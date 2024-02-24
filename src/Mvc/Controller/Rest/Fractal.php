@@ -99,7 +99,7 @@ trait Fractal
     /**
      * Transform the model using the fractal manager, serializer and transformer
      */
-    public function transformModel(ModelInterface $model, ?TransformerAbstract $transformer = null, ?Manager $fractalManager = null): array
+    public function transformModel(ModelInterface $model, ?TransformerAbstract $transformer = null, ?Manager $fractalManager = null): ?array
     {
         $fractalManager ??= $this->getFractalManager();
         $transformer ??= $this->getTransformer();
@@ -109,7 +109,7 @@ trait Fractal
     /**
      * Transform the resultset models using the fractal manager, serializer and transformer
      */
-    public function transformResultset(ResultsetInterface $resultset, ?TransformerAbstract $transformer = null, ?Manager $fractalManager = null): array
+    public function transformResultset(ResultsetInterface $resultset, ?TransformerAbstract $transformer = null, ?Manager $fractalManager = null): ?array
     {
         $fractalManager ??= $this->getFractalManager();
         $transformer ??= $this->getTransformer();
