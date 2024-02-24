@@ -143,15 +143,16 @@ class Jwt
      */
     public function getDefaultOptions(array $options = []): array
     {
-        $options['expiration'] ??= $this->options['expiration'] ?? null;
-        $options['notBefore'] ??= $this->options['notBefore'] ?? null;
-        $options['issuedAt'] ??= $this->options['issuedAt'] ?? null;
-        $options['issuer'] ??= $this->options['issuer'] ?? null;
-        $options['audience'] ??= $this->options['audience'] ?? null;
-        $options['contentType'] ??= $this->options['contentType'] ?? null;
-        $options['passphrase'] ??= $this->options['passphrase'] ?? null;
-        $options['id'] ??= $this->options['id'] ?? null;
-        $options['subject'] ??= $this->options['subject'] ?? null;
+        $now = new \DateTimeImmutable();
+        $options['expiration'] ??= $this->options['expiration'] ?? $now->modify('+1 day')->getTimestamp();
+        $options['notBefore'] ??= $this->options['notBefore'] ?? $now->modify('-1 minute')->getTimestamp();
+        $options['issuedAt'] ??= $this->options['issuedAt'] ?? $now->modify('now')->getTimestamp();
+        $options['issuer'] ??= $this->options['issuer'] ?? '';
+        $options['audience'] ??= $this->options['audience'] ?? '';
+        $options['contentType'] ??= $this->options['contentType'] ?? '';
+        $options['passphrase'] ??= $this->options['passphrase'] ?? '';
+        $options['id'] ??= $this->options['id'] ?? '';
+        $options['subject'] ??= $this->options['subject'] ?? '';
         
         return $options;
     }
