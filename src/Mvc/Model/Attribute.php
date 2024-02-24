@@ -11,7 +11,7 @@
 
 namespace Zemit\Mvc\Model;
 
-use Phalcon\Mvc\EntityInterface;
+use Phalcon\Mvc\ModelInterface;
 use Zemit\Mvc\Model\AbstractTrait\AbstractEntity;
 use Zemit\Mvc\Model\AbstractTrait\AbstractMetaData;
 use Zemit\Support\Helper;
@@ -28,7 +28,7 @@ trait Attribute
      */
     public function getAttribute(string $attribute)
     {
-        assert($this instanceof EntityInterface);
+        assert($this instanceof ModelInterface);
         if ($this->getModelsMetaData()->hasAttribute($this, $attribute)) {
             
             $method = 'get' . ucfirst(Helper::camelize($attribute));
@@ -50,7 +50,7 @@ trait Attribute
      */
     public function setAttribute(string $attribute, $value): void
     {
-        assert($this instanceof EntityInterface);
+        assert($this instanceof ModelInterface);
         if ($this->getModelsMetaData()->hasAttribute($this, $attribute)) {
             
             $method = 'set' . ucfirst(Helper::camelize($attribute));
