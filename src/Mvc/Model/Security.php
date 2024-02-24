@@ -11,14 +11,11 @@
 
 namespace Zemit\Mvc\Model;
 
-use Zemit\Mvc\Model\AbstractTrait\AbstractBehavior;
-use Zemit\Mvc\Model\AbstractTrait\AbstractInjectable;
 use Zemit\Mvc\Model\Behavior\Security as SecurityBehavior;
 
 trait Security
 {
-    use AbstractInjectable;
-    use AbstractBehavior;
+    use Behavior;
     use Options;
     
     /**
@@ -28,7 +25,7 @@ trait Security
     {
         $options ??= $this->getOptionsManager()->get('security') ?? [];
         
-        $this->addBehavior(new SecurityBehavior($options));
+        $this->setSecurityBehavior(new SecurityBehavior($options));
     }
     
     /**
