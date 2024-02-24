@@ -11,10 +11,12 @@
 
 namespace Zemit\Mvc\Model\Behavior;
 
+use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Mvc\ModelInterface;
 use Zemit\Models\Audit;
 use Zemit\Models\AuditDetail;
+use Zemit\Models\Interfaces\AbstractInterface;
 use Zemit\Models\Interfaces\AuditDetailInterface;
 use Zemit\Models\Interfaces\AuditInterface;
 use Zemit\Models\User;
@@ -74,7 +76,7 @@ class Blameable extends Behavior
      * Create new audit
      * Return true if the audit was created
      */
-    public function createAudit(string $type, ModelInterface $model): bool
+    public function createAudit(string $type, AbstractInterface $model): bool
     {
         $event = lcfirst(Helper::uncamelize(str_replace(['before', 'after'], ['', ''], $type)));
         
@@ -89,6 +91,7 @@ class Blameable extends Behavior
         
         $audit = new $auditClass();
         assert($audit instanceof AuditInterface);
+        assert($audit instanceof Model);
         
         $audit->setModel(get_class($model));
         $audit->setTable($model->getSource());

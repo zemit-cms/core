@@ -16,6 +16,4 @@ interface AbstractInterface extends ModelInterface
 {
     public function setId($id);
     public function getId();
-    
-    public function toArray($columns = null, $useGetter = true): array;
 }
