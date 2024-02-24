@@ -23,7 +23,10 @@ trait ExportAction {
         $find = $this->getFind();
         $with = $model::findWith($this->getExportWith() ?: [], $find ?: []);
         $list = $this->exportExpose($with);
-        if ($this->download($list)) die; // @todo avoid sending response instead of die
+        if ($this->download($list)) {
+            // @todo avoid sending response instead of die
+            die;
+        }
     }
     
 }
