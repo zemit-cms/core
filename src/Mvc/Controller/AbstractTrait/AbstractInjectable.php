@@ -31,16 +31,16 @@ use Zemit\Support\HelperFactory;
  * and depend on a dependency injection container.
  * 
  * @property Loader $loader
- * @property View $view;
- * @property Router $router;
- * @property Response $response;
- * @property Request $request;
- * @property Filter $filter;
- * @property Dispatcher $dispatcher;
- * @property ModelsManager $modelsManager;
- * @property EventsManager $eventsManager;
- * @property Identity $identity;
- * @property HelperFactory $helper;
+ * @property View $view
+ * @property Router $router
+ * @property Response $response
+ * @property Request $request
+ * @property Filter $filter
+ * @property Dispatcher $dispatcher
+ * @property ModelsManager $modelsManager
+ * @property EventsManager $eventsManager
+ * @property Identity $identity
+ * @property HelperFactory $helper
  */
 trait AbstractInjectable
 {
