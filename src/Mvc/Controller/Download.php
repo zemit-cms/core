@@ -35,7 +35,7 @@ trait Download {
     {
         $params ??= $this->getParams();
         
-        $contentType = strtolower($params['contentType'] ?? $params['content-type'] ?? $this->request->getContentType());
+        $contentType = strtolower($params['contentType'] ?? $params['content-type'] ?? $this->request->getContentType() ?? '');
         
         switch ($contentType) {
             case 'html':
