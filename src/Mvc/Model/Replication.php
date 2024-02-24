@@ -22,6 +22,10 @@ use Zemit\Mvc\Model\AbstractTrait\AbstractInjectable;
  */
 trait Replication
 {
+    abstract public function setConnectionService(string $connectionService): void;
+    abstract public function setReadConnectionService(string $connectionService): void;
+    abstract public function setWriteConnectionService(string $connectionService): void;
+    
     use AbstractInjectable;
     use Options;
     
@@ -92,9 +96,13 @@ trait Replication
     /**
      * Dynamically selects a shard
      * - Prefer to read on the write master during the replica delay
+     * 
+     * Possible parameters which can be added if required
+     * ?array $intermediate = null, array $bindParams = [], array $bindTypes = []
+     * 
      * @return AdapterInterface
      */
-    public function selectReadConnection(?array $intermediate = null, array $bindParams = [], array $bindTypes = [])
+    public function selectReadConnection(): AdapterInterface
     {
         $di = $this->getDI();
         
