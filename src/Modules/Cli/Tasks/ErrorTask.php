@@ -11,7 +11,6 @@
 
 namespace Zemit\Modules\Cli\Tasks;
 
-use JetBrains\PhpStorm\NoReturn;
 use Phalcon\Http\ResponseInterface;
 use Zemit\Exception\CliException;
 use Zemit\Http\StatusCode;
@@ -23,13 +22,14 @@ class ErrorTask extends Task
     use Errors;
     
     /**
-     * @param int|null $code The status code to set. Defaults to 500 if not provided.
-     * @param string|null $message The status message to set. Defaults to null if not provided.
-     * @return ResponseInterface The response object.
-     * @throws CliException
+     * Set the status code for the response. Immediately throw a CliException.
+     *
+     * @param int $code The status code to set. Defaults to 500 if not provided.
+     * @param string|null $message The optional message to associate with the status code.
+     *
+     * @throws CliException If an error occurs while setting the status code.
      */
-    #[NoReturn]
-    public function setStatusCode(?int $code = 500, ?string $message = null): ResponseInterface
+    public function setStatusCode(int $code = 500, ?string $message = null): ResponseInterface
     {
         throw new CliException('Error: ' . $code . ' - ' . StatusCode::getMessage($code));
     }
