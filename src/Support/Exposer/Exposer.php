@@ -39,7 +39,7 @@ use Zemit\Mvc\Model;
  */
 class Exposer
 {
-    public static function createBuilder($object, ?array $columns = null, ?bool $expose = null, ?bool $protected = null): Builder
+    public static function createBuilder(mixed $object, ?array $columns = null, ?bool $expose = null, ?bool $protected = null): Builder
     {
         $expose ??= true;
         $protected ??= false;
@@ -52,7 +52,7 @@ class Exposer
         return $builder;
     }
     
-    private static function getValue(string $string, $value): string
+    private static function getValue(string $string, mixed $value): string
     {
         return (is_array($value) || is_object($value))
             ? sprintfn($string, $value)
