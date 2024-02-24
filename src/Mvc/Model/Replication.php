@@ -13,6 +13,7 @@ namespace Zemit\Mvc\Model;
 
 use Phalcon\Config\ConfigInterface;
 use Phalcon\Db\Adapter\AdapterInterface;
+use Zemit\Mvc\Model\AbstractTrait\AbstractEventsManager;
 use Zemit\Mvc\Model\AbstractTrait\AbstractInjectable;
 
 /**
@@ -25,7 +26,10 @@ trait Replication
     abstract public function setConnectionService(string $connectionService): void;
     abstract public function setReadConnectionService(string $connectionService): void;
     abstract public function setWriteConnectionService(string $connectionService): void;
+    abstract public function getWriteConnectionService(): string;
+    abstract public function getReadConnectionService(): string;
     
+    use AbstractEventsManager;
     use AbstractInjectable;
     use Options;
     
@@ -123,7 +127,7 @@ trait Replication
     public function addReadWriteConnectionBehavior(): void
     {
         $forceMasterConnectionService = function () {
-            self::setReplicationReadyAt(round(microtime(true) * 1000) + self::getReplicationLag());
+            self::setReplicationReadyAt(round(microtime(true) * 1000) + (float)self::getReplicationLag());
         };
         
         // @todo change to behavior or check if this is added multiple times
