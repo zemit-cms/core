@@ -13,13 +13,13 @@ namespace Zemit\Cli;
 
 use joshtronic\LoremIpsum;
 use Orhanerday\OpenAi\OpenAi;
-use Phalcon\Logger;
+use Phalcon\Logger\Logger;
 use Zemit\Bootstrap;
 use Zemit\Db\Profiler;
-use Zemit\Debug;
+use Zemit\Html\Escaper;
+use Zemit\Support\Debug;
 use Zemit\Encryption\Security;
-use Zemit\Escaper;
-use Zemit\Filter;
+use Zemit\Filter\Filter;
 use Zemit\Identity;
 use Zemit\Locale;
 use Zemit\Mvc\View;
@@ -41,7 +41,7 @@ use Zemit\Support\Utils;
  * @property Identity $identity
  * @property Locale $locale
  * @property Logger $logger
- * @property \Zemit\Support\Utils $utils
+ * @property Utils $utils
  * @property LoremIpsum $loremIpsum
  * @property OpenAi $openAi
  */
