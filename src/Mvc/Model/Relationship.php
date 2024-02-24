@@ -137,13 +137,13 @@ trait Relationship
     }
     
     /**
-     * {@inheritDoc}}
+     * {@inheritDoc}
      * @throws Exception
      */
     public function assign(array $data, $whiteList = null, $dataColumnMap = null): ModelInterface
     {
-        $this->assignRelated(...func_get_args());
-        return parent::assign(...func_get_args());
+        $this->assignRelated($data, $whiteList, $dataColumnMap);
+        return parent::assign($data, $whiteList, $dataColumnMap);
     }
     
     /**
@@ -158,13 +158,13 @@ trait Relationship
      * [alias => [false, 1, 2, 4]]; // delete 3
      *
      * @param array $data
-     * @param null $whiteList
-     * @param null $dataColumnMap
+     * @param array|null $whiteList
+     * @param array|null $dataColumnMap
      *
-     * @return $this|ModelInterface
+     * @return ModelInterface
      * @throws Exception
      */
-    public function assignRelated(array $data, $whiteList = null, $dataColumnMap = null): ModelInterface
+    public function assignRelated(array $data, ?array $whiteList = null, ?array $dataColumnMap = null): ModelInterface
     {
         // no data, nothing to do
         if (empty($data)) {
