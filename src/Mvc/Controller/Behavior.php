@@ -73,7 +73,7 @@ trait Behavior
         $event = new $behavior();
         
         // inject DI
-        if ($event instanceof Injectable || method_exists($event, 'setDI')) {
+        if (method_exists($event, 'setDI')) {
             $event->setDI($this->getDI());
         }
         
