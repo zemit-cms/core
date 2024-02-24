@@ -12,8 +12,8 @@
 namespace Zemit\Mvc\Dispatcher;
 
 use Phalcon\Dispatcher\AbstractDispatcher;
+use Phalcon\Dispatcher\Exception;
 use Phalcon\Events\Event;
-use Phalcon\Exception;
 use Zemit\Config\ConfigInterface;
 use Zemit\Di\Injectable;
 use Zemit\Exception\HttpException;
@@ -30,11 +30,15 @@ class Maintenance extends Injectable
     public const DEFAULT_MAINTENANCE_ACTION = 'maintenance';
     
     /**
-     * @param Event $event
-     * @param Dispatcher $dispatcher
+     * Executed before dispatching a request.
      *
-     * @throws HttpException Throws a maintenance in progress exception 503 if not maintenance router provided
-     * @throws Exception Throws a phalcon exception if the dispatcher fail to dispatch to the maintenance route
+     * @param Event $event The event object.
+     * @param AbstractDispatcher $dispatcher The dispatcher object.
+     *
+     * @return void
+     *
+     * @throws HttpException When maintenance mode is activated but no maintenance route is defined.
+     * @throws Exception If an error happened during the dispatch forwarding to the maintenance route
      */
     public function beforeDispatch(Event $event, AbstractDispatcher $dispatcher): void
     {
@@ -43,15 +47,15 @@ class Maintenance extends Injectable
         
         $maintenance = $config->path('app.maintenance', false);
         if ($maintenance) {
-            $route = $config->pathToArray('router.maintenance');
-            if ($route) {
-                $route['module'] ??= self::DEFAULT_MAINTENANCE_MODULE;
-                $route['controller'] ??= self::DEFAULT_MAINTENANCE_CONTROLLER;
-                $route['action'] ??= self::DEFAULT_MAINTENANCE_ACTION;
-                $dispatcher->forward($route, true);
-            }
-            else {
-                throw new HttpException('Maintenance mode is activated but no maintenance route is defined.', 503);
+            $route = $config->pathToArray('router.maintenance') ?? [];
+            $route['module'] ??= self::DEFAULT_MAINTENANCE_MODULE;
+            $route['controller'] ??= self::DEFAULT_MAINTENANCE_CONTROLLER;
+            $route['action'] ??= self::DEFAULT_MAINTENANCE_ACTION;
+            
+            $dispatcher->forward($route, true);
+            
+            if ($event->isCancelable()) {
+                $event->stop();
             }
         }
     }
