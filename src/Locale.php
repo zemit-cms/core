@@ -46,8 +46,6 @@ class Locale extends Injectable implements OptionsInterface
      * Locale mode
      * Locale::MODE_DEFAULT 'default' (Router -> http)
      * Locale::MODE_SESSION 'session' (Router -> session -> http)
-     * Locale::MODE_GEOIP 'geoip' (Router -> geoip -> http)
-     * Locale::MODE_SESSION_GEOIP 'session_geoip' (Router -> session -> geoip -> http)
      */
     public string $mode = self::MODE_DEFAULT;
     
@@ -228,7 +226,7 @@ class Locale extends Injectable implements OptionsInterface
         $locale ??= $this->getLocale();
         
         // save into session
-        $force = $force || $this->mode === self::MODE_SESSION || $this->mode === self::MODE_SESSION_GEOIP;
+        $force = $force || $this->mode === self::MODE_SESSION;
         if ($force) {
             $this->session->set($this->sessionKey, $locale);
         }
