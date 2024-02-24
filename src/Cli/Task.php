@@ -28,6 +28,7 @@ use Zemit\Provider\Jwt\Jwt;
 use Zemit\Support\Utils;
 
 /**
+ * @property Console $console
  * @property Config $config
  * @property Bootstrap $bootstrap
  * @property Debug $debug
