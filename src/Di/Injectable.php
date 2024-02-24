@@ -47,6 +47,9 @@ namespace Zemit\Di;
  * 
  * @property \Zemit\Acl\Acl $acl
  * @property \Zemit\Support\HelperFactory $helper
+ * @property \Zemit\Bootstrap\Config $config
+ * 
+ * // @todo review Phalcon & Zemit DI
  */
 class Injectable extends \Phalcon\Di\Injectable implements \Phalcon\Di\InjectionAwareInterface
 {
