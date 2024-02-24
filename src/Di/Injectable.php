@@ -27,9 +27,7 @@ namespace Zemit\Di;
  * @property \Phalcon\Session\ManagerInterface $session
  * @property \Phalcon\Events\Manager|\Phalcon\Events\ManagerInterface $eventsManager
  * @property \Phalcon\Db\Adapter\AdapterInterface $db
-// * @property \Phalcon\Encryption\Security $security
  * @property \Phalcon\Encryption\Crypt|\Phalcon\Encryption\Crypt\CryptInterface $crypt
- * @property \Phalcon\Html\TagFactory $tag
  * @property \Phalcon\Html\Escaper|\Phalcon\Html\Escaper\EscaperInterface $escaper
  * @property \Phalcon\Annotations\Adapter\Memory|\Phalcon\Annotations\Adapter $annotations
  * @property \Phalcon\Mvc\Model\Manager|\Phalcon\Mvc\Model\ManagerInterface $modelsManager
@@ -43,11 +41,12 @@ namespace Zemit\Di;
  * @property \Zemit\Identity $identity
  * @property \Zemit\Locale $locale
  * @property \Zemit\Encryption\Security $security
-// * @property \Zemit\Tag $tag
+ * @property \Zemit\Tag $tag
  * 
  * @property \Zemit\Acl\Acl $acl
  * @property \Zemit\Support\HelperFactory $helper
  * @property \Zemit\Bootstrap\Config $config
+ * @property \Phalcon\Logger\Logger $logger
  * 
  * // @todo review Phalcon & Zemit DI
  */
