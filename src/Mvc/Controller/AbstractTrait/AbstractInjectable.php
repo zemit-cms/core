@@ -11,8 +11,37 @@
 
 namespace Zemit\Mvc\Controller\AbstractTrait;
 
+use Phalcon\Autoload\Loader;
 use Phalcon\Di\DiInterface;
+use Phalcon\Events\Manager as EventsManager;
+use Phalcon\Http\Response;
+use Zemit\Filter\Filter;
+use Zemit\Http\Request;
+use Zemit\Identity;
+use Zemit\Mvc\Dispatcher;
+use Zemit\Mvc\Model\Manager as ModelsManager;
+use Zemit\Mvc\Router;
+use Zemit\Mvc\View;
+use Zemit\Support\HelperFactory;
 
+/**
+ * Trait AbstractInjectable
+ *
+ * This trait provides a common interface for classes that are injectable
+ * and depend on a dependency injection container.
+ * 
+ * @property Loader $loader
+ * @property View $view;
+ * @property Router $router;
+ * @property Response $response;
+ * @property Request $request;
+ * @property Filter $filter;
+ * @property Dispatcher $dispatcher;
+ * @property ModelsManager $modelsManager;
+ * @property EventsManager $eventsManager;
+ * @property Identity $identity;
+ * @property HelperFactory $helper;
+ */
 trait AbstractInjectable
 {
     abstract public function setDI(DiInterface $di): void;

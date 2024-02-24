@@ -9,13 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Controller\Rest;
+namespace Zemit\Mvc\Controller;
 
-trait Allowed
+use Zemit\Mvc\Controller\Rest\Actions;
+use Zemit\Mvc\Controller\Rest\Expose;
+
+class Restful extends Rest
 {
-    protected ?array $allowedSearchFields;
+    use Model;
     
-    protected ?array $allowedSaveFields;
-    
-    protected ?array $allowedFilterFields;
+    // Rest Helpers
+    use Expose;
+    use Actions;
 }

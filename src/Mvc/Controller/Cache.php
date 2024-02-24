@@ -9,13 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Controller\Rest;
+namespace Zemit\Mvc\Controller;
 
-trait Allowed
+trait Cache
 {
-    protected ?array $allowedSearchFields;
     
-    protected ?array $allowedSaveFields;
-    
-    protected ?array $allowedFilterFields;
 }

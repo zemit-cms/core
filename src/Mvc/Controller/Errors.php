@@ -11,6 +11,7 @@
 
 namespace Zemit\Mvc\Controller;
 
+use JetBrains\PhpStorm\NoReturn;
 use Phalcon\Http\ResponseInterface;
 
 /**

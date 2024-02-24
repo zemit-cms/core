@@ -11,17 +11,15 @@
 
 namespace Zemit\Mvc\Controller;
 
-use Zemit\Mvc\Controller\Rest\Fractal;
-use Zemit\Mvc\Controller\Rest\Response;
-
-class Rest extends \Zemit\Mvc\Controller
-{
-    // Helpers
-    use Debug;
-    use Behavior;
+trait Debug {
     
-    // Rest Helpers
-    use Params;
-    use Fractal;
-    use Response;
+    /**
+     * Returns whether debug mode is enabled.
+     *
+     * @return bool True if debug mode is enabled, false otherwise.
+     */
+    public function isDebugEnabled(): bool
+    {
+        return $this->config->path('app.debug') ?? false;
+    }
 }

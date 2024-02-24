@@ -24,13 +24,11 @@ use Zemit\Support\Slug;
 
 /**
  * Trait Model
- *
- *
- *
- * @package Zemit\Mvc\Controller
  */
 trait Model
 {
+    use Params;
+    
     protected $_bind = [];
     protected $_bindTypes = [];
     
@@ -871,62 +869,6 @@ trait Model
     }
     
     /**
-     * Get requested content type
-     * - Default will return csv
-     *
-     * @param array|null $params
-     *
-     * @return string
-     * @throws \Exception
-     */
-    public function getContentType(?array $params = null)
-    {
-        $params ??= $this->getParams();
-        
-        $contentType = strtolower($params['contentType'] ?? $params['content-type'] ?? 'json');
-        
-        switch ($contentType) {
-            case 'html':
-            case 'text/html':
-            case 'application/html':
-                // html not supported yet
-                break;
-            
-            case 'xml':
-            case 'text/xml':
-            case 'application/xml':
-                // xml not supported yet
-                break;
-            
-            case 'text':
-            case 'text/plain':
-                // plain text not supported yet
-                break;
-            
-            case 'json':
-            case 'text/json':
-            case 'application/json':
-                return 'json';
-            
-            case 'csv':
-            case 'text/csv':
-                return 'csv';
-            
-            case 'xlsx':
-            case 'application/xlsx':
-            case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-                return 'xlsx';
-            
-            case 'xls':
-            case 'application/vnd.ms-excel':
-                // old xls not supported yet
-                break;
-        }
-        
-        throw new \Exception('`' . $contentType . '` is not supported.', 400);
-    }
-    
-    /**
      * Get find definition
      *
      * @return array
@@ -976,56 +918,6 @@ trait Model
 //        }
         
         return array_filter($find);
-    }
-    
-    /**
-     * @todo refactor this to support new filter->sanitize parameters
-     *
-     * @param string $key
-     * @param string[]|string|null $filters
-     * @param string|null $default
-     * @param array|null $params
-     *
-     * @return string[]|string|null
-     */
-    public function getParam(string $key, $filters = null, string $default = null, array $params = null)
-    {
-        $params ??= $this->getParams();
-        
-        return isset($params[$key])
-            ? ($filters? $this->filter->sanitize($params[$key], $filters) : $params[$key])
-            : $this->dispatcher->getParam($key, $filters, $default);
-    }
-    
-    /**
-     * Get parameters from
-     * - JsonRawBody, post, put or get
-     * @return mixed
-     */
-    protected function getParams(array $filters = null)
-    {
-        /** @var Request $request */
-        $request = $this->request;
-        
-        if (!empty($filters)) {
-            foreach ($filters as $filter) {
-                $request->setParameterFilters($filter['name'], $filter['filters'], $filter['scope']);
-            }
-        }
-
-//        $params = empty($request->getRawBody()) ? [] : $request->getJsonRawBody(true); // @TODO handle this differently
-        $params = array_merge_recursive(
-            $request->getFilteredQuery(), // $_GET
-            $request->getFilteredPut(), // $_PUT
-            $request->getFilteredPost(), // $_POST
-        );
-        
-        // @todo see if we can prevent phalcon from returning this
-        if (isset($params['_url'])) {
-            unset($params['_url']);
-        }
-        
-        return $params;
     }
     
     /**
@@ -1186,61 +1078,5 @@ trait Model
         }
         
         return class_exists($model) && new $model() instanceof ModelInterface ? $model : null;
-    }
-    
-    /**
-     * Get message from list of entities
-     *
-     * @param $list Resultset|\Phalcon\Mvc\Model
-     *
-     * @return array|bool
-     * @deprecated
-     *
-     */
-    public function getRestMessages($list = null)
-    {
-        if (!is_array($list)) {
-            $list = [$list];
-        }
-        
-        $ret = [];
-        
-        foreach ($list as $single) {
-            
-            if ($single) {
-                
-                /** @var Messages $validations */
-                $messages = $single instanceof Message ? $list : $single->getMessages();
-                
-                if ($messages && (is_array($messages) || $messages instanceof \Traversable)) {
-                    
-                    foreach ($messages as $message) {
-                        
-                        $validationFields = $message->getField();
-                        
-                        if (!is_array($validationFields)) {
-                            $validationFields = [$validationFields];
-                        }
-                        
-                        foreach ($validationFields as $validationField) {
-                            
-                            if (empty($ret[$validationField])) {
-                                $ret[$validationField] = [];
-                            }
-                            
-                            $ret[$validationField][] = [
-                                'field' => $message->getField(),
-                                'code' => $message->getCode(),
-                                'type' => $message->getType(),
-                                'message' => $message->getMessage(),
-                                'metaData' => $message->getMetaData(),
-                            ];
-                        }
-                    }
-                }
-            }
-        }
-        
-        return $ret ?: false;
     }
 }

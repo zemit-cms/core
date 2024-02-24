@@ -1,22 +1,22 @@
 <?php
 
+/**
+ * This file is part of the Zemit Framework.
+ *
+ * (c) Zemit Team <contact@zemit.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
+
 namespace Zemit\Mvc\Controller\Rest;
 
 use Phalcon\Mvc\ModelInterface;
-use Zemit\Mvc\Controller\AbstractTrait\AbstractDispatcher;
 use Zemit\Mvc\Controller\AbstractTrait\AbstractInjectable;
-use Zemit\Mvc\Controller\AbstractTrait\AbstractLoader;
-use Zemit\Mvc\Controller\AbstractTrait\AbstractModelsManager;
-use Zemit\Mvc\Controller\AbstractTrait\AbstractRouter;
-use Zemit\Support\Helper;
 
 trait ModelName
 {
     use AbstractInjectable;
-    use AbstractLoader;
-    use AbstractDispatcher;
-    use AbstractRouter;
-    use AbstractModelsManager;
     
     protected ?string $modelName;
     protected ?array $modelNamespaces;
@@ -47,7 +47,7 @@ trait ModelName
     public function getModelNamespaces(): array
     {
         if (!$this->modelNamespaces) {
-            $this->modelNamespaces = $this->getLoader()->getNamespaces();
+            $this->modelNamespaces = $this->loader->getNamespaces();
         }
         
         return $this->modelNamespaces;
@@ -66,7 +66,13 @@ trait ModelName
      */
     public function getModelNameFromController(?array $namespaces = null, ?string $needle = 'Models'): ?string
     {
-        $model = ucfirst(Helper::camelize(Helper::uncamelize($this->getControllerName())));
+        $model = ucfirst(
+            $this->helper->camelize(
+                $this->helper->uncamelize(
+                    $this->getControllerName()
+                )
+            )
+        );
         
         if (class_exists($model)) {
             return $model;
@@ -90,7 +96,7 @@ trait ModelName
      */
     public function getControllerName(): string
     {
-        return $this->getDispatcher()->getControllerName()
+        return $this->dispatcher->getControllerName()
             ?: substr(basename(str_replace('\\', '/', get_class($this))), 0, -10);
     }
     
@@ -101,6 +107,6 @@ trait ModelName
     public function loadModel(?string $modelName = null): ModelInterface
     {
         $modelName ??= $this->getModelName();
-        return $this->getModelsManager()->load($modelName);
+        return $this->modelsManager->load($modelName);
     }
 }

@@ -11,8 +11,8 @@
 
 namespace Zemit\Modules\Api;
 
-use Zemit\Mvc\Controller\Rest;
+use Zemit\Mvc\Controller\Restful;
 
-class Controller extends Rest
+class Controller extends Restful
 {
 }
