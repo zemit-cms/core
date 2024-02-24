@@ -47,6 +47,7 @@ namespace Zemit\Di;
  * @property \Zemit\Support\HelperFactory $helper
  * @property \Zemit\Bootstrap\Config $config
  * @property \Phalcon\Logger\Logger $logger
+ * @property \Zemit\Db\Profiler $profiler
  * 
  * // @todo review Phalcon & Zemit DI
  */
