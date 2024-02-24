@@ -14,6 +14,7 @@ namespace Zemit\Cli;
 use joshtronic\LoremIpsum;
 use Orhanerday\OpenAi\OpenAi;
 use Phalcon\Logger\Logger;
+use Zemit\Bootstrap\Config;
 use Zemit\Bootstrap;
 use Zemit\Db\Profiler;
 use Zemit\Html\Escaper;
@@ -27,7 +28,7 @@ use Zemit\Provider\Jwt\Jwt;
 use Zemit\Support\Utils;
 
 /**
- * @property Bootstrap\Config $config
+ * @property Config $config
  * @property Bootstrap $bootstrap
  * @property Debug $debug
  * @property Router $router
