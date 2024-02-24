@@ -27,6 +27,7 @@ use Zemit\Models\Interfaces\RoleInterface;
 use Zemit\Models\Interfaces\SessionInterface;
 use Zemit\Models\Interfaces\UserInterface;
 use Zemit\Models\User;
+use Zemit\Mvc\Model;
 use Zemit\Mvc\Model\Behavior\Security as SecurityBehavior;
 use Zemit\Support\ModelsMap;
 use Zemit\Support\Options\Options;
@@ -949,7 +950,7 @@ class Identity extends Injectable implements OptionsInterface
     /**
      * Get the User from the database using the ID
      */
-    public function findUserById(int $id): ?ModelInterface
+    public function findUserById(int $id): ?Model
     {
         /** @var User $userClass */
         $userClass = $this->getUserClass();
@@ -963,7 +964,7 @@ class Identity extends Injectable implements OptionsInterface
     /**
      * Get the user from the database using the username or email
      */
-    public function findUser(string $string): ?ModelInterface
+    public function findUser(string $string): ?Model
     {
         /** @var User $userClass */
         $userClass = $this->getUserClass();
