@@ -89,13 +89,9 @@ trait InjectableTrait
     {
         if (!isset($this->container)) {
             $this->container = Di::getDefault();
-            
-            if (!$this->container) {
-                $this->container = new DI();
-            }    
         }
         
-        return $this->container;
+        return $this->container ?? new DI();
     }
     
     public function setDI(DiInterface $container): void
