@@ -12,13 +12,11 @@
 namespace Zemit\Mvc\Model;
 
 use Exception;
-use Zemit\Mvc\Model;
 use Zemit\Mvc\Model\Behavior\Position as PositionBehavior;
 
 trait Position
 {
-    use Model\AbstractTrait\AbstractBehavior;
-    use Attribute;
+    use Behavior;
     use Options;
     
     /**
@@ -50,13 +48,16 @@ trait Position
     }
     
     /**
-     * Re-ordering an entity
+     * Reorders the current object's position in the list.
      * - Update position+1 done using afterSave event
      *
-     * @return mixed
+     * @param int|null $position The new position for the object. If not provided, the default behavior's position field will be used.
+     * @param string|null $positionField The field on which the position is stored. If not provided, the default behavior's field will be used.
+     *
+     * @return bool Returns true if the reorder operation was successful, false otherwise.
      * @throws Exception
      */
-    public function reorder(?int $position = null, ?string $positionField = null)
+    public function reorder(?int $position = null, ?string $positionField = null): bool
     {
         $positionField ??= $this->getPositionBehavior()->getField();
         
