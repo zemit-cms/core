@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit;
+namespace Zemit\Filter;
 
 use Phalcon\Config\ConfigInterface;
 use Phalcon\Di\Di;
@@ -21,7 +21,7 @@ use Zemit\Filter\Sanitize\Md5;
 /**
  * {@inheritDoc}
  */
-class Filter extends \Phalcon\Filter
+class Filter extends \Phalcon\Filter\Filter
 {
     public ConfigInterface $config;
     
