@@ -958,7 +958,7 @@ class Identity extends Injectable implements OptionsInterface
             'id = :id:',
             'bind' => ['id' => $id],
             'bindTypes' => ['id' => Column::BIND_PARAM_INT],
-        ]) ?: null;
+        ]);
     }
     
     /**
@@ -978,6 +978,6 @@ class Identity extends Injectable implements OptionsInterface
                 'email' => Column::BIND_PARAM_STR,
                 'username' => Column::BIND_PARAM_STR,
             ],
-        ]) ?: null;
+        ]);
     }
 }
