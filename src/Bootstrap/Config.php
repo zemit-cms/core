@@ -1382,7 +1382,6 @@ class Config extends \Zemit\Config\Config
                     // Console (CLI)
                     'cli' => [
                         'components' => [
-                            Cli\Tasks\BuildTask::class => ['*'],
                             Cli\Tasks\CacheTask::class => ['*'],
                             Cli\Tasks\CronTask::class => ['*'],
                             Cli\Tasks\ErrorTask::class => ['*'],
