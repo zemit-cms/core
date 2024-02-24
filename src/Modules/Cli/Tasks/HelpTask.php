@@ -11,23 +11,30 @@
 
 namespace Zemit\Modules\Cli\Tasks;
 
-use Phalcon\Exception;
+use Phalcon\Dispatcher\Exception;
 use Zemit\Modules\Cli\Task;
 
 class HelpTask extends Task
 {
     public string $cliDoc = <<<DOC
 Usage:
-  zemit cli <task> [<action>] [<params> ...]
-
-Options:
-  task: build,cron,cache
-
+  zemit cli help cache
+  zemit cli help cron
+  zemit cli help database
+  zemit cli help data-life-cycle
+  zemit cli help scaffold
+  zemit cli help test
+  zemit cli help user
 
 DOC;
     
     /**
-     * @throws Exception
+     * Build Action
+     *
+     * This method executes the build action by forwarding the request to the build task's help action.
+     *
+     * @return void
+     * @throws Exception if there is an error during the forwarding process
      */
     public function buildAction(): void
     {
@@ -35,7 +42,12 @@ DOC;
     }
     
     /**
-     * @throws Exception
+     * Cron Action
+     *
+     * This method executes the cron action by forwarding the request to the cron task's help action.
+     *
+     * @return void
+     * @throws Exception if there is an error during the forwarding process
      */
     public function cronAction(): void
     {
@@ -43,7 +55,12 @@ DOC;
     }
     
     /**
-     * @throws Exception
+     * Cache Action
+     *
+     * This method executes the cache action by forwarding the request to the cache task's help action.
+     *
+     * @return void
+     * @throws Exception if there is an error during the forwarding process
      */
     public function cacheAction(): void
     {
