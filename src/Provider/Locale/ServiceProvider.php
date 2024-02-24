@@ -24,7 +24,7 @@ class ServiceProvider extends AbstractServiceProvider
     public array $defaultOptions = [
         'default' => 'en',
         'sessionKey' => 'zemit-locale',
-        'mode' => Locale::MODE_SESSION_GEOIP,
+        'mode' => Locale::MODE_DEFAULT,
         'allowed' => ['en'],
     ];
     
