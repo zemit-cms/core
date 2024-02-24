@@ -106,7 +106,7 @@ trait ModelName
      */
     public function loadModel(?string $modelName = null): ModelInterface
     {
-        $modelName ??= $this->getModelName();
+        $modelName ??= $this->getModelName() ?? '';
         return $this->modelsManager->load($modelName);
     }
 }
