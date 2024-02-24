@@ -43,16 +43,6 @@ class Locale extends Injectable implements OptionsInterface
     public const MODE_SESSION = 'session';
     
     /**
-     * Router -> geoip -> http
-     */
-    public const MODE_GEOIP = 'geoip';
-    
-    /**
-     * Router -> session -> geoip -> http
-     */
-    public const MODE_SESSION_GEOIP = 'session_geoip';
-    
-    /**
      * Locale mode
      * Locale::MODE_DEFAULT 'default' (Router -> http)
      * Locale::MODE_SESSION 'session' (Router -> session -> http)
@@ -172,47 +162,20 @@ class Locale extends Injectable implements OptionsInterface
      */
     public function prepare(?string $default = null): ?string
     {
-        switch ($this->mode) {
-            case self::MODE_SESSION:
-                $locale =
-                    $this->getFromRoute() ??
-                    $this->getFromSession() ??
-                    $this->getFromHttp() ??
-                    $default;
-                break;
-            
-            case self::MODE_GEOIP:
-                $locale =
-                    $this->getFromRoute() ??
-                    $this->getFromGeoIP() ??
-                    $this->getFromHttp() ??
-                    $default;
-                break;
-            
-            case self::MODE_SESSION_GEOIP:
-                $locale =
-                    $this->getFromRoute() ??
-                    $this->getFromSession() ??
-                    $this->getFromGeoIP() ??
-                    $this->getFromHttp() ??
-                    $default;
-                break;
-                
-            case self::MODE_HTTP:
-                $locale =
-                    $this->getFromRoute() ??
-                    $this->getFromHttp() ??
-                    $default;
-                break;
-            
-            case self::MODE_ROUTE:
-            case self::MODE_DEFAULT:
-            default:
-                $locale =
-                    $this->getFromRoute() ??
-                    $default;
-                break;
-        }
+        $locale = match ($this->mode) {
+            self::MODE_SESSION =>
+                $this->getFromRoute() ??
+                $this->getFromSession() ??
+                $this->getFromHttp() ??
+                $default,
+            self::MODE_HTTP =>
+                $this->getFromRoute() ??
+                $this->getFromHttp() ??
+                $default,
+            default =>
+                $this->getFromRoute() ??
+                $default,
+        };
         
         $locale ??= $this->locale;
         $this->setLocale($locale);
@@ -242,15 +205,6 @@ class Locale extends Injectable implements OptionsInterface
     public function getFromSession(?string $default = null): ?string
     {
         return $this->lookup($this->session->get($this->sessionKey, $default));
-    }
-    
-    /**
-     * Retrieves the locale from the geolocation
-     * @todo not ready yet
-     */
-    public function getFromGeoIP(?string $default = null): ?string
-    {
-        return $this->lookup($default);
     }
     
     /**
