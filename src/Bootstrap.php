@@ -71,8 +71,15 @@ Options:
   -d --debug              enable debug mode
   --format=<format>       change output returned value format (json, xml, serialized, raw, dump)
 
-The most commonly used zemit commands are:
-   deployment             Populate the database
+Tasks:
+  cache                  Wipe the cache
+  cron                   Run the scheduled task
+  database               Create, optimize, truncate or drop tables within the database
+  data-life-cycle        Delete old data based on the data life cycle definitions
+  scaffold               Generating files and folders structure
+  test                   Return the memory usage to see if the CLI works
+  user                   Manage the users and passwords
+
 DOC;
     
     /**
