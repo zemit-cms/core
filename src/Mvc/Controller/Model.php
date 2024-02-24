@@ -219,7 +219,7 @@ trait Model
     protected function getLimit(): ?int
     {
         $limit = (int)$this->getParam('limit', 'int', 1000);
-        return $limit === -1? null : abs($limit);
+        return $limit === -1? null : (int)abs($limit);
     }
     
     /**
@@ -394,17 +394,15 @@ trait Model
     }
     
     /**
-     * Get Created By Condition
+     * Get the identity condition for querying the database: Default created by
      *
-     * @param string[] $columns
-     * @param Identity|null $identity
-     * @param string[]|null $roleList
+     * @param array|null $columns The columns to check for identity condition
+     * @param Identity|null $identity The identity object
+     * @param array|null $roleList The list of roles
      *
-     * @return null
-     *
-     * @return string|null
+     * @return string|null The generated identity condition or null if no condition is generated
      */
-    protected function getIdentityCondition(array $columns = null, Identity $identity = null, $roleList = null)
+    protected function getIdentityCondition(?array $columns = null, ?Identity $identity = null, ?array $roleList = null): ?string
     {
         $identity ??= $this->identity ?? false;
         $roleList ??= $this->getRoleList();
