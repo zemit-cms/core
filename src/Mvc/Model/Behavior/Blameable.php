@@ -42,7 +42,7 @@ class Blameable extends Behavior
 
     protected string $userClass = User::class;
     
-    public function __construct(?array $options = null)
+    public function __construct(array $options = [])
     {
         parent::__construct($options);
         $this->userClass = $options['userClass'] ?? $this->userClass;
