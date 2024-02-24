@@ -16,6 +16,7 @@ use Orhanerday\OpenAi\OpenAi;
 use Phalcon\Logger\Logger;
 use Zemit\Bootstrap\Config;
 use Zemit\Bootstrap;
+use Zemit\Cache\Cache;
 use Zemit\Db\Profiler;
 use Zemit\Html\Escaper;
 use Zemit\Support\Debug;
@@ -46,6 +47,7 @@ use Zemit\Support\Utils;
  * @property Utils $utils
  * @property LoremIpsum $loremIpsum
  * @property OpenAi $openAi
+ * @property Cache $cache
  */
 class Task extends \Phalcon\Cli\Task implements TaskInterface
 {
