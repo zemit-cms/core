@@ -12,6 +12,7 @@
 namespace Zemit\Mvc\Dispatcher;
 
 use Phalcon\Dispatcher\Exception;
+use Phalcon\Dispatcher\AbstractDispatcher;
 use Phalcon\Events\Event;
 use Zemit\Config\ConfigInterface;
 use Zemit\Di\Injectable;
@@ -31,13 +32,13 @@ class Maintenance extends Injectable
      * Executed before dispatching a request.
      *
      * @param Event $event The event object.
-     * @param Dispatcher $dispatcher The dispatcher object.
+     * @param AbstractDispatcher $dispatcher The dispatcher object.
      *
      * @return void
      *
      * @throws Exception If an error happened during the dispatch forwarding to the maintenance route
      */
-    public function beforeDispatch(Event $event, Dispatcher $dispatcher): void
+    public function beforeDispatch(Event $event, AbstractDispatcher $dispatcher): void
     {
         $config = $this->getDI()->get('config');
         assert($config instanceof ConfigInterface);
@@ -49,7 +50,11 @@ class Maintenance extends Injectable
             $route['controller'] ??= self::DEFAULT_MAINTENANCE_CONTROLLER;
             $route['action'] ??= self::DEFAULT_MAINTENANCE_ACTION;
             
-            $dispatcher->forward($route, true);
+            if ($dispatcher instanceof Dispatcher) {
+                $dispatcher->forward($route, true);
+            } else {
+                $dispatcher->forward($route);
+            }
             
             if ($event->isCancelable()) {
                 $event->stop();
