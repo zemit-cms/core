@@ -49,6 +49,7 @@ namespace Zemit\Di;
  * @property \Phalcon\Logger\Logger $logger
  * @property \Zemit\Db\Profiler $profiler
  * @property \Zemit\Bootstrap $bootstrap
+ * @property \Zemit\Provider\Jwt\Jwt $jwt
  * 
  * // @todo review Phalcon & Zemit DI
  */
