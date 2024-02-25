@@ -954,11 +954,16 @@ class Identity extends Injectable implements OptionsInterface
     {
         /** @var User $userClass */
         $userClass = $this->getUserClass();
-        return $userClass::findFirst([
+        $user = $userClass::findFirst([
             'id = :id:',
             'bind' => ['id' => $id],
             'bindTypes' => ['id' => Column::BIND_PARAM_INT],
         ]);
+        if ($user) {
+            assert($user instanceof Model);
+            assert($user instanceof UserInterface);
+        }
+        return $user;
     }
     
     /**
@@ -968,7 +973,7 @@ class Identity extends Injectable implements OptionsInterface
     {
         /** @var User $userClass */
         $userClass = $this->getUserClass();
-        return $userClass::findFirst([
+        $user = $userClass::findFirst([
             'email = :email: or username = :username:',
             'bind' => [
                 'email' => $string,
@@ -979,5 +984,10 @@ class Identity extends Injectable implements OptionsInterface
                 'username' => Column::BIND_PARAM_STR,
             ],
         ]);
+        if ($user) {
+            assert($user instanceof Model);
+            assert($user instanceof UserInterface);
+        }
+        return $user;
     }
 }
