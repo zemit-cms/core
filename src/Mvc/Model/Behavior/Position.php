@@ -12,6 +12,7 @@
 namespace Zemit\Mvc\Model\Behavior;
 
 use Phalcon\Db\RawValue;
+use Phalcon\Mvc\EntityInterface;
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Mvc\ModelInterface;
 use Zemit\Mvc\Model;
@@ -92,7 +93,8 @@ class Position extends Behavior
      */
     public function beforeValidation(ModelInterface $model, string $field): void
     {
-        if (property_exists($model, $field)) {
+        if (property_exists($model, $field) && $model instanceof EntityInterface) {
+            
             $positionValue = $model->readAttribute($field);
             if (is_null($positionValue)) {
                 
