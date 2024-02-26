@@ -11,9 +11,11 @@
 
 namespace Zemit\Mvc\Model\Behavior;
 
-use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Mvc\ModelInterface;
+use Zemit\Models\AbstractModel;
+use Zemit\Models\Interfaces\AbstractInterface;
+use Zemit\Mvc\Model;
 use Zemit\Models\Audit;
 use Zemit\Models\AuditDetail;
 use Zemit\Models\Interfaces\AuditDetailInterface;
@@ -51,8 +53,10 @@ class Blameable extends Behavior
         $this->auditDetailClass = $options['auditDetailClass'] ?? $this->auditDetailClass;
     }
     
-    public function notify(string $type, ModelInterface $model)
+    public function notify(string $type, ModelInterface $model): bool|null
     {
+        assert($model instanceof Model);
+        
         if ($this->isEnabled()) {
             return null;
         }
@@ -62,13 +66,11 @@ class Blameable extends Behavior
             return null;
         }
         
-        switch ($type) {
-            case 'afterCreate':
-            case 'afterUpdate':
-                return $this->createAudit($type, $model);
-            case 'beforeUpdate':
-                return $this->collectData($model);
-        }
+        return match ($type) {
+            'afterCreate', 'afterUpdate' => $this->createAudit($type, $model),
+            'beforeUpdate' => $this->collectData($model),
+            default => null,
+        };
     }
     
     /**
@@ -77,6 +79,8 @@ class Blameable extends Behavior
      */
     public function createAudit(string $type, Model $model): bool
     {
+        assert($model instanceof AbstractInterface);
+            
         $event = lcfirst(Helper::uncamelize(str_replace(['before', 'after'], ['', ''], $type)));
         
         $auditClass = $this->auditClass;
@@ -117,8 +121,8 @@ class Blameable extends Behavior
             
             $auditDetail = new $auditDetailClass();
             assert($auditDetail instanceof AuditDetailInterface);
+            assert($model instanceof AbstractModel);
             
-            $auditDetail->setModel(get_class($model));
             $auditDetail->setTable($model->getSource());
             $auditDetail->setPrimary($model->getId());
             $auditDetail->setEvent($event);
@@ -144,7 +148,7 @@ class Blameable extends Behavior
     /**
      * Return true if data has been collected
      */
-    protected function collectData(ModelInterface $model): bool
+    protected function collectData(Model $model): bool
     {
         if ($model->hasSnapshotData()) {
             $this->snapshot = $model->getSnapshotData();
