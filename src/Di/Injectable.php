@@ -49,7 +49,7 @@ namespace Zemit\Di;
  * @property \Zemit\Db\Profiler $profiler
  * @property \Zemit\Bootstrap $bootstrap
  * @property \Zemit\Provider\Jwt\Jwt $jwt
- * @property \Zemit\Http\Request $request
+ * @property \Zemit\Http\Request|\Zemit\Http\RequestInterface $request
  * 
  * // @todo review Phalcon & Zemit DI
  */
