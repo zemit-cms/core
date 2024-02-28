@@ -11,6 +11,7 @@
 
 namespace Zemit\Mvc\Dispatcher;
 
+use JetBrains\PhpStorm\NoReturn;
 use Phalcon\Events\Event;
 use Phalcon\Http\Response;
 use Zemit\Di\Injectable;
@@ -21,7 +22,7 @@ class Preflight extends Injectable
     /**
      * Set cors headers for cors request and send no content for preflight request
      */
-    public function beforeExecuteRoute(Event $event, DispatcherInterface $dispatcher): void
+    public function beforeExecuteRoute(): void
     {
         if ($this->request->isCors()) {
             
@@ -57,6 +58,7 @@ class Preflight extends Injectable
     /**
      * Send 204 no content response & exit application successfully
      */
+    #[NoReturn]
     public function sendNoContent(Response $response): void
     {
         $response->setStatusCode(204)->send();
