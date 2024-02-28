@@ -53,7 +53,8 @@ trait Uuid
                 },
             ],
             'afterFetch' => [
-                $field => function ($model, $field) use ($native, $binary) {
+                $field => function ($model, $field) use ($binary) {
+                    // $native not yet supported while fetching
                     $value = $model->getAttribute($field);
                     if ($binary && !empty($value)) {
                         $hex = bin2hex($value);
