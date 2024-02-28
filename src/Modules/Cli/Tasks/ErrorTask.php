@@ -31,6 +31,7 @@ class ErrorTask extends Task
      */
     public function setStatusCode(int $code = 500, ?string $message = null): ResponseInterface
     {
-        throw new CliException('Error: ' . $code . ' - ' . StatusCode::getMessage($code));
+        $message ??= StatusCode::getMessage($code);
+        throw new CliException('Error: ' . $code . ' - ' . $message);
     }
 }
