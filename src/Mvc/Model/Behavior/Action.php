@@ -19,25 +19,26 @@ class Action extends Behavior
     use SkippableTrait;
     
     /**
-     * @return void|null
+     * @return void
      */
     public function notify(string $type, ModelInterface $model)
     {
         if (!$this->isEnabled()) {
-            return null;
+            return;
         }
         
         if (!$this->mustTakeAction($type)) {
-            return null;
+            return;
         }
 
         $options = $this->getOptions($type);
         if (empty($options)) {
-            return null;
+            return;
         }
 
         foreach ($options as $action => $value) {
-            $value = is_callable($value) ? $value($model, $action) : $value;
+            assert(is_callable($value));
+            $value($model, $action);
         }
     }
 }
