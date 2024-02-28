@@ -13,6 +13,7 @@ namespace Zemit\Mvc\Model\Blameable;
 
 use Zemit\Db\Column;
 use Zemit\Mvc\Model\AbstractTrait\AbstractBehavior;
+use Zemit\Mvc\Model\AbstractTrait\AbstractBlameable;
 use Zemit\Mvc\Model\Behavior\Transformable;
 use Zemit\Mvc\Model\Identity;
 use Zemit\Mvc\Model\Options;
@@ -22,6 +23,7 @@ use Zemit\Mvc\Model\SoftDelete;
 trait Deleted
 {
     use AbstractBehavior;
+    use AbstractBlameable;
     use Options;
     use Identity;
     use Snapshot;
