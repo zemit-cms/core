@@ -17,6 +17,7 @@ use Zemit\Config\ConfigInterface;
 use Zemit\Models\Audit;
 use Zemit\Models\AuditDetail;
 use Zemit\Models\Session;
+use Zemit\Mvc\Model\AbstractTrait\AbstractBehavior;
 use Zemit\Mvc\Model\AbstractTrait\AbstractModelsCache;
 
 /**
@@ -30,6 +31,7 @@ use Zemit\Mvc\Model\AbstractTrait\AbstractModelsCache;
 trait Cache
 {
     use AbstractModelsCache;
+    use AbstractBehavior;
     
     /**
      * Set true to avoid flushing cache for the current instance
