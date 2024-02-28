@@ -18,7 +18,6 @@ namespace Zemit\Di;
  * @property \Phalcon\Mvc\Dispatcher|\Phalcon\Mvc\DispatcherInterface $dispatcher
  * @property \Phalcon\Mvc\Router|\Phalcon\Mvc\RouterInterface $router
  * @property \Phalcon\Mvc\Url|\Phalcon\Mvc\Url\UrlInterface $url
- * @property \Phalcon\Http\Request|\Phalcon\Http\RequestInterface $request
  * @property \Phalcon\Http\Response|\Phalcon\Http\ResponseInterface $response
  * @property \Phalcon\Http\Response\Cookies|\Phalcon\Http\Response\CookiesInterface $cookies
  * @property \Phalcon\Filter\Filter $filter
@@ -50,6 +49,7 @@ namespace Zemit\Di;
  * @property \Zemit\Db\Profiler $profiler
  * @property \Zemit\Bootstrap $bootstrap
  * @property \Zemit\Provider\Jwt\Jwt $jwt
+ * @property \Zemit\Http\Request $request
  * 
  * // @todo review Phalcon & Zemit DI
  */
