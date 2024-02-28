@@ -39,7 +39,7 @@ if (!function_exists('sprintfn')) {
      * @param array $args array of [ 'arg_name' => 'arg value', ... ] replacements to be made
      * @return string|false result of sprintf call, or bool false on error
      */
-    function sprintfn(string $format, array $args = [])
+    function sprintfn(string $format, array $args = []): false|string
     {
         // map of argument names to their corresponding sprintf numeric argument value
         $array = array_keys($args);
@@ -59,7 +59,7 @@ if (!function_exists('sprintfn')) {
             }
             
             // replace the named argument with the corresponding numeric one
-            $format = substr_replace($format, $replace = $array[$key], $position, $length);
+            $format = (string)substr_replace($format, $replace = $array[$key], $position, $length);
             $pos = $position + strlen($replace);
             
             // skip to end of replacement for next iteration
@@ -77,7 +77,7 @@ if (!function_exists('mb_sprintf')) {
      * It handles sign, padding, alignment, width and precision. Argument swapping is not handled.
      * @link http://php.net/manual/en/function.sprintf.php#89020
      */
-    function mb_sprintf($format, ...$args): string
+    function mb_sprintf(string $format, ...$args): string
     {
         return mb_vsprintf($format, $args);
     }
@@ -93,17 +93,13 @@ if (!function_exists('mb_vsprintf')) {
      * Not supported: Argument swapping.
      * @link http://php.net/manual/en/function.sprintf.php#89020
      */
-    function mb_vsprintf($format, $argv, $encoding = null): string
+    function mb_vsprintf(string $format, array $argv, ?string $encoding = null): string
     {
-        if (!is_array($argv)) {
-            $argv = [$argv];
-        }
-        
         if (is_null($encoding)) {
             $encoding = mb_internal_encoding();
         }
         
-        $format = mb_convert_encoding($format, 'UTF-8', $encoding);
+        $format = (string)mb_convert_encoding($format, 'UTF-8', $encoding);
         $newFormat = '';
         $newArgv = [];
         
@@ -140,7 +136,7 @@ if (!function_exists('mb_vsprintf')) {
             $format = $post;
         }
         
-        $newFormat = mb_convert_encoding($newFormat, $encoding, 'UTF-8');
+        $newFormat = (string)mb_convert_encoding($newFormat, $encoding, 'UTF-8');
         return !empty($newArgv) ? vsprintf($newFormat, $newArgv) : $newFormat;
     }
 }
