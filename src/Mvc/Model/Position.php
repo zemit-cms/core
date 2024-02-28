@@ -12,10 +12,13 @@
 namespace Zemit\Mvc\Model;
 
 use Exception;
+use Zemit\Mvc\Model;
+use Zemit\Mvc\Model\AbstractTrait\AbstractEventsManager;
 use Zemit\Mvc\Model\Behavior\Position as PositionBehavior;
 
 trait Position
 {
+    use AbstractEventsManager;
     use Behavior;
     use Options;
     
@@ -59,6 +62,8 @@ trait Position
      */
     public function reorder(?int $position = null, ?string $positionField = null): bool
     {
+        assert($this instanceof Model);
+        
         $positionField ??= $this->getPositionBehavior()->getField();
         
         if ($this->fireEventCancel('beforeReorder') === false) {
