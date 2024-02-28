@@ -11,6 +11,7 @@
 
 namespace Zemit\Mvc\Model;
 
+use Phalcon\Mvc\Model;
 use Phalcon\Mvc\ModelInterface;
 use Zemit\Config\ConfigInterface;
 use Zemit\Models\Audit;
@@ -73,7 +74,7 @@ trait Cache
         }
         
         $modelsCache = $this->getModelsCache();
-        $flushAction = function (ModelInterface $model) use ($modelsCache) {
+        $flushAction = function (Model $model) use ($modelsCache) {
             // Do not flush cache if nothing has changed
             return ($model->hasSnapshotData() && !($model->hasUpdated() || $model->hasChanged()))
                 && $modelsCache->clear();
