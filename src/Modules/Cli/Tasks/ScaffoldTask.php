@@ -128,7 +128,7 @@ DOC;
             // Save Interface File
             $savePath = $this->path . $this->modelsPath . $this->abstractsPath . $this->interfacesPath . $definitions['interface']['file'];
             if (!file_exists($savePath) || $force) {
-                $columns = $columns = $this->db->describeColumns($table);
+                $columns = $this->db->describeColumns($table);
                 $this->saveFile($savePath, $this->createInterfaceOutput($definitions, $columns), $force);
                 $ret [] = 'Interface `' . $definitions['interface']['file'] . '` created';
             }
