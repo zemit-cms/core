@@ -20,7 +20,7 @@ trait Events
 {
     abstract public function fireEventCancel(string $eventName): bool;
     
-    public static function find($parameters = null): ResultsetInterface
+    public static function find(): ResultsetInterface
     {
         $ret = self::fireEventCancelCall(__FUNCTION__, func_get_args());
         
@@ -28,29 +28,29 @@ trait Events
             $that = new self();
             assert($that instanceof ModelInterface);
             $columnMap = $that->getModelsMetaData()->getColumnMap($that);
-            return new Simple($columnMap, $that, []);
+            return new Simple($columnMap, $that, false);
         }
         
         return $ret;
     }
 
-    public static function findFirst($parameters = null): ?ModelInterface
+    public static function findFirst(): ?ModelInterface
     {
         $ret = self::fireEventCancelCall(__FUNCTION__, func_get_args());
         return $ret ?: null;
     }
 
-    public static function count($parameters = null)
+    public static function count()
     {
         return self::fireEventCancelCall(__FUNCTION__, func_get_args());
     }
 
-    public static function sum($parameters = null)
+    public static function sum()
     {
         return self::fireEventCancelCall(__FUNCTION__, func_get_args());
     }
     
-    public static function average($parameters = null)
+    public static function average()
     {
         return self::fireEventCancelCall(__FUNCTION__, func_get_args());
     }
