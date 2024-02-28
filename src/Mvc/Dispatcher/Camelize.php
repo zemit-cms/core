@@ -24,26 +24,28 @@ class Camelize extends Injectable
      */
     public function beforeDispatchLoop(Event $event, AbstractDispatcher $dispatcher): void
     {
-        if ($dispatcher instanceof MvcDispatcher) {
-            $dispatcher->setControllerName(
-                ucfirst(
-                    Helper::camelize(
-                        Helper::uncamelize(
-                            $dispatcher->getControllerName()
+        if ($event->getType() === 'beforeDispatchLoop') {
+            if ($dispatcher instanceof MvcDispatcher) {
+                $dispatcher->setControllerName(
+                    ucfirst(
+                        $this->helper->camelize(
+                            $this->helper->uncamelize(
+                                $dispatcher->getControllerName()
+                            )
+                        )
+                    )
+                );
+            }
+            
+            $dispatcher->setActionName(
+                lcfirst(
+                    $this->helper->camelize(
+                        $this->helper->uncamelize(
+                            $dispatcher->getActionName()
                         )
                     )
                 )
             );
         }
-        
-        $dispatcher->setActionName(
-            lcfirst(
-                Helper::camelize(
-                    Helper::uncamelize(
-                        $dispatcher->getActionName()
-                    )
-                )
-            )
-        );
     }
 }
