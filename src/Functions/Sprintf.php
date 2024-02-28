@@ -96,7 +96,7 @@ if (!function_exists('mb_vsprintf')) {
     function mb_vsprintf(string $format, array $argv, ?string $encoding = null): string
     {
         if (is_null($encoding)) {
-            $encoding = mb_internal_encoding();
+            $encoding = (string)mb_internal_encoding();
         }
         
         $format = (string)mb_convert_encoding($format, 'UTF-8', $encoding);
