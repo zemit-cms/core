@@ -20,7 +20,7 @@ trait Behavior
 {
     use AbstractInjectable;
     
-    public function beforeExecuteRoute(Dispatcher $dispatcher): void
+    public function beforeExecuteRoute(): void
     {
         // @todo use eventsManager from service provider instead
         $this->eventsManager->enablePriorities(true);
