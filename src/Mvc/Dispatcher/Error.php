@@ -37,7 +37,7 @@ class Error extends Injectable
      * Forward to 404 or 500 error controller
      * @throws Exception
      */
-    public function beforeException(Event $event, Dispatcher $dispatcher, Exception $exception): bool
+    public function beforeException(Event $_event, Dispatcher $dispatcher, Exception $exception): bool
     {
         switch ($exception->getCode()) {
             
