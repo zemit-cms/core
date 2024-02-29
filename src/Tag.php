@@ -346,7 +346,7 @@ class Tag extends PhalconTag
     {
         self::removeMeta('charset');
         self::addMeta('charset', $charset);
-}
+    }
     
     /**
      * Set Meta by property
