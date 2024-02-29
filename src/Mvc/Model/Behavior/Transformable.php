@@ -11,6 +11,7 @@
 
 namespace Zemit\Mvc\Model\Behavior;
 
+use Phalcon\Mvc\EntityInterface;
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Mvc\ModelInterface;
 
@@ -26,11 +27,6 @@ class Transformable extends Behavior
     
     /**
      * Listens for notifications from the models manager
-     *
-     * @param string $type Event Type
-     * @param ModelInterface $model Model
-     *
-     * @return void|null
      */
     public function notify(string $type, ModelInterface $model): ?bool
     {
@@ -56,6 +52,7 @@ class Transformable extends Behavior
                 $value = $value();
             }
             
+            assert($model instanceof EntityInterface);
             $model->writeAttribute($field, $value);
 //            $model->assign([$field => $value]);
         }
