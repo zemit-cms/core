@@ -26,11 +26,6 @@ class Conditional extends Behavior
     
     /**
      * Listens for notifications from the models manager
-     *
-     * @param string $type Event Type
-     * @param ModelInterface $model Model
-     *
-     * @return void|null
      */
     public function notify(string $type, ModelInterface $model): ?bool
     {

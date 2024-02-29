@@ -53,7 +53,7 @@ class Blameable extends Behavior
         $this->auditDetailClass = $options['auditDetailClass'] ?? $this->auditDetailClass;
     }
     
-    public function notify(string $type, ModelInterface $model): bool|null
+    public function notify(string $type, ModelInterface $model): ?bool
     {
         assert($model instanceof Model);
         
@@ -93,8 +93,8 @@ class Blameable extends Behavior
         $snapshot = $this->snapshot;
         
         $audit = new $auditClass();
-        assert($audit instanceof AuditInterface);
         assert($audit instanceof Model);
+        assert($audit instanceof AuditInterface);
         
         $audit->setModel(get_class($model));
         $audit->setTable($model->getSource());
