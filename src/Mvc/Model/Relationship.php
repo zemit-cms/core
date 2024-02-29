@@ -385,6 +385,7 @@ trait Relationship
      * @link https://forum.phalconphp.com/discussion/2190/many-to-many-expected-behaviour
      * @link http://stackoverflow.com/questions/23374858/update-a-records-n-n-relationships
      * @link https://github.com/phalcon/cphalcon/issues/2871
+     * @throws Exception
      */
     protected function postSaveRelatedRecords(AdapterInterface $connection, $related, CollectionInterface $visited): bool
     {
