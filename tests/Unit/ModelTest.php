@@ -38,9 +38,9 @@ class ModelTest extends AbstractUnit
         $this->prepareTests();
         
         $user = new User();
-        $user->setUsername('test');
-        $user->setFirstName('test');
-        $user->setLastName('test');
+//        $user->setUsername('test');
+//        $user->setFirstName('test');
+//        $user->setLastName('test');
         $user->setEmail('test@test.tld');
         
         // Create
@@ -59,9 +59,9 @@ class ModelTest extends AbstractUnit
         
         // Fetch
         $user = User::findFirst([
-            'username = :username:',
-            'bind' => ['username' => 'test'],
-            'bindTypes' => ['username' => Column::BIND_PARAM_STR],
+            'email = :email:',
+            'bind' => ['email' => 'test@test.tld'],
+            'bindTypes' => ['email' => Column::BIND_PARAM_STR],
         ]);
         $this->assertInstanceOf(User::class, $user);
         
@@ -79,9 +79,9 @@ class ModelTest extends AbstractUnit
         
         $user = new User();
         $user->assign([
-            'username' => 'test',
-            'firstName' => 'test',
-            'lastName' => 'test',
+//            'username' => 'test',
+//            'firstName' => 'test',
+//            'lastName' => 'test',
             'email' => 'test@test.tld',
             'rolelist' => [
                 false,
