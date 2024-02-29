@@ -12,6 +12,8 @@
 namespace Zemit\Mvc\Controller;
 
 use Phalcon\Db\Column;
+use Phalcon\Filter\Exception;
+use Phalcon\Filter\Filter;
 use Phalcon\Messages\Message;
 use Phalcon\Mvc\Model\Resultset;
 use Phalcon\Mvc\ModelInterface;
@@ -906,16 +908,12 @@ trait Model
     
     /**
      * Get Single from ID and Model Name
-     *
-     * @param string|int|null $id
-     * @param string|null $modelName
-     * @param string|array|null $with
-     *
-     * @return bool|Resultset|\Zemit\Mvc\Model
+     * @throws Exception
+     * @throws \Exception
      */
-    public function getSingle($id = null, $modelName = null, $with = [], $find = null, $appendCondition = true)
+    public function getSingle(?int $id = null, ?string $modelName = null, ?array $with = null, ?array $find = null, bool $appendCondition = true)
     {
-        $id ??= (int)$this->getParam('id', 'int');
+        $id ??= (int)$this->getParam('id', [Filter::FILTER_INT]);
         $modelName ??= $this->getModelClassName();
         $with ??= $this->getWith();
         $find ??= $this->getFind();
