@@ -47,7 +47,7 @@ build:
           - composer require --dev phpunit/phpunit
           - composer require --dev squizlabs/php_codesniffer
           - mysql -h 127.0.0.1 -u root -e 'create database zemit_core'
-          - chmod +x ./bin/*.sh
+          - chmod +x ./bin/* ./vendor/bin/* ./zemit
           - mkdir .phalcon
           - touch .env
           - cp .env.scrutinizer .env
