@@ -10,36 +10,36 @@
 
 namespace Zemit\Models;
 
-use Zemit\Models\Abstracts\AbstractGroupRole;
-use Zemit\Models\Interfaces\GroupRoleInterface;
+use Zemit\Models\Abstracts\AbstractGroupFeature;
+use Zemit\Models\Interfaces\GroupFeatureInterface;
 
 /**
  * @property Group $Group
  * @method Group getGroup(?array $params = null)
- *
- * @property Role $Role
- * @method Role getRole(?array $params = null)
+ * 
+ * @property Feature $Feature
+ * @method Feature getFeature(?array $params = null)
  */
-class GroupRole extends AbstractGroupRole implements GroupRoleInterface
+class GroupFeature extends AbstractGroupFeature implements GroupFeatureInterface
 {
     protected $deleted = self::NO;
     protected $position = self::NO;
-    
+
     public function initialize(): void
     {
         parent::initialize();
-        
+
         $this->hasOne('groupId', Group::class, 'id', ['alias' => 'Group']);
-        $this->hasOne('roleId', Role::class, 'id', ['alias' => 'Role']);
+        $this->hasOne('featureId', Feature::class, 'id', ['alias' => 'Feature']);
     }
-    
+
     public function validation(): bool
     {
         $validator = $this->genericValidation();
-        
+
         $this->addUnsignedIntValidation($validator, 'groupId', false);
-        $this->addUnsignedIntValidation($validator, 'roleId', false);
-        $this->addUniquenessValidation($validator, ['groupId', 'roleId'], false);
+        $this->addUnsignedIntValidation($validator, 'featureId', false);
+        $this->addUniquenessValidation($validator, ['groupId', 'featureId'], false);
         
         return $this->validate($validator);
     }

@@ -10,6 +10,6 @@
 
 namespace Zemit\Models\Interfaces;
 
-interface GroupeTypeInterface extends AbstractInterface
+interface GroupFeatureInterface extends AbstractInterface
 {
 }

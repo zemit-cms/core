@@ -11,42 +11,36 @@
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\AbstractGroupType;
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-use Phalcon\Filter\Validation\Validator\Uniqueness;
-use Zemit\Models\Interfaces\GroupeTypeInterface;
+use Zemit\Models\Interfaces\GroupTypeInterface;
 
 /**
  * @property Group $Group
- * @property Type $Type
- * @property Group $GroupEntity
- * @property Type $TypeEntity
- *
  * @method Group getGroup(?array $params = null)
+ *
+ * @property Type $Type
  * @method Type getType(?array $params = null)
- * @method Group getGroupEntity(?array $params = null)
- * @method Type getTypeEntity(?array $params = null)
  */
-class GroupType extends AbstractGroupType implements GroupeTypeInterface
+class GroupType extends AbstractGroupType implements GroupTypeInterface
 {
     protected $deleted = self::NO;
     protected $position = self::NO;
-
+    
     public function initialize(): void
     {
         parent::initialize();
-
-        $this->hasOne('groupId', Group::class, 'id', ['alias' => 'GroupEntity']);
-        $this->hasOne('typeId', Type::class, 'id', ['alias' => 'TypeEntity']);
+        
+        $this->hasOne('groupId', Group::class, 'id', ['alias' => 'Group']);
+        $this->hasOne('typeId', Type::class, 'id', ['alias' => 'Type']);
     }
-
+    
     public function validation(): bool
     {
         $validator = $this->genericValidation();
-
-        $validator->add('groupId', new PresenceOf(['message' => $this->_('required')]));
-        $validator->add('typeId', new PresenceOf(['message' => $this->_('required')]));
-        $validator->add(['groupId', 'typeId'], new Uniqueness(['message' => $this->_('not-unique')]));
-
+        
+        $this->addUnsignedIntValidation($validator, 'groupId', false);
+        $this->addUnsignedIntValidation($validator, 'typeId', false);
+        $this->addUniquenessValidation($validator, ['groupId', 'typeId'], false);
+        
         return $this->validate($validator);
     }
 }
