@@ -76,6 +76,7 @@ class Blameable extends Behavior
     /**
      * Create new audit
      * Return true if the audit was created
+     * @throws \Exception
      */
     public function createAudit(string $type, Model $model): bool
     {
@@ -134,7 +135,7 @@ class Blameable extends Behavior
             $auditDetailList[] = $auditDetail;
         }
         
-        $audit->AuditDetailList = $auditDetailList;
+        $audit->assign(['AuditDetailList' => $auditDetailList]);
         $save = $audit->save();
         foreach ($audit->getMessages() as $message) {
             $message->setField('Audit.' . $message->getField());
