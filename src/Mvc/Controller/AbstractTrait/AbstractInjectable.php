@@ -15,6 +15,7 @@ use Phalcon\Autoload\Loader;
 use Phalcon\Di\DiInterface;
 use Phalcon\Events\Manager as EventsManager;
 use Phalcon\Http\Response;
+use Zemit\Acl\Acl;
 use Zemit\Filter\Filter;
 use Zemit\Http\Request;
 use Zemit\Identity;
@@ -41,6 +42,7 @@ use Zemit\Support\HelperFactory;
  * @property EventsManager $eventsManager
  * @property Identity $identity
  * @property HelperFactory $helper
+ * @property Acl $acl
  */
 trait AbstractInjectable
 {
