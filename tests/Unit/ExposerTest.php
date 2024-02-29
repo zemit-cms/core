@@ -119,10 +119,10 @@ class ExposerTest extends AbstractUnit
             'test_removed_two' => 'test_removed_two',
             'test_after_removed' => 'test_after_removed',
             'test_replace_value' => 'test_value_before',
+            'test_same_value_mb_sprintf' => 'test_same_value_mb_sprintf',
+            'test_altered_value_mb_sprintf' => 'test_altered_value_mb_sprintf',
         ];
         $expected = $test;
-        $expected['test_empty_object'] = (array)$expected['test_empty_object'];
-        $expected['test_object'] = (array)$expected['test_object'];
 
         $builder = Exposer::createBuilder($test);
         $actual = Exposer::expose($builder);
@@ -133,12 +133,16 @@ class ExposerTest extends AbstractUnit
         unset($expected['test_removed_two']);
         $expected['test_replace_value'] = 'test_value_after';
 //        $expected['new_value'] = 'test';
+        $expected['test_same_value_mb_sprintf'] = 'test_same_value_mb_sprintf';
+        $expected['test_altered_value_mb_sprintf'] = 'test_altered_value_mb_sprintf!';
         $builder = Exposer::createBuilder($test, [
             true,
             'test_removed' => false,
             'test_removed_two' => false,
             'test_replace_value' => 'test_value_after',
             'new_value' => 'test',
+            'test_get_value_sprint' => '%s',
+            'test_altered_value_mb_sprintf' => '%s!',
         ]);
         $actual = Exposer::expose($builder);
         $this->assertEquals($expected, $actual);

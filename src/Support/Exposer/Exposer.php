@@ -54,9 +54,8 @@ class Exposer
     
     private static function getValue(string $string, mixed $value): string
     {
-        return (is_array($value) || is_object($value))
-            ? sprintfn($string, $value)
-            : mb_sprintf($string, $value);
+        // @todo maybe we should remove the sprintf manipulation
+        return mb_vsprintf($string, [$value]);
     }
     
     private static function checkExpose(Builder $builder): void
@@ -96,7 +95,7 @@ class Exposer
                 }
                 
                 // If array is returned, parse the columns from the current context key and merge it with the builder
-                elseif (is_array($callbackReturn)) {
+                elseif (is_iterable($callbackReturn)) {
                     $columns = self::parseColumnsRecursive($callbackReturn, $builder->getFullKey());
                     
                     // If not set, set expose to false by default
@@ -105,7 +104,7 @@ class Exposer
                     }
                     
                     //@TODO handle with array_merge_recursive and handle array inside the columns parameters ^^
-                    $builder->setColumns(array_merge($builder->getColumns(), $columns));
+                    $builder->setColumns(array_merge($builder->getColumns() ?? [], $columns));
                 }
             }
             
@@ -140,7 +139,7 @@ class Exposer
                         elseif (is_bool($callbackReturn)) {
                             $builder->setExpose($callbackReturn);
                         }
-                        elseif (is_array($callbackReturn)) {
+                        elseif (is_iterable($callbackReturn)) {
                             // Since it is a parent, we're not supposed to re-re-merge the existing columns
                         }
                     }
@@ -158,7 +157,7 @@ class Exposer
         if (isset($fullKey) && !empty($columns)) {
             // Try to find a subentity, or field that has the true value
             $value = $builder->getValue();
-            if (is_array($value) || is_object($value) || is_callable($value)) {
+            if (is_iterable($value) || is_callable($value)) {
                 foreach ($columns as $columnKey => $columnValue) {
                     if ($columnValue === true && str_starts_with($columnKey, $fullKey)) {
                         // expose the current instance (which is the parent of the sub column)
@@ -183,10 +182,10 @@ class Exposer
         $columns = $builder->getColumns();
         $value = $builder->getValue();
         
-        if (is_array($value) || is_object($value)) {
+        if (is_iterable($value)) {
             $toParse = is_object($value) && method_exists($value, 'toArray')
                 ? $value->toArray()
-                : $value;
+                : (array)$value;
             
             // si accused column demandé et que l'expose est à false
             if (is_null($columns) && !$builder->getExpose()) {
@@ -220,12 +219,12 @@ class Exposer
      * the key path separated by dot "my.path" and the value true, false or a callback function
      * including the ExposeBuilder object
      *
-     * @param array|null $columns
+     * @param iterable|null $columns
      * @param string|null $context
      *
      * @return array|null
      */
-    public static function parseColumnsRecursive(?array $columns = null, ?string $context = null): ?array
+    public static function parseColumnsRecursive(?iterable $columns = null, ?string $context = null): ?array
     {
         if (!isset($columns)) {
             return null;
@@ -254,17 +253,16 @@ class Exposer
             if (is_string($value) && empty($value)) {
                 $value = true;
             }
+            
             $currentKey = (!empty($context) ? $context . (!empty($key) ? '.' : null) : null) . $key;
-            if (is_array($value) || is_object($value)) {
-                if (is_callable($value)) {
-                    $ret[$currentKey] = $value;
-                }
-                else {
-                    $subRet = self::parseColumnsRecursive($value, $currentKey);
-                    $ret = array_merge_recursive($ret, $subRet);
-                    if (!isset($ret[$currentKey])) {
-                        $ret[$currentKey] = false;
-                    }
+            if (is_callable($value)) {
+                $ret[$currentKey] = $value;
+            }
+            else if (is_iterable($value)) {
+                $subRet = self::parseColumnsRecursive($value, $currentKey);
+                $ret = array_merge_recursive($ret, $subRet ?? []);
+                if (!isset($ret[$currentKey])) {
+                    $ret[$currentKey] = false;
                 }
             }
             else {
