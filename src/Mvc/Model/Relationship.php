@@ -397,12 +397,13 @@ trait Relationship
                 $modelsManager = $this->getModelsManager();
                 $relation = $modelsManager->getRelationByAlias(get_class($this), $lowerCaseAlias);
                 
-                if (!($relation instanceof RelationInterface)) {
+                if (!$relation) {
                     if (is_array($assign)) {
                         $connection->rollback($nesting);
                         throw new Exception("There are no defined relations for the model '" . get_class($this) . "' using alias '" . $lowerCaseAlias . "'");
                     }
                 }
+                assert($relation instanceof RelationInterface);
                 
                 /**
                  * Discard belongsTo relations
