@@ -25,6 +25,8 @@ trait SoftDelete
     use Options;
     use Behavior;
     
+    protected $skipped = false;
+    
     /**
      * Initializing SoftDelete
      */
