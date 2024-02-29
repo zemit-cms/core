@@ -474,9 +474,9 @@ trait Model
             $field = $this->filter->sanitize($filter['field'] ?? null, ['string', 'trim']);
             
             // @todo logic bitwise operator
-            $logic = $this->filter->sanitize($filter['logic'] ?? null, ['string', 'trim', 'lower']);
-            $logic = $logic ?: ($or ? 'or' : 'and');
-            $logic = ' ' . $logic . ' ';
+//            $logic = $this->filter->sanitize($filter['logic'] ?? null, ['string', 'trim', 'lower']);
+//            $logic = $logic ?: ($or ? 'or' : 'and');
+//            $logic = ' ' . $logic . ' ';
             
             if (!empty($field)) {
                 $lowercaseField = mb_strtolower($field);
