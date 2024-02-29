@@ -13,7 +13,7 @@ namespace Zemit\Mvc\Model;
 
 use Phalcon\Di\Di;
 use Phalcon\Mvc\Model\ManagerInterface;
-use Phalcon\Mvc\Model\Query\Builder;
+use Phalcon\Mvc\Model\Query\BuilderInterface;
 use Phalcon\Mvc\Model\QueryInterface;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Zemit\Mvc\Model\AbstractTrait\AbstractModelsManager;
@@ -25,7 +25,7 @@ trait LifeCycle
     /**
      * Return the query for data retention
      */
-    public static function prepareLifeCycleQuery(Builder $builder = null, ?array $parameters = null): void
+    public static function prepareLifeCycleQuery(BuilderInterface $builder = null, ?array $parameters = null): void
     {
         // data life cycle policy must be defined
         if (empty($parameters)) {
@@ -51,7 +51,7 @@ trait LifeCycle
     /**
      * Return the Query for data retention
      */
-    public static function getLifeCycleQuery(?array $parameters = null, ?Builder $builder = null): QueryInterface
+    public static function getLifeCycleQuery(?array $parameters = null, ?BuilderInterface $builder = null): QueryInterface
     {
         $parameters ??= self::getLifeCyclePolicyQuery();
         $builder ??= self::getBuilder($parameters);
@@ -64,7 +64,7 @@ trait LifeCycle
     /**
      * Return a Query Builder based on parameters
      */
-    public static function getBuilder(?array $parameters = null): Builder
+    public static function getBuilder(?array $parameters = null): BuilderInterface
     {
         $di = Di::getDefault();
         $modelsManager = $di->getShared('modelsManager');
@@ -82,9 +82,8 @@ trait LifeCycle
     
     /**
      * Find records to hard delete for data retention purpose
-     * @return mixed
      */
-    public static function findLifeCycle(?array $parameters = null)
+    public static function findLifeCycle(?array $parameters = null): mixed
     {
         $query = self::getLifeCycleQuery($parameters);
         $resultset = $query->execute();
