@@ -80,7 +80,7 @@ class Position extends Behavior
                 break;
             
             case 'afterSave':
-//                $this->afterSave($model, $field, $rawSql);
+                $this->afterSave($model, $field, $rawSql);
                 break;
         }
         
