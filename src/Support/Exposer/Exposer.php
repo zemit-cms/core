@@ -155,13 +155,12 @@ class Exposer
             while ($parentIndex = strrpos($parentKey, '.'));
         }
         
-        if (!empty($columns)) {
+        if (isset($fullKey) && !empty($columns)) {
             // Try to find a subentity, or field that has the true value
             $value = $builder->getValue();
             if (is_array($value) || is_object($value) || is_callable($value)) {
                 foreach ($columns as $columnKey => $columnValue) {
-                    $ret = str_starts_with($columnKey, $builder->getFullKey());
-                    if ($ret && $columnValue === true) {
+                    if ($columnValue === true && str_starts_with($columnKey, $fullKey)) {
                         // expose the current instance (which is the parent of the sub column)
                         $builder->setExpose(true);
                     }
