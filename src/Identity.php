@@ -829,6 +829,7 @@ class Identity extends Injectable implements OptionsInterface
     
     /**
      * Get key / token fields to use for the session fetch & validation
+     * @throws ValidatorException
      */
     public function getKeyToken(string $jwt = null, string $key = null, string $token = null): array
     {
@@ -859,10 +860,14 @@ class Identity extends Injectable implements OptionsInterface
             elseif (!empty($authorization)) {
                 $authorizationType = $authorization[0] ?? 'Bearer';
                 $authorizationToken = $authorization[1] ?? null;
-                if (strtolower($authorizationType) === 'bearer') {
+                if ($authorizationToken && strtolower($authorizationType) === 'bearer') {
                     $sessionClaim = $this->getClaim($authorizationToken, $this->sessionKey);
                     $key = $sessionClaim['key'] ?? null;
                     $token = $sessionClaim['token'] ?? null;
+                } else {
+                    // missing token or unsupported authorization
+                    $key = null;
+                    $token = null;
                 }
             }
             elseif ($this->config->path('identity.sessionFallback', false) &&
