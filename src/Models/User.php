@@ -51,7 +51,7 @@ class User extends AbstractUser implements UserInterface
         
         $this->hasMany('id', File::class, 'userId', ['alias' => 'Files']);
         
-        $this->hasMany('id', UserGroup::class, 'userId', ['alias' => 'GroupNodes']);
+        $this->hasMany('id', UserGroup::class, 'userId', ['alias' => 'GroupNode']);
         $this->hasManyToMany(
             'id',
             UserGroup::class,
@@ -59,10 +59,10 @@ class User extends AbstractUser implements UserInterface
             'groupId',
             Group::class,
             'id',
-            ['alias' => 'Groups']
+            ['alias' => 'GroupList']
         );
         
-        $this->hasMany('id', UserRole::class, 'userId', ['alias' => 'RoleNodes']);
+        $this->hasMany('id', UserRole::class, 'userId', ['alias' => 'RoleNode']);
         $this->hasManyToMany(
             'id',
             UserRole::class,
@@ -70,10 +70,10 @@ class User extends AbstractUser implements UserInterface
             'roleId',
             Role::class,
             'id',
-            ['alias' => 'Roles']
+            ['alias' => 'RoleList']
         );
         
-        $this->hasMany('id', UserType::class, 'userId', ['alias' => 'TypeNodes']);
+        $this->hasMany('id', UserType::class, 'userId', ['alias' => 'TypeNode']);
         $this->hasManyToMany(
             'id',
             UserType::class,
@@ -81,10 +81,10 @@ class User extends AbstractUser implements UserInterface
             'typeId',
             Type::class,
             'id',
-            ['alias' => 'Types']
+            ['alias' => 'TypeList']
         );
         
-        $this->hasMany('id', UserFeature::class, 'userId', ['alias' => 'FeatureNodes']);
+        $this->hasMany('id', UserFeature::class, 'userId', ['alias' => 'FeatureNode']);
         $this->hasManyToMany(
             'id',
             UserFeature::class,
@@ -92,7 +92,7 @@ class User extends AbstractUser implements UserInterface
             'featureId',
             Feature::class,
             'id',
-            ['alias' => 'Features']
+            ['alias' => 'FeatureList']
         );
     }
     

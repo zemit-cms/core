@@ -18,11 +18,12 @@ use Zemit\Models\Interfaces\AuditInterface;
 
 /**
  * @property AuditDetail[] $AuditDetailList
- * @property User $CreatedByEntity
- * @property User $UpdatedByEntity
- *
  * @method AuditDetail[] getAuditDetailList(?array $params = null)
+ * 
+ * @property User $CreatedByEntity
  * @method User getCreatedByEntity(?array $params = null)
+ * 
+ * @property User $UpdatedByEntity
  * @method User getUpdatedByEntity(?array $params = null)
  */
 class Audit extends AbstractAudit implements AuditInterface
