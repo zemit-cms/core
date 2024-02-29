@@ -33,7 +33,7 @@ trait Slug
         
         $this->setSlugBehavior(new Transformable([
             'beforeValidation' => [
-                $field => function (Model $model, $field) {
+                $field => function (Model $model, string $field) {
                     $value = $model->readAttribute($field);
                     return $value && is_string($value) ? \Zemit\Support\Slug::generate($value) : $value;
                 },

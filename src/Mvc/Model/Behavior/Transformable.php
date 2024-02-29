@@ -44,6 +44,10 @@ class Transformable extends Behavior
         }
 
         foreach ($options as $field => $value) {
+            if (!property_exists($model, $field)) {
+                continue;
+            }
+            
             $value = is_callable($value) ? $value($model, $field) : $value;
             
             // allow up to 10 callbacks

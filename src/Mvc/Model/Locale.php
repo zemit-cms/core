@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 /**
  * This file is part of the Zemit Framework.
  *
@@ -11,40 +11,46 @@
 
 namespace Zemit\Mvc\Model;
 
+use Phalcon\Mvc\Model\Exception;
+use Phalcon\Translate\Adapter\AbstractAdapter;
 use Zemit\Mvc\Model\AbstractTrait\AbstractInjectable;
 use Zemit\Mvc\Model\AbstractTrait\AbstractEntity;
 
+/**
+ * Trait Locale
+ *
+ * This trait provides functionality to handle localization in models.
+ */
 trait Locale
 {
     use AbstractInjectable;
     use AbstractEntity;
     
     /**
-     * Returns the translation string of the given key
+     * Translate a given key using the translation service
      *
-     * @param array $placeholders
-     * @param string $translateKey
-     * @return string
+     * @param string $translateKey The key to be translated
+     * @param array $placeholders The placeholders to be replaced in the translation
+     * @return string The translated string
      */
     public function _(string $translateKey, array $placeholders = []): string
     {
         $translate = $this->getDI()->get('translate');
-        assert($translate instanceof \Phalcon\Translate\Adapter\AbstractAdapter);
+        assert($translate instanceof AbstractAdapter);
         
         return $translate->_($translateKey, $placeholders);
     }
     
     /**
-     * Magic caller to set or get localed named field automagically using the current locale
-     * - Allow to call $this->getName{Fr|En|Sp|...}
-     * - Allow to call $this->setName{Fr|En|Sp|...}
+     * Magic method to dynamically call localed named methods using the current locale
+     * - Allow to call $this->methodName{Fr|En|Sp|...}() from missing methodName method
      *
      * @param string $method method name
      * @param array $arguments method arguments
-     * @return mixed
-     * @throws \Phalcon\Mvc\Model\Exception
+     * @return mixed|null
+     * @throws Exception
      */
-    public function __call(string $method, array $arguments)
+    public function __call(string $method, array $arguments): mixed
     {
         $locale = $this->getDI()->get('locale');
         assert($locale instanceof \Zemit\Locale);
@@ -58,18 +64,19 @@ trait Locale
             }
         }
         
+//        return $this->$method(...$arguments);
         return parent::__call($method, $arguments);
     }
     
     /**
      * Magic setter to set localed named field automatically using the current locale
-     * - Allow to set $this->name{Fr|En|Sp|...} from missing name property
+     * - Allow to set $this->name{Fr|En|Sp|...} for missing name property
      *
      * @param string $property property name
-     * @param mixed $value value to set
+     * @param mixed $value value to be set for the property
      * @return void
      */
-    public function __set(string $property, $value): void
+    public function __set(string $property, mixed $value): void
     {
         $locale = $this->getDI()->get('locale');
         assert($locale instanceof \Zemit\Locale);
@@ -81,13 +88,11 @@ trait Locale
             
             if (property_exists($this, $set)) {
                 $this->writeAttribute($set, $value);
-                
                 return;
             }
         }
         
-        
-        @parent::__set($property, $value); // @todo refactor for php83+
+        parent::__set($property, $value);
     }
     
     /**
@@ -95,9 +100,9 @@ trait Locale
      * - Allow to get $this->name{Fr|En|Sp|...} from missing name property
      *
      * @param string $property property name
-     * @return mixed|null
+     * @return mixed
      */
-    public function __get(string $property)
+    public function __get(string $property): mixed
     {
         $locale = $this->getDI()->get('locale');
         assert($locale instanceof \Zemit\Locale);
@@ -105,13 +110,13 @@ trait Locale
         $lang = $locale->getLocale();
         
         if (!empty($lang)) {
-            $set = $property . ucfirst($lang);
+            $get = $property . ucfirst($lang);
             
-            if (property_exists($this, $set)) {
-                return $this->readAttribute($set);
+            if (property_exists($this, $get)) {
+                return $this->readAttribute($get);
             }
         }
         
-        return @parent::__get($property); // @todo refactor for php83+
+        return parent::__get($property);
     }
 }
