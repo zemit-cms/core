@@ -11,7 +11,11 @@
 
 namespace Zemit\Mvc\Controller\Rest\Actions;
 
-trait ExportAction {
+use Zemit\Mvc\Controller\Download;
+
+trait ExportAction
+{
+    use Download;
     
     /**
      * Exporting a record list into a CSV stream

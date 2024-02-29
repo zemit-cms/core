@@ -20,7 +20,8 @@ use League\Csv\Writer;
 use Shuchkin\SimpleXLSXGen;
 use Zemit\Support\Slug;
 
-trait Download {
+trait Download
+{
     
     use Params;
     
