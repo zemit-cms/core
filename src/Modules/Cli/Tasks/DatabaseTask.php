@@ -11,6 +11,7 @@
 
 namespace Zemit\Modules\Cli\Tasks;
 
+use Phalcon\Config\Exception;
 use Zemit\Bootstrap\Deployment;
 use Zemit\Modules\Cli\Task;
 use Zemit\Modules\Cli\Tasks\Traits\DatabaseTrait;
@@ -22,13 +23,22 @@ class DatabaseTask extends Task
     
     public string $cliDoc = <<<DOC
 Usage:
-  zemit cli database <action> [<params> ...]
+  zemit cli database main
+  zemit cli database drop
+  zemit cli database truncate
+  zemit cli database fix-engine
+  zemit cli database optimize
+  zemit cli database analyze
+  zemit cli database insert
 
 Options:
-  task: database
-  action: drop, truncate, fixEngine, insert, optimize, analyze
-
-
+  main:         truncate, drop, fix-engine, insert, optimize, analyze
+  drop:         Drop deprecated tables
+  truncate:     Truncate tables
+  fix-engine:   Force table engines to `InnoDB`
+  optimize:     Run `OPTIMIZE TABLE`
+  analyze:      Run `ANALYZE TABLE`
+  insert:       Insert records
 DOC;
     
     public ?array $drop = null;
@@ -38,6 +48,9 @@ DOC;
     public ?array $optimize = null;
     public ?array $analyze = null;
     
+    /**
+     * @throws Exception
+     */
     public function initialize(): void
     {
         Utils::setUnlimitedRuntime();

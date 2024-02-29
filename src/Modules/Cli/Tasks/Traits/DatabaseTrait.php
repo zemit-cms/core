@@ -11,11 +11,15 @@
 
 namespace Zemit\Modules\Cli\Tasks\Traits;
 
+use Phalcon\Config\Exception;
 use Phalcon\Mvc\Model;
 use Zemit\Exception\CliException;
+use Zemit\Mvc\Controller\AbstractTrait\AbstractInjectable;
 
 trait DatabaseTrait
 {
+    use AbstractInjectable;
+    
     /**
      * Default action
      * @throws CliException
@@ -208,6 +212,9 @@ trait DatabaseTrait
         return $response;
     }
     
+    /**
+     * @throws Exception
+     */
     public function addModelsPermissions(?array $tables = null): void
     {
         $permissions = [];
@@ -215,6 +222,7 @@ trait DatabaseTrait
         foreach ($tables as $model => $entity) {
             $permissions[$model] = ['*'];
         }
+        
         $this->config->merge([
             'permissions' => [
                 'roles' => [
@@ -224,5 +232,6 @@ trait DatabaseTrait
                 ],
             ],
         ], true);
+        $this->acl->setOption('permissions', $this->config->pathToArray('permissions') ?? []);
     }
 }
