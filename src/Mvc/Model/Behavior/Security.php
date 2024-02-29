@@ -72,7 +72,7 @@ class Security extends Behavior
         return self::$roles;
     }
     
-    public function __construct(?array $options = null)
+    public function __construct(array $options = [])
     {
         parent::__construct($options);
     }
