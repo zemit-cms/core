@@ -901,7 +901,7 @@ class Identity extends Injectable implements OptionsInterface
         $authorizationType = $authorization[0] ?? null;
         $authorizationToken = $authorization[1] ?? null;
         
-        if ($authorizationToken && strtolower($authorizationType) === 'bearer') {
+        if ($authorizationType && $authorizationToken && strtolower($authorizationType) === 'bearer') {
             return $this->getKeyTokenFromClaimToken($authorizationToken, $this->sessionKey);
         }
         
