@@ -96,7 +96,7 @@ class Exposer
                 
                 // If array is returned, parse the columns from the current context key and merge it with the builder
                 elseif (is_iterable($callbackReturn)) {
-                    $columns = self::parseColumnsRecursive($callbackReturn, $builder->getFullKey());
+                    $columns = self::parseColumnsRecursive($callbackReturn, $builder->getFullKey()) ?? [];
                     
                     // If not set, set expose to false by default
                     if (!isset($columns[$builder->getFullKey()])) {
