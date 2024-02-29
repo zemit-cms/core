@@ -414,7 +414,6 @@ class Config extends \Zemit\Config\Config
                 Provider\Assets\ServiceProvider::class => Env::get('PROVIDER_ASSETS', Provider\Assets\ServiceProvider::class),
                 Provider\Flash\ServiceProvider::class => Env::get('PROVIDER_FLASH', Provider\Flash\ServiceProvider::class),
                 Provider\Escaper\ServiceProvider::class => Env::get('PROVIDER_ESCAPER', Provider\Escaper\ServiceProvider::class),
-                Provider\Markdown\ServiceProvider::class => Env::get('PROVIDER_MARKDOWN', Provider\Markdown\ServiceProvider::class),
                 
                 // Database & Models
                 Provider\Database\ServiceProvider::class => Env::get('PROVIDER_DATABASE', Provider\Database\ServiceProvider::class),
