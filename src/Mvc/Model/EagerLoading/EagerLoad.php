@@ -1,5 +1,6 @@
 <?php namespace Zemit\Mvc\Model\EagerLoading;
 
+use Phalcon\Mvc\EntityInterface;
 use Phalcon\Mvc\Model\Relation;
 use Phalcon\Mvc\Model\RelationInterface;
 
@@ -75,6 +76,7 @@ final class EagerLoad
         
         $bindValues = [];
         foreach ($parentSubject as $record) {
+            assert($record instanceof EntityInterface);
             $bindValues[$record->readAttribute($relField)] = true;
         }
         unset($record);
