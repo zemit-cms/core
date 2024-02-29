@@ -93,6 +93,7 @@ class File extends AbstractFile implements FileInterface
 
         $imageWidth = $info[0];
         $imageHeight = $info[1];
+        $imageSize = [];
         $imageSize['width'] = $imageWidth;
         $imageSize['height'] = $imageHeight;
         if ($imageWidth > $maxWidth || $imageHeight > $maxHeight) {
