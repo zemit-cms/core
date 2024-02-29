@@ -449,7 +449,6 @@ class Config extends \Zemit\Config\Config
                 Provider\Utils\ServiceProvider::class => Env::get('PROVIDER_UTILS', Provider\Utils\ServiceProvider::class),
                 Provider\Aws\ServiceProvider::class => Env::get('PROVIDER_AWS', Provider\Aws\ServiceProvider::class),
                 Provider\OCR\ServiceProvider::class => Env::get('PROVIDER_OCR', Provider\OCR\ServiceProvider::class),
-                Provider\V8js\ServiceProvider::class => Env::get('PROVIDER_V8_JS', Provider\V8js\ServiceProvider::class),
                 Provider\Gravatar\ServiceProvider::class => Env::get('PROVIDER_GRAVATAR', Provider\Gravatar\ServiceProvider::class),
                 Provider\Clamav\ServiceProvider::class => Env::get('PROVIDER_CLAMAV', Provider\Clamav\ServiceProvider::class),
                 Provider\OpenAi\ServiceProvider::class => Env::get('PROVIDER_OPENAI', Provider\OpenAi\ServiceProvider::class),
