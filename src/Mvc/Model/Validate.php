@@ -52,12 +52,12 @@ trait Validate
      * Add validation to ensure that a field is not empty
      *
      * @param Validation $validator The validation object to add the validation to
-     * @param string $field The name of the field to validate
+     * @param array|string $field The name of the field to validate
      * @param bool $allowEmpty Whether to allow empty values. Default is false.
      * 
      * @return Validation The updated validation object
      */
-    public function addNotEmptyValidation(Validation $validator, string $field, bool $allowEmpty = false): Validation
+    public function addNotEmptyValidation(Validation $validator, array|string $field, bool $allowEmpty = false): Validation
     {
         if (!$allowEmpty) {
             $this->addPresenceValidation($validator, $field, $allowEmpty);
@@ -70,12 +70,12 @@ trait Validate
      * Add presence validation to a field in a validator object
      *
      * @param Validation $validator The validator object to add the validation to
-     * @param string $field The name of the field to validate
+     * @param array|string $field The name of the field to validate
      * @param bool $allowEmpty Whether to allow empty values for the field or not (default: true)
      *
      * @return Validation The modified validator object after adding the validation
      */
-    public function addPresenceValidation(Validation $validator, string $field, bool $allowEmpty = true): Validation
+    public function addPresenceValidation(Validation $validator, array|string $field, bool $allowEmpty = true): Validation
     {
         $validator->add($field, new PresenceOf([
             'message' => $this->_('required'),
@@ -89,12 +89,12 @@ trait Validate
      * Add validations for an unsigned integer field
      *
      * @param Validation $validator The validation object to add rules to
-     * @param string $field The name of the field to validate (default: 'id')
+     * @param array|string $field The name of the field to validate (default: 'id')
      * @param bool $allowEmpty Whether to allow the field to be empty (default: true)
      *
      * @return Validation The updated validation object with the added rules
      */
-    public function addUnsignedIntValidation(Validation $validator, string $field = 'id', bool $allowEmpty = true): Validation
+    public function addUnsignedIntValidation(Validation $validator, array|string $field = 'id', bool $allowEmpty = true): Validation
     {
         $this->addNotEmptyValidation($validator, $field, $allowEmpty);
         
@@ -119,12 +119,12 @@ trait Validate
      * Add basic validations for the specified field to ensure it is an unsigned big integer
      *
      * @param Validation $validator The validation object to add rules to
-     * @param string $field The name of the field to validate (default is 'id')
+     * @param array|string $field The name of the field to validate (default is 'id')
      * @param bool $allowEmpty Whether empty values are allowed or not (default is true)
      * 
      * @return Validation The updated validation object
      */
-    public function addUnsignedBigIntValidation(Validation $validator, string $field = 'id', bool $allowEmpty = true): Validation
+    public function addUnsignedBigIntValidation(Validation $validator, array|string $field = 'id', bool $allowEmpty = true): Validation
     {
         $this->addNotEmptyValidation($validator, $field, $allowEmpty);
         
@@ -149,14 +149,14 @@ trait Validate
      * Add number validations for a given field
      *
      * @param Validation $validator The validation object to add the validations to
-     * @param string $field The name of the field to validate
+     * @param array|string $field The name of the field to validate
      * @param int $min The minimum value allowed for the field
      * @param int $max The maximum value allowed for the field
      * @param bool $allowEmpty Specifies whether the field can be empty
      * 
      * @return Validation The modified validation object with the number validations added
      */
-    public function addNumberValidation(Validation $validator, string $field, int $min, int $max, bool $allowEmpty = true): Validation
+    public function addNumberValidation(Validation $validator, array|string $field, int $min, int $max, bool $allowEmpty = true): Validation
     {
         $this->addNotEmptyValidation($validator, $field, $allowEmpty);
         
@@ -181,14 +181,14 @@ trait Validate
      * Add string length validations for a field
      *
      * @param Validation $validator The validation object to add the validations to
-     * @param string $field The name of the field to be validated
+     * @param array|string $field The name of the field to be validated
      * @param int $minChar The minimum number of characters allowed (default: 0)
      * @param int $maxChar The maximum number of characters allowed (default: 255)
      * @param bool $allowEmpty Whether empty values are allowed (default: true)
      *
      * @return Validation The validation object with the added validations
      */
-    public function addStringLengthValidation(Validation $validator, string $field, int $minChar = 0, int $maxChar = 255, bool $allowEmpty = true): Validation
+    public function addStringLengthValidation(Validation $validator, array|string $field, int $minChar = 0, int $maxChar = 255, bool $allowEmpty = true): Validation
     {
         $this->addNotEmptyValidation($validator, $field, $allowEmpty);
         
@@ -211,13 +211,13 @@ trait Validate
      * Add inclusion validation for a field
      *
      * @param Validation $validator The validation object
-     * @param string $field The name of the field to be validated
+     * @param array|string $field The name of the field to be validated
      * @param array $domainList The list of valid values for the field
      * @param bool $allowEmpty Set to true to allow empty values (default: true)
      *
      * @return Validation The updated validation object with the inclusion validation added
      */
-    public function addInclusionInValidation(Validation $validator, string $field, array $domainList = [], bool $allowEmpty = true): Validation
+    public function addInclusionInValidation(Validation $validator, array|string $field, array $domainList = [], bool $allowEmpty = true): Validation
     {
         $this->addNotEmptyValidation($validator, $field, $allowEmpty);
         
@@ -236,12 +236,12 @@ trait Validate
      * - Must be a boolean value (1, 0, true, false)
      *
      * @param Validation $validator The validation object to add the validations to
-     * @param string $field The name of the field to validate
+     * @param array|string $field The name of the field to validate
      * @param bool $allowEmpty Whether to allow empty values or not (default: true)
      *
      * @return Validation The updated validation object
      */
-    public function addBooleanValidation(Validation $validator, string $field, bool $allowEmpty = true): Validation
+    public function addBooleanValidation(Validation $validator, array|string $field, bool $allowEmpty = true): Validation
     {
         $this->addNotEmptyValidation($validator, $field, $allowEmpty);
         
@@ -261,14 +261,14 @@ trait Validate
      * The inclusion rule checks if the value of the field is included in the specified domain.
      *
      * @param Validation $validator The validator object to which the rule should be added
-     * @param string $field The name of the field to be validated
+     * @param array|string $field The name of the field to be validated
      * @param array $domain The array of allowed values for the field
      * @param bool $allowEmpty Whether to allow empty values for the field (default: true)
      * @param bool $strict Whether to use strict comparison for checking inclusion (default: true)
      * 
      * @return Validation The updated validator object
      */
-    public function addInclusionValidation(Validation $validator, string $field, array $domain = [], bool $allowEmpty = true, bool $strict = true): Validation
+    public function addInclusionValidation(Validation $validator, array|string $field, array $domain = [], bool $allowEmpty = true, bool $strict = true): Validation
     {
         $this->addNotEmptyValidation($validator, $field, $allowEmpty);
         
@@ -307,12 +307,12 @@ trait Validate
      * Add email validation to a field
      *
      * @param Validation $validator The validator object
-     * @param string $field The field name to add the validation to
+     * @param array|string $field The field name to add the validation to
      * @param bool $allowEmpty Whether to allow empty values for the field (default: true)
      * 
      * @return Validation The modified validator object
      */
-    public function addEmailValidation(Validation $validator, string $field, bool $allowEmpty = true): Validation
+    public function addEmailValidation(Validation $validator, array|string $field, bool $allowEmpty = true): Validation
     {
         $this->addNotEmptyValidation($validator, $field, $allowEmpty);
         
@@ -330,13 +330,13 @@ trait Validate
      * - Must be a valid date in the specified format
      *
      * @param Validation $validator The validation object to add the validations to
-     * @param string $field The name of the date field to validate
+     * @param array|string $field The name of the date field to validate
      * @param bool $allowEmpty Whether to allow empty values for the date field (default: true)
      * @param string $format The expected format of the date field (default: Column::DATE_FORMAT)
      * 
      * @return Validation The updated validation object
      */
-    public function addDateValidation(Validation $validator, string $field, bool $allowEmpty = true, string $format = Column::DATE_FORMAT): Validation
+    public function addDateValidation(Validation $validator, array|string $field, bool $allowEmpty = true, string $format = Column::DATE_FORMAT): Validation
     {
         $this->addNotEmptyValidation($validator, $field, $allowEmpty);
         
@@ -355,13 +355,13 @@ trait Validate
      * - Must be a valid datetime format
      *
      * @param Validation $validator The validation object
-     * @param string $field The name of the field to validate
+     * @param array|string $field The name of the field to validate
      * @param bool $allowEmpty Specifies if the field is allowed to be empty (default: true)
      * @param string $format The format of the datetime (default: Column::DATETIME_FORMAT)
      * 
      * @return Validation The updated validation object
      */
-    public function addDateTimeValidation(Validation $validator, string $field, bool $allowEmpty = true, string $format = Column::DATETIME_FORMAT): Validation
+    public function addDateTimeValidation(Validation $validator, array|string $field, bool $allowEmpty = true, string $format = Column::DATETIME_FORMAT): Validation
     {
         $this->addNotEmptyValidation($validator, $field, $allowEmpty);
         
@@ -380,14 +380,14 @@ trait Validate
      * - Must be a valid JSON string
      *
      * @param Validation $validator The validator object to add the validations to
-     * @param string $field The name of the JSON field to validate
+     * @param array|string $field The name of the JSON field to validate
      * @param bool $allowEmpty Whether to allow an empty value for the field
      * @param int $depth The maximum depth of the JSON string (default: 512)
      * @param int $flags JSON flags to be used (default: 0)
      * 
      * @return Validation The updated validator object
      */
-    public function addJsonValidation(Validation $validator, string $field, bool $allowEmpty = true, int $depth = 512, int $flags = 0): Validation
+    public function addJsonValidation(Validation $validator, array|string $field, bool $allowEmpty = true, int $depth = 512, int $flags = 0): Validation
     {
         $this->addNotEmptyValidation($validator, $field, $allowEmpty);
         
@@ -407,12 +407,12 @@ trait Validate
      * - Must be a valid hex color code
      *
      * @param Validation $validator The validation object
-     * @param string $field The name of the field to validate
+     * @param array|string $field The name of the field to validate
      * @param bool $allowEmpty Whether empty values are allowed (default: true)
      * 
      * @return Validation The modified validation object
      */
-    public function addColorValidation(Validation $validator, string $field, bool $allowEmpty = true): Validation
+    public function addColorValidation(Validation $validator, array|string $field, bool $allowEmpty = true): Validation
     {
         $this->addNotEmptyValidation($validator, $field, $allowEmpty);
         
