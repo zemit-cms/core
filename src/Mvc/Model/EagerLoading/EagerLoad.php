@@ -69,6 +69,20 @@ final class EagerLoad
         $relIrField = $relation->getIntermediateFields();
         $relIrReferencedField = $relation->getIntermediateReferencedFields();
         
+        // @todo support multiples fields with eager loading
+        if (!is_string($relField)) {
+            throw new \RuntimeException('Relation field must be a string, multiple fields are not supported yet.');
+        }
+        if (!is_string($relReferencedField)) {
+            throw new \RuntimeException('Relation Referenced field must be a string, multiple fields are not supported yet.');
+        }
+        if (!is_string($relIrField)) {
+            throw new \RuntimeException('Relation Intermediate field must be a string, multiple fields are not supported yet.');
+        }
+        if (!is_string($relIrReferencedField)) {
+            throw new \RuntimeException('Relation Intermediate Referenced field must be a string, multiple fields are not supported yet.');
+        }
+        
         // PHQL has problems with this slash
         if ($relReferencedModel[0] === '\\') {
             $relReferencedModel = ltrim($relReferencedModel, '\\');
