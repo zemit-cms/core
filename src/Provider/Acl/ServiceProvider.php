@@ -29,7 +29,7 @@ class ServiceProvider extends AbstractServiceProvider
             assert($config instanceof ConfigInterface);
             
             // acl config
-            $aclConfig = $config->pathToArray('acl', []);
+            $aclConfig = $config->pathToArray('acl') ?? [];
             
             // permissions config
             $permissionsConfig = $config->pathToArray('permissions') ?? [];
