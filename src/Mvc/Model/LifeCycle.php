@@ -12,7 +12,6 @@
 namespace Zemit\Mvc\Model;
 
 use Phalcon\Di\Di;
-use Phalcon\Mvc\Model\ManagerInterface;
 use Phalcon\Mvc\Model\Query\BuilderInterface;
 use Phalcon\Mvc\Model\QueryInterface;
 use Phalcon\Mvc\Model\ResultsetInterface;
@@ -25,7 +24,7 @@ trait LifeCycle
     /**
      * Return the query for data retention
      */
-    public static function prepareLifeCycleQuery(BuilderInterface $builder = null, ?array $parameters = null): void
+    public static function prepareLifeCycleQuery(BuilderInterface $builder, ?array $parameters = null): void
     {
         // data life cycle policy must be defined
         if (empty($parameters)) {
@@ -68,7 +67,7 @@ trait LifeCycle
     {
         $di = Di::getDefault();
         $modelsManager = $di->getShared('modelsManager');
-        assert($modelsManager instanceof ManagerInterface);
+        assert($modelsManager instanceof \Phalcon\Mvc\Model\ManagerInterface);
         
         $builder = $modelsManager->createBuilder($parameters);
         $builder->from(get_called_class());
