@@ -12,8 +12,8 @@
 namespace Zemit\Support;
 
 use Phalcon\Di\DiInterface;
-use Phalcon\Mvc\ModelInterface;
 use Zemit\Bootstrap\Config;
+
 use Zemit\Models\Backup;
 use Zemit\Models\Audit;
 use Zemit\Models\AuditDetail;
@@ -112,15 +112,6 @@ trait ModelsMap
     public function getClassMap(string $class): string
     {
         return $this->getModelsMap()[$class] ?? $class;
-    }
-    
-    /**
-     * Return an instance of the class
-     */
-    public function getObjectMap(string $class): ModelInterface
-    {
-        $class = $this->getClassMap($class);
-        return new $class();
     }
     
     /**
@@ -236,17 +227,17 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\Site::class
+     * Return the mapped class name of \Zemit\Models\Workspace::class
      */
-    public function getSiteClass(): string
+    public function getWorkspaceClass(): string
     {
         return $this->getClassMap(Workspace::class);
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\SiteLang::class
+     * Return the mapped class name of \Zemit\Models\WorkspaceLang::class
      */
-    public function getSiteLangClass(): string
+    public function getWorkspaceLangClass(): string
     {
         return $this->getClassMap(WorkspaceLang::class);
     }
@@ -276,9 +267,9 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\Channel::class
+     * Return the mapped class name of \Zemit\Models\Table::class
      */
-    public function getChannelClass(): string
+    public function getTableClass(): string
     {
         return $this->getClassMap(Table::class);
     }

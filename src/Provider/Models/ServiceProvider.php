@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Provider\Acl;
+namespace Zemit\Provider\Models;
 
 use Phalcon\Di\DiInterface;
-use Zemit\Acl\Acl;
 use Zemit\Config\ConfigInterface;
 use Zemit\Provider\AbstractServiceProvider;
+use Zemit\Support\Models;
 
 class ServiceProvider extends AbstractServiceProvider
 {
-    protected string $serviceName = 'acl';
+    protected string $serviceName = 'models';
     
     public function register(DiInterface $di): void
     {
@@ -28,16 +28,10 @@ class ServiceProvider extends AbstractServiceProvider
             $config = $di->get('config');
             assert($config instanceof ConfigInterface);
             
-            // acl config
-            $aclConfig = $config->pathToArray('acl', []);
+            // models config (mapping)
+            $options = $config->pathToArray('models', []);
             
-            // permissions config
-            $permissionsConfig = $config->pathToArray('permissions') ?? [];
-            
-            // acl options
-            $options = array_merge($aclConfig, ['permissions' => $permissionsConfig]);
-            
-            return new Acl($options);
+            return new Models($options);
         });
     }
 }
