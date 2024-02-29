@@ -26,7 +26,7 @@ class ServiceProvider extends AbstractServiceProvider
             
             $config = $di->get('config');
             assert($config instanceof ConfigInterface);
-            $helperServices = $config->pathToArray('helpers', []);
+            $helperServices = $config->pathToArray('helpers') ?? [];
             
             return new HelperFactory($helperServices);
         });
