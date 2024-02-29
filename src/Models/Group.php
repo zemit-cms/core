@@ -47,7 +47,7 @@ class Group extends AbstractGroup implements GroupInterface
         $this->hasMany('id', UserGroup::class, 'groupId', ['alias' => 'UserNode']);
         $this->hasManyToMany(
             'id',
-            UserGroup::Class,
+            UserGroup::class,
             'groupId',
             'userId',
             User::class,
