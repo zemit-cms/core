@@ -44,7 +44,8 @@ final class QueryBuilder extends Builder
     public function where(string $conditions, array $bindParams = [], array $bindTypes = []): BuilderInterface
     {
         if (!empty($this->conditions)) {
-            $conditions = '(' . $this->conditions . ') AND (' . $conditions . ')';
+            $appendCondition = is_array($this->conditions)? implode(') AND (', $this->conditions) : $this->conditions;
+            $conditions = '(' . $appendCondition . ') AND (' . $conditions . ')';
         }
         return parent::where($conditions, $bindParams, $bindTypes);
     }
