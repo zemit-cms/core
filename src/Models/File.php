@@ -57,7 +57,6 @@ class File extends AbstractFile implements FileInterface
     public function getFilePath(?string $fileName = null): ?string
     {
         $fileName ??= $this->getPath();
-        $filePath = null;
 
         $config = $this->getDI()->get('config');
         $filePath = $config->app->dir->files . $fileName;
