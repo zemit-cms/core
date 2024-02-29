@@ -14,7 +14,7 @@ namespace Zemit\Provider\View;
 use Phalcon\Di\DiInterface;
 use Phalcon\Events\Manager;
 use Zemit\Mvc\View;
-use Zemit\Mvc\View\Error as ViewError;
+use Zemit\Mvc\View\Error;
 use Zemit\Config\ConfigInterface;
 use Zemit\Provider\AbstractServiceProvider;
 
@@ -34,7 +34,7 @@ class ServiceProvider extends AbstractServiceProvider
             
             $options ??= $config->pathToArray('view', []);
             
-            $error = new ViewError();
+            $error = new Error();
             $error->setDI($di);
             
             $eventsManager->attach('view', $error);
