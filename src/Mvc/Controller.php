@@ -13,10 +13,10 @@ namespace Zemit\Mvc;
 
 use Zemit\Bootstrap;
 use Zemit\Bootstrap\Config;
-use Zemit\Cache;
+use Zemit\Cache\Cache;
 use Zemit\Db\Profiler;
-use Zemit\Escaper;
-use Zemit\Filter;
+use Zemit\Filter\Filter;
+use Zemit\Html\Escaper;
 use Zemit\Http\Request;
 use Zemit\Identity;
 use Zemit\Support\Utils;
