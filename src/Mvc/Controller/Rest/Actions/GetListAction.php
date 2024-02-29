@@ -14,8 +14,8 @@ namespace Zemit\Mvc\Controller\Rest\Actions;
 use Phalcon\Http\ResponseInterface;
 use Zemit\Mvc\Controller\AbstractTrait\AbstractInjectable;
 
-trait GetListAction {
-    
+trait GetListAction
+{
     use AbstractInjectable;
     
     /**
@@ -37,7 +37,7 @@ trait GetListAction {
         $find = $this->getFind() ?: [];
         
         $totalCount = $model::count($this->getFindCount($find));
-        $totalCount = is_countable($totalCount)? count($totalCount) : (int)$totalCount;
+        $totalCount = is_countable($totalCount) ? count($totalCount) : (int)$totalCount;
         $this->view->setVars([
             'list' => $this->listExpose($model::findWith($with, $find)),
             'totalCount' => $totalCount,

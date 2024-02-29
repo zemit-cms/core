@@ -14,8 +14,8 @@ namespace Zemit\Mvc\Controller\Rest\Actions;
 use Phalcon\Http\ResponseInterface;
 use Zemit\Mvc\Controller\AbstractTrait\AbstractInjectable;
 
-trait GetAction {
-    
+trait GetAction
+{
     use AbstractInjectable;
     
     /**

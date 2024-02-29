@@ -11,9 +11,8 @@
 
 namespace Zemit\Mvc\Controller;
 
+use Phalcon\Di\Injectable;
 use Phalcon\Events\Manager;
-use Phalcon\Mvc\Dispatcher;
-use Zemit\Di\Injectable;
 use Zemit\Mvc\Controller\AbstractTrait\AbstractInjectable;
 
 trait Behavior
@@ -29,7 +28,7 @@ trait Behavior
         // $this->eventsManager->collectResponses(true);
         
         // retrieve events based on the config roles and features
-        $permissions = $this->config->get('permissions')->toArray() ?? [];
+        $permissions = $this->config->pathToArray('permissions') ?? [];
         $featureList = $permissions['features'] ?? [];
         $roleList = $permissions['roles'] ?? [];
         
@@ -72,8 +71,7 @@ trait Behavior
     {
         $event = new $behavior();
         
-        // inject DI
-        if (method_exists($event, 'setDI')) {
+        if ($event instanceof Injectable) {
             $event->setDI($this->getDI());
         }
         

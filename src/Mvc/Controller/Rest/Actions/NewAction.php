@@ -15,10 +15,14 @@ use Exception;
 use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\ModelInterface;
 use Zemit\Mvc\Controller\AbstractTrait\AbstractInjectable;
+use Zemit\Mvc\Controller\Rest\Expose;
+use Zemit\Mvc\Controller\Params;
 
-trait NewAction {
-    
+trait NewAction
+{
     use AbstractInjectable;
+    use Params;
+    use Expose;
     
     /**
      * Prepare a new unsaved model
