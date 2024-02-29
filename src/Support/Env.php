@@ -132,14 +132,15 @@ class Env
     }
     
     /**
-     * Set Dotenv type
-     * @param string|null $type
+     * Sets the Dotenv type ('mutable', 'immutable', 'unsafe-mutable', 'unsafe-immutable')
+     *
+     * @param string|null $type The type to set. If null, the type will default to 'mutable'.
      * @return void
      */
     public static function setType(?string $type = null): void
     {
         $domain = ['mutable', 'immutable', 'unsafe-mutable', 'unsafe-immutable'];
-        self::$type = (!in_array(strtolower($type), $domain, true)) ? strtolower($type) : 'mutable';
+        self::$type = isset($type) && !in_array(strtolower($type), $domain, true) ? strtolower($type) : 'mutable';
     }
     
     /**
