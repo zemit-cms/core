@@ -105,7 +105,7 @@ trait UserTrait
         $roleClass = $this->config->getModelClass(Role::class);
         $role = $roleClass::findFirst([
             'index = :role:',
-            'bind' => ['role' => $username],
+            'bind' => ['role' => $role],
             'bindTypes' => ['role' => Column::BIND_PARAM_STR],
         ]);
         
