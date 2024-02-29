@@ -66,20 +66,22 @@ class File extends AbstractFile implements FileInterface
 
         return $filePath;
     }
-
+    
     /**
-     * Compress an image
+     * Compresses an image and saves it to a destination file.
      *
-     * @param null $destination
-     * @param null $source
-     * @param int $quality
-     * @param int $maxWidth
-     * @param int $maxHeight
-     * @param string $returnMethodName
+     * @param string|null $destination The path to save the compressed image. If null, the source file will be overwritten.
+     * @param string|null $source The path to the source image file. If null, $this->getFilePath() will be used.
+     * @param int $quality The quality of the compressed image (range: 0-100, default: 60).
+     * @param int $maxWidth The maximum width of the compressed image (default: 1920).
+     * @param int $maxHeight The maximum height of the compressed image (default: 1024).
+     * @param string $returnMethodName The name of the method used to save the compressed image.
+     *      Possible values: 'imagepng' (default), 'imagejpeg', 'imagegif'.
+     *      Note: Make sure the GD extension is enabled in PHP for the respective format.
      *
-     * @return string|bool Return a string on success or false
+     * @return string|null The path of the compressed image on success, null if the image cannot be compressed.
      */
-    public function compressImage($destination = null, $source = null, $quality = 60, $maxWidth = 1920, $maxHeight = 1024, $returnMethodName = 'imagepng')
+    public function compressImage(string $destination = null, string $source = null, int $quality = 60, int $maxWidth = 1920, int $maxHeight = 1024, string $returnMethodName = 'imagepng'): ?string
     {
         $source ??= $this->getFilePath();
         $destination ??= $source;
@@ -146,7 +148,7 @@ class File extends AbstractFile implements FileInterface
             return $destination;
         }
 
-        return false;
+        return null;
     }
 
 }
