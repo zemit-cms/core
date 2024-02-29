@@ -20,7 +20,8 @@ use Zemit\Di\Injectable;
  */
 class Rest extends Injectable
 {
-    public function beforeDispatch(Event $event, Dispatcher $dispatcher): bool
+//    public function beforeDispatch(Event $event, Dispatcher $dispatcher): bool
+    public function beforeDispatch(): bool
     {
         return true;
     }
