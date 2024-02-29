@@ -132,7 +132,7 @@ class Models extends Injectable
     /**
      * Store an array of instances
      */
-    public ?array $instances = null;
+    public array $instances = [];
     
     /**
      * 
