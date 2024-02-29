@@ -213,14 +213,14 @@ class Tag extends PhalconTag
         return $beforeHtml . implode($glue ?? '', $html) . $afterHtml . PHP_EOL;
     }
     
-    public static function getTag(): string
+    public static function getTag(string $tag, array $params = [], array $html = [], ?string $glue = null): string
     {
-        return self::get(...func_get_args());
+        return self::get($tag, $params, $html, $glue);
     }
     
-    public static function tag(): void
+    public static function tag(string $tag, array $params = [], array $html = [], ?string $glue = null): void
     {
-        echo self::get(...func_get_args());
+        echo self::get($tag, $params, $html, $glue);
     }
     
     public static function getTagParams(string $tag, array $params = [], string $format = ' %2$s="%1$s"', ?string $glue = null): string
@@ -342,11 +342,11 @@ class Tag extends PhalconTag
      * For more information about the charset values, please visit this documentation below
      * https://www.w3schools.com/tags/att_meta_charset.asp
      */
-    public static function setMetaCharset(?string $charset = 'UTF-8'): void
+    public static function setMetaCharset(string $charset = 'UTF-8'): void
     {
         self::removeMeta('charset');
         self::addMeta('charset', $charset);
-    }
+}
     
     /**
      * Set Meta by property
