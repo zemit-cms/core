@@ -49,12 +49,12 @@ class User extends AbstractUser implements UserInterface
     {
         parent::initialize();
         
-        $this->hasMany('id', File::Class, 'userId', ['alias' => 'Files']);
+        $this->hasMany('id', File::class, 'userId', ['alias' => 'Files']);
         
         $this->hasMany('id', UserGroup::class, 'userId', ['alias' => 'GroupNodes']);
         $this->hasManyToMany(
             'id',
-            UserGroup::Class,
+            UserGroup::class,
             'userId',
             'groupId',
             Group::class,
@@ -65,7 +65,7 @@ class User extends AbstractUser implements UserInterface
         $this->hasMany('id', UserRole::class, 'userId', ['alias' => 'RoleNodes']);
         $this->hasManyToMany(
             'id',
-            UserRole::Class,
+            UserRole::class,
             'userId',
             'roleId',
             Role::class,
@@ -76,7 +76,7 @@ class User extends AbstractUser implements UserInterface
         $this->hasMany('id', UserType::class, 'userId', ['alias' => 'TypeNodes']);
         $this->hasManyToMany(
             'id',
-            UserType::Class,
+            UserType::class,
             'userId',
             'typeId',
             Type::class,
@@ -87,7 +87,7 @@ class User extends AbstractUser implements UserInterface
         $this->hasMany('id', UserFeature::class, 'userId', ['alias' => 'FeatureNodes']);
         $this->hasManyToMany(
             'id',
-            UserFeature::Class,
+            UserFeature::class,
             'userId',
             'featureId',
             Feature::class,
