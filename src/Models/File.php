@@ -87,7 +87,7 @@ class File extends AbstractFile implements FileInterface
         $destination ??= $source;
 
         if (empty($source)) {
-            return false;
+            return null;
         }
 
         $info = getimagesize($source);
