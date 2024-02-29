@@ -15,7 +15,7 @@ use Exception;
 use Phalcon\Db\Adapter\AdapterInterface;
 use Phalcon\Db\Column;
 use Phalcon\Messages\Message;
-use Phalcon\Mvc\Model as PhalconModel;
+use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Model\Relation;
 use Phalcon\Mvc\Model\RelationInterface;
 use Phalcon\Mvc\Model\ResultsetInterface;
@@ -107,7 +107,7 @@ trait Relationship
     /**
      * Return the dirtyRelated entities
      */
-    public function getDirtyRelatedAlias(string $alias)
+    public function getDirtyRelatedAlias(string $alias): mixed
     {
         return $this->dirtyRelated[$alias];
     }
@@ -115,7 +115,7 @@ trait Relationship
     /**
      * Return the dirtyRelated entities
      */
-    public function setDirtyRelatedAlias(string $alias, $value): void
+    public function setDirtyRelatedAlias(string $alias, mixed $value): void
     {
         $this->dirtyRelated[$alias] = $value;
     }
@@ -166,6 +166,8 @@ trait Relationship
      */
     public function assignRelated(array $data, ?array $whiteList = null, ?array $dataColumnMap = null): ModelInterface
     {
+        assert($this instanceof Model);
+        
         // no data, nothing to do
         if (empty($data)) {
             return $this;
@@ -348,16 +350,18 @@ trait Relationship
                     $referencedFields = is_array($referencedFields) ? $referencedFields : [$referencedFields];
                     
                     // Set the relationship context
-                    // @todo review this
-                    $currentRelationshipContext = $this->getRelationshipContext();
-                    $relationshipPrefix = !empty($currentRelationshipContext)? $currentRelationshipContext . '.' : '';
-                    $record->setRelationshipContext($relationshipPrefix . $alias);
+                    if ($record instanceof RelationshipInterface) {
+                        $currentRelationshipContext = $this->getRelationshipContext();
+                        $relationshipPrefix = !empty($currentRelationshipContext)? $currentRelationshipContext . '.' : '';
+                        $record->setRelationshipContext($relationshipPrefix . $alias);
+                    }
                     
                     /**
                      * If dynamic update is enabled, saving the record must not take any action
                      * Only save if the model is dirty to prevent circular relations causing an infinite loop
                      */
-                    if ($record->getDirtyState() !== PhalconModel::DIRTY_STATE_PERSISTENT && !$record->doSave($visited)) {
+                    assert($record instanceof Model);
+                    if ($record->getDirtyState() !== Model::DIRTY_STATE_PERSISTENT && !$record->doSave($visited)) {
                         $this->appendMessagesFromRecord($record, $alias);
                         $connection->rollback($nesting);
                         return false;
@@ -850,7 +854,7 @@ trait Relationship
     /**
      * Return the related instances as an array representation
      */
-    public function relatedToArray(?array $columns = null, $useGetter = true): array
+    public function relatedToArray(?array $columns = null, bool $useGetter = true): array
     {
         $ret = [];
         
@@ -904,7 +908,7 @@ trait Relationship
      *
      * @param string $alias
      * @param $arguments
-     * @return false|int|PhalconModel\Resultset\Simple
+     * @return false|int|Model\Resultset\Simple
      * @throws Exception
      */
     public function getRelated(string $alias, $arguments = null)
