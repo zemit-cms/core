@@ -64,7 +64,7 @@ trait ModelName
     /**
      * Try to find the appropriate model which would suit the current controller name
      */
-    public function getModelNameFromController(?array $namespaces = null, ?string $needle = 'Models'): ?string
+    public function getModelNameFromController(?array $namespaces = null, string $needle = 'Models'): ?string
     {
         $model = ucfirst(
             $this->helper->camelize(
@@ -80,7 +80,7 @@ trait ModelName
         
         $namespaces ??= $this->getModelNamespaces();
         foreach ($namespaces as $namespace => $path) {
-            if (strpos($namespace, $needle) !== false) {
+            if (str_contains($namespace, $needle)) {
                 $possibleModel = $namespace . '\\' . $model;
                 if (class_exists($possibleModel) && is_subclass_of($possibleModel, ModelInterface::class)) {
                     return $possibleModel;
