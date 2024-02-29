@@ -11,120 +11,100 @@
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\AbstractUser;
-use Phalcon\Filter\Validation\Validator\Between;
-use Phalcon\Filter\Validation\Validator\Confirmation;
-use Phalcon\Filter\Validation\Validator\Date;
-use Phalcon\Filter\Validation\Validator\Email;
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-use Phalcon\Filter\Validation\Validator\StringLength\Max;
-use Phalcon\Filter\Validation\Validator\Uniqueness;
-use Phalcon\Filter\Validation\Validator\InclusionIn;
-
-use Zemit\Identity;
 use Zemit\Models\Interfaces\UserInterface;
 
 /**
- * @property UserGroup[] $GroupNode
- * @property Group[] $GroupList
- * @property UserRole[] $RoleNode
- * @property Role[] $RoleList
- * @property UserType[] $TypeNode
- * @property Type[] $TypeList
- * @property File[] $FileList
- * @property Identity $Identity
+ * @property File[] $Files
+ * @method File[] getFiles(?array $params = null)
  *
+ * @property UserGroup[] $GroupNode
  * @method UserGroup[] getGroupNode(?array $params = null)
- * @method Group[] getGroupList(?array $params = null)
+ *
+ * @property Group[] $Groups
+ * @method Group[] getGroups(?array $params = null)
+ *
+ * @property UserRole[] $RoleNode
  * @method UserRole[] getRoleNode(?array $params = null)
- * @method Role[] getRoleList(?array $params = null)
+ *
+ * @property Role[] $Roles
+ * @method Role[] getRoles(?array $params = null)
+ *
+ * @property UserType[] $TypeNode
  * @method UserType[] getTypeNode(?array $params = null)
- * @method Type[] getTypeList(?array $params = null)
- * @method File[] getFileList(?array $params = null)
+ *
+ * @property Type[] $Types
+ * @method Type[] getTypes(?array $params = null)
+ *
+ * @property UserFeature[] $FeatureNode
+ * @method UserFeature[] getFeatureNode(?array $params = null)
+ *
+ * @property Feature[] $Features
+ * @method Feature[] getFeatures(?array $params = null)
  */
 class User extends AbstractUser implements UserInterface
 {
     protected $deleted = self::NO;
-
+    
     public function initialize(): void
     {
         parent::initialize();
-
-        $this->hasMany('id', File::Class, 'userId', ['alias' => 'FileList']);
-
-        $this->hasMany('id', UserGroup::class, 'userId', ['alias' => 'GroupNode']);
-        $this->hasManyToMany('id', UserGroup::Class, 'userId',
-            'groupId', Group::class, 'id', ['alias' => 'GroupList']);
-
-        $this->hasMany('id', UserRole::class, 'userId', ['alias' => 'RoleNode']);
-        $this->hasManyToMany('id', UserRole::Class, 'userId',
-            'roleId', Role::class, 'id', ['alias' => 'RoleList']);
-
-        $this->hasMany('id', UserType::class, 'userId', ['alias' => 'TypeNode']);
-        $this->hasManyToMany('id', UserType::Class, 'userId',
-            'typeId', Type::class, 'id', ['alias' => 'TypeList']);
+        
+        $this->hasMany('id', File::Class, 'userId', ['alias' => 'Files']);
+        
+        $this->hasMany('id', UserGroup::class, 'userId', ['alias' => 'GroupNodes']);
+        $this->hasManyToMany(
+            'id',
+            UserGroup::Class,
+            'userId',
+            'groupId',
+            Group::class,
+            'id',
+            ['alias' => 'Groups']
+        );
+        
+        $this->hasMany('id', UserRole::class, 'userId', ['alias' => 'RoleNodes']);
+        $this->hasManyToMany(
+            'id',
+            UserRole::Class,
+            'userId',
+            'roleId',
+            Role::class,
+            'id',
+            ['alias' => 'Roles']
+        );
+        
+        $this->hasMany('id', UserType::class, 'userId', ['alias' => 'TypeNodes']);
+        $this->hasManyToMany(
+            'id',
+            UserType::Class,
+            'userId',
+            'typeId',
+            Type::class,
+            'id',
+            ['alias' => 'Types']
+        );
+        
+        $this->hasMany('id', UserFeature::class, 'userId', ['alias' => 'FeatureNodes']);
+        $this->hasManyToMany(
+            'id',
+            UserFeature::Class,
+            'userId',
+            'featureId',
+            Feature::class,
+            'id',
+            ['alias' => 'Features']
+        );
     }
-
+    
     public function validation(): bool
     {
         $validator = $this->genericValidation();
-
-        $validator->add('username', new PresenceOf(['message' => $this->_('required')]));
-        $validator->add('email', new Max(['max' => 120, 'message' => $this->_('length-exceeded')]));
-
-        $validator->add('firstName', new PresenceOf(['message' => $this->_('first-name') . ': ' . $this->_('required')]));
-        $validator->add('firstName', new Max(['max' => 60, 'message' => $this->_('first-name') . ': ' . $this->_('length-exceeded')]));
-
-        $validator->add('lastName', new PresenceOf(['message' => $this->_('last-name') . ': ' . $this->_('required')]));
-        $validator->add('lastName', new Max(['max' => 60, 'message' => $this->_('last-name') . ': ' . $this->_('length-exceeded')]));
-
-        $validator->add('email', new PresenceOf(['message' => $this->_('required')]));
-        $validator->add('email', new Email(['message' => 'email-not-valid']));
-        $validator->add('email', new Uniqueness(['message' => $this->_('not-unique')]));
-        $validator->add('email', new Max(['max' => 191, 'message' => $this->_('length-exceeded')]));
-
-        $validator->add('gender', new Between(["minimum" => 0, "maximum" => 1, 'message' => $this->_('boolean-not-valid')]));
-
-        if ($this->getDob()) {
-            $validator->add('dob', new Date(['format' => self::DATE_FORMAT, 'message' => $this->_('date-not-valid')]));
-        }
-
-        $validator->add(['phone', 'phone2', 'cellphone', 'fax'], new Max(['max' => 60, 'message' => $this->_('length-exceeded')]));
-
-        $validator->add('token', new Max(['max' => 120, 'message' => $this->_('length-exceeded')]));
-
-        // Password
-        if (!$this->hasSnapshotData() || $this->hasChanged('password')) {
-            $validator->add(['password', 'passwordConfirm'], new Max(['max' => 255, 'message' => 'Le mot de passe ne doit pas dépasser :max caractères']));
-            $validator->add('passwordConfirm', new Confirmation([
-                'message' => 'La mot de passe et la confirmation doivent être identique',
-                'with' => 'password',
-            ]));
-        }
-
+        
+        $this->addEmailValidation($validator, 'email', false);
+        
         return $this->validate($validator);
     }
-
-    /**
-     * Prepare save after validation
-     */
-    public function beforeSave(): void
-    {
-        $this->preparePassword();
-    }
-
-    /**
-     * Salt & hash the passwordConfirm field into password
-     */
-    public function preparePassword(): void
-    {
-        $password = $this->getPassword();
-        $passwordConfirm = $this->getPasswordConfirm();
-        if (!empty($passwordConfirm) && $password === $passwordConfirm) {
-            $this->setPassword($this->hash($passwordConfirm));
-        }
-        $this->setPasswordConfirm(null);
-    }
-
+    
     /**
      * @param string|null $password
      *
