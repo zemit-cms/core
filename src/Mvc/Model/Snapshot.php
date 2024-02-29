@@ -11,7 +11,7 @@
 
 namespace Zemit\Mvc\Model;
 
-use Phalcon\Mvc\ModelInterface;
+use Phalcon\Mvc\Model;
 use Zemit\Mvc\Model\AbstractTrait\AbstractEventsManager;
 use Zemit\Mvc\Model\Behavior\Snapshot as SnapshotBehavior;
 
@@ -57,7 +57,7 @@ trait Snapshot
      */
     public function hasChangedCallback(callable $callback, bool $anyField = true): \Closure
     {
-        return function (ModelInterface $model, $field) use ($callback, $anyField) {
+        return function (Model $model, $field) use ($callback, $anyField) {
             return (!$model->hasSnapshotData()
                 || $model->hasChanged($anyField ? null : $field)
                 || $model->hasUpdated($anyField ? null : $field))
