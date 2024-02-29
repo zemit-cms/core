@@ -70,16 +70,16 @@ final class EagerLoad
         $relIrReferencedField = $relation->getIntermediateReferencedFields();
         
         // @todo support multiples fields with eager loading
-        if (!is_string($relField)) {
+        if (is_array($relField)) {
             throw new \RuntimeException('Relation field must be a string, multiple fields are not supported yet.');
         }
-        if (!is_string($relReferencedField)) {
+        if (is_array($relReferencedField)) {
             throw new \RuntimeException('Relation Referenced field must be a string, multiple fields are not supported yet.');
         }
-        if (!is_string($relIrField)) {
+        if (is_array($relIrField)) {
             throw new \RuntimeException('Relation Intermediate field must be a string, multiple fields are not supported yet.');
         }
-        if (!is_string($relIrReferencedField)) {
+        if (is_array($relIrReferencedField)) {
             throw new \RuntimeException('Relation Intermediate Referenced field must be a string, multiple fields are not supported yet.');
         }
         
