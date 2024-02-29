@@ -828,57 +828,99 @@ class Identity extends Injectable implements OptionsInterface
     }
     
     /**
-     * Get key / token fields to use for the session fetch & validation
+     * Retrieve the key and token from various authorization sources
+     *
+     * @param string|null $jwt The JWT token
+     * @param string|null $key The key
+     * @param string|null $token The token
+     * @return array An array containing the key and token
      * @throws ValidatorException
      */
     public function getKeyToken(string $jwt = null, string $key = null, string $token = null): array
     {
-        $basicAuth = $this->request->getBasicAuth();
-        $authorization = array_filter(explode(' ', $this->request->getHeader($this->config->path('identity.authorizationHeader', 'Authorization')) ?: ''));
-        
         $json = $this->request->getJsonRawBody();
         $refreshToken = $this->request->get('refreshToken', 'string', $json->refreshToken ?? null);
         $jwt ??= $this->request->get('jwt', 'string', $json->jwt ?? null);
         $key ??= $this->request->get('key', 'string', $this->store['key'] ?? $json->key ?? null);
         $token ??= $this->request->get('token', 'string', $this->store['token'] ?? $json->token ?? null);
         
-        if (empty($key) || empty($token)) {
-            if (!empty($refreshToken)) {
-                $sessionClaim = $this->getClaim($refreshToken, $this->sessionKey . '-refresh');
-                $key = $sessionClaim['key'] ?? null;
-                $token = $sessionClaim['token'] ?? null;
-            }
-            elseif (!empty($jwt)) {
-                $sessionClaim = $this->getClaim($jwt, $this->sessionKey);
-                $key = $sessionClaim['key'] ?? null;
-                $token = $sessionClaim['token'] ?? null;
-            }
-            elseif (!empty($basicAuth)) {
-                $key = $basicAuth['username'] ?? null;
-                $token = $basicAuth['password'] ?? null;
-            }
-            elseif (!empty($authorization)) {
-                $authorizationType = $authorization[0] ?? 'Bearer';
-                $authorizationToken = $authorization[1] ?? null;
-                if ($authorizationToken && strtolower($authorizationType) === 'bearer') {
-                    $sessionClaim = $this->getClaim($authorizationToken, $this->sessionKey);
-                    $key = $sessionClaim['key'] ?? null;
-                    $token = $sessionClaim['token'] ?? null;
-                } else {
-                    // missing token or unsupported authorization
-                    $key = null;
-                    $token = null;
-                }
-            }
-            elseif ($this->config->path('identity.sessionFallback', false) &&
-                $this->session->has($this->sessionKey)
-            ) {
-                $sessionStore = $this->session->get($this->sessionKey);
-                $key = $sessionStore['key'] ?? null;
-                $token = $sessionStore['token'] ?? null;
-            }
+        // Using provided key & token
+        if (isset($key, $token)) {
+            return [$key, $token];
         }
         
+        // Using refresh token
+        if (!empty($refreshToken)) {
+            return $this->getKeyTokenFromClaimToken($refreshToken, $this->sessionKey . '-refresh');
+        }
+        
+        // Using JWT
+        if (!empty($jwt)) {
+            return $this->getKeyTokenFromClaimToken($jwt, $this->sessionKey);
+        }
+        
+        // Using Basic Auth from HTTP request
+        $basicAuth = $this->request->getBasicAuth();
+        if (!empty($basicAuth)) {
+            return [
+                $basicAuth['username'] ?? null,
+                $basicAuth['password'] ?? null,
+            ];
+        }
+        
+        // Using X-Authorization Header
+        $authorizationHeaderKey = $this->config->path('identity.authorizationHeader', 'Authorization');
+        $authorizationHeaderValue = $this->request->getHeader($authorizationHeaderKey);
+        $authorization = array_filter(explode(' ', $authorizationHeaderValue));
+        if (!empty($authorization)) {
+            return $this->getKeyTokenFromAuthorization($authorization);
+        }
+        
+        // Using Session Fallback
+        $sessionFallback = $this->config->path('identity.sessionFallback', false);
+        if ($sessionFallback && $this->session->has($this->sessionKey)) {
+            $sessionStore = $this->session->get($this->sessionKey);
+            return [
+                $sessionStore['key'] ?? null,
+                $sessionStore['token'] ?? null,
+            ];
+        }
+        
+        // Unsupported authorization method
+        return [null, null];
+    }
+    
+    /**
+     * Get key and token from authorization
+     * @param array $authorization The authorization array, where the first element is the authorization type and the second element is the authorization token
+     * @return array The key and token extracted from the authorization session claim. If the key or token is not found, null will be returned for that value.
+     * @throws ValidatorException
+     */
+    public function getKeyTokenFromAuthorization(array $authorization): array
+    {
+        $authorizationType = $authorization[0] ?? null;
+        $authorizationToken = $authorization[1] ?? null;
+        
+        if ($authorizationToken && strtolower($authorizationType) === 'bearer') {
+            return $this->getKeyTokenFromClaimToken($authorizationToken, $this->sessionKey);
+        }
+        
+        return [null, null];
+    }
+    
+    /**
+     * Get the key and token from the claim token
+     *
+     * @param string $claimToken The claim token
+     * @param string $sessionKey The session key
+     * @return array The key and token, [key, token]
+     * @throws ValidatorException
+     */
+    public function getKeyTokenFromClaimToken(string $claimToken, string $sessionKey): array
+    {
+        $sessionClaim = $this->getClaim($claimToken, $sessionKey);
+        $key = $sessionClaim['key'] ?? null;
+        $token = $sessionClaim['token'] ?? null;
         return [$key, $token];
     }
     
