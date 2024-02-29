@@ -342,21 +342,28 @@ final class Loader
     }
     
     /**
-     * @return $this
+     * Execute the eager loading of related models.
+     *
+     * This method iterates through the result of the buildTree method and loads the related models
+     * using the load method of each eager load instance.
+     *
+     * @return self The instance of the class executing the method.
      */
     public function execute(): self
     {
         foreach ($this->buildTree() as $eagerLoad) {
-            $eagerLoad->load($this->options);
+            // @todo option to enable or disable soft delete etc.
+//            $eagerLoad->load($this->options); 
+            $eagerLoad->load();
         }
         
         return $this;
     }
     
     /**
-     * Loader::execute() alias
+     * Loads the data from a data source and returns an instance of the current object.
      *
-     * @return $this
+     * @return $this The current object instance after loading the data.
      */
     public function load(): self
     {
