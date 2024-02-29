@@ -4,11 +4,11 @@ if (!function_exists('implode_sprintf')) {
     /**
      * Will implode an array_map return of the sprintf or mb_sprintf results
      */
-    function implode_sprintf(array $array = [], string $glue = ' ', string $format = '%s', $multibyte = false): string
+    function implode_sprintf(array $array = [], string $glue = ' ', string $format = '%s', $multibyte = false, ?string $encoding = null): string
     {
-        return implode($glue, array_map(function ($value, $key) use ($format, $multibyte) {
+        return implode($glue, array_map(function ($value, $key) use ($format, $multibyte, $encoding) {
             return $multibyte
-                ? mb_sprintf($format, $value, $key)
+                ? mb_vsprintf($format, [$value, $key], $encoding)
                 : sprintf($format, $value, $key);
         }, $array, array_keys($array)));
     }
@@ -18,9 +18,9 @@ if (!function_exists('implode_mb_sprintf')) {
     /**
      * Will implode an array_map return of the mb_sprintf results
      */
-    function implode_mb_sprintf(array $array = [], string $glue = ' ', string $format = '%s'): string
+    function implode_mb_sprintf(array $array = [], string $glue = ' ', string $format = '%s', ?string $encoding = null): string
     {
-        return implode_sprintf($array, $glue, $format, true);
+        return implode_sprintf($array, $glue, $format, true, $encoding);
     }
 }
 
@@ -76,6 +76,7 @@ if (!function_exists('mb_sprintf')) {
      * It should work with any "ASCII preserving" encoding such as UTF-8 and all the ISO-8859 charsets.
      * It handles sign, padding, alignment, width and precision. Argument swapping is not handled.
      * @link http://php.net/manual/en/function.sprintf.php#89020
+     * @deprecated use mb_vsprintf() instead
      */
     function mb_sprintf(string $format, ...$args): string
     {
@@ -95,10 +96,7 @@ if (!function_exists('mb_vsprintf')) {
      */
     function mb_vsprintf(string $format, array $argv, ?string $encoding = null): string
     {
-        if (is_null($encoding)) {
-            $encoding = (string)mb_internal_encoding();
-        }
-        
+        $encoding ??= (string)mb_internal_encoding();
         $format = (string)mb_convert_encoding($format, 'UTF-8', $encoding);
         $newFormat = '';
         $newArgv = [];
