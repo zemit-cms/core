@@ -237,7 +237,7 @@ trait Model
      * - Automatically group by ID by default if nothing else is provided
      * - This will fix multiple single records being returned for the same model with joins
      *
-     * @return array[string]|string|null
+     * @return array|string|null
      */
     protected function getGroup()
     {
@@ -256,7 +256,7 @@ trait Model
      * Get distinct
      * @TODO see how to implement this, maybe an action itself
      *
-     * @return array[string]|string|null
+     * @return array|null
      */
     protected function getDistinct()
     {
@@ -267,7 +267,7 @@ trait Model
      * Get columns
      * @TODO see how to implement this
      *
-     * @return array[string]|string|null
+     * @return array|string|null
      */
     protected function getColumns()
     {
@@ -743,13 +743,8 @@ trait Model
     /**
      * Append the current model name alias to the field
      * So: field -> [Alias].[field]
-     *
-     * @param string|array $field
-     * @param null $modelName
-     *
-     * @return array|string
      */
-    public function appendModelName($field, $modelName = null)
+    public function appendModelName(string $field, ?string $modelName = null): string
     {
         $modelName ??= $this->getModelClassName();
         
@@ -757,20 +752,13 @@ trait Model
             return $field;
         }
         
-        if (is_string($field)) {
-            // Add the current model name by default
-            $explode = explode(' ', $field);
-            if (!strpos($field, '.') !== false) {
-                $field = trim('[' . $modelName . '].[' . array_shift($explode) . '] ' . implode(' ', $explode));
-            }
-            elseif (strpos($field, ']') === false && strpos($field, '[') === false) {
-                $field = trim('[' . implode('].[', explode('.', array_shift($explode))) . ']' . implode(' ', $explode));
-            }
+        // Add the current model name by default
+        $explode = explode(' ', $field);
+        if (!strpos($field, '.') !== false) {
+            $field = trim('[' . $modelName . '].[' . array_shift($explode) . '] ' . implode(' ', $explode));
         }
-        elseif (is_array($field)) {
-            foreach ($field as $fieldKey => $fieldValue) {
-                $field[$fieldKey] = $this->appendModelName($fieldValue, $modelName);
-            }
+        elseif (strpos($field, ']') === false && strpos($field, '[') === false) {
+            $field = trim('[' . implode('].[', explode('.', array_shift($explode))) . ']' . implode(' ', $explode));
         }
         
         return $field;
