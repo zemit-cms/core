@@ -155,24 +155,23 @@ class Exposer
             while ($parentIndex = strrpos($parentKey, '.'));
         }
         
-        // Try to find a subentity, or field that has the true value
-        $value = $builder->getValue();
-        if ((is_array($value) || is_object($value) || is_callable($value))) {
-            $subColumns = is_null($columns) ? $columns : array_filter($columns, function ($columnValue, $columnKey) use ($builder) {
-                
-                $ret = strpos($columnKey, $builder->getFullKey()) === 0;
-                if ($ret && $columnValue === true) {
-                    // expose the current instance (which is the parent of the sub column)
-                    $builder->setExpose(true);
+        if (!empty($columns)) {
+            // Try to find a subentity, or field that has the true value
+            $value = $builder->getValue();
+            if (is_array($value) || is_object($value) || is_callable($value)) {
+                foreach ($columns as $columnKey => $columnValue) {
+                    $ret = str_starts_with($columnKey, $builder->getFullKey());
+                    if ($ret && $columnValue === true) {
+                        // expose the current instance (which is the parent of the sub column)
+                        $builder->setExpose(true);
+                    }
                 }
-                
-                return $ret;
-            }, ARRAY_FILTER_USE_BOTH);
+            }
         }
         
         // check for protected setting
         $key = $builder->getKey();
-        if (!$builder->getProtected() && is_string($key) && strpos($key, '_') === 0) {
+        if (!$builder->getProtected() && is_string($key) && str_starts_with($key, '_')) {
             $builder->setExpose(false);
         }
     }
