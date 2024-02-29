@@ -11,6 +11,7 @@
 
 namespace Zemit\Mvc\Model\Behavior;
 
+use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Mvc\ModelInterface;
 
@@ -33,6 +34,7 @@ class Snapshot extends Behavior
     
     public function beforeCreate(ModelInterface $model): void
     {
+        assert($model instanceof Model);
         $model->setSnapshotData($model->toArray());
     }
 }
