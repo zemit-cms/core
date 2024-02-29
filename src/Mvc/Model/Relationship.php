@@ -396,7 +396,7 @@ trait Relationship
                 $modelsManager = $this->getModelsManager();
                 $relation = $modelsManager->getRelationByAlias(get_class($this), $lowerCaseAlias);
                 
-                if (!$relation) {
+                if (!($relation instanceof RelationInterface)) {
                     if (is_array($assign)) {
                         $connection->rollback($nesting);
                         throw new Exception("There are no defined relations for the model '" . get_class($this) . "' using alias '" . $lowerCaseAlias . "'");
