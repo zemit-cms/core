@@ -31,7 +31,7 @@ trait CountAction
         $model = $this->getModelClassName();
         
         $countResult = $model::count($this->getFindCount($this->getFind()));
-        $count = is_array($countResult) ? count($countResult) : $countResult;
+        $count = is_countable($countResult) ? count($countResult) : (int)$countResult;
         
         $this->view->setVar('count', $count);
         return $this->setRestResponse(true);
