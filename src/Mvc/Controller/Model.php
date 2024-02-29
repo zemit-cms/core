@@ -13,10 +13,8 @@ namespace Zemit\Mvc\Controller;
 
 use Phalcon\Db\Column;
 use Phalcon\Messages\Message;
-use Phalcon\Messages\Messages;
 use Phalcon\Mvc\Model\Resultset;
 use Phalcon\Mvc\ModelInterface;
-use Zemit\Http\Request;
 use Zemit\Identity;
 use Zemit\Support\Exposer\Exposer;
 use Zemit\Support\Helper;
@@ -757,7 +755,7 @@ trait Model
         if (!strpos($field, '.') !== false) {
             $field = trim('[' . $modelName . '].[' . array_shift($explode) . '] ' . implode(' ', $explode));
         }
-        elseif (strpos($field, ']') === false && strpos($field, '[') === false) {
+        elseif (!str_contains($field, ']') && !str_contains($field, '[')) {
             $field = trim('[' . implode('].[', explode('.', array_shift($explode))) . ']' . implode(' ', $explode));
         }
         
@@ -1041,12 +1039,6 @@ trait Model
     
     /**
      * Try to find the appropriate model from the current controller name
-     *
-     * @param ?string $controllerName
-     * @param ?array $namespaces
-     * @param string $needle
-     *
-     * @return string|null|\Zemit\Mvc\Model
      */
     public function getModelNameFromController(string $controllerName = null, array $namespaces = null, string $needle = 'Models\\'): ?string
     {
@@ -1056,7 +1048,7 @@ trait Model
         $model = ucfirst(Helper::camelize(Helper::uncamelize($controllerName)));
         if (!class_exists($model)) {
             foreach ($namespaces as $namespace => $path) {
-                $possibleModel = preg_replace('/\\\\+/', '\\', $namespace . '\\' . $model); // @todo check if phalcon namespaces are always going to end with a trailing backslash
+                $possibleModel = preg_replace('/\\\\+/', '\\', $namespace . '\\' . $model);
                 if (str_ends_with($namespace, $needle) && class_exists($possibleModel)) {
                     $model = $possibleModel;
                 }
