@@ -13,14 +13,13 @@ namespace Zemit\Mvc\Model\Behavior;
 
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Mvc\ModelInterface;
-use Zemit\Models\AbstractModel;
-use Zemit\Models\Interfaces\AbstractInterface;
 use Zemit\Mvc\Model;
-use Zemit\Models\Audit;
-use Zemit\Models\AuditDetail;
+use Zemit\Models\Interfaces\AbstractInterface;
 use Zemit\Models\Interfaces\AuditDetailInterface;
 use Zemit\Models\Interfaces\AuditInterface;
 use Zemit\Models\User;
+use Zemit\Models\Audit;
+use Zemit\Models\AuditDetail;
 use Zemit\Support\Helper;
 
 /**
@@ -121,7 +120,7 @@ class Blameable extends Behavior
             
             $auditDetail = new $auditDetailClass();
             assert($auditDetail instanceof AuditDetailInterface);
-            assert($model instanceof AbstractModel);
+            assert($model instanceof AbstractInterface);
             
             $auditDetail->setTable($model->getSource());
             $auditDetail->setPrimary($model->getId());
