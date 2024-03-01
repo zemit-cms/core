@@ -123,6 +123,8 @@ class ExposerTest extends AbstractUnit
             'test_altered_value_mb_sprintf' => 'test_altered_value_mb_sprintf',
         ];
         $expected = $test;
+        $expected['test_empty_object'] = (array)$expected['test_empty_object'];
+        $expected['test_object'] = (array)$expected['test_object'];
 
         $builder = Exposer::createBuilder($test);
         $actual = Exposer::expose($builder);

@@ -182,7 +182,7 @@ class Exposer
         $columns = $builder->getColumns();
         $value = $builder->getValue();
         
-        if (is_iterable($value)) {
+        if (is_iterable($value) || is_object($value)) {
             $toParse = is_object($value) && method_exists($value, 'toArray')
                 ? $value->toArray()
                 : (array)$value;
