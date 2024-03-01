@@ -15,6 +15,7 @@ use Exception;
 use Phalcon\Db\Adapter\AdapterInterface;
 use Phalcon\Db\Column;
 use Phalcon\Messages\Message;
+use Phalcon\Mvc\EntityInterface;
 use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Model\Relation;
 use Phalcon\Mvc\Model\RelationInterface;
@@ -709,6 +710,9 @@ trait Relationship
      */
     public function getEntityFromData(array $data, array $configuration = []): ModelInterface
     {
+        assert($this instanceof ModelInterface);
+        assert($this instanceof EntityInterface);
+        
         $alias = $configuration['alias'] ?? null;
         $fields = $configuration['fields'] ?? null;
         $modelClass = $configuration['modelClass'] ?? null;
@@ -761,7 +765,6 @@ trait Relationship
                 }
             }
             
-            /** @var ModelInterface|string $modelClass */
             $entity = $modelClass::findFirst([
                 'conditions' => implode_sprintf($fields, ' and ', '[' . $modelClass . '].[%s] = ?%s'),
                 'bind' => array_values($dataKeys),
@@ -772,6 +775,8 @@ trait Relationship
         if (!$entity) {
             $entity = new $modelClass();
         }
+        
+        assert($entity instanceof ModelInterface);
         
         // assign new values
         // can be null to bypass, empty array for nothing or filled array
@@ -860,6 +865,7 @@ trait Relationship
     {
         $ret = [];
         
+        assert($this instanceof ModelInterface);
         $columnMap = $this->getModelsMetaData()->getColumnMap($this);
         
         foreach ($this->getDirtyRelated() as $attribute => $related) {
@@ -927,6 +933,9 @@ trait Relationship
             );
         }
 
+        assert($relation instanceof RelationInterface);
+        assert($this instanceof ModelInterface);
+        
         return $manager->getRelationRecords($relation, $this, $arguments);
     }
     
