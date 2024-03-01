@@ -18,22 +18,29 @@ use Phalcon\Mvc\ModelInterface;
 
 final class Loader
 {
-    protected ?array $subject;
+    public ?array $subject;
     
-    protected string $className;
+    public string $className;
     
-    protected array $eagerLoads;
+    public array $eagerLoads;
     
-    protected bool $singleModel;
+    public bool $singleModel;
     
-    protected array $options = [];
+    public array $options = [];
     
     private const E_INVALID_SUBJECT = 'Expected value of `subject` to be either a ModelInterface object, a Simple object or an array of ModelInterface objects';
     
     /**
-     * @throws \InvalidArgumentException
+     * Constructs a new instance of the class.
+     *
+     * @param mixed $from The data source from which to load the data. Can be an instance of ModelInterface,
+     *                    Simple, array, null, or boolean.
+     * @param array ...$arguments Optional arguments for eager loading. Each argument should be an array
+     *                            specifying the relationships to eager load.
+     *
+     * @throws \InvalidArgumentException If the supplied data source is invalid.
      */
-    public function __construct($from, array ...$arguments)
+    public function __construct(mixed $from, array ...$arguments)
     {
         $error = false;
         $className = null;
@@ -102,12 +109,48 @@ final class Loader
     }
     
     /**
-     * Set Options
+     * Sets the options for the current object instance.
+     *
+     * @param array $options An array of options for the current object.
+     * @return $this The current object instance after setting the options.
      */
     public function setOptions(array $options = []): self
     {
         $this->options = $options;
         return $this;
+    }
+    
+    /**
+     * Sets the subject of the object.
+     *
+     * @param array|null $subject The subject data array or null to clear the subject.
+     *
+     * @return $this The current object instance with the subject set.
+     */
+    public function setSubject(?array $subject): self
+    {
+        $this->subject = $subject;
+        return $this;
+    }
+    
+    /**
+     * Gets the subject
+     *
+     * @return ModelInterface[]|null The subject, or null if it has not been set.
+     */
+    public function getSubject(): ?array
+    {
+        return $this->subject;
+    }
+    
+    /**
+     * Retrieves the first element from the subject array and returns it.
+     *
+     * @return ModelInterface|null The first element from the subject array, or null if the array is empty.
+     */
+    public function getFirstSubject(): ?ModelInterface
+    {
+        return $this->subject[0] ?? null;
     }
     
     /**
@@ -140,25 +183,11 @@ final class Loader
      *
      * @param ModelInterface $subject
      * @param mixed ...$arguments
-     * @return ModelInterface
+     * @return ?ModelInterface
      */
-    public static function fromModel(ModelInterface $subject, ...$arguments): ModelInterface
+    public static function fromModel(ModelInterface $subject, ...$arguments): ?ModelInterface
     {
-        return (new self($subject, ...$arguments))->execute()->get();
-    }
-    
-    /**
-     * Create and get from a Model without soft deleted records
-     *
-     * @param ModelInterface $subject
-     * @param mixed ...$arguments
-     * @return ModelInterface
-     */
-    public static function fromModelWithoutSoftDelete(ModelInterface $subject, ...$arguments): ModelInterface
-    {
-        $options = ['softDelete' => 'softDelete'];
-        $obj = new self($subject, ...$arguments);
-        return $obj->setOptions($options)->execute()->get();
+        return (new self($subject, ...$arguments))->execute()->getFirstSubject();
     }
     
     /**
@@ -170,7 +199,21 @@ final class Loader
      */
     public static function fromArray(array $subject, ...$arguments): array
     {
-        return (new self($subject, ...$arguments))->execute()->get() ?? [];
+        return (new self($subject, ...$arguments))->execute()->getSubject() ?? [];
+    }
+    
+    /**
+     * Create and get from a Model without soft deleted records
+     *
+     * @param ModelInterface $subject
+     * @param mixed ...$arguments
+     * @return ?ModelInterface
+     */
+    public static function fromModelWithoutSoftDelete(ModelInterface $subject, ...$arguments): ?ModelInterface
+    {
+        $options = ['softDelete' => 'softDelete'];
+        $obj = new self($subject, ...$arguments);
+        return $obj->setOptions($options)->execute()->getFirstSubject();
     }
     
     /**
@@ -184,7 +227,7 @@ final class Loader
     {
         $options = ['softDelete' => 'softDelete'];
         $obj = new self($subject, ...$arguments);
-        return $obj->setOptions($options)->execute()->get() ?? [];
+        return $obj->setOptions($options)->execute()->getSubject() ?? [];
     }
     
     /**
@@ -192,29 +235,11 @@ final class Loader
      *
      * @param ResultsetInterface $subject
      * @param mixed ...$arguments
-     * @return ?array
+     * @return array
      */
-    public static function fromResultset(ResultsetInterface $subject, ...$arguments): ?array
+    public static function fromResultset(ResultsetInterface $subject, ...$arguments): array
     {
-        return (new self($subject, ...$arguments))->execute()->get();
-    }
-    
-    /**
-     * @return null|ModelInterface[]|ModelInterface
-     */
-    public function get()
-    {
-        return $this->singleModel
-            ? $this->subject[0] ?? null
-            : $this->subject ?? [];
-    }
-    
-    /**
-     * @return null|ModelInterface[]
-     */
-    public function getSubject()
-    {
-        return $this->subject;
+        return (new self($subject, ...$arguments))->execute()->getSubject() ?? [];
     }
     
     /**
@@ -252,6 +277,14 @@ final class Loader
         return $relations;
     }
     
+    /**
+     * Adds an eager load for a given relation alias and optional constraints and returns an instance of the current object.
+     *
+     * @param string $relationAlias The alias of the relation to be eagerly loaded.
+     * @param callable|null $constraints Optional. The callback function that applies constraints on the eager loaded relation. Default is null.
+     * 
+     * @return $this The current object instance after adding the eager load.
+     */
     public function addEagerLoad(string $relationAlias, ?callable $constraints = null): self
     {
         $this->eagerLoads[$relationAlias] = $constraints;
