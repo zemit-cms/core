@@ -14,7 +14,6 @@ namespace Zemit\Mvc;
 use Phalcon\Autoload\Loader;
 use Phalcon\Di\DiInterface;
 use Phalcon\Mvc\ModuleDefinitionInterface;
-use Phalcon\Mvc\View;
 use Zemit\Bootstrap\Config;
 use Zemit\Di\Injectable;
 use Zemit\Support\Utils;
