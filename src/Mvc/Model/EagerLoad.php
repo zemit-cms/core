@@ -42,7 +42,7 @@ trait EagerLoad
      *
      * @param mixed ...$arguments
      */
-    public static function findWith(array ...$arguments): array|ResultsetInterface
+    public static function findWith(array ...$arguments): array
     {
         $parameters = self::getParametersFromArguments($arguments);
         $list = static::find($parameters);
@@ -50,7 +50,7 @@ trait EagerLoad
             return Loader::fromResultset($list, ...$arguments);
         }
         
-        return $list;
+        return [];
     }
     
     /**
@@ -114,7 +114,7 @@ trait EagerLoad
     /**
      * Call native Phalcon FindFirstBy function then eager load relationships from the model
      */
-    private static function findFirstWithBy(string $forwardMethod, array $arguments): ModelInterface
+    private static function findFirstWithBy(string $forwardMethod, array $arguments): ?ModelInterface
     {
         $parameters = self::getParametersFromArguments($arguments);
         $entity = @parent::$forwardMethod($parameters); // @todo refactor for php83+
@@ -140,7 +140,7 @@ trait EagerLoad
             return Loader::fromResultset($list, ...$arguments);
         }
     
-        return iterator_to_array($list);
+        return [];
     }
     
     /**
