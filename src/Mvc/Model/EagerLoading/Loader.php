@@ -113,7 +113,7 @@ final class Loader
     /**
      * Creates an instance of the current object from various input types and returns it.
      *
-     * @param array|ModelInterface|ResultsetInterface $subject The input object or array to create the instance from.
+     * @param mixed $subject The input object or array to create the instance from.
      * @param mixed ...$arguments Additional arguments that can be passed to the creation process.
      * @return array|ModelInterface The current object instance created from the input.
      */
