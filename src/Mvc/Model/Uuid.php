@@ -34,7 +34,7 @@ trait Uuid
         
         $field = $options['field'] ?? 'uuid';
         $native = $options['native'] ?? true;
-        $binary = $options['binary'] ?? true;
+        $binary = $options['binary'] ?? false;
         
         $security = $this->getDI()->get('security');
         assert($security instanceof Security);

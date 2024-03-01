@@ -45,9 +45,9 @@ class EmailMigration_100 extends Migration
                 new Column(
                     'uuid',
                     [
-                        'type' => Column::TYPE_VARCHAR,
+                        'type' => Column::TYPE_CHAR,
                         'notNull' => true,
-                        'size' => 255,
+                        'size' => 36,
                         'after' => 'template_id'
                     ]
                 ),

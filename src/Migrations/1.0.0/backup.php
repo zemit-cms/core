@@ -35,9 +35,9 @@ class BackupMigration_100 extends Migration
                 new Column(
                     'uuid',
                     [
-                        'type' => Column::TYPE_TINYINTEGER,
+                        'type' => Column::TYPE_CHAR,
                         'notNull' => true,
-                        'size' => 16,
+                        'size' => 36,
                         'after' => 'id'
                     ]
                 ),

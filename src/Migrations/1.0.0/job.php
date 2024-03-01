@@ -37,7 +37,7 @@ class JobMigration_100 extends Migration
                     [
                         'type' => Column::TYPE_CHAR,
                         'notNull' => true,
-                        'size' => 100,
+                        'size' => 36,
                         'after' => 'id'
                     ]
                 ),
