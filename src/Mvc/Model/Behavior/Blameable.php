@@ -11,6 +11,7 @@
 
 namespace Zemit\Mvc\Model\Behavior;
 
+use Phalcon\Mvc\EntityInterface;
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Mvc\ModelInterface;
 use Zemit\Mvc\Model;
@@ -52,10 +53,11 @@ class Blameable extends Behavior
         $this->auditDetailClass = $options['auditDetailClass'] ?? $this->auditDetailClass;
     }
     
+    /**
+     * @throws \Exception
+     */
     public function notify(string $type, ModelInterface $model): ?bool
     {
-        assert($model instanceof Model);
-        
         if ($this->isEnabled()) {
             return null;
         }
@@ -77,10 +79,11 @@ class Blameable extends Behavior
      * Return true if the audit was created
      * @throws \Exception
      */
-    public function createAudit(string $type, Model $model): bool
+    public function createAudit(string $type, ModelInterface $model): bool
     {
         assert($model instanceof AbstractInterface);
-            
+        assert($model instanceof EntityInterface);
+        
         $event = lcfirst(Helper::uncamelize(str_replace(['before', 'after'], ['', ''], $type)));
         
         $auditClass = $this->auditClass;
@@ -120,7 +123,6 @@ class Blameable extends Behavior
             
             $auditDetail = new $auditDetailClass();
             assert($auditDetail instanceof AuditDetailInterface);
-            assert($model instanceof AbstractInterface);
             
             $auditDetail->setTable($model->getSource());
             $auditDetail->setPrimary($model->getId());
@@ -147,8 +149,10 @@ class Blameable extends Behavior
     /**
      * Return true if data has been collected
      */
-    protected function collectData(Model $model): bool
+    protected function collectData(ModelInterface $model): bool
     {
+        assert($model instanceof Model);
+        
         if ($model->hasSnapshotData()) {
             $this->snapshot = $model->getSnapshotData();
             $this->changedFields = $model->getChangedFields();
