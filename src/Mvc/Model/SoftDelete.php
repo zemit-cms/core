@@ -15,6 +15,7 @@ use Zemit\Mvc\Model\AbstractTrait\AbstractBehavior;
 use Zemit\Mvc\Model\AbstractTrait\AbstractEntity;
 use Zemit\Mvc\Model\AbstractTrait\AbstractEventsManager;
 use Zemit\Mvc\Model\AbstractTrait\AbstractModelsManager;
+use Zemit\Mvc\Model\AbstractTrait\AbstractSave;
 
 trait SoftDelete
 {
@@ -22,6 +23,7 @@ trait SoftDelete
     use AbstractBehavior;
     use AbstractEventsManager;
     use AbstractEntity;
+    use AbstractSave;
     use Options;
     use Behavior;
     
