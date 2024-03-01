@@ -11,7 +11,9 @@
 
 namespace Zemit\Mvc\Controller\AbstractTrait;
 
+use Phalcon\Mvc\ModelInterface;
+
 trait AbstractGetSingle
 {
-    abstract public function getSingle(?int $id = null, ?string $modelName = null, ?array $with = null, ?array $find = null, bool $appendCondition = true);
+    abstract public function getSingle(?int $id = null, ?string $modelName = null, ?array $with = null, ?array $find = null): ?ModelInterface;
 }

@@ -907,29 +907,52 @@ trait Model
     }
     
     /**
-     * Get Single from ID and Model Name
+     * Get a single model instance by ID or UUID
+     *
+     * @param int|null $id The ID of the model instance
+     * @param string|null $modelName The name of the model class to retrieve
+     * @param array|null $with An array of relationship names to eager load
+     * @param array|null $find An array of additional find options
+     *
+     * @return ModelInterface|null     The retrieved model instance, or null if no ID or UUID is provided
      * @throws Exception
      * @throws \Exception
      */
-    public function getSingle(?int $id = null, ?string $modelName = null, ?array $with = null, ?array $find = null, bool $appendCondition = true)
+    public function getSingle(?int $id = null, ?string $modelName = null, ?array $with = null, ?array $find = null): ?ModelInterface
     {
-        $id ??= (int)$this->getParam('id', [Filter::FILTER_INT]);
+        $id ??= $this->getParam('id', [Filter::FILTER_INT]);
+        $uuid ??= $this->getParam('uuid', [Filter::FILTER_ALNUM]);
+        
+        // no ID or UUID provided, avoid doing the request
+        if (empty($id) && empty($uuid)) {
+            return null;
+        }
+        
         $modelName ??= $this->getModelClassName();
         $with ??= $this->getWith();
         $find ??= $this->getFind();
         
-        $condition = '[' . $modelName . '].[id] = ' . (int)$id;
+        $conditions = [];
         
-        if ($appendCondition) {
-            $find['conditions'] .= (empty($find['conditions']) ? null : ' and ') . $condition;
-        }
-        else {
-            $find['bind'] = [];
-            $find['bindTypes'] = [];
-            $find['conditions'] = $condition;
+        // Using ID
+        if (!empty($id)) {
+            
+            $conditions []= $this->appendModelName('id', $modelName) . ' = :id:';
+            $find['bind']['id'] = (int)$id;
+            $find['bindTypes']['id'] = Column::BIND_PARAM_INT;
         }
         
-        return $id ? $modelName::findFirstWith($with ?? [], $find ?? []) : false;
+        // Using UUID
+        if (!empty($uuid)) {
+            $conditions []= $this->appendModelName('uuid', $modelName) . ' = :uuid:';
+            $find['bind']['uuid'] = $uuid;
+            $find['bindTypes']['uuid'] = Column::BIND_PARAM_STR;
+        }
+        
+        // Append conditions
+        $find['conditions'] .= (empty($find['conditions']) ? null : ' AND (') . implode(') AND (', $conditions) . ')';
+        
+        return $modelName::findFirstWith($with ?? [], $find ?? []);
     }
     
     /**
