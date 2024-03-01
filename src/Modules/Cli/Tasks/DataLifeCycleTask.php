@@ -61,10 +61,11 @@ DOC;
     {
         $response = [];
         
-        foreach ($tables as &$table) {
-            $table = array_map('trim', explode(',', $table));
+        $parsedTables = [];
+        foreach ($tables as $key => $table) {
+            $parsedTables[$key] = array_map('trim', explode(',', $table));
         }
-        $tables = array_flip(array_merge_recursive(...$tables));
+        $parsedTables = array_flip(array_merge_recursive(...$parsedTables));
         
         foreach ($this->models as $modelClass => $policyName) {
             
@@ -77,7 +78,7 @@ DOC;
             $source = $model->getSource();
             
             // whitelisted tables
-            if (!empty($tables) && !isset($tables[$source])) {
+            if (!empty($parsedTables) && !isset($parsedTables[$source])) {
                 continue;
             }
             
