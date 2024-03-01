@@ -94,7 +94,6 @@ class Blameable extends Behavior
         $snapshot = $this->snapshot;
         
         $audit = new $auditClass();
-        assert($audit instanceof Model);
         assert($audit instanceof AuditInterface);
         
         $audit->setModel(get_class($model));
