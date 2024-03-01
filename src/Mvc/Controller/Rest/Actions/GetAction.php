@@ -23,8 +23,9 @@ trait GetAction
     
     /**
      * @deprecated Should use getAction() method instead
+     * @throws Exception
      */
-    public function getSingleAction(string|int $id = null): ResponseInterface
+    public function getSingleAction(?int $id = null): ResponseInterface
     {
         return $this->getAction($id);
     }

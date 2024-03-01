@@ -28,7 +28,7 @@ trait ReorderAction
      * Re-ordering a position
      * @throws Exception
      */
-    public function reorderAction(string|int $id = null, int $position = null): ResponseInterface
+    public function reorderAction(?int $id = null, ?int $position = null): ResponseInterface
     {
         $entity = $this->getSingle($id);
         

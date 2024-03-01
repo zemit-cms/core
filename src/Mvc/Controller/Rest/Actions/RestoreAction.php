@@ -27,7 +27,7 @@ trait RestoreAction
      * Restoring record
      * @throws Exception
      */
-    public function restoreAction(string|int $id = null): ResponseInterface
+    public function restoreAction(?int $id = null): ResponseInterface
     {
         $entity = $this->getSingle($id);
         

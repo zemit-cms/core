@@ -27,7 +27,7 @@ trait DeleteAction
      * Deleting a record
      * @throws Exception
      */
-    public function deleteAction(string|int $id = null): ResponseInterface
+    public function deleteAction(?int $id = null): ResponseInterface
     {
         $entity = $this->getSingle($id);
         
