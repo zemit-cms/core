@@ -12,12 +12,15 @@
 namespace Zemit\Mvc\Controller;
 
 use Phalcon\Encryption\Security\Exception;
+use Zemit\Mvc\Controller\AbstractTrait\AbstractParams;
 
 /**
  * @property \Zemit\Identity $identity
  */
 trait Identity
 {
+    use AbstractParams;
+    
     /**
      * Create a refresh a session
      */
