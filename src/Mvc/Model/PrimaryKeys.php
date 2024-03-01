@@ -11,16 +11,29 @@
 
 namespace Zemit\Mvc\Model;
 
+use Phalcon\Mvc\EntityInterface;
 use Phalcon\Mvc\ModelInterface;
 use Zemit\Mvc\Model\AbstractTrait\AbstractMetaData;
 
 trait PrimaryKeys
 {
     use AbstractMetaData;
-    use Attribute;
     
     /**
-     * Get Primary Key Attributes from models MetaData
+     * Get the column mapping of the model
+     *
+     * @return array|null The column mapping of the model, or null if no mapping is defined
+     */
+    public function getColumnMap(): ?array
+    {
+        assert($this instanceof ModelInterface);
+        return $this->getModelsMetaData()->getColumnMap($this);
+    }
+    
+    /**
+     * Retrieves the primary keys attributes of the model.
+     *
+     * @return array Array containing the primary keys of the model.
      */
     public function getPrimaryKeys(): array
     {
@@ -29,27 +42,20 @@ trait PrimaryKeys
     }
     
     /**
-     * Get column map from models MetaData
-     */
-    public function getColumnMap(): array
-    {
-        assert($this instanceof ModelInterface);
-        return $this->getModelsMetaData()->getColumnMap($this);
-    }
-    
-    /**
-     * Get an array of primary keys values
+     * Retrieves the values of the primary keys attributes of the entity.
+     *
+     * @return array Array containing the values of the primary keys attributes of the entity.
      */
     public function getPrimaryKeysValues(): array
     {
-        $primaryKeys = $this->getPrimaryKeys();
-        $columnMap = $this->getColumnMap();
-        
         $ret = [];
+        $columnMap = $this->getColumnMap() ?? [];
         
-        foreach ($primaryKeys as $primaryKey) {
+        assert($this instanceof EntityInterface);
+        
+        foreach ($this->getPrimaryKeys() as $primaryKey) {
             $attributeField = $columnMap[$primaryKey] ?? $primaryKey;
-            $ret [$attributeField] = $this->getAttribute($attributeField);
+            $ret [$attributeField] = $this->readAttribute($attributeField);
         }
         
         return $ret;
