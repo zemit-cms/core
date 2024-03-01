@@ -115,19 +115,24 @@ final class Loader
      *
      * @param mixed $subject The input object or array to create the instance from.
      * @param mixed ...$arguments Additional arguments that can be passed to the creation process.
-     * @return array|ModelInterface The current object instance created from the input.
+     * 
+     * @return array|ModelInterface|null The current object instance created from the input.
      */
-    public static function from(array|ModelInterface|ResultsetInterface $subject, mixed ...$arguments): array|ModelInterface
+    public static function from(mixed $subject, mixed ...$arguments): array|ModelInterface|null
     {
         if ($subject instanceof ModelInterface) {
             return self::fromModel($subject, ...$arguments);
         }
         
-        if ($subject instanceof ResultsetInterface) {
+        else if ($subject instanceof ResultsetInterface) {
             return self::fromResultset($subject, ...$arguments);
         }
         
-        return self::fromArray($subject, ...$arguments);
+        else if (is_array($subject)) {
+            return self::fromArray($subject, ...$arguments);
+        }
+        
+        throw new \InvalidArgumentException(Loader::E_INVALID_SUBJECT);
     }
     
     /**
@@ -165,7 +170,7 @@ final class Loader
      */
     public static function fromArray(array $subject, ...$arguments): array
     {
-        return (new self($subject, ...$arguments))->execute()->get();
+        return (new self($subject, ...$arguments))->execute()->get() ?? [];
     }
     
     /**
@@ -179,7 +184,7 @@ final class Loader
     {
         $options = ['softDelete' => 'softDelete'];
         $obj = new self($subject, ...$arguments);
-        return $obj->setOptions($options)->execute()->get();
+        return $obj->setOptions($options)->execute()->get() ?? [];
     }
     
     /**
