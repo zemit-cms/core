@@ -42,7 +42,7 @@ trait EagerLoad
      *
      * @param mixed ...$arguments
      */
-    public static function findWith(array ...$arguments)
+    public static function findWith(array ...$arguments): array|ResultsetInterface
     {
         $parameters = self::getParametersFromArguments($arguments);
         $list = static::find($parameters);
@@ -59,7 +59,7 @@ trait EagerLoad
      * @param mixed ...$arguments
      * @return false|\Phalcon\Mvc\ModelInterface
      */
-    public static function findFirstWith(array ...$arguments)
+    public static function findFirstWith(array ...$arguments): ?ModelInterface
     {
         $parameters = self::getParametersFromArguments($arguments);
         $entity = static::findFirst($parameters);

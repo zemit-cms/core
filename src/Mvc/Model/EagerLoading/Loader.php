@@ -13,6 +13,7 @@ namespace Zemit\Mvc\Model\EagerLoading;
 
 use Phalcon\Mvc\Model\Relation;
 use Phalcon\Mvc\Model\Resultset\Simple;
+use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\ModelInterface;
 
 final class Loader
@@ -110,26 +111,23 @@ final class Loader
     }
     
     /**
-     * Create and get from a mixed $subject
+     * Creates an instance of the current object from various input types and returns it.
      *
-     * @param ModelInterface|ModelInterface[]|Simple $subject
-     * @param mixed ...$arguments
-     * @return mixed
-     * @throws \InvalidArgumentException
+     * @param array|ModelInterface|ResultsetInterface $subject The input object or array to create the instance from.
+     * @param mixed ...$arguments Additional arguments that can be passed to the creation process.
+     * @return array|ModelInterface The current object instance created from the input.
      */
-    public static function from($subject, array ...$arguments)
+    public static function from(array|ModelInterface|ResultsetInterface $subject, mixed ...$arguments): array|ModelInterface
     {
         if ($subject instanceof ModelInterface) {
             return self::fromModel($subject, ...$arguments);
         }
-        elseif ($subject instanceof Simple) {
+        
+        if ($subject instanceof ResultsetInterface) {
             return self::fromResultset($subject, ...$arguments);
         }
-        elseif (is_array($subject)) {
-            return self::fromArray($subject, ...$arguments);
-        }
         
-        throw new \InvalidArgumentException(self::E_INVALID_SUBJECT);
+        return self::fromArray($subject, ...$arguments);
     }
     
     /**
@@ -187,11 +185,11 @@ final class Loader
     /**
      * Create and get from a Resultset
      *
-     * @param Simple $subject
+     * @param ResultsetInterface $subject
      * @param mixed ...$arguments
      * @return ?array
      */
-    public static function fromResultset(Simple $subject, ...$arguments): ?array
+    public static function fromResultset(ResultsetInterface $subject, ...$arguments): ?array
     {
         return (new self($subject, ...$arguments))->execute()->get();
     }
