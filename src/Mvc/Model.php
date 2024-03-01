@@ -40,8 +40,16 @@ use Phalcon\Events\Manager as EventsManager;
  * {@inheritdoc} \Phalcon\Mvc\Model
  * @package Zemit\Mvc
  */
-class Model extends \Phalcon\Mvc\Model implements \Zemit\Mvc\Model\RelationshipInterface, \Phalcon\Mvc\EntityInterface, \Phalcon\Mvc\ModelInterface, \Phalcon\Mvc\Model\ResultInterface, \Serializable, \JsonSerializable
+class Model extends \Phalcon\Mvc\Model implements
+    \Zemit\Mvc\Model\SoftDeleteInterface,
+    \Zemit\Mvc\Model\RelationshipInterface,
+    \Phalcon\Mvc\EntityInterface,
+    \Phalcon\Mvc\ModelInterface,
+    \Phalcon\Mvc\Model\ResultInterface,
+    \Serializable,
+    \JsonSerializable
 {
+    
     // Model Feature Traits
     use \Zemit\Mvc\Model\Options;
     use \Zemit\Mvc\Model\Events;

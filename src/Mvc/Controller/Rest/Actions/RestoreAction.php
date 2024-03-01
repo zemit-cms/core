@@ -16,6 +16,7 @@ use Phalcon\Http\ResponseInterface;
 use Zemit\Mvc\Controller\AbstractTrait\AbstractGetSingle;
 use Zemit\Mvc\Controller\AbstractTrait\AbstractInjectable;
 use Zemit\Mvc\Controller\Rest\Response;
+use Zemit\Mvc\Model\SoftDeleteInterface;
 
 trait RestoreAction
 {
@@ -35,6 +36,7 @@ trait RestoreAction
             return $this->setRestErrorResponse(404);
         }
         
+        assert($entity instanceof SoftDeleteInterface);
         $restore = $entity->restore();
         $this->view->setVars([
             'restore' => $restore,
