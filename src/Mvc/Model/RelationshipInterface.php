@@ -47,7 +47,7 @@ interface RelationshipInterface
     
     public function appendMessages(array $messages = [], ?string $context = null, ?int $index = 0): void;
     
-    public function appendMessagesFromRecord($record, string $context = null, ?int $index = 0): void;
+    public function appendMessagesFromRecord(?ModelInterface $record = null, string $context = null, ?int $index = 0): void;
     
     public function appendMessagesFromResultset(?ResultsetInterface $resultset = null, ?string $context = null, ?int $index = 0): void;
     

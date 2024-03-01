@@ -765,7 +765,8 @@ trait Relationship
                 }
             }
             
-            $entity = $modelClass::findFirst([
+            /** @var ModelInterface|null $entity */
+            $entity = call_user_func($modelClass . '::findFirst', [
                 'conditions' => implode_sprintf($fields, ' and ', '[' . $modelClass . '].[%s] = ?%s'),
                 'bind' => array_values($dataKeys),
                 'bindTypes' => array_fill(0, count($dataKeys), Column::BIND_PARAM_STR),
@@ -801,37 +802,47 @@ trait Relationship
     }
     
     /**
-     * Append a message to this model from another record,
-     * also prepend a context to the previous context
+     * Appends messages from a record to the current messages container.
      *
-     * @param ResultsetInterface|ModelInterface $record
-     * @param string|null $context
+     * @param ModelInterface|null $record The record from which to append the messages.
+     * @param string|null $context The context in which the messages should be added. Defaults to null.
+     * @param int|null $index The index at which the messages should be added. Defaults to 0.
+     * 
+     * @return void
      */
-    public function appendMessagesFromRecord($record, string $context = null, ?int $index = 0): void
+    public function appendMessagesFromRecord(?ModelInterface $record = null, string $context = null, ?int $index = 0): void
     {
-        if ($record) {
+        if (isset($record)) {
             $this->appendMessages($record->getMessages(), $context, $index);
         }
     }
     
     /**
-     * Append a message to this model from another record,
-     * also prepend a context to the previous context
+     * Append messages from a resultset to the current message container.
+     *
+     * @param ResultsetInterface|null $resultset The resultset containing the messages to be appended. If not provided, no messages will be appended.
+     * @param string|null $context The context to assign to the appended messages. If not provided, the default context will be used.
+     * @param int|null $index The index at which the messages should be inserted in the messages array. If not provided, the messages will be appended at the end.
      */
     public function appendMessagesFromResultset(?ResultsetInterface $resultset = null, ?string $context = null, ?int $index = 0): void
     {
-        if ($resultset) {
+        if (isset($resultset)) {
             $this->appendMessages($resultset->getMessages(), $context, $index);
         }
     }
     
     /**
-     * Append a message to this model from another record,
-     * also prepend a context to the previous context
+     * Appends messages from a record list to the current message container.
+     *
+     * @param iterable|null $recordList The list of records to append messages from.
+     * @param string|null $context The context to associate with the messages.
+     * @param int|null $index The index to use for the messages.
+     * 
+     * @return void
      */
     public function appendMessagesFromRecordList(?iterable $recordList = null, ?string $context = null, ?int $index = 0): void
     {
-        if ($recordList) {
+        if (isset($recordList)) {
             foreach ($recordList as $key => $record) {
                 $this->appendMessagesFromRecord($record, $context, $index . '.' . $key);
             }
@@ -839,9 +850,17 @@ trait Relationship
     }
     
     /**
-     * Rebuilding context for meta data
+     * Rebuilds the message context.
+     *
+     * This method appends the given context to the previous context stored in the message metadata.
+     * If there is no previous context, only the given context is returned.
+     *
+     * @param Message $message The message object whose context needs to be rebuilt.
+     * @param string $context The context to be appended.
+     *
+     * @return string The rebuilt context
      */
-    public function rebuildMessageContext(Message $message, string $context): ?string
+    public function rebuildMessageContext(Message $message, string $context): string
     {
         $metaData = $message->getMetaData();
         $previousContext = $metaData['context'] ?? '';
@@ -849,9 +868,17 @@ trait Relationship
     }
     
     /**
-     * Rebuilding context for meta data
+     * Rebuilds the message index.
+     *
+     * This method constructs the new message index based on the provided $index argument
+     * and the previous index stored in the message's metadata. It returns the new index
+     * as a string.
+     *
+     * @param Message $message The message object for which the index is being rebuilt.
+     * @param int|null $index The new index to be assigned to the message. Can be null.
+     * @return string The new index as a string
      */
-    public function rebuildMessageIndex(Message $message, ?int $index): ?string
+    public function rebuildMessageIndex(Message $message, ?int $index = null): string
     {
         $metaData = $message->getMetaData();
         $previousIndex = $metaData['index'] ?? '';
@@ -859,7 +886,15 @@ trait Relationship
     }
     
     /**
-     * Return the related instances as an array representation
+     * Retrieves the related records as an array.
+     *
+     * If $columns is provided, only the specified columns will be included in the array.
+     * If $useGetter is set to true, it will use the getter methods of the related records.
+     *
+     * @param array|null $columns (optional) The columns to include in the array for each related record
+     * @param bool $useGetter (optional) Whether to use getter methods of the related records (default: true)
+     * 
+     * @return array The related records as an array
      */
     public function relatedToArray(?array $columns = null, bool $useGetter = true): array
     {
