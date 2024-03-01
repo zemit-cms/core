@@ -787,7 +787,7 @@ trait Relationship
         return $entity;
     }
     
-    public function appendMessages(array $messages = [], ?string $context = null, ?int $index = 0): void
+    public function appendMessages(array $messages = [], ?string $context = null, ?int $index = null): void
     {
         foreach ($messages as $message) {
             assert($message instanceof Message);
@@ -810,7 +810,7 @@ trait Relationship
      * 
      * @return void
      */
-    public function appendMessagesFromRecord(?ModelInterface $record = null, string $context = null, ?int $index = 0): void
+    public function appendMessagesFromRecord(?ModelInterface $record = null, string $context = null, ?int $index = null): void
     {
         if (isset($record)) {
             $this->appendMessages($record->getMessages(), $context, $index);
@@ -824,7 +824,7 @@ trait Relationship
      * @param string|null $context The context to assign to the appended messages. If not provided, the default context will be used.
      * @param int|null $index The index at which the messages should be inserted in the messages array. If not provided, the messages will be appended at the end.
      */
-    public function appendMessagesFromResultset(?ResultsetInterface $resultset = null, ?string $context = null, ?int $index = 0): void
+    public function appendMessagesFromResultset(?ResultsetInterface $resultset = null, ?string $context = null, ?int $index = null): void
     {
         if (isset($resultset)) {
             $this->appendMessages($resultset->getMessages(), $context, $index);
@@ -840,11 +840,11 @@ trait Relationship
      * 
      * @return void
      */
-    public function appendMessagesFromRecordList(?iterable $recordList = null, ?string $context = null, ?int $index = 0): void
+    public function appendMessagesFromRecordList(?iterable $recordList = null, ?string $context = null, ?int $index = null): void
     {
         if (isset($recordList)) {
             foreach ($recordList as $key => $record) {
-                $this->appendMessagesFromRecord($record, $context, $index . '.' . $key);
+                $this->appendMessagesFromRecord($record, $context . '[' . $index . ']', $key);
             }
         }
     }
@@ -856,11 +856,11 @@ trait Relationship
      * If there is no previous context, only the given context is returned.
      *
      * @param Message $message The message object whose context needs to be rebuilt.
-     * @param string $context The context to be appended.
+     * @param string|null $context The context to be appended.
      *
      * @return string The rebuilt context
      */
-    public function rebuildMessageContext(Message $message, string $context): string
+    public function rebuildMessageContext(Message $message, ?string $context = null): string
     {
         $metaData = $message->getMetaData();
         $previousContext = $metaData['context'] ?? '';
