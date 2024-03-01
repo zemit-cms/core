@@ -34,7 +34,7 @@ trait GetAction
      * Retrieving a single record
      * @throws Exception
      */
-    public function getAction(string|int $id = null): ResponseInterface
+    public function getAction(?int $id = null): ResponseInterface
     {
         $entity = $this->getSingle($id);
         
