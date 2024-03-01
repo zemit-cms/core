@@ -14,12 +14,14 @@ namespace Zemit\Mvc\Controller\Rest\Actions;
 use Exception;
 use Phalcon\Filter\Filter;
 use Phalcon\Http\ResponseInterface;
+use Zemit\Mvc\Controller\AbstractTrait\AbstractGetSingle;
 use Zemit\Mvc\Controller\AbstractTrait\AbstractInjectable;
 use Zemit\Mvc\Controller\Rest\Response;
 
 trait ReorderAction
 {
     use AbstractInjectable;
+    use AbstractGetSingle;
     use Response;
     
     /**

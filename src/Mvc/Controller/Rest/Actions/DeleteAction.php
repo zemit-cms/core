@@ -11,17 +11,21 @@
 
 namespace Zemit\Mvc\Controller\Rest\Actions;
 
+use Phalcon\Filter\Exception;
 use Phalcon\Http\ResponseInterface;
+use Zemit\Mvc\Controller\AbstractTrait\AbstractGetSingle;
 use Zemit\Mvc\Controller\AbstractTrait\AbstractInjectable;
 use Zemit\Mvc\Controller\Rest\Response;
 
 trait DeleteAction
 {
     use AbstractInjectable;
+    use AbstractGetSingle;
     use Response;
     
     /**
      * Deleting a record
+     * @throws Exception
      */
     public function deleteAction(string|int $id = null): ResponseInterface
     {

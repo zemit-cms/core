@@ -11,12 +11,15 @@
 
 namespace Zemit\Mvc\Controller\Rest\Actions;
 
+use Phalcon\Filter\Exception;
 use Phalcon\Http\ResponseInterface;
+use Zemit\Mvc\Controller\AbstractTrait\AbstractGetSingle;
 use Zemit\Mvc\Controller\AbstractTrait\AbstractInjectable;
 
 trait GetAction
 {
     use AbstractInjectable;
+    use AbstractGetSingle;
     
     /**
      * @deprecated Should use getAction() method instead
@@ -28,6 +31,7 @@ trait GetAction
     
     /**
      * Retrieving a single record
+     * @throws Exception
      */
     public function getAction(string|int $id = null): ResponseInterface
     {
