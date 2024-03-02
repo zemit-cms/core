@@ -11,7 +11,7 @@
 
 namespace Zemit\Provider\Gravatar;
 
-use Phalcon\Avatar\Gravatar;
+//use Phalcon\Avatar\Gravatar;
 use Phalcon\Di\DiInterface;
 use Zemit\Config\ConfigInterface;
 use Zemit\Provider\AbstractServiceProvider;
@@ -22,14 +22,15 @@ class ServiceProvider extends AbstractServiceProvider
     
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function (?array $options = null) use ($di) {
-    
-            $config = $di->get('config');
-            assert($config instanceof ConfigInterface);
-    
-            $options ??= $config->pathToArray('gravatar', []);
-            
-            return new Gravatar($options);
-        });
+        // @todo implement based on https://github.com/phalcon/incubator-avatar/blob/master/src/Gravatar.php
+//        $di->setShared($this->getName(), function (?array $options = null) use ($di) {
+//    
+//            $config = $di->get('config');
+//            assert($config instanceof ConfigInterface);
+//    
+//            $options ??= $config->pathToArray('gravatar', []);
+//            
+//            return new Gravatar($options);
+//        });
     }
 }
