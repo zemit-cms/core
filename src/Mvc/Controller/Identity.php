@@ -33,7 +33,6 @@ trait Identity
     
     /**
      * Refresh or create a session
-     * @throws Exception
      */
     public function refreshAction(): bool
     {

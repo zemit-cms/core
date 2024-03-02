@@ -11,7 +11,8 @@
 
 namespace Zemit\Mvc\Controller;
 
-trait Debug {
+trait Debug
+{
     
     /**
      * Returns whether debug mode is enabled.

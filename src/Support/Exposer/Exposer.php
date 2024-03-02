@@ -32,10 +32,6 @@ use Zemit\Mvc\Model;
  * $this->expose(array('Source.Sources' => array(true, 'id' => false), false) // expose everything from the sub array "Sources" except the 'id' field
  * $this->expose(array('Source' => array(false, 'Sources' => array(true, 'id' => false))) // expose everything from the sub array "Sources" except the 'id' field
  * ```
- * Complexe
- *
- *
- * @package Zemit\Mvc\Model\Expose
  */
 class Exposer
 {
@@ -174,10 +170,7 @@ class Exposer
         }
     }
     
-    /**
-     * @return array|false|Model
-     */
-    public static function expose(Builder $builder)
+    public static function expose(Builder $builder): mixed
     {
         $columns = $builder->getColumns();
         $value = $builder->getValue();

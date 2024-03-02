@@ -16,6 +16,8 @@ use Phalcon\Mvc\EntityInterface;
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Mvc\ModelInterface;
 use Zemit\Mvc\Model;
+use Zemit\Mvc\Model\Behavior\Traits\ProgressTrait;
+use Zemit\Mvc\Model\Behavior\Traits\SkippableTrait;
 
 class Position extends Behavior
 {

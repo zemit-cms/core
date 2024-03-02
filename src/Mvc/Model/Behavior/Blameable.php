@@ -14,17 +14,18 @@ namespace Zemit\Mvc\Model\Behavior;
 use Phalcon\Mvc\EntityInterface;
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Mvc\ModelInterface;
-use Zemit\Mvc\Model;
+use Zemit\Models\Audit;
+use Zemit\Models\AuditDetail;
 use Zemit\Models\Interfaces\AbstractInterface;
 use Zemit\Models\Interfaces\AuditDetailInterface;
 use Zemit\Models\Interfaces\AuditInterface;
 use Zemit\Models\User;
-use Zemit\Models\Audit;
-use Zemit\Models\AuditDetail;
+use Zemit\Mvc\Model;
+use Zemit\Mvc\Model\Behavior\Traits\SkippableTrait;
 use Zemit\Support\Helper;
 
 /**
- * Zemit\Mvc\Model\Behavior\Blameable
+ * Zemit\Mvc\Model\Traits\Behavior\Blameable
  *
  * Allows to automatically update a model’s attribute saving the datetime when a
  * record is created or updated

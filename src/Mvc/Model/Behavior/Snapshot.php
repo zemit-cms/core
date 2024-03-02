@@ -14,6 +14,7 @@ namespace Zemit\Mvc\Model\Behavior;
 use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Mvc\ModelInterface;
+use Zemit\Mvc\Model\Behavior\Traits\SkippableTrait;
 
 class Snapshot extends Behavior
 {

@@ -35,47 +35,37 @@ use Phalcon\Events\Manager as EventsManager;
  * - onValidationFails
  * - prepareSave
  * - validation
- * @link https://docs.phalcon.io/4.0/en/db-models#events
+ * @link https://docs.phalcon.io/5.6/db-models/#events
  *
  * {@inheritdoc} \Phalcon\Mvc\Model
  * @package Zemit\Mvc
  */
-class Model extends \Phalcon\Mvc\Model implements
-    \Zemit\Mvc\Model\SoftDeleteInterface,
-    \Zemit\Mvc\Model\RelationshipInterface,
-    \Phalcon\Mvc\EntityInterface,
-    \Phalcon\Mvc\ModelInterface,
-    \Phalcon\Mvc\Model\ResultInterface,
-    \Serializable,
-    \JsonSerializable
+class Model extends \Phalcon\Mvc\Model implements ModelInterface
 {
-    
     // Model Feature Traits
-    use \Zemit\Mvc\Model\Options;
-    use \Zemit\Mvc\Model\Events;
-    use \Zemit\Mvc\Model\Security;
-    use \Zemit\Mvc\Model\EagerLoad;
-    use \Zemit\Mvc\Model\Relationship;
-    use \Zemit\Mvc\Model\Expose;
-    use \Zemit\Mvc\Model\FindIn;
-    use \Zemit\Mvc\Model\SoftDelete;
-    use \Zemit\Mvc\Model\Identity;
-    use \Zemit\Mvc\Model\Replication;
-    use \Zemit\Mvc\Model\Cache;
-    use \Zemit\Mvc\Model\Hash;
-    use \Zemit\Mvc\Model\Attribute;
-    use \Zemit\Mvc\Model\Json;
-    use \Zemit\Mvc\Model\Position;
-    use \Zemit\Mvc\Model\Blameable;
-    use \Zemit\Mvc\Model\FindIn;
-    use \Zemit\Mvc\Model\Snapshot;
-    use \Zemit\Mvc\Model\LifeCycle;
-    use \Zemit\Mvc\Model\PrimaryKeys;
-    use \Zemit\Mvc\Model\Options;
-    use \Zemit\Mvc\Model\Uuid;
-    use \Zemit\Mvc\Model\Slug;
-    use \Zemit\Mvc\Model\Validate;
-    use \Zemit\Mvc\Model\Locale;
+    use Model\Traits\Attribute;
+    use Model\Traits\Blameable;
+    use Model\Traits\Cache;
+    use Model\Traits\EagerLoad;
+    use Model\Traits\Events;
+    use Model\Traits\Expose;
+    use Model\Traits\FindIn;
+    use Model\Traits\Hash;
+    use Model\Traits\Identity;
+    use Model\Traits\Json;
+    use Model\Traits\LifeCycle;
+    use Model\Traits\Locale;
+    use Model\Traits\MetaData;
+    use Model\Traits\Options;
+    use Model\Traits\Position;
+    use Model\Traits\Relationship;
+    use Model\Traits\Replication;
+    use Model\Traits\Security;
+    use Model\Traits\Slug;
+    use Model\Traits\Snapshot;
+    use Model\Traits\SoftDelete;
+    use Model\Traits\Uuid;
+    use Model\Traits\Validate;
     
     public function initialize(): void
     {

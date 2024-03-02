@@ -16,7 +16,7 @@ use Phalcon\Http\ResponseInterface;
 use Zemit\Mvc\Controller\AbstractTrait\AbstractGetSingle;
 use Zemit\Mvc\Controller\AbstractTrait\AbstractInjectable;
 use Zemit\Mvc\Controller\Rest\Response;
-use Zemit\Mvc\Model\SoftDeleteInterface;
+use Zemit\Mvc\Model\Interfaces\SoftDeleteInterface;
 
 trait RestoreAction
 {

@@ -12,13 +12,16 @@
 namespace Zemit\Mvc\Controller\Rest\Actions;
 
 use Phalcon\Http\ResponseInterface;
+use Zemit\Mvc\Controller\AbstractTrait\AbstractDebug;
 use Zemit\Mvc\Controller\AbstractTrait\AbstractInjectable;
 
 trait GetListAction
 {
     use AbstractInjectable;
+    use AbstractDebug;
     
     /**
+     * @throws \Exception
      * @deprecated Should use getListAction() method instead
      */
     public function getAllAction(): ResponseInterface

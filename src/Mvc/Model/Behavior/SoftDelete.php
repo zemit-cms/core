@@ -13,6 +13,7 @@ namespace Zemit\Mvc\Model\Behavior;
 
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Mvc\ModelInterface;
+use Zemit\Mvc\Model\Behavior\Traits\SkippableTrait;
 
 /**
  * {@inheritDoc}

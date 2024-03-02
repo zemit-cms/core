@@ -13,9 +13,10 @@ namespace Zemit\Mvc\Model\Behavior;
 
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Mvc\ModelInterface;
+use Zemit\Mvc\Model\Behavior\Traits\SkippableTrait;
 
 /**
- * Zemit\Mvc\Model\Behavior\Conditional
+ * Zemit\Mvc\Model\Traits\Behavior\Conditional
  *
  * Allows to automatically update a model’s attribute saving the datetime when a
  * record is created or updated
