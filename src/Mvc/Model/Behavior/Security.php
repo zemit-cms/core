@@ -11,11 +11,11 @@
 
 namespace Zemit\Mvc\Model\Behavior;
 
-use Phalcon\Acl\Adapter\Memory;
 use Phalcon\Di\Di;
 use Phalcon\Messages\Message;
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Mvc\ModelInterface;
+use Phalcon\Acl\Adapter\AdapterInterface;
 use Zemit\Mvc\Model\Behavior\Traits\ProgressTrait;
 use Zemit\Mvc\Model\Behavior\Traits\SkippableTrait;
 
@@ -30,12 +30,12 @@ class Security extends Behavior
     
     public static ?array $roles = null;
     
-    public static ?Memory $acl = null;
+    public static ?AdapterInterface $acl = null;
     
     /**
      * Set the ACL
      */
-    public static function setAcl(?Memory $acl = null): void
+    public static function setAcl(?AdapterInterface $acl = null): void
     {
         self::$acl = $acl;
     }
@@ -43,13 +43,14 @@ class Security extends Behavior
     /**
      * Get the ACL
      */
-    public static function getAcl(): Memory
+    public static function getAcl(): AdapterInterface
     {
         if (is_null(self::$acl)) {
             $acl = Di::getDefault()->get('acl');
             assert($acl instanceof \Zemit\Acl\Acl);
             self::setAcl($acl->get(['models', 'components']));
         }
+        assert(self::$acl instanceof AdapterInterface);
         return self::$acl;
     }
     
@@ -120,7 +121,7 @@ class Security extends Behavior
         return true;
     }
     
-    public function isAllowed(string $type, ModelInterface $model, ?Memory $acl = null, ?array $roles = null): bool
+    public function isAllowed(string $type, ModelInterface $model, ?AdapterInterface $acl = null, ?array $roles = null): bool
     {
         $acl ??= self::getAcl();
         $modelClass = get_class($model);
