@@ -12,8 +12,8 @@
 namespace Zemit\Mvc\Model\Traits;
 
 use Phalcon\Db\RawValue;
-use Phalcon\Encryption\Security;
 use Phalcon\Mvc\EntityInterface;
+use Phalcon\Encryption\Security as SecurityService;
 use Zemit\Mvc\Model\Behavior\Transformable;
 use Zemit\Mvc\Model\Traits\Abstracts\AbstractBehavior;
 use Zemit\Mvc\Model\Traits\Abstracts\AbstractInjectable;
@@ -37,7 +37,7 @@ trait Uuid
         $binary = $options['binary'] ?? false;
         
         $security = $this->getDI()->get('security');
-        assert($security instanceof Security);
+        assert($security instanceof SecurityService);
         
         $this->setUuidBehavior(new Transformable([
             'beforeValidationOnCreate' => [
