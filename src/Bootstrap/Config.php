@@ -1082,13 +1082,6 @@ class Config extends \Zemit\Config\Config
                     'secret' => Env::get('AWS_CREDENTIALS_SECRET', ''),
                 ],
             ],
-    
-            /**
-             * Facebook SDK
-             */
-            'facebook' => [
-            
-            ],
             
             /**
              * Oauth2
