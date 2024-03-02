@@ -69,7 +69,7 @@ class Builder implements BuilderInterface
         $this->contextKey = self::processKey($contextKey);
     }
     
-    public function getField(): string
+    public function getField(): ?string
     {
         return $this->field;
     }
