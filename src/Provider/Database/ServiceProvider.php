@@ -18,7 +18,6 @@ use Phalcon\Events\ManagerInterface;
 use Zemit\Config\ConfigInterface;
 use Zemit\Db\Events\Logger;
 use Zemit\Db\Events\Profiler;
-use Zemit\Db\Events\Security;
 use Zemit\Provider\AbstractServiceProvider;
 
 class ServiceProvider extends AbstractServiceProvider
