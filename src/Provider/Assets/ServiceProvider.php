@@ -13,7 +13,7 @@ namespace Zemit\Provider\Assets;
 
 use Phalcon\Di\DiInterface;
 use Phalcon\Html\Escaper\EscaperInterface;
-use Phalcon\Html\TagFactory;
+use Zemit\Html\TagFactory;
 use Zemit\Assets\Manager;
 use Zemit\Provider\AbstractServiceProvider;
 
@@ -26,10 +26,13 @@ class ServiceProvider extends AbstractServiceProvider
         $escaper = $di->get('escaper');
         assert($escaper instanceof EscaperInterface);
         
-        $tagFactory = new TagFactory($escaper); // @todo move Zemit\Tag to TagFactory
+        // @todo set tag factory as tag service and use service instead
+//        $tag = $di->get('tag');
+//        assert($tag instanceof TagFactory);
+        $tag = new TagFactory($escaper);
         
-        $di->setShared($this->getName(), function () use ($tagFactory) {
-            return new Manager($tagFactory);
+        $di->setShared($this->getName(), function () use ($tag) {
+            return new Manager($tag);
         });
     }
 }
