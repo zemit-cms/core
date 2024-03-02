@@ -12,13 +12,13 @@
 namespace Zemit\Support\Helper\Arr;
 
 /**
- * 
+ * This class provides methods to parse an array into a flatten array with key path separated by a delimiter.
  */
 class FlattenKeys
 {
     public function __invoke(array $collection = [], string $delimiter = '.', bool $lowerKey = true): array
     {
-        return self::process($collection, $delimiter, $lowerKey);
+        return self::process($collection, $delimiter, $lowerKey) ?? [];
     }
     
     /**
