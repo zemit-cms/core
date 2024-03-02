@@ -11,8 +11,8 @@ declare(strict_types=1);
 
 namespace Zemit\Mvc\Model\Traits;
 
-use Phalcon\Encryption\Security;
 use Zemit\Config\ConfigInterface;
+use Zemit\Encryption\Security as SecurityService;
 use Zemit\Mvc\Model\Traits\Abstracts\AbstractInjectable;
 
 trait Hash
@@ -34,7 +34,7 @@ trait Hash
         assert($config instanceof ConfigInterface);
         
         $security = $this->getDI()->get('security');
-        assert($security instanceof Security);
+        assert($security instanceof SecurityService);
         
         // Get salt & workFactor
         $salt ??= $config->path('security.salt') ?? '';
@@ -69,7 +69,7 @@ trait Hash
         assert($config instanceof ConfigInterface);
         
         $security = $this->getDI()->get('security');
-        assert($security instanceof Security);
+        assert($security instanceof SecurityService);
         
         // Get salt
         $salt = $config->path('security.salt') ?? '';
