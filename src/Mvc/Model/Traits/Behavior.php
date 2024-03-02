@@ -13,6 +13,7 @@ namespace Zemit\Mvc\Model\Traits;
 
 use Phalcon\Mvc\Model\BehaviorInterface;
 use Phalcon\Mvc\ModelInterface;
+use Zemit\Mvc\Model\ManagerInterface;
 use Zemit\Mvc\Model\Traits\Abstracts\AbstractModelsManager;
 
 /**
@@ -23,12 +24,11 @@ use Zemit\Mvc\Model\Traits\Abstracts\AbstractModelsManager;
 trait Behavior
 {
     use AbstractModelsManager;
-    
     /**
      * Retrieves a behavior by its name.
      *
      * @param string $behaviorName The name of the behavior to retrieve.
-     * 
+     *
      * @return BehaviorInterface The behavior instance.
      */
     public function getBehavior(string $behaviorName): BehaviorInterface
@@ -44,7 +44,7 @@ trait Behavior
      *
      * @param string $behaviorName The name of the behavior to set.
      * @param BehaviorInterface $behavior The behavior instance to set.
-     * 
+     *
      * @return void
      */
     public function setBehavior(string $behaviorName, BehaviorInterface $behavior): void
@@ -69,4 +69,5 @@ trait Behavior
         assert($this instanceof ModelInterface);
         return $modelsManager->hasBehavior($this, $behaviorName);
     }
+    
 }

@@ -16,4 +16,10 @@ use Phalcon\Mvc\Model\BehaviorInterface;
 trait AbstractBehavior
 {
     abstract public function addBehavior(BehaviorInterface $behavior): void;
+    
+    abstract public function getBehavior(string $behaviorName): BehaviorInterface;
+    
+    abstract public function setBehavior(string $behaviorName, BehaviorInterface $behavior): void;
+    
+    abstract public function hasBehavior(string $behaviorName): bool;
 }
