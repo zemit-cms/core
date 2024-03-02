@@ -525,7 +525,7 @@ trait Validate
      */
     public function addUuidValidation(Validation $validator, string $field = 'uuid', bool $allowEmpty = false): Validation
     {
-        if (property_exists($this, $field) && $this->getModelsMetaData()->hasAttribute($this, $field)) {
+        if (property_exists($this, $field)) {
             
             $this->addNotEmptyValidation($validator, $field, $allowEmpty);
             
