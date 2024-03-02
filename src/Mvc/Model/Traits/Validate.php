@@ -11,6 +11,10 @@
 
 namespace Zemit\Mvc\Model\Traits;
 
+use Zemit\Db\Column;
+use Zemit\Filter\Validation;
+use Zemit\Filter\Validation\Validator\Color as ColorValidator;
+use Zemit\Filter\Validation\Validator\Json as JsonValidator;
 use Phalcon\Filter\Validation\Validator\Between;
 use Phalcon\Filter\Validation\Validator\Date;
 use Phalcon\Filter\Validation\Validator\Email;
@@ -20,13 +24,16 @@ use Phalcon\Filter\Validation\Validator\PresenceOf;
 use Phalcon\Filter\Validation\Validator\StringLength\Max;
 use Phalcon\Filter\Validation\Validator\StringLength\Min;
 use Phalcon\Filter\Validation\Validator\Uniqueness;
-use Zemit\Db\Column;
-use Zemit\Filter\Validation;
-use Zemit\Filter\Validation\Validator\Color;
-use Zemit\Filter\Validation\Validator\Json;
+use Zemit\Mvc\Model\Traits\Abstracts\AbstractEntity;
+use Zemit\Mvc\Model\Traits\Abstracts\AbstractLocale;
+use Zemit\Mvc\Model\Traits\Abstracts\AbstractMetaData;
 
 trait Validate
 {
+    use AbstractLocale;
+    use AbstractMetaData;
+    use AbstractEntity;
+    
     /**
      * Apply generic validation to a validator object.
      *
@@ -391,7 +398,7 @@ trait Validate
     {
         $this->addNotEmptyValidation($validator, $field, $allowEmpty);
         
-        $validator->add($field, new Json([
+        $validator->add($field, new JsonValidator([
             'message' => $this->_('not-valid-json'),
             'depth' => $depth,
             'flags' => $flags,
@@ -416,7 +423,7 @@ trait Validate
     {
         $this->addNotEmptyValidation($validator, $field, $allowEmpty);
         
-        $validator->add($field, new Color([
+        $validator->add($field, new ColorValidator([
             'message' => $this->_('not-hex-color'),
             'allowEmpty' => true,
         ]));
