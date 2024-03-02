@@ -12,6 +12,8 @@
 namespace Zemit\Mvc\Dispatcher;
 
 use Phalcon\Events\Event;
+use Phalcon\Logger\Exception;
+use Phalcon\Mvc\EntityInterface;
 use Zemit\Di\Injectable;
 use Zemit\Dispatcher\DispatcherInterface;
 
@@ -29,22 +31,17 @@ class Logger extends Injectable
     /**
      * This action is executed before execute any action in the application
      * Keeping a log of the dispatch event
+     * @throws Exception
      */
     public function beforeDispatchLoop(Event $event, DispatcherInterface $dispatcher): void
     {
         if ($this->isEnabled()) {
             if ($this->config->path('logger.dispatcher')) {
-                
-                $session = $this->identity->getSession();
-                $sessionId = $session ? $session->readAttribute('id') : null;
-                $userId = $this->identity->getUserId();
-                $userAsId = $this->identity->getUserAsId();
-                
                 $log = json_encode([
                     'type' => 'dispatch',
-                    'sessionId' => $sessionId,
-                    'userId' => $userId,
-                    'userAsId' => $userAsId,
+                    'sessionId' => $this->identity->getSessionId(),
+                    'userId' => $this->identity->getUserId(),
+                    'userAsId' => $this->identity->getUserAsId(),
                     'meta' => [
                         'dispatcher' => $dispatcher->toArray(),
                     ],

@@ -19,6 +19,7 @@ use Phalcon\Filter\Validation\Validator\Confirmation;
 use Phalcon\Filter\Validation\Validator\Numericality;
 use Phalcon\Filter\Validation\Validator\PresenceOf;
 use Phalcon\Messages\Message;
+use Phalcon\Mvc\EntityInterface;
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Support\Helper\Str\Random;
 use Zemit\Di\Injectable;
@@ -952,6 +953,17 @@ class Identity extends Injectable implements OptionsInterface
         }
         
         return $this->currentSession;
+    }
+    
+    /**
+     * Return the session ID if available, otherwise return null
+     *
+     * @return int|null
+     */
+    public function getSessionId(): ?int
+    {
+        $session = $this->getSession();
+        return $session instanceof EntityInterface? $session->readAttribute('id') : null;
     }
     
     /**
