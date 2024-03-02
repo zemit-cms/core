@@ -79,7 +79,7 @@ trait ModelsMap
         if (!isset($this->modelsMap)) {
             $this->setModelsMap();
         }
-        return $this->modelsMap;
+        return $this->modelsMap ?? [];
     }
     
     /**

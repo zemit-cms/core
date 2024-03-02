@@ -39,7 +39,7 @@ class Env
     public static bool $shortCircuit = true;
     public static ?string $fileEncoding = null;
     
-    public function __construct(DiInterface $di)
+    public function __construct()
     {
         self::initialize();
     }
