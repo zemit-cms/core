@@ -15,10 +15,12 @@ use Phalcon\Filter\Exception;
 use Phalcon\Http\ResponseInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractGetSingle;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractRestResponse;
 
 trait GetAction
 {
     use AbstractInjectable;
+    use AbstractRestResponse;
     use AbstractGetSingle;
     
     /**

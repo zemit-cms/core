@@ -16,13 +16,14 @@ use Phalcon\Filter\Filter;
 use Phalcon\Http\ResponseInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractGetSingle;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractRestResponse;
 use Zemit\Mvc\Controller\Traits\RestResponse;
 
 trait ReorderAction
 {
     use AbstractInjectable;
+    use AbstractRestResponse;
     use AbstractGetSingle;
-    use RestResponse;
     
     /**
      * Re-ordering a position

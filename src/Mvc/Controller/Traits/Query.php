@@ -17,6 +17,8 @@ use Phalcon\Filter\Filter;
 use Phalcon\Messages\Message;
 use Phalcon\Mvc\ModelInterface;
 use Zemit\Identity;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
 use Zemit\Support\Exposer\Exposer;
 use Zemit\Support\Helper;
 use Zemit\Support\Slug;
@@ -26,32 +28,11 @@ use Zemit\Support\Slug;
  */
 trait Query
 {
-    use Params;
+    use AbstractParams;
+    use AbstractModel;
     
     protected $_bind = [];
     protected $_bindTypes = [];
-    
-    /**
-     * Get the current Model Name
-     * @return string|null
-     * @todo remove for v1
-     *
-     * @deprecated change to getModelClassName() instead
-     */
-    public function getModelName()
-    {
-        return $this->getModelClassName();
-    }
-    
-    /**
-     * Get the current Model Class Name
-     *
-     * @return string|null|\Zemit\Mvc\Model
-     */
-    public function getModelClassName()
-    {
-        return $this->getModelNameFromController();
-    }
     
     /**
      * Get the WhiteList parameters for saving
@@ -328,7 +309,7 @@ trait Query
      */
     protected function getSoftDeleteCondition(): ?string
     {
-        return '[' . $this->getModelClassName() . '].[deleted] = 0';
+        return '[' . $this->getModelName() . '].[deleted] = 0';
     }
     
     /**
@@ -405,7 +386,7 @@ trait Query
     {
         $identity ??= $this->identity ?? false;
         $roleList ??= $this->getRoleList();
-        $modelName = $this->getModelClassName();
+        $modelName = $this->getModelName();
         
         if ($modelName && $identity && !$identity->hasRole($roleList)) {
             $ret = [];
@@ -745,7 +726,7 @@ trait Query
      */
     public function appendModelName(string $field, ?string $modelName = null): string
     {
-        $modelName ??= $this->getModelClassName();
+        $modelName ??= $this->getModelName();
         
         if (empty($field)) {
             return $field;
@@ -927,7 +908,7 @@ trait Query
             return null;
         }
         
-        $modelName ??= $this->getModelClassName();
+        $modelName ??= $this->getModelName();
         $with ??= $this->getWith();
         $find ??= $this->getFind();
         
@@ -969,7 +950,7 @@ trait Query
         $retList = [];
         
         // Get the model name to play with
-        $modelName ??= $this->getModelClassName();
+        $modelName ??= $this->getModelName();
         $post ??= $this->getParams();
         $whiteList ??= $this->getWhiteList();
         $columnMap ??= $this->getColumnMap();
@@ -1055,26 +1036,5 @@ trait Query
         $ret['single'] = $this->expose($entity, $this->getExpose());
         
         return $ret;
-    }
-    
-    /**
-     * Try to find the appropriate model from the current controller name
-     */
-    public function getModelNameFromController(string $controllerName = null, array $namespaces = null, string $needle = 'Models\\'): ?string
-    {
-        $controllerName ??= $this->dispatcher->getControllerName() ?? '';
-        $namespaces ??= $this->loader->getNamespaces() ?? [];
-        
-        $model = ucfirst(Helper::camelize(Helper::uncamelize($controllerName)));
-        if (!class_exists($model)) {
-            foreach ($namespaces as $namespace => $path) {
-                $possibleModel = preg_replace('/\\\\+/', '\\', $namespace . '\\' . $model);
-                if (str_ends_with($namespace, $needle) && class_exists($possibleModel)) {
-                    $model = $possibleModel;
-                }
-            }
-        }
-        
-        return class_exists($model) && new $model() instanceof ModelInterface ? $model : null;
     }
 }

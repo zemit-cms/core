@@ -11,15 +11,11 @@
 
 namespace Zemit\Mvc\Controller;
 
-use Zemit\Mvc\Controller\Traits\Actions\RestActions;
-use Zemit\Mvc\Controller\Traits\Expose;
-use Zemit\Mvc\Controller\Traits\Query;
+use Zemit\Mvc\Controller\Traits\StatusCode;
+use Zemit\Mvc\Controller\Traits\Actions\ErrorActions;
 
-class RestfulController extends RestController
+class Error extends \Zemit\Mvc\Controller
 {
-    use Query;
-    
-    // Rest Helpers
-    use Expose;
-    use RestActions;
+    use StatusCode;
+    use ErrorActions;
 }

@@ -9,10 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Api;
+namespace Zemit\Mvc\Controller;
 
-use Zemit\Mvc\Controller\Restful;
+use Zemit\Mvc\Controller\Traits\Interfaces\ExposeInterface;
 
-class Controller extends Restful
+interface RestfulInterface extends
+    ExposeInterface,
+    RestInterface
 {
 }

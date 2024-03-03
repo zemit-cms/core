@@ -11,23 +11,26 @@
 
 namespace Zemit\Mvc\Controller\Traits\Actions\Rest;
 
-use Zemit\Mvc\Controller\Traits\Export;
+use Exception;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractExport;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
 
 trait ExportAction
 {
-    use Export;
+    use AbstractModel;
+    use AbstractExport;
     
     /**
      * Exporting a record list into a CSV stream
-     * @throws \Exception
+     * @throws Exception
      */
     public function exportAction(): void
     {
-        $model = $this->getModelClassName();
+        $model = $this->getModelName();
         $find = $this->getFind();
         $with = $model::findWith($this->getExportWith() ?: [], $find ?: []);
         $list = $this->exportExpose($with);
-        if ($this->download($list)) {
+        if ($this->export($list)) {
             // @todo avoid sending response instead of die
             die;
         }

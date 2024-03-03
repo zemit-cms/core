@@ -15,10 +15,12 @@ use Phalcon\Dispatcher\Exception;
 use Phalcon\Filter\Filter;
 use Phalcon\Http\ResponseInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractRestResponse;
 
 trait IndexAction
 {
     use AbstractInjectable;
+    use AbstractRestResponse;
     
     /**
      * @throws Exception

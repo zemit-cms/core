@@ -80,7 +80,7 @@ trait Export
         return ucfirst(
             Slug::generate(
                 basename(
-                    str_replace('\\', '/', $this->getModelClassName())
+                    str_replace('\\', '/', $this->getModelName())
                 )
             )
         ) . $suffix;
@@ -139,7 +139,7 @@ trait Export
         }
         
         // Unsupported content-type
-        throw new Exception('Failed to export `' . $this->getModelClassName() . '` using unsupported content-type `' . $contentType . '`', 400);
+        throw new Exception('Failed to export `' . $this->getModelName() . '` using unsupported content-type `' . $contentType . '`', 400);
     }
     
     /**

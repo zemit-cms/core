@@ -26,7 +26,7 @@ trait Model
      */
     public function getModelName(): ?string
     {
-        if (!$this->modelName) {
+        if (!isset($this->modelName)) {
             $this->modelName = $this->getModelNameFromController();
         }
         
@@ -46,7 +46,7 @@ trait Model
      */
     public function getModelNamespaces(): array
     {
-        if (!$this->modelNamespaces) {
+        if (!isset($this->modelNamespaces)) {
             $this->modelNamespaces = $this->loader->getNamespaces();
         }
         
@@ -81,7 +81,7 @@ trait Model
         $namespaces ??= $this->getModelNamespaces();
         foreach ($namespaces as $namespace => $path) {
             if (str_contains($namespace, $needle)) {
-                $possibleModel = $namespace . '\\' . $model;
+                $possibleModel = $namespace . $model;
                 if (class_exists($possibleModel) && is_subclass_of($possibleModel, ModelInterface::class)) {
                     return $possibleModel;
                 }

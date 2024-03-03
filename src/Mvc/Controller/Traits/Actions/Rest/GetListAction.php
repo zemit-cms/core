@@ -14,10 +14,12 @@ namespace Zemit\Mvc\Controller\Traits\Actions\Rest;
 use Phalcon\Http\ResponseInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractDebug;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractRestResponse;
 
 trait GetListAction
 {
     use AbstractInjectable;
+    use AbstractRestResponse;
     use AbstractDebug;
     
     /**
@@ -35,7 +37,7 @@ trait GetListAction
      */
     public function getListAction(): ResponseInterface
     {
-        $model = $this->getModelClassName();
+        $model = $this->getModelName();
         $with = $this->getListWith() ?: [];
         $find = $this->getFind() ?: [];
         

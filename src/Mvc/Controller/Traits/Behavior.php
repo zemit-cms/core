@@ -49,8 +49,8 @@ trait Behavior
                 if (is_int($className) || get_class($this) === $className) {
                     $this->attachBehaviors($behaviors, 'rest');
                 }
-                if (method_exists($this, 'getModelClassName')) {
-                    if ($this->getModelClassName() === $className) {
+                if (method_exists($this, 'getModelName')) {
+                    if ($this->getModelName() === $className) {
                         $this->attachBehaviors($behaviors, 'model');
                     }
                 }

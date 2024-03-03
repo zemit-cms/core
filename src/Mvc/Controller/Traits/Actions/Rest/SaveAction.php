@@ -13,12 +13,13 @@ namespace Zemit\Mvc\Controller\Traits\Actions\Rest;
 
 use Phalcon\Http\ResponseInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractRestResponse;
 use Zemit\Mvc\Controller\Traits\RestResponse;
 
 trait SaveAction
 {
     use AbstractInjectable;
-    use RestResponse;
+    use AbstractRestResponse;
     
     /**
      * Saving a record (create & update)
