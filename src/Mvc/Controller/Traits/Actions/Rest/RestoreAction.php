@@ -13,17 +13,18 @@ namespace Zemit\Mvc\Controller\Traits\Actions\Rest;
 
 use Phalcon\Filter\Exception;
 use Phalcon\Http\ResponseInterface;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractExpose;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractGetSingle;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractRestResponse;
-use Zemit\Mvc\Controller\Traits\RestResponse;
 use Zemit\Mvc\Model\Interfaces\SoftDeleteInterface;
 
 trait RestoreAction
 {
+    use AbstractExpose;
+    use AbstractGetSingle;
     use AbstractInjectable;
     use AbstractRestResponse;
-    use AbstractGetSingle;
     
     /**
      * Restoring record

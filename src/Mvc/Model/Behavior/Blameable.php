@@ -84,6 +84,7 @@ class Blameable extends Behavior
     {
         assert($model instanceof AbstractInterface);
         assert($model instanceof EntityInterface);
+        assert($model instanceof Model);
         
         $event = lcfirst(Helper::uncamelize(str_replace(['before', 'after'], ['', ''], $type)));
         
