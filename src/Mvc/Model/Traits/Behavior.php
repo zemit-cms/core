@@ -24,6 +24,7 @@ use Zemit\Mvc\Model\Traits\Abstracts\AbstractModelsManager;
 trait Behavior
 {
     use AbstractModelsManager;
+    
     /**
      * Retrieves a behavior by its name.
      *

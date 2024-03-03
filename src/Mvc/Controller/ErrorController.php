@@ -9,19 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Frontend\Controllers;
+namespace Zemit\Mvc\Controller;
 
-use Zemit\Mvc\Controller\Traits\Actions\ErrorActions;
 use Zemit\Mvc\Controller\Traits\StatusCode;
+use Zemit\Mvc\Controller\Traits\Actions\ErrorActions;
 
-class ErrorController extends AbstractController
+class ErrorController extends \Zemit\Mvc\Controller
 {
     use StatusCode;
     use ErrorActions;
-
-    public function initialize()
-    {
-        $this->view->pick('error/index');
-        parent::initialize();
-    }
 }

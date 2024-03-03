@@ -11,9 +11,9 @@
 namespace Zemit\Modules\Api\Controllers;
 
 use Zemit\Modules\Api\Controller;
-use Zemit\Mvc\Controller\Clamav;
+use Zemit\Mvc\Controller\Traits\Actions\ClamavActions;
 
 class ClamavController extends Controller
 {
-    use Clamav;
+    use ClamavActions;
 }

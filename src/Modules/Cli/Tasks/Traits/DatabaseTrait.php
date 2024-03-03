@@ -14,7 +14,7 @@ namespace Zemit\Modules\Cli\Tasks\Traits;
 use Phalcon\Config\Exception;
 use Phalcon\Mvc\Model;
 use Zemit\Exception\CliException;
-use Zemit\Mvc\Controller\AbstractTrait\AbstractInjectable;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
 
 trait DatabaseTrait
 {

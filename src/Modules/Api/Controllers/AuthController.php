@@ -11,11 +11,11 @@
 namespace Zemit\Modules\Api\Controllers;
 
 use Phalcon\Http\ResponseInterface;
-use Zemit\Mvc\Controller\Identity;
+use Zemit\Mvc\Controller\Traits\Actions\AuthActions;
 
 class AuthController extends AbstractController
 {
-    use Identity {
+    use AuthActions {
         getAction as traitGetAction;
     }
     
@@ -23,8 +23,6 @@ class AuthController extends AbstractController
      * Create a refresh a session
      *
      * @param bool $refresh
-     *
-     * @return bool
      */
     public function getAction($refresh = false): ResponseInterface
     {
@@ -56,7 +54,6 @@ class AuthController extends AbstractController
         }
         $this->view->setVars($view);
         
-        return $ret;
+        return $this->setRestResponse($ret);
     }
 }
-

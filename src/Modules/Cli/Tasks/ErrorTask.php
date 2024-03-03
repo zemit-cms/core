@@ -15,11 +15,11 @@ use Phalcon\Http\ResponseInterface;
 use Zemit\Exception\CliException;
 use Zemit\Http\StatusCode;
 use Zemit\Modules\Cli\Task;
-use Zemit\Mvc\Controller\Errors;
+use Zemit\Mvc\Controller\Traits\Actions\ErrorActions;
 
 class ErrorTask extends Task
 {
-    use Errors;
+    use ErrorActions;
     
     /**
      * Set the status code for the response. Immediately throw a CliException.

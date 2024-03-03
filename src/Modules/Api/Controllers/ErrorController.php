@@ -10,11 +10,11 @@
 
 namespace Zemit\Modules\Api\Controllers;
 
-use Zemit\Mvc\Controller\Errors;
-use Zemit\Mvc\Controller\StatusCode;
+use Zemit\Mvc\Controller\Traits\Actions\ErrorActions;
+use Zemit\Mvc\Controller\Traits\StatusCode;
 
 class ErrorController extends AbstractController
 {
-    use Errors;
+    use ErrorActions;
     use StatusCode;
 }

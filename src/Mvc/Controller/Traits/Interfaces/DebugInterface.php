@@ -9,10 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Api;
+namespace Zemit\Mvc\Controller\Traits\Interfaces;
 
-use Zemit\Mvc\Controller\RestfulController;
-
-class Controller extends RestfulController
+interface DebugInterface
 {
+    public function isDebugEnabled(): bool;
 }

@@ -9,10 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Api;
+namespace Zemit\Mvc\Controller\Traits\Interfaces;
 
-use Zemit\Mvc\Controller\RestfulController;
+use Phalcon\Http\ResponseInterface;
 
-class Controller extends RestfulController
+interface StatusCodeInterface
 {
+    public function setStatusCode(int $code = 200, ?string $message = null): ResponseInterface;
 }

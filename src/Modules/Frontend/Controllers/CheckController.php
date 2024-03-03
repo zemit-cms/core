@@ -32,8 +32,8 @@ class CheckController extends AbstractController
 {
     public array $versionList = [
         'php' => '8.2',
-        'phalcon' => '5.4',
-        'zemit' => '0.5',
+        'phalcon' => '5.6',
+        'zemit' => '1.0',
     ];
     
     public array $phpExtensionList = [

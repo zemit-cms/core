@@ -9,10 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Api;
+namespace Zemit\Mvc\Controller\Traits;
 
-use Zemit\Mvc\Controller\RestfulController;
-
-class Controller extends RestfulController
+trait Allowed
 {
+    protected ?array $allowedSearchFields;
+    
+    protected ?array $allowedSaveFields;
+    
+    protected ?array $allowedFilterFields;
 }
