@@ -67,12 +67,12 @@ class Security extends Behavior
      */
     public static function getRoles(): array
     {
-        if (is_null(self::$roles)) {
+        if (!isset(self::$roles)) {
             $identity = Di::getDefault()->get('identity');
             assert($identity instanceof \Zemit\Identity);
-            self::setRoles($identity->getAclRoles());
+            self::$roles = $identity->getAclRoles();
         }
-        return self::$roles;
+        return self::$roles ?? [];
     }
     
     public function __construct(array $options = [])
