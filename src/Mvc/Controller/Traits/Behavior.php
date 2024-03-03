@@ -59,14 +59,15 @@ trait Behavior
     }
     
     /**
-     * Attach a behavior to the events' manager.
+     * Attach a behavior to the object.
      *
-     * @param string $behavior The name of the behavior to attach.
-     * @param string $eventType Optional. The event type to attach the behavior to. Default is 'rest'.
-     *
+     * @param string $behavior The behavior to attach.
+     * @param string|null $eventType The event type to attach the behavior to. If null, the behavior will be attached to the default event type.
+     * @param int|null $priority The priority of the behavior. If null, the behavior will be attached with the default priority.
+     * 
      * @return void
      */
-    public function attachBehavior(string $behavior, string $eventType = 'rest'): void
+    public function attachBehavior(string $behavior, ?string $eventType = null, ?int $priority = null): void
     {
         $event = new $behavior();
         
@@ -74,22 +75,24 @@ trait Behavior
             $event->setDI($this->getDI());
         }
         
-        // attach behavior
-        $this->eventsManager->attach($event->eventType ?? $eventType, $event, $event->priority ?? Manager::DEFAULT_PRIORITY);
+        $eventType = $event->eventType ?? $eventType ?? 'rest';
+        $priority = $event->priority ?? $priority ?? Manager::DEFAULT_PRIORITY;
+        $this->eventsManager->attach($eventType, $event, $priority);
     }
     
     /**
-     * Attach behaviors to the current object.
+     * Attach multiple behaviors to the object.
      *
-     * @param array $behaviors The array of behaviors to attach.
-     * @param string $eventType The event type to attach the behaviors to. Default is 'rest'.
-     *
+     * @param array $behaviors An array of behaviors to attach.
+     * @param string|null $eventType The event type to attach the behaviors to. If null, the behaviors will be attached to all event types.
+     * @param int|null $priority The priority of the behaviors. If null, the behaviors will be attached with the default priority.
+     * 
      * @return void
      */
-    public function attachBehaviors(array $behaviors = [], string $eventType = 'rest'): void
+    public function attachBehaviors(array $behaviors = [], string $eventType = null, ?int $priority = null): void
     {
         foreach ($behaviors as $behavior) {
-            $this->attachBehavior($behavior, $eventType);
+            $this->attachBehavior($behavior, $eventType, $priority);
         }
     }
     
