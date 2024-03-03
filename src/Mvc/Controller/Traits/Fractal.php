@@ -26,9 +26,9 @@ use Zemit\Fractal\Serializer\RawArraySerializer;
  */
 trait Fractal
 {
-    public ?Manager $fractalManager;
-    public ?SerializerAbstract $fractalSerializer;
-    public ?TransformerAbstract $transformer;
+    public Manager $fractalManager;
+    public SerializerAbstract $fractalSerializer;
+    public TransformerAbstract $transformer;
     
     /**
      * Get the Fractal Manager object.
