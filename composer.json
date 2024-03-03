@@ -50,8 +50,6 @@
     "phalcon/incubator-mailer": "^2.0",
     "vlucas/phpdotenv": "^5.6",
     "docopt/docopt": "^1.0",
-    "shuchkin/simplexlsxgen": "^1.4",
-    "league/csv": "^9.14",
     "league/flysystem": "^3.23",
     "league/fractal": "^0.20.1"
   },
@@ -79,7 +77,10 @@
     "league/oauth2-linkedin": "^5.1",
     "league/oauth2-instagram": "^3.1",
     "league/oauth2-github": "^3.1",
-    "thiagoalessio/tesseract_ocr": "^2.13"
+    "thiagoalessio/tesseract_ocr": "^2.13",
+    "shuchkin/simplexlsxgen": "^1.4",
+    "league/csv": "^9.14",
+    "spatie/array-to-xml": "^3.2"
   },
   "require-dev": {
     "phalcon/ide-stubs": "^5.6",
@@ -109,7 +110,10 @@
     "league/oauth2-linkedin": "^5.1",
     "league/oauth2-instagram": "^3.1",
     "league/oauth2-github": "^3.1",
-    "thiagoalessio/tesseract_ocr": "^2.13"
+    "thiagoalessio/tesseract_ocr": "^2.13",
+    "shuchkin/simplexlsxgen": "^1.4",
+    "league/csv": "^9.14",
+    "spatie/array-to-xml": "^3.2"
   },
   "autoload": {
     "psr-4": {
