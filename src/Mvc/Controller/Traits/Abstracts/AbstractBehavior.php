@@ -13,7 +13,7 @@ namespace Zemit\Mvc\Controller\Traits\Abstracts;
 
 trait AbstractBehavior
 {
-    abstract public function attachBehavior(string $behavior, ?string $eventType = null, ?int $priority = null): void;
+    abstract public function attachBehavior(string $eventClass, ?string $eventType = null, ?int $priority = null): void;
     
     abstract public function attachBehaviors(array $behaviors = [], string $eventType = null, ?int $priority = null): void;
 }

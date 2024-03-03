@@ -61,15 +61,15 @@ trait Behavior
     /**
      * Attach a behavior to the object.
      *
-     * @param string $behavior The behavior to attach.
+     * @param string $eventClass The behavior to attach.
      * @param string|null $eventType The event type to attach the behavior to. If null, the behavior will be attached to the default event type.
      * @param int|null $priority The priority of the behavior. If null, the behavior will be attached with the default priority.
      * 
      * @return void
      */
-    public function attachBehavior(string $behavior, ?string $eventType = null, ?int $priority = null): void
+    public function attachBehavior(string $eventClass, ?string $eventType = null, ?int $priority = null): void
     {
-        $event = new $behavior();
+        $event = new $eventClass();
         
         if ($event instanceof Injectable) {
             $event->setDI($this->getDI());

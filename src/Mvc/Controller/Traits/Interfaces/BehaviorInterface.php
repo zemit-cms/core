@@ -13,7 +13,7 @@ namespace Zemit\Mvc\Controller\Traits\Interfaces;
 
 interface BehaviorInterface
 {
-    public function attachBehavior(string $behavior, ?string $eventType = null, ?int $priority = null): void;
+    public function attachBehavior(string $eventClass, ?string $eventType = null, ?int $priority = null): void;
     
     public function attachBehaviors(array $behaviors = [], string $eventType = null, ?int $priority = null): void;
 }
