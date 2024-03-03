@@ -32,19 +32,21 @@ class Url extends \Phalcon\Mvc\Url
     }
     
     /**
-     * @param string $path
+     * Returns the absolute path from the given path.
      *
-     * @return string
+     * @param string $path The path to convert to an absolute path.
+     *
+     * @return string The absolute path.
      */
     public static function getAbsolutePath(string $path): string
     {
-        if (strpos($path, 'https://') === 0) {
+        if (str_starts_with($path, 'https://')) {
             return $path;
         }
-        if (strpos($path, 'http://') === 0) {
+        if (str_starts_with($path, 'http://')) {
             return $path;
         }
-        if (strpos($path, '//') === 0) {
+        if (str_starts_with($path, '//')) {
             return $path;
         }
         
