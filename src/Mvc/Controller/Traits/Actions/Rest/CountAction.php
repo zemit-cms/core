@@ -14,11 +14,13 @@ namespace Zemit\Mvc\Controller\Traits\Actions\Rest;
 use Exception;
 use Phalcon\Http\ResponseInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractRestResponse;
 
 trait CountAction
 {
     use AbstractInjectable;
+    use AbstractModel;
     use AbstractRestResponse;
     
     /**

@@ -16,17 +16,17 @@ use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\ModelInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractExpose;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractRestResponse;
-use Zemit\Mvc\Controller\Traits\Expose;
-use Zemit\Mvc\Controller\Traits\Params;
 
 trait NewAction
 {
-    use AbstractInjectable;
-    use AbstractRestResponse;
-    use AbstractParams;
     use AbstractExpose;
+    use AbstractInjectable;
+    use AbstractModel;
+    use AbstractParams;
+    use AbstractRestResponse;
     
     /**
      * Prepare a new unsaved model

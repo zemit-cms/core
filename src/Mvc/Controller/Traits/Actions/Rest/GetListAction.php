@@ -14,13 +14,15 @@ namespace Zemit\Mvc\Controller\Traits\Actions\Rest;
 use Phalcon\Http\ResponseInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractDebug;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractRestResponse;
 
 trait GetListAction
 {
-    use AbstractInjectable;
-    use AbstractRestResponse;
     use AbstractDebug;
+    use AbstractInjectable;
+    use AbstractModel;
+    use AbstractRestResponse;
     
     /**
      * @throws \Exception
