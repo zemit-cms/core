@@ -27,6 +27,7 @@ use Zemit\Filter\Validation;
 use Zemit\Models\Interfaces\RoleInterface;
 use Zemit\Models\Interfaces\SessionInterface;
 use Zemit\Models\Interfaces\UserInterface;
+use Zemit\Models\OAuth2;
 use Zemit\Models\User;
 use Zemit\Mvc\Model;
 use Zemit\Mvc\Model\Behavior\Security as SecurityBehavior;
@@ -75,7 +76,7 @@ class Identity extends Injectable implements OptionsInterface
     public function getUserId(bool $as = false): ?int
     {
         $user = $this->getUser($as);
-        return $user ? $user->getId() : null;
+        return isset($user)? (int)$user->getId() : null;
     }
     
     /**
@@ -103,14 +104,14 @@ class Identity extends Injectable implements OptionsInterface
      *
      * @return bool Return true or false if the needles rules are being met
      */
-    public function has($needles = null, array $haystack = [], bool $or = false)
+    public function has(array|string|null $needles = null, array $haystack = [], bool $or = false): bool
     {
         if (!is_array($needles)) {
-            $needles = [$needles];
+            $needles = isset($needles)? [$needles] : [];
         }
         
         $result = [];
-        foreach ([...$needles] as $needle) {
+        foreach ($needles as $needle) {
             if (is_array($needle)) {
                 $result [] = $this->has($needle, $haystack, !$or);
             }
@@ -137,9 +138,12 @@ class Identity extends Injectable implements OptionsInterface
         $token ??= $this->helper->random(Random::RANDOM_ALNUM, rand(111, 222));
         $newToken = $refresh ? $this->helper->random(Random::RANDOM_ALNUM, rand(111, 222)) : $token;
         
-        // save the key token into the store (database or session)
+        // retrieve or create a new session
         $sessionClass = $this->getSessionClass();
-        $session = $this->getSession($key, $token) ?: new $sessionClass();
+        $session = $this->getSession($key, $token) ?? new $sessionClass();
+        assert($session instanceof SessionInterface);
+        
+        // save the key token into the store (database or session)
         $session->setKey($key);
         $session->setToken($session->hash($key . $newToken));
         $session->setDate(date('Y-m-d H:i:s'));
@@ -189,7 +193,7 @@ class Identity extends Injectable implements OptionsInterface
         $groupList = [];
         $typeList = [];
         
-        if ($user) {
+        if (isset($user)) {
             if (isset($user->rolelist) && is_iterable($user->rolelist)) {
                 foreach ($user->rolelist as $role) {
                     $roleList [$role->getIndex()] = $role;
@@ -495,7 +499,7 @@ class Identity extends Injectable implements OptionsInterface
                 }
         
                 $asUser = $this->findUserById((int)$params['userId']);
-                if ($asUser) {
+                if (isset($asUser)) {
                     if ($this->hasRole(['admin', 'dev'])) {
                         $session->setAsUserId($userId);
                         $session->setUserId($params['userId']);
@@ -545,31 +549,46 @@ class Identity extends Injectable implements OptionsInterface
     }
     
     /**
+     * OAuth2 authentication
      *
+     * @param string $provider The OAuth2 provider
+     * @param int $providerUuid The UUID associated with the provider
+     * @param string $accessToken The access token provided by the provider
+     * @param string|null $refreshToken The refresh token provided by the provider (optional)
+     * @param array|null $meta Additional metadata associated with the user (optional)
+     *
+     * @return array Returns an array with the following keys:
+     *   - 'saved': Indicates whether the OAuth2 entity was saved successfully
+     *   - 'loggedIn': Indicates whether the user is currently logged in
+     *   - 'loggedInAs': Indicates the user that is currently logged in
+     *   - 'messages': An array of validation messages
+     * 
+     * @throws \Phalcon\Filter\Exception
      */
-    public function oauth2(string $provider, int $id, string $accessToken, ?array $meta = [])
+    public function oauth2(string $provider, int $providerUuid, string $accessToken, ?string $refreshToken = null, ?array $meta = []): array
     {
         $loggedInUser = null;
         
         // retrieve and prepare oauth2 entity
-        $oauth2 = Oauth2::findFirst([
-            'provider = :provider: and id = :id:',
+        $oauth2 = OAuth2::findFirst([
+            'provider = :provider: and provider_uuid = :providerUuid:',
             'bind' => [
                 'provider' => $this->filter->sanitize($provider, 'string'),
-                'id' => (int)$id,
+                'providerUuid' => (int)$providerUuid,
             ],
             'bindTypes' => [
                 'provider' => Column::BIND_PARAM_STR,
-                'id' => Column::BIND_PARAM_INT,
+                'id' => Column::BIND_PARAM_STR,
             ],
         ]);
         if (!$oauth2) {
             $oauth2 = new Oauth2();
-            $oauth2->setProviderName($provider);
-            $oauth2->setProviderId($id);
+            $oauth2->setProvider($provider);
+            $oauth2->setProviderUuid($providerUuid);
         }
         $oauth2->setAccessToken($accessToken);
-        $oauth2->setMeta($meta);
+        $oauth2->setRefreshToken($refreshToken);
+        $oauth2->setMeta(!empty($meta)? json_encode($meta) : null);
         $oauth2->setName($meta['name'] ?? null);
         $oauth2->setFirstName($meta['first_name'] ?? null);
         $oauth2->setLastName($meta['last_name'] ?? null);
@@ -597,20 +616,20 @@ class Identity extends Injectable implements OptionsInterface
         }
         
         // a session is required
-        if (!$session) {
+        if (!isset($session)) {
             $validation->appendMessage(new Message('A session is required', 'session', 'PresenceOf', 403));
         }
         
         // user id is required
         $validation->add('userId', new PresenceOf(['message' => 'userId is required']));
-        $validation->validate($oauth2 ? $oauth2->toArray() : []);
+        $validation->validate($oauth2->toArray());
         
         // All validation passed
         if ($saved && !$validation->getMessages()->count()) {
             $user = $this->findUserById($oauth2->getUserId());
             
             // user not found, login failed
-            if (!$user) {
+            if (!isset($user)) {
                 $validation->appendMessage(new Message('Login Failed', ['id'], 'LoginFailed', 401));
             }
             
@@ -625,7 +644,7 @@ class Identity extends Injectable implements OptionsInterface
             }
             
             // Set the oauth user id into the session
-            $session->setUserId($loggedInUser ? $loggedInUser->getId() : null);
+            $session->setUserId($loggedInUser?->getId());
             $saved = $session->save();
             
             // append session error messages
@@ -666,7 +685,7 @@ class Identity extends Injectable implements OptionsInterface
             $loginFailedMessage = new Message('Login Failed', ['email', 'password'], 'LoginFailed', 401);
             $loginForbiddenMessage = new Message('Login Forbidden', ['email', 'password'], 'LoginForbidden', 403);
             
-            if (!$user) {
+            if (!isset($user)) {
                 // user not found, login failed
                 $validation->appendMessage($loginFailedMessage);
             }
@@ -1009,7 +1028,7 @@ class Identity extends Injectable implements OptionsInterface
     /**
      * Get the User from the database using the ID
      */
-    public function findUserById(int $id): ?Model
+    public function findUserById(int $id): ?UserInterface
     {
         /** @var User $userClass */
         $userClass = $this->getUserClass();
@@ -1018,8 +1037,7 @@ class Identity extends Injectable implements OptionsInterface
             'bind' => ['id' => $id],
             'bindTypes' => ['id' => Column::BIND_PARAM_INT],
         ]);
-        if ($user) {
-            assert($user instanceof Model);
+        if (isset($user)) {
             assert($user instanceof UserInterface);
         }
         return $user;
@@ -1028,12 +1046,12 @@ class Identity extends Injectable implements OptionsInterface
     /**
      * Get the user from the database using the username or email
      */
-    public function findUser(string $string): ?Model
+    public function findUser(string $string): ?UserInterface
     {
         /** @var User $userClass */
         $userClass = $this->getUserClass();
         $user = $userClass::findFirst([
-            'email = :email: or username = :username:',
+            'email = :email:',
             'bind' => [
                 'email' => $string,
                 'username' => $string,
@@ -1043,8 +1061,7 @@ class Identity extends Injectable implements OptionsInterface
                 'username' => Column::BIND_PARAM_STR,
             ],
         ]);
-        if ($user) {
-            assert($user instanceof Model);
+        if (isset($user)) {
             assert($user instanceof UserInterface);
         }
         return $user;

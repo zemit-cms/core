@@ -83,6 +83,9 @@ use Zemit\Models\Interfaces\FieldInterface;
 use Zemit\Models\Profile;
 use Zemit\Models\Interfaces\ProfileInterface;
 
+use Zemit\Models\OAuth2;
+use Zemit\Models\Interfaces\OAuth2Interface;
+
 use Zemit\Models\User;
 use Zemit\Models\Interfaces\UserInterface;
 
@@ -401,6 +404,16 @@ class Models extends Injectable
     {
         $instance = $this->getInstance(Profile::class);
         assert($instance instanceof ProfileInterface);
+        return $instance;
+    }
+    
+    /**
+     * Return an instance of \Zemit\Models\Interfaces\UserInterface
+     */
+    public function getOauth2(): OAuth2Interface
+    {
+        $instance = $this->getInstance(OAuth2::class);
+        assert($instance instanceof OAuth2Interface);
         return $instance;
     }
     

@@ -14,10 +14,10 @@ use Zemit\Db\Column;
 
 abstract class AbstractModel extends \Zemit\Mvc\Model
 {
-    const YES = Column::YES;
-    const NO = Column::NO;
+    public const YES = Column::YES;
+    public const NO = Column::NO;
     
-    const LANG_EN = 'en';
-    const LANG_FR = 'fr';
-    const LANG_SP = 'sp';
+    public const LANG_EN = 'en';
+    public const LANG_FR = 'fr';
+    public const LANG_SP = 'sp';
 }

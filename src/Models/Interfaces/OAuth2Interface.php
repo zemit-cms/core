@@ -10,10 +10,6 @@
 
 namespace Zemit\Models\Interfaces;
 
-use Zemit\Mvc\ModelInterface;
-
-interface AbstractInterface extends ModelInterface
+interface OAuth2Interface extends AbstractInterface
 {
-    public function setId($id);
-    public function getId();
 }

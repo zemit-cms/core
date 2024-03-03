@@ -21,6 +21,7 @@ use Zemit\Models\Log;
 use Zemit\Models\Email;
 use Zemit\Models\Job;
 use Zemit\Models\File;
+use Zemit\Models\OAuth2;
 use Zemit\Models\Session;
 use Zemit\Models\Flag;
 use Zemit\Models\Setting;
@@ -288,6 +289,14 @@ trait ModelsMap
     public function getProfileClass(): string
     {
         return $this->getClassMap(Profile::class);
+    }
+    
+    /**
+     * Return the mapped class name of \Zemit\Models\OAuth2::class
+     */
+    public function getOAuth2Class(): string
+    {
+        return $this->getClassMap(OAuth2::class);
     }
     
     /**
