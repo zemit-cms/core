@@ -11,15 +11,13 @@
 
 namespace Zemit\Mvc\Model\Behavior;
 
-use Phalcon\Mvc\EntityInterface;
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Mvc\ModelInterface;
+use Zemit\Models\User;
 use Zemit\Models\Audit;
 use Zemit\Models\AuditDetail;
-use Zemit\Models\Interfaces\AbstractInterface;
 use Zemit\Models\Interfaces\AuditDetailInterface;
 use Zemit\Models\Interfaces\AuditInterface;
-use Zemit\Models\User;
 use Zemit\Mvc\Model;
 use Zemit\Mvc\Model\Behavior\Traits\SkippableTrait;
 use Zemit\Support\Helper;
@@ -68,6 +66,7 @@ class Blameable extends Behavior
             return null;
         }
         
+        assert($model instanceof Model);
         return match ($type) {
             'afterCreate', 'afterUpdate' => $this->createAudit($type, $model),
             'beforeUpdate' => $this->collectData($model),
@@ -80,12 +79,8 @@ class Blameable extends Behavior
      * Return true if the audit was created
      * @throws \Exception
      */
-    public function createAudit(string $type, ModelInterface $model): bool
+    public function createAudit(string $type, Model $model): bool
     {
-        assert($model instanceof AbstractInterface);
-        assert($model instanceof EntityInterface);
-        assert($model instanceof Model);
-        
         $event = lcfirst(Helper::uncamelize(str_replace(['before', 'after'], ['', ''], $type)));
         
         $auditClass = $this->auditClass;
@@ -102,7 +97,7 @@ class Blameable extends Behavior
         
         $audit->setModel(get_class($model));
         $audit->setTable($model->getSource());
-        $audit->setPrimary($model->getId());
+        $audit->setPrimary($model->readAttribute('id'));
         $audit->setEvent($event);
         $audit->setColumns(json_encode($columnMap ?: $columns));
         $audit->setBefore($snapshot ? json_encode($snapshot) : null);
@@ -127,7 +122,7 @@ class Blameable extends Behavior
             assert($auditDetail instanceof AuditDetailInterface);
             
             $auditDetail->setTable($model->getSource());
-            $auditDetail->setPrimary($model->getId());
+            $auditDetail->setPrimary($model->readAttribute('id'));
             $auditDetail->setEvent($event);
             $auditDetail->setColumn($column);
             $auditDetail->setMap($map);
@@ -144,7 +139,6 @@ class Blameable extends Behavior
             $model->appendMessage($message);
         }
         
-        assert($model instanceof Model);
         self::$parentId = (!empty($model->hasDirtyRelated())) ? $audit->getId() : null;
         return $save;
     }
@@ -152,10 +146,8 @@ class Blameable extends Behavior
     /**
      * Return true if data has been collected
      */
-    protected function collectData(ModelInterface $model): bool
+    protected function collectData(Model $model): bool
     {
-        assert($model instanceof Model);
-        
         if ($model->hasSnapshotData()) {
             $this->snapshot = $model->getSnapshotData();
             $this->changedFields = $model->getChangedFields();
