@@ -20,6 +20,7 @@ use League\Csv\Writer;
 use Shuchkin\SimpleXLSXGen;
 use Spatie\ArrayToXml\ArrayToXml;
 use Zemit\Support\Slug;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
 
 /**
@@ -28,6 +29,7 @@ use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
 trait Export
 {
     use AbstractParams;
+    use AbstractModel;
     
     /**
      * Get the content type based on the given parameters.
