@@ -13,15 +13,17 @@ namespace Zemit\Mvc\Controller\Traits\Actions\Rest;
 
 use Exception;
 use Phalcon\Http\ResponseInterface;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractExpose;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractGetSingle;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractRestResponse;
 
 trait DeleteAction
 {
+    use AbstractExpose;
+    use AbstractGetSingle;
     use AbstractInjectable;
     use AbstractRestResponse;
-    use AbstractGetSingle;
     
     /**
      * Deleting a record

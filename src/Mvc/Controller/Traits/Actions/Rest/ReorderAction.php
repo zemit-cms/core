@@ -16,14 +16,16 @@ use Phalcon\Filter\Filter;
 use Phalcon\Http\ResponseInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractGetSingle;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractRestResponse;
-use Zemit\Mvc\Controller\Traits\RestResponse;
+use Zemit\Mvc\Model\Interfaces\PositionInterface;
 
 trait ReorderAction
 {
-    use AbstractInjectable;
-    use AbstractRestResponse;
     use AbstractGetSingle;
+    use AbstractInjectable;
+    use AbstractParams;
+    use AbstractRestResponse;
     
     /**
      * Re-ordering a position
@@ -39,6 +41,7 @@ trait ReorderAction
         
         $position ??= $this->getParam('position', [Filter::FILTER_INT]);
         
+        assert($entity instanceof PositionInterface);
         $reorder = $entity->reorder($position);
         $this->view->setVars([
             'reorder' => $reorder,
