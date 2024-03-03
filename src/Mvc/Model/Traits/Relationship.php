@@ -296,7 +296,7 @@ trait Relationship
                     
                     // fix to force recursive parent save from children entities within _preSaveRelatedRecords method
                     if ($this->{$alias} && $this->{$alias} instanceof ModelInterface) {
-                        $this->{$alias}->setDirtyState(self::DIRTY_STATE_TRANSIENT);
+                        $this->{$alias}->setDirtyState(Model::DIRTY_STATE_TRANSIENT);
                     }
                     
                     $this->dirtyRelated[mb_strtolower($alias)] = $this->{$alias} ?? false;
@@ -503,11 +503,10 @@ trait Relationship
                     
                     $nodeIdListToKeep = [];
                     foreach ($assign as $key => $entity) {
-                        assert($entity instanceof ModelInterface);
-                        
                         // get referenced model bindings
                         $referencedBind = [];
                         foreach ($referencedFields as $referencedField) {
+                            assert($entity instanceof EntityInterface);
                             $referencedBind [] = $entity->readAttribute($referencedField);
                         }
                         
@@ -535,6 +534,7 @@ trait Relationship
                             }
                             
                             // save edge record
+                            assert($entity instanceof Model);
                             if (!$entity->doSave($visited)) {
                                 $this->appendMessagesFromRecord($entity, $lowerCaseAlias, $key);
                                 $this->appendMessage(new Message('Unable to save related entity `' . $intermediateModelClass . '`', $lowerCaseAlias, 'Bad Request', 400));
