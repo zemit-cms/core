@@ -638,6 +638,7 @@ trait Relationship
     {
         assert($this instanceof RelationshipInterface);
         assert($this instanceof EntityInterface);
+        assert($this instanceof ModelInterface);
         
         if (!$relation->isThrough()) {
             return null;
