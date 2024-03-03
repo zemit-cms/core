@@ -636,6 +636,9 @@ trait Relationship
     
     public function postSaveRelatedThroughAfter(RelationInterface $relation, $relatedRecords, CollectionInterface $visited): ?bool
     {
+        assert($this instanceof RelationshipInterface);
+        assert($this instanceof EntityInterface);
+        
         if (!$relation->isThrough()) {
             return null;
         }
@@ -658,6 +661,8 @@ trait Relationship
         $intermediateReferencedFields = is_array($intermediateReferencedFields) ? $intermediateReferencedFields : [$intermediateReferencedFields];
         
         foreach ($relatedRecords as $relatedAfterKey => $recordAfter) {
+            assert($recordAfter instanceof Model);
+            
             // Save the record and get messages
             if (!$recordAfter->doSave($visited)) {
                 $this->appendMessagesFromRecord($recordAfter, $lowerCaseAlias, $relatedAfterKey);
