@@ -22,7 +22,7 @@ trait Params
      * Get a specific parameter value by key.
      *
      * @param string $key The key of the parameter.
-     * @param string|array|null $filters Optional. The filters to apply to the parameter value. Defaults to null.
+     * @param array|string|null $filters Optional. The filters to apply to the parameter value. Defaults to null.
      * @param string|null $default Optional. The default value if the parameter does not exist. Defaults to null.
      * @param array|null $params Optional. The array of parameters to search from. Defaults to null.
      *
@@ -31,7 +31,7 @@ trait Params
      *               then the value from the dispatcher's parameter is returned.
      * @throws Exception
      */
-    public function getParam(string $key, string|array $filters = null, string $default = null, array $params = null): mixed
+    public function getParam(string $key, array|string|null $filters = null, string $default = null, array $params = null): mixed
     {
         $params ??= $this->getParams();
         
