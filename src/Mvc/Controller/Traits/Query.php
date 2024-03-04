@@ -800,41 +800,6 @@ trait Query
     }
     
     /**
-     * Get a cache key from params
-     *
-     * @param array|null $params
-     *
-     * @return string|null
-     */
-    public function getCacheKey(?array $params = null): ?string
-    {
-        $params ??= $this->getParams();
-        
-        return Slug::generate(json_encode($params, JSON_UNESCAPED_SLASHES));
-    }
-    
-    /**
-     * Get cache setting
-     *
-     * @param array|null $params
-     *
-     * @return array|null
-     */
-    public function getCache(?array $params = null)
-    {
-        $params ??= $this->getParams();
-        
-        if (!empty($params['cache'])) {
-            return [
-                'lifetime' => (int)$params['cache'],
-                'key' => $this->getCacheKey($params),
-            ];
-        }
-        
-        return null;
-    }
-    
-    /**
      * Get find definition
      *
      * @return array
