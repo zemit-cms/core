@@ -3,7 +3,16 @@
   "version": "1.0.0",
   "type": "library",
   "description": "Zemit CMS Core",
-  "keywords": ["framework", "phalcon", "cms", "core", "zemit", "zemit-cms", "zemit cms", "zemit cms core"],
+  "keywords": [
+    "framework",
+    "phalcon",
+    "cms",
+    "core",
+    "zemit",
+    "zemit-cms",
+    "zemit cms",
+    "zemit cms core"
+  ],
   "homepage": "https://www.zemit.com",
   "license": "BSD-3-Clause",
   "authors": [
@@ -25,6 +34,12 @@
     {
       "name": "Contributors",
       "homepage": "https://github.com/zemit-cms/core/graphs/contributors"
+    }
+  ],
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/jturbide"
     }
   ],
   "support": {
@@ -138,5 +153,9 @@
   },
   "bin": [
     "zemit"
-  ]
+  ],
+  "scripts": {
+    "phpcs": "phpcs --standard=phpcs.xml",
+    "phpcbf": "phpcbf --standard=phpcs.xml"
+  }
 }
