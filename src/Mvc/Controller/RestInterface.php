@@ -12,6 +12,7 @@
 namespace Zemit\Mvc\Controller;
 
 use Zemit\Mvc\Controller\Traits\Interfaces\BehaviorInterface;
+use Zemit\Mvc\Controller\Traits\Interfaces\CacheInterface;
 use Zemit\Mvc\Controller\Traits\Interfaces\DebugInterface;
 use Zemit\Mvc\Controller\Traits\Interfaces\FractalInterface;
 use Zemit\Mvc\Controller\Traits\Interfaces\ParamsInterface;
@@ -19,6 +20,7 @@ use Zemit\Mvc\Controller\Traits\Interfaces\RestResponseInterface;
 
 interface RestInterface extends
     DebugInterface,
+    CacheInterface,
     BehaviorInterface,
     ParamsInterface,
     FractalInterface,
