@@ -344,10 +344,12 @@ class Identity extends Injectable implements OptionsInterface
     }
     
     /**
-     * Get Identity User
-     * @param bool $as True to return the Identity User (As)
-     * @param bool|null $force True to fetch the user from the database again
-     * @return UserInterface|null Return the Identity User Model
+     * Return the user object based on the session
+     *
+     * @param bool $as Flag to indicate whether to get the user as another user
+     * @param bool|null $force Flag to indicate whether to force the retrieval of the user object
+     * 
+     * @return UserInterface|null The user object or null if session is not available
      */
     public function getUser(bool $as = false, ?bool $force = null): ?UserInterface
     {
@@ -367,17 +369,18 @@ class Identity extends Injectable implements OptionsInterface
                 ? $session->getAsUserId()
                 : $session->getUserId();
             
-            $userClass = $this->getUserClass();
-            
-            if (empty($userId)) {
-                $user = null;
-            } else {
+            $user = null;
+            if (!empty($userId)) {
                 SecurityBehavior::staticStart();
+                
+                /** @var User $userClass */
+                $userClass = $this->getUserClass();
                 $user = $userClass::findFirstWithById([
                     'RoleList',
                     'GroupList.RoleList',
                     'TypeList.GroupList.RoleList',
                 ], $userId);
+                
                 SecurityBehavior::staticStop();
             }
             
@@ -1054,11 +1057,9 @@ class Identity extends Injectable implements OptionsInterface
             'email = :email:',
             'bind' => [
                 'email' => $string,
-                'username' => $string,
             ],
             'bindTypes' => [
                 'email' => Column::BIND_PARAM_STR,
-                'username' => Column::BIND_PARAM_STR,
             ],
         ]);
         if (isset($user)) {
