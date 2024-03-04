@@ -155,7 +155,9 @@
     "zemit"
   ],
   "scripts": {
-    "phpcs": "phpcs --standard=phpcs.xml",
-    "phpcbf": "phpcbf --standard=phpcs.xml"
+    "phpcs": "./vendor/bin/phpcs --standard=phpcs.xml --colors",
+    "phpcbf": "./vendor/bin/phpcbf --standard=phpcs.xml",
+    "skeleton:validate": "./vendor/bin/pds-skeleton validate",
+    "test": "./vendor/bin/phpunit"
   }
 }
