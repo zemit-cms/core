@@ -33,7 +33,7 @@ trait ReorderAction
      */
     public function reorderAction(?int $id = null, ?int $position = null): ResponseInterface
     {
-        $entity = $this->getSingle($id);
+        $entity = $this->getSingle($id, null, []);
         
         if (!$entity) {
             return $this->setRestErrorResponse(404);

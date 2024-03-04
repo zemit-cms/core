@@ -32,7 +32,7 @@ trait RestoreAction
      */
     public function restoreAction(?int $id = null): ResponseInterface
     {
-        $entity = $this->getSingle($id);
+        $entity = $this->getSingle($id, null, []);
         
         if (!$entity) {
             return $this->setRestErrorResponse(404);
