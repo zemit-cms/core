@@ -11,13 +11,12 @@
 
 namespace Zemit\Mvc\Controller\Traits\Actions;
 
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
 
-/**
- * @property \Zemit\Identity $identity
- */
 trait AuthActions
 {
+    use AbstractInjectable;
     use AbstractParams;
     
     /**
@@ -25,7 +24,7 @@ trait AuthActions
      */
     public function getAction(bool $refresh = false): bool
     {
-        $this->view->setVars($this->identity->getJwt($refresh === true));
+        $this->view->setVars($this->identity->getJwt($refresh));
         $this->view->setVars($this->identity->getIdentity());
         return $this->view->getVar('validated') ?? false;
     }
