@@ -3,4 +3,3 @@ rm -rf ./src/Models/Abstracts/Abstract*.php && ./vendor/bin/phalcon all-models -
 find ./src/Models/Abstracts/ -type f -exec sed -i -e '/$this->setSchema/i \        parent::initialize();' {} \;
 find ./src/Models/Abstracts/ -type f -exec sed -i -e 's/ $this->setSchema/ \/\/ $this->setSchema/g' {} \;
 find ./src/Models/Abstracts/ -type f -exec sed -i -e 's/public function initialize()/public function initialize() :void/g' {} \;
-./vendor/bin/phpcbf ./src/Models/Abstracts/
