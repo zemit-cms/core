@@ -36,6 +36,8 @@ trait Relationship
     use AbstractMetaData;
     use AbstractModelsManager;
     
+    abstract public function appendMessage(\Phalcon\Messages\MessageInterface $message): ModelInterface;
+    
     private array $keepMissingRelated = [];
     
     private string $relationshipContext = '';
@@ -797,6 +799,7 @@ trait Relationship
     
     public function appendMessages(array $messages = [], ?string $context = null, ?int $index = null): void
     {
+        assert($this instanceof ModelInterface);
         foreach ($messages as $message) {
             assert($message instanceof Message);
             
