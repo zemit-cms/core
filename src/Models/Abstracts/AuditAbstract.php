@@ -20,6 +20,11 @@ use Zemit\Models\Audit;
 use Zemit\Models\Abstracts\Interfaces\AuditAbstractInterface;
 
 /**
+ * Class AuditAbstract
+ *
+ * This class defines a Audit abstract model that extends the AbstractModel class and implements the AuditAbstractInterface.
+ * It provides properties and methods for managing Audit data.
+ * 
  * @property AuditDetail[] $AuditDetailList
  * @method AuditDetail[] getAuditDetailList(?array $params = null)
  *
@@ -42,21 +47,21 @@ class AuditAbstract extends AbstractModel implements AuditAbstractInterface
     
     /**
      * Column: model
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $model;
+    public RawValue|string|null $model = null;
     
     /**
      * Column: table
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $table;
+    public RawValue|string|null $table = null;
     
     /**
      * Column: primary
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $primary;
+    public RawValue|int|null $primary = null;
     
     /**
      * Column: event
@@ -90,9 +95,9 @@ class AuditAbstract extends AbstractModel implements AuditAbstractInterface
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -204,9 +209,9 @@ class AuditAbstract extends AbstractModel implements AuditAbstractInterface
     /**
      * Returns the value of field model
      * Column: model
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getModel(): RawValue|string
+    public function getModel(): RawValue|string|null
     {
         return $this->model;
     }
@@ -214,10 +219,10 @@ class AuditAbstract extends AbstractModel implements AuditAbstractInterface
     /**
      * Sets the value of field model
      * Column: model 
-     * @param RawValue|string $model
+     * @param RawValue|string|null $model
      * @return void
      */
-    public function setModel(RawValue|string $model): void
+    public function setModel(RawValue|string|null $model): void
     {
         $this->model = $model;
     }
@@ -225,9 +230,9 @@ class AuditAbstract extends AbstractModel implements AuditAbstractInterface
     /**
      * Returns the value of field table
      * Column: table
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getTable(): RawValue|string
+    public function getTable(): RawValue|string|null
     {
         return $this->table;
     }
@@ -235,10 +240,10 @@ class AuditAbstract extends AbstractModel implements AuditAbstractInterface
     /**
      * Sets the value of field table
      * Column: table 
-     * @param RawValue|string $table
+     * @param RawValue|string|null $table
      * @return void
      */
-    public function setTable(RawValue|string $table): void
+    public function setTable(RawValue|string|null $table): void
     {
         $this->table = $table;
     }
@@ -246,9 +251,9 @@ class AuditAbstract extends AbstractModel implements AuditAbstractInterface
     /**
      * Returns the value of field primary
      * Column: primary
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getPrimary(): RawValue|int
+    public function getPrimary(): RawValue|int|null
     {
         return $this->primary;
     }
@@ -256,10 +261,10 @@ class AuditAbstract extends AbstractModel implements AuditAbstractInterface
     /**
      * Sets the value of field primary
      * Column: primary 
-     * @param RawValue|int $primary
+     * @param RawValue|int|null $primary
      * @return void
      */
-    public function setPrimary(RawValue|int $primary): void
+    public function setPrimary(RawValue|int|null $primary): void
     {
         $this->primary = $primary;
     }
@@ -372,9 +377,9 @@ class AuditAbstract extends AbstractModel implements AuditAbstractInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -382,10 +387,10 @@ class AuditAbstract extends AbstractModel implements AuditAbstractInterface
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

@@ -35,32 +35,32 @@ interface RoleRoleAbstractInterface extends ModelInterface
     /**
      * Returns the value of field parentId
      * Column: parent_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getParentId(): RawValue|int;
+    public function getParentId(): RawValue|int|null;
     
     /**
      * Sets the value of field parentId
      * Column: parent_id 
-     * @param RawValue|int $parentId
+     * @param RawValue|int|null $parentId
      * @return void
      */
-    public function setParentId(RawValue|int $parentId): void;
+    public function setParentId(RawValue|int|null $parentId): void;
     
     /**
      * Returns the value of field childId
      * Column: child_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getChildId(): RawValue|int;
+    public function getChildId(): RawValue|int|null;
     
     /**
      * Sets the value of field childId
      * Column: child_id 
-     * @param RawValue|int $childId
+     * @param RawValue|int|null $childId
      * @return void
      */
-    public function setChildId(RawValue|int $childId): void;
+    public function setChildId(RawValue|int|null $childId): void;
     
     /**
      * Returns the value of field position
@@ -95,17 +95,17 @@ interface RoleRoleAbstractInterface extends ModelInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string;
+    public function getCreatedAt(): RawValue|string|null;
     
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void;
+    public function setCreatedAt(RawValue|string|null $createdAt): void;
     
     /**
      * Returns the value of field createdBy

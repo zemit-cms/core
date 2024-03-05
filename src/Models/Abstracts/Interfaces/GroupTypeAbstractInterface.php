@@ -35,32 +35,32 @@ interface GroupTypeAbstractInterface extends ModelInterface
     /**
      * Returns the value of field groupId
      * Column: group_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getGroupId(): RawValue|int;
+    public function getGroupId(): RawValue|int|null;
     
     /**
      * Sets the value of field groupId
      * Column: group_id 
-     * @param RawValue|int $groupId
+     * @param RawValue|int|null $groupId
      * @return void
      */
-    public function setGroupId(RawValue|int $groupId): void;
+    public function setGroupId(RawValue|int|null $groupId): void;
     
     /**
      * Returns the value of field typeId
      * Column: type_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getTypeId(): RawValue|int;
+    public function getTypeId(): RawValue|int|null;
     
     /**
      * Sets the value of field typeId
      * Column: type_id 
-     * @param RawValue|int $typeId
+     * @param RawValue|int|null $typeId
      * @return void
      */
-    public function setTypeId(RawValue|int $typeId): void;
+    public function setTypeId(RawValue|int|null $typeId): void;
     
     /**
      * Returns the value of field position
@@ -95,17 +95,17 @@ interface GroupTypeAbstractInterface extends ModelInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string;
+    public function getCreatedAt(): RawValue|string|null;
     
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void;
+    public function setCreatedAt(RawValue|string|null $createdAt): void;
     
     /**
      * Returns the value of field createdBy

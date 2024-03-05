@@ -20,6 +20,11 @@ use Zemit\Models\Type;
 use Zemit\Models\Abstracts\Interfaces\UserTypeAbstractInterface;
 
 /**
+ * Class UserTypeAbstract
+ *
+ * This class defines a UserType abstract model that extends the AbstractModel class and implements the UserTypeAbstractInterface.
+ * It provides properties and methods for managing UserType data.
+ * 
  * @property User $UserEntity
  * @method User getUserEntity(?array $params = null)
  *
@@ -36,15 +41,15 @@ class UserTypeAbstract extends AbstractModel implements UserTypeAbstractInterfac
     
     /**
      * Column: user_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $userId;
+    public RawValue|int|null $userId = null;
     
     /**
      * Column: type_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $typeId;
+    public RawValue|int|null $typeId = null;
     
     /**
      * Column: position
@@ -60,9 +65,9 @@ class UserTypeAbstract extends AbstractModel implements UserTypeAbstractInterfac
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -153,9 +158,9 @@ class UserTypeAbstract extends AbstractModel implements UserTypeAbstractInterfac
     /**
      * Returns the value of field userId
      * Column: user_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getUserId(): RawValue|int
+    public function getUserId(): RawValue|int|null
     {
         return $this->userId;
     }
@@ -163,10 +168,10 @@ class UserTypeAbstract extends AbstractModel implements UserTypeAbstractInterfac
     /**
      * Sets the value of field userId
      * Column: user_id 
-     * @param RawValue|int $userId
+     * @param RawValue|int|null $userId
      * @return void
      */
-    public function setUserId(RawValue|int $userId): void
+    public function setUserId(RawValue|int|null $userId): void
     {
         $this->userId = $userId;
     }
@@ -174,9 +179,9 @@ class UserTypeAbstract extends AbstractModel implements UserTypeAbstractInterfac
     /**
      * Returns the value of field typeId
      * Column: type_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getTypeId(): RawValue|int
+    public function getTypeId(): RawValue|int|null
     {
         return $this->typeId;
     }
@@ -184,10 +189,10 @@ class UserTypeAbstract extends AbstractModel implements UserTypeAbstractInterfac
     /**
      * Sets the value of field typeId
      * Column: type_id 
-     * @param RawValue|int $typeId
+     * @param RawValue|int|null $typeId
      * @return void
      */
-    public function setTypeId(RawValue|int $typeId): void
+    public function setTypeId(RawValue|int|null $typeId): void
     {
         $this->typeId = $typeId;
     }
@@ -237,9 +242,9 @@ class UserTypeAbstract extends AbstractModel implements UserTypeAbstractInterfac
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -247,10 +252,10 @@ class UserTypeAbstract extends AbstractModel implements UserTypeAbstractInterfac
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

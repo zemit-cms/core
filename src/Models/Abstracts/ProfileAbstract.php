@@ -19,6 +19,11 @@ use Zemit\Models\User;
 use Zemit\Models\Abstracts\Interfaces\ProfileAbstractInterface;
 
 /**
+ * Class ProfileAbstract
+ *
+ * This class defines a Profile abstract model that extends the AbstractModel class and implements the ProfileAbstractInterface.
+ * It provides properties and methods for managing Profile data.
+ * 
  * @property User $UserEntity
  * @method User getUserEntity(?array $params = null)
  */
@@ -32,9 +37,9 @@ class ProfileAbstract extends AbstractModel implements ProfileAbstractInterface
     
     /**
      * Column: user_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $userId;
+    public RawValue|int|null $userId = null;
     
     /**
      * Column: deleted
@@ -44,9 +49,9 @@ class ProfileAbstract extends AbstractModel implements ProfileAbstractInterface
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -131,9 +136,9 @@ class ProfileAbstract extends AbstractModel implements ProfileAbstractInterface
     /**
      * Returns the value of field userId
      * Column: user_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getUserId(): RawValue|int
+    public function getUserId(): RawValue|int|null
     {
         return $this->userId;
     }
@@ -141,10 +146,10 @@ class ProfileAbstract extends AbstractModel implements ProfileAbstractInterface
     /**
      * Sets the value of field userId
      * Column: user_id 
-     * @param RawValue|int $userId
+     * @param RawValue|int|null $userId
      * @return void
      */
-    public function setUserId(RawValue|int $userId): void
+    public function setUserId(RawValue|int|null $userId): void
     {
         $this->userId = $userId;
     }
@@ -173,9 +178,9 @@ class ProfileAbstract extends AbstractModel implements ProfileAbstractInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -183,10 +188,10 @@ class ProfileAbstract extends AbstractModel implements ProfileAbstractInterface
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

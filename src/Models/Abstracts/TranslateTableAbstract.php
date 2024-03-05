@@ -19,6 +19,11 @@ use Zemit\Models\TranslateTable;
 use Zemit\Models\Abstracts\Interfaces\TranslateTableAbstractInterface;
 
 /**
+ * Class TranslateTableAbstract
+ *
+ * This class defines a TranslateTable abstract model that extends the AbstractModel class and implements the TranslateTableAbstractInterface.
+ * It provides properties and methods for managing TranslateTable data.
+ * 
  * @property TranslateTable $LeftEntity
  * @method TranslateTable getLeftEntity(?array $params = null)
  *
@@ -35,9 +40,9 @@ class TranslateTableAbstract extends AbstractModel implements TranslateTableAbst
     
     /**
      * Column: table
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $table;
+    public RawValue|string|null $table = null;
     
     /**
      * Column: left_id
@@ -59,9 +64,9 @@ class TranslateTableAbstract extends AbstractModel implements TranslateTableAbst
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -152,9 +157,9 @@ class TranslateTableAbstract extends AbstractModel implements TranslateTableAbst
     /**
      * Returns the value of field table
      * Column: table
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getTable(): RawValue|string
+    public function getTable(): RawValue|string|null
     {
         return $this->table;
     }
@@ -162,10 +167,10 @@ class TranslateTableAbstract extends AbstractModel implements TranslateTableAbst
     /**
      * Sets the value of field table
      * Column: table 
-     * @param RawValue|string $table
+     * @param RawValue|string|null $table
      * @return void
      */
-    public function setTable(RawValue|string $table): void
+    public function setTable(RawValue|string|null $table): void
     {
         $this->table = $table;
     }
@@ -236,9 +241,9 @@ class TranslateTableAbstract extends AbstractModel implements TranslateTableAbst
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -246,10 +251,10 @@ class TranslateTableAbstract extends AbstractModel implements TranslateTableAbst
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

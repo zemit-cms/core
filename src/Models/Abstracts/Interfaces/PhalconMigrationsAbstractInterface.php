@@ -35,17 +35,17 @@ interface PhalconMigrationsAbstractInterface extends ModelInterface
     /**
      * Returns the value of field version
      * Column: version
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getVersion(): RawValue|string;
+    public function getVersion(): RawValue|string|null;
     
     /**
      * Sets the value of field version
      * Column: version 
-     * @param RawValue|string $version
+     * @param RawValue|string|null $version
      * @return void
      */
-    public function setVersion(RawValue|string $version): void;
+    public function setVersion(RawValue|string|null $version): void;
     
     /**
      * Returns the value of field startTime

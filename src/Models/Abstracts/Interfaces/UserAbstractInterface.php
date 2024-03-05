@@ -35,32 +35,32 @@ interface UserAbstractInterface extends ModelInterface
     /**
      * Returns the value of field uuid
      * Column: uuid
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getUuid(): RawValue|string;
+    public function getUuid(): RawValue|string|null;
     
     /**
      * Sets the value of field uuid
      * Column: uuid 
-     * @param RawValue|string $uuid
+     * @param RawValue|string|null $uuid
      * @return void
      */
-    public function setUuid(RawValue|string $uuid): void;
+    public function setUuid(RawValue|string|null $uuid): void;
     
     /**
      * Returns the value of field email
      * Column: email
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getEmail(): RawValue|string;
+    public function getEmail(): RawValue|string|null;
     
     /**
      * Sets the value of field email
      * Column: email 
-     * @param RawValue|string $email
+     * @param RawValue|string|null $email
      * @return void
      */
-    public function setEmail(RawValue|string $email): void;
+    public function setEmail(RawValue|string|null $email): void;
     
     /**
      * Returns the value of field password
@@ -95,17 +95,17 @@ interface UserAbstractInterface extends ModelInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string;
+    public function getCreatedAt(): RawValue|string|null;
     
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void;
+    public function setCreatedAt(RawValue|string|null $createdAt): void;
     
     /**
      * Returns the value of field createdBy

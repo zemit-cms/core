@@ -21,6 +21,11 @@ use Zemit\Models\Table;
 use Zemit\Models\Abstracts\Interfaces\TranslateFieldAbstractInterface;
 
 /**
+ * Class TranslateFieldAbstract
+ *
+ * This class defines a TranslateField abstract model that extends the AbstractModel class and implements the TranslateFieldAbstractInterface.
+ * It provides properties and methods for managing TranslateField data.
+ * 
  * @property Site $SiteEntity
  * @method Site getSiteEntity(?array $params = null)
  *
@@ -40,33 +45,33 @@ class TranslateFieldAbstract extends AbstractModel implements TranslateFieldAbst
     
     /**
      * Column: site_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $siteId;
+    public RawValue|int|null $siteId = null;
     
     /**
      * Column: lang_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $langId;
+    public RawValue|int|null $langId = null;
     
     /**
      * Column: table
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $table;
+    public RawValue|string|null $table = null;
     
     /**
      * Column: table_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $tableId;
+    public RawValue|int|null $tableId = null;
     
     /**
      * Column: field
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $field;
+    public RawValue|string|null $field = null;
     
     /**
      * Column: value
@@ -82,9 +87,9 @@ class TranslateFieldAbstract extends AbstractModel implements TranslateFieldAbst
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -169,9 +174,9 @@ class TranslateFieldAbstract extends AbstractModel implements TranslateFieldAbst
     /**
      * Returns the value of field siteId
      * Column: site_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getSiteId(): RawValue|int
+    public function getSiteId(): RawValue|int|null
     {
         return $this->siteId;
     }
@@ -179,10 +184,10 @@ class TranslateFieldAbstract extends AbstractModel implements TranslateFieldAbst
     /**
      * Sets the value of field siteId
      * Column: site_id 
-     * @param RawValue|int $siteId
+     * @param RawValue|int|null $siteId
      * @return void
      */
-    public function setSiteId(RawValue|int $siteId): void
+    public function setSiteId(RawValue|int|null $siteId): void
     {
         $this->siteId = $siteId;
     }
@@ -190,9 +195,9 @@ class TranslateFieldAbstract extends AbstractModel implements TranslateFieldAbst
     /**
      * Returns the value of field langId
      * Column: lang_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getLangId(): RawValue|int
+    public function getLangId(): RawValue|int|null
     {
         return $this->langId;
     }
@@ -200,10 +205,10 @@ class TranslateFieldAbstract extends AbstractModel implements TranslateFieldAbst
     /**
      * Sets the value of field langId
      * Column: lang_id 
-     * @param RawValue|int $langId
+     * @param RawValue|int|null $langId
      * @return void
      */
-    public function setLangId(RawValue|int $langId): void
+    public function setLangId(RawValue|int|null $langId): void
     {
         $this->langId = $langId;
     }
@@ -211,9 +216,9 @@ class TranslateFieldAbstract extends AbstractModel implements TranslateFieldAbst
     /**
      * Returns the value of field table
      * Column: table
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getTable(): RawValue|string
+    public function getTable(): RawValue|string|null
     {
         return $this->table;
     }
@@ -221,10 +226,10 @@ class TranslateFieldAbstract extends AbstractModel implements TranslateFieldAbst
     /**
      * Sets the value of field table
      * Column: table 
-     * @param RawValue|string $table
+     * @param RawValue|string|null $table
      * @return void
      */
-    public function setTable(RawValue|string $table): void
+    public function setTable(RawValue|string|null $table): void
     {
         $this->table = $table;
     }
@@ -232,9 +237,9 @@ class TranslateFieldAbstract extends AbstractModel implements TranslateFieldAbst
     /**
      * Returns the value of field tableId
      * Column: table_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getTableId(): RawValue|int
+    public function getTableId(): RawValue|int|null
     {
         return $this->tableId;
     }
@@ -242,10 +247,10 @@ class TranslateFieldAbstract extends AbstractModel implements TranslateFieldAbst
     /**
      * Sets the value of field tableId
      * Column: table_id 
-     * @param RawValue|int $tableId
+     * @param RawValue|int|null $tableId
      * @return void
      */
-    public function setTableId(RawValue|int $tableId): void
+    public function setTableId(RawValue|int|null $tableId): void
     {
         $this->tableId = $tableId;
     }
@@ -253,9 +258,9 @@ class TranslateFieldAbstract extends AbstractModel implements TranslateFieldAbst
     /**
      * Returns the value of field field
      * Column: field
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getField(): RawValue|string
+    public function getField(): RawValue|string|null
     {
         return $this->field;
     }
@@ -263,10 +268,10 @@ class TranslateFieldAbstract extends AbstractModel implements TranslateFieldAbst
     /**
      * Sets the value of field field
      * Column: field 
-     * @param RawValue|string $field
+     * @param RawValue|string|null $field
      * @return void
      */
-    public function setField(RawValue|string $field): void
+    public function setField(RawValue|string|null $field): void
     {
         $this->field = $field;
     }
@@ -316,9 +321,9 @@ class TranslateFieldAbstract extends AbstractModel implements TranslateFieldAbst
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -326,10 +331,10 @@ class TranslateFieldAbstract extends AbstractModel implements TranslateFieldAbst
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

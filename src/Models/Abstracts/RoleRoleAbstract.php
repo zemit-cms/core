@@ -19,6 +19,11 @@ use Zemit\Models\RoleRole;
 use Zemit\Models\Abstracts\Interfaces\RoleRoleAbstractInterface;
 
 /**
+ * Class RoleRoleAbstract
+ *
+ * This class defines a RoleRole abstract model that extends the AbstractModel class and implements the RoleRoleAbstractInterface.
+ * It provides properties and methods for managing RoleRole data.
+ * 
  * @property RoleRole $ParentEntity
  * @method RoleRole getParentEntity(?array $params = null)
  *
@@ -35,15 +40,15 @@ class RoleRoleAbstract extends AbstractModel implements RoleRoleAbstractInterfac
     
     /**
      * Column: parent_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $parentId;
+    public RawValue|int|null $parentId = null;
     
     /**
      * Column: child_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $childId;
+    public RawValue|int|null $childId = null;
     
     /**
      * Column: position
@@ -59,9 +64,9 @@ class RoleRoleAbstract extends AbstractModel implements RoleRoleAbstractInterfac
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -152,9 +157,9 @@ class RoleRoleAbstract extends AbstractModel implements RoleRoleAbstractInterfac
     /**
      * Returns the value of field parentId
      * Column: parent_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getParentId(): RawValue|int
+    public function getParentId(): RawValue|int|null
     {
         return $this->parentId;
     }
@@ -162,10 +167,10 @@ class RoleRoleAbstract extends AbstractModel implements RoleRoleAbstractInterfac
     /**
      * Sets the value of field parentId
      * Column: parent_id 
-     * @param RawValue|int $parentId
+     * @param RawValue|int|null $parentId
      * @return void
      */
-    public function setParentId(RawValue|int $parentId): void
+    public function setParentId(RawValue|int|null $parentId): void
     {
         $this->parentId = $parentId;
     }
@@ -173,9 +178,9 @@ class RoleRoleAbstract extends AbstractModel implements RoleRoleAbstractInterfac
     /**
      * Returns the value of field childId
      * Column: child_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getChildId(): RawValue|int
+    public function getChildId(): RawValue|int|null
     {
         return $this->childId;
     }
@@ -183,10 +188,10 @@ class RoleRoleAbstract extends AbstractModel implements RoleRoleAbstractInterfac
     /**
      * Sets the value of field childId
      * Column: child_id 
-     * @param RawValue|int $childId
+     * @param RawValue|int|null $childId
      * @return void
      */
-    public function setChildId(RawValue|int $childId): void
+    public function setChildId(RawValue|int|null $childId): void
     {
         $this->childId = $childId;
     }
@@ -236,9 +241,9 @@ class RoleRoleAbstract extends AbstractModel implements RoleRoleAbstractInterfac
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -246,10 +251,10 @@ class RoleRoleAbstract extends AbstractModel implements RoleRoleAbstractInterfac
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

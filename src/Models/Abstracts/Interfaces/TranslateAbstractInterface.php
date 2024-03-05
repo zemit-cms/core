@@ -35,17 +35,17 @@ interface TranslateAbstractInterface extends ModelInterface
     /**
      * Returns the value of field langId
      * Column: lang_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getLangId(): RawValue|int;
+    public function getLangId(): RawValue|int|null;
     
     /**
      * Sets the value of field langId
      * Column: lang_id 
-     * @param RawValue|int $langId
+     * @param RawValue|int|null $langId
      * @return void
      */
-    public function setLangId(RawValue|int $langId): void;
+    public function setLangId(RawValue|int|null $langId): void;
     
     /**
      * Returns the value of field siteId
@@ -110,17 +110,17 @@ interface TranslateAbstractInterface extends ModelInterface
     /**
      * Returns the value of field key
      * Column: key
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getKey(): RawValue|string;
+    public function getKey(): RawValue|string|null;
     
     /**
      * Sets the value of field key
      * Column: key 
-     * @param RawValue|string $key
+     * @param RawValue|string|null $key
      * @return void
      */
-    public function setKey(RawValue|string $key): void;
+    public function setKey(RawValue|string|null $key): void;
     
     /**
      * Returns the value of field value
@@ -155,17 +155,17 @@ interface TranslateAbstractInterface extends ModelInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string;
+    public function getCreatedAt(): RawValue|string|null;
     
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void;
+    public function setCreatedAt(RawValue|string|null $createdAt): void;
     
     /**
      * Returns the value of field createdBy

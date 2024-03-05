@@ -21,6 +21,11 @@ use Zemit\Models\Template;
 use Zemit\Models\Abstracts\Interfaces\EmailAbstractInterface;
 
 /**
+ * Class EmailAbstract
+ *
+ * This class defines a Email abstract model that extends the AbstractModel class and implements the EmailAbstractInterface.
+ * It provides properties and methods for managing Email data.
+ * 
  * @property EmailFile[] $EmailFileList
  * @method EmailFile[] getEmailFileList(?array $params = null)
  *
@@ -40,27 +45,27 @@ class EmailAbstract extends AbstractModel implements EmailAbstractInterface
     
     /**
      * Column: template_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $templateId;
+    public RawValue|int|null $templateId = null;
     
     /**
      * Column: uuid
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $uuid;
+    public RawValue|string|null $uuid = null;
     
     /**
      * Column: from
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $from;
+    public RawValue|string|null $from = null;
     
     /**
      * Column: to
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $to;
+    public RawValue|string|null $to = null;
     
     /**
      * Column: cc
@@ -82,15 +87,15 @@ class EmailAbstract extends AbstractModel implements EmailAbstractInterface
     
     /**
      * Column: subject
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $subject;
+    public RawValue|string|null $subject = null;
     
     /**
      * Column: content
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $content;
+    public RawValue|string|null $content = null;
     
     /**
      * Column: meta
@@ -136,9 +141,9 @@ class EmailAbstract extends AbstractModel implements EmailAbstractInterface
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -229,9 +234,9 @@ class EmailAbstract extends AbstractModel implements EmailAbstractInterface
     /**
      * Returns the value of field templateId
      * Column: template_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getTemplateId(): RawValue|int
+    public function getTemplateId(): RawValue|int|null
     {
         return $this->templateId;
     }
@@ -239,10 +244,10 @@ class EmailAbstract extends AbstractModel implements EmailAbstractInterface
     /**
      * Sets the value of field templateId
      * Column: template_id 
-     * @param RawValue|int $templateId
+     * @param RawValue|int|null $templateId
      * @return void
      */
-    public function setTemplateId(RawValue|int $templateId): void
+    public function setTemplateId(RawValue|int|null $templateId): void
     {
         $this->templateId = $templateId;
     }
@@ -250,9 +255,9 @@ class EmailAbstract extends AbstractModel implements EmailAbstractInterface
     /**
      * Returns the value of field uuid
      * Column: uuid
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getUuid(): RawValue|string
+    public function getUuid(): RawValue|string|null
     {
         return $this->uuid;
     }
@@ -260,10 +265,10 @@ class EmailAbstract extends AbstractModel implements EmailAbstractInterface
     /**
      * Sets the value of field uuid
      * Column: uuid 
-     * @param RawValue|string $uuid
+     * @param RawValue|string|null $uuid
      * @return void
      */
-    public function setUuid(RawValue|string $uuid): void
+    public function setUuid(RawValue|string|null $uuid): void
     {
         $this->uuid = $uuid;
     }
@@ -271,9 +276,9 @@ class EmailAbstract extends AbstractModel implements EmailAbstractInterface
     /**
      * Returns the value of field from
      * Column: from
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getFrom(): RawValue|string
+    public function getFrom(): RawValue|string|null
     {
         return $this->from;
     }
@@ -281,10 +286,10 @@ class EmailAbstract extends AbstractModel implements EmailAbstractInterface
     /**
      * Sets the value of field from
      * Column: from 
-     * @param RawValue|string $from
+     * @param RawValue|string|null $from
      * @return void
      */
-    public function setFrom(RawValue|string $from): void
+    public function setFrom(RawValue|string|null $from): void
     {
         $this->from = $from;
     }
@@ -292,9 +297,9 @@ class EmailAbstract extends AbstractModel implements EmailAbstractInterface
     /**
      * Returns the value of field to
      * Column: to
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getTo(): RawValue|string
+    public function getTo(): RawValue|string|null
     {
         return $this->to;
     }
@@ -302,10 +307,10 @@ class EmailAbstract extends AbstractModel implements EmailAbstractInterface
     /**
      * Sets the value of field to
      * Column: to 
-     * @param RawValue|string $to
+     * @param RawValue|string|null $to
      * @return void
      */
-    public function setTo(RawValue|string $to): void
+    public function setTo(RawValue|string|null $to): void
     {
         $this->to = $to;
     }
@@ -376,9 +381,9 @@ class EmailAbstract extends AbstractModel implements EmailAbstractInterface
     /**
      * Returns the value of field subject
      * Column: subject
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getSubject(): RawValue|string
+    public function getSubject(): RawValue|string|null
     {
         return $this->subject;
     }
@@ -386,10 +391,10 @@ class EmailAbstract extends AbstractModel implements EmailAbstractInterface
     /**
      * Sets the value of field subject
      * Column: subject 
-     * @param RawValue|string $subject
+     * @param RawValue|string|null $subject
      * @return void
      */
-    public function setSubject(RawValue|string $subject): void
+    public function setSubject(RawValue|string|null $subject): void
     {
         $this->subject = $subject;
     }
@@ -397,9 +402,9 @@ class EmailAbstract extends AbstractModel implements EmailAbstractInterface
     /**
      * Returns the value of field content
      * Column: content
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getContent(): RawValue|string
+    public function getContent(): RawValue|string|null
     {
         return $this->content;
     }
@@ -407,10 +412,10 @@ class EmailAbstract extends AbstractModel implements EmailAbstractInterface
     /**
      * Sets the value of field content
      * Column: content 
-     * @param RawValue|string $content
+     * @param RawValue|string|null $content
      * @return void
      */
-    public function setContent(RawValue|string $content): void
+    public function setContent(RawValue|string|null $content): void
     {
         $this->content = $content;
     }
@@ -565,9 +570,9 @@ class EmailAbstract extends AbstractModel implements EmailAbstractInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -575,10 +580,10 @@ class EmailAbstract extends AbstractModel implements EmailAbstractInterface
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

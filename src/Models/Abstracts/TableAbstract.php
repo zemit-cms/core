@@ -23,6 +23,11 @@ use Zemit\Models\Workspace;
 use Zemit\Models\Abstracts\Interfaces\TableAbstractInterface;
 
 /**
+ * Class TableAbstract
+ *
+ * This class defines a Table abstract model that extends the AbstractModel class and implements the TableAbstractInterface.
+ * It provides properties and methods for managing Table data.
+ * 
  * @property Data[] $DataList
  * @method Data[] getDataList(?array $params = null)
  *
@@ -54,9 +59,9 @@ class TableAbstract extends AbstractModel implements TableAbstractInterface
     
     /**
      * Column: uuid
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $uuid;
+    public RawValue|string|null $uuid = null;
     
     /**
      * Column: lang_id
@@ -66,15 +71,15 @@ class TableAbstract extends AbstractModel implements TableAbstractInterface
     
     /**
      * Column: workspace_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $workspaceId;
+    public RawValue|int|null $workspaceId = null;
     
     /**
      * Column: name
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $name;
+    public RawValue|string|null $name = null;
     
     /**
      * Column: deleted
@@ -84,9 +89,9 @@ class TableAbstract extends AbstractModel implements TableAbstractInterface
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -171,9 +176,9 @@ class TableAbstract extends AbstractModel implements TableAbstractInterface
     /**
      * Returns the value of field uuid
      * Column: uuid
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getUuid(): RawValue|string
+    public function getUuid(): RawValue|string|null
     {
         return $this->uuid;
     }
@@ -181,10 +186,10 @@ class TableAbstract extends AbstractModel implements TableAbstractInterface
     /**
      * Sets the value of field uuid
      * Column: uuid 
-     * @param RawValue|string $uuid
+     * @param RawValue|string|null $uuid
      * @return void
      */
-    public function setUuid(RawValue|string $uuid): void
+    public function setUuid(RawValue|string|null $uuid): void
     {
         $this->uuid = $uuid;
     }
@@ -213,9 +218,9 @@ class TableAbstract extends AbstractModel implements TableAbstractInterface
     /**
      * Returns the value of field workspaceId
      * Column: workspace_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getWorkspaceId(): RawValue|int
+    public function getWorkspaceId(): RawValue|int|null
     {
         return $this->workspaceId;
     }
@@ -223,10 +228,10 @@ class TableAbstract extends AbstractModel implements TableAbstractInterface
     /**
      * Sets the value of field workspaceId
      * Column: workspace_id 
-     * @param RawValue|int $workspaceId
+     * @param RawValue|int|null $workspaceId
      * @return void
      */
-    public function setWorkspaceId(RawValue|int $workspaceId): void
+    public function setWorkspaceId(RawValue|int|null $workspaceId): void
     {
         $this->workspaceId = $workspaceId;
     }
@@ -234,9 +239,9 @@ class TableAbstract extends AbstractModel implements TableAbstractInterface
     /**
      * Returns the value of field name
      * Column: name
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getName(): RawValue|string
+    public function getName(): RawValue|string|null
     {
         return $this->name;
     }
@@ -244,10 +249,10 @@ class TableAbstract extends AbstractModel implements TableAbstractInterface
     /**
      * Sets the value of field name
      * Column: name 
-     * @param RawValue|string $name
+     * @param RawValue|string|null $name
      * @return void
      */
-    public function setName(RawValue|string $name): void
+    public function setName(RawValue|string|null $name): void
     {
         $this->name = $name;
     }
@@ -276,9 +281,9 @@ class TableAbstract extends AbstractModel implements TableAbstractInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -286,10 +291,10 @@ class TableAbstract extends AbstractModel implements TableAbstractInterface
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

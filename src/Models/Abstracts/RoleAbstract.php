@@ -24,6 +24,11 @@ use Zemit\Models\User;
 use Zemit\Models\Abstracts\Interfaces\RoleAbstractInterface;
 
 /**
+ * Class RoleAbstract
+ *
+ * This class defines a Role abstract model that extends the AbstractModel class and implements the RoleAbstractInterface.
+ * It provides properties and methods for managing Role data.
+ * 
  * @property GroupRole[] $GroupRoleList
  * @method GroupRole[] getGroupRoleList(?array $params = null)
  *
@@ -52,15 +57,15 @@ class RoleAbstract extends AbstractModel implements RoleAbstractInterface
     
     /**
      * Column: index
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $index;
+    public RawValue|string|null $index = null;
     
     /**
      * Column: label
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $label;
+    public RawValue|string|null $label = null;
     
     /**
      * Column: position
@@ -76,9 +81,9 @@ class RoleAbstract extends AbstractModel implements RoleAbstractInterface
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -169,9 +174,9 @@ class RoleAbstract extends AbstractModel implements RoleAbstractInterface
     /**
      * Returns the value of field index
      * Column: index
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getIndex(): RawValue|string
+    public function getIndex(): RawValue|string|null
     {
         return $this->index;
     }
@@ -179,10 +184,10 @@ class RoleAbstract extends AbstractModel implements RoleAbstractInterface
     /**
      * Sets the value of field index
      * Column: index 
-     * @param RawValue|string $index
+     * @param RawValue|string|null $index
      * @return void
      */
-    public function setIndex(RawValue|string $index): void
+    public function setIndex(RawValue|string|null $index): void
     {
         $this->index = $index;
     }
@@ -190,9 +195,9 @@ class RoleAbstract extends AbstractModel implements RoleAbstractInterface
     /**
      * Returns the value of field label
      * Column: label
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getLabel(): RawValue|string
+    public function getLabel(): RawValue|string|null
     {
         return $this->label;
     }
@@ -200,10 +205,10 @@ class RoleAbstract extends AbstractModel implements RoleAbstractInterface
     /**
      * Sets the value of field label
      * Column: label 
-     * @param RawValue|string $label
+     * @param RawValue|string|null $label
      * @return void
      */
-    public function setLabel(RawValue|string $label): void
+    public function setLabel(RawValue|string|null $label): void
     {
         $this->label = $label;
     }
@@ -253,9 +258,9 @@ class RoleAbstract extends AbstractModel implements RoleAbstractInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -263,10 +268,10 @@ class RoleAbstract extends AbstractModel implements RoleAbstractInterface
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

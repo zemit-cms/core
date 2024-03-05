@@ -20,6 +20,11 @@ use Zemit\Models\Role;
 use Zemit\Models\Abstracts\Interfaces\UserRoleAbstractInterface;
 
 /**
+ * Class UserRoleAbstract
+ *
+ * This class defines a UserRole abstract model that extends the AbstractModel class and implements the UserRoleAbstractInterface.
+ * It provides properties and methods for managing UserRole data.
+ * 
  * @property User $UserEntity
  * @method User getUserEntity(?array $params = null)
  *
@@ -36,15 +41,15 @@ class UserRoleAbstract extends AbstractModel implements UserRoleAbstractInterfac
     
     /**
      * Column: user_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $userId;
+    public RawValue|int|null $userId = null;
     
     /**
      * Column: role_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $roleId;
+    public RawValue|int|null $roleId = null;
     
     /**
      * Column: position
@@ -60,9 +65,9 @@ class UserRoleAbstract extends AbstractModel implements UserRoleAbstractInterfac
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -153,9 +158,9 @@ class UserRoleAbstract extends AbstractModel implements UserRoleAbstractInterfac
     /**
      * Returns the value of field userId
      * Column: user_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getUserId(): RawValue|int
+    public function getUserId(): RawValue|int|null
     {
         return $this->userId;
     }
@@ -163,10 +168,10 @@ class UserRoleAbstract extends AbstractModel implements UserRoleAbstractInterfac
     /**
      * Sets the value of field userId
      * Column: user_id 
-     * @param RawValue|int $userId
+     * @param RawValue|int|null $userId
      * @return void
      */
-    public function setUserId(RawValue|int $userId): void
+    public function setUserId(RawValue|int|null $userId): void
     {
         $this->userId = $userId;
     }
@@ -174,9 +179,9 @@ class UserRoleAbstract extends AbstractModel implements UserRoleAbstractInterfac
     /**
      * Returns the value of field roleId
      * Column: role_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getRoleId(): RawValue|int
+    public function getRoleId(): RawValue|int|null
     {
         return $this->roleId;
     }
@@ -184,10 +189,10 @@ class UserRoleAbstract extends AbstractModel implements UserRoleAbstractInterfac
     /**
      * Sets the value of field roleId
      * Column: role_id 
-     * @param RawValue|int $roleId
+     * @param RawValue|int|null $roleId
      * @return void
      */
-    public function setRoleId(RawValue|int $roleId): void
+    public function setRoleId(RawValue|int|null $roleId): void
     {
         $this->roleId = $roleId;
     }
@@ -237,9 +242,9 @@ class UserRoleAbstract extends AbstractModel implements UserRoleAbstractInterfac
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -247,10 +252,10 @@ class UserRoleAbstract extends AbstractModel implements UserRoleAbstractInterfac
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

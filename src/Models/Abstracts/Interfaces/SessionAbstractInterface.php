@@ -65,32 +65,32 @@ interface SessionAbstractInterface extends ModelInterface
     /**
      * Returns the value of field key
      * Column: key
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getKey(): RawValue|string;
+    public function getKey(): RawValue|string|null;
     
     /**
      * Sets the value of field key
      * Column: key 
-     * @param RawValue|string $key
+     * @param RawValue|string|null $key
      * @return void
      */
-    public function setKey(RawValue|string $key): void;
+    public function setKey(RawValue|string|null $key): void;
     
     /**
      * Returns the value of field token
      * Column: token
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getToken(): RawValue|string;
+    public function getToken(): RawValue|string|null;
     
     /**
      * Sets the value of field token
      * Column: token 
-     * @param RawValue|string $token
+     * @param RawValue|string|null $token
      * @return void
      */
-    public function setToken(RawValue|string $token): void;
+    public function setToken(RawValue|string|null $token): void;
     
     /**
      * Returns the value of field jwt
@@ -125,17 +125,17 @@ interface SessionAbstractInterface extends ModelInterface
     /**
      * Returns the value of field date
      * Column: date
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getDate(): RawValue|string;
+    public function getDate(): RawValue|string|null;
     
     /**
      * Sets the value of field date
      * Column: date 
-     * @param RawValue|string $date
+     * @param RawValue|string|null $date
      * @return void
      */
-    public function setDate(RawValue|string $date): void;
+    public function setDate(RawValue|string|null $date): void;
     
     /**
      * Returns the value of field deleted
@@ -155,17 +155,17 @@ interface SessionAbstractInterface extends ModelInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string;
+    public function getCreatedAt(): RawValue|string|null;
     
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void;
+    public function setCreatedAt(RawValue|string|null $createdAt): void;
     
     /**
      * Returns the value of field createdBy

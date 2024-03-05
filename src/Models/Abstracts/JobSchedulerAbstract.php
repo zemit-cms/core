@@ -19,7 +19,12 @@ use Zemit\Models\AbstractModel;
 use Zemit\Models\Abstracts\Interfaces\JobSchedulerAbstractInterface;
 
 /**
-
+ * Class JobSchedulerAbstract
+ *
+ * This class defines a JobScheduler abstract model that extends the AbstractModel class and implements the JobSchedulerAbstractInterface.
+ * It provides properties and methods for managing JobScheduler data.
+ * 
+ * 
  */
 class JobSchedulerAbstract extends AbstractModel implements JobSchedulerAbstractInterface
 {
@@ -31,27 +36,27 @@ class JobSchedulerAbstract extends AbstractModel implements JobSchedulerAbstract
     
     /**
      * Column: index
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $index;
+    public RawValue|string|null $index = null;
     
     /**
      * Column: label
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $label;
+    public RawValue|string|null $label = null;
     
     /**
      * Column: task
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $task;
+    public RawValue|string|null $task = null;
     
     /**
      * Column: action
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $action;
+    public RawValue|string|null $action = null;
     
     /**
      * Column: params
@@ -67,9 +72,9 @@ class JobSchedulerAbstract extends AbstractModel implements JobSchedulerAbstract
     
     /**
      * Column: starting_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $startingAt;
+    public RawValue|string|null $startingAt = null;
     
     /**
      * Column: deleted
@@ -79,9 +84,9 @@ class JobSchedulerAbstract extends AbstractModel implements JobSchedulerAbstract
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -172,9 +177,9 @@ class JobSchedulerAbstract extends AbstractModel implements JobSchedulerAbstract
     /**
      * Returns the value of field index
      * Column: index
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getIndex(): RawValue|string
+    public function getIndex(): RawValue|string|null
     {
         return $this->index;
     }
@@ -182,10 +187,10 @@ class JobSchedulerAbstract extends AbstractModel implements JobSchedulerAbstract
     /**
      * Sets the value of field index
      * Column: index 
-     * @param RawValue|string $index
+     * @param RawValue|string|null $index
      * @return void
      */
-    public function setIndex(RawValue|string $index): void
+    public function setIndex(RawValue|string|null $index): void
     {
         $this->index = $index;
     }
@@ -193,9 +198,9 @@ class JobSchedulerAbstract extends AbstractModel implements JobSchedulerAbstract
     /**
      * Returns the value of field label
      * Column: label
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getLabel(): RawValue|string
+    public function getLabel(): RawValue|string|null
     {
         return $this->label;
     }
@@ -203,10 +208,10 @@ class JobSchedulerAbstract extends AbstractModel implements JobSchedulerAbstract
     /**
      * Sets the value of field label
      * Column: label 
-     * @param RawValue|string $label
+     * @param RawValue|string|null $label
      * @return void
      */
-    public function setLabel(RawValue|string $label): void
+    public function setLabel(RawValue|string|null $label): void
     {
         $this->label = $label;
     }
@@ -214,9 +219,9 @@ class JobSchedulerAbstract extends AbstractModel implements JobSchedulerAbstract
     /**
      * Returns the value of field task
      * Column: task
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getTask(): RawValue|string
+    public function getTask(): RawValue|string|null
     {
         return $this->task;
     }
@@ -224,10 +229,10 @@ class JobSchedulerAbstract extends AbstractModel implements JobSchedulerAbstract
     /**
      * Sets the value of field task
      * Column: task 
-     * @param RawValue|string $task
+     * @param RawValue|string|null $task
      * @return void
      */
-    public function setTask(RawValue|string $task): void
+    public function setTask(RawValue|string|null $task): void
     {
         $this->task = $task;
     }
@@ -235,9 +240,9 @@ class JobSchedulerAbstract extends AbstractModel implements JobSchedulerAbstract
     /**
      * Returns the value of field action
      * Column: action
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getAction(): RawValue|string
+    public function getAction(): RawValue|string|null
     {
         return $this->action;
     }
@@ -245,10 +250,10 @@ class JobSchedulerAbstract extends AbstractModel implements JobSchedulerAbstract
     /**
      * Sets the value of field action
      * Column: action 
-     * @param RawValue|string $action
+     * @param RawValue|string|null $action
      * @return void
      */
-    public function setAction(RawValue|string $action): void
+    public function setAction(RawValue|string|null $action): void
     {
         $this->action = $action;
     }
@@ -298,9 +303,9 @@ class JobSchedulerAbstract extends AbstractModel implements JobSchedulerAbstract
     /**
      * Returns the value of field startingAt
      * Column: starting_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getStartingAt(): RawValue|string
+    public function getStartingAt(): RawValue|string|null
     {
         return $this->startingAt;
     }
@@ -308,10 +313,10 @@ class JobSchedulerAbstract extends AbstractModel implements JobSchedulerAbstract
     /**
      * Sets the value of field startingAt
      * Column: starting_at 
-     * @param RawValue|string $startingAt
+     * @param RawValue|string|null $startingAt
      * @return void
      */
-    public function setStartingAt(RawValue|string $startingAt): void
+    public function setStartingAt(RawValue|string|null $startingAt): void
     {
         $this->startingAt = $startingAt;
     }
@@ -340,9 +345,9 @@ class JobSchedulerAbstract extends AbstractModel implements JobSchedulerAbstract
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -350,10 +355,10 @@ class JobSchedulerAbstract extends AbstractModel implements JobSchedulerAbstract
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -595,7 +600,7 @@ class JobSchedulerAbstract extends AbstractModel implements JobSchedulerAbstract
      */
     public function addDefaultRelationships(): void
     {
-        
+        // no default relationship
     }
     
     /**

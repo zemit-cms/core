@@ -20,6 +20,11 @@ use Zemit\Models\Type;
 use Zemit\Models\Abstracts\Interfaces\GroupTypeAbstractInterface;
 
 /**
+ * Class GroupTypeAbstract
+ *
+ * This class defines a GroupType abstract model that extends the AbstractModel class and implements the GroupTypeAbstractInterface.
+ * It provides properties and methods for managing GroupType data.
+ * 
  * @property Group $GroupEntity
  * @method Group getGroupEntity(?array $params = null)
  *
@@ -36,15 +41,15 @@ class GroupTypeAbstract extends AbstractModel implements GroupTypeAbstractInterf
     
     /**
      * Column: group_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $groupId;
+    public RawValue|int|null $groupId = null;
     
     /**
      * Column: type_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $typeId;
+    public RawValue|int|null $typeId = null;
     
     /**
      * Column: position
@@ -60,9 +65,9 @@ class GroupTypeAbstract extends AbstractModel implements GroupTypeAbstractInterf
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -153,9 +158,9 @@ class GroupTypeAbstract extends AbstractModel implements GroupTypeAbstractInterf
     /**
      * Returns the value of field groupId
      * Column: group_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getGroupId(): RawValue|int
+    public function getGroupId(): RawValue|int|null
     {
         return $this->groupId;
     }
@@ -163,10 +168,10 @@ class GroupTypeAbstract extends AbstractModel implements GroupTypeAbstractInterf
     /**
      * Sets the value of field groupId
      * Column: group_id 
-     * @param RawValue|int $groupId
+     * @param RawValue|int|null $groupId
      * @return void
      */
-    public function setGroupId(RawValue|int $groupId): void
+    public function setGroupId(RawValue|int|null $groupId): void
     {
         $this->groupId = $groupId;
     }
@@ -174,9 +179,9 @@ class GroupTypeAbstract extends AbstractModel implements GroupTypeAbstractInterf
     /**
      * Returns the value of field typeId
      * Column: type_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getTypeId(): RawValue|int
+    public function getTypeId(): RawValue|int|null
     {
         return $this->typeId;
     }
@@ -184,10 +189,10 @@ class GroupTypeAbstract extends AbstractModel implements GroupTypeAbstractInterf
     /**
      * Sets the value of field typeId
      * Column: type_id 
-     * @param RawValue|int $typeId
+     * @param RawValue|int|null $typeId
      * @return void
      */
-    public function setTypeId(RawValue|int $typeId): void
+    public function setTypeId(RawValue|int|null $typeId): void
     {
         $this->typeId = $typeId;
     }
@@ -237,9 +242,9 @@ class GroupTypeAbstract extends AbstractModel implements GroupTypeAbstractInterf
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -247,10 +252,10 @@ class GroupTypeAbstract extends AbstractModel implements GroupTypeAbstractInterf
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

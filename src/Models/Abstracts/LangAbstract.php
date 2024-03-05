@@ -28,6 +28,11 @@ use Zemit\Models\WorkspaceLang;
 use Zemit\Models\Abstracts\Interfaces\LangAbstractInterface;
 
 /**
+ * Class LangAbstract
+ *
+ * This class defines a Lang abstract model that extends the AbstractModel class and implements the LangAbstractInterface.
+ * It provides properties and methods for managing Lang data.
+ * 
  * @property Category[] $CategoryList
  * @method Category[] getCategoryList(?array $params = null)
  *
@@ -98,15 +103,15 @@ class LangAbstract extends AbstractModel implements LangAbstractInterface
     
     /**
      * Column: label
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $label;
+    public RawValue|string|null $label = null;
     
     /**
      * Column: code
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $code;
+    public RawValue|string|null $code = null;
     
     /**
      * Column: deleted
@@ -116,9 +121,9 @@ class LangAbstract extends AbstractModel implements LangAbstractInterface
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -203,9 +208,9 @@ class LangAbstract extends AbstractModel implements LangAbstractInterface
     /**
      * Returns the value of field label
      * Column: label
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getLabel(): RawValue|string
+    public function getLabel(): RawValue|string|null
     {
         return $this->label;
     }
@@ -213,10 +218,10 @@ class LangAbstract extends AbstractModel implements LangAbstractInterface
     /**
      * Sets the value of field label
      * Column: label 
-     * @param RawValue|string $label
+     * @param RawValue|string|null $label
      * @return void
      */
-    public function setLabel(RawValue|string $label): void
+    public function setLabel(RawValue|string|null $label): void
     {
         $this->label = $label;
     }
@@ -224,9 +229,9 @@ class LangAbstract extends AbstractModel implements LangAbstractInterface
     /**
      * Returns the value of field code
      * Column: code
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCode(): RawValue|string
+    public function getCode(): RawValue|string|null
     {
         return $this->code;
     }
@@ -234,10 +239,10 @@ class LangAbstract extends AbstractModel implements LangAbstractInterface
     /**
      * Sets the value of field code
      * Column: code 
-     * @param RawValue|string $code
+     * @param RawValue|string|null $code
      * @return void
      */
-    public function setCode(RawValue|string $code): void
+    public function setCode(RawValue|string|null $code): void
     {
         $this->code = $code;
     }
@@ -266,9 +271,9 @@ class LangAbstract extends AbstractModel implements LangAbstractInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -276,10 +281,10 @@ class LangAbstract extends AbstractModel implements LangAbstractInterface
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

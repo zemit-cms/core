@@ -20,6 +20,11 @@ use Zemit\Models\Group;
 use Zemit\Models\Abstracts\Interfaces\UserGroupAbstractInterface;
 
 /**
+ * Class UserGroupAbstract
+ *
+ * This class defines a UserGroup abstract model that extends the AbstractModel class and implements the UserGroupAbstractInterface.
+ * It provides properties and methods for managing UserGroup data.
+ * 
  * @property User $UserEntity
  * @method User getUserEntity(?array $params = null)
  *
@@ -36,15 +41,15 @@ class UserGroupAbstract extends AbstractModel implements UserGroupAbstractInterf
     
     /**
      * Column: user_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $userId;
+    public RawValue|int|null $userId = null;
     
     /**
      * Column: group_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $groupId;
+    public RawValue|int|null $groupId = null;
     
     /**
      * Column: position
@@ -60,9 +65,9 @@ class UserGroupAbstract extends AbstractModel implements UserGroupAbstractInterf
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -153,9 +158,9 @@ class UserGroupAbstract extends AbstractModel implements UserGroupAbstractInterf
     /**
      * Returns the value of field userId
      * Column: user_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getUserId(): RawValue|int
+    public function getUserId(): RawValue|int|null
     {
         return $this->userId;
     }
@@ -163,10 +168,10 @@ class UserGroupAbstract extends AbstractModel implements UserGroupAbstractInterf
     /**
      * Sets the value of field userId
      * Column: user_id 
-     * @param RawValue|int $userId
+     * @param RawValue|int|null $userId
      * @return void
      */
-    public function setUserId(RawValue|int $userId): void
+    public function setUserId(RawValue|int|null $userId): void
     {
         $this->userId = $userId;
     }
@@ -174,9 +179,9 @@ class UserGroupAbstract extends AbstractModel implements UserGroupAbstractInterf
     /**
      * Returns the value of field groupId
      * Column: group_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getGroupId(): RawValue|int
+    public function getGroupId(): RawValue|int|null
     {
         return $this->groupId;
     }
@@ -184,10 +189,10 @@ class UserGroupAbstract extends AbstractModel implements UserGroupAbstractInterf
     /**
      * Sets the value of field groupId
      * Column: group_id 
-     * @param RawValue|int $groupId
+     * @param RawValue|int|null $groupId
      * @return void
      */
-    public function setGroupId(RawValue|int $groupId): void
+    public function setGroupId(RawValue|int|null $groupId): void
     {
         $this->groupId = $groupId;
     }
@@ -237,9 +242,9 @@ class UserGroupAbstract extends AbstractModel implements UserGroupAbstractInterf
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -247,10 +252,10 @@ class UserGroupAbstract extends AbstractModel implements UserGroupAbstractInterf
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

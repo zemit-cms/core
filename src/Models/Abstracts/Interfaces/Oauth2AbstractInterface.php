@@ -35,62 +35,62 @@ interface Oauth2AbstractInterface extends ModelInterface
     /**
      * Returns the value of field userId
      * Column: user_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getUserId(): RawValue|int;
+    public function getUserId(): RawValue|int|null;
     
     /**
      * Sets the value of field userId
      * Column: user_id 
-     * @param RawValue|int $userId
+     * @param RawValue|int|null $userId
      * @return void
      */
-    public function setUserId(RawValue|int $userId): void;
+    public function setUserId(RawValue|int|null $userId): void;
     
     /**
      * Returns the value of field provider
      * Column: provider
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getProvider(): RawValue|string;
+    public function getProvider(): RawValue|string|null;
     
     /**
      * Sets the value of field provider
      * Column: provider 
-     * @param RawValue|string $provider
+     * @param RawValue|string|null $provider
      * @return void
      */
-    public function setProvider(RawValue|string $provider): void;
+    public function setProvider(RawValue|string|null $provider): void;
     
     /**
      * Returns the value of field providerUuid
      * Column: provider_uuid
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getProviderUuid(): RawValue|string;
+    public function getProviderUuid(): RawValue|string|null;
     
     /**
      * Sets the value of field providerUuid
      * Column: provider_uuid 
-     * @param RawValue|string $providerUuid
+     * @param RawValue|string|null $providerUuid
      * @return void
      */
-    public function setProviderUuid(RawValue|string $providerUuid): void;
+    public function setProviderUuid(RawValue|string|null $providerUuid): void;
     
     /**
      * Returns the value of field accessToken
      * Column: access_token
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getAccessToken(): RawValue|string;
+    public function getAccessToken(): RawValue|string|null;
     
     /**
      * Sets the value of field accessToken
      * Column: access_token 
-     * @param RawValue|string $accessToken
+     * @param RawValue|string|null $accessToken
      * @return void
      */
-    public function setAccessToken(RawValue|string $accessToken): void;
+    public function setAccessToken(RawValue|string|null $accessToken): void;
     
     /**
      * Returns the value of field refreshToken
@@ -200,17 +200,17 @@ interface Oauth2AbstractInterface extends ModelInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string;
+    public function getCreatedAt(): RawValue|string|null;
     
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void;
+    public function setCreatedAt(RawValue|string|null $createdAt): void;
     
     /**
      * Returns the value of field createdBy

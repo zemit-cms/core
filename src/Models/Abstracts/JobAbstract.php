@@ -19,7 +19,12 @@ use Zemit\Models\AbstractModel;
 use Zemit\Models\Abstracts\Interfaces\JobAbstractInterface;
 
 /**
-
+ * Class JobAbstract
+ *
+ * This class defines a Job abstract model that extends the AbstractModel class and implements the JobAbstractInterface.
+ * It provides properties and methods for managing Job data.
+ * 
+ * 
  */
 class JobAbstract extends AbstractModel implements JobAbstractInterface
 {
@@ -31,9 +36,9 @@ class JobAbstract extends AbstractModel implements JobAbstractInterface
     
     /**
      * Column: uuid
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $uuid;
+    public RawValue|string|null $uuid = null;
     
     /**
      * Column: label
@@ -43,15 +48,15 @@ class JobAbstract extends AbstractModel implements JobAbstractInterface
     
     /**
      * Column: task
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $task;
+    public RawValue|string|null $task = null;
     
     /**
      * Column: action
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $action;
+    public RawValue|string|null $action = null;
     
     /**
      * Column: params
@@ -97,9 +102,9 @@ class JobAbstract extends AbstractModel implements JobAbstractInterface
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -190,9 +195,9 @@ class JobAbstract extends AbstractModel implements JobAbstractInterface
     /**
      * Returns the value of field uuid
      * Column: uuid
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getUuid(): RawValue|string
+    public function getUuid(): RawValue|string|null
     {
         return $this->uuid;
     }
@@ -200,10 +205,10 @@ class JobAbstract extends AbstractModel implements JobAbstractInterface
     /**
      * Sets the value of field uuid
      * Column: uuid 
-     * @param RawValue|string $uuid
+     * @param RawValue|string|null $uuid
      * @return void
      */
-    public function setUuid(RawValue|string $uuid): void
+    public function setUuid(RawValue|string|null $uuid): void
     {
         $this->uuid = $uuid;
     }
@@ -232,9 +237,9 @@ class JobAbstract extends AbstractModel implements JobAbstractInterface
     /**
      * Returns the value of field task
      * Column: task
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getTask(): RawValue|string
+    public function getTask(): RawValue|string|null
     {
         return $this->task;
     }
@@ -242,10 +247,10 @@ class JobAbstract extends AbstractModel implements JobAbstractInterface
     /**
      * Sets the value of field task
      * Column: task 
-     * @param RawValue|string $task
+     * @param RawValue|string|null $task
      * @return void
      */
-    public function setTask(RawValue|string $task): void
+    public function setTask(RawValue|string|null $task): void
     {
         $this->task = $task;
     }
@@ -253,9 +258,9 @@ class JobAbstract extends AbstractModel implements JobAbstractInterface
     /**
      * Returns the value of field action
      * Column: action
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getAction(): RawValue|string
+    public function getAction(): RawValue|string|null
     {
         return $this->action;
     }
@@ -263,10 +268,10 @@ class JobAbstract extends AbstractModel implements JobAbstractInterface
     /**
      * Sets the value of field action
      * Column: action 
-     * @param RawValue|string $action
+     * @param RawValue|string|null $action
      * @return void
      */
-    public function setAction(RawValue|string $action): void
+    public function setAction(RawValue|string|null $action): void
     {
         $this->action = $action;
     }
@@ -421,9 +426,9 @@ class JobAbstract extends AbstractModel implements JobAbstractInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -431,10 +436,10 @@ class JobAbstract extends AbstractModel implements JobAbstractInterface
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -676,7 +681,7 @@ class JobAbstract extends AbstractModel implements JobAbstractInterface
      */
     public function addDefaultRelationships(): void
     {
-        
+        // no default relationship
     }
     
     /**

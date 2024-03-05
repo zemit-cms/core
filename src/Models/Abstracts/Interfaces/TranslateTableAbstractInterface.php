@@ -35,17 +35,17 @@ interface TranslateTableAbstractInterface extends ModelInterface
     /**
      * Returns the value of field table
      * Column: table
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getTable(): RawValue|string;
+    public function getTable(): RawValue|string|null;
     
     /**
      * Sets the value of field table
      * Column: table 
-     * @param RawValue|string $table
+     * @param RawValue|string|null $table
      * @return void
      */
-    public function setTable(RawValue|string $table): void;
+    public function setTable(RawValue|string|null $table): void;
     
     /**
      * Returns the value of field leftId
@@ -95,17 +95,17 @@ interface TranslateTableAbstractInterface extends ModelInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string;
+    public function getCreatedAt(): RawValue|string|null;
     
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void;
+    public function setCreatedAt(RawValue|string|null $createdAt): void;
     
     /**
      * Returns the value of field createdBy

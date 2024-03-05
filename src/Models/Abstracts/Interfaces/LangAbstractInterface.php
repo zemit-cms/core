@@ -35,32 +35,32 @@ interface LangAbstractInterface extends ModelInterface
     /**
      * Returns the value of field label
      * Column: label
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getLabel(): RawValue|string;
+    public function getLabel(): RawValue|string|null;
     
     /**
      * Sets the value of field label
      * Column: label 
-     * @param RawValue|string $label
+     * @param RawValue|string|null $label
      * @return void
      */
-    public function setLabel(RawValue|string $label): void;
+    public function setLabel(RawValue|string|null $label): void;
     
     /**
      * Returns the value of field code
      * Column: code
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCode(): RawValue|string;
+    public function getCode(): RawValue|string|null;
     
     /**
      * Sets the value of field code
      * Column: code 
-     * @param RawValue|string $code
+     * @param RawValue|string|null $code
      * @return void
      */
-    public function setCode(RawValue|string $code): void;
+    public function setCode(RawValue|string|null $code): void;
     
     /**
      * Returns the value of field deleted
@@ -80,17 +80,17 @@ interface LangAbstractInterface extends ModelInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string;
+    public function getCreatedAt(): RawValue|string|null;
     
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void;
+    public function setCreatedAt(RawValue|string|null $createdAt): void;
     
     /**
      * Returns the value of field createdBy

@@ -30,6 +30,11 @@ use Zemit\Models\Type;
 use Zemit\Models\Abstracts\Interfaces\UserAbstractInterface;
 
 /**
+ * Class UserAbstract
+ *
+ * This class defines a User abstract model that extends the AbstractModel class and implements the UserAbstractInterface.
+ * It provides properties and methods for managing User data.
+ * 
  * @property File[] $FileList
  * @method File[] getFileList(?array $params = null)
  *
@@ -76,15 +81,15 @@ class UserAbstract extends AbstractModel implements UserAbstractInterface
     
     /**
      * Column: uuid
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $uuid;
+    public RawValue|string|null $uuid = null;
     
     /**
      * Column: email
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $email;
+    public RawValue|string|null $email = null;
     
     /**
      * Column: password
@@ -100,9 +105,9 @@ class UserAbstract extends AbstractModel implements UserAbstractInterface
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -193,9 +198,9 @@ class UserAbstract extends AbstractModel implements UserAbstractInterface
     /**
      * Returns the value of field uuid
      * Column: uuid
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getUuid(): RawValue|string
+    public function getUuid(): RawValue|string|null
     {
         return $this->uuid;
     }
@@ -203,10 +208,10 @@ class UserAbstract extends AbstractModel implements UserAbstractInterface
     /**
      * Sets the value of field uuid
      * Column: uuid 
-     * @param RawValue|string $uuid
+     * @param RawValue|string|null $uuid
      * @return void
      */
-    public function setUuid(RawValue|string $uuid): void
+    public function setUuid(RawValue|string|null $uuid): void
     {
         $this->uuid = $uuid;
     }
@@ -214,9 +219,9 @@ class UserAbstract extends AbstractModel implements UserAbstractInterface
     /**
      * Returns the value of field email
      * Column: email
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getEmail(): RawValue|string
+    public function getEmail(): RawValue|string|null
     {
         return $this->email;
     }
@@ -224,10 +229,10 @@ class UserAbstract extends AbstractModel implements UserAbstractInterface
     /**
      * Sets the value of field email
      * Column: email 
-     * @param RawValue|string $email
+     * @param RawValue|string|null $email
      * @return void
      */
-    public function setEmail(RawValue|string $email): void
+    public function setEmail(RawValue|string|null $email): void
     {
         $this->email = $email;
     }
@@ -277,9 +282,9 @@ class UserAbstract extends AbstractModel implements UserAbstractInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -287,10 +292,10 @@ class UserAbstract extends AbstractModel implements UserAbstractInterface
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

@@ -35,62 +35,62 @@ interface JobSchedulerAbstractInterface extends ModelInterface
     /**
      * Returns the value of field index
      * Column: index
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getIndex(): RawValue|string;
+    public function getIndex(): RawValue|string|null;
     
     /**
      * Sets the value of field index
      * Column: index 
-     * @param RawValue|string $index
+     * @param RawValue|string|null $index
      * @return void
      */
-    public function setIndex(RawValue|string $index): void;
+    public function setIndex(RawValue|string|null $index): void;
     
     /**
      * Returns the value of field label
      * Column: label
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getLabel(): RawValue|string;
+    public function getLabel(): RawValue|string|null;
     
     /**
      * Sets the value of field label
      * Column: label 
-     * @param RawValue|string $label
+     * @param RawValue|string|null $label
      * @return void
      */
-    public function setLabel(RawValue|string $label): void;
+    public function setLabel(RawValue|string|null $label): void;
     
     /**
      * Returns the value of field task
      * Column: task
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getTask(): RawValue|string;
+    public function getTask(): RawValue|string|null;
     
     /**
      * Sets the value of field task
      * Column: task 
-     * @param RawValue|string $task
+     * @param RawValue|string|null $task
      * @return void
      */
-    public function setTask(RawValue|string $task): void;
+    public function setTask(RawValue|string|null $task): void;
     
     /**
      * Returns the value of field action
      * Column: action
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getAction(): RawValue|string;
+    public function getAction(): RawValue|string|null;
     
     /**
      * Sets the value of field action
      * Column: action 
-     * @param RawValue|string $action
+     * @param RawValue|string|null $action
      * @return void
      */
-    public function setAction(RawValue|string $action): void;
+    public function setAction(RawValue|string|null $action): void;
     
     /**
      * Returns the value of field params
@@ -125,17 +125,17 @@ interface JobSchedulerAbstractInterface extends ModelInterface
     /**
      * Returns the value of field startingAt
      * Column: starting_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getStartingAt(): RawValue|string;
+    public function getStartingAt(): RawValue|string|null;
     
     /**
      * Sets the value of field startingAt
      * Column: starting_at 
-     * @param RawValue|string $startingAt
+     * @param RawValue|string|null $startingAt
      * @return void
      */
-    public function setStartingAt(RawValue|string $startingAt): void;
+    public function setStartingAt(RawValue|string|null $startingAt): void;
     
     /**
      * Returns the value of field deleted
@@ -155,17 +155,17 @@ interface JobSchedulerAbstractInterface extends ModelInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string;
+    public function getCreatedAt(): RawValue|string|null;
     
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void;
+    public function setCreatedAt(RawValue|string|null $createdAt): void;
     
     /**
      * Returns the value of field createdBy

@@ -35,32 +35,32 @@ interface WorkspaceAbstractInterface extends ModelInterface
     /**
      * Returns the value of field uuid
      * Column: uuid
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getUuid(): RawValue|string;
+    public function getUuid(): RawValue|string|null;
     
     /**
      * Sets the value of field uuid
      * Column: uuid 
-     * @param RawValue|string $uuid
+     * @param RawValue|string|null $uuid
      * @return void
      */
-    public function setUuid(RawValue|string $uuid): void;
+    public function setUuid(RawValue|string|null $uuid): void;
     
     /**
      * Returns the value of field name
      * Column: name
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getName(): RawValue|string;
+    public function getName(): RawValue|string|null;
     
     /**
      * Sets the value of field name
      * Column: name 
-     * @param RawValue|string $name
+     * @param RawValue|string|null $name
      * @return void
      */
-    public function setName(RawValue|string $name): void;
+    public function setName(RawValue|string|null $name): void;
     
     /**
      * Returns the value of field description
@@ -140,17 +140,17 @@ interface WorkspaceAbstractInterface extends ModelInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string;
+    public function getCreatedAt(): RawValue|string|null;
     
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void;
+    public function setCreatedAt(RawValue|string|null $createdAt): void;
     
     /**
      * Returns the value of field createdBy

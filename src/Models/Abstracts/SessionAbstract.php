@@ -20,6 +20,11 @@ use Zemit\Models\AsUser;
 use Zemit\Models\Abstracts\Interfaces\SessionAbstractInterface;
 
 /**
+ * Class SessionAbstract
+ *
+ * This class defines a Session abstract model that extends the AbstractModel class and implements the SessionAbstractInterface.
+ * It provides properties and methods for managing Session data.
+ * 
  * @property User $UserEntity
  * @method User getUserEntity(?array $params = null)
  *
@@ -48,15 +53,15 @@ class SessionAbstract extends AbstractModel implements SessionAbstractInterface
     
     /**
      * Column: key
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $key;
+    public RawValue|string|null $key = null;
     
     /**
      * Column: token
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $token;
+    public RawValue|string|null $token = null;
     
     /**
      * Column: jwt
@@ -72,9 +77,9 @@ class SessionAbstract extends AbstractModel implements SessionAbstractInterface
     
     /**
      * Column: date
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $date;
+    public RawValue|string|null $date = null;
     
     /**
      * Column: deleted
@@ -84,9 +89,9 @@ class SessionAbstract extends AbstractModel implements SessionAbstractInterface
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -219,9 +224,9 @@ class SessionAbstract extends AbstractModel implements SessionAbstractInterface
     /**
      * Returns the value of field key
      * Column: key
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getKey(): RawValue|string
+    public function getKey(): RawValue|string|null
     {
         return $this->key;
     }
@@ -229,10 +234,10 @@ class SessionAbstract extends AbstractModel implements SessionAbstractInterface
     /**
      * Sets the value of field key
      * Column: key 
-     * @param RawValue|string $key
+     * @param RawValue|string|null $key
      * @return void
      */
-    public function setKey(RawValue|string $key): void
+    public function setKey(RawValue|string|null $key): void
     {
         $this->key = $key;
     }
@@ -240,9 +245,9 @@ class SessionAbstract extends AbstractModel implements SessionAbstractInterface
     /**
      * Returns the value of field token
      * Column: token
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getToken(): RawValue|string
+    public function getToken(): RawValue|string|null
     {
         return $this->token;
     }
@@ -250,10 +255,10 @@ class SessionAbstract extends AbstractModel implements SessionAbstractInterface
     /**
      * Sets the value of field token
      * Column: token 
-     * @param RawValue|string $token
+     * @param RawValue|string|null $token
      * @return void
      */
-    public function setToken(RawValue|string $token): void
+    public function setToken(RawValue|string|null $token): void
     {
         $this->token = $token;
     }
@@ -303,9 +308,9 @@ class SessionAbstract extends AbstractModel implements SessionAbstractInterface
     /**
      * Returns the value of field date
      * Column: date
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getDate(): RawValue|string
+    public function getDate(): RawValue|string|null
     {
         return $this->date;
     }
@@ -313,10 +318,10 @@ class SessionAbstract extends AbstractModel implements SessionAbstractInterface
     /**
      * Sets the value of field date
      * Column: date 
-     * @param RawValue|string $date
+     * @param RawValue|string|null $date
      * @return void
      */
-    public function setDate(RawValue|string $date): void
+    public function setDate(RawValue|string|null $date): void
     {
         $this->date = $date;
     }
@@ -345,9 +350,9 @@ class SessionAbstract extends AbstractModel implements SessionAbstractInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -355,10 +360,10 @@ class SessionAbstract extends AbstractModel implements SessionAbstractInterface
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

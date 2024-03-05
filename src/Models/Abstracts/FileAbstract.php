@@ -22,6 +22,11 @@ use Zemit\Models\User;
 use Zemit\Models\Abstracts\Interfaces\FileAbstractInterface;
 
 /**
+ * Class FileAbstract
+ *
+ * This class defines a File abstract model that extends the AbstractModel class and implements the FileAbstractInterface.
+ * It provides properties and methods for managing File data.
+ * 
  * @property EmailFile[] $EmailFileList
  * @method EmailFile[] getEmailFileList(?array $params = null)
  *
@@ -116,9 +121,9 @@ class FileAbstract extends AbstractModel implements FileAbstractInterface
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -461,9 +466,9 @@ class FileAbstract extends AbstractModel implements FileAbstractInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -471,10 +476,10 @@ class FileAbstract extends AbstractModel implements FileAbstractInterface
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

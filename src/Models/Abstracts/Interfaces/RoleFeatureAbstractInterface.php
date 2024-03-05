@@ -35,32 +35,32 @@ interface RoleFeatureAbstractInterface extends ModelInterface
     /**
      * Returns the value of field roleId
      * Column: role_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getRoleId(): RawValue|int;
+    public function getRoleId(): RawValue|int|null;
     
     /**
      * Sets the value of field roleId
      * Column: role_id 
-     * @param RawValue|int $roleId
+     * @param RawValue|int|null $roleId
      * @return void
      */
-    public function setRoleId(RawValue|int $roleId): void;
+    public function setRoleId(RawValue|int|null $roleId): void;
     
     /**
      * Returns the value of field featureId
      * Column: feature_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getFeatureId(): RawValue|int;
+    public function getFeatureId(): RawValue|int|null;
     
     /**
      * Sets the value of field featureId
      * Column: feature_id 
-     * @param RawValue|int $featureId
+     * @param RawValue|int|null $featureId
      * @return void
      */
-    public function setFeatureId(RawValue|int $featureId): void;
+    public function setFeatureId(RawValue|int|null $featureId): void;
     
     /**
      * Returns the value of field position
@@ -95,17 +95,17 @@ interface RoleFeatureAbstractInterface extends ModelInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string;
+    public function getCreatedAt(): RawValue|string|null;
     
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void;
+    public function setCreatedAt(RawValue|string|null $createdAt): void;
     
     /**
      * Returns the value of field createdBy

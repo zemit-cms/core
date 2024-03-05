@@ -23,6 +23,11 @@ use Zemit\Models\Category;
 use Zemit\Models\Abstracts\Interfaces\MetaAbstractInterface;
 
 /**
+ * Class MetaAbstract
+ *
+ * This class defines a Meta abstract model that extends the AbstractModel class and implements the MetaAbstractInterface.
+ * It provides properties and methods for managing Meta data.
+ * 
  * @property Lang $LangEntity
  * @method Lang getLangEntity(?array $params = null)
  *
@@ -96,9 +101,9 @@ class MetaAbstract extends AbstractModel implements MetaAbstractInterface
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -351,9 +356,9 @@ class MetaAbstract extends AbstractModel implements MetaAbstractInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -361,10 +366,10 @@ class MetaAbstract extends AbstractModel implements MetaAbstractInterface
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

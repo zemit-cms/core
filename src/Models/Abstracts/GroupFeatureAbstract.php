@@ -20,6 +20,11 @@ use Zemit\Models\Feature;
 use Zemit\Models\Abstracts\Interfaces\GroupFeatureAbstractInterface;
 
 /**
+ * Class GroupFeatureAbstract
+ *
+ * This class defines a GroupFeature abstract model that extends the AbstractModel class and implements the GroupFeatureAbstractInterface.
+ * It provides properties and methods for managing GroupFeature data.
+ * 
  * @property Group $GroupEntity
  * @method Group getGroupEntity(?array $params = null)
  *
@@ -36,15 +41,15 @@ class GroupFeatureAbstract extends AbstractModel implements GroupFeatureAbstract
     
     /**
      * Column: group_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $groupId;
+    public RawValue|int|null $groupId = null;
     
     /**
      * Column: feature_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $featureId;
+    public RawValue|int|null $featureId = null;
     
     /**
      * Column: position
@@ -60,9 +65,9 @@ class GroupFeatureAbstract extends AbstractModel implements GroupFeatureAbstract
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -153,9 +158,9 @@ class GroupFeatureAbstract extends AbstractModel implements GroupFeatureAbstract
     /**
      * Returns the value of field groupId
      * Column: group_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getGroupId(): RawValue|int
+    public function getGroupId(): RawValue|int|null
     {
         return $this->groupId;
     }
@@ -163,10 +168,10 @@ class GroupFeatureAbstract extends AbstractModel implements GroupFeatureAbstract
     /**
      * Sets the value of field groupId
      * Column: group_id 
-     * @param RawValue|int $groupId
+     * @param RawValue|int|null $groupId
      * @return void
      */
-    public function setGroupId(RawValue|int $groupId): void
+    public function setGroupId(RawValue|int|null $groupId): void
     {
         $this->groupId = $groupId;
     }
@@ -174,9 +179,9 @@ class GroupFeatureAbstract extends AbstractModel implements GroupFeatureAbstract
     /**
      * Returns the value of field featureId
      * Column: feature_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getFeatureId(): RawValue|int
+    public function getFeatureId(): RawValue|int|null
     {
         return $this->featureId;
     }
@@ -184,10 +189,10 @@ class GroupFeatureAbstract extends AbstractModel implements GroupFeatureAbstract
     /**
      * Sets the value of field featureId
      * Column: feature_id 
-     * @param RawValue|int $featureId
+     * @param RawValue|int|null $featureId
      * @return void
      */
-    public function setFeatureId(RawValue|int $featureId): void
+    public function setFeatureId(RawValue|int|null $featureId): void
     {
         $this->featureId = $featureId;
     }
@@ -237,9 +242,9 @@ class GroupFeatureAbstract extends AbstractModel implements GroupFeatureAbstract
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -247,10 +252,10 @@ class GroupFeatureAbstract extends AbstractModel implements GroupFeatureAbstract
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

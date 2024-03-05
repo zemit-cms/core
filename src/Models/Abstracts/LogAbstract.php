@@ -19,15 +19,20 @@ use Zemit\Models\AbstractModel;
 use Zemit\Models\Abstracts\Interfaces\LogAbstractInterface;
 
 /**
-
+ * Class LogAbstract
+ *
+ * This class defines a Log abstract model that extends the AbstractModel class and implements the LogAbstractInterface.
+ * It provides properties and methods for managing Log data.
+ * 
+ * 
  */
 class LogAbstract extends AbstractModel implements LogAbstractInterface
 {
     /**
      * Column: id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $id;
+    public RawValue|int|null $id = null;
     
     /**
      * Column: level
@@ -43,27 +48,27 @@ class LogAbstract extends AbstractModel implements LogAbstractInterface
     
     /**
      * Column: name
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $name;
+    public RawValue|string|null $name = null;
     
     /**
      * Column: message
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $message;
+    public RawValue|string|null $message = null;
     
     /**
      * Column: context
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $context;
+    public RawValue|string|null $context = null;
     
     /**
      * Column: date
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $date;
+    public RawValue|string|null $date = null;
     
     /**
      * Column: deleted
@@ -73,9 +78,9 @@ class LogAbstract extends AbstractModel implements LogAbstractInterface
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -145,9 +150,9 @@ class LogAbstract extends AbstractModel implements LogAbstractInterface
     /**
      * Returns the value of field id
      * Column: id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getId(): RawValue|int
+    public function getId(): RawValue|int|null
     {
         return $this->id;
     }
@@ -155,10 +160,10 @@ class LogAbstract extends AbstractModel implements LogAbstractInterface
     /**
      * Sets the value of field id
      * Column: id 
-     * @param RawValue|int $id
+     * @param RawValue|int|null $id
      * @return void
      */
-    public function setId(RawValue|int $id): void
+    public function setId(RawValue|int|null $id): void
     {
         $this->id = $id;
     }
@@ -208,9 +213,9 @@ class LogAbstract extends AbstractModel implements LogAbstractInterface
     /**
      * Returns the value of field name
      * Column: name
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getName(): RawValue|string
+    public function getName(): RawValue|string|null
     {
         return $this->name;
     }
@@ -218,10 +223,10 @@ class LogAbstract extends AbstractModel implements LogAbstractInterface
     /**
      * Sets the value of field name
      * Column: name 
-     * @param RawValue|string $name
+     * @param RawValue|string|null $name
      * @return void
      */
-    public function setName(RawValue|string $name): void
+    public function setName(RawValue|string|null $name): void
     {
         $this->name = $name;
     }
@@ -229,9 +234,9 @@ class LogAbstract extends AbstractModel implements LogAbstractInterface
     /**
      * Returns the value of field message
      * Column: message
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getMessage(): RawValue|string
+    public function getMessage(): RawValue|string|null
     {
         return $this->message;
     }
@@ -239,10 +244,10 @@ class LogAbstract extends AbstractModel implements LogAbstractInterface
     /**
      * Sets the value of field message
      * Column: message 
-     * @param RawValue|string $message
+     * @param RawValue|string|null $message
      * @return void
      */
-    public function setMessage(RawValue|string $message): void
+    public function setMessage(RawValue|string|null $message): void
     {
         $this->message = $message;
     }
@@ -250,9 +255,9 @@ class LogAbstract extends AbstractModel implements LogAbstractInterface
     /**
      * Returns the value of field context
      * Column: context
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getContext(): RawValue|string
+    public function getContext(): RawValue|string|null
     {
         return $this->context;
     }
@@ -260,10 +265,10 @@ class LogAbstract extends AbstractModel implements LogAbstractInterface
     /**
      * Sets the value of field context
      * Column: context 
-     * @param RawValue|string $context
+     * @param RawValue|string|null $context
      * @return void
      */
-    public function setContext(RawValue|string $context): void
+    public function setContext(RawValue|string|null $context): void
     {
         $this->context = $context;
     }
@@ -271,9 +276,9 @@ class LogAbstract extends AbstractModel implements LogAbstractInterface
     /**
      * Returns the value of field date
      * Column: date
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getDate(): RawValue|string
+    public function getDate(): RawValue|string|null
     {
         return $this->date;
     }
@@ -281,10 +286,10 @@ class LogAbstract extends AbstractModel implements LogAbstractInterface
     /**
      * Sets the value of field date
      * Column: date 
-     * @param RawValue|string $date
+     * @param RawValue|string|null $date
      * @return void
      */
-    public function setDate(RawValue|string $date): void
+    public function setDate(RawValue|string|null $date): void
     {
         $this->date = $date;
     }
@@ -313,9 +318,9 @@ class LogAbstract extends AbstractModel implements LogAbstractInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -323,10 +328,10 @@ class LogAbstract extends AbstractModel implements LogAbstractInterface
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -568,7 +573,7 @@ class LogAbstract extends AbstractModel implements LogAbstractInterface
      */
     public function addDefaultRelationships(): void
     {
-        
+        // no default relationship
     }
     
     /**

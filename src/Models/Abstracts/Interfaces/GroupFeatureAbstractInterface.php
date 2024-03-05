@@ -35,32 +35,32 @@ interface GroupFeatureAbstractInterface extends ModelInterface
     /**
      * Returns the value of field groupId
      * Column: group_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getGroupId(): RawValue|int;
+    public function getGroupId(): RawValue|int|null;
     
     /**
      * Sets the value of field groupId
      * Column: group_id 
-     * @param RawValue|int $groupId
+     * @param RawValue|int|null $groupId
      * @return void
      */
-    public function setGroupId(RawValue|int $groupId): void;
+    public function setGroupId(RawValue|int|null $groupId): void;
     
     /**
      * Returns the value of field featureId
      * Column: feature_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getFeatureId(): RawValue|int;
+    public function getFeatureId(): RawValue|int|null;
     
     /**
      * Sets the value of field featureId
      * Column: feature_id 
-     * @param RawValue|int $featureId
+     * @param RawValue|int|null $featureId
      * @return void
      */
-    public function setFeatureId(RawValue|int $featureId): void;
+    public function setFeatureId(RawValue|int|null $featureId): void;
     
     /**
      * Returns the value of field position
@@ -95,17 +95,17 @@ interface GroupFeatureAbstractInterface extends ModelInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string;
+    public function getCreatedAt(): RawValue|string|null;
     
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void;
+    public function setCreatedAt(RawValue|string|null $createdAt): void;
     
     /**
      * Returns the value of field createdBy

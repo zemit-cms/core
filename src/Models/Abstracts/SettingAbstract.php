@@ -19,7 +19,12 @@ use Zemit\Models\AbstractModel;
 use Zemit\Models\Abstracts\Interfaces\SettingAbstractInterface;
 
 /**
-
+ * Class SettingAbstract
+ *
+ * This class defines a Setting abstract model that extends the AbstractModel class and implements the SettingAbstractInterface.
+ * It provides properties and methods for managing Setting data.
+ * 
+ * 
  */
 class SettingAbstract extends AbstractModel implements SettingAbstractInterface
 {
@@ -37,9 +42,9 @@ class SettingAbstract extends AbstractModel implements SettingAbstractInterface
     
     /**
      * Column: index
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $index;
+    public RawValue|string|null $index = null;
     
     /**
      * Column: label
@@ -61,9 +66,9 @@ class SettingAbstract extends AbstractModel implements SettingAbstractInterface
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -175,9 +180,9 @@ class SettingAbstract extends AbstractModel implements SettingAbstractInterface
     /**
      * Returns the value of field index
      * Column: index
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getIndex(): RawValue|string
+    public function getIndex(): RawValue|string|null
     {
         return $this->index;
     }
@@ -185,10 +190,10 @@ class SettingAbstract extends AbstractModel implements SettingAbstractInterface
     /**
      * Sets the value of field index
      * Column: index 
-     * @param RawValue|string $index
+     * @param RawValue|string|null $index
      * @return void
      */
-    public function setIndex(RawValue|string $index): void
+    public function setIndex(RawValue|string|null $index): void
     {
         $this->index = $index;
     }
@@ -259,9 +264,9 @@ class SettingAbstract extends AbstractModel implements SettingAbstractInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -269,10 +274,10 @@ class SettingAbstract extends AbstractModel implements SettingAbstractInterface
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -514,7 +519,7 @@ class SettingAbstract extends AbstractModel implements SettingAbstractInterface
      */
     public function addDefaultRelationships(): void
     {
-        
+        // no default relationship
     }
     
     /**

@@ -25,6 +25,11 @@ use Zemit\Models\Site;
 use Zemit\Models\Abstracts\Interfaces\CategoryAbstractInterface;
 
 /**
+ * Class CategoryAbstract
+ *
+ * This class defines a Category abstract model that extends the AbstractModel class and implements the CategoryAbstractInterface.
+ * It provides properties and methods for managing Category data.
+ * 
  * @property Meta[] $MetaList
  * @method Meta[] getMetaList(?array $params = null)
  *
@@ -71,27 +76,27 @@ class CategoryAbstract extends AbstractModel implements CategoryAbstractInterfac
     
     /**
      * Column: site_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $siteId;
+    public RawValue|int|null $siteId = null;
     
     /**
      * Column: lang_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $langId;
+    public RawValue|int|null $langId = null;
     
     /**
      * Column: name
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $name;
+    public RawValue|string|null $name = null;
     
     /**
      * Column: index
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $index;
+    public RawValue|string|null $index = null;
     
     /**
      * Column: description
@@ -107,9 +112,9 @@ class CategoryAbstract extends AbstractModel implements CategoryAbstractInterfac
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -194,9 +199,9 @@ class CategoryAbstract extends AbstractModel implements CategoryAbstractInterfac
     /**
      * Returns the value of field siteId
      * Column: site_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getSiteId(): RawValue|int
+    public function getSiteId(): RawValue|int|null
     {
         return $this->siteId;
     }
@@ -204,10 +209,10 @@ class CategoryAbstract extends AbstractModel implements CategoryAbstractInterfac
     /**
      * Sets the value of field siteId
      * Column: site_id 
-     * @param RawValue|int $siteId
+     * @param RawValue|int|null $siteId
      * @return void
      */
-    public function setSiteId(RawValue|int $siteId): void
+    public function setSiteId(RawValue|int|null $siteId): void
     {
         $this->siteId = $siteId;
     }
@@ -215,9 +220,9 @@ class CategoryAbstract extends AbstractModel implements CategoryAbstractInterfac
     /**
      * Returns the value of field langId
      * Column: lang_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getLangId(): RawValue|int
+    public function getLangId(): RawValue|int|null
     {
         return $this->langId;
     }
@@ -225,10 +230,10 @@ class CategoryAbstract extends AbstractModel implements CategoryAbstractInterfac
     /**
      * Sets the value of field langId
      * Column: lang_id 
-     * @param RawValue|int $langId
+     * @param RawValue|int|null $langId
      * @return void
      */
-    public function setLangId(RawValue|int $langId): void
+    public function setLangId(RawValue|int|null $langId): void
     {
         $this->langId = $langId;
     }
@@ -236,9 +241,9 @@ class CategoryAbstract extends AbstractModel implements CategoryAbstractInterfac
     /**
      * Returns the value of field name
      * Column: name
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getName(): RawValue|string
+    public function getName(): RawValue|string|null
     {
         return $this->name;
     }
@@ -246,10 +251,10 @@ class CategoryAbstract extends AbstractModel implements CategoryAbstractInterfac
     /**
      * Sets the value of field name
      * Column: name 
-     * @param RawValue|string $name
+     * @param RawValue|string|null $name
      * @return void
      */
-    public function setName(RawValue|string $name): void
+    public function setName(RawValue|string|null $name): void
     {
         $this->name = $name;
     }
@@ -257,9 +262,9 @@ class CategoryAbstract extends AbstractModel implements CategoryAbstractInterfac
     /**
      * Returns the value of field index
      * Column: index
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getIndex(): RawValue|string
+    public function getIndex(): RawValue|string|null
     {
         return $this->index;
     }
@@ -267,10 +272,10 @@ class CategoryAbstract extends AbstractModel implements CategoryAbstractInterfac
     /**
      * Sets the value of field index
      * Column: index 
-     * @param RawValue|string $index
+     * @param RawValue|string|null $index
      * @return void
      */
-    public function setIndex(RawValue|string $index): void
+    public function setIndex(RawValue|string|null $index): void
     {
         $this->index = $index;
     }
@@ -320,9 +325,9 @@ class CategoryAbstract extends AbstractModel implements CategoryAbstractInterfac
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -330,10 +335,10 @@ class CategoryAbstract extends AbstractModel implements CategoryAbstractInterfac
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

@@ -23,6 +23,11 @@ use Zemit\Models\Category;
 use Zemit\Models\Abstracts\Interfaces\TranslateAbstractInterface;
 
 /**
+ * Class TranslateAbstract
+ *
+ * This class defines a Translate abstract model that extends the AbstractModel class and implements the TranslateAbstractInterface.
+ * It provides properties and methods for managing Translate data.
+ * 
  * @property Lang $LangEntity
  * @method Lang getLangEntity(?array $params = null)
  *
@@ -48,9 +53,9 @@ class TranslateAbstract extends AbstractModel implements TranslateAbstractInterf
     
     /**
      * Column: lang_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $langId;
+    public RawValue|int|null $langId = null;
     
     /**
      * Column: site_id
@@ -78,9 +83,9 @@ class TranslateAbstract extends AbstractModel implements TranslateAbstractInterf
     
     /**
      * Column: key
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $key;
+    public RawValue|string|null $key = null;
     
     /**
      * Column: value
@@ -96,9 +101,9 @@ class TranslateAbstract extends AbstractModel implements TranslateAbstractInterf
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -183,9 +188,9 @@ class TranslateAbstract extends AbstractModel implements TranslateAbstractInterf
     /**
      * Returns the value of field langId
      * Column: lang_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getLangId(): RawValue|int
+    public function getLangId(): RawValue|int|null
     {
         return $this->langId;
     }
@@ -193,10 +198,10 @@ class TranslateAbstract extends AbstractModel implements TranslateAbstractInterf
     /**
      * Sets the value of field langId
      * Column: lang_id 
-     * @param RawValue|int $langId
+     * @param RawValue|int|null $langId
      * @return void
      */
-    public function setLangId(RawValue|int $langId): void
+    public function setLangId(RawValue|int|null $langId): void
     {
         $this->langId = $langId;
     }
@@ -288,9 +293,9 @@ class TranslateAbstract extends AbstractModel implements TranslateAbstractInterf
     /**
      * Returns the value of field key
      * Column: key
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getKey(): RawValue|string
+    public function getKey(): RawValue|string|null
     {
         return $this->key;
     }
@@ -298,10 +303,10 @@ class TranslateAbstract extends AbstractModel implements TranslateAbstractInterf
     /**
      * Sets the value of field key
      * Column: key 
-     * @param RawValue|string $key
+     * @param RawValue|string|null $key
      * @return void
      */
-    public function setKey(RawValue|string $key): void
+    public function setKey(RawValue|string|null $key): void
     {
         $this->key = $key;
     }
@@ -351,9 +356,9 @@ class TranslateAbstract extends AbstractModel implements TranslateAbstractInterf
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -361,10 +366,10 @@ class TranslateAbstract extends AbstractModel implements TranslateAbstractInterf
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

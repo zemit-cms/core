@@ -20,6 +20,11 @@ use Zemit\Models\File;
 use Zemit\Models\Abstracts\Interfaces\EmailFileAbstractInterface;
 
 /**
+ * Class EmailFileAbstract
+ *
+ * This class defines a EmailFile abstract model that extends the AbstractModel class and implements the EmailFileAbstractInterface.
+ * It provides properties and methods for managing EmailFile data.
+ * 
  * @property Email $EmailEntity
  * @method Email getEmailEntity(?array $params = null)
  *
@@ -36,15 +41,15 @@ class EmailFileAbstract extends AbstractModel implements EmailFileAbstractInterf
     
     /**
      * Column: email_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $emailId;
+    public RawValue|int|null $emailId = null;
     
     /**
      * Column: file_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $fileId;
+    public RawValue|int|null $fileId = null;
     
     /**
      * Column: deleted
@@ -54,9 +59,9 @@ class EmailFileAbstract extends AbstractModel implements EmailFileAbstractInterf
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -147,9 +152,9 @@ class EmailFileAbstract extends AbstractModel implements EmailFileAbstractInterf
     /**
      * Returns the value of field emailId
      * Column: email_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getEmailId(): RawValue|int
+    public function getEmailId(): RawValue|int|null
     {
         return $this->emailId;
     }
@@ -157,10 +162,10 @@ class EmailFileAbstract extends AbstractModel implements EmailFileAbstractInterf
     /**
      * Sets the value of field emailId
      * Column: email_id 
-     * @param RawValue|int $emailId
+     * @param RawValue|int|null $emailId
      * @return void
      */
-    public function setEmailId(RawValue|int $emailId): void
+    public function setEmailId(RawValue|int|null $emailId): void
     {
         $this->emailId = $emailId;
     }
@@ -168,9 +173,9 @@ class EmailFileAbstract extends AbstractModel implements EmailFileAbstractInterf
     /**
      * Returns the value of field fileId
      * Column: file_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getFileId(): RawValue|int
+    public function getFileId(): RawValue|int|null
     {
         return $this->fileId;
     }
@@ -178,10 +183,10 @@ class EmailFileAbstract extends AbstractModel implements EmailFileAbstractInterf
     /**
      * Sets the value of field fileId
      * Column: file_id 
-     * @param RawValue|int $fileId
+     * @param RawValue|int|null $fileId
      * @return void
      */
-    public function setFileId(RawValue|int $fileId): void
+    public function setFileId(RawValue|int|null $fileId): void
     {
         $this->fileId = $fileId;
     }
@@ -210,9 +215,9 @@ class EmailFileAbstract extends AbstractModel implements EmailFileAbstractInterf
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -220,10 +225,10 @@ class EmailFileAbstract extends AbstractModel implements EmailFileAbstractInterf
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

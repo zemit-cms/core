@@ -25,6 +25,11 @@ use Zemit\Models\Site;
 use Zemit\Models\Abstracts\Interfaces\PageAbstractInterface;
 
 /**
+ * Class PageAbstract
+ *
+ * This class defines a Page abstract model that extends the AbstractModel class and implements the PageAbstractInterface.
+ * It provides properties and methods for managing Page data.
+ * 
  * @property Flag[] $FlagList
  * @method Flag[] getFlagList(?array $params = null)
  *
@@ -83,15 +88,15 @@ class PageAbstract extends AbstractModel implements PageAbstractInterface
     
     /**
      * Column: site_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $siteId;
+    public RawValue|int|null $siteId = null;
     
     /**
      * Column: name
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $name;
+    public RawValue|string|null $name = null;
     
     /**
      * Column: description
@@ -107,9 +112,9 @@ class PageAbstract extends AbstractModel implements PageAbstractInterface
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -221,9 +226,9 @@ class PageAbstract extends AbstractModel implements PageAbstractInterface
     /**
      * Returns the value of field siteId
      * Column: site_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getSiteId(): RawValue|int
+    public function getSiteId(): RawValue|int|null
     {
         return $this->siteId;
     }
@@ -231,10 +236,10 @@ class PageAbstract extends AbstractModel implements PageAbstractInterface
     /**
      * Sets the value of field siteId
      * Column: site_id 
-     * @param RawValue|int $siteId
+     * @param RawValue|int|null $siteId
      * @return void
      */
-    public function setSiteId(RawValue|int $siteId): void
+    public function setSiteId(RawValue|int|null $siteId): void
     {
         $this->siteId = $siteId;
     }
@@ -242,9 +247,9 @@ class PageAbstract extends AbstractModel implements PageAbstractInterface
     /**
      * Returns the value of field name
      * Column: name
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getName(): RawValue|string
+    public function getName(): RawValue|string|null
     {
         return $this->name;
     }
@@ -252,10 +257,10 @@ class PageAbstract extends AbstractModel implements PageAbstractInterface
     /**
      * Sets the value of field name
      * Column: name 
-     * @param RawValue|string $name
+     * @param RawValue|string|null $name
      * @return void
      */
-    public function setName(RawValue|string $name): void
+    public function setName(RawValue|string|null $name): void
     {
         $this->name = $name;
     }
@@ -305,9 +310,9 @@ class PageAbstract extends AbstractModel implements PageAbstractInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -315,10 +320,10 @@ class PageAbstract extends AbstractModel implements PageAbstractInterface
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

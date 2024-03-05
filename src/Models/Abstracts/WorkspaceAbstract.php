@@ -21,6 +21,11 @@ use Zemit\Models\WorkspaceLang;
 use Zemit\Models\Abstracts\Interfaces\WorkspaceAbstractInterface;
 
 /**
+ * Class WorkspaceAbstract
+ *
+ * This class defines a Workspace abstract model that extends the AbstractModel class and implements the WorkspaceAbstractInterface.
+ * It provides properties and methods for managing Workspace data.
+ * 
  * @property Table[] $TableList
  * @method Table[] getTableList(?array $params = null)
  *
@@ -43,15 +48,15 @@ class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstractInterf
     
     /**
      * Column: uuid
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $uuid;
+    public RawValue|string|null $uuid = null;
     
     /**
      * Column: name
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $name;
+    public RawValue|string|null $name = null;
     
     /**
      * Column: description
@@ -85,9 +90,9 @@ class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstractInterf
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -178,9 +183,9 @@ class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstractInterf
     /**
      * Returns the value of field uuid
      * Column: uuid
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getUuid(): RawValue|string
+    public function getUuid(): RawValue|string|null
     {
         return $this->uuid;
     }
@@ -188,10 +193,10 @@ class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstractInterf
     /**
      * Sets the value of field uuid
      * Column: uuid 
-     * @param RawValue|string $uuid
+     * @param RawValue|string|null $uuid
      * @return void
      */
-    public function setUuid(RawValue|string $uuid): void
+    public function setUuid(RawValue|string|null $uuid): void
     {
         $this->uuid = $uuid;
     }
@@ -199,9 +204,9 @@ class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstractInterf
     /**
      * Returns the value of field name
      * Column: name
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getName(): RawValue|string
+    public function getName(): RawValue|string|null
     {
         return $this->name;
     }
@@ -209,10 +214,10 @@ class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstractInterf
     /**
      * Sets the value of field name
      * Column: name 
-     * @param RawValue|string $name
+     * @param RawValue|string|null $name
      * @return void
      */
-    public function setName(RawValue|string $name): void
+    public function setName(RawValue|string|null $name): void
     {
         $this->name = $name;
     }
@@ -325,9 +330,9 @@ class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstractInterf
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -335,10 +340,10 @@ class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstractInterf
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

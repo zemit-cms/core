@@ -19,7 +19,12 @@ use Zemit\Models\AbstractModel;
 use Zemit\Models\Abstracts\Interfaces\PhalconMigrationsAbstractInterface;
 
 /**
-
+ * Class PhalconMigrationsAbstract
+ *
+ * This class defines a PhalconMigrations abstract model that extends the AbstractModel class and implements the PhalconMigrationsAbstractInterface.
+ * It provides properties and methods for managing PhalconMigrations data.
+ * 
+ * 
  */
 class PhalconMigrationsAbstract extends AbstractModel implements PhalconMigrationsAbstractInterface
 {
@@ -31,9 +36,9 @@ class PhalconMigrationsAbstract extends AbstractModel implements PhalconMigratio
     
     /**
      * Column: version
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $version;
+    public RawValue|string|null $version = null;
     
     /**
      * Column: start_time
@@ -70,9 +75,9 @@ class PhalconMigrationsAbstract extends AbstractModel implements PhalconMigratio
     /**
      * Returns the value of field version
      * Column: version
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getVersion(): RawValue|string
+    public function getVersion(): RawValue|string|null
     {
         return $this->version;
     }
@@ -80,10 +85,10 @@ class PhalconMigrationsAbstract extends AbstractModel implements PhalconMigratio
     /**
      * Sets the value of field version
      * Column: version 
-     * @param RawValue|string $version
+     * @param RawValue|string|null $version
      * @return void
      */
-    public function setVersion(RawValue|string $version): void
+    public function setVersion(RawValue|string|null $version): void
     {
         $this->version = $version;
     }
@@ -136,7 +141,7 @@ class PhalconMigrationsAbstract extends AbstractModel implements PhalconMigratio
      */
     public function addDefaultRelationships(): void
     {
-        
+        // no default relationship
     }
     
     /**

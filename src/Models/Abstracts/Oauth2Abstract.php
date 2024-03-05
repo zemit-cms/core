@@ -19,6 +19,11 @@ use Zemit\Models\User;
 use Zemit\Models\Abstracts\Interfaces\Oauth2AbstractInterface;
 
 /**
+ * Class Oauth2Abstract
+ *
+ * This class defines a Oauth2 abstract model that extends the AbstractModel class and implements the Oauth2AbstractInterface.
+ * It provides properties and methods for managing Oauth2 data.
+ * 
  * @property User $UserEntity
  * @method User getUserEntity(?array $params = null)
  */
@@ -32,27 +37,27 @@ class Oauth2Abstract extends AbstractModel implements Oauth2AbstractInterface
     
     /**
      * Column: user_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $userId;
+    public RawValue|int|null $userId = null;
     
     /**
      * Column: provider
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $provider;
+    public RawValue|string|null $provider = null;
     
     /**
      * Column: provider_uuid
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $providerUuid;
+    public RawValue|string|null $providerUuid = null;
     
     /**
      * Column: access_token
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $accessToken;
+    public RawValue|string|null $accessToken = null;
     
     /**
      * Column: refresh_token
@@ -98,9 +103,9 @@ class Oauth2Abstract extends AbstractModel implements Oauth2AbstractInterface
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -185,9 +190,9 @@ class Oauth2Abstract extends AbstractModel implements Oauth2AbstractInterface
     /**
      * Returns the value of field userId
      * Column: user_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getUserId(): RawValue|int
+    public function getUserId(): RawValue|int|null
     {
         return $this->userId;
     }
@@ -195,10 +200,10 @@ class Oauth2Abstract extends AbstractModel implements Oauth2AbstractInterface
     /**
      * Sets the value of field userId
      * Column: user_id 
-     * @param RawValue|int $userId
+     * @param RawValue|int|null $userId
      * @return void
      */
-    public function setUserId(RawValue|int $userId): void
+    public function setUserId(RawValue|int|null $userId): void
     {
         $this->userId = $userId;
     }
@@ -206,9 +211,9 @@ class Oauth2Abstract extends AbstractModel implements Oauth2AbstractInterface
     /**
      * Returns the value of field provider
      * Column: provider
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getProvider(): RawValue|string
+    public function getProvider(): RawValue|string|null
     {
         return $this->provider;
     }
@@ -216,10 +221,10 @@ class Oauth2Abstract extends AbstractModel implements Oauth2AbstractInterface
     /**
      * Sets the value of field provider
      * Column: provider 
-     * @param RawValue|string $provider
+     * @param RawValue|string|null $provider
      * @return void
      */
-    public function setProvider(RawValue|string $provider): void
+    public function setProvider(RawValue|string|null $provider): void
     {
         $this->provider = $provider;
     }
@@ -227,9 +232,9 @@ class Oauth2Abstract extends AbstractModel implements Oauth2AbstractInterface
     /**
      * Returns the value of field providerUuid
      * Column: provider_uuid
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getProviderUuid(): RawValue|string
+    public function getProviderUuid(): RawValue|string|null
     {
         return $this->providerUuid;
     }
@@ -237,10 +242,10 @@ class Oauth2Abstract extends AbstractModel implements Oauth2AbstractInterface
     /**
      * Sets the value of field providerUuid
      * Column: provider_uuid 
-     * @param RawValue|string $providerUuid
+     * @param RawValue|string|null $providerUuid
      * @return void
      */
-    public function setProviderUuid(RawValue|string $providerUuid): void
+    public function setProviderUuid(RawValue|string|null $providerUuid): void
     {
         $this->providerUuid = $providerUuid;
     }
@@ -248,9 +253,9 @@ class Oauth2Abstract extends AbstractModel implements Oauth2AbstractInterface
     /**
      * Returns the value of field accessToken
      * Column: access_token
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getAccessToken(): RawValue|string
+    public function getAccessToken(): RawValue|string|null
     {
         return $this->accessToken;
     }
@@ -258,10 +263,10 @@ class Oauth2Abstract extends AbstractModel implements Oauth2AbstractInterface
     /**
      * Sets the value of field accessToken
      * Column: access_token 
-     * @param RawValue|string $accessToken
+     * @param RawValue|string|null $accessToken
      * @return void
      */
-    public function setAccessToken(RawValue|string $accessToken): void
+    public function setAccessToken(RawValue|string|null $accessToken): void
     {
         $this->accessToken = $accessToken;
     }
@@ -416,9 +421,9 @@ class Oauth2Abstract extends AbstractModel implements Oauth2AbstractInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -426,10 +431,10 @@ class Oauth2Abstract extends AbstractModel implements Oauth2AbstractInterface
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

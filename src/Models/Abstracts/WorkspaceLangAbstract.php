@@ -20,6 +20,11 @@ use Zemit\Models\Lang;
 use Zemit\Models\Abstracts\Interfaces\WorkspaceLangAbstractInterface;
 
 /**
+ * Class WorkspaceLangAbstract
+ *
+ * This class defines a WorkspaceLang abstract model that extends the AbstractModel class and implements the WorkspaceLangAbstractInterface.
+ * It provides properties and methods for managing WorkspaceLang data.
+ * 
  * @property Workspace $WorkspaceEntity
  * @method Workspace getWorkspaceEntity(?array $params = null)
  *
@@ -36,15 +41,15 @@ class WorkspaceLangAbstract extends AbstractModel implements WorkspaceLangAbstra
     
     /**
      * Column: workspace_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $workspaceId;
+    public RawValue|int|null $workspaceId = null;
     
     /**
      * Column: lang_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $langId;
+    public RawValue|int|null $langId = null;
     
     /**
      * Column: deleted
@@ -54,9 +59,9 @@ class WorkspaceLangAbstract extends AbstractModel implements WorkspaceLangAbstra
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -147,9 +152,9 @@ class WorkspaceLangAbstract extends AbstractModel implements WorkspaceLangAbstra
     /**
      * Returns the value of field workspaceId
      * Column: workspace_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getWorkspaceId(): RawValue|int
+    public function getWorkspaceId(): RawValue|int|null
     {
         return $this->workspaceId;
     }
@@ -157,10 +162,10 @@ class WorkspaceLangAbstract extends AbstractModel implements WorkspaceLangAbstra
     /**
      * Sets the value of field workspaceId
      * Column: workspace_id 
-     * @param RawValue|int $workspaceId
+     * @param RawValue|int|null $workspaceId
      * @return void
      */
-    public function setWorkspaceId(RawValue|int $workspaceId): void
+    public function setWorkspaceId(RawValue|int|null $workspaceId): void
     {
         $this->workspaceId = $workspaceId;
     }
@@ -168,9 +173,9 @@ class WorkspaceLangAbstract extends AbstractModel implements WorkspaceLangAbstra
     /**
      * Returns the value of field langId
      * Column: lang_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getLangId(): RawValue|int
+    public function getLangId(): RawValue|int|null
     {
         return $this->langId;
     }
@@ -178,10 +183,10 @@ class WorkspaceLangAbstract extends AbstractModel implements WorkspaceLangAbstra
     /**
      * Sets the value of field langId
      * Column: lang_id 
-     * @param RawValue|int $langId
+     * @param RawValue|int|null $langId
      * @return void
      */
-    public function setLangId(RawValue|int $langId): void
+    public function setLangId(RawValue|int|null $langId): void
     {
         $this->langId = $langId;
     }
@@ -210,9 +215,9 @@ class WorkspaceLangAbstract extends AbstractModel implements WorkspaceLangAbstra
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -220,10 +225,10 @@ class WorkspaceLangAbstract extends AbstractModel implements WorkspaceLangAbstra
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

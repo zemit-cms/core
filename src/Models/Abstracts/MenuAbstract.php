@@ -19,6 +19,11 @@ use Zemit\Models\Menu;
 use Zemit\Models\Abstracts\Interfaces\MenuAbstractInterface;
 
 /**
+ * Class MenuAbstract
+ *
+ * This class defines a Menu abstract model that extends the AbstractModel class and implements the MenuAbstractInterface.
+ * It provides properties and methods for managing Menu data.
+ * 
  * @property Menu $ParentEntity
  * @method Menu getParentEntity(?array $params = null)
  */
@@ -32,15 +37,15 @@ class MenuAbstract extends AbstractModel implements MenuAbstractInterface
     
     /**
      * Column: name
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $name;
+    public RawValue|string|null $name = null;
     
     /**
      * Column: index
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $index;
+    public RawValue|string|null $index = null;
     
     /**
      * Column: parent_id
@@ -56,9 +61,9 @@ class MenuAbstract extends AbstractModel implements MenuAbstractInterface
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -143,9 +148,9 @@ class MenuAbstract extends AbstractModel implements MenuAbstractInterface
     /**
      * Returns the value of field name
      * Column: name
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getName(): RawValue|string
+    public function getName(): RawValue|string|null
     {
         return $this->name;
     }
@@ -153,10 +158,10 @@ class MenuAbstract extends AbstractModel implements MenuAbstractInterface
     /**
      * Sets the value of field name
      * Column: name 
-     * @param RawValue|string $name
+     * @param RawValue|string|null $name
      * @return void
      */
-    public function setName(RawValue|string $name): void
+    public function setName(RawValue|string|null $name): void
     {
         $this->name = $name;
     }
@@ -164,9 +169,9 @@ class MenuAbstract extends AbstractModel implements MenuAbstractInterface
     /**
      * Returns the value of field index
      * Column: index
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getIndex(): RawValue|string
+    public function getIndex(): RawValue|string|null
     {
         return $this->index;
     }
@@ -174,10 +179,10 @@ class MenuAbstract extends AbstractModel implements MenuAbstractInterface
     /**
      * Sets the value of field index
      * Column: index 
-     * @param RawValue|string $index
+     * @param RawValue|string|null $index
      * @return void
      */
-    public function setIndex(RawValue|string $index): void
+    public function setIndex(RawValue|string|null $index): void
     {
         $this->index = $index;
     }
@@ -227,9 +232,9 @@ class MenuAbstract extends AbstractModel implements MenuAbstractInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -237,10 +242,10 @@ class MenuAbstract extends AbstractModel implements MenuAbstractInterface
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

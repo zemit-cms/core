@@ -21,6 +21,11 @@ use Zemit\Models\Field;
 use Zemit\Models\Abstracts\Interfaces\DataAbstractInterface;
 
 /**
+ * Class DataAbstract
+ *
+ * This class defines a Data abstract model that extends the AbstractModel class and implements the DataAbstractInterface.
+ * It provides properties and methods for managing Data data.
+ * 
  * @property Site $SiteEntity
  * @method Site getSiteEntity(?array $params = null)
  *
@@ -40,21 +45,21 @@ class DataAbstract extends AbstractModel implements DataAbstractInterface
     
     /**
      * Column: site_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $siteId;
+    public RawValue|int|null $siteId = null;
     
     /**
      * Column: table_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $tableId;
+    public RawValue|int|null $tableId = null;
     
     /**
      * Column: field_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $fieldId;
+    public RawValue|int|null $fieldId = null;
     
     /**
      * Column: value
@@ -70,9 +75,9 @@ class DataAbstract extends AbstractModel implements DataAbstractInterface
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -157,9 +162,9 @@ class DataAbstract extends AbstractModel implements DataAbstractInterface
     /**
      * Returns the value of field siteId
      * Column: site_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getSiteId(): RawValue|int
+    public function getSiteId(): RawValue|int|null
     {
         return $this->siteId;
     }
@@ -167,10 +172,10 @@ class DataAbstract extends AbstractModel implements DataAbstractInterface
     /**
      * Sets the value of field siteId
      * Column: site_id 
-     * @param RawValue|int $siteId
+     * @param RawValue|int|null $siteId
      * @return void
      */
-    public function setSiteId(RawValue|int $siteId): void
+    public function setSiteId(RawValue|int|null $siteId): void
     {
         $this->siteId = $siteId;
     }
@@ -178,9 +183,9 @@ class DataAbstract extends AbstractModel implements DataAbstractInterface
     /**
      * Returns the value of field tableId
      * Column: table_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getTableId(): RawValue|int
+    public function getTableId(): RawValue|int|null
     {
         return $this->tableId;
     }
@@ -188,10 +193,10 @@ class DataAbstract extends AbstractModel implements DataAbstractInterface
     /**
      * Sets the value of field tableId
      * Column: table_id 
-     * @param RawValue|int $tableId
+     * @param RawValue|int|null $tableId
      * @return void
      */
-    public function setTableId(RawValue|int $tableId): void
+    public function setTableId(RawValue|int|null $tableId): void
     {
         $this->tableId = $tableId;
     }
@@ -199,9 +204,9 @@ class DataAbstract extends AbstractModel implements DataAbstractInterface
     /**
      * Returns the value of field fieldId
      * Column: field_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getFieldId(): RawValue|int
+    public function getFieldId(): RawValue|int|null
     {
         return $this->fieldId;
     }
@@ -209,10 +214,10 @@ class DataAbstract extends AbstractModel implements DataAbstractInterface
     /**
      * Sets the value of field fieldId
      * Column: field_id 
-     * @param RawValue|int $fieldId
+     * @param RawValue|int|null $fieldId
      * @return void
      */
-    public function setFieldId(RawValue|int $fieldId): void
+    public function setFieldId(RawValue|int|null $fieldId): void
     {
         $this->fieldId = $fieldId;
     }
@@ -262,9 +267,9 @@ class DataAbstract extends AbstractModel implements DataAbstractInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -272,10 +277,10 @@ class DataAbstract extends AbstractModel implements DataAbstractInterface
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

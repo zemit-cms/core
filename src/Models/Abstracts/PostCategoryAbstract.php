@@ -20,6 +20,11 @@ use Zemit\Models\Category;
 use Zemit\Models\Abstracts\Interfaces\PostCategoryAbstractInterface;
 
 /**
+ * Class PostCategoryAbstract
+ *
+ * This class defines a PostCategory abstract model that extends the AbstractModel class and implements the PostCategoryAbstractInterface.
+ * It provides properties and methods for managing PostCategory data.
+ * 
  * @property Post $PostEntity
  * @method Post getPostEntity(?array $params = null)
  *
@@ -36,15 +41,15 @@ class PostCategoryAbstract extends AbstractModel implements PostCategoryAbstract
     
     /**
      * Column: post_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $postId;
+    public RawValue|int|null $postId = null;
     
     /**
      * Column: category_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $categoryId;
+    public RawValue|int|null $categoryId = null;
     
     /**
      * Column: deleted
@@ -54,9 +59,9 @@ class PostCategoryAbstract extends AbstractModel implements PostCategoryAbstract
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -147,9 +152,9 @@ class PostCategoryAbstract extends AbstractModel implements PostCategoryAbstract
     /**
      * Returns the value of field postId
      * Column: post_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getPostId(): RawValue|int
+    public function getPostId(): RawValue|int|null
     {
         return $this->postId;
     }
@@ -157,10 +162,10 @@ class PostCategoryAbstract extends AbstractModel implements PostCategoryAbstract
     /**
      * Sets the value of field postId
      * Column: post_id 
-     * @param RawValue|int $postId
+     * @param RawValue|int|null $postId
      * @return void
      */
-    public function setPostId(RawValue|int $postId): void
+    public function setPostId(RawValue|int|null $postId): void
     {
         $this->postId = $postId;
     }
@@ -168,9 +173,9 @@ class PostCategoryAbstract extends AbstractModel implements PostCategoryAbstract
     /**
      * Returns the value of field categoryId
      * Column: category_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getCategoryId(): RawValue|int
+    public function getCategoryId(): RawValue|int|null
     {
         return $this->categoryId;
     }
@@ -178,10 +183,10 @@ class PostCategoryAbstract extends AbstractModel implements PostCategoryAbstract
     /**
      * Sets the value of field categoryId
      * Column: category_id 
-     * @param RawValue|int $categoryId
+     * @param RawValue|int|null $categoryId
      * @return void
      */
-    public function setCategoryId(RawValue|int $categoryId): void
+    public function setCategoryId(RawValue|int|null $categoryId): void
     {
         $this->categoryId = $categoryId;
     }
@@ -210,9 +215,9 @@ class PostCategoryAbstract extends AbstractModel implements PostCategoryAbstract
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -220,10 +225,10 @@ class PostCategoryAbstract extends AbstractModel implements PostCategoryAbstract
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

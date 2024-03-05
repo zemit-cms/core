@@ -20,6 +20,11 @@ use Zemit\Models\Feature;
 use Zemit\Models\Abstracts\Interfaces\RoleFeatureAbstractInterface;
 
 /**
+ * Class RoleFeatureAbstract
+ *
+ * This class defines a RoleFeature abstract model that extends the AbstractModel class and implements the RoleFeatureAbstractInterface.
+ * It provides properties and methods for managing RoleFeature data.
+ * 
  * @property Role $RoleEntity
  * @method Role getRoleEntity(?array $params = null)
  *
@@ -36,15 +41,15 @@ class RoleFeatureAbstract extends AbstractModel implements RoleFeatureAbstractIn
     
     /**
      * Column: role_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $roleId;
+    public RawValue|int|null $roleId = null;
     
     /**
      * Column: feature_id
-     * @var RawValue|int
+     * @var RawValue|int|null
      */
-    public RawValue|int $featureId;
+    public RawValue|int|null $featureId = null;
     
     /**
      * Column: position
@@ -60,9 +65,9 @@ class RoleFeatureAbstract extends AbstractModel implements RoleFeatureAbstractIn
     
     /**
      * Column: created_at
-     * @var RawValue|string
+     * @var RawValue|string|null
      */
-    public RawValue|string $createdAt;
+    public RawValue|string|null $createdAt = null;
     
     /**
      * Column: created_by
@@ -153,9 +158,9 @@ class RoleFeatureAbstract extends AbstractModel implements RoleFeatureAbstractIn
     /**
      * Returns the value of field roleId
      * Column: role_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getRoleId(): RawValue|int
+    public function getRoleId(): RawValue|int|null
     {
         return $this->roleId;
     }
@@ -163,10 +168,10 @@ class RoleFeatureAbstract extends AbstractModel implements RoleFeatureAbstractIn
     /**
      * Sets the value of field roleId
      * Column: role_id 
-     * @param RawValue|int $roleId
+     * @param RawValue|int|null $roleId
      * @return void
      */
-    public function setRoleId(RawValue|int $roleId): void
+    public function setRoleId(RawValue|int|null $roleId): void
     {
         $this->roleId = $roleId;
     }
@@ -174,9 +179,9 @@ class RoleFeatureAbstract extends AbstractModel implements RoleFeatureAbstractIn
     /**
      * Returns the value of field featureId
      * Column: feature_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getFeatureId(): RawValue|int
+    public function getFeatureId(): RawValue|int|null
     {
         return $this->featureId;
     }
@@ -184,10 +189,10 @@ class RoleFeatureAbstract extends AbstractModel implements RoleFeatureAbstractIn
     /**
      * Sets the value of field featureId
      * Column: feature_id 
-     * @param RawValue|int $featureId
+     * @param RawValue|int|null $featureId
      * @return void
      */
-    public function setFeatureId(RawValue|int $featureId): void
+    public function setFeatureId(RawValue|int|null $featureId): void
     {
         $this->featureId = $featureId;
     }
@@ -237,9 +242,9 @@ class RoleFeatureAbstract extends AbstractModel implements RoleFeatureAbstractIn
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string
+    public function getCreatedAt(): RawValue|string|null
     {
         return $this->createdAt;
     }
@@ -247,10 +252,10 @@ class RoleFeatureAbstract extends AbstractModel implements RoleFeatureAbstractIn
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void
+    public function setCreatedAt(RawValue|string|null $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

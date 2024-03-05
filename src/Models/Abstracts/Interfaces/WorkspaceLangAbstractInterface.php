@@ -35,32 +35,32 @@ interface WorkspaceLangAbstractInterface extends ModelInterface
     /**
      * Returns the value of field workspaceId
      * Column: workspace_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getWorkspaceId(): RawValue|int;
+    public function getWorkspaceId(): RawValue|int|null;
     
     /**
      * Sets the value of field workspaceId
      * Column: workspace_id 
-     * @param RawValue|int $workspaceId
+     * @param RawValue|int|null $workspaceId
      * @return void
      */
-    public function setWorkspaceId(RawValue|int $workspaceId): void;
+    public function setWorkspaceId(RawValue|int|null $workspaceId): void;
     
     /**
      * Returns the value of field langId
      * Column: lang_id
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getLangId(): RawValue|int;
+    public function getLangId(): RawValue|int|null;
     
     /**
      * Sets the value of field langId
      * Column: lang_id 
-     * @param RawValue|int $langId
+     * @param RawValue|int|null $langId
      * @return void
      */
-    public function setLangId(RawValue|int $langId): void;
+    public function setLangId(RawValue|int|null $langId): void;
     
     /**
      * Returns the value of field deleted
@@ -80,17 +80,17 @@ interface WorkspaceLangAbstractInterface extends ModelInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string;
+    public function getCreatedAt(): RawValue|string|null;
     
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void;
+    public function setCreatedAt(RawValue|string|null $createdAt): void;
     
     /**
      * Returns the value of field createdBy

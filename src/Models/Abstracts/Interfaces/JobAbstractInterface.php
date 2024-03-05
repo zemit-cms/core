@@ -35,17 +35,17 @@ interface JobAbstractInterface extends ModelInterface
     /**
      * Returns the value of field uuid
      * Column: uuid
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getUuid(): RawValue|string;
+    public function getUuid(): RawValue|string|null;
     
     /**
      * Sets the value of field uuid
      * Column: uuid 
-     * @param RawValue|string $uuid
+     * @param RawValue|string|null $uuid
      * @return void
      */
-    public function setUuid(RawValue|string $uuid): void;
+    public function setUuid(RawValue|string|null $uuid): void;
     
     /**
      * Returns the value of field label
@@ -65,32 +65,32 @@ interface JobAbstractInterface extends ModelInterface
     /**
      * Returns the value of field task
      * Column: task
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getTask(): RawValue|string;
+    public function getTask(): RawValue|string|null;
     
     /**
      * Sets the value of field task
      * Column: task 
-     * @param RawValue|string $task
+     * @param RawValue|string|null $task
      * @return void
      */
-    public function setTask(RawValue|string $task): void;
+    public function setTask(RawValue|string|null $task): void;
     
     /**
      * Returns the value of field action
      * Column: action
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getAction(): RawValue|string;
+    public function getAction(): RawValue|string|null;
     
     /**
      * Sets the value of field action
      * Column: action 
-     * @param RawValue|string $action
+     * @param RawValue|string|null $action
      * @return void
      */
-    public function setAction(RawValue|string $action): void;
+    public function setAction(RawValue|string|null $action): void;
     
     /**
      * Returns the value of field params
@@ -200,17 +200,17 @@ interface JobAbstractInterface extends ModelInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string;
+    public function getCreatedAt(): RawValue|string|null;
     
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void;
+    public function setCreatedAt(RawValue|string|null $createdAt): void;
     
     /**
      * Returns the value of field createdBy

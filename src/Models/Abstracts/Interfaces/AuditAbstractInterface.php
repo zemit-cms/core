@@ -50,47 +50,47 @@ interface AuditAbstractInterface extends ModelInterface
     /**
      * Returns the value of field model
      * Column: model
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getModel(): RawValue|string;
+    public function getModel(): RawValue|string|null;
     
     /**
      * Sets the value of field model
      * Column: model 
-     * @param RawValue|string $model
+     * @param RawValue|string|null $model
      * @return void
      */
-    public function setModel(RawValue|string $model): void;
+    public function setModel(RawValue|string|null $model): void;
     
     /**
      * Returns the value of field table
      * Column: table
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getTable(): RawValue|string;
+    public function getTable(): RawValue|string|null;
     
     /**
      * Sets the value of field table
      * Column: table 
-     * @param RawValue|string $table
+     * @param RawValue|string|null $table
      * @return void
      */
-    public function setTable(RawValue|string $table): void;
+    public function setTable(RawValue|string|null $table): void;
     
     /**
      * Returns the value of field primary
      * Column: primary
-     * @return RawValue|int
+     * @return RawValue|int|null
      */
-    public function getPrimary(): RawValue|int;
+    public function getPrimary(): RawValue|int|null;
     
     /**
      * Sets the value of field primary
      * Column: primary 
-     * @param RawValue|int $primary
+     * @param RawValue|int|null $primary
      * @return void
      */
-    public function setPrimary(RawValue|int $primary): void;
+    public function setPrimary(RawValue|int|null $primary): void;
     
     /**
      * Returns the value of field event
@@ -170,17 +170,17 @@ interface AuditAbstractInterface extends ModelInterface
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string
+     * @return RawValue|string|null
      */
-    public function getCreatedAt(): RawValue|string;
+    public function getCreatedAt(): RawValue|string|null;
     
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string $createdAt
+     * @param RawValue|string|null $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string $createdAt): void;
+    public function setCreatedAt(RawValue|string|null $createdAt): void;
     
     /**
      * Returns the value of field createdBy
