@@ -23,7 +23,7 @@ class TableConfig extends ZemitConfig
 {
     public function __construct(array $data = [], bool $insensitive = true)
     {
-        parent::__construct([
+        $data = $this->internalMergeAppend([
             'permissions' => [
                 'features' => [
                     'manageTableList' => [
@@ -58,10 +58,8 @@ class TableConfig extends ZemitConfig
                     ],
                 ],
             ],
-        ], $insensitive);
-
-        if (!empty($data)) {
-            $this->merge(new PhalconConfig($data, $insensitive));
-        }
+        ], $data);
+        
+        parent::__construct($data, $insensitive);
     }
 }
