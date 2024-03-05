@@ -12,13 +12,13 @@
 namespace Zemit\Modules\Frontend\Controllers;
 
 use Phalcon\Db\Adapter\Pdo\Mysql;
-use Phalcon\Filter;
+use Phalcon\Filter\Filter;
 use Phalcon\Filter\Validation;
 use Phalcon\Http\Response;
 use Phalcon\Messages\Message;
 use Zemit\Bootstrap;
 use Zemit\Bootstrap\Config;
-use Zemit\Escaper;
+use Zemit\Html\Escaper;
 use Zemit\Http\Request;
 use Zemit\Identity;
 use Zemit\Locale;
@@ -153,12 +153,12 @@ class CheckController extends AbstractController
         $versionList = $this->getVersionList();
         $phalconVersion = new \Phalcon\Support\Version();
         $zemitVersion = new \Zemit\Support\Version();
-        foreach ([
-                     'php' => PHP_VERSION,
-                     'phalcon' => $phalconVersion->get(),
-                     'zemit' => $zemitVersion->get(),
-                 ] as $what => $version
-        ) {
+        $versions = [
+            'php' => PHP_VERSION,
+            'phalcon' => $phalconVersion->get(),
+            'zemit' => $zemitVersion->get(),
+        ];
+        foreach ($versions as $what => $version) {
             if (!version_compare($version, $versionList[$what], '>=')) {
                 $validation->appendMessage(new Message('PHP Version Failed `' . $version . '` received but `' . $this->version[$what] . '` >= expected', $what, 'PhpVersionMismatch', 404));
             }
