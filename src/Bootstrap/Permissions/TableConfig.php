@@ -12,14 +12,13 @@
 
 namespace Zemit\Bootstrap\Permissions;
 
-use Phalcon\Config as PhalconConfig;
-use Zemit\Config\Config as ZemitConfig;
+use Zemit\Config\Config;
 use Zemit\Mvc\Controller\Behavior\Skip\SkipIdentityCondition;
 use Zemit\Mvc\Controller\Behavior\Skip\SkipSoftDeleteCondition;
 use Zemit\Modules\Api\Controllers\TableController;
 use Zemit\Models\Table;
 
-class TableConfig extends ZemitConfig
+class TableConfig extends Config
 {
     public function __construct(array $data = [], bool $insensitive = true)
     {
