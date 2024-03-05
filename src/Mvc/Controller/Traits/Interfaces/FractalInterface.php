@@ -14,7 +14,6 @@ namespace Zemit\Mvc\Controller\Traits\Interfaces;
 use League\Fractal\Serializer\SerializerAbstract;
 use League\Fractal\TransformerAbstract;
 use Phalcon\Mvc\Model\ResultsetInterface;
-use Phalcon\Mvc\ModelInterface;
 use Zemit\Fractal\Manager;
 
 interface FractalInterface
@@ -33,7 +32,7 @@ interface FractalInterface
     
     public function hasTransformer(): bool;
     
-    public function transformModel(ModelInterface $model, ?TransformerAbstract $transformer = null, ?Manager $fractalManager = null): ?array;
+    public function transformModel(\Phalcon\Mvc\ModelInterface $model, ?TransformerAbstract $transformer = null, ?Manager $fractalManager = null): ?array;
     
     public function transformResultset(ResultsetInterface $resultset, ?TransformerAbstract $transformer = null, ?Manager $fractalManager = null): ?array;
     
