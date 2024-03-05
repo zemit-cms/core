@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\FeatureAbstract;
 use Zemit\Models\Interfaces\FeatureInterface;
 
 /**
- * Feature Model
+ * Class Feature
+ *
+ * This class represents a Feature model.
+ * It extends the FeatureAbstract class and implements the FeatureInterface.
  */
 class Feature extends FeatureAbstract implements FeatureInterface
 {

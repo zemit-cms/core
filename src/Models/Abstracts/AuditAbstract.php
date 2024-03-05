@@ -31,7 +31,7 @@ use Zemit\Models\Abstracts\Interfaces\AuditAbstractInterface;
  * @property Audit $ParentEntity
  * @method Audit getParentEntity(?array $params = null)
  */
-class AuditAbstract extends AbstractModel implements AuditAbstractInterface
+abstract class AuditAbstract extends AbstractModel implements AuditAbstractInterface
 {
     /**
      * Column: id

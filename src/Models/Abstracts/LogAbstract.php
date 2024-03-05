@@ -26,7 +26,7 @@ use Zemit\Models\Abstracts\Interfaces\LogAbstractInterface;
  * 
  * 
  */
-class LogAbstract extends AbstractModel implements LogAbstractInterface
+abstract class LogAbstract extends AbstractModel implements LogAbstractInterface
 {
     /**
      * Column: id
@@ -573,7 +573,7 @@ class LogAbstract extends AbstractModel implements LogAbstractInterface
      */
     public function addDefaultRelationships(): void
     {
-        // no default relationship
+        // no default relationship found
     }
     
     /**

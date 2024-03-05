@@ -27,7 +27,7 @@ use Zemit\Models\Abstracts\Interfaces\TemplateAbstractInterface;
  * @property Email[] $EmailList
  * @method Email[] getEmailList(?array $params = null)
  */
-class TemplateAbstract extends AbstractModel implements TemplateAbstractInterface
+abstract class TemplateAbstract extends AbstractModel implements TemplateAbstractInterface
 {
     /**
      * Column: id

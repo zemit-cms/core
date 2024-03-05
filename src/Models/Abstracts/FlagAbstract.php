@@ -35,7 +35,7 @@ use Zemit\Models\Abstracts\Interfaces\FlagAbstractInterface;
  * @property Lang $LangEntity
  * @method Lang getLangEntity(?array $params = null)
  */
-class FlagAbstract extends AbstractModel implements FlagAbstractInterface
+abstract class FlagAbstract extends AbstractModel implements FlagAbstractInterface
 {
     /**
      * Column: id

@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\FieldAbstract;
 use Zemit\Models\Interfaces\FieldInterface;
 
 /**
- * Field Model
+ * Class Field
+ *
+ * This class represents a Field model.
+ * It extends the FieldAbstract class and implements the FieldInterface.
  */
 class Field extends FieldAbstract implements FieldInterface
 {

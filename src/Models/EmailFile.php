@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\EmailFileAbstract;
 use Zemit\Models\Interfaces\EmailFileInterface;
 
 /**
- * EmailFile Model
+ * Class EmailFile
+ *
+ * This class represents a EmailFile model.
+ * It extends the EmailFileAbstract class and implements the EmailFileInterface.
  */
 class EmailFile extends EmailFileAbstract implements EmailFileInterface
 {

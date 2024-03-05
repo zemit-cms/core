@@ -47,7 +47,7 @@ use Zemit\Models\Abstracts\Interfaces\RoleAbstractInterface;
  * @property User[] $UserList
  * @method User[] getUserList(?array $params = null)
  */
-class RoleAbstract extends AbstractModel implements RoleAbstractInterface
+abstract class RoleAbstract extends AbstractModel implements RoleAbstractInterface
 {
     /**
      * Column: id

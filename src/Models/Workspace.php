@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\WorkspaceAbstract;
 use Zemit\Models\Interfaces\WorkspaceInterface;
 
 /**
- * Workspace Model
+ * Class Workspace
+ *
+ * This class represents a Workspace model.
+ * It extends the WorkspaceAbstract class and implements the WorkspaceInterface.
  */
 class Workspace extends WorkspaceAbstract implements WorkspaceInterface
 {

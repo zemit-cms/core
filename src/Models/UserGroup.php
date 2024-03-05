@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\UserGroupAbstract;
 use Zemit\Models\Interfaces\UserGroupInterface;
 
 /**
- * UserGroup Model
+ * Class UserGroup
+ *
+ * This class represents a UserGroup model.
+ * It extends the UserGroupAbstract class and implements the UserGroupInterface.
  */
 class UserGroup extends UserGroupAbstract implements UserGroupInterface
 {

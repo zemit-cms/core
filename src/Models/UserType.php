@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\UserTypeAbstract;
 use Zemit\Models\Interfaces\UserTypeInterface;
 
 /**
- * UserType Model
+ * Class UserType
+ *
+ * This class represents a UserType model.
+ * It extends the UserTypeAbstract class and implements the UserTypeInterface.
  */
 class UserType extends UserTypeAbstract implements UserTypeInterface
 {

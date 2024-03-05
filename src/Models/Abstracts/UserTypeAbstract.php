@@ -31,7 +31,7 @@ use Zemit\Models\Abstracts\Interfaces\UserTypeAbstractInterface;
  * @property Type $TypeEntity
  * @method Type getTypeEntity(?array $params = null)
  */
-class UserTypeAbstract extends AbstractModel implements UserTypeAbstractInterface
+abstract class UserTypeAbstract extends AbstractModel implements UserTypeAbstractInterface
 {
     /**
      * Column: id

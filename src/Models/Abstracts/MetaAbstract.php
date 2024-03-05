@@ -43,7 +43,7 @@ use Zemit\Models\Abstracts\Interfaces\MetaAbstractInterface;
  * @property Category $CategoryEntity
  * @method Category getCategoryEntity(?array $params = null)
  */
-class MetaAbstract extends AbstractModel implements MetaAbstractInterface
+abstract class MetaAbstract extends AbstractModel implements MetaAbstractInterface
 {
     /**
      * Column: id

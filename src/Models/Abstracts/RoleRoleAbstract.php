@@ -15,7 +15,7 @@ namespace Zemit\Models\Abstracts;
 use Phalcon\Db\RawValue;
 use Zemit\Filter\Validation;
 use Zemit\Models\AbstractModel;
-use Zemit\Models\RoleRole;
+use Zemit\Models\Role;
 use Zemit\Models\Abstracts\Interfaces\RoleRoleAbstractInterface;
 
 /**
@@ -24,13 +24,13 @@ use Zemit\Models\Abstracts\Interfaces\RoleRoleAbstractInterface;
  * This class defines a RoleRole abstract model that extends the AbstractModel class and implements the RoleRoleAbstractInterface.
  * It provides properties and methods for managing RoleRole data.
  * 
- * @property RoleRole $ParentEntity
- * @method RoleRole getParentEntity(?array $params = null)
+ * @property Role $ParentEntity
+ * @method Role getParentEntity(?array $params = null)
  *
- * @property RoleRole $ChildEntity
- * @method RoleRole getChildEntity(?array $params = null)
+ * @property Role $ChildEntity
+ * @method Role getChildEntity(?array $params = null)
  */
-class RoleRoleAbstract extends AbstractModel implements RoleRoleAbstractInterface
+abstract class RoleRoleAbstract extends AbstractModel implements RoleRoleAbstractInterface
 {
     /**
      * Column: id
@@ -496,9 +496,9 @@ class RoleRoleAbstract extends AbstractModel implements RoleRoleAbstractInterfac
      */
     public function addDefaultRelationships(): void
     {
-        $this->belongsTo('parentId', RoleRole::class, 'id', ['alias' => 'ParentEntity']);
+        $this->belongsTo('parentId', Role::class, 'id', ['alias' => 'ParentEntity']);
 
-        $this->belongsTo('childId', RoleRole::class, 'id', ['alias' => 'ChildEntity']);
+        $this->belongsTo('childId', Role::class, 'id', ['alias' => 'ChildEntity']);
     }
     
     /**

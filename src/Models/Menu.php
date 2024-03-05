@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\MenuAbstract;
 use Zemit\Models\Interfaces\MenuInterface;
 
 /**
- * Menu Model
+ * Class Menu
+ *
+ * This class represents a Menu model.
+ * It extends the MenuAbstract class and implements the MenuInterface.
  */
 class Menu extends MenuAbstract implements MenuInterface
 {

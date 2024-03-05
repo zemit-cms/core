@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\FlagAbstract;
 use Zemit\Models\Interfaces\FlagInterface;
 
 /**
- * Flag Model
+ * Class Flag
+ *
+ * This class represents a Flag model.
+ * It extends the FlagAbstract class and implements the FlagInterface.
  */
 class Flag extends FlagAbstract implements FlagInterface
 {

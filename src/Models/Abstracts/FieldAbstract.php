@@ -16,9 +16,9 @@ use Phalcon\Db\RawValue;
 use Zemit\Filter\Validation;
 use Zemit\Models\AbstractModel;
 use Zemit\Models\Data;
+use Zemit\Models\Site;
 use Zemit\Models\Table;
 use Zemit\Models\Validator;
-use Zemit\Models\Site;
 use Zemit\Models\Abstracts\Interfaces\FieldAbstractInterface;
 
 /**
@@ -29,6 +29,9 @@ use Zemit\Models\Abstracts\Interfaces\FieldAbstractInterface;
  * 
  * @property Data[] $DataList
  * @method Data[] getDataList(?array $params = null)
+ *
+ * @property Site[] $DataSiteList
+ * @method Site[] getDataSiteList(?array $params = null)
  *
  * @property Table[] $DataTableList
  * @method Table[] getDataTableList(?array $params = null)
@@ -42,7 +45,7 @@ use Zemit\Models\Abstracts\Interfaces\FieldAbstractInterface;
  * @property Table $TableEntity
  * @method Table getTableEntity(?array $params = null)
  */
-class FieldAbstract extends AbstractModel implements FieldAbstractInterface
+abstract class FieldAbstract extends AbstractModel implements FieldAbstractInterface
 {
     /**
      * Column: id
@@ -563,6 +566,9 @@ class FieldAbstract extends AbstractModel implements FieldAbstractInterface
     public function addDefaultRelationships(): void
     {
         $this->hasMany('id', Data::class, 'fieldId', ['alias' => 'DataList']);
+
+        $this->hasManyToMany('id', Data::class, 'fieldId',
+            'siteId', Site::class, 'id', ['alias' => 'DataSiteList']);
 
         $this->hasManyToMany('id', Data::class, 'fieldId',
             'tableId', Table::class, 'id', ['alias' => 'DataTableList']);

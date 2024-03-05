@@ -27,7 +27,7 @@ use Zemit\Models\Abstracts\Interfaces\MenuAbstractInterface;
  * @property Menu $ParentEntity
  * @method Menu getParentEntity(?array $params = null)
  */
-class MenuAbstract extends AbstractModel implements MenuAbstractInterface
+abstract class MenuAbstract extends AbstractModel implements MenuAbstractInterface
 {
     /**
      * Column: id

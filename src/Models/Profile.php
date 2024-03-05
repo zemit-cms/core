@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\ProfileAbstract;
 use Zemit\Models\Interfaces\ProfileInterface;
 
 /**
- * Profile Model
+ * Class Profile
+ *
+ * This class represents a Profile model.
+ * It extends the ProfileAbstract class and implements the ProfileInterface.
  */
 class Profile extends ProfileAbstract implements ProfileInterface
 {

@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\GroupRoleAbstract;
 use Zemit\Models\Interfaces\GroupRoleInterface;
 
 /**
- * GroupRole Model
+ * Class GroupRole
+ *
+ * This class represents a GroupRole model.
+ * It extends the GroupRoleAbstract class and implements the GroupRoleInterface.
  */
 class GroupRole extends GroupRoleAbstract implements GroupRoleInterface
 {

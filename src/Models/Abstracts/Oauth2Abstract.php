@@ -27,7 +27,7 @@ use Zemit\Models\Abstracts\Interfaces\Oauth2AbstractInterface;
  * @property User $UserEntity
  * @method User getUserEntity(?array $params = null)
  */
-class Oauth2Abstract extends AbstractModel implements Oauth2AbstractInterface
+abstract class Oauth2Abstract extends AbstractModel implements Oauth2AbstractInterface
 {
     /**
      * Column: id

@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\UserRoleAbstract;
 use Zemit\Models\Interfaces\UserRoleInterface;
 
 /**
- * UserRole Model
+ * Class UserRole
+ *
+ * This class represents a UserRole model.
+ * It extends the UserRoleAbstract class and implements the UserRoleInterface.
  */
 class UserRole extends UserRoleAbstract implements UserRoleInterface
 {

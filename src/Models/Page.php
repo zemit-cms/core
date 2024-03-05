@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\PageAbstract;
 use Zemit\Models\Interfaces\PageInterface;
 
 /**
- * Page Model
+ * Class Page
+ *
+ * This class represents a Page model.
+ * It extends the PageAbstract class and implements the PageInterface.
  */
 class Page extends PageAbstract implements PageInterface
 {

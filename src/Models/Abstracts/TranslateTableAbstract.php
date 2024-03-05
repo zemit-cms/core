@@ -30,7 +30,7 @@ use Zemit\Models\Abstracts\Interfaces\TranslateTableAbstractInterface;
  * @property TranslateTable $RightEntity
  * @method TranslateTable getRightEntity(?array $params = null)
  */
-class TranslateTableAbstract extends AbstractModel implements TranslateTableAbstractInterface
+abstract class TranslateTableAbstract extends AbstractModel implements TranslateTableAbstractInterface
 {
     /**
      * Column: id

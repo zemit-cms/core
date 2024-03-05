@@ -71,7 +71,7 @@ use Zemit\Models\Abstracts\Interfaces\UserAbstractInterface;
  * @property Type[] $TypeList
  * @method Type[] getTypeList(?array $params = null)
  */
-class UserAbstract extends AbstractModel implements UserAbstractInterface
+abstract class UserAbstract extends AbstractModel implements UserAbstractInterface
 {
     /**
      * Column: id

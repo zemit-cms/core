@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\GroupTypeAbstract;
 use Zemit\Models\Interfaces\GroupTypeInterface;
 
 /**
- * GroupType Model
+ * Class GroupType
+ *
+ * This class represents a GroupType model.
+ * It extends the GroupTypeAbstract class and implements the GroupTypeInterface.
  */
 class GroupType extends GroupTypeAbstract implements GroupTypeInterface
 {

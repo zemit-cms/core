@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\TemplateAbstract;
 use Zemit\Models\Interfaces\TemplateInterface;
 
 /**
- * Template Model
+ * Class Template
+ *
+ * This class represents a Template model.
+ * It extends the TemplateAbstract class and implements the TemplateInterface.
  */
 class Template extends TemplateAbstract implements TemplateInterface
 {

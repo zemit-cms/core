@@ -35,7 +35,7 @@ use Zemit\Models\Abstracts\Interfaces\EmailAbstractInterface;
  * @property Template $TemplateEntity
  * @method Template getTemplateEntity(?array $params = null)
  */
-class EmailAbstract extends AbstractModel implements EmailAbstractInterface
+abstract class EmailAbstract extends AbstractModel implements EmailAbstractInterface
 {
     /**
      * Column: id

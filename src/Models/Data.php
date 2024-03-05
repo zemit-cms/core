@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\DataAbstract;
 use Zemit\Models\Interfaces\DataInterface;
 
 /**
- * Data Model
+ * Class Data
+ *
+ * This class represents a Data model.
+ * It extends the DataAbstract class and implements the DataInterface.
  */
 class Data extends DataAbstract implements DataInterface
 {

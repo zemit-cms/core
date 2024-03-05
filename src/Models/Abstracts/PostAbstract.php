@@ -17,11 +17,11 @@ use Zemit\Filter\Validation;
 use Zemit\Models\AbstractModel;
 use Zemit\Models\Meta;
 use Zemit\Models\Lang;
+use Zemit\Models\Site;
 use Zemit\Models\Page;
 use Zemit\Models\Category;
 use Zemit\Models\PostCategory;
 use Zemit\Models\Translate;
-use Zemit\Models\Site;
 use Zemit\Models\Abstracts\Interfaces\PostAbstractInterface;
 
 /**
@@ -35,6 +35,9 @@ use Zemit\Models\Abstracts\Interfaces\PostAbstractInterface;
  *
  * @property Lang[] $MetaLangList
  * @method Lang[] getMetaLangList(?array $params = null)
+ *
+ * @property Site[] $MetaSiteList
+ * @method Site[] getMetaSiteList(?array $params = null)
  *
  * @property Page[] $MetaPageList
  * @method Page[] getMetaPageList(?array $params = null)
@@ -54,6 +57,9 @@ use Zemit\Models\Abstracts\Interfaces\PostAbstractInterface;
  * @property Lang[] $TranslateLangList
  * @method Lang[] getTranslateLangList(?array $params = null)
  *
+ * @property Site[] $TranslateSiteList
+ * @method Site[] getTranslateSiteList(?array $params = null)
+ *
  * @property Page[] $TranslatePageList
  * @method Page[] getTranslatePageList(?array $params = null)
  *
@@ -69,7 +75,7 @@ use Zemit\Models\Abstracts\Interfaces\PostAbstractInterface;
  * @property Page $PageEntity
  * @method Page getPageEntity(?array $params = null)
  */
-class PostAbstract extends AbstractModel implements PostAbstractInterface
+abstract class PostAbstract extends AbstractModel implements PostAbstractInterface
 {
     /**
      * Column: id
@@ -622,6 +628,9 @@ class PostAbstract extends AbstractModel implements PostAbstractInterface
             'langId', Lang::class, 'id', ['alias' => 'MetaLangList']);
 
         $this->hasManyToMany('id', Meta::class, 'postId',
+            'siteId', Site::class, 'id', ['alias' => 'MetaSiteList']);
+
+        $this->hasManyToMany('id', Meta::class, 'postId',
             'pageId', Page::class, 'id', ['alias' => 'MetaPageList']);
 
         $this->hasManyToMany('id', Meta::class, 'postId',
@@ -636,6 +645,9 @@ class PostAbstract extends AbstractModel implements PostAbstractInterface
 
         $this->hasManyToMany('id', Translate::class, 'postId',
             'langId', Lang::class, 'id', ['alias' => 'TranslateLangList']);
+
+        $this->hasManyToMany('id', Translate::class, 'postId',
+            'siteId', Site::class, 'id', ['alias' => 'TranslateSiteList']);
 
         $this->hasManyToMany('id', Translate::class, 'postId',
             'pageId', Page::class, 'id', ['alias' => 'TranslatePageList']);

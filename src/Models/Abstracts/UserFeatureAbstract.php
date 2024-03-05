@@ -31,7 +31,7 @@ use Zemit\Models\Abstracts\Interfaces\UserFeatureAbstractInterface;
  * @property Feature $FeatureEntity
  * @method Feature getFeatureEntity(?array $params = null)
  */
-class UserFeatureAbstract extends AbstractModel implements UserFeatureAbstractInterface
+abstract class UserFeatureAbstract extends AbstractModel implements UserFeatureAbstractInterface
 {
     /**
      * Column: id

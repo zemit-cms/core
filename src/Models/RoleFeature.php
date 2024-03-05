@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\RoleFeatureAbstract;
 use Zemit\Models\Interfaces\RoleFeatureInterface;
 
 /**
- * RoleFeature Model
+ * Class RoleFeature
+ *
+ * This class represents a RoleFeature model.
+ * It extends the RoleFeatureAbstract class and implements the RoleFeatureInterface.
  */
 class RoleFeature extends RoleFeatureAbstract implements RoleFeatureInterface
 {

@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\FileRelationAbstract;
 use Zemit\Models\Interfaces\FileRelationInterface;
 
 /**
- * FileRelation Model
+ * Class FileRelation
+ *
+ * This class represents a FileRelation model.
+ * It extends the FileRelationAbstract class and implements the FileRelationInterface.
  */
 class FileRelation extends FileRelationAbstract implements FileRelationInterface
 {

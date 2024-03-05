@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\AuditDetailAbstract;
 use Zemit\Models\Interfaces\AuditDetailInterface;
 
 /**
- * AuditDetail Model
+ * Class AuditDetail
+ *
+ * This class represents a AuditDetail model.
+ * It extends the AuditDetailAbstract class and implements the AuditDetailInterface.
  */
 class AuditDetail extends AuditDetailAbstract implements AuditDetailInterface
 {

@@ -17,11 +17,11 @@ use Zemit\Filter\Validation;
 use Zemit\Models\AbstractModel;
 use Zemit\Models\Meta;
 use Zemit\Models\Lang;
+use Zemit\Models\Site;
 use Zemit\Models\Page;
 use Zemit\Models\Post;
 use Zemit\Models\PostCategory;
 use Zemit\Models\Translate;
-use Zemit\Models\Site;
 use Zemit\Models\Abstracts\Interfaces\CategoryAbstractInterface;
 
 /**
@@ -35,6 +35,9 @@ use Zemit\Models\Abstracts\Interfaces\CategoryAbstractInterface;
  *
  * @property Lang[] $MetaLangList
  * @method Lang[] getMetaLangList(?array $params = null)
+ *
+ * @property Site[] $MetaSiteList
+ * @method Site[] getMetaSiteList(?array $params = null)
  *
  * @property Page[] $MetaPageList
  * @method Page[] getMetaPageList(?array $params = null)
@@ -54,6 +57,9 @@ use Zemit\Models\Abstracts\Interfaces\CategoryAbstractInterface;
  * @property Lang[] $TranslateLangList
  * @method Lang[] getTranslateLangList(?array $params = null)
  *
+ * @property Site[] $TranslateSiteList
+ * @method Site[] getTranslateSiteList(?array $params = null)
+ *
  * @property Page[] $TranslatePageList
  * @method Page[] getTranslatePageList(?array $params = null)
  *
@@ -66,7 +72,7 @@ use Zemit\Models\Abstracts\Interfaces\CategoryAbstractInterface;
  * @property Lang $LangEntity
  * @method Lang getLangEntity(?array $params = null)
  */
-class CategoryAbstract extends AbstractModel implements CategoryAbstractInterface
+abstract class CategoryAbstract extends AbstractModel implements CategoryAbstractInterface
 {
     /**
      * Column: id
@@ -565,6 +571,9 @@ class CategoryAbstract extends AbstractModel implements CategoryAbstractInterfac
             'langId', Lang::class, 'id', ['alias' => 'MetaLangList']);
 
         $this->hasManyToMany('id', Meta::class, 'categoryId',
+            'siteId', Site::class, 'id', ['alias' => 'MetaSiteList']);
+
+        $this->hasManyToMany('id', Meta::class, 'categoryId',
             'pageId', Page::class, 'id', ['alias' => 'MetaPageList']);
 
         $this->hasManyToMany('id', Meta::class, 'categoryId',
@@ -579,6 +588,9 @@ class CategoryAbstract extends AbstractModel implements CategoryAbstractInterfac
 
         $this->hasManyToMany('id', Translate::class, 'categoryId',
             'langId', Lang::class, 'id', ['alias' => 'TranslateLangList']);
+
+        $this->hasManyToMany('id', Translate::class, 'categoryId',
+            'siteId', Site::class, 'id', ['alias' => 'TranslateSiteList']);
 
         $this->hasManyToMany('id', Translate::class, 'categoryId',
             'pageId', Page::class, 'id', ['alias' => 'TranslatePageList']);

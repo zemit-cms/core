@@ -31,7 +31,7 @@ use Zemit\Models\Abstracts\Interfaces\RoleFeatureAbstractInterface;
  * @property Feature $FeatureEntity
  * @method Feature getFeatureEntity(?array $params = null)
  */
-class RoleFeatureAbstract extends AbstractModel implements RoleFeatureAbstractInterface
+abstract class RoleFeatureAbstract extends AbstractModel implements RoleFeatureAbstractInterface
 {
     /**
      * Column: id

@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\SessionAbstract;
 use Zemit\Models\Interfaces\SessionInterface;
 
 /**
- * Session Model
+ * Class Session
+ *
+ * This class represents a Session model.
+ * It extends the SessionAbstract class and implements the SessionInterface.
  */
 class Session extends SessionAbstract implements SessionInterface
 {

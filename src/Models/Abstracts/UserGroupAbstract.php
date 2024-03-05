@@ -31,7 +31,7 @@ use Zemit\Models\Abstracts\Interfaces\UserGroupAbstractInterface;
  * @property Group $GroupEntity
  * @method Group getGroupEntity(?array $params = null)
  */
-class UserGroupAbstract extends AbstractModel implements UserGroupAbstractInterface
+abstract class UserGroupAbstract extends AbstractModel implements UserGroupAbstractInterface
 {
     /**
      * Column: id

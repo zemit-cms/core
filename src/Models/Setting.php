@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\SettingAbstract;
 use Zemit\Models\Interfaces\SettingInterface;
 
 /**
- * Setting Model
+ * Class Setting
+ *
+ * This class represents a Setting model.
+ * It extends the SettingAbstract class and implements the SettingInterface.
  */
 class Setting extends SettingAbstract implements SettingInterface
 {

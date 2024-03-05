@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\PhalconMigrationsAbstract;
 use Zemit\Models\Interfaces\PhalconMigrationsInterface;
 
 /**
- * PhalconMigrations Model
+ * Class PhalconMigrations
+ *
+ * This class represents a PhalconMigrations model.
+ * It extends the PhalconMigrationsAbstract class and implements the PhalconMigrationsInterface.
  */
 class PhalconMigrations extends PhalconMigrationsAbstract implements PhalconMigrationsInterface
 {

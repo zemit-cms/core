@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\WorkspaceLangAbstract;
 use Zemit\Models\Interfaces\WorkspaceLangInterface;
 
 /**
- * WorkspaceLang Model
+ * Class WorkspaceLang
+ *
+ * This class represents a WorkspaceLang model.
+ * It extends the WorkspaceLangAbstract class and implements the WorkspaceLangInterface.
  */
 class WorkspaceLang extends WorkspaceLangAbstract implements WorkspaceLangInterface
 {

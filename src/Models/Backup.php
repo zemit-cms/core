@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\BackupAbstract;
 use Zemit\Models\Interfaces\BackupInterface;
 
 /**
- * Backup Model
+ * Class Backup
+ *
+ * This class represents a Backup model.
+ * It extends the BackupAbstract class and implements the BackupInterface.
  */
 class Backup extends BackupAbstract implements BackupInterface
 {

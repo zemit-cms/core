@@ -39,7 +39,7 @@ use Zemit\Models\Abstracts\Interfaces\FileAbstractInterface;
  * @property User $UserEntity
  * @method User getUserEntity(?array $params = null)
  */
-class FileAbstract extends AbstractModel implements FileAbstractInterface
+abstract class FileAbstract extends AbstractModel implements FileAbstractInterface
 {
     /**
      * Column: id

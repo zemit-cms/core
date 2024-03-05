@@ -26,7 +26,7 @@ use Zemit\Models\Abstracts\Interfaces\BackupAbstractInterface;
  * 
  * 
  */
-class BackupAbstract extends AbstractModel implements BackupAbstractInterface
+abstract class BackupAbstract extends AbstractModel implements BackupAbstractInterface
 {
     /**
      * Column: id
@@ -438,7 +438,7 @@ class BackupAbstract extends AbstractModel implements BackupAbstractInterface
      */
     public function addDefaultRelationships(): void
     {
-        // no default relationship
+        // no default relationship found
     }
     
     /**

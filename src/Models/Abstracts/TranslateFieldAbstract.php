@@ -35,7 +35,7 @@ use Zemit\Models\Abstracts\Interfaces\TranslateFieldAbstractInterface;
  * @property Table $TableEntity
  * @method Table getTableEntity(?array $params = null)
  */
-class TranslateFieldAbstract extends AbstractModel implements TranslateFieldAbstractInterface
+abstract class TranslateFieldAbstract extends AbstractModel implements TranslateFieldAbstractInterface
 {
     /**
      * Column: id

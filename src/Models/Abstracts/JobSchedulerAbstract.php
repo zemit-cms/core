@@ -26,7 +26,7 @@ use Zemit\Models\Abstracts\Interfaces\JobSchedulerAbstractInterface;
  * 
  * 
  */
-class JobSchedulerAbstract extends AbstractModel implements JobSchedulerAbstractInterface
+abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedulerAbstractInterface
 {
     /**
      * Column: id
@@ -600,7 +600,7 @@ class JobSchedulerAbstract extends AbstractModel implements JobSchedulerAbstract
      */
     public function addDefaultRelationships(): void
     {
-        // no default relationship
+        // no default relationship found
     }
     
     /**

@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\PostCategoryAbstract;
 use Zemit\Models\Interfaces\PostCategoryInterface;
 
 /**
- * PostCategory Model
+ * Class PostCategory
+ *
+ * This class represents a PostCategory model.
+ * It extends the PostCategoryAbstract class and implements the PostCategoryInterface.
  */
 class PostCategory extends PostCategoryAbstract implements PostCategoryInterface
 {

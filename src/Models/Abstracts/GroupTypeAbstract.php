@@ -31,7 +31,7 @@ use Zemit\Models\Abstracts\Interfaces\GroupTypeAbstractInterface;
  * @property Type $TypeEntity
  * @method Type getTypeEntity(?array $params = null)
  */
-class GroupTypeAbstract extends AbstractModel implements GroupTypeAbstractInterface
+abstract class GroupTypeAbstract extends AbstractModel implements GroupTypeAbstractInterface
 {
     /**
      * Column: id

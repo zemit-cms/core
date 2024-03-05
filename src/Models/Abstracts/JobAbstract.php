@@ -26,7 +26,7 @@ use Zemit\Models\Abstracts\Interfaces\JobAbstractInterface;
  * 
  * 
  */
-class JobAbstract extends AbstractModel implements JobAbstractInterface
+abstract class JobAbstract extends AbstractModel implements JobAbstractInterface
 {
     /**
      * Column: id
@@ -681,7 +681,7 @@ class JobAbstract extends AbstractModel implements JobAbstractInterface
      */
     public function addDefaultRelationships(): void
     {
-        // no default relationship
+        // no default relationship found
     }
     
     /**

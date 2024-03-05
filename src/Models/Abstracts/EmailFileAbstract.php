@@ -31,7 +31,7 @@ use Zemit\Models\Abstracts\Interfaces\EmailFileAbstractInterface;
  * @property File $FileEntity
  * @method File getFileEntity(?array $params = null)
  */
-class EmailFileAbstract extends AbstractModel implements EmailFileAbstractInterface
+abstract class EmailFileAbstract extends AbstractModel implements EmailFileAbstractInterface
 {
     /**
      * Column: id

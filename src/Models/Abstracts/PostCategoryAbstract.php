@@ -31,7 +31,7 @@ use Zemit\Models\Abstracts\Interfaces\PostCategoryAbstractInterface;
  * @property Category $CategoryEntity
  * @method Category getCategoryEntity(?array $params = null)
  */
-class PostCategoryAbstract extends AbstractModel implements PostCategoryAbstractInterface
+abstract class PostCategoryAbstract extends AbstractModel implements PostCategoryAbstractInterface
 {
     /**
      * Column: id

@@ -27,7 +27,7 @@ use Zemit\Models\Abstracts\Interfaces\FileRelationAbstractInterface;
  * @property File $FileEntity
  * @method File getFileEntity(?array $params = null)
  */
-class FileRelationAbstract extends AbstractModel implements FileRelationAbstractInterface
+abstract class FileRelationAbstract extends AbstractModel implements FileRelationAbstractInterface
 {
     /**
      * Column: id

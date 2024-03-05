@@ -16,6 +16,7 @@ use Phalcon\Db\RawValue;
 use Zemit\Filter\Validation;
 use Zemit\Models\AbstractModel;
 use Zemit\Models\Data;
+use Zemit\Models\Site;
 use Zemit\Models\Field;
 use Zemit\Models\TranslateField;
 use Zemit\Models\Lang;
@@ -31,14 +32,23 @@ use Zemit\Models\Abstracts\Interfaces\TableAbstractInterface;
  * @property Data[] $DataList
  * @method Data[] getDataList(?array $params = null)
  *
+ * @property Site[] $DataSiteList
+ * @method Site[] getDataSiteList(?array $params = null)
+ *
  * @property Field[] $DataFieldList
  * @method Field[] getDataFieldList(?array $params = null)
  *
  * @property Field[] $FieldList
  * @method Field[] getFieldList(?array $params = null)
  *
+ * @property Site[] $FieldSiteList
+ * @method Site[] getFieldSiteList(?array $params = null)
+ *
  * @property TranslateField[] $TranslateFieldList
  * @method TranslateField[] getTranslateFieldList(?array $params = null)
+ *
+ * @property Site[] $TranslateFieldSiteList
+ * @method Site[] getTranslateFieldSiteList(?array $params = null)
  *
  * @property Lang[] $TranslateFieldLangList
  * @method Lang[] getTranslateFieldLangList(?array $params = null)
@@ -49,7 +59,7 @@ use Zemit\Models\Abstracts\Interfaces\TableAbstractInterface;
  * @property Workspace $WorkspaceEntity
  * @method Workspace getWorkspaceEntity(?array $params = null)
  */
-class TableAbstract extends AbstractModel implements TableAbstractInterface
+abstract class TableAbstract extends AbstractModel implements TableAbstractInterface
 {
     /**
      * Column: id
@@ -518,11 +528,20 @@ class TableAbstract extends AbstractModel implements TableAbstractInterface
         $this->hasMany('id', Data::class, 'tableId', ['alias' => 'DataList']);
 
         $this->hasManyToMany('id', Data::class, 'tableId',
+            'siteId', Site::class, 'id', ['alias' => 'DataSiteList']);
+
+        $this->hasManyToMany('id', Data::class, 'tableId',
             'fieldId', Field::class, 'id', ['alias' => 'DataFieldList']);
 
         $this->hasMany('id', Field::class, 'tableId', ['alias' => 'FieldList']);
 
+        $this->hasManyToMany('id', Field::class, 'tableId',
+            'siteId', Site::class, 'id', ['alias' => 'FieldSiteList']);
+
         $this->hasMany('id', TranslateField::class, 'tableId', ['alias' => 'TranslateFieldList']);
+
+        $this->hasManyToMany('id', TranslateField::class, 'tableId',
+            'siteId', Site::class, 'id', ['alias' => 'TranslateFieldSiteList']);
 
         $this->hasManyToMany('id', TranslateField::class, 'tableId',
             'langId', Lang::class, 'id', ['alias' => 'TranslateFieldLangList']);

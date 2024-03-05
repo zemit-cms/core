@@ -38,7 +38,7 @@ use Zemit\Models\Abstracts\Interfaces\WorkspaceAbstractInterface;
  * @property Lang[] $LangList
  * @method Lang[] getLangList(?array $params = null)
  */
-class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstractInterface
+abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstractInterface
 {
     /**
      * Column: id

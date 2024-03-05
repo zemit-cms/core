@@ -47,7 +47,7 @@ use Zemit\Models\Abstracts\Interfaces\FeatureAbstractInterface;
  * @property User[] $UserList
  * @method User[] getUserList(?array $params = null)
  */
-class FeatureAbstract extends AbstractModel implements FeatureAbstractInterface
+abstract class FeatureAbstract extends AbstractModel implements FeatureAbstractInterface
 {
     /**
      * Column: id

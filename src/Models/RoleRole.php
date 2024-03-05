@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\RoleRoleAbstract;
 use Zemit\Models\Interfaces\RoleRoleInterface;
 
 /**
- * RoleRole Model
+ * Class RoleRole
+ *
+ * This class represents a RoleRole model.
+ * It extends the RoleRoleAbstract class and implements the RoleRoleInterface.
  */
 class RoleRole extends RoleRoleAbstract implements RoleRoleInterface
 {

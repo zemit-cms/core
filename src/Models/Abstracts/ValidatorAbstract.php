@@ -27,7 +27,7 @@ use Zemit\Models\Abstracts\Interfaces\ValidatorAbstractInterface;
  * @property Field $FieldEntity
  * @method Field getFieldEntity(?array $params = null)
  */
-class ValidatorAbstract extends AbstractModel implements ValidatorAbstractInterface
+abstract class ValidatorAbstract extends AbstractModel implements ValidatorAbstractInterface
 {
     /**
      * Column: id

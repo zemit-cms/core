@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\UserFeatureAbstract;
 use Zemit\Models\Interfaces\UserFeatureInterface;
 
 /**
- * UserFeature Model
+ * Class UserFeature
+ *
+ * This class represents a UserFeature model.
+ * It extends the UserFeatureAbstract class and implements the UserFeatureInterface.
  */
 class UserFeature extends UserFeatureAbstract implements UserFeatureInterface
 {

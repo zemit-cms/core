@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\TableAbstract;
 use Zemit\Models\Interfaces\TableInterface;
 
 /**
- * Table Model
+ * Class Table
+ *
+ * This class represents a Table model.
+ * It extends the TableAbstract class and implements the TableInterface.
  */
 class Table extends TableAbstract implements TableInterface
 {

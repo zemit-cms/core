@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\TypeAbstract;
 use Zemit\Models\Interfaces\TypeInterface;
 
 /**
- * Type Model
+ * Class Type
+ *
+ * This class represents a Type model.
+ * It extends the TypeAbstract class and implements the TypeInterface.
  */
 class Type extends TypeAbstract implements TypeInterface
 {

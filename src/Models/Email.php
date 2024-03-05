@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\EmailAbstract;
 use Zemit\Models\Interfaces\EmailInterface;
 
 /**
- * Email Model
+ * Class Email
+ *
+ * This class represents a Email model.
+ * It extends the EmailAbstract class and implements the EmailInterface.
  */
 class Email extends EmailAbstract implements EmailInterface
 {

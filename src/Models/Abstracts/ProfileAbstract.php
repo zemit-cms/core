@@ -27,7 +27,7 @@ use Zemit\Models\Abstracts\Interfaces\ProfileAbstractInterface;
  * @property User $UserEntity
  * @method User getUserEntity(?array $params = null)
  */
-class ProfileAbstract extends AbstractModel implements ProfileAbstractInterface
+abstract class ProfileAbstract extends AbstractModel implements ProfileAbstractInterface
 {
     /**
      * Column: id

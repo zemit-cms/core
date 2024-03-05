@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\LangAbstract;
 use Zemit\Models\Interfaces\LangInterface;
 
 /**
- * Lang Model
+ * Class Lang
+ *
+ * This class represents a Lang model.
+ * It extends the LangAbstract class and implements the LangInterface.
  */
 class Lang extends LangAbstract implements LangInterface
 {

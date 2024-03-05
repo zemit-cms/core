@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\TranslateTableAbstract;
 use Zemit\Models\Interfaces\TranslateTableInterface;
 
 /**
- * TranslateTable Model
+ * Class TranslateTable
+ *
+ * This class represents a TranslateTable model.
+ * It extends the TranslateTableAbstract class and implements the TranslateTableInterface.
  */
 class TranslateTable extends TranslateTableAbstract implements TranslateTableInterface
 {

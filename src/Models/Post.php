@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\PostAbstract;
 use Zemit\Models\Interfaces\PostInterface;
 
 /**
- * Post Model
+ * Class Post
+ *
+ * This class represents a Post model.
+ * It extends the PostAbstract class and implements the PostInterface.
  */
 class Post extends PostAbstract implements PostInterface
 {

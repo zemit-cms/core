@@ -26,7 +26,7 @@ use Zemit\Models\Abstracts\Interfaces\SettingAbstractInterface;
  * 
  * 
  */
-class SettingAbstract extends AbstractModel implements SettingAbstractInterface
+abstract class SettingAbstract extends AbstractModel implements SettingAbstractInterface
 {
     /**
      * Column: id
@@ -519,7 +519,7 @@ class SettingAbstract extends AbstractModel implements SettingAbstractInterface
      */
     public function addDefaultRelationships(): void
     {
-        // no default relationship
+        // no default relationship found
     }
     
     /**

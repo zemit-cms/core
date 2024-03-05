@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\Oauth2Abstract;
 use Zemit\Models\Interfaces\Oauth2Interface;
 
 /**
- * Oauth2 Model
+ * Class Oauth2
+ *
+ * This class represents a Oauth2 model.
+ * It extends the Oauth2Abstract class and implements the Oauth2Interface.
  */
 class Oauth2 extends Oauth2Abstract implements Oauth2Interface
 {

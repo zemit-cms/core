@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\JobAbstract;
 use Zemit\Models\Interfaces\JobInterface;
 
 /**
- * Job Model
+ * Class Job
+ *
+ * This class represents a Job model.
+ * It extends the JobAbstract class and implements the JobInterface.
  */
 class Job extends JobAbstract implements JobInterface
 {

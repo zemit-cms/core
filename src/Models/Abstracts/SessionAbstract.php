@@ -31,7 +31,7 @@ use Zemit\Models\Abstracts\Interfaces\SessionAbstractInterface;
  * @property AsUser $AsUserEntity
  * @method AsUser getAsUserEntity(?array $params = null)
  */
-class SessionAbstract extends AbstractModel implements SessionAbstractInterface
+abstract class SessionAbstract extends AbstractModel implements SessionAbstractInterface
 {
     /**
      * Column: id

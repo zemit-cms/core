@@ -43,7 +43,7 @@ use Zemit\Models\Abstracts\Interfaces\TranslateAbstractInterface;
  * @property Category $CategoryEntity
  * @method Category getCategoryEntity(?array $params = null)
  */
-class TranslateAbstract extends AbstractModel implements TranslateAbstractInterface
+abstract class TranslateAbstract extends AbstractModel implements TranslateAbstractInterface
 {
     /**
      * Column: id

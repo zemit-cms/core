@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\CategoryAbstract;
 use Zemit\Models\Interfaces\CategoryInterface;
 
 /**
- * Category Model
+ * Class Category
+ *
+ * This class represents a Category model.
+ * It extends the CategoryAbstract class and implements the CategoryInterface.
  */
 class Category extends CategoryAbstract implements CategoryInterface
 {

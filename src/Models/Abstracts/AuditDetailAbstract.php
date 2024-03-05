@@ -27,7 +27,7 @@ use Zemit\Models\Abstracts\Interfaces\AuditDetailAbstractInterface;
  * @property Audit $AuditEntity
  * @method Audit getAuditEntity(?array $params = null)
  */
-class AuditDetailAbstract extends AbstractModel implements AuditDetailAbstractInterface
+abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailAbstractInterface
 {
     /**
      * Column: id

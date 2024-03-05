@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\MetaAbstract;
 use Zemit\Models\Interfaces\MetaInterface;
 
 /**
- * Meta Model
+ * Class Meta
+ *
+ * This class represents a Meta model.
+ * It extends the MetaAbstract class and implements the MetaInterface.
  */
 class Meta extends MetaAbstract implements MetaInterface
 {

@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\GroupFeatureAbstract;
 use Zemit\Models\Interfaces\GroupFeatureInterface;
 
 /**
- * GroupFeature Model
+ * Class GroupFeature
+ *
+ * This class represents a GroupFeature model.
+ * It extends the GroupFeatureAbstract class and implements the GroupFeatureInterface.
  */
 class GroupFeature extends GroupFeatureAbstract implements GroupFeatureInterface
 {

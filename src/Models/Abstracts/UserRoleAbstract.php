@@ -31,7 +31,7 @@ use Zemit\Models\Abstracts\Interfaces\UserRoleAbstractInterface;
  * @property Role $RoleEntity
  * @method Role getRoleEntity(?array $params = null)
  */
-class UserRoleAbstract extends AbstractModel implements UserRoleAbstractInterface
+abstract class UserRoleAbstract extends AbstractModel implements UserRoleAbstractInterface
 {
     /**
      * Column: id

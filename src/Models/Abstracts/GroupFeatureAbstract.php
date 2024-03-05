@@ -31,7 +31,7 @@ use Zemit\Models\Abstracts\Interfaces\GroupFeatureAbstractInterface;
  * @property Feature $FeatureEntity
  * @method Feature getFeatureEntity(?array $params = null)
  */
-class GroupFeatureAbstract extends AbstractModel implements GroupFeatureAbstractInterface
+abstract class GroupFeatureAbstract extends AbstractModel implements GroupFeatureAbstractInterface
 {
     /**
      * Column: id

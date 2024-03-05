@@ -26,7 +26,7 @@ use Zemit\Models\Abstracts\Interfaces\PhalconMigrationsAbstractInterface;
  * 
  * 
  */
-class PhalconMigrationsAbstract extends AbstractModel implements PhalconMigrationsAbstractInterface
+abstract class PhalconMigrationsAbstract extends AbstractModel implements PhalconMigrationsAbstractInterface
 {
     /**
      * Column: id
@@ -141,7 +141,7 @@ class PhalconMigrationsAbstract extends AbstractModel implements PhalconMigratio
      */
     public function addDefaultRelationships(): void
     {
-        // no default relationship
+        // no default relationship found
     }
     
     /**

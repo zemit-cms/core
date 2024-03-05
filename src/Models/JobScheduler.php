@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\JobSchedulerAbstract;
 use Zemit\Models\Interfaces\JobSchedulerInterface;
 
 /**
- * JobScheduler Model
+ * Class JobScheduler
+ *
+ * This class represents a JobScheduler model.
+ * It extends the JobSchedulerAbstract class and implements the JobSchedulerInterface.
  */
 class JobScheduler extends JobSchedulerAbstract implements JobSchedulerInterface
 {

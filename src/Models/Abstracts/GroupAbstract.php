@@ -55,7 +55,7 @@ use Zemit\Models\Abstracts\Interfaces\GroupAbstractInterface;
  * @property User[] $UserList
  * @method User[] getUserList(?array $params = null)
  */
-class GroupAbstract extends AbstractModel implements GroupAbstractInterface
+abstract class GroupAbstract extends AbstractModel implements GroupAbstractInterface
 {
     /**
      * Column: id

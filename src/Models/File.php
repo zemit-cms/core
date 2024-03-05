@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\FileAbstract;
 use Zemit\Models\Interfaces\FileInterface;
 
 /**
- * File Model
+ * Class File
+ *
+ * This class represents a File model.
+ * It extends the FileAbstract class and implements the FileInterface.
  */
 class File extends FileAbstract implements FileInterface
 {

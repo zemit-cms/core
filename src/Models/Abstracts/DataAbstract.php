@@ -35,7 +35,7 @@ use Zemit\Models\Abstracts\Interfaces\DataAbstractInterface;
  * @property Field $FieldEntity
  * @method Field getFieldEntity(?array $params = null)
  */
-class DataAbstract extends AbstractModel implements DataAbstractInterface
+abstract class DataAbstract extends AbstractModel implements DataAbstractInterface
 {
     /**
      * Column: id

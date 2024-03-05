@@ -16,7 +16,10 @@ use Zemit\Models\Abstracts\ValidatorAbstract;
 use Zemit\Models\Interfaces\ValidatorInterface;
 
 /**
- * Validator Model
+ * Class Validator
+ *
+ * This class represents a Validator model.
+ * It extends the ValidatorAbstract class and implements the ValidatorInterface.
  */
 class Validator extends ValidatorAbstract implements ValidatorInterface
 {
