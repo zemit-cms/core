@@ -82,7 +82,7 @@ class SettingMigration_100 extends Migration
                     'created_at',
                     [
                         'type' => Column::TYPE_DATETIME,
-                        'default' => "NOW()",
+                        'default' => "CURRENT_TIMESTAMP",
                         'notNull' => true,
                         'after' => 'deleted'
                     ]
