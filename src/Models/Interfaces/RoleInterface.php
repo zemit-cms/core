@@ -8,13 +8,12 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Zemit\Models\Interfaces;
 
-interface RoleInterface extends AbstractInterface
+use Zemit\Models\Abstracts\Interfaces\RoleAbstractInterface;
+
+interface RoleInterface extends RoleAbstractInterface
 {
-    public function getIndex();
-    
-    public function setIndex(string $index);
-    
-    public function setLabel(string $label);
 }

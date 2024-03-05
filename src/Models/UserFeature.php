@@ -8,39 +8,28 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+ 
 namespace Zemit\Models;
 
-use Zemit\Models\Abstracts\AbstractUserFeature;
+use Zemit\Models\Abstracts\UserFeatureAbstract;
 use Zemit\Models\Interfaces\UserFeatureInterface;
 
 /**
- * @property User $UserEntity
- * @method User getUserEntity(?array $params = null)
- * 
- * @property Feature $FeatureEntity
- * @method Feature getFeatureEntity(?array $params = null)
+ * UserFeature Model
  */
-class UserFeature extends AbstractUserFeature implements UserFeatureInterface
+class UserFeature extends UserFeatureAbstract implements UserFeatureInterface
 {
-    protected $deleted = self::NO;
-    protected $position = self::NO;
-
     public function initialize(): void
     {
         parent::initialize();
-
-        $this->hasOne('userId', User::class, 'id', ['alias' => 'User']);
-        $this->hasOne('featureId', Feature::class, 'id', ['alias' => 'Feature']);
+        $this->addDefaultRelationships();
     }
 
     public function validation(): bool
     {
         $validator = $this->genericValidation();
-        
-        $this->addUniquenessValidation($validator, ['userId', 'featureId']);
-        $this->addUnsignedIntValidation($validator, 'userId', false);
-        $this->addUnsignedIntValidation($validator, 'featureId', false);
-
+        $this->addDefaultValidations($validator);
         return $this->validate($validator);
     }
 }

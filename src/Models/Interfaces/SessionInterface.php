@@ -8,42 +8,12 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Zemit\Models\Interfaces;
 
-use Phalcon\Mvc\ModelInterface;
-use Phalcon\Session\ManagerInterface;
-use Zemit\Models\Behaviors\BlameableInterface;
+use Zemit\Models\Abstracts\Interfaces\SessionAbstractInterface;
 
-interface SessionInterface extends AbstractInterface, BlameableInterface
+interface SessionInterface extends SessionAbstractInterface
 {
-    public static function getSessionManager(): ManagerInterface;
-    
-    public static function useSessionManager(bool $useSessionManager): void;
-    public static function isUsingSessionManager(): bool;
-    
-    public function setUserId($userId);
-    public function getUserId();
-    
-    public function setAsUserId($asUserId);
-    public function getAsUserId();
-    
-    public function setKey($key);
-    public function getKey();
-    
-    public function setToken($token);
-    public function getToken();
-    
-    public function setJwt($jwt);
-    public function getJwt();
-    
-    public function setMeta($meta);
-    public function getMeta();
-    
-    public function setDate($date);
-    public function getDate();
-    
-    public static function findFirstByKey(?string $key = null): ?ModelInterface;
-    
-    public function saveToSession(): bool;
-    public function removeFromSession(): bool;
 }

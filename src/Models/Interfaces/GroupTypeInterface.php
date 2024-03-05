@@ -8,8 +8,12 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Zemit\Models\Interfaces;
 
-interface GroupTypeInterface extends AbstractInterface
+use Zemit\Models\Abstracts\Interfaces\GroupTypeAbstractInterface;
+
+interface GroupTypeInterface extends GroupTypeAbstractInterface
 {
 }

@@ -8,30 +8,28 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+ 
 namespace Zemit\Models;
 
-use Zemit\Db\Column;
-use Zemit\Models\Abstracts\AbstractLang;
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-use Phalcon\Filter\Validation\Validator\StringLength\Max;
+use Zemit\Models\Abstracts\LangAbstract;
 use Zemit\Models\Interfaces\LangInterface;
 
-class Lang extends AbstractLang implements LangInterface
+/**
+ * Lang Model
+ */
+class Lang extends LangAbstract implements LangInterface
 {
-    protected $deleted = Column::NO;
-
     public function initialize(): void
     {
         parent::initialize();
-        // @todo relationships
+        $this->addDefaultRelationships();
     }
 
     public function validation(): bool
     {
         $validator = $this->genericValidation();
-
-        // @todo validations
-
+        $this->addDefaultValidations($validator);
         return $this->validate($validator);
     }
 }

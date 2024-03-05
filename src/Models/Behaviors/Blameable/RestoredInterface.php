@@ -8,9 +8,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Models\Behaviors;
+namespace Zemit\Models\Behaviors\Blameable;
 
-interface BlameableRestoreInterface
+interface RestoredInterface
 {
     public function setRestoredAt($restoredAt);
     public function getRestoredAt();

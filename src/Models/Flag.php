@@ -8,27 +8,28 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+ 
 namespace Zemit\Models;
 
-use Zemit\Models\Abstracts\AbstractFlag;
+use Zemit\Models\Abstracts\FlagAbstract;
 use Zemit\Models\Interfaces\FlagInterface;
 
-class Flag extends AbstractFlag implements FlagInterface
+/**
+ * Flag Model
+ */
+class Flag extends FlagAbstract implements FlagInterface
 {
-    protected $deleted = self::NO;
-
     public function initialize(): void
     {
         parent::initialize();
-        // @todo relationships
+        $this->addDefaultRelationships();
     }
 
     public function validation(): bool
     {
         $validator = $this->genericValidation();
-        
-        // @todo validations
-        
+        $this->addDefaultValidations($validator);
         return $this->validate($validator);
     }
 }

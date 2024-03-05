@@ -8,27 +8,28 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+ 
 namespace Zemit\Models;
 
-use Zemit\Models\Abstracts\AbstractData;
+use Zemit\Models\Abstracts\DataAbstract;
 use Zemit\Models\Interfaces\DataInterface;
 
-class Data extends AbstractData implements DataInterface
+/**
+ * Data Model
+ */
+class Data extends DataAbstract implements DataInterface
 {
-    protected $deleted = self::NO;
-
     public function initialize(): void
     {
         parent::initialize();
-        // @todo relationships
+        $this->addDefaultRelationships();
     }
 
     public function validation(): bool
     {
         $validator = $this->genericValidation();
-
-        // @todo validations
-
+        $this->addDefaultValidations($validator);
         return $this->validate($validator);
     }
 }

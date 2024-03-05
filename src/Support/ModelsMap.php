@@ -21,7 +21,7 @@ use Zemit\Models\Log;
 use Zemit\Models\Email;
 use Zemit\Models\Job;
 use Zemit\Models\File;
-use Zemit\Models\OAuth2;
+use Zemit\Models\Oauth2;
 use Zemit\Models\Session;
 use Zemit\Models\Flag;
 use Zemit\Models\Setting;
@@ -292,11 +292,11 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\OAuth2::class
+     * Return the mapped class name of \Zemit\Models\Oauth2::class
      */
-    public function getOAuth2Class(): string
+    public function getOauth2Class(): string
     {
-        return $this->getClassMap(OAuth2::class);
+        return $this->getClassMap(Oauth2::class);
     }
     
     /**

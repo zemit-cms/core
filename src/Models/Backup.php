@@ -8,27 +8,28 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+ 
 namespace Zemit\Models;
 
-use Zemit\Models\Abstracts\AbstractBackup;
+use Zemit\Models\Abstracts\BackupAbstract;
 use Zemit\Models\Interfaces\BackupInterface;
 
-class Backup extends AbstractBackup implements BackupInterface
+/**
+ * Backup Model
+ */
+class Backup extends BackupAbstract implements BackupInterface
 {
-    protected $deleted = self::NO;
-
     public function initialize(): void
     {
         parent::initialize();
-        // @todo relationships
+        $this->addDefaultRelationships();
     }
 
     public function validation(): bool
     {
         $validator = $this->genericValidation();
-
-        // @todo validations
-        
+        $this->addDefaultValidations($validator);
         return $this->validate($validator);
     }
 }

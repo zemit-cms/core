@@ -8,12 +8,28 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+ 
 namespace Zemit\Models;
 
-use Zemit\Models\Abstracts\AbstractPhalconMigrations;
+use Zemit\Models\Abstracts\PhalconMigrationsAbstract;
 use Zemit\Models\Interfaces\PhalconMigrationsInterface;
 
-class PhalconMigrations extends AbstractPhalconMigrations implements PhalconMigrationsInterface
+/**
+ * PhalconMigrations Model
+ */
+class PhalconMigrations extends PhalconMigrationsAbstract implements PhalconMigrationsInterface
 {
+    public function initialize(): void
+    {
+        parent::initialize();
+        $this->addDefaultRelationships();
+    }
 
+    public function validation(): bool
+    {
+        $validator = $this->genericValidation();
+        $this->addDefaultValidations($validator);
+        return $this->validate($validator);
+    }
 }

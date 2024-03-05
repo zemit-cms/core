@@ -8,29 +8,28 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+ 
 namespace Zemit\Models;
 
-use Zemit\Models\Abstracts\AbstractMeta;
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-use Phalcon\Filter\Validation\Validator\StringLength\Max;
+use Zemit\Models\Abstracts\MetaAbstract;
 use Zemit\Models\Interfaces\MetaInterface;
 
-class Meta extends AbstractMeta implements MetaInterface
+/**
+ * Meta Model
+ */
+class Meta extends MetaAbstract implements MetaInterface
 {
-    protected $deleted = self::NO;
-
     public function initialize(): void
     {
         parent::initialize();
-        // @todo relationships
+        $this->addDefaultRelationships();
     }
 
     public function validation(): bool
     {
         $validator = $this->genericValidation();
-
-        // @todo validations
-
+        $this->addDefaultValidations($validator);
         return $this->validate($validator);
     }
 }

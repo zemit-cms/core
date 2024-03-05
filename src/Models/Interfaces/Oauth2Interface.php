@@ -8,8 +8,12 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Zemit\Models\Interfaces;
 
-interface OAuth2Interface extends AbstractInterface
+use Zemit\Models\Abstracts\Interfaces\Oauth2AbstractInterface;
+
+interface Oauth2Interface extends Oauth2AbstractInterface
 {
 }

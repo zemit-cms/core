@@ -8,32 +8,28 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+ 
 namespace Zemit\Models;
 
-use Phalcon\Db\RawValue;
-use Zemit\Models\Abstracts\AbstractTable;
+use Zemit\Models\Abstracts\TableAbstract;
 use Zemit\Models\Interfaces\TableInterface;
 
-class Table extends AbstractTable implements TableInterface
+/**
+ * Table Model
+ */
+class Table extends TableAbstract implements TableInterface
 {
-    protected $deleted = self::NO;
-
     public function initialize(): void
     {
         parent::initialize();
-        
-        $this->hasMany('id', Field::class, 'tableId', ['alias' => 'Fields']);
+        $this->addDefaultRelationships();
     }
 
     public function validation(): bool
     {
         $validator = $this->genericValidation();
-
+        $this->addDefaultValidations($validator);
         return $this->validate($validator);
     }
-    
-//    public static function find($parameters = null) : \Phalcon\Mvc\Model\ResultsetInterface{
-//        $parameters['columns'] = '*, BIN_TO_UUID(uuid) AS uuid';
-//        return parent::find($parameters);
-//    }
 }

@@ -8,9 +8,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Models\Behaviors;
+namespace Zemit\Models\Behaviors\Blameable;
 
-interface BlameableCreateInterface
+interface CreatedInterface
 {
     public function setCreatedAt($createdAt);
     public function getCreatedAt();

@@ -8,27 +8,28 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+ 
 namespace Zemit\Models;
 
-use Zemit\Models\Abstracts\AbstractTranslate;
+use Zemit\Models\Abstracts\TranslateAbstract;
 use Zemit\Models\Interfaces\TranslateInterface;
 
-class Translate extends AbstractTranslate implements TranslateInterface
+/**
+ * Translate Model
+ */
+class Translate extends TranslateAbstract implements TranslateInterface
 {
-    protected $deleted = self::NO;
-
     public function initialize(): void
     {
         parent::initialize();
-        // @todo relationships
+        $this->addDefaultRelationships();
     }
 
     public function validation(): bool
     {
         $validator = $this->genericValidation();
-
-        // @todo validations
-
+        $this->addDefaultValidations($validator);
         return $this->validate($validator);
     }
 }

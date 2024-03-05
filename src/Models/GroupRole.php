@@ -8,39 +8,28 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+ 
 namespace Zemit\Models;
 
-use Zemit\Models\Abstracts\AbstractGroupRole;
+use Zemit\Models\Abstracts\GroupRoleAbstract;
 use Zemit\Models\Interfaces\GroupRoleInterface;
 
 /**
- * @property Group $Group
- * @method Group getGroup(?array $params = null)
- *
- * @property Role $Role
- * @method Role getRole(?array $params = null)
+ * GroupRole Model
  */
-class GroupRole extends AbstractGroupRole implements GroupRoleInterface
+class GroupRole extends GroupRoleAbstract implements GroupRoleInterface
 {
-    protected $deleted = self::NO;
-    protected $position = self::NO;
-    
     public function initialize(): void
     {
         parent::initialize();
-        
-        $this->hasOne('groupId', Group::class, 'id', ['alias' => 'Group']);
-        $this->hasOne('roleId', Role::class, 'id', ['alias' => 'Role']);
+        $this->addDefaultRelationships();
     }
-    
+
     public function validation(): bool
     {
         $validator = $this->genericValidation();
-        
-        $this->addUnsignedIntValidation($validator, 'groupId', false);
-        $this->addUnsignedIntValidation($validator, 'roleId', false);
-        $this->addUniquenessValidation($validator, ['groupId', 'roleId'], false);
-        
+        $this->addDefaultValidations($validator);
         return $this->validate($validator);
     }
 }

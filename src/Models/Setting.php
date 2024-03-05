@@ -8,35 +8,28 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+ 
 namespace Zemit\Models;
 
-use Zemit\Models\Abstracts\AbstractSetting;
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-use Phalcon\Filter\Validation\Validator\StringLength\Max;
-use Phalcon\Filter\Validation\Validator\Uniqueness;
+use Zemit\Models\Abstracts\SettingAbstract;
 use Zemit\Models\Interfaces\SettingInterface;
 
-class Setting extends AbstractSetting implements SettingInterface
+/**
+ * Setting Model
+ */
+class Setting extends SettingAbstract implements SettingInterface
 {
-    protected $deleted = self::NO;
-
     public function initialize(): void
     {
         parent::initialize();
+        $this->addDefaultRelationships();
     }
 
     public function validation(): bool
     {
         $validator = $this->genericValidation();
-
-        $validator->add('index', new PresenceOf(['message' => $this->_('required')]));
-        $validator->add('index', new Max(['max' => 255, 'message' => $this->_('length-exceeded')]));
-        $validator->add('index', new Uniqueness(['message' => $this->_('not-unique')]));
-
-        $validator->add('category', new Max(['max' => 255, 'message' => $this->_('length-exceeded')]));
-
-        $validator->add('label', new Max(['max' => 255, 'message' => $this->_('length-exceeded')]));
-
+        $this->addDefaultValidations($validator);
         return $this->validate($validator);
     }
 }

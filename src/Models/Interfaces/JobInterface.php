@@ -8,8 +8,12 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Zemit\Models\Interfaces;
 
-interface JobInterface extends AbstractInterface
+use Zemit\Models\Abstracts\Interfaces\JobAbstractInterface;
+
+interface JobInterface extends JobAbstractInterface
 {
 }

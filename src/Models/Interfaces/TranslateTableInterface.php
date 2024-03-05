@@ -8,8 +8,12 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Zemit\Models\Interfaces;
 
-interface TranslateTableInterface extends AbstractInterface
+use Zemit\Models\Abstracts\Interfaces\TranslateTableAbstractInterface;
+
+interface TranslateTableInterface extends TranslateTableAbstractInterface
 {
 }

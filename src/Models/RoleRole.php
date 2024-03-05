@@ -8,39 +8,28 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+ 
 namespace Zemit\Models;
 
-use Zemit\Models\Abstracts\AbstractRoleRole;
+use Zemit\Models\Abstracts\RoleRoleAbstract;
 use Zemit\Models\Interfaces\RoleRoleInterface;
 
 /**
- * @property Role $Parent
- * @method Role getParent(?array $params = null)
- * 
- * @property Role $Child
- * @method Role getChild(?array $params = null)
+ * RoleRole Model
  */
-class RoleRole extends AbstractRoleRole implements RoleRoleInterface
+class RoleRole extends RoleRoleAbstract implements RoleRoleInterface
 {
-    protected $deleted = self::NO;
-    protected $position = self::NO;
-
     public function initialize(): void
     {
         parent::initialize();
-
-        $this->hasOne('parentId', Role::class, 'id', ['alias' => 'Parent']);
-        $this->hasOne('childId', Role::class, 'id', ['alias' => 'Child']);
+        $this->addDefaultRelationships();
     }
 
     public function validation(): bool
     {
         $validator = $this->genericValidation();
-        
-        $this->addUniquenessValidation($validator, ['parentId', 'childId']);
-        $this->addUnsignedIntValidation($validator, 'parentId', false);
-        $this->addUnsignedIntValidation($validator, 'childId', false);
-
+        $this->addDefaultValidations($validator);
         return $this->validate($validator);
     }
 }

@@ -8,8 +8,12 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Zemit\Models\Interfaces;
 
-interface TemplateInterface extends AbstractInterface
+use Zemit\Models\Abstracts\Interfaces\TemplateAbstractInterface;
+
+interface TemplateInterface extends TemplateAbstractInterface
 {
 }

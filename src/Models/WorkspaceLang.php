@@ -8,44 +8,28 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+ 
 namespace Zemit\Models;
 
-use Zemit\Models\Abstracts\AbstractWorkspaceLang;
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-use Phalcon\Filter\Validation\Validator\Uniqueness;
+use Zemit\Models\Abstracts\WorkspaceLangAbstract;
 use Zemit\Models\Interfaces\WorkspaceLangInterface;
 
 /**
- * @property Workspace $Workspace
- * @property Lang $Lang
- * @property Workspace $WorkspaceEntity
- * @property Lang $LangEntity
- *
- * @method Workspace getWorkspace(?array $params = null)
- * @method Lang getLang(?array $params = null)
- * @method Workspace getWorkspaceEntity(?array $params = null)
- * @method Lang getLangEntity(?array $params = null)
+ * WorkspaceLang Model
  */
-class WorkspaceLang extends AbstractWorkspaceLang implements WorkspaceLangInterface
+class WorkspaceLang extends WorkspaceLangAbstract implements WorkspaceLangInterface
 {
-    protected $deleted = self::NO;
-
     public function initialize(): void
     {
         parent::initialize();
-
-        $this->hasOne('workspaceId', Workspace::class, 'id', ['alias' => 'WorkspaceEntity']);
-        $this->hasOne('langId', Lang::class, 'id', ['alias' => 'LangEntity']);
+        $this->addDefaultRelationships();
     }
 
     public function validation(): bool
     {
         $validator = $this->genericValidation();
-
-        $validator->add('workspaceId', new PresenceOf(['message' => $this->_('required')]));
-        $validator->add('langId', new PresenceOf(['message' => $this->_('required')]));
-        $validator->add(['workspaceId', 'langId'], new Uniqueness(['message' => $this->_('not-unique')]));
-
+        $this->addDefaultValidations($validator);
         return $this->validate($validator);
     }
 }

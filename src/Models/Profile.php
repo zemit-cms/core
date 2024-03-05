@@ -8,27 +8,28 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+ 
 namespace Zemit\Models;
 
-use Zemit\Models\Abstracts\AbstractProfile;
+use Zemit\Models\Abstracts\ProfileAbstract;
 use Zemit\Models\Interfaces\ProfileInterface;
 
-class Profile extends AbstractProfile implements ProfileInterface
+/**
+ * Profile Model
+ */
+class Profile extends ProfileAbstract implements ProfileInterface
 {
-    protected $deleted = self::NO;
-
     public function initialize(): void
     {
         parent::initialize();
-        // @todo relationships
+        $this->addDefaultRelationships();
     }
 
     public function validation(): bool
     {
         $validator = $this->genericValidation();
-
-        // @todo validations
-        
+        $this->addDefaultValidations($validator);
         return $this->validate($validator);
     }
 }

@@ -8,27 +8,28 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+ 
 namespace Zemit\Models;
 
-use Zemit\Models\Abstracts\AbstractCategory;
+use Zemit\Models\Abstracts\CategoryAbstract;
 use Zemit\Models\Interfaces\CategoryInterface;
 
-class Category extends AbstractCategory implements CategoryInterface
+/**
+ * Category Model
+ */
+class Category extends CategoryAbstract implements CategoryInterface
 {
-    protected $deleted = self::NO;
-
     public function initialize(): void
     {
         parent::initialize();
-        // @todo relationships
+        $this->addDefaultRelationships();
     }
 
     public function validation(): bool
     {
         $validator = $this->genericValidation();
-        
-        // @todo validations
-        
+        $this->addDefaultValidations($validator);
         return $this->validate($validator);
     }
 }

@@ -8,9 +8,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Models\Behaviors;
+namespace Zemit\Models\Behaviors\Blameable;
 
-interface BlameableDeleteInterface
+interface UpdateInterface
 {
     public function setUpdatedAt($updatedAt);
     public function getUpdatedAt();

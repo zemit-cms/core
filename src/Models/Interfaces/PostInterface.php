@@ -8,8 +8,12 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Zemit\Models\Interfaces;
 
-interface PostInterface extends AbstractInterface
+use Zemit\Models\Abstracts\Interfaces\PostAbstractInterface;
+
+interface PostInterface extends PostAbstractInterface
 {
 }

@@ -8,60 +8,28 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+ 
 namespace Zemit\Models;
 
-use Phalcon\Filter\Validation\Validator\InclusionIn;
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-use Phalcon\Filter\Validation\Validator\StringLength\Max;
-use Zemit\Models\Abstracts\AbstractAudit;
+use Zemit\Models\Abstracts\AuditAbstract;
 use Zemit\Models\Interfaces\AuditInterface;
 
 /**
- * @property AuditDetail[] $AuditDetailList
- * @method AuditDetail[] getAuditDetailList(?array $params = null)
- * 
- * @property User $CreatedByEntity
- * @method User getCreatedByEntity(?array $params = null)
- * 
- * @property User $UpdatedByEntity
- * @method User getUpdatedByEntity(?array $params = null)
+ * Audit Model
  */
-class Audit extends AbstractAudit implements AuditInterface
+class Audit extends AuditAbstract implements AuditInterface
 {
-    public const EVENT_CREATE = 'create';
-    public const EVENT_UPDATE = 'update';
-    public const EVENT_DELETE = 'delete';
-    public const EVENT_RESTORE = 'restore';
-    public const EVENT_OTHER = 'other';
-
-    protected $event = self::EVENT_OTHER;
-    protected $deleted = self::NO;
-
     public function initialize(): void
     {
         parent::initialize();
-
-        $this->hasMany('id', AuditDetail::class, 'auditId', ['alias' => 'AuditDetailList']);
-        $this->belongsTo('createdBy', User::class, 'id', ['alias' => 'CreatedByEntity']);
-        $this->belongsTo('updatedBy', User::class, 'id', ['alias' => 'UpdatedByEntity']);
+        $this->addDefaultRelationships();
     }
 
     public function validation(): bool
     {
         $validator = $this->genericValidation();
-        $eventInclusions = [self::EVENT_CREATE, self::EVENT_UPDATE, self::EVENT_DELETE, self::EVENT_RESTORE, self::EVENT_OTHER];
-
-        $validator->add('model', new PresenceOf(['message' => $this->_('required')]));
-        $validator->add('model', new Max(['max' => 255, 'message' => $this->_('length-exceeded')]));
-
-        $validator->add('table', new PresenceOf(['message' => $this->_('required')]));
-        $validator->add('table', new Max(['max' => 60, 'message' => $this->_('length-exceeded')]));
-
-        $validator->add('primary', new PresenceOf(['message' => $this->_('required')]));
-
-        $validator->add('event', new PresenceOf(['message' => $this->_('required')]));
-        $validator->add('event', new InclusionIn(['message' => $this->_('not-valid'), 'domain' => $eventInclusions]));
-
+        $this->addDefaultValidations($validator);
         return $this->validate($validator);
     }
 }

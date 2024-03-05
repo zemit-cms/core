@@ -10,6 +10,15 @@
 
 namespace Zemit\Models\Behaviors;
 
-interface BlameableInterface extends BlameableCreateInterface, BlameableUpdateInterface, BlameableDeleteInterface, BlameableRestoreInterface
+use Zemit\Models\Behaviors\Blameable\CreatedInterface;
+use Zemit\Models\Behaviors\Blameable\DeletedInterface;
+use Zemit\Models\Behaviors\Blameable\RestoredInterface;
+use Zemit\Models\Behaviors\Blameable\UpdateInterface;
+
+interface BlameableInterface extends
+    CreatedInterface,
+    UpdateInterface,
+    DeletedInterface,
+    RestoredInterface
 {
 }

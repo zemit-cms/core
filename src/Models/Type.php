@@ -8,54 +8,28 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+ 
 namespace Zemit\Models;
 
-use Zemit\Models\Abstracts\AbstractType;
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-use Phalcon\Filter\Validation\Validator\StringLength\Max;
+use Zemit\Models\Abstracts\TypeAbstract;
 use Zemit\Models\Interfaces\TypeInterface;
 
 /**
- * @property UserType[] $UserNode
- * @property User[] $UserList
- * @property GroupType $GroupNode
- * @property Group[] $GroupList
- *
- * @method UserType[] getUserNode(?array $params = null)
- * @method User[] getUserList(?array $params = null)
- * @method GroupType getGroupNode(?array $params = null)
- * @method Group[] getGroupList(?array $params = null)
+ * Type Model
  */
-class Type extends AbstractType implements TypeInterface
+class Type extends TypeAbstract implements TypeInterface
 {
-    protected $deleted = self::NO;
-    protected $position = self::NO;
-
     public function initialize(): void
     {
         parent::initialize();
-
-        // User relationship
-        $this->hasMany('id', UserType::class, 'typeId', ['alias' => 'UserNode']);
-        $this->hasManyToMany('id', UserType::class, 'typeId',
-            'userId', User::class, 'id', ['alias' => 'UserList']);
-
-        // Group relationship
-        $this->hasMany('id', GroupType::class, 'typeId', ['alias' => 'GroupNode']);
-        $this->hasManyToMany('id', GroupType::class, 'typeId',
-            'groupId', Group::class, 'id', ['alias' => 'GroupList']);
+        $this->addDefaultRelationships();
     }
 
     public function validation(): bool
     {
         $validator = $this->genericValidation();
-
-        $validator->add('index', new Max(['max' => 50, 'message' => $this->_('length-exceeded')]));
-        $validator->add('index', new PresenceOf(['message' => $this->_('required')]));
-
-        $validator->add('label', new PresenceOf(['message' => $this->_('required')]));
-        $validator->add('label', new Max(['max' => 100, 'message' => $this->_('length-exceeded')]));
-
+        $this->addDefaultValidations($validator);
         return $this->validate($validator);
     }
 }

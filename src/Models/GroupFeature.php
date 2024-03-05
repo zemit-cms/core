@@ -8,39 +8,28 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+ 
 namespace Zemit\Models;
 
-use Zemit\Models\Abstracts\AbstractGroupFeature;
+use Zemit\Models\Abstracts\GroupFeatureAbstract;
 use Zemit\Models\Interfaces\GroupFeatureInterface;
 
 /**
- * @property Group $Group
- * @method Group getGroup(?array $params = null)
- * 
- * @property Feature $Feature
- * @method Feature getFeature(?array $params = null)
+ * GroupFeature Model
  */
-class GroupFeature extends AbstractGroupFeature implements GroupFeatureInterface
+class GroupFeature extends GroupFeatureAbstract implements GroupFeatureInterface
 {
-    protected $deleted = self::NO;
-    protected $position = self::NO;
-
     public function initialize(): void
     {
         parent::initialize();
-
-        $this->hasOne('groupId', Group::class, 'id', ['alias' => 'Group']);
-        $this->hasOne('featureId', Feature::class, 'id', ['alias' => 'Feature']);
+        $this->addDefaultRelationships();
     }
 
     public function validation(): bool
     {
         $validator = $this->genericValidation();
-
-        $this->addUnsignedIntValidation($validator, 'groupId', false);
-        $this->addUnsignedIntValidation($validator, 'featureId', false);
-        $this->addUniquenessValidation($validator, ['groupId', 'featureId'], false);
-        
+        $this->addDefaultValidations($validator);
         return $this->validate($validator);
     }
 }

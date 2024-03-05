@@ -8,27 +8,28 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+ 
 namespace Zemit\Models;
 
-use Zemit\Models\Abstracts\AbstractJob;
+use Zemit\Models\Abstracts\JobAbstract;
 use Zemit\Models\Interfaces\JobInterface;
 
-class Job extends AbstractJob implements JobInterface
+/**
+ * Job Model
+ */
+class Job extends JobAbstract implements JobInterface
 {
-    protected $deleted = self::NO;
-
     public function initialize(): void
     {
         parent::initialize();
-        // @todo relationships
+        $this->addDefaultRelationships();
     }
 
     public function validation(): bool
     {
         $validator = $this->genericValidation();
-
-        // @todo validations
-
+        $this->addDefaultValidations($validator);
         return $this->validate($validator);
     }
 }

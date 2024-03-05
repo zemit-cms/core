@@ -8,8 +8,12 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Zemit\Models\Interfaces;
 
-interface UserRoleInterface extends AbstractInterface
+use Zemit\Models\Abstracts\Interfaces\UserRoleAbstractInterface;
+
+interface UserRoleInterface extends UserRoleAbstractInterface
 {
 }

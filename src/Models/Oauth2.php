@@ -8,27 +8,28 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+ 
 namespace Zemit\Models;
 
-use Zemit\Models\Abstracts\AbstractOauth2;
+use Zemit\Models\Abstracts\Oauth2Abstract;
 use Zemit\Models\Interfaces\Oauth2Interface;
 
-class OAuth2 extends AbstractOauth2 implements OAuth2Interface
+/**
+ * Oauth2 Model
+ */
+class Oauth2 extends Oauth2Abstract implements Oauth2Interface
 {
-    protected $deleted = self::NO;
-
     public function initialize(): void
     {
         parent::initialize();
-        // @todo relationships
+        $this->addDefaultRelationships();
     }
 
     public function validation(): bool
     {
         $validator = $this->genericValidation();
-
-        // @todo validations
-
+        $this->addDefaultValidations($validator);
         return $this->validate($validator);
     }
 }

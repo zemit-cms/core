@@ -8,52 +8,28 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+ 
 namespace Zemit\Models;
 
-use Phalcon\Filter\Validation\Validator\PresenceOf;
-use Phalcon\Filter\Validation\Validator\StringLength\Max;
-use Zemit\Models\Abstracts\AbstractRole;
+use Zemit\Models\Abstracts\RoleAbstract;
 use Zemit\Models\Interfaces\RoleInterface;
 
 /**
- * @property UserRole[] $UserNode
- * @property User[] $UserList
- * @property Group[] $GroupList
- * @property GroupRole[] $GroupNode
- *
- * @method UserRole[] getUserNode(?array $params = null)
- * @method User[] getUserList(?array $params = null)
- * @method GroupRole[] getGroupNode(?array $params = null)
- * @method Group[] getGroupList(?array $params = null)
+ * Role Model
  */
-class Role extends AbstractRole implements RoleInterface
+class Role extends RoleAbstract implements RoleInterface
 {
-    protected $position = 0;
-    protected $deleted = self::NO;
-
     public function initialize(): void
     {
         parent::initialize();
-
-        $this->hasMany('id', UserRole::class, 'roleId', ['alias' => 'UserNode']);
-        $this->hasManyToMany('id', UserRole::class, 'roleId',
-            'userId', User::class, 'id', ['alias' => 'UserList']);
-
-        $this->hasMany('id', GroupRole::class, 'roleId', ['alias' => 'GroupNode']);
-        $this->hasManyToMany('id', GroupRole::class, 'roleId',
-            'groupId', Group::class, 'id', ['alias' => 'GroupList']);
+        $this->addDefaultRelationships();
     }
 
     public function validation(): bool
     {
         $validator = $this->genericValidation();
-
-        $validator->add('index', new PresenceOf(['message' => $this->_('required')]));
-        $validator->add('index', new Max(['max' => 50, 'message' => $this->_('length-exceeded')]));
-
-        $validator->add('label', new PresenceOf(['message' => $this->_('required')]));
-        $validator->add('label', new Max(['max' => 100, 'message' => $this->_('length-exceeded')]));
-
+        $this->addDefaultValidations($validator);
         return $this->validate($validator);
     }
 }

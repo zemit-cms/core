@@ -8,39 +8,28 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+ 
 namespace Zemit\Models;
 
-use Zemit\Models\Abstracts\AbstractGroupType;
+use Zemit\Models\Abstracts\GroupTypeAbstract;
 use Zemit\Models\Interfaces\GroupTypeInterface;
 
 /**
- * @property Group $Group
- * @method Group getGroup(?array $params = null)
- *
- * @property Type $Type
- * @method Type getType(?array $params = null)
+ * GroupType Model
  */
-class GroupType extends AbstractGroupType implements GroupTypeInterface
+class GroupType extends GroupTypeAbstract implements GroupTypeInterface
 {
-    protected $deleted = self::NO;
-    protected $position = self::NO;
-    
     public function initialize(): void
     {
         parent::initialize();
-        
-        $this->hasOne('groupId', Group::class, 'id', ['alias' => 'Group']);
-        $this->hasOne('typeId', Type::class, 'id', ['alias' => 'Type']);
+        $this->addDefaultRelationships();
     }
-    
+
     public function validation(): bool
     {
         $validator = $this->genericValidation();
-        
-        $this->addUnsignedIntValidation($validator, 'groupId', false);
-        $this->addUnsignedIntValidation($validator, 'typeId', false);
-        $this->addUniquenessValidation($validator, ['groupId', 'typeId'], false);
-        
+        $this->addDefaultValidations($validator);
         return $this->validate($validator);
     }
 }
