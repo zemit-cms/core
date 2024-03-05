@@ -50,13 +50,13 @@ trait Model
             $this->modelNamespaces = $this->loader->getNamespaces();
         }
         
-        return $this->modelNamespaces;
+        return $this->modelNamespaces ?? [];
     }
     
     /**
      * Set the default model namespaces
      */
-    public function setModelNamespaces(?array $modelNamespaces = []): void
+    public function setModelNamespaces(?array $modelNamespaces = null): void
     {
         $this->modelNamespaces = $modelNamespaces;
     }
