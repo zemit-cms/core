@@ -27,7 +27,7 @@ use Zemit\Filter\Validation;
 use Zemit\Models\Interfaces\RoleInterface;
 use Zemit\Models\Interfaces\SessionInterface;
 use Zemit\Models\Interfaces\UserInterface;
-use Zemit\Models\OAuth2;
+use Zemit\Models\Oauth2;
 use Zemit\Models\User;
 use Zemit\Mvc\Model;
 use Zemit\Mvc\Model\Behavior\Security as SecurityBehavior;
@@ -490,27 +490,27 @@ class Identity extends Injectable implements OptionsInterface
         $validation = new Validation();
         $validation->add('userId', new PresenceOf(['message' => 'required']));
         $validation->add('userId', new Numericality(['message' => 'not-numeric']));
-        $validation->validate($params);
+        $messages = $validation->validate($params);
     
         $saved = false;
         
-        if ($session) {
+        // must be an admin
+        if (!count($messages) && $this->hasRole(['admin', 'dev']) && $session) {
             $userId = $session->getUserId();
-            if (!empty($userId) && !empty($params['userId'])) {
-                if ((int)$params['userId'] === (int)$userId) {
-                    return $this->logoutAs();
-                }
-        
-                $asUser = $this->findUserById((int)$params['userId']);
-                if (isset($asUser)) {
-                    if ($this->hasRole(['admin', 'dev'])) {
-                        $session->setAsUserId($userId);
-                        $session->setUserId($params['userId']);
-                    }
-                }
-                else {
-                    $validation->appendMessage(new Message('User Not Found', 'userId', 'PresenceOf', 404));
-                }
+            
+            // himself, return back to normal login
+            if ((int)$params['userId'] === (int)$userId) {
+                return $this->logoutAs();
+            }
+    
+            // login as using id
+            $asUser = $this->findUserById((int)$params['userId']);
+            if (isset($asUser)) {
+                $session->setAsUserId($userId);
+                $session->setUserId($params['userId']);
+            }
+            else {
+                $validation->appendMessage(new Message('User Not Found', 'userId', 'PresenceOf', 404));
             }
     
             $saved = $session->save();
@@ -573,7 +573,7 @@ class Identity extends Injectable implements OptionsInterface
         $loggedInUser = null;
         
         // retrieve and prepare oauth2 entity
-        $oauth2 = OAuth2::findFirst([
+        $oauth2 = Oauth2::findFirst([
             'provider = :provider: and provider_uuid = :providerUuid:',
             'bind' => [
                 'provider' => $this->filter->sanitize($provider, 'string'),
@@ -674,11 +674,12 @@ class Identity extends Injectable implements OptionsInterface
         $saved = null;
         $session = $this->getSession();
         $validation = new Validation();
-        $validation->add('email', new PresenceOf(['message' => 'email is required']));
-        $validation->add('password', new PresenceOf(['message' => 'password is required']));
+        $validation->add('email', new PresenceOf(['message' => 'required']));
+        $validation->add('password', new PresenceOf(['message' => 'required']));
         $validation->validate($params);
+        
         if (!$session) {
-            $validation->appendMessage(new Message('A session is required', 'session', 'PresenceOf', 403));
+            $validation->appendMessage(new Message('required', 'Session Required', 'PresenceOf', 403));
         }
         
         $messages = $validation->getMessages();
@@ -696,7 +697,7 @@ class Identity extends Injectable implements OptionsInterface
                 // password disabled, login failed
                 $validation->appendMessage($loginFailedMessage);
             }
-            elseif (!$user->checkPassword($params['password'])) {
+            elseif (!$user->checkHash($user->getPassword(), $params['password'])) {
                 // password failed, login failed
                 $validation->appendMessage($loginFailedMessage);
             }
@@ -710,7 +711,7 @@ class Identity extends Injectable implements OptionsInterface
                 $loggedInUser = $user;
             }
             
-            $session->setUserId($loggedInUser ? $loggedInUser->getId() : null);
+            $session->setUserId($loggedInUser?->getId());
             $saved = $session->save();
             foreach ($session->getMessages() as $message) {
                 $validation->appendMessage($message);
