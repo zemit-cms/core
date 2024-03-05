@@ -391,6 +391,7 @@ trait Relationship
      */
     protected function postSaveRelatedRecords(AdapterInterface $connection, $related, CollectionInterface $visited): bool
     {
+        assert($this instanceof ModelInterface);
         $nesting = false;
         
         if ($related) {
