@@ -78,7 +78,8 @@ class UserTypeMigration_100 extends Migration
                     'created_at',
                     [
                         'type' => Column::TYPE_DATETIME,
-                        'notNull' => false,
+                        'default' => "NOW()",
+                        'notNull' => true,
                         'after' => 'deleted'
                     ]
                 ),

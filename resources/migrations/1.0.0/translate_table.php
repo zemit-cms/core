@@ -76,7 +76,7 @@ class TranslateTableMigration_100 extends Migration
                     'created_at',
                     [
                         'type' => Column::TYPE_DATETIME,
-                        'default' => "CURRENT_TIMESTAMP",
+                        'default' => "NOW()",
                         'notNull' => true,
                         'after' => 'deleted'
                     ]
