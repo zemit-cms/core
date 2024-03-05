@@ -155,6 +155,7 @@ trait Export
     public function exportXml(array $list, ?string $filename = null, ?array $params = null): bool
     {
         $params ??= $this->getParams();
+        $filename ??= $this->getFilename();
         
         $rootElement = $params['rootElement'] ?? '';
         $replaceSpacesByUnderScoresInKeyNames = $params['replaceSpacesByUnderScoresInKeyNames'] ?? true;
