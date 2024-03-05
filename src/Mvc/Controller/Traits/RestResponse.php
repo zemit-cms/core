@@ -13,7 +13,8 @@ namespace Zemit\Mvc\Controller\Traits;
 
 use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\Dispatcher;
-use Zemit\Http\StatusCode;
+use Zemit\Http\StatusCode as HttpStatusCode;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractCache;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractDebug;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
 use Zemit\Support\Utils;
@@ -22,6 +23,7 @@ trait RestResponse
 {
     use AbstractInjectable;
     use AbstractDebug;
+    use AbstractCache;
     
     /**
      * Set the REST response error
@@ -55,7 +57,7 @@ trait RestResponse
         $statusCode = $this->response->getStatusCode();
         $reasonPhrase = $this->response->getReasonPhrase();
         $code ??= (int)$statusCode ?: 200;
-        $status ??= $reasonPhrase ?: StatusCode::getMessage($code);
+        $status ??= $reasonPhrase ?: HttpStatusCode::getMessage($code);
         
         $view = $this->view->getParamsToView();
         $hash = hash('sha512', json_encode($view)); // @todo store hash in cache layer with response content
