@@ -13,11 +13,13 @@ namespace Zemit\Mvc\Controller\Traits\Actions;
 
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
+use Zemit\Mvc\Controller\Traits\StatusCode;
 
 trait AuthActions
 {
     use AbstractInjectable;
     use AbstractParams;
+    use StatusCode;
     
     /**
      * Create a refresh a session
@@ -46,7 +48,13 @@ trait AuthActions
         $this->view->setVars($this->identity->getJwt());
         $this->view->setVars($this->identity->login($this->getParams()));
         $this->view->setVars($this->identity->getIdentity());
-        return $this->view->getVar('loggedIn') ?? false;
+        $loggedIn = $this->view->getVar('loggedIn') ?? false;
+        
+        if (!$loggedIn) {
+            $this->setStatusCode(401);
+        }
+        
+        return $loggedIn;
     }
 
     /**
