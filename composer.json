@@ -53,7 +53,7 @@
     "preferred-install": "dist",
     "sort-packages": true,
     "allow-plugins": {
-      "funkjedi/composer-include-files": true
+      "funkjedi/composer-include-files": false
     }
   },
   "minimum-stability": "dev",
@@ -68,7 +68,6 @@
     "ext-psr": "*",
     "ext-sodium": "*",
     "docopt/docopt": "^1.0",
-    "funkjedi/composer-include-files": "^1.1",
     "league/flysystem": "^3.23",
     "league/fractal": "^0.20.1",
     "phalcon/cphalcon": "^5.6",
@@ -145,10 +144,6 @@
       "Zemit\\": "src/"
     },
     "files": [
-    ]
-  },
-  "extra": {
-    "include_files": [
       "src/Functions/Dump.php",
       "src/Functions/Array.php",
       "src/Functions/Sprintf.php",
