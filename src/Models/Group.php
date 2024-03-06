@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\GroupAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\GroupInterface;
 /**
  * Class Group
  *
- * This class represents a Group model.
+ * This class represents a Group object.
  * It extends the GroupAbstract class and implements the GroupInterface.
  */
 class Group extends GroupAbstract implements GroupInterface

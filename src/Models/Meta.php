@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\MetaAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\MetaInterface;
 /**
  * Class Meta
  *
- * This class represents a Meta model.
+ * This class represents a Meta object.
  * It extends the MetaAbstract class and implements the MetaInterface.
  */
 class Meta extends MetaAbstract implements MetaInterface

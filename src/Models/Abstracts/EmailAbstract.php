@@ -39,183 +39,214 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
 {
     /**
      * Column: id
-     * @var RawValue|int|null
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * @var mixed
      */
-    public RawValue|int|null $id = null;
-    
+    public $id = null;
+        
     /**
      * Column: template_id
-     * @var RawValue|int|null
+     * Attributes: NotNull | Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $templateId = null;
-    
+    public $templateId = null;
+        
     /**
      * Column: uuid
-     * @var RawValue|string|null
+     * Attributes: NotNull | Size(36) | Type(5)
+     * @var mixed
      */
-    public RawValue|string|null $uuid = null;
-    
+    public $uuid = null;
+        
     /**
      * Column: from
-     * @var RawValue|string|null
+     * Attributes: NotNull | Size(500) | Type(2)
+     * @var mixed
      */
-    public RawValue|string|null $from = null;
-    
+    public $from = null;
+        
     /**
      * Column: to
-     * @var RawValue|string|null
+     * Attributes: NotNull | Type(6)
+     * @var mixed
      */
-    public RawValue|string|null $to = null;
-    
+    public $to = null;
+        
     /**
      * Column: cc
-     * @var RawValue|string|null
+     * Attributes: Type(6)
+     * @var mixed
      */
-    public RawValue|string|null $cc = null;
-    
+    public $cc = null;
+        
     /**
      * Column: bcc
-     * @var RawValue|string|null
+     * Attributes: Type(6)
+     * @var mixed
      */
-    public RawValue|string|null $bcc = null;
-    
+    public $bcc = null;
+        
     /**
      * Column: read_receipt_to
-     * @var RawValue|string|null
+     * Attributes: Type(6)
+     * @var mixed
      */
-    public RawValue|string|null $readReceiptTo = null;
-    
+    public $readReceiptTo = null;
+        
     /**
      * Column: subject
-     * @var RawValue|string|null
+     * Attributes: NotNull | Size(255) | Type(2)
+     * @var mixed
      */
-    public RawValue|string|null $subject = null;
-    
+    public $subject = null;
+        
     /**
      * Column: content
-     * @var RawValue|string|null
+     * Attributes: NotNull | Type(23)
+     * @var mixed
      */
-    public RawValue|string|null $content = null;
-    
+    public $content = null;
+        
     /**
      * Column: meta
-     * @var RawValue|string|null
+     * Attributes: Type(23)
+     * @var mixed
      */
-    public RawValue|string|null $meta = null;
-    
+    public $meta = null;
+        
     /**
      * Column: view_path
-     * @var RawValue|string|null
+     * Attributes: Size(255) | Type(2)
+     * @var mixed
      */
-    public RawValue|string|null $viewPath = null;
-    
+    public $viewPath = null;
+        
     /**
      * Column: sent
-     * @var RawValue|int
+     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * @var mixed
      */
-    public RawValue|int $sent = 0;
-    
+    public $sent = 0;
+        
     /**
      * Column: sent_at
-     * @var RawValue|string|null
+     * Attributes: Type(4)
+     * @var mixed
      */
-    public RawValue|string|null $sentAt = null;
-    
+    public $sentAt = null;
+        
     /**
      * Column: sent_by
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $sentBy = null;
-    
+    public $sentBy = null;
+        
     /**
      * Column: sent_as
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $sentAs = null;
-    
+    public $sentAs = null;
+        
     /**
      * Column: deleted
-     * @var RawValue|int
+     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * @var mixed
      */
-    public RawValue|int $deleted = 0;
-    
+    public $deleted = 0;
+        
     /**
      * Column: created_at
-     * @var RawValue|string|null
+     * Attributes: NotNull | Type(4)
+     * @var mixed
      */
-    public RawValue|string|null $createdAt = null;
-    
+    public $createdAt = null;
+        
     /**
      * Column: created_by
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $createdBy = null;
-    
+    public $createdBy = null;
+        
     /**
      * Column: created_as
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $createdAs = null;
-    
+    public $createdAs = null;
+        
     /**
      * Column: updated_at
-     * @var RawValue|string|null
+     * Attributes: Type(4)
+     * @var mixed
      */
-    public RawValue|string|null $updatedAt = null;
-    
+    public $updatedAt = null;
+        
     /**
      * Column: updated_by
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $updatedBy = null;
-    
+    public $updatedBy = null;
+        
     /**
      * Column: updated_as
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $updatedAs = null;
-    
+    public $updatedAs = null;
+        
     /**
      * Column: deleted_at
-     * @var RawValue|string|null
+     * Attributes: Type(4)
+     * @var mixed
      */
-    public RawValue|string|null $deletedAt = null;
-    
+    public $deletedAt = null;
+        
     /**
      * Column: deleted_by
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $deletedBy = null;
-    
+    public $deletedBy = null;
+        
     /**
      * Column: deleted_as
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $deletedAs = null;
-    
+    public $deletedAs = null;
+        
     /**
      * Column: restored_at
-     * @var RawValue|string|null
+     * Attributes: Type(4)
+     * @var mixed
      */
-    public RawValue|string|null $restoredAt = null;
-    
+    public $restoredAt = null;
+        
     /**
      * Column: restored_by
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $restoredBy = null;
-    
+    public $restoredBy = null;
+        
     /**
      * Column: restored_as
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $restoredAs = null;
+    public $restoredAs = null;
+    
     /**
      * Returns the value of field id
      * Column: id
-     * @return RawValue|int|null
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * @return mixed
      */
-    public function getId(): RawValue|int|null
+    public function getId()
     {
         return $this->id;
     }
@@ -223,10 +254,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field id
      * Column: id 
-     * @param RawValue|int|null $id
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * @param mixed $id
      * @return void
      */
-    public function setId(RawValue|int|null $id): void
+    public function setId($id)
     {
         $this->id = $id;
     }
@@ -234,9 +266,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field templateId
      * Column: template_id
-     * @return RawValue|int|null
+     * Attributes: NotNull | Numeric | Unsigned
+     * @return mixed
      */
-    public function getTemplateId(): RawValue|int|null
+    public function getTemplateId()
     {
         return $this->templateId;
     }
@@ -244,10 +277,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field templateId
      * Column: template_id 
-     * @param RawValue|int|null $templateId
+     * Attributes: NotNull | Numeric | Unsigned
+     * @param mixed $templateId
      * @return void
      */
-    public function setTemplateId(RawValue|int|null $templateId): void
+    public function setTemplateId($templateId)
     {
         $this->templateId = $templateId;
     }
@@ -255,9 +289,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field uuid
      * Column: uuid
-     * @return RawValue|string|null
+     * Attributes: NotNull | Size(36) | Type(5)
+     * @return mixed
      */
-    public function getUuid(): RawValue|string|null
+    public function getUuid()
     {
         return $this->uuid;
     }
@@ -265,10 +300,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field uuid
      * Column: uuid 
-     * @param RawValue|string|null $uuid
+     * Attributes: NotNull | Size(36) | Type(5)
+     * @param mixed $uuid
      * @return void
      */
-    public function setUuid(RawValue|string|null $uuid): void
+    public function setUuid($uuid)
     {
         $this->uuid = $uuid;
     }
@@ -276,9 +312,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field from
      * Column: from
-     * @return RawValue|string|null
+     * Attributes: NotNull | Size(500) | Type(2)
+     * @return mixed
      */
-    public function getFrom(): RawValue|string|null
+    public function getFrom()
     {
         return $this->from;
     }
@@ -286,10 +323,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field from
      * Column: from 
-     * @param RawValue|string|null $from
+     * Attributes: NotNull | Size(500) | Type(2)
+     * @param mixed $from
      * @return void
      */
-    public function setFrom(RawValue|string|null $from): void
+    public function setFrom($from)
     {
         $this->from = $from;
     }
@@ -297,9 +335,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field to
      * Column: to
-     * @return RawValue|string|null
+     * Attributes: NotNull | Type(6)
+     * @return mixed
      */
-    public function getTo(): RawValue|string|null
+    public function getTo()
     {
         return $this->to;
     }
@@ -307,10 +346,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field to
      * Column: to 
-     * @param RawValue|string|null $to
+     * Attributes: NotNull | Type(6)
+     * @param mixed $to
      * @return void
      */
-    public function setTo(RawValue|string|null $to): void
+    public function setTo($to)
     {
         $this->to = $to;
     }
@@ -318,9 +358,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field cc
      * Column: cc
-     * @return RawValue|string|null
+     * Attributes: Type(6)
+     * @return mixed
      */
-    public function getCc(): RawValue|string|null
+    public function getCc()
     {
         return $this->cc;
     }
@@ -328,10 +369,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field cc
      * Column: cc 
-     * @param RawValue|string|null $cc
+     * Attributes: Type(6)
+     * @param mixed $cc
      * @return void
      */
-    public function setCc(RawValue|string|null $cc): void
+    public function setCc($cc)
     {
         $this->cc = $cc;
     }
@@ -339,9 +381,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field bcc
      * Column: bcc
-     * @return RawValue|string|null
+     * Attributes: Type(6)
+     * @return mixed
      */
-    public function getBcc(): RawValue|string|null
+    public function getBcc()
     {
         return $this->bcc;
     }
@@ -349,10 +392,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field bcc
      * Column: bcc 
-     * @param RawValue|string|null $bcc
+     * Attributes: Type(6)
+     * @param mixed $bcc
      * @return void
      */
-    public function setBcc(RawValue|string|null $bcc): void
+    public function setBcc($bcc)
     {
         $this->bcc = $bcc;
     }
@@ -360,9 +404,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field readReceiptTo
      * Column: read_receipt_to
-     * @return RawValue|string|null
+     * Attributes: Type(6)
+     * @return mixed
      */
-    public function getReadReceiptTo(): RawValue|string|null
+    public function getReadReceiptTo()
     {
         return $this->readReceiptTo;
     }
@@ -370,10 +415,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field readReceiptTo
      * Column: read_receipt_to 
-     * @param RawValue|string|null $readReceiptTo
+     * Attributes: Type(6)
+     * @param mixed $readReceiptTo
      * @return void
      */
-    public function setReadReceiptTo(RawValue|string|null $readReceiptTo): void
+    public function setReadReceiptTo($readReceiptTo)
     {
         $this->readReceiptTo = $readReceiptTo;
     }
@@ -381,9 +427,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field subject
      * Column: subject
-     * @return RawValue|string|null
+     * Attributes: NotNull | Size(255) | Type(2)
+     * @return mixed
      */
-    public function getSubject(): RawValue|string|null
+    public function getSubject()
     {
         return $this->subject;
     }
@@ -391,10 +438,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field subject
      * Column: subject 
-     * @param RawValue|string|null $subject
+     * Attributes: NotNull | Size(255) | Type(2)
+     * @param mixed $subject
      * @return void
      */
-    public function setSubject(RawValue|string|null $subject): void
+    public function setSubject($subject)
     {
         $this->subject = $subject;
     }
@@ -402,9 +450,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field content
      * Column: content
-     * @return RawValue|string|null
+     * Attributes: NotNull | Type(23)
+     * @return mixed
      */
-    public function getContent(): RawValue|string|null
+    public function getContent()
     {
         return $this->content;
     }
@@ -412,10 +461,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field content
      * Column: content 
-     * @param RawValue|string|null $content
+     * Attributes: NotNull | Type(23)
+     * @param mixed $content
      * @return void
      */
-    public function setContent(RawValue|string|null $content): void
+    public function setContent($content)
     {
         $this->content = $content;
     }
@@ -423,9 +473,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field meta
      * Column: meta
-     * @return RawValue|string|null
+     * Attributes: Type(23)
+     * @return mixed
      */
-    public function getMeta(): RawValue|string|null
+    public function getMeta()
     {
         return $this->meta;
     }
@@ -433,10 +484,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field meta
      * Column: meta 
-     * @param RawValue|string|null $meta
+     * Attributes: Type(23)
+     * @param mixed $meta
      * @return void
      */
-    public function setMeta(RawValue|string|null $meta): void
+    public function setMeta($meta)
     {
         $this->meta = $meta;
     }
@@ -444,9 +496,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field viewPath
      * Column: view_path
-     * @return RawValue|string|null
+     * Attributes: Size(255) | Type(2)
+     * @return mixed
      */
-    public function getViewPath(): RawValue|string|null
+    public function getViewPath()
     {
         return $this->viewPath;
     }
@@ -454,10 +507,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field viewPath
      * Column: view_path 
-     * @param RawValue|string|null $viewPath
+     * Attributes: Size(255) | Type(2)
+     * @param mixed $viewPath
      * @return void
      */
-    public function setViewPath(RawValue|string|null $viewPath): void
+    public function setViewPath($viewPath)
     {
         $this->viewPath = $viewPath;
     }
@@ -465,9 +519,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field sent
      * Column: sent
-     * @return RawValue|int
+     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * @return mixed
      */
-    public function getSent(): RawValue|int
+    public function getSent()
     {
         return $this->sent;
     }
@@ -475,10 +530,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field sent
      * Column: sent 
-     * @param RawValue|int $sent
+     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * @param mixed $sent
      * @return void
      */
-    public function setSent(RawValue|int $sent): void
+    public function setSent($sent)
     {
         $this->sent = $sent;
     }
@@ -486,9 +542,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field sentAt
      * Column: sent_at
-     * @return RawValue|string|null
+     * Attributes: Type(4)
+     * @return mixed
      */
-    public function getSentAt(): RawValue|string|null
+    public function getSentAt()
     {
         return $this->sentAt;
     }
@@ -496,10 +553,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field sentAt
      * Column: sent_at 
-     * @param RawValue|string|null $sentAt
+     * Attributes: Type(4)
+     * @param mixed $sentAt
      * @return void
      */
-    public function setSentAt(RawValue|string|null $sentAt): void
+    public function setSentAt($sentAt)
     {
         $this->sentAt = $sentAt;
     }
@@ -507,9 +565,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field sentBy
      * Column: sent_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getSentBy(): RawValue|int|null
+    public function getSentBy()
     {
         return $this->sentBy;
     }
@@ -517,10 +576,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field sentBy
      * Column: sent_by 
-     * @param RawValue|int|null $sentBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $sentBy
      * @return void
      */
-    public function setSentBy(RawValue|int|null $sentBy): void
+    public function setSentBy($sentBy)
     {
         $this->sentBy = $sentBy;
     }
@@ -528,9 +588,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field sentAs
      * Column: sent_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getSentAs(): RawValue|int|null
+    public function getSentAs()
     {
         return $this->sentAs;
     }
@@ -538,10 +599,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field sentAs
      * Column: sent_as 
-     * @param RawValue|int|null $sentAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $sentAs
      * @return void
      */
-    public function setSentAs(RawValue|int|null $sentAs): void
+    public function setSentAs($sentAs)
     {
         $this->sentAs = $sentAs;
     }
@@ -549,9 +611,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field deleted
      * Column: deleted
-     * @return RawValue|int
+     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * @return mixed
      */
-    public function getDeleted(): RawValue|int
+    public function getDeleted()
     {
         return $this->deleted;
     }
@@ -559,10 +622,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field deleted
      * Column: deleted 
-     * @param RawValue|int $deleted
+     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * @param mixed $deleted
      * @return void
      */
-    public function setDeleted(RawValue|int $deleted): void
+    public function setDeleted($deleted)
     {
         $this->deleted = $deleted;
     }
@@ -570,9 +634,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string|null
+     * Attributes: NotNull | Type(4)
+     * @return mixed
      */
-    public function getCreatedAt(): RawValue|string|null
+    public function getCreatedAt()
     {
         return $this->createdAt;
     }
@@ -580,10 +645,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string|null $createdAt
+     * Attributes: NotNull | Type(4)
+     * @param mixed $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string|null $createdAt): void
+    public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
     }
@@ -591,9 +657,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field createdBy
      * Column: created_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getCreatedBy(): RawValue|int|null
+    public function getCreatedBy()
     {
         return $this->createdBy;
     }
@@ -601,10 +668,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field createdBy
      * Column: created_by 
-     * @param RawValue|int|null $createdBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $createdBy
      * @return void
      */
-    public function setCreatedBy(RawValue|int|null $createdBy): void
+    public function setCreatedBy($createdBy)
     {
         $this->createdBy = $createdBy;
     }
@@ -612,9 +680,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field createdAs
      * Column: created_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getCreatedAs(): RawValue|int|null
+    public function getCreatedAs()
     {
         return $this->createdAs;
     }
@@ -622,10 +691,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field createdAs
      * Column: created_as 
-     * @param RawValue|int|null $createdAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $createdAs
      * @return void
      */
-    public function setCreatedAs(RawValue|int|null $createdAs): void
+    public function setCreatedAs($createdAs)
     {
         $this->createdAs = $createdAs;
     }
@@ -633,9 +703,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field updatedAt
      * Column: updated_at
-     * @return RawValue|string|null
+     * Attributes: Type(4)
+     * @return mixed
      */
-    public function getUpdatedAt(): RawValue|string|null
+    public function getUpdatedAt()
     {
         return $this->updatedAt;
     }
@@ -643,10 +714,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field updatedAt
      * Column: updated_at 
-     * @param RawValue|string|null $updatedAt
+     * Attributes: Type(4)
+     * @param mixed $updatedAt
      * @return void
      */
-    public function setUpdatedAt(RawValue|string|null $updatedAt): void
+    public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
     }
@@ -654,9 +726,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field updatedBy
      * Column: updated_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getUpdatedBy(): RawValue|int|null
+    public function getUpdatedBy()
     {
         return $this->updatedBy;
     }
@@ -664,10 +737,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field updatedBy
      * Column: updated_by 
-     * @param RawValue|int|null $updatedBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $updatedBy
      * @return void
      */
-    public function setUpdatedBy(RawValue|int|null $updatedBy): void
+    public function setUpdatedBy($updatedBy)
     {
         $this->updatedBy = $updatedBy;
     }
@@ -675,9 +749,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field updatedAs
      * Column: updated_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getUpdatedAs(): RawValue|int|null
+    public function getUpdatedAs()
     {
         return $this->updatedAs;
     }
@@ -685,10 +760,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field updatedAs
      * Column: updated_as 
-     * @param RawValue|int|null $updatedAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $updatedAs
      * @return void
      */
-    public function setUpdatedAs(RawValue|int|null $updatedAs): void
+    public function setUpdatedAs($updatedAs)
     {
         $this->updatedAs = $updatedAs;
     }
@@ -696,9 +772,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field deletedAt
      * Column: deleted_at
-     * @return RawValue|string|null
+     * Attributes: Type(4)
+     * @return mixed
      */
-    public function getDeletedAt(): RawValue|string|null
+    public function getDeletedAt()
     {
         return $this->deletedAt;
     }
@@ -706,10 +783,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field deletedAt
      * Column: deleted_at 
-     * @param RawValue|string|null $deletedAt
+     * Attributes: Type(4)
+     * @param mixed $deletedAt
      * @return void
      */
-    public function setDeletedAt(RawValue|string|null $deletedAt): void
+    public function setDeletedAt($deletedAt)
     {
         $this->deletedAt = $deletedAt;
     }
@@ -717,9 +795,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field deletedBy
      * Column: deleted_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getDeletedBy(): RawValue|int|null
+    public function getDeletedBy()
     {
         return $this->deletedBy;
     }
@@ -727,10 +806,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field deletedBy
      * Column: deleted_by 
-     * @param RawValue|int|null $deletedBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $deletedBy
      * @return void
      */
-    public function setDeletedBy(RawValue|int|null $deletedBy): void
+    public function setDeletedBy($deletedBy)
     {
         $this->deletedBy = $deletedBy;
     }
@@ -738,9 +818,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field deletedAs
      * Column: deleted_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getDeletedAs(): RawValue|int|null
+    public function getDeletedAs()
     {
         return $this->deletedAs;
     }
@@ -748,10 +829,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field deletedAs
      * Column: deleted_as 
-     * @param RawValue|int|null $deletedAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $deletedAs
      * @return void
      */
-    public function setDeletedAs(RawValue|int|null $deletedAs): void
+    public function setDeletedAs($deletedAs)
     {
         $this->deletedAs = $deletedAs;
     }
@@ -759,9 +841,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field restoredAt
      * Column: restored_at
-     * @return RawValue|string|null
+     * Attributes: Type(4)
+     * @return mixed
      */
-    public function getRestoredAt(): RawValue|string|null
+    public function getRestoredAt()
     {
         return $this->restoredAt;
     }
@@ -769,10 +852,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field restoredAt
      * Column: restored_at 
-     * @param RawValue|string|null $restoredAt
+     * Attributes: Type(4)
+     * @param mixed $restoredAt
      * @return void
      */
-    public function setRestoredAt(RawValue|string|null $restoredAt): void
+    public function setRestoredAt($restoredAt)
     {
         $this->restoredAt = $restoredAt;
     }
@@ -780,9 +864,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field restoredBy
      * Column: restored_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getRestoredBy(): RawValue|int|null
+    public function getRestoredBy()
     {
         return $this->restoredBy;
     }
@@ -790,10 +875,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field restoredBy
      * Column: restored_by 
-     * @param RawValue|int|null $restoredBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $restoredBy
      * @return void
      */
-    public function setRestoredBy(RawValue|int|null $restoredBy): void
+    public function setRestoredBy($restoredBy)
     {
         $this->restoredBy = $restoredBy;
     }
@@ -801,9 +887,10 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Returns the value of field restoredAs
      * Column: restored_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getRestoredAs(): RawValue|int|null
+    public function getRestoredAs()
     {
         return $this->restoredAs;
     }
@@ -811,10 +898,11 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     /**
      * Sets the value of field restoredAs
      * Column: restored_as 
-     * @param RawValue|int|null $restoredAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $restoredAs
      * @return void
      */
-    public function setRestoredAs(RawValue|int|null $restoredAs): void
+    public function setRestoredAs($restoredAs)
     {
         $this->restoredAs = $restoredAs;
     }
@@ -835,6 +923,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     
     /**
      * Adds the default validations to the model.
+     * @param Validation|null $validator
      * @return Validation
      */
     public function addDefaultValidations(?Validation $validator = null): Validation

@@ -17,258 +17,292 @@ use Zemit\Mvc\ModelInterface;
 
 interface GroupAbstractInterface extends ModelInterface
 {
-/**
+    /**
      * Returns the value of field id
      * Column: id
-     * @return RawValue|int|null
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * @return mixed
      */
-    public function getId(): RawValue|int|null;
+    public function getId();
     
     /**
      * Sets the value of field id
      * Column: id 
-     * @param RawValue|int|null $id
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * @param mixed $id
      * @return void
      */
-    public function setId(RawValue|int|null $id): void;
+    public function setId($id);
     
     /**
      * Returns the value of field index
      * Column: index
-     * @return RawValue|string|null
+     * Attributes: NotNull | Size(50) | Type(2)
+     * @return mixed
      */
-    public function getIndex(): RawValue|string|null;
+    public function getIndex();
     
     /**
      * Sets the value of field index
      * Column: index 
-     * @param RawValue|string|null $index
+     * Attributes: NotNull | Size(50) | Type(2)
+     * @param mixed $index
      * @return void
      */
-    public function setIndex(RawValue|string|null $index): void;
+    public function setIndex($index);
     
     /**
      * Returns the value of field label
      * Column: label
-     * @return RawValue|string|null
+     * Attributes: NotNull | Size(100) | Type(2)
+     * @return mixed
      */
-    public function getLabel(): RawValue|string|null;
+    public function getLabel();
     
     /**
      * Sets the value of field label
      * Column: label 
-     * @param RawValue|string|null $label
+     * Attributes: NotNull | Size(100) | Type(2)
+     * @param mixed $label
      * @return void
      */
-    public function setLabel(RawValue|string|null $label): void;
+    public function setLabel($label);
     
     /**
      * Returns the value of field position
      * Column: position
-     * @return RawValue|int
+     * Attributes: NotNull | Numeric | Unsigned
+     * @return mixed
      */
-    public function getPosition(): RawValue|int;
+    public function getPosition();
     
     /**
      * Sets the value of field position
      * Column: position 
-     * @param RawValue|int $position
+     * Attributes: NotNull | Numeric | Unsigned
+     * @param mixed $position
      * @return void
      */
-    public function setPosition(RawValue|int $position): void;
+    public function setPosition($position);
     
     /**
      * Returns the value of field deleted
      * Column: deleted
-     * @return RawValue|int
+     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * @return mixed
      */
-    public function getDeleted(): RawValue|int;
+    public function getDeleted();
     
     /**
      * Sets the value of field deleted
      * Column: deleted 
-     * @param RawValue|int $deleted
+     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * @param mixed $deleted
      * @return void
      */
-    public function setDeleted(RawValue|int $deleted): void;
+    public function setDeleted($deleted);
     
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string|null
+     * Attributes: NotNull | Type(4)
+     * @return mixed
      */
-    public function getCreatedAt(): RawValue|string|null;
+    public function getCreatedAt();
     
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string|null $createdAt
+     * Attributes: NotNull | Type(4)
+     * @param mixed $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string|null $createdAt): void;
+    public function setCreatedAt($createdAt);
     
     /**
      * Returns the value of field createdBy
      * Column: created_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getCreatedBy(): RawValue|int|null;
+    public function getCreatedBy();
     
     /**
      * Sets the value of field createdBy
      * Column: created_by 
-     * @param RawValue|int|null $createdBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $createdBy
      * @return void
      */
-    public function setCreatedBy(RawValue|int|null $createdBy): void;
+    public function setCreatedBy($createdBy);
     
     /**
      * Returns the value of field createdAs
      * Column: created_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getCreatedAs(): RawValue|int|null;
+    public function getCreatedAs();
     
     /**
      * Sets the value of field createdAs
      * Column: created_as 
-     * @param RawValue|int|null $createdAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $createdAs
      * @return void
      */
-    public function setCreatedAs(RawValue|int|null $createdAs): void;
+    public function setCreatedAs($createdAs);
     
     /**
      * Returns the value of field updatedAt
      * Column: updated_at
-     * @return RawValue|string|null
+     * Attributes: Type(4)
+     * @return mixed
      */
-    public function getUpdatedAt(): RawValue|string|null;
+    public function getUpdatedAt();
     
     /**
      * Sets the value of field updatedAt
      * Column: updated_at 
-     * @param RawValue|string|null $updatedAt
+     * Attributes: Type(4)
+     * @param mixed $updatedAt
      * @return void
      */
-    public function setUpdatedAt(RawValue|string|null $updatedAt): void;
+    public function setUpdatedAt($updatedAt);
     
     /**
      * Returns the value of field updatedBy
      * Column: updated_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getUpdatedBy(): RawValue|int|null;
+    public function getUpdatedBy();
     
     /**
      * Sets the value of field updatedBy
      * Column: updated_by 
-     * @param RawValue|int|null $updatedBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $updatedBy
      * @return void
      */
-    public function setUpdatedBy(RawValue|int|null $updatedBy): void;
+    public function setUpdatedBy($updatedBy);
     
     /**
      * Returns the value of field updatedAs
      * Column: updated_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getUpdatedAs(): RawValue|int|null;
+    public function getUpdatedAs();
     
     /**
      * Sets the value of field updatedAs
      * Column: updated_as 
-     * @param RawValue|int|null $updatedAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $updatedAs
      * @return void
      */
-    public function setUpdatedAs(RawValue|int|null $updatedAs): void;
+    public function setUpdatedAs($updatedAs);
     
     /**
      * Returns the value of field deletedAt
      * Column: deleted_at
-     * @return RawValue|string|null
+     * Attributes: Type(4)
+     * @return mixed
      */
-    public function getDeletedAt(): RawValue|string|null;
+    public function getDeletedAt();
     
     /**
      * Sets the value of field deletedAt
      * Column: deleted_at 
-     * @param RawValue|string|null $deletedAt
+     * Attributes: Type(4)
+     * @param mixed $deletedAt
      * @return void
      */
-    public function setDeletedAt(RawValue|string|null $deletedAt): void;
+    public function setDeletedAt($deletedAt);
     
     /**
      * Returns the value of field deletedAs
      * Column: deleted_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getDeletedAs(): RawValue|int|null;
+    public function getDeletedAs();
     
     /**
      * Sets the value of field deletedAs
      * Column: deleted_as 
-     * @param RawValue|int|null $deletedAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $deletedAs
      * @return void
      */
-    public function setDeletedAs(RawValue|int|null $deletedAs): void;
+    public function setDeletedAs($deletedAs);
     
     /**
      * Returns the value of field deletedBy
      * Column: deleted_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getDeletedBy(): RawValue|int|null;
+    public function getDeletedBy();
     
     /**
      * Sets the value of field deletedBy
      * Column: deleted_by 
-     * @param RawValue|int|null $deletedBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $deletedBy
      * @return void
      */
-    public function setDeletedBy(RawValue|int|null $deletedBy): void;
+    public function setDeletedBy($deletedBy);
     
     /**
      * Returns the value of field restoredAt
      * Column: restored_at
-     * @return RawValue|string|null
+     * Attributes: Type(4)
+     * @return mixed
      */
-    public function getRestoredAt(): RawValue|string|null;
+    public function getRestoredAt();
     
     /**
      * Sets the value of field restoredAt
      * Column: restored_at 
-     * @param RawValue|string|null $restoredAt
+     * Attributes: Type(4)
+     * @param mixed $restoredAt
      * @return void
      */
-    public function setRestoredAt(RawValue|string|null $restoredAt): void;
+    public function setRestoredAt($restoredAt);
     
     /**
      * Returns the value of field restoredBy
      * Column: restored_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getRestoredBy(): RawValue|int|null;
+    public function getRestoredBy();
     
     /**
      * Sets the value of field restoredBy
      * Column: restored_by 
-     * @param RawValue|int|null $restoredBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $restoredBy
      * @return void
      */
-    public function setRestoredBy(RawValue|int|null $restoredBy): void;
+    public function setRestoredBy($restoredBy);
     
     /**
      * Returns the value of field restoredAs
      * Column: restored_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getRestoredAs(): RawValue|int|null;
+    public function getRestoredAs();
     
     /**
      * Sets the value of field restoredAs
      * Column: restored_as 
-     * @param RawValue|int|null $restoredAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $restoredAs
      * @return void
      */
-    public function setRestoredAs(RawValue|int|null $restoredAs): void;
+    public function setRestoredAs($restoredAs);
 }

@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\Oauth2Abstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\Oauth2Interface;
 /**
  * Class Oauth2
  *
- * This class represents a Oauth2 model.
+ * This class represents a Oauth2 object.
  * It extends the Oauth2Abstract class and implements the Oauth2Interface.
  */
 class Oauth2 extends Oauth2Abstract implements Oauth2Interface

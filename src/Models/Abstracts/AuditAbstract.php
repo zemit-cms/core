@@ -35,141 +35,165 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
 {
     /**
      * Column: id
-     * @var RawValue|int|null
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Type(14)
+     * @var mixed
      */
-    public RawValue|int|null $id = null;
-    
+    public $id = null;
+        
     /**
      * Column: parent_id
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned | Type(14)
+     * @var mixed
      */
-    public RawValue|int|null $parentId = null;
-    
+    public $parentId = null;
+        
     /**
      * Column: model
-     * @var RawValue|string|null
+     * Attributes: NotNull | Size(255) | Type(2)
+     * @var mixed
      */
-    public RawValue|string|null $model = null;
-    
+    public $model = null;
+        
     /**
      * Column: table
-     * @var RawValue|string|null
+     * Attributes: NotNull | Size(60) | Type(2)
+     * @var mixed
      */
-    public RawValue|string|null $table = null;
-    
+    public $table = null;
+        
     /**
      * Column: primary
-     * @var RawValue|int|null
+     * Attributes: NotNull | Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $primary = null;
-    
+    public $primary = null;
+        
     /**
      * Column: event
-     * @var RawValue|string
+     * Attributes: NotNull | Size('create','update','delete','restore','other') | Type(18)
+     * @var mixed
      */
-    public RawValue|string $event = 'other';
-    
+    public $event = 'other';
+        
     /**
      * Column: columns
-     * @var RawValue|string|null
+     * Attributes: Type(6)
+     * @var mixed
      */
-    public RawValue|string|null $columns = null;
-    
+    public $columns = null;
+        
     /**
      * Column: before
-     * @var RawValue|string|null
+     * Attributes: Type(23)
+     * @var mixed
      */
-    public RawValue|string|null $before = null;
-    
+    public $before = null;
+        
     /**
      * Column: after
-     * @var RawValue|string|null
+     * Attributes: Type(23)
+     * @var mixed
      */
-    public RawValue|string|null $after = null;
-    
+    public $after = null;
+        
     /**
      * Column: deleted
-     * @var RawValue|int
+     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * @var mixed
      */
-    public RawValue|int $deleted = 0;
-    
+    public $deleted = 0;
+        
     /**
      * Column: created_at
-     * @var RawValue|string|null
+     * Attributes: NotNull | Type(4)
+     * @var mixed
      */
-    public RawValue|string|null $createdAt = null;
-    
+    public $createdAt = null;
+        
     /**
      * Column: created_by
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $createdBy = null;
-    
+    public $createdBy = null;
+        
     /**
      * Column: created_as
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $createdAs = null;
-    
+    public $createdAs = null;
+        
     /**
      * Column: updated_at
-     * @var RawValue|string|null
+     * Attributes: Type(4)
+     * @var mixed
      */
-    public RawValue|string|null $updatedAt = null;
-    
+    public $updatedAt = null;
+        
     /**
      * Column: updated_by
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $updatedBy = null;
-    
+    public $updatedBy = null;
+        
     /**
      * Column: updated_as
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $updatedAs = null;
-    
+    public $updatedAs = null;
+        
     /**
      * Column: deleted_at
-     * @var RawValue|string|null
+     * Attributes: Type(4)
+     * @var mixed
      */
-    public RawValue|string|null $deletedAt = null;
-    
+    public $deletedAt = null;
+        
     /**
      * Column: deleted_as
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $deletedAs = null;
-    
+    public $deletedAs = null;
+        
     /**
      * Column: deleted_by
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $deletedBy = null;
-    
+    public $deletedBy = null;
+        
     /**
      * Column: restored_at
-     * @var RawValue|string|null
+     * Attributes: Type(4)
+     * @var mixed
      */
-    public RawValue|string|null $restoredAt = null;
-    
+    public $restoredAt = null;
+        
     /**
      * Column: restored_by
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $restoredBy = null;
-    
+    public $restoredBy = null;
+        
     /**
      * Column: restored_as
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $restoredAs = null;
+    public $restoredAs = null;
+    
     /**
      * Returns the value of field id
      * Column: id
-     * @return RawValue|int|null
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Type(14)
+     * @return mixed
      */
-    public function getId(): RawValue|int|null
+    public function getId()
     {
         return $this->id;
     }
@@ -177,10 +201,11 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field id
      * Column: id 
-     * @param RawValue|int|null $id
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Type(14)
+     * @param mixed $id
      * @return void
      */
-    public function setId(RawValue|int|null $id): void
+    public function setId($id)
     {
         $this->id = $id;
     }
@@ -188,9 +213,10 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Returns the value of field parentId
      * Column: parent_id
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned | Type(14)
+     * @return mixed
      */
-    public function getParentId(): RawValue|int|null
+    public function getParentId()
     {
         return $this->parentId;
     }
@@ -198,10 +224,11 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field parentId
      * Column: parent_id 
-     * @param RawValue|int|null $parentId
+     * Attributes: Numeric | Unsigned | Type(14)
+     * @param mixed $parentId
      * @return void
      */
-    public function setParentId(RawValue|int|null $parentId): void
+    public function setParentId($parentId)
     {
         $this->parentId = $parentId;
     }
@@ -209,9 +236,10 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Returns the value of field model
      * Column: model
-     * @return RawValue|string|null
+     * Attributes: NotNull | Size(255) | Type(2)
+     * @return mixed
      */
-    public function getModel(): RawValue|string|null
+    public function getModel()
     {
         return $this->model;
     }
@@ -219,10 +247,11 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field model
      * Column: model 
-     * @param RawValue|string|null $model
+     * Attributes: NotNull | Size(255) | Type(2)
+     * @param mixed $model
      * @return void
      */
-    public function setModel(RawValue|string|null $model): void
+    public function setModel($model)
     {
         $this->model = $model;
     }
@@ -230,9 +259,10 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Returns the value of field table
      * Column: table
-     * @return RawValue|string|null
+     * Attributes: NotNull | Size(60) | Type(2)
+     * @return mixed
      */
-    public function getTable(): RawValue|string|null
+    public function getTable()
     {
         return $this->table;
     }
@@ -240,10 +270,11 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field table
      * Column: table 
-     * @param RawValue|string|null $table
+     * Attributes: NotNull | Size(60) | Type(2)
+     * @param mixed $table
      * @return void
      */
-    public function setTable(RawValue|string|null $table): void
+    public function setTable($table)
     {
         $this->table = $table;
     }
@@ -251,9 +282,10 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Returns the value of field primary
      * Column: primary
-     * @return RawValue|int|null
+     * Attributes: NotNull | Numeric | Unsigned
+     * @return mixed
      */
-    public function getPrimary(): RawValue|int|null
+    public function getPrimary()
     {
         return $this->primary;
     }
@@ -261,10 +293,11 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field primary
      * Column: primary 
-     * @param RawValue|int|null $primary
+     * Attributes: NotNull | Numeric | Unsigned
+     * @param mixed $primary
      * @return void
      */
-    public function setPrimary(RawValue|int|null $primary): void
+    public function setPrimary($primary)
     {
         $this->primary = $primary;
     }
@@ -272,9 +305,10 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Returns the value of field event
      * Column: event
-     * @return RawValue|string
+     * Attributes: NotNull | Size('create','update','delete','restore','other') | Type(18)
+     * @return mixed
      */
-    public function getEvent(): RawValue|string
+    public function getEvent()
     {
         return $this->event;
     }
@@ -282,10 +316,11 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field event
      * Column: event 
-     * @param RawValue|string $event
+     * Attributes: NotNull | Size('create','update','delete','restore','other') | Type(18)
+     * @param mixed $event
      * @return void
      */
-    public function setEvent(RawValue|string $event): void
+    public function setEvent($event)
     {
         $this->event = $event;
     }
@@ -293,9 +328,10 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Returns the value of field columns
      * Column: columns
-     * @return RawValue|string|null
+     * Attributes: Type(6)
+     * @return mixed
      */
-    public function getColumns(): RawValue|string|null
+    public function getColumns()
     {
         return $this->columns;
     }
@@ -303,10 +339,11 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field columns
      * Column: columns 
-     * @param RawValue|string|null $columns
+     * Attributes: Type(6)
+     * @param mixed $columns
      * @return void
      */
-    public function setColumns(RawValue|string|null $columns): void
+    public function setColumns($columns)
     {
         $this->columns = $columns;
     }
@@ -314,9 +351,10 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Returns the value of field before
      * Column: before
-     * @return RawValue|string|null
+     * Attributes: Type(23)
+     * @return mixed
      */
-    public function getBefore(): RawValue|string|null
+    public function getBefore()
     {
         return $this->before;
     }
@@ -324,10 +362,11 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field before
      * Column: before 
-     * @param RawValue|string|null $before
+     * Attributes: Type(23)
+     * @param mixed $before
      * @return void
      */
-    public function setBefore(RawValue|string|null $before): void
+    public function setBefore($before)
     {
         $this->before = $before;
     }
@@ -335,9 +374,10 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Returns the value of field after
      * Column: after
-     * @return RawValue|string|null
+     * Attributes: Type(23)
+     * @return mixed
      */
-    public function getAfter(): RawValue|string|null
+    public function getAfter()
     {
         return $this->after;
     }
@@ -345,10 +385,11 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field after
      * Column: after 
-     * @param RawValue|string|null $after
+     * Attributes: Type(23)
+     * @param mixed $after
      * @return void
      */
-    public function setAfter(RawValue|string|null $after): void
+    public function setAfter($after)
     {
         $this->after = $after;
     }
@@ -356,9 +397,10 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Returns the value of field deleted
      * Column: deleted
-     * @return RawValue|int
+     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * @return mixed
      */
-    public function getDeleted(): RawValue|int
+    public function getDeleted()
     {
         return $this->deleted;
     }
@@ -366,10 +408,11 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field deleted
      * Column: deleted 
-     * @param RawValue|int $deleted
+     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * @param mixed $deleted
      * @return void
      */
-    public function setDeleted(RawValue|int $deleted): void
+    public function setDeleted($deleted)
     {
         $this->deleted = $deleted;
     }
@@ -377,9 +420,10 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string|null
+     * Attributes: NotNull | Type(4)
+     * @return mixed
      */
-    public function getCreatedAt(): RawValue|string|null
+    public function getCreatedAt()
     {
         return $this->createdAt;
     }
@@ -387,10 +431,11 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string|null $createdAt
+     * Attributes: NotNull | Type(4)
+     * @param mixed $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string|null $createdAt): void
+    public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
     }
@@ -398,9 +443,10 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Returns the value of field createdBy
      * Column: created_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getCreatedBy(): RawValue|int|null
+    public function getCreatedBy()
     {
         return $this->createdBy;
     }
@@ -408,10 +454,11 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field createdBy
      * Column: created_by 
-     * @param RawValue|int|null $createdBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $createdBy
      * @return void
      */
-    public function setCreatedBy(RawValue|int|null $createdBy): void
+    public function setCreatedBy($createdBy)
     {
         $this->createdBy = $createdBy;
     }
@@ -419,9 +466,10 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Returns the value of field createdAs
      * Column: created_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getCreatedAs(): RawValue|int|null
+    public function getCreatedAs()
     {
         return $this->createdAs;
     }
@@ -429,10 +477,11 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field createdAs
      * Column: created_as 
-     * @param RawValue|int|null $createdAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $createdAs
      * @return void
      */
-    public function setCreatedAs(RawValue|int|null $createdAs): void
+    public function setCreatedAs($createdAs)
     {
         $this->createdAs = $createdAs;
     }
@@ -440,9 +489,10 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Returns the value of field updatedAt
      * Column: updated_at
-     * @return RawValue|string|null
+     * Attributes: Type(4)
+     * @return mixed
      */
-    public function getUpdatedAt(): RawValue|string|null
+    public function getUpdatedAt()
     {
         return $this->updatedAt;
     }
@@ -450,10 +500,11 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field updatedAt
      * Column: updated_at 
-     * @param RawValue|string|null $updatedAt
+     * Attributes: Type(4)
+     * @param mixed $updatedAt
      * @return void
      */
-    public function setUpdatedAt(RawValue|string|null $updatedAt): void
+    public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
     }
@@ -461,9 +512,10 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Returns the value of field updatedBy
      * Column: updated_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getUpdatedBy(): RawValue|int|null
+    public function getUpdatedBy()
     {
         return $this->updatedBy;
     }
@@ -471,10 +523,11 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field updatedBy
      * Column: updated_by 
-     * @param RawValue|int|null $updatedBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $updatedBy
      * @return void
      */
-    public function setUpdatedBy(RawValue|int|null $updatedBy): void
+    public function setUpdatedBy($updatedBy)
     {
         $this->updatedBy = $updatedBy;
     }
@@ -482,9 +535,10 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Returns the value of field updatedAs
      * Column: updated_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getUpdatedAs(): RawValue|int|null
+    public function getUpdatedAs()
     {
         return $this->updatedAs;
     }
@@ -492,10 +546,11 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field updatedAs
      * Column: updated_as 
-     * @param RawValue|int|null $updatedAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $updatedAs
      * @return void
      */
-    public function setUpdatedAs(RawValue|int|null $updatedAs): void
+    public function setUpdatedAs($updatedAs)
     {
         $this->updatedAs = $updatedAs;
     }
@@ -503,9 +558,10 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Returns the value of field deletedAt
      * Column: deleted_at
-     * @return RawValue|string|null
+     * Attributes: Type(4)
+     * @return mixed
      */
-    public function getDeletedAt(): RawValue|string|null
+    public function getDeletedAt()
     {
         return $this->deletedAt;
     }
@@ -513,10 +569,11 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field deletedAt
      * Column: deleted_at 
-     * @param RawValue|string|null $deletedAt
+     * Attributes: Type(4)
+     * @param mixed $deletedAt
      * @return void
      */
-    public function setDeletedAt(RawValue|string|null $deletedAt): void
+    public function setDeletedAt($deletedAt)
     {
         $this->deletedAt = $deletedAt;
     }
@@ -524,9 +581,10 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Returns the value of field deletedAs
      * Column: deleted_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getDeletedAs(): RawValue|int|null
+    public function getDeletedAs()
     {
         return $this->deletedAs;
     }
@@ -534,10 +592,11 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field deletedAs
      * Column: deleted_as 
-     * @param RawValue|int|null $deletedAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $deletedAs
      * @return void
      */
-    public function setDeletedAs(RawValue|int|null $deletedAs): void
+    public function setDeletedAs($deletedAs)
     {
         $this->deletedAs = $deletedAs;
     }
@@ -545,9 +604,10 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Returns the value of field deletedBy
      * Column: deleted_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getDeletedBy(): RawValue|int|null
+    public function getDeletedBy()
     {
         return $this->deletedBy;
     }
@@ -555,10 +615,11 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field deletedBy
      * Column: deleted_by 
-     * @param RawValue|int|null $deletedBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $deletedBy
      * @return void
      */
-    public function setDeletedBy(RawValue|int|null $deletedBy): void
+    public function setDeletedBy($deletedBy)
     {
         $this->deletedBy = $deletedBy;
     }
@@ -566,9 +627,10 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Returns the value of field restoredAt
      * Column: restored_at
-     * @return RawValue|string|null
+     * Attributes: Type(4)
+     * @return mixed
      */
-    public function getRestoredAt(): RawValue|string|null
+    public function getRestoredAt()
     {
         return $this->restoredAt;
     }
@@ -576,10 +638,11 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field restoredAt
      * Column: restored_at 
-     * @param RawValue|string|null $restoredAt
+     * Attributes: Type(4)
+     * @param mixed $restoredAt
      * @return void
      */
-    public function setRestoredAt(RawValue|string|null $restoredAt): void
+    public function setRestoredAt($restoredAt)
     {
         $this->restoredAt = $restoredAt;
     }
@@ -587,9 +650,10 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Returns the value of field restoredBy
      * Column: restored_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getRestoredBy(): RawValue|int|null
+    public function getRestoredBy()
     {
         return $this->restoredBy;
     }
@@ -597,10 +661,11 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field restoredBy
      * Column: restored_by 
-     * @param RawValue|int|null $restoredBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $restoredBy
      * @return void
      */
-    public function setRestoredBy(RawValue|int|null $restoredBy): void
+    public function setRestoredBy($restoredBy)
     {
         $this->restoredBy = $restoredBy;
     }
@@ -608,9 +673,10 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Returns the value of field restoredAs
      * Column: restored_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getRestoredAs(): RawValue|int|null
+    public function getRestoredAs()
     {
         return $this->restoredAs;
     }
@@ -618,10 +684,11 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field restoredAs
      * Column: restored_as 
-     * @param RawValue|int|null $restoredAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $restoredAs
      * @return void
      */
-    public function setRestoredAs(RawValue|int|null $restoredAs): void
+    public function setRestoredAs($restoredAs)
     {
         $this->restoredAs = $restoredAs;
     }
@@ -639,6 +706,7 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     
     /**
      * Adds the default validations to the model.
+     * @param Validation|null $validator
      * @return Validation
      */
     public function addDefaultValidations(?Validation $validator = null): Validation

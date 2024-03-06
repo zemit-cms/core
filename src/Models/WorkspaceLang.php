@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\WorkspaceLangAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\WorkspaceLangInterface;
 /**
  * Class WorkspaceLang
  *
- * This class represents a WorkspaceLang model.
+ * This class represents a WorkspaceLang object.
  * It extends the WorkspaceLangAbstract class and implements the WorkspaceLangInterface.
  */
 class WorkspaceLang extends WorkspaceLangAbstract implements WorkspaceLangInterface

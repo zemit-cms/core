@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\UserGroupAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\UserGroupInterface;
 /**
  * Class UserGroup
  *
- * This class represents a UserGroup model.
+ * This class represents a UserGroup object.
  * It extends the UserGroupAbstract class and implements the UserGroupInterface.
  */
 class UserGroup extends UserGroupAbstract implements UserGroupInterface

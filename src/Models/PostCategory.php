@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\PostCategoryAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\PostCategoryInterface;
 /**
  * Class PostCategory
  *
- * This class represents a PostCategory model.
+ * This class represents a PostCategory object.
  * It extends the PostCategoryAbstract class and implements the PostCategoryInterface.
  */
 class PostCategory extends PostCategoryAbstract implements PostCategoryInterface

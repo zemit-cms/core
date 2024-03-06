@@ -17,63 +17,71 @@ use Zemit\Mvc\ModelInterface;
 
 interface PhalconMigrationsAbstractInterface extends ModelInterface
 {
-/**
+    /**
      * Returns the value of field id
      * Column: id
-     * @return RawValue|int|null
+     * Attributes: First | NotNull | Numeric | Unsigned | AutoIncrement
+     * @return mixed
      */
-    public function getId(): RawValue|int|null;
+    public function getId();
     
     /**
      * Sets the value of field id
      * Column: id 
-     * @param RawValue|int|null $id
+     * Attributes: First | NotNull | Numeric | Unsigned | AutoIncrement
+     * @param mixed $id
      * @return void
      */
-    public function setId(RawValue|int|null $id): void;
+    public function setId($id);
     
     /**
      * Returns the value of field version
      * Column: version
-     * @return RawValue|string|null
+     * Attributes: Primary | NotNull | Size(255) | Type(2)
+     * @return mixed
      */
-    public function getVersion(): RawValue|string|null;
+    public function getVersion();
     
     /**
      * Sets the value of field version
      * Column: version 
-     * @param RawValue|string|null $version
+     * Attributes: Primary | NotNull | Size(255) | Type(2)
+     * @param mixed $version
      * @return void
      */
-    public function setVersion(RawValue|string|null $version): void;
+    public function setVersion($version);
     
     /**
      * Returns the value of field startTime
      * Column: start_time
-     * @return RawValue|int
+     * Attributes: NotNull | Type(17)
+     * @return mixed
      */
-    public function getStartTime(): RawValue|int;
+    public function getStartTime();
     
     /**
      * Sets the value of field startTime
      * Column: start_time 
-     * @param RawValue|int $startTime
+     * Attributes: NotNull | Type(17)
+     * @param mixed $startTime
      * @return void
      */
-    public function setStartTime(RawValue|int $startTime): void;
+    public function setStartTime($startTime);
     
     /**
      * Returns the value of field endTime
      * Column: end_time
-     * @return RawValue|int
+     * Attributes: NotNull | Type(17)
+     * @return mixed
      */
-    public function getEndTime(): RawValue|int;
+    public function getEndTime();
     
     /**
      * Sets the value of field endTime
      * Column: end_time 
-     * @param RawValue|int $endTime
+     * Attributes: NotNull | Type(17)
+     * @param mixed $endTime
      * @return void
      */
-    public function setEndTime(RawValue|int $endTime): void;
+    public function setEndTime($endTime);
 }

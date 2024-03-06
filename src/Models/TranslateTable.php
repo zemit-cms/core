@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\TranslateTableAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\TranslateTableInterface;
 /**
  * Class TranslateTable
  *
- * This class represents a TranslateTable model.
+ * This class represents a TranslateTable object.
  * It extends the TranslateTableAbstract class and implements the TranslateTableInterface.
  */
 class TranslateTable extends TranslateTableAbstract implements TranslateTableInterface

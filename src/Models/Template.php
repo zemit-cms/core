@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\TemplateAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\TemplateInterface;
 /**
  * Class Template
  *
- * This class represents a Template model.
+ * This class represents a Template object.
  * It extends the TemplateAbstract class and implements the TemplateInterface.
  */
 class Template extends TemplateAbstract implements TemplateInterface

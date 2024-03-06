@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\TableAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\TableInterface;
 /**
  * Class Table
  *
- * This class represents a Table model.
+ * This class represents a Table object.
  * It extends the TableAbstract class and implements the TableInterface.
  */
 class Table extends TableAbstract implements TableInterface

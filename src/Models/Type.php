@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\TypeAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\TypeInterface;
 /**
  * Class Type
  *
- * This class represents a Type model.
+ * This class represents a Type object.
  * It extends the TypeAbstract class and implements the TypeInterface.
  */
 class Type extends TypeAbstract implements TypeInterface

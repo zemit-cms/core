@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\SiteAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\SiteInterface;
 /**
  * Class Site
  *
- * This class represents a Site model.
+ * This class represents a Site object.
  * It extends the SiteAbstract class and implements the SiteInterface.
  */
 class Site extends SiteAbstract implements SiteInterface

@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\LogAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\LogInterface;
 /**
  * Class Log
  *
- * This class represents a Log model.
+ * This class represents a Log object.
  * It extends the LogAbstract class and implements the LogInterface.
  */
 class Log extends LogAbstract implements LogInterface

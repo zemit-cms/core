@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\EmailAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\EmailInterface;
 /**
  * Class Email
  *
- * This class represents a Email model.
+ * This class represents a Email object.
  * It extends the EmailAbstract class and implements the EmailInterface.
  */
 class Email extends EmailAbstract implements EmailInterface

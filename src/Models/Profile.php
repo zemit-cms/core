@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\ProfileAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\ProfileInterface;
 /**
  * Class Profile
  *
- * This class represents a Profile model.
+ * This class represents a Profile object.
  * It extends the ProfileAbstract class and implements the ProfileInterface.
  */
 class Profile extends ProfileAbstract implements ProfileInterface

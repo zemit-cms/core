@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\CategoryAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\CategoryInterface;
 /**
  * Class Category
  *
- * This class represents a Category model.
+ * This class represents a Category object.
  * It extends the CategoryAbstract class and implements the CategoryInterface.
  */
 class Category extends CategoryAbstract implements CategoryInterface

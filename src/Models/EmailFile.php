@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\EmailFileAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\EmailFileInterface;
 /**
  * Class EmailFile
  *
- * This class represents a EmailFile model.
+ * This class represents a EmailFile object.
  * It extends the EmailFileAbstract class and implements the EmailFileInterface.
  */
 class EmailFile extends EmailFileAbstract implements EmailFileInterface

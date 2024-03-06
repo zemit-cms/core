@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\JobAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\JobInterface;
 /**
  * Class Job
  *
- * This class represents a Job model.
+ * This class represents a Job object.
  * It extends the JobAbstract class and implements the JobInterface.
  */
 class Job extends JobAbstract implements JobInterface

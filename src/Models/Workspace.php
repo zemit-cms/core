@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\WorkspaceAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\WorkspaceInterface;
 /**
  * Class Workspace
  *
- * This class represents a Workspace model.
+ * This class represents a Workspace object.
  * It extends the WorkspaceAbstract class and implements the WorkspaceInterface.
  */
 class Workspace extends WorkspaceAbstract implements WorkspaceInterface

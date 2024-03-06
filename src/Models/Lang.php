@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\LangAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\LangInterface;
 /**
  * Class Lang
  *
- * This class represents a Lang model.
+ * This class represents a Lang object.
  * It extends the LangAbstract class and implements the LangInterface.
  */
 class Lang extends LangAbstract implements LangInterface

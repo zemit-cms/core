@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\FeatureAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\FeatureInterface;
 /**
  * Class Feature
  *
- * This class represents a Feature model.
+ * This class represents a Feature object.
  * It extends the FeatureAbstract class and implements the FeatureInterface.
  */
 class Feature extends FeatureAbstract implements FeatureInterface

@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\PhalconMigrationsAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\PhalconMigrationsInterface;
 /**
  * Class PhalconMigrations
  *
- * This class represents a PhalconMigrations model.
+ * This class represents a PhalconMigrations object.
  * It extends the PhalconMigrationsAbstract class and implements the PhalconMigrationsInterface.
  */
 class PhalconMigrations extends PhalconMigrationsAbstract implements PhalconMigrationsInterface

@@ -17,438 +17,496 @@ use Zemit\Mvc\ModelInterface;
 
 interface EmailAbstractInterface extends ModelInterface
 {
-/**
+    /**
      * Returns the value of field id
      * Column: id
-     * @return RawValue|int|null
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * @return mixed
      */
-    public function getId(): RawValue|int|null;
+    public function getId();
     
     /**
      * Sets the value of field id
      * Column: id 
-     * @param RawValue|int|null $id
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * @param mixed $id
      * @return void
      */
-    public function setId(RawValue|int|null $id): void;
+    public function setId($id);
     
     /**
      * Returns the value of field templateId
      * Column: template_id
-     * @return RawValue|int|null
+     * Attributes: NotNull | Numeric | Unsigned
+     * @return mixed
      */
-    public function getTemplateId(): RawValue|int|null;
+    public function getTemplateId();
     
     /**
      * Sets the value of field templateId
      * Column: template_id 
-     * @param RawValue|int|null $templateId
+     * Attributes: NotNull | Numeric | Unsigned
+     * @param mixed $templateId
      * @return void
      */
-    public function setTemplateId(RawValue|int|null $templateId): void;
+    public function setTemplateId($templateId);
     
     /**
      * Returns the value of field uuid
      * Column: uuid
-     * @return RawValue|string|null
+     * Attributes: NotNull | Size(36) | Type(5)
+     * @return mixed
      */
-    public function getUuid(): RawValue|string|null;
+    public function getUuid();
     
     /**
      * Sets the value of field uuid
      * Column: uuid 
-     * @param RawValue|string|null $uuid
+     * Attributes: NotNull | Size(36) | Type(5)
+     * @param mixed $uuid
      * @return void
      */
-    public function setUuid(RawValue|string|null $uuid): void;
+    public function setUuid($uuid);
     
     /**
      * Returns the value of field from
      * Column: from
-     * @return RawValue|string|null
+     * Attributes: NotNull | Size(500) | Type(2)
+     * @return mixed
      */
-    public function getFrom(): RawValue|string|null;
+    public function getFrom();
     
     /**
      * Sets the value of field from
      * Column: from 
-     * @param RawValue|string|null $from
+     * Attributes: NotNull | Size(500) | Type(2)
+     * @param mixed $from
      * @return void
      */
-    public function setFrom(RawValue|string|null $from): void;
+    public function setFrom($from);
     
     /**
      * Returns the value of field to
      * Column: to
-     * @return RawValue|string|null
+     * Attributes: NotNull | Type(6)
+     * @return mixed
      */
-    public function getTo(): RawValue|string|null;
+    public function getTo();
     
     /**
      * Sets the value of field to
      * Column: to 
-     * @param RawValue|string|null $to
+     * Attributes: NotNull | Type(6)
+     * @param mixed $to
      * @return void
      */
-    public function setTo(RawValue|string|null $to): void;
+    public function setTo($to);
     
     /**
      * Returns the value of field cc
      * Column: cc
-     * @return RawValue|string|null
+     * Attributes: Type(6)
+     * @return mixed
      */
-    public function getCc(): RawValue|string|null;
+    public function getCc();
     
     /**
      * Sets the value of field cc
      * Column: cc 
-     * @param RawValue|string|null $cc
+     * Attributes: Type(6)
+     * @param mixed $cc
      * @return void
      */
-    public function setCc(RawValue|string|null $cc): void;
+    public function setCc($cc);
     
     /**
      * Returns the value of field bcc
      * Column: bcc
-     * @return RawValue|string|null
+     * Attributes: Type(6)
+     * @return mixed
      */
-    public function getBcc(): RawValue|string|null;
+    public function getBcc();
     
     /**
      * Sets the value of field bcc
      * Column: bcc 
-     * @param RawValue|string|null $bcc
+     * Attributes: Type(6)
+     * @param mixed $bcc
      * @return void
      */
-    public function setBcc(RawValue|string|null $bcc): void;
+    public function setBcc($bcc);
     
     /**
      * Returns the value of field readReceiptTo
      * Column: read_receipt_to
-     * @return RawValue|string|null
+     * Attributes: Type(6)
+     * @return mixed
      */
-    public function getReadReceiptTo(): RawValue|string|null;
+    public function getReadReceiptTo();
     
     /**
      * Sets the value of field readReceiptTo
      * Column: read_receipt_to 
-     * @param RawValue|string|null $readReceiptTo
+     * Attributes: Type(6)
+     * @param mixed $readReceiptTo
      * @return void
      */
-    public function setReadReceiptTo(RawValue|string|null $readReceiptTo): void;
+    public function setReadReceiptTo($readReceiptTo);
     
     /**
      * Returns the value of field subject
      * Column: subject
-     * @return RawValue|string|null
+     * Attributes: NotNull | Size(255) | Type(2)
+     * @return mixed
      */
-    public function getSubject(): RawValue|string|null;
+    public function getSubject();
     
     /**
      * Sets the value of field subject
      * Column: subject 
-     * @param RawValue|string|null $subject
+     * Attributes: NotNull | Size(255) | Type(2)
+     * @param mixed $subject
      * @return void
      */
-    public function setSubject(RawValue|string|null $subject): void;
+    public function setSubject($subject);
     
     /**
      * Returns the value of field content
      * Column: content
-     * @return RawValue|string|null
+     * Attributes: NotNull | Type(23)
+     * @return mixed
      */
-    public function getContent(): RawValue|string|null;
+    public function getContent();
     
     /**
      * Sets the value of field content
      * Column: content 
-     * @param RawValue|string|null $content
+     * Attributes: NotNull | Type(23)
+     * @param mixed $content
      * @return void
      */
-    public function setContent(RawValue|string|null $content): void;
+    public function setContent($content);
     
     /**
      * Returns the value of field meta
      * Column: meta
-     * @return RawValue|string|null
+     * Attributes: Type(23)
+     * @return mixed
      */
-    public function getMeta(): RawValue|string|null;
+    public function getMeta();
     
     /**
      * Sets the value of field meta
      * Column: meta 
-     * @param RawValue|string|null $meta
+     * Attributes: Type(23)
+     * @param mixed $meta
      * @return void
      */
-    public function setMeta(RawValue|string|null $meta): void;
+    public function setMeta($meta);
     
     /**
      * Returns the value of field viewPath
      * Column: view_path
-     * @return RawValue|string|null
+     * Attributes: Size(255) | Type(2)
+     * @return mixed
      */
-    public function getViewPath(): RawValue|string|null;
+    public function getViewPath();
     
     /**
      * Sets the value of field viewPath
      * Column: view_path 
-     * @param RawValue|string|null $viewPath
+     * Attributes: Size(255) | Type(2)
+     * @param mixed $viewPath
      * @return void
      */
-    public function setViewPath(RawValue|string|null $viewPath): void;
+    public function setViewPath($viewPath);
     
     /**
      * Returns the value of field sent
      * Column: sent
-     * @return RawValue|int
+     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * @return mixed
      */
-    public function getSent(): RawValue|int;
+    public function getSent();
     
     /**
      * Sets the value of field sent
      * Column: sent 
-     * @param RawValue|int $sent
+     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * @param mixed $sent
      * @return void
      */
-    public function setSent(RawValue|int $sent): void;
+    public function setSent($sent);
     
     /**
      * Returns the value of field sentAt
      * Column: sent_at
-     * @return RawValue|string|null
+     * Attributes: Type(4)
+     * @return mixed
      */
-    public function getSentAt(): RawValue|string|null;
+    public function getSentAt();
     
     /**
      * Sets the value of field sentAt
      * Column: sent_at 
-     * @param RawValue|string|null $sentAt
+     * Attributes: Type(4)
+     * @param mixed $sentAt
      * @return void
      */
-    public function setSentAt(RawValue|string|null $sentAt): void;
+    public function setSentAt($sentAt);
     
     /**
      * Returns the value of field sentBy
      * Column: sent_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getSentBy(): RawValue|int|null;
+    public function getSentBy();
     
     /**
      * Sets the value of field sentBy
      * Column: sent_by 
-     * @param RawValue|int|null $sentBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $sentBy
      * @return void
      */
-    public function setSentBy(RawValue|int|null $sentBy): void;
+    public function setSentBy($sentBy);
     
     /**
      * Returns the value of field sentAs
      * Column: sent_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getSentAs(): RawValue|int|null;
+    public function getSentAs();
     
     /**
      * Sets the value of field sentAs
      * Column: sent_as 
-     * @param RawValue|int|null $sentAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $sentAs
      * @return void
      */
-    public function setSentAs(RawValue|int|null $sentAs): void;
+    public function setSentAs($sentAs);
     
     /**
      * Returns the value of field deleted
      * Column: deleted
-     * @return RawValue|int
+     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * @return mixed
      */
-    public function getDeleted(): RawValue|int;
+    public function getDeleted();
     
     /**
      * Sets the value of field deleted
      * Column: deleted 
-     * @param RawValue|int $deleted
+     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * @param mixed $deleted
      * @return void
      */
-    public function setDeleted(RawValue|int $deleted): void;
+    public function setDeleted($deleted);
     
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string|null
+     * Attributes: NotNull | Type(4)
+     * @return mixed
      */
-    public function getCreatedAt(): RawValue|string|null;
+    public function getCreatedAt();
     
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string|null $createdAt
+     * Attributes: NotNull | Type(4)
+     * @param mixed $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string|null $createdAt): void;
+    public function setCreatedAt($createdAt);
     
     /**
      * Returns the value of field createdBy
      * Column: created_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getCreatedBy(): RawValue|int|null;
+    public function getCreatedBy();
     
     /**
      * Sets the value of field createdBy
      * Column: created_by 
-     * @param RawValue|int|null $createdBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $createdBy
      * @return void
      */
-    public function setCreatedBy(RawValue|int|null $createdBy): void;
+    public function setCreatedBy($createdBy);
     
     /**
      * Returns the value of field createdAs
      * Column: created_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getCreatedAs(): RawValue|int|null;
+    public function getCreatedAs();
     
     /**
      * Sets the value of field createdAs
      * Column: created_as 
-     * @param RawValue|int|null $createdAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $createdAs
      * @return void
      */
-    public function setCreatedAs(RawValue|int|null $createdAs): void;
+    public function setCreatedAs($createdAs);
     
     /**
      * Returns the value of field updatedAt
      * Column: updated_at
-     * @return RawValue|string|null
+     * Attributes: Type(4)
+     * @return mixed
      */
-    public function getUpdatedAt(): RawValue|string|null;
+    public function getUpdatedAt();
     
     /**
      * Sets the value of field updatedAt
      * Column: updated_at 
-     * @param RawValue|string|null $updatedAt
+     * Attributes: Type(4)
+     * @param mixed $updatedAt
      * @return void
      */
-    public function setUpdatedAt(RawValue|string|null $updatedAt): void;
+    public function setUpdatedAt($updatedAt);
     
     /**
      * Returns the value of field updatedBy
      * Column: updated_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getUpdatedBy(): RawValue|int|null;
+    public function getUpdatedBy();
     
     /**
      * Sets the value of field updatedBy
      * Column: updated_by 
-     * @param RawValue|int|null $updatedBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $updatedBy
      * @return void
      */
-    public function setUpdatedBy(RawValue|int|null $updatedBy): void;
+    public function setUpdatedBy($updatedBy);
     
     /**
      * Returns the value of field updatedAs
      * Column: updated_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getUpdatedAs(): RawValue|int|null;
+    public function getUpdatedAs();
     
     /**
      * Sets the value of field updatedAs
      * Column: updated_as 
-     * @param RawValue|int|null $updatedAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $updatedAs
      * @return void
      */
-    public function setUpdatedAs(RawValue|int|null $updatedAs): void;
+    public function setUpdatedAs($updatedAs);
     
     /**
      * Returns the value of field deletedAt
      * Column: deleted_at
-     * @return RawValue|string|null
+     * Attributes: Type(4)
+     * @return mixed
      */
-    public function getDeletedAt(): RawValue|string|null;
+    public function getDeletedAt();
     
     /**
      * Sets the value of field deletedAt
      * Column: deleted_at 
-     * @param RawValue|string|null $deletedAt
+     * Attributes: Type(4)
+     * @param mixed $deletedAt
      * @return void
      */
-    public function setDeletedAt(RawValue|string|null $deletedAt): void;
+    public function setDeletedAt($deletedAt);
     
     /**
      * Returns the value of field deletedBy
      * Column: deleted_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getDeletedBy(): RawValue|int|null;
+    public function getDeletedBy();
     
     /**
      * Sets the value of field deletedBy
      * Column: deleted_by 
-     * @param RawValue|int|null $deletedBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $deletedBy
      * @return void
      */
-    public function setDeletedBy(RawValue|int|null $deletedBy): void;
+    public function setDeletedBy($deletedBy);
     
     /**
      * Returns the value of field deletedAs
      * Column: deleted_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getDeletedAs(): RawValue|int|null;
+    public function getDeletedAs();
     
     /**
      * Sets the value of field deletedAs
      * Column: deleted_as 
-     * @param RawValue|int|null $deletedAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $deletedAs
      * @return void
      */
-    public function setDeletedAs(RawValue|int|null $deletedAs): void;
+    public function setDeletedAs($deletedAs);
     
     /**
      * Returns the value of field restoredAt
      * Column: restored_at
-     * @return RawValue|string|null
+     * Attributes: Type(4)
+     * @return mixed
      */
-    public function getRestoredAt(): RawValue|string|null;
+    public function getRestoredAt();
     
     /**
      * Sets the value of field restoredAt
      * Column: restored_at 
-     * @param RawValue|string|null $restoredAt
+     * Attributes: Type(4)
+     * @param mixed $restoredAt
      * @return void
      */
-    public function setRestoredAt(RawValue|string|null $restoredAt): void;
+    public function setRestoredAt($restoredAt);
     
     /**
      * Returns the value of field restoredBy
      * Column: restored_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getRestoredBy(): RawValue|int|null;
+    public function getRestoredBy();
     
     /**
      * Sets the value of field restoredBy
      * Column: restored_by 
-     * @param RawValue|int|null $restoredBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $restoredBy
      * @return void
      */
-    public function setRestoredBy(RawValue|int|null $restoredBy): void;
+    public function setRestoredBy($restoredBy);
     
     /**
      * Returns the value of field restoredAs
      * Column: restored_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getRestoredAs(): RawValue|int|null;
+    public function getRestoredAs();
     
     /**
      * Sets the value of field restoredAs
      * Column: restored_as 
-     * @param RawValue|int|null $restoredAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $restoredAs
      * @return void
      */
-    public function setRestoredAs(RawValue|int|null $restoredAs): void;
+    public function setRestoredAs($restoredAs);
 }

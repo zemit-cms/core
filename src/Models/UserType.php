@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\UserTypeAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\UserTypeInterface;
 /**
  * Class UserType
  *
- * This class represents a UserType model.
+ * This class represents a UserType object.
  * It extends the UserTypeAbstract class and implements the UserTypeInterface.
  */
 class UserType extends UserTypeAbstract implements UserTypeInterface

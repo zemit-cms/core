@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\PageAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\PageInterface;
 /**
  * Class Page
  *
- * This class represents a Page model.
+ * This class represents a Page object.
  * It extends the PageAbstract class and implements the PageInterface.
  */
 class Page extends PageAbstract implements PageInterface

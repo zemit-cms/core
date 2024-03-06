@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\FieldAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\FieldInterface;
 /**
  * Class Field
  *
- * This class represents a Field model.
+ * This class represents a Field object.
  * It extends the FieldAbstract class and implements the FieldInterface.
  */
 class Field extends FieldAbstract implements FieldInterface

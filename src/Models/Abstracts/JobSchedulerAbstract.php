@@ -30,135 +30,158 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
 {
     /**
      * Column: id
-     * @var RawValue|int|null
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * @var mixed
      */
-    public RawValue|int|null $id = null;
-    
+    public $id = null;
+        
     /**
      * Column: index
-     * @var RawValue|string|null
+     * Attributes: NotNull | Size(100) | Type(5)
+     * @var mixed
      */
-    public RawValue|string|null $index = null;
-    
+    public $index = null;
+        
     /**
      * Column: label
-     * @var RawValue|string|null
+     * Attributes: NotNull | Size(100) | Type(2)
+     * @var mixed
      */
-    public RawValue|string|null $label = null;
-    
+    public $label = null;
+        
     /**
      * Column: task
-     * @var RawValue|string|null
+     * Attributes: NotNull | Size(100) | Type(5)
+     * @var mixed
      */
-    public RawValue|string|null $task = null;
-    
+    public $task = null;
+        
     /**
      * Column: action
-     * @var RawValue|string|null
+     * Attributes: NotNull | Size(100) | Type(5)
+     * @var mixed
      */
-    public RawValue|string|null $action = null;
-    
+    public $action = null;
+        
     /**
      * Column: params
-     * @var RawValue|string|null
+     * Attributes: Type(15)
+     * @var mixed
      */
-    public RawValue|string|null $params = null;
-    
+    public $params = null;
+        
     /**
      * Column: frequency
-     * @var RawValue|string
+     * Attributes: NotNull | Size('manually','minutely','hourly','daily','weekdays','weekends','weekly','bi-weekly','monthly','bi-monthly','quarterly','semi-annually','yearly') | Type(18)
+     * @var mixed
      */
-    public RawValue|string $frequency = 'manually';
-    
+    public $frequency = 'manually';
+        
     /**
      * Column: starting_at
-     * @var RawValue|string|null
+     * Attributes: NotNull | Type(4)
+     * @var mixed
      */
-    public RawValue|string|null $startingAt = null;
-    
+    public $startingAt = null;
+        
     /**
      * Column: deleted
-     * @var RawValue|int
+     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * @var mixed
      */
-    public RawValue|int $deleted = 0;
-    
+    public $deleted = 0;
+        
     /**
      * Column: created_at
-     * @var RawValue|string|null
+     * Attributes: NotNull | Type(4)
+     * @var mixed
      */
-    public RawValue|string|null $createdAt = null;
-    
+    public $createdAt = null;
+        
     /**
      * Column: created_by
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $createdBy = null;
-    
+    public $createdBy = null;
+        
     /**
      * Column: created_as
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $createdAs = null;
-    
+    public $createdAs = null;
+        
     /**
      * Column: updated_at
-     * @var RawValue|string|null
+     * Attributes: Type(4)
+     * @var mixed
      */
-    public RawValue|string|null $updatedAt = null;
-    
+    public $updatedAt = null;
+        
     /**
      * Column: updated_by
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $updatedBy = null;
-    
+    public $updatedBy = null;
+        
     /**
      * Column: updated_as
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $updatedAs = null;
-    
+    public $updatedAs = null;
+        
     /**
      * Column: deleted_at
-     * @var RawValue|string|null
+     * Attributes: Type(4)
+     * @var mixed
      */
-    public RawValue|string|null $deletedAt = null;
-    
+    public $deletedAt = null;
+        
     /**
      * Column: deleted_as
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $deletedAs = null;
-    
+    public $deletedAs = null;
+        
     /**
      * Column: deleted_by
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $deletedBy = null;
-    
+    public $deletedBy = null;
+        
     /**
      * Column: restored_at
-     * @var RawValue|string|null
+     * Attributes: Type(4)
+     * @var mixed
      */
-    public RawValue|string|null $restoredAt = null;
-    
+    public $restoredAt = null;
+        
     /**
      * Column: restored_by
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $restoredBy = null;
-    
+    public $restoredBy = null;
+        
     /**
      * Column: restored_as
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $restoredAs = null;
+    public $restoredAs = null;
+    
     /**
      * Returns the value of field id
      * Column: id
-     * @return RawValue|int|null
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * @return mixed
      */
-    public function getId(): RawValue|int|null
+    public function getId()
     {
         return $this->id;
     }
@@ -166,10 +189,11 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field id
      * Column: id 
-     * @param RawValue|int|null $id
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * @param mixed $id
      * @return void
      */
-    public function setId(RawValue|int|null $id): void
+    public function setId($id)
     {
         $this->id = $id;
     }
@@ -177,9 +201,10 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Returns the value of field index
      * Column: index
-     * @return RawValue|string|null
+     * Attributes: NotNull | Size(100) | Type(5)
+     * @return mixed
      */
-    public function getIndex(): RawValue|string|null
+    public function getIndex()
     {
         return $this->index;
     }
@@ -187,10 +212,11 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field index
      * Column: index 
-     * @param RawValue|string|null $index
+     * Attributes: NotNull | Size(100) | Type(5)
+     * @param mixed $index
      * @return void
      */
-    public function setIndex(RawValue|string|null $index): void
+    public function setIndex($index)
     {
         $this->index = $index;
     }
@@ -198,9 +224,10 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Returns the value of field label
      * Column: label
-     * @return RawValue|string|null
+     * Attributes: NotNull | Size(100) | Type(2)
+     * @return mixed
      */
-    public function getLabel(): RawValue|string|null
+    public function getLabel()
     {
         return $this->label;
     }
@@ -208,10 +235,11 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field label
      * Column: label 
-     * @param RawValue|string|null $label
+     * Attributes: NotNull | Size(100) | Type(2)
+     * @param mixed $label
      * @return void
      */
-    public function setLabel(RawValue|string|null $label): void
+    public function setLabel($label)
     {
         $this->label = $label;
     }
@@ -219,9 +247,10 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Returns the value of field task
      * Column: task
-     * @return RawValue|string|null
+     * Attributes: NotNull | Size(100) | Type(5)
+     * @return mixed
      */
-    public function getTask(): RawValue|string|null
+    public function getTask()
     {
         return $this->task;
     }
@@ -229,10 +258,11 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field task
      * Column: task 
-     * @param RawValue|string|null $task
+     * Attributes: NotNull | Size(100) | Type(5)
+     * @param mixed $task
      * @return void
      */
-    public function setTask(RawValue|string|null $task): void
+    public function setTask($task)
     {
         $this->task = $task;
     }
@@ -240,9 +270,10 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Returns the value of field action
      * Column: action
-     * @return RawValue|string|null
+     * Attributes: NotNull | Size(100) | Type(5)
+     * @return mixed
      */
-    public function getAction(): RawValue|string|null
+    public function getAction()
     {
         return $this->action;
     }
@@ -250,10 +281,11 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field action
      * Column: action 
-     * @param RawValue|string|null $action
+     * Attributes: NotNull | Size(100) | Type(5)
+     * @param mixed $action
      * @return void
      */
-    public function setAction(RawValue|string|null $action): void
+    public function setAction($action)
     {
         $this->action = $action;
     }
@@ -261,9 +293,10 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Returns the value of field params
      * Column: params
-     * @return RawValue|string|null
+     * Attributes: Type(15)
+     * @return mixed
      */
-    public function getParams(): RawValue|string|null
+    public function getParams()
     {
         return $this->params;
     }
@@ -271,10 +304,11 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field params
      * Column: params 
-     * @param RawValue|string|null $params
+     * Attributes: Type(15)
+     * @param mixed $params
      * @return void
      */
-    public function setParams(RawValue|string|null $params): void
+    public function setParams($params)
     {
         $this->params = $params;
     }
@@ -282,9 +316,10 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Returns the value of field frequency
      * Column: frequency
-     * @return RawValue|string
+     * Attributes: NotNull | Size('manually','minutely','hourly','daily','weekdays','weekends','weekly','bi-weekly','monthly','bi-monthly','quarterly','semi-annually','yearly') | Type(18)
+     * @return mixed
      */
-    public function getFrequency(): RawValue|string
+    public function getFrequency()
     {
         return $this->frequency;
     }
@@ -292,10 +327,11 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field frequency
      * Column: frequency 
-     * @param RawValue|string $frequency
+     * Attributes: NotNull | Size('manually','minutely','hourly','daily','weekdays','weekends','weekly','bi-weekly','monthly','bi-monthly','quarterly','semi-annually','yearly') | Type(18)
+     * @param mixed $frequency
      * @return void
      */
-    public function setFrequency(RawValue|string $frequency): void
+    public function setFrequency($frequency)
     {
         $this->frequency = $frequency;
     }
@@ -303,9 +339,10 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Returns the value of field startingAt
      * Column: starting_at
-     * @return RawValue|string|null
+     * Attributes: NotNull | Type(4)
+     * @return mixed
      */
-    public function getStartingAt(): RawValue|string|null
+    public function getStartingAt()
     {
         return $this->startingAt;
     }
@@ -313,10 +350,11 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field startingAt
      * Column: starting_at 
-     * @param RawValue|string|null $startingAt
+     * Attributes: NotNull | Type(4)
+     * @param mixed $startingAt
      * @return void
      */
-    public function setStartingAt(RawValue|string|null $startingAt): void
+    public function setStartingAt($startingAt)
     {
         $this->startingAt = $startingAt;
     }
@@ -324,9 +362,10 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Returns the value of field deleted
      * Column: deleted
-     * @return RawValue|int
+     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * @return mixed
      */
-    public function getDeleted(): RawValue|int
+    public function getDeleted()
     {
         return $this->deleted;
     }
@@ -334,10 +373,11 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field deleted
      * Column: deleted 
-     * @param RawValue|int $deleted
+     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * @param mixed $deleted
      * @return void
      */
-    public function setDeleted(RawValue|int $deleted): void
+    public function setDeleted($deleted)
     {
         $this->deleted = $deleted;
     }
@@ -345,9 +385,10 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string|null
+     * Attributes: NotNull | Type(4)
+     * @return mixed
      */
-    public function getCreatedAt(): RawValue|string|null
+    public function getCreatedAt()
     {
         return $this->createdAt;
     }
@@ -355,10 +396,11 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string|null $createdAt
+     * Attributes: NotNull | Type(4)
+     * @param mixed $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string|null $createdAt): void
+    public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
     }
@@ -366,9 +408,10 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Returns the value of field createdBy
      * Column: created_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getCreatedBy(): RawValue|int|null
+    public function getCreatedBy()
     {
         return $this->createdBy;
     }
@@ -376,10 +419,11 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field createdBy
      * Column: created_by 
-     * @param RawValue|int|null $createdBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $createdBy
      * @return void
      */
-    public function setCreatedBy(RawValue|int|null $createdBy): void
+    public function setCreatedBy($createdBy)
     {
         $this->createdBy = $createdBy;
     }
@@ -387,9 +431,10 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Returns the value of field createdAs
      * Column: created_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getCreatedAs(): RawValue|int|null
+    public function getCreatedAs()
     {
         return $this->createdAs;
     }
@@ -397,10 +442,11 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field createdAs
      * Column: created_as 
-     * @param RawValue|int|null $createdAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $createdAs
      * @return void
      */
-    public function setCreatedAs(RawValue|int|null $createdAs): void
+    public function setCreatedAs($createdAs)
     {
         $this->createdAs = $createdAs;
     }
@@ -408,9 +454,10 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Returns the value of field updatedAt
      * Column: updated_at
-     * @return RawValue|string|null
+     * Attributes: Type(4)
+     * @return mixed
      */
-    public function getUpdatedAt(): RawValue|string|null
+    public function getUpdatedAt()
     {
         return $this->updatedAt;
     }
@@ -418,10 +465,11 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field updatedAt
      * Column: updated_at 
-     * @param RawValue|string|null $updatedAt
+     * Attributes: Type(4)
+     * @param mixed $updatedAt
      * @return void
      */
-    public function setUpdatedAt(RawValue|string|null $updatedAt): void
+    public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
     }
@@ -429,9 +477,10 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Returns the value of field updatedBy
      * Column: updated_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getUpdatedBy(): RawValue|int|null
+    public function getUpdatedBy()
     {
         return $this->updatedBy;
     }
@@ -439,10 +488,11 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field updatedBy
      * Column: updated_by 
-     * @param RawValue|int|null $updatedBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $updatedBy
      * @return void
      */
-    public function setUpdatedBy(RawValue|int|null $updatedBy): void
+    public function setUpdatedBy($updatedBy)
     {
         $this->updatedBy = $updatedBy;
     }
@@ -450,9 +500,10 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Returns the value of field updatedAs
      * Column: updated_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getUpdatedAs(): RawValue|int|null
+    public function getUpdatedAs()
     {
         return $this->updatedAs;
     }
@@ -460,10 +511,11 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field updatedAs
      * Column: updated_as 
-     * @param RawValue|int|null $updatedAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $updatedAs
      * @return void
      */
-    public function setUpdatedAs(RawValue|int|null $updatedAs): void
+    public function setUpdatedAs($updatedAs)
     {
         $this->updatedAs = $updatedAs;
     }
@@ -471,9 +523,10 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Returns the value of field deletedAt
      * Column: deleted_at
-     * @return RawValue|string|null
+     * Attributes: Type(4)
+     * @return mixed
      */
-    public function getDeletedAt(): RawValue|string|null
+    public function getDeletedAt()
     {
         return $this->deletedAt;
     }
@@ -481,10 +534,11 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field deletedAt
      * Column: deleted_at 
-     * @param RawValue|string|null $deletedAt
+     * Attributes: Type(4)
+     * @param mixed $deletedAt
      * @return void
      */
-    public function setDeletedAt(RawValue|string|null $deletedAt): void
+    public function setDeletedAt($deletedAt)
     {
         $this->deletedAt = $deletedAt;
     }
@@ -492,9 +546,10 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Returns the value of field deletedAs
      * Column: deleted_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getDeletedAs(): RawValue|int|null
+    public function getDeletedAs()
     {
         return $this->deletedAs;
     }
@@ -502,10 +557,11 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field deletedAs
      * Column: deleted_as 
-     * @param RawValue|int|null $deletedAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $deletedAs
      * @return void
      */
-    public function setDeletedAs(RawValue|int|null $deletedAs): void
+    public function setDeletedAs($deletedAs)
     {
         $this->deletedAs = $deletedAs;
     }
@@ -513,9 +569,10 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Returns the value of field deletedBy
      * Column: deleted_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getDeletedBy(): RawValue|int|null
+    public function getDeletedBy()
     {
         return $this->deletedBy;
     }
@@ -523,10 +580,11 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field deletedBy
      * Column: deleted_by 
-     * @param RawValue|int|null $deletedBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $deletedBy
      * @return void
      */
-    public function setDeletedBy(RawValue|int|null $deletedBy): void
+    public function setDeletedBy($deletedBy)
     {
         $this->deletedBy = $deletedBy;
     }
@@ -534,9 +592,10 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Returns the value of field restoredAt
      * Column: restored_at
-     * @return RawValue|string|null
+     * Attributes: Type(4)
+     * @return mixed
      */
-    public function getRestoredAt(): RawValue|string|null
+    public function getRestoredAt()
     {
         return $this->restoredAt;
     }
@@ -544,10 +603,11 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field restoredAt
      * Column: restored_at 
-     * @param RawValue|string|null $restoredAt
+     * Attributes: Type(4)
+     * @param mixed $restoredAt
      * @return void
      */
-    public function setRestoredAt(RawValue|string|null $restoredAt): void
+    public function setRestoredAt($restoredAt)
     {
         $this->restoredAt = $restoredAt;
     }
@@ -555,9 +615,10 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Returns the value of field restoredBy
      * Column: restored_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getRestoredBy(): RawValue|int|null
+    public function getRestoredBy()
     {
         return $this->restoredBy;
     }
@@ -565,10 +626,11 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field restoredBy
      * Column: restored_by 
-     * @param RawValue|int|null $restoredBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $restoredBy
      * @return void
      */
-    public function setRestoredBy(RawValue|int|null $restoredBy): void
+    public function setRestoredBy($restoredBy)
     {
         $this->restoredBy = $restoredBy;
     }
@@ -576,9 +638,10 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Returns the value of field restoredAs
      * Column: restored_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getRestoredAs(): RawValue|int|null
+    public function getRestoredAs()
     {
         return $this->restoredAs;
     }
@@ -586,10 +649,11 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field restoredAs
      * Column: restored_as 
-     * @param RawValue|int|null $restoredAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $restoredAs
      * @return void
      */
-    public function setRestoredAs(RawValue|int|null $restoredAs): void
+    public function setRestoredAs($restoredAs)
     {
         $this->restoredAs = $restoredAs;
     }
@@ -605,6 +669,7 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     
     /**
      * Adds the default validations to the model.
+     * @param Validation|null $validator
      * @return Validation
      */
     public function addDefaultValidations(?Validation $validator = null): Validation

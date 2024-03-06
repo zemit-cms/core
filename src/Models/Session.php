@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\SessionAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\SessionInterface;
 /**
  * Class Session
  *
- * This class represents a Session model.
+ * This class represents a Session object.
  * It extends the SessionAbstract class and implements the SessionInterface.
  */
 class Session extends SessionAbstract implements SessionInterface

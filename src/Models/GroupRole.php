@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\GroupRoleAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\GroupRoleInterface;
 /**
  * Class GroupRole
  *
- * This class represents a GroupRole model.
+ * This class represents a GroupRole object.
  * It extends the GroupRoleAbstract class and implements the GroupRoleInterface.
  */
 class GroupRole extends GroupRoleAbstract implements GroupRoleInterface

@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\PostAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\PostInterface;
 /**
  * Class Post
  *
- * This class represents a Post model.
+ * This class represents a Post object.
  * It extends the PostAbstract class and implements the PostInterface.
  */
 class Post extends PostAbstract implements PostInterface

@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\AuditDetailAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\AuditDetailInterface;
 /**
  * Class AuditDetail
  *
- * This class represents a AuditDetail model.
+ * This class represents a AuditDetail object.
  * It extends the AuditDetailAbstract class and implements the AuditDetailInterface.
  */
 class AuditDetail extends AuditDetailAbstract implements AuditDetailInterface

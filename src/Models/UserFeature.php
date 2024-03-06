@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\UserFeatureAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\UserFeatureInterface;
 /**
  * Class UserFeature
  *
- * This class represents a UserFeature model.
+ * This class represents a UserFeature object.
  * It extends the UserFeatureAbstract class and implements the UserFeatureInterface.
  */
 class UserFeature extends UserFeatureAbstract implements UserFeatureInterface

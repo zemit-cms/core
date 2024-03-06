@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\TranslateFieldAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\TranslateFieldInterface;
 /**
  * Class TranslateField
  *
- * This class represents a TranslateField model.
+ * This class represents a TranslateField object.
  * It extends the TranslateFieldAbstract class and implements the TranslateFieldInterface.
  */
 class TranslateField extends TranslateFieldAbstract implements TranslateFieldInterface

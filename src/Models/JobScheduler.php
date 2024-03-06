@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\JobSchedulerAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\JobSchedulerInterface;
 /**
  * Class JobScheduler
  *
- * This class represents a JobScheduler model.
+ * This class represents a JobScheduler object.
  * It extends the JobSchedulerAbstract class and implements the JobSchedulerInterface.
  */
 class JobScheduler extends JobSchedulerAbstract implements JobSchedulerInterface

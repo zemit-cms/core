@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\FileRelationAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\FileRelationInterface;
 /**
  * Class FileRelation
  *
- * This class represents a FileRelation model.
+ * This class represents a FileRelation object.
  * It extends the FileRelationAbstract class and implements the FileRelationInterface.
  */
 class FileRelation extends FileRelationAbstract implements FileRelationInterface

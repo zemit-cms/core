@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\FileAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\FileInterface;
 /**
  * Class File
  *
- * This class represents a File model.
+ * This class represents a File object.
  * It extends the FileAbstract class and implements the FileInterface.
  */
 class File extends FileAbstract implements FileInterface

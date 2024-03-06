@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\SettingAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\SettingInterface;
 /**
  * Class Setting
  *
- * This class represents a Setting model.
+ * This class represents a Setting object.
  * It extends the SettingAbstract class and implements the SettingInterface.
  */
 class Setting extends SettingAbstract implements SettingInterface

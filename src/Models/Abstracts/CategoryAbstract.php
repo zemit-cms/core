@@ -76,117 +76,137 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
 {
     /**
      * Column: id
-     * @var RawValue|int|null
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * @var mixed
      */
-    public RawValue|int|null $id = null;
-    
+    public $id = null;
+        
     /**
      * Column: site_id
-     * @var RawValue|int|null
+     * Attributes: NotNull | Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $siteId = null;
-    
+    public $siteId = null;
+        
     /**
      * Column: lang_id
-     * @var RawValue|int|null
+     * Attributes: NotNull | Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $langId = null;
-    
+    public $langId = null;
+        
     /**
      * Column: name
-     * @var RawValue|string|null
+     * Attributes: NotNull | Size(255) | Type(2)
+     * @var mixed
      */
-    public RawValue|string|null $name = null;
-    
+    public $name = null;
+        
     /**
      * Column: index
-     * @var RawValue|string|null
+     * Attributes: NotNull | Size(255) | Type(2)
+     * @var mixed
      */
-    public RawValue|string|null $index = null;
-    
+    public $index = null;
+        
     /**
      * Column: description
-     * @var RawValue|string|null
+     * Attributes: Type(23)
+     * @var mixed
      */
-    public RawValue|string|null $description = null;
-    
+    public $description = null;
+        
     /**
      * Column: deleted
-     * @var RawValue|int
+     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * @var mixed
      */
-    public RawValue|int $deleted = 0;
-    
+    public $deleted = 0;
+        
     /**
      * Column: created_at
-     * @var RawValue|string|null
+     * Attributes: NotNull | Type(4)
+     * @var mixed
      */
-    public RawValue|string|null $createdAt = null;
-    
+    public $createdAt = null;
+        
     /**
      * Column: created_by
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $createdBy = null;
-    
+    public $createdBy = null;
+        
     /**
      * Column: created_as
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $createdAs = null;
-    
+    public $createdAs = null;
+        
     /**
      * Column: updated_at
-     * @var RawValue|string|null
+     * Attributes: Type(4)
+     * @var mixed
      */
-    public RawValue|string|null $updatedAt = null;
-    
+    public $updatedAt = null;
+        
     /**
      * Column: updated_by
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $updatedBy = null;
-    
+    public $updatedBy = null;
+        
     /**
      * Column: updated_as
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $updatedAs = null;
-    
+    public $updatedAs = null;
+        
     /**
      * Column: deleted_at
-     * @var RawValue|string|null
+     * Attributes: Type(4)
+     * @var mixed
      */
-    public RawValue|string|null $deletedAt = null;
-    
+    public $deletedAt = null;
+        
     /**
      * Column: deleted_as
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $deletedAs = null;
-    
+    public $deletedAs = null;
+        
     /**
      * Column: deleted_by
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $deletedBy = null;
-    
+    public $deletedBy = null;
+        
     /**
      * Column: restored_at
-     * @var RawValue|string|null
+     * Attributes: Type(4)
+     * @var mixed
      */
-    public RawValue|string|null $restoredAt = null;
-    
+    public $restoredAt = null;
+        
     /**
      * Column: restored_by
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $restoredBy = null;
+    public $restoredBy = null;
+    
     /**
      * Returns the value of field id
      * Column: id
-     * @return RawValue|int|null
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * @return mixed
      */
-    public function getId(): RawValue|int|null
+    public function getId()
     {
         return $this->id;
     }
@@ -194,10 +214,11 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Sets the value of field id
      * Column: id 
-     * @param RawValue|int|null $id
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * @param mixed $id
      * @return void
      */
-    public function setId(RawValue|int|null $id): void
+    public function setId($id)
     {
         $this->id = $id;
     }
@@ -205,9 +226,10 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Returns the value of field siteId
      * Column: site_id
-     * @return RawValue|int|null
+     * Attributes: NotNull | Numeric | Unsigned
+     * @return mixed
      */
-    public function getSiteId(): RawValue|int|null
+    public function getSiteId()
     {
         return $this->siteId;
     }
@@ -215,10 +237,11 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Sets the value of field siteId
      * Column: site_id 
-     * @param RawValue|int|null $siteId
+     * Attributes: NotNull | Numeric | Unsigned
+     * @param mixed $siteId
      * @return void
      */
-    public function setSiteId(RawValue|int|null $siteId): void
+    public function setSiteId($siteId)
     {
         $this->siteId = $siteId;
     }
@@ -226,9 +249,10 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Returns the value of field langId
      * Column: lang_id
-     * @return RawValue|int|null
+     * Attributes: NotNull | Numeric | Unsigned
+     * @return mixed
      */
-    public function getLangId(): RawValue|int|null
+    public function getLangId()
     {
         return $this->langId;
     }
@@ -236,10 +260,11 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Sets the value of field langId
      * Column: lang_id 
-     * @param RawValue|int|null $langId
+     * Attributes: NotNull | Numeric | Unsigned
+     * @param mixed $langId
      * @return void
      */
-    public function setLangId(RawValue|int|null $langId): void
+    public function setLangId($langId)
     {
         $this->langId = $langId;
     }
@@ -247,9 +272,10 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Returns the value of field name
      * Column: name
-     * @return RawValue|string|null
+     * Attributes: NotNull | Size(255) | Type(2)
+     * @return mixed
      */
-    public function getName(): RawValue|string|null
+    public function getName()
     {
         return $this->name;
     }
@@ -257,10 +283,11 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Sets the value of field name
      * Column: name 
-     * @param RawValue|string|null $name
+     * Attributes: NotNull | Size(255) | Type(2)
+     * @param mixed $name
      * @return void
      */
-    public function setName(RawValue|string|null $name): void
+    public function setName($name)
     {
         $this->name = $name;
     }
@@ -268,9 +295,10 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Returns the value of field index
      * Column: index
-     * @return RawValue|string|null
+     * Attributes: NotNull | Size(255) | Type(2)
+     * @return mixed
      */
-    public function getIndex(): RawValue|string|null
+    public function getIndex()
     {
         return $this->index;
     }
@@ -278,10 +306,11 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Sets the value of field index
      * Column: index 
-     * @param RawValue|string|null $index
+     * Attributes: NotNull | Size(255) | Type(2)
+     * @param mixed $index
      * @return void
      */
-    public function setIndex(RawValue|string|null $index): void
+    public function setIndex($index)
     {
         $this->index = $index;
     }
@@ -289,9 +318,10 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Returns the value of field description
      * Column: description
-     * @return RawValue|string|null
+     * Attributes: Type(23)
+     * @return mixed
      */
-    public function getDescription(): RawValue|string|null
+    public function getDescription()
     {
         return $this->description;
     }
@@ -299,10 +329,11 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Sets the value of field description
      * Column: description 
-     * @param RawValue|string|null $description
+     * Attributes: Type(23)
+     * @param mixed $description
      * @return void
      */
-    public function setDescription(RawValue|string|null $description): void
+    public function setDescription($description)
     {
         $this->description = $description;
     }
@@ -310,9 +341,10 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Returns the value of field deleted
      * Column: deleted
-     * @return RawValue|int
+     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * @return mixed
      */
-    public function getDeleted(): RawValue|int
+    public function getDeleted()
     {
         return $this->deleted;
     }
@@ -320,10 +352,11 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Sets the value of field deleted
      * Column: deleted 
-     * @param RawValue|int $deleted
+     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * @param mixed $deleted
      * @return void
      */
-    public function setDeleted(RawValue|int $deleted): void
+    public function setDeleted($deleted)
     {
         $this->deleted = $deleted;
     }
@@ -331,9 +364,10 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string|null
+     * Attributes: NotNull | Type(4)
+     * @return mixed
      */
-    public function getCreatedAt(): RawValue|string|null
+    public function getCreatedAt()
     {
         return $this->createdAt;
     }
@@ -341,10 +375,11 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string|null $createdAt
+     * Attributes: NotNull | Type(4)
+     * @param mixed $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string|null $createdAt): void
+    public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
     }
@@ -352,9 +387,10 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Returns the value of field createdBy
      * Column: created_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getCreatedBy(): RawValue|int|null
+    public function getCreatedBy()
     {
         return $this->createdBy;
     }
@@ -362,10 +398,11 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Sets the value of field createdBy
      * Column: created_by 
-     * @param RawValue|int|null $createdBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $createdBy
      * @return void
      */
-    public function setCreatedBy(RawValue|int|null $createdBy): void
+    public function setCreatedBy($createdBy)
     {
         $this->createdBy = $createdBy;
     }
@@ -373,9 +410,10 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Returns the value of field createdAs
      * Column: created_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getCreatedAs(): RawValue|int|null
+    public function getCreatedAs()
     {
         return $this->createdAs;
     }
@@ -383,10 +421,11 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Sets the value of field createdAs
      * Column: created_as 
-     * @param RawValue|int|null $createdAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $createdAs
      * @return void
      */
-    public function setCreatedAs(RawValue|int|null $createdAs): void
+    public function setCreatedAs($createdAs)
     {
         $this->createdAs = $createdAs;
     }
@@ -394,9 +433,10 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Returns the value of field updatedAt
      * Column: updated_at
-     * @return RawValue|string|null
+     * Attributes: Type(4)
+     * @return mixed
      */
-    public function getUpdatedAt(): RawValue|string|null
+    public function getUpdatedAt()
     {
         return $this->updatedAt;
     }
@@ -404,10 +444,11 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Sets the value of field updatedAt
      * Column: updated_at 
-     * @param RawValue|string|null $updatedAt
+     * Attributes: Type(4)
+     * @param mixed $updatedAt
      * @return void
      */
-    public function setUpdatedAt(RawValue|string|null $updatedAt): void
+    public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
     }
@@ -415,9 +456,10 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Returns the value of field updatedBy
      * Column: updated_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getUpdatedBy(): RawValue|int|null
+    public function getUpdatedBy()
     {
         return $this->updatedBy;
     }
@@ -425,10 +467,11 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Sets the value of field updatedBy
      * Column: updated_by 
-     * @param RawValue|int|null $updatedBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $updatedBy
      * @return void
      */
-    public function setUpdatedBy(RawValue|int|null $updatedBy): void
+    public function setUpdatedBy($updatedBy)
     {
         $this->updatedBy = $updatedBy;
     }
@@ -436,9 +479,10 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Returns the value of field updatedAs
      * Column: updated_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getUpdatedAs(): RawValue|int|null
+    public function getUpdatedAs()
     {
         return $this->updatedAs;
     }
@@ -446,10 +490,11 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Sets the value of field updatedAs
      * Column: updated_as 
-     * @param RawValue|int|null $updatedAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $updatedAs
      * @return void
      */
-    public function setUpdatedAs(RawValue|int|null $updatedAs): void
+    public function setUpdatedAs($updatedAs)
     {
         $this->updatedAs = $updatedAs;
     }
@@ -457,9 +502,10 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Returns the value of field deletedAt
      * Column: deleted_at
-     * @return RawValue|string|null
+     * Attributes: Type(4)
+     * @return mixed
      */
-    public function getDeletedAt(): RawValue|string|null
+    public function getDeletedAt()
     {
         return $this->deletedAt;
     }
@@ -467,10 +513,11 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Sets the value of field deletedAt
      * Column: deleted_at 
-     * @param RawValue|string|null $deletedAt
+     * Attributes: Type(4)
+     * @param mixed $deletedAt
      * @return void
      */
-    public function setDeletedAt(RawValue|string|null $deletedAt): void
+    public function setDeletedAt($deletedAt)
     {
         $this->deletedAt = $deletedAt;
     }
@@ -478,9 +525,10 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Returns the value of field deletedAs
      * Column: deleted_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getDeletedAs(): RawValue|int|null
+    public function getDeletedAs()
     {
         return $this->deletedAs;
     }
@@ -488,10 +536,11 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Sets the value of field deletedAs
      * Column: deleted_as 
-     * @param RawValue|int|null $deletedAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $deletedAs
      * @return void
      */
-    public function setDeletedAs(RawValue|int|null $deletedAs): void
+    public function setDeletedAs($deletedAs)
     {
         $this->deletedAs = $deletedAs;
     }
@@ -499,9 +548,10 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Returns the value of field deletedBy
      * Column: deleted_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getDeletedBy(): RawValue|int|null
+    public function getDeletedBy()
     {
         return $this->deletedBy;
     }
@@ -509,10 +559,11 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Sets the value of field deletedBy
      * Column: deleted_by 
-     * @param RawValue|int|null $deletedBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $deletedBy
      * @return void
      */
-    public function setDeletedBy(RawValue|int|null $deletedBy): void
+    public function setDeletedBy($deletedBy)
     {
         $this->deletedBy = $deletedBy;
     }
@@ -520,9 +571,10 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Returns the value of field restoredAt
      * Column: restored_at
-     * @return RawValue|string|null
+     * Attributes: Type(4)
+     * @return mixed
      */
-    public function getRestoredAt(): RawValue|string|null
+    public function getRestoredAt()
     {
         return $this->restoredAt;
     }
@@ -530,10 +582,11 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Sets the value of field restoredAt
      * Column: restored_at 
-     * @param RawValue|string|null $restoredAt
+     * Attributes: Type(4)
+     * @param mixed $restoredAt
      * @return void
      */
-    public function setRestoredAt(RawValue|string|null $restoredAt): void
+    public function setRestoredAt($restoredAt)
     {
         $this->restoredAt = $restoredAt;
     }
@@ -541,9 +594,10 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Returns the value of field restoredBy
      * Column: restored_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getRestoredBy(): RawValue|int|null
+    public function getRestoredBy()
     {
         return $this->restoredBy;
     }
@@ -551,10 +605,11 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Sets the value of field restoredBy
      * Column: restored_by 
-     * @param RawValue|int|null $restoredBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $restoredBy
      * @return void
      */
-    public function setRestoredBy(RawValue|int|null $restoredBy): void
+    public function setRestoredBy($restoredBy)
     {
         $this->restoredBy = $restoredBy;
     }
@@ -605,6 +660,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     
     /**
      * Adds the default validations to the model.
+     * @param Validation|null $validator
      * @return Validation
      */
     public function addDefaultValidations(?Validation $validator = null): Validation

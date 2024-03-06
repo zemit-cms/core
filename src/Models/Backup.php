@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\BackupAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\BackupInterface;
 /**
  * Class Backup
  *
- * This class represents a Backup model.
+ * This class represents a Backup object.
  * It extends the BackupAbstract class and implements the BackupInterface.
  */
 class Backup extends BackupAbstract implements BackupInterface

@@ -47,129 +47,151 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
 {
     /**
      * Column: id
-     * @var RawValue|int|null
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * @var mixed
      */
-    public RawValue|int|null $id = null;
-    
+    public $id = null;
+        
     /**
      * Column: lang_id
-     * @var RawValue|int|null
+     * Attributes: NotNull | Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $langId = null;
-    
+    public $langId = null;
+        
     /**
      * Column: site_id
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $siteId = null;
-    
+    public $siteId = null;
+        
     /**
      * Column: page_id
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $pageId = null;
-    
+    public $pageId = null;
+        
     /**
      * Column: post_id
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $postId = null;
-    
+    public $postId = null;
+        
     /**
      * Column: category_id
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $categoryId = null;
-    
+    public $categoryId = null;
+        
     /**
      * Column: key
-     * @var RawValue|string|null
+     * Attributes: NotNull | Size(255) | Type(2)
+     * @var mixed
      */
-    public RawValue|string|null $key = null;
-    
+    public $key = null;
+        
     /**
      * Column: value
-     * @var RawValue|string|null
+     * Attributes: Type(23)
+     * @var mixed
      */
-    public RawValue|string|null $value = null;
-    
+    public $value = null;
+        
     /**
      * Column: deleted
-     * @var RawValue|int
+     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * @var mixed
      */
-    public RawValue|int $deleted = 0;
-    
+    public $deleted = 0;
+        
     /**
      * Column: created_at
-     * @var RawValue|string|null
+     * Attributes: NotNull | Type(4)
+     * @var mixed
      */
-    public RawValue|string|null $createdAt = null;
-    
+    public $createdAt = null;
+        
     /**
      * Column: created_by
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $createdBy = null;
-    
+    public $createdBy = null;
+        
     /**
      * Column: created_as
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $createdAs = null;
-    
+    public $createdAs = null;
+        
     /**
      * Column: updated_at
-     * @var RawValue|string|null
+     * Attributes: Type(4)
+     * @var mixed
      */
-    public RawValue|string|null $updatedAt = null;
-    
+    public $updatedAt = null;
+        
     /**
      * Column: updated_by
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $updatedBy = null;
-    
+    public $updatedBy = null;
+        
     /**
      * Column: updated_as
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $updatedAs = null;
-    
+    public $updatedAs = null;
+        
     /**
      * Column: deleted_at
-     * @var RawValue|string|null
+     * Attributes: Type(4)
+     * @var mixed
      */
-    public RawValue|string|null $deletedAt = null;
-    
+    public $deletedAt = null;
+        
     /**
      * Column: deleted_as
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $deletedAs = null;
-    
+    public $deletedAs = null;
+        
     /**
      * Column: deleted_by
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $deletedBy = null;
-    
+    public $deletedBy = null;
+        
     /**
      * Column: restored_at
-     * @var RawValue|string|null
+     * Attributes: Type(4)
+     * @var mixed
      */
-    public RawValue|string|null $restoredAt = null;
-    
+    public $restoredAt = null;
+        
     /**
      * Column: restored_by
-     * @var RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @var mixed
      */
-    public RawValue|int|null $restoredBy = null;
+    public $restoredBy = null;
+    
     /**
      * Returns the value of field id
      * Column: id
-     * @return RawValue|int|null
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * @return mixed
      */
-    public function getId(): RawValue|int|null
+    public function getId()
     {
         return $this->id;
     }
@@ -177,10 +199,11 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Sets the value of field id
      * Column: id 
-     * @param RawValue|int|null $id
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * @param mixed $id
      * @return void
      */
-    public function setId(RawValue|int|null $id): void
+    public function setId($id)
     {
         $this->id = $id;
     }
@@ -188,9 +211,10 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Returns the value of field langId
      * Column: lang_id
-     * @return RawValue|int|null
+     * Attributes: NotNull | Numeric | Unsigned
+     * @return mixed
      */
-    public function getLangId(): RawValue|int|null
+    public function getLangId()
     {
         return $this->langId;
     }
@@ -198,10 +222,11 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Sets the value of field langId
      * Column: lang_id 
-     * @param RawValue|int|null $langId
+     * Attributes: NotNull | Numeric | Unsigned
+     * @param mixed $langId
      * @return void
      */
-    public function setLangId(RawValue|int|null $langId): void
+    public function setLangId($langId)
     {
         $this->langId = $langId;
     }
@@ -209,9 +234,10 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Returns the value of field siteId
      * Column: site_id
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getSiteId(): RawValue|int|null
+    public function getSiteId()
     {
         return $this->siteId;
     }
@@ -219,10 +245,11 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Sets the value of field siteId
      * Column: site_id 
-     * @param RawValue|int|null $siteId
+     * Attributes: Numeric | Unsigned
+     * @param mixed $siteId
      * @return void
      */
-    public function setSiteId(RawValue|int|null $siteId): void
+    public function setSiteId($siteId)
     {
         $this->siteId = $siteId;
     }
@@ -230,9 +257,10 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Returns the value of field pageId
      * Column: page_id
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getPageId(): RawValue|int|null
+    public function getPageId()
     {
         return $this->pageId;
     }
@@ -240,10 +268,11 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Sets the value of field pageId
      * Column: page_id 
-     * @param RawValue|int|null $pageId
+     * Attributes: Numeric | Unsigned
+     * @param mixed $pageId
      * @return void
      */
-    public function setPageId(RawValue|int|null $pageId): void
+    public function setPageId($pageId)
     {
         $this->pageId = $pageId;
     }
@@ -251,9 +280,10 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Returns the value of field postId
      * Column: post_id
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getPostId(): RawValue|int|null
+    public function getPostId()
     {
         return $this->postId;
     }
@@ -261,10 +291,11 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Sets the value of field postId
      * Column: post_id 
-     * @param RawValue|int|null $postId
+     * Attributes: Numeric | Unsigned
+     * @param mixed $postId
      * @return void
      */
-    public function setPostId(RawValue|int|null $postId): void
+    public function setPostId($postId)
     {
         $this->postId = $postId;
     }
@@ -272,9 +303,10 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Returns the value of field categoryId
      * Column: category_id
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getCategoryId(): RawValue|int|null
+    public function getCategoryId()
     {
         return $this->categoryId;
     }
@@ -282,10 +314,11 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Sets the value of field categoryId
      * Column: category_id 
-     * @param RawValue|int|null $categoryId
+     * Attributes: Numeric | Unsigned
+     * @param mixed $categoryId
      * @return void
      */
-    public function setCategoryId(RawValue|int|null $categoryId): void
+    public function setCategoryId($categoryId)
     {
         $this->categoryId = $categoryId;
     }
@@ -293,9 +326,10 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Returns the value of field key
      * Column: key
-     * @return RawValue|string|null
+     * Attributes: NotNull | Size(255) | Type(2)
+     * @return mixed
      */
-    public function getKey(): RawValue|string|null
+    public function getKey()
     {
         return $this->key;
     }
@@ -303,10 +337,11 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Sets the value of field key
      * Column: key 
-     * @param RawValue|string|null $key
+     * Attributes: NotNull | Size(255) | Type(2)
+     * @param mixed $key
      * @return void
      */
-    public function setKey(RawValue|string|null $key): void
+    public function setKey($key)
     {
         $this->key = $key;
     }
@@ -314,9 +349,10 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Returns the value of field value
      * Column: value
-     * @return RawValue|string|null
+     * Attributes: Type(23)
+     * @return mixed
      */
-    public function getValue(): RawValue|string|null
+    public function getValue()
     {
         return $this->value;
     }
@@ -324,10 +360,11 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Sets the value of field value
      * Column: value 
-     * @param RawValue|string|null $value
+     * Attributes: Type(23)
+     * @param mixed $value
      * @return void
      */
-    public function setValue(RawValue|string|null $value): void
+    public function setValue($value)
     {
         $this->value = $value;
     }
@@ -335,9 +372,10 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Returns the value of field deleted
      * Column: deleted
-     * @return RawValue|int
+     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * @return mixed
      */
-    public function getDeleted(): RawValue|int
+    public function getDeleted()
     {
         return $this->deleted;
     }
@@ -345,10 +383,11 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Sets the value of field deleted
      * Column: deleted 
-     * @param RawValue|int $deleted
+     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * @param mixed $deleted
      * @return void
      */
-    public function setDeleted(RawValue|int $deleted): void
+    public function setDeleted($deleted)
     {
         $this->deleted = $deleted;
     }
@@ -356,9 +395,10 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Returns the value of field createdAt
      * Column: created_at
-     * @return RawValue|string|null
+     * Attributes: NotNull | Type(4)
+     * @return mixed
      */
-    public function getCreatedAt(): RawValue|string|null
+    public function getCreatedAt()
     {
         return $this->createdAt;
     }
@@ -366,10 +406,11 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Sets the value of field createdAt
      * Column: created_at 
-     * @param RawValue|string|null $createdAt
+     * Attributes: NotNull | Type(4)
+     * @param mixed $createdAt
      * @return void
      */
-    public function setCreatedAt(RawValue|string|null $createdAt): void
+    public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
     }
@@ -377,9 +418,10 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Returns the value of field createdBy
      * Column: created_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getCreatedBy(): RawValue|int|null
+    public function getCreatedBy()
     {
         return $this->createdBy;
     }
@@ -387,10 +429,11 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Sets the value of field createdBy
      * Column: created_by 
-     * @param RawValue|int|null $createdBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $createdBy
      * @return void
      */
-    public function setCreatedBy(RawValue|int|null $createdBy): void
+    public function setCreatedBy($createdBy)
     {
         $this->createdBy = $createdBy;
     }
@@ -398,9 +441,10 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Returns the value of field createdAs
      * Column: created_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getCreatedAs(): RawValue|int|null
+    public function getCreatedAs()
     {
         return $this->createdAs;
     }
@@ -408,10 +452,11 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Sets the value of field createdAs
      * Column: created_as 
-     * @param RawValue|int|null $createdAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $createdAs
      * @return void
      */
-    public function setCreatedAs(RawValue|int|null $createdAs): void
+    public function setCreatedAs($createdAs)
     {
         $this->createdAs = $createdAs;
     }
@@ -419,9 +464,10 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Returns the value of field updatedAt
      * Column: updated_at
-     * @return RawValue|string|null
+     * Attributes: Type(4)
+     * @return mixed
      */
-    public function getUpdatedAt(): RawValue|string|null
+    public function getUpdatedAt()
     {
         return $this->updatedAt;
     }
@@ -429,10 +475,11 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Sets the value of field updatedAt
      * Column: updated_at 
-     * @param RawValue|string|null $updatedAt
+     * Attributes: Type(4)
+     * @param mixed $updatedAt
      * @return void
      */
-    public function setUpdatedAt(RawValue|string|null $updatedAt): void
+    public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
     }
@@ -440,9 +487,10 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Returns the value of field updatedBy
      * Column: updated_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getUpdatedBy(): RawValue|int|null
+    public function getUpdatedBy()
     {
         return $this->updatedBy;
     }
@@ -450,10 +498,11 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Sets the value of field updatedBy
      * Column: updated_by 
-     * @param RawValue|int|null $updatedBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $updatedBy
      * @return void
      */
-    public function setUpdatedBy(RawValue|int|null $updatedBy): void
+    public function setUpdatedBy($updatedBy)
     {
         $this->updatedBy = $updatedBy;
     }
@@ -461,9 +510,10 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Returns the value of field updatedAs
      * Column: updated_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getUpdatedAs(): RawValue|int|null
+    public function getUpdatedAs()
     {
         return $this->updatedAs;
     }
@@ -471,10 +521,11 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Sets the value of field updatedAs
      * Column: updated_as 
-     * @param RawValue|int|null $updatedAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $updatedAs
      * @return void
      */
-    public function setUpdatedAs(RawValue|int|null $updatedAs): void
+    public function setUpdatedAs($updatedAs)
     {
         $this->updatedAs = $updatedAs;
     }
@@ -482,9 +533,10 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Returns the value of field deletedAt
      * Column: deleted_at
-     * @return RawValue|string|null
+     * Attributes: Type(4)
+     * @return mixed
      */
-    public function getDeletedAt(): RawValue|string|null
+    public function getDeletedAt()
     {
         return $this->deletedAt;
     }
@@ -492,10 +544,11 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Sets the value of field deletedAt
      * Column: deleted_at 
-     * @param RawValue|string|null $deletedAt
+     * Attributes: Type(4)
+     * @param mixed $deletedAt
      * @return void
      */
-    public function setDeletedAt(RawValue|string|null $deletedAt): void
+    public function setDeletedAt($deletedAt)
     {
         $this->deletedAt = $deletedAt;
     }
@@ -503,9 +556,10 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Returns the value of field deletedAs
      * Column: deleted_as
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getDeletedAs(): RawValue|int|null
+    public function getDeletedAs()
     {
         return $this->deletedAs;
     }
@@ -513,10 +567,11 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Sets the value of field deletedAs
      * Column: deleted_as 
-     * @param RawValue|int|null $deletedAs
+     * Attributes: Numeric | Unsigned
+     * @param mixed $deletedAs
      * @return void
      */
-    public function setDeletedAs(RawValue|int|null $deletedAs): void
+    public function setDeletedAs($deletedAs)
     {
         $this->deletedAs = $deletedAs;
     }
@@ -524,9 +579,10 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Returns the value of field deletedBy
      * Column: deleted_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getDeletedBy(): RawValue|int|null
+    public function getDeletedBy()
     {
         return $this->deletedBy;
     }
@@ -534,10 +590,11 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Sets the value of field deletedBy
      * Column: deleted_by 
-     * @param RawValue|int|null $deletedBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $deletedBy
      * @return void
      */
-    public function setDeletedBy(RawValue|int|null $deletedBy): void
+    public function setDeletedBy($deletedBy)
     {
         $this->deletedBy = $deletedBy;
     }
@@ -545,9 +602,10 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Returns the value of field restoredAt
      * Column: restored_at
-     * @return RawValue|string|null
+     * Attributes: Type(4)
+     * @return mixed
      */
-    public function getRestoredAt(): RawValue|string|null
+    public function getRestoredAt()
     {
         return $this->restoredAt;
     }
@@ -555,10 +613,11 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Sets the value of field restoredAt
      * Column: restored_at 
-     * @param RawValue|string|null $restoredAt
+     * Attributes: Type(4)
+     * @param mixed $restoredAt
      * @return void
      */
-    public function setRestoredAt(RawValue|string|null $restoredAt): void
+    public function setRestoredAt($restoredAt)
     {
         $this->restoredAt = $restoredAt;
     }
@@ -566,9 +625,10 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Returns the value of field restoredBy
      * Column: restored_by
-     * @return RawValue|int|null
+     * Attributes: Numeric | Unsigned
+     * @return mixed
      */
-    public function getRestoredBy(): RawValue|int|null
+    public function getRestoredBy()
     {
         return $this->restoredBy;
     }
@@ -576,10 +636,11 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     /**
      * Sets the value of field restoredBy
      * Column: restored_by 
-     * @param RawValue|int|null $restoredBy
+     * Attributes: Numeric | Unsigned
+     * @param mixed $restoredBy
      * @return void
      */
-    public function setRestoredBy(RawValue|int|null $restoredBy): void
+    public function setRestoredBy($restoredBy)
     {
         $this->restoredBy = $restoredBy;
     }
@@ -603,6 +664,7 @@ abstract class TranslateAbstract extends AbstractModel implements TranslateAbstr
     
     /**
      * Adds the default validations to the model.
+     * @param Validation|null $validator
      * @return Validation
      */
     public function addDefaultValidations(?Validation $validator = null): Validation

@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\SiteLangAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\SiteLangInterface;
 /**
  * Class SiteLang
  *
- * This class represents a SiteLang model.
+ * This class represents a SiteLang object.
  * It extends the SiteLangAbstract class and implements the SiteLangInterface.
  */
 class SiteLang extends SiteLangAbstract implements SiteLangInterface

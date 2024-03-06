@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\MenuAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\MenuInterface;
 /**
  * Class Menu
  *
- * This class represents a Menu model.
+ * This class represents a Menu object.
  * It extends the MenuAbstract class and implements the MenuInterface.
  */
 class Menu extends MenuAbstract implements MenuInterface

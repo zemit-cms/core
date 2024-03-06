@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\RoleRoleAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\RoleRoleInterface;
 /**
  * Class RoleRole
  *
- * This class represents a RoleRole model.
+ * This class represents a RoleRole object.
  * It extends the RoleRoleAbstract class and implements the RoleRoleInterface.
  */
 class RoleRole extends RoleRoleAbstract implements RoleRoleInterface

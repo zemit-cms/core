@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\ValidatorAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\ValidatorInterface;
 /**
  * Class Validator
  *
- * This class represents a Validator model.
+ * This class represents a Validator object.
  * It extends the ValidatorAbstract class and implements the ValidatorInterface.
  */
 class Validator extends ValidatorAbstract implements ValidatorInterface

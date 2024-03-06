@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\UserRoleAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\UserRoleInterface;
 /**
  * Class UserRole
  *
- * This class represents a UserRole model.
+ * This class represents a UserRole object.
  * It extends the UserRoleAbstract class and implements the UserRoleInterface.
  */
 class UserRole extends UserRoleAbstract implements UserRoleInterface

@@ -30,33 +30,39 @@ abstract class PhalconMigrationsAbstract extends AbstractModel implements Phalco
 {
     /**
      * Column: id
-     * @var RawValue|int|null
+     * Attributes: First | NotNull | Numeric | Unsigned | AutoIncrement
+     * @var mixed
      */
-    public RawValue|int|null $id = null;
-    
+    public $id = null;
+        
     /**
      * Column: version
-     * @var RawValue|string|null
+     * Attributes: Primary | NotNull | Size(255) | Type(2)
+     * @var mixed
      */
-    public RawValue|string|null $version = null;
-    
+    public $version = null;
+        
     /**
      * Column: start_time
-     * @var RawValue|int
+     * Attributes: NotNull | Type(17)
+     * @var mixed
      */
-    public RawValue|int $startTime = 0;
-    
+    public $startTime = 0;
+        
     /**
      * Column: end_time
-     * @var RawValue|int
+     * Attributes: NotNull | Type(17)
+     * @var mixed
      */
-    public RawValue|int $endTime = 0;
+    public $endTime = 0;
+    
     /**
      * Returns the value of field id
      * Column: id
-     * @return RawValue|int|null
+     * Attributes: First | NotNull | Numeric | Unsigned | AutoIncrement
+     * @return mixed
      */
-    public function getId(): RawValue|int|null
+    public function getId()
     {
         return $this->id;
     }
@@ -64,10 +70,11 @@ abstract class PhalconMigrationsAbstract extends AbstractModel implements Phalco
     /**
      * Sets the value of field id
      * Column: id 
-     * @param RawValue|int|null $id
+     * Attributes: First | NotNull | Numeric | Unsigned | AutoIncrement
+     * @param mixed $id
      * @return void
      */
-    public function setId(RawValue|int|null $id): void
+    public function setId($id)
     {
         $this->id = $id;
     }
@@ -75,9 +82,10 @@ abstract class PhalconMigrationsAbstract extends AbstractModel implements Phalco
     /**
      * Returns the value of field version
      * Column: version
-     * @return RawValue|string|null
+     * Attributes: Primary | NotNull | Size(255) | Type(2)
+     * @return mixed
      */
-    public function getVersion(): RawValue|string|null
+    public function getVersion()
     {
         return $this->version;
     }
@@ -85,10 +93,11 @@ abstract class PhalconMigrationsAbstract extends AbstractModel implements Phalco
     /**
      * Sets the value of field version
      * Column: version 
-     * @param RawValue|string|null $version
+     * Attributes: Primary | NotNull | Size(255) | Type(2)
+     * @param mixed $version
      * @return void
      */
-    public function setVersion(RawValue|string|null $version): void
+    public function setVersion($version)
     {
         $this->version = $version;
     }
@@ -96,9 +105,10 @@ abstract class PhalconMigrationsAbstract extends AbstractModel implements Phalco
     /**
      * Returns the value of field startTime
      * Column: start_time
-     * @return RawValue|int
+     * Attributes: NotNull | Type(17)
+     * @return mixed
      */
-    public function getStartTime(): RawValue|int
+    public function getStartTime()
     {
         return $this->startTime;
     }
@@ -106,10 +116,11 @@ abstract class PhalconMigrationsAbstract extends AbstractModel implements Phalco
     /**
      * Sets the value of field startTime
      * Column: start_time 
-     * @param RawValue|int $startTime
+     * Attributes: NotNull | Type(17)
+     * @param mixed $startTime
      * @return void
      */
-    public function setStartTime(RawValue|int $startTime): void
+    public function setStartTime($startTime)
     {
         $this->startTime = $startTime;
     }
@@ -117,9 +128,10 @@ abstract class PhalconMigrationsAbstract extends AbstractModel implements Phalco
     /**
      * Returns the value of field endTime
      * Column: end_time
-     * @return RawValue|int
+     * Attributes: NotNull | Type(17)
+     * @return mixed
      */
-    public function getEndTime(): RawValue|int
+    public function getEndTime()
     {
         return $this->endTime;
     }
@@ -127,10 +139,11 @@ abstract class PhalconMigrationsAbstract extends AbstractModel implements Phalco
     /**
      * Sets the value of field endTime
      * Column: end_time 
-     * @param RawValue|int $endTime
+     * Attributes: NotNull | Type(17)
+     * @param mixed $endTime
      * @return void
      */
-    public function setEndTime(RawValue|int $endTime): void
+    public function setEndTime($endTime)
     {
         $this->endTime = $endTime;
     }
@@ -146,6 +159,7 @@ abstract class PhalconMigrationsAbstract extends AbstractModel implements Phalco
     
     /**
      * Adds the default validations to the model.
+     * @param Validation|null $validator
      * @return Validation
      */
     public function addDefaultValidations(?Validation $validator = null): Validation

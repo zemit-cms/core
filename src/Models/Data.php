@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
- 
+
 namespace Zemit\Models;
 
 use Zemit\Models\Abstracts\DataAbstract;
@@ -18,7 +18,7 @@ use Zemit\Models\Interfaces\DataInterface;
 /**
  * Class Data
  *
- * This class represents a Data model.
+ * This class represents a Data object.
  * It extends the DataAbstract class and implements the DataInterface.
  */
 class Data extends DataAbstract implements DataInterface
