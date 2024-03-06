@@ -13,501 +13,896 @@ namespace Zemit\Modules\Cli\Tasks;
 
 use Phalcon\Db\Column;
 use Phalcon\Db\ColumnInterface;
-use Phalcon\Mvc\Model\Relation;
 use Zemit\Modules\Cli\Task;
-use Zemit\Mvc\Model;
+use Zemit\Modules\Cli\Tasks\Traits\DescribesTrait;
+use Zemit\Modules\Cli\Tasks\Traits\ScaffoldTrait;
 use Zemit\Support\Helper;
 use Zemit\Support\Slug;
 
 class ScaffoldTask extends Task
 {
+    use ScaffoldTrait;
+    use DescribesTrait;
     
     public string $cliDoc = <<<DOC
 Usage:
-  zemit cli scaffold <action> [<params>...] [--force] [--table=<table>] [--directory=<directory>]
+  zemit cli scaffold <action> [--force] [--directory=<directory>] [--namespace=<namespace>]
+                              [--table=<table>] [--exclude=<exclude>] [--license=<license>]
+                              [--controllers-dir=<controllers-dir>] [--controllers-dir=<controllers-dir>]
+                              [--interfaces-dir=<interfaces-dir>] [--abstracts-dir=<abstracts-dir>]
+                              [--models-dir=<models-dir>] [--enums-dir=<enums-dir>] [--models-extend=<models-extend>]
+                              [--interfaces-extend=<interface-extend>] [--controllers-extend=<controllers-extend>]
+                              [--no-controllers] [--no-interfaces] [--no-abstracts] [--no-models] [--no-enums]
+                              [--no-strict-types] [--no-license] [--no-comments] [--no-get-set-methods]
+                              [--no-validations] [--no-relationships] [--no-column-map] [--no-set-source]
+                              [--no-typings] [--granular-typings] [--add-raw-value-type] [--protected-properties]
+
+Actions:
+  models
+  abstracts
+  controllers
+  enums
 
 Options:
-  --force                       Overwrite existing files
-  --path=<directory>            Directory path to generate new files
-  --table=<table>               Comma seperated list of table to generate
+  --force                                     Overwrite existing files
+  --table=<table>                             Comma seperated list of table to generate
+  --exclude=<table>                           Comma seperated list of table to exclude
+  --namespace=<namespace>                     Root namespace of the project (Default to "App")
+  --license=<license>                         Set your own license stamp (PHP Comment)
 
+  --directory=<directory>                     Root directory path to generate new files (Default to "./")
+  --controllers-dir=<controllers-dir>         Set your own controllers directory (Default: "Controllers")
+  --interfaces-dir=<interfaces-dir>           Set your own interfaces directory (Default: "Interfaces")
+  --abstracts-dir=<abstracts-dir>             Set your own abstract directory (Default: "Abstracts")
+  --models-dir=<models-dir>                   Set your own models directory (Default: "Models")
+  --enums-dir=<enums-dir>                     Set your own enums directory (Default: "Enums")
 
+  --models-extend=<models-extend>             Extend models with this base class (Default: "\Zemit\Models\ModelAbstract")
+  --interfaces-extend=<interface-extend>      Extend models interfaces with this base interface (Default: "\Zemit\Models\ModelInterface")
+  --controllers-extend=<controllers-extends>  Extend controllers with this base class (Default: "Zemit\Mvc\Controller\Rest")
+
+  --no-controllers                            Do not generate controllers
+  --no-interfaces                             Do not generate interfaces
+  --no-abstracts                              Do not generate abstracts
+  --no-models                                 Do not generate models
+  --no-enums                                  Do not generate enums
+
+  --no-strict-types                           Do not generate declare(strict_types=1);
+  --no-license                                Do not generate license stamps
+  --no-comments                               Do not generate comments
+
+  --no-get-set-methods                        Do not generate getter and setter methods in models
+  --no-validations                            Do not generate default validations in models
+  --no-relationships                          Do not generate default relationships in models
+  --no-column-map                             Do not generate column map in models
+  --no-set-source                             Do not call setSource() in models
+  --no-typings                                Do not generate typings for properties in models
+  --granular-typings                          Force the properties to `mixed` in models
+  --add-raw-value-type                        Add the `RawValue` type to every property in models
+  --protected-properties                      Make the properties `protected` in models
 DOC;
-    
-    public string $path = '../sdk/src/';
-    public string $servicesPath = 'services/';
-    public string $modelsPath = 'models/';
-    public string $abstractsPath = 'abstracts/';
-    public string $interfacesPath = 'interfaces/';
     
     public function getDefinitionsAction(string $name): array
     {
         $definitions = [];
         
-        $definitions['table'] = $this->getTableName($name);
+        $tableName = $this->getTableName($name);
+        $definitions['table'] = $tableName;
         $definitions['slug'] = Slug::generate(Helper::uncamelize($name));
         
-        // backend model
-        $definitions['backend'] = 'Zemit\\Models\\' . $definitions['table'];
+        // enums
+        $definitions['enums']['name'] = $tableName . 'Enum';
+        $definitions['enums']['file'] = $definitions['enums']['name'] . '.php';
         
-        // model
-        $definitions['model']['name'] = $definitions['table'] . 'Model';
-        $definitions['model']['file'] = $definitions['model']['name'] . '.ts';
-        $definitions['model']['export'] = trim($this->modelsPath, '/') . '.ts';
-        $definitions['model']['path'] = $this->modelsPath;
+        // controllers
+        $definitions['controller']['name'] = $tableName . 'Controller';
+        $definitions['controller']['file'] = $definitions['controller']['name'] . '.php';
         
-        // service
-        $definitions['service']['name'] = $definitions['table'] . 'Service';
-        $definitions['service']['file'] = $definitions['service']['name'] . '.ts';
-        $definitions['service']['export'] = trim($this->servicesPath, '/') . '.ts';
-        $definitions['service']['path'] = $this->servicesPath;
+        // controllers interfaces
+        $definitions['controllerInterface']['name'] = $definitions['controller']['name'] . 'Interface';
+        $definitions['controllerInterface']['file'] = $definitions['controllerInterface']['name'] . '.php';
         
-        // service
-        $definitions['interface']['name'] = $definitions['table'] . 'ModelInterface';
-        $definitions['interface']['file'] = $definitions['interface']['name'] . '.ts';
-        $definitions['interface']['export'] = trim($this->interfacesPath, '/') . '.ts';
-        $definitions['interface']['path'] = $this->interfacesPath;
+        // abstracts
+        $definitions['abstract']['name'] = $tableName . 'Abstract';
+        $definitions['abstract']['file'] = $definitions['abstract']['name'] . '.php';
         
-        // abstract
-        $definitions['abstract']['name'] = $definitions['table'] . 'ModelAbstract';
-        $definitions['abstract']['file'] = $definitions['abstract']['name'] . '.ts';
-        $definitions['abstract']['export'] = trim($this->abstractsPath, '/') . '.ts';
-        $definitions['abstract']['path'] = $this->abstractsPath;
+        // abstracts interfaces
+        $definitions['abstractInterface']['name'] = $definitions['abstract']['name'] . 'Interface';
+        $definitions['abstractInterface']['file'] = $definitions['abstractInterface']['name'] . '.php';
         
+        // models
+        $definitions['model']['name'] = $tableName;
+        $definitions['model']['file'] = $definitions['model']['name'] . '.php';
+        
+        // models interfaces
+        $definitions['modelInterface']['name'] = $definitions['model']['name'] . 'Interface';
+        $definitions['modelInterface']['file'] = $definitions['modelInterface']['name'] . '.php';
         
         return $definitions;
-    }
-    
-    public function generateExportsAction(): array
-    {
-        $ret = [];
-        
-        $directory = $this->dispatcher->getParam('directory');
-        $files = glob($directory . '*.ts');
-        
-        $exports = [];
-        foreach ($files as $file) {
-            $fileName = pathinfo($file, PATHINFO_FILENAME);
-            if ($fileName !== 'index') {
-                $exports []= "export {{$fileName}} from './{$fileName}'";
-            }
-        }
-        
-        $interfacesExportPath = $directory . 'index.ts';
-        
-        $ret ['exports'] = $exports;
-        $ret ['filePath'] = $interfacesExportPath;
-        $ret ['saved']= $this->saveFile($interfacesExportPath, implode(PHP_EOL, $exports));
-        
-        return $ret;
     }
     
     public function runAction(): array
     {
         $ret = [];
         
-        $exports = [
-            'models' => [],
-            'services' => [],
-            'interfaces' => [],
-            'abstracts' => [],
-        ];
-        
         $force = $this->dispatcher->getParam('force') ?? false;
-        $whitelisted = array_filter(explode(',', $this->dispatcher->getParam('table') ?? ''));
+        
         $tables = $this->db->listTables();
         foreach ($tables as $table) {
-            if (!empty($whitelisted) && !in_array($table, $whitelisted)) {
+            
+            // filter excluded tables
+            if ($this->isExcludedTable($table)) {
                 continue;
             }
             
-            $columns = $this->db->describeColumns($table);
-            $definitions = $this->getDefinitionsAction($table);
-            $related = $this->getRelatedMeta($definitions['backend']);
-            
-            // Save Interface File
-            $savePath = $this->path . $this->modelsPath . $this->abstractsPath . $this->interfacesPath . $definitions['interface']['file'];
-            if (!file_exists($savePath) || $force) {
-                $columns = $this->db->describeColumns($table);
-                $this->saveFile($savePath, $this->createInterfaceOutput($definitions, $columns), $force);
-                $ret [] = 'Interface `' . $definitions['interface']['file'] . '` created';
+            // filter whitelisted tables
+            if (!$this->isWhitelistedTable($table)) {
+                continue;
             }
             
+            $columns = $this->describeColumns($table);
+            $definitions = $this->getDefinitionsAction($table);
+            
             // Abstract
-            $savePath = $this->path . $this->modelsPath . $this->abstractsPath . $definitions['abstract']['file'];
+            $savePath = $this->getAbstractsDirectory($definitions['abstract']['file']);
             if (!file_exists($savePath) || $force) {
-                $this->saveFile($savePath, $this->createAbstractOutput($definitions, $columns), $force);
-                $ret [] = 'Abstract `' . $definitions['abstract']['file'] . '` created';
+                $this->saveFile($savePath, $this->createAbstractOutput($definitions, $table, $columns, $tables), $force);
+                $ret [] = 'Abstract Model `' . $definitions['abstract']['file'] . '` created';
+            }
+            
+            // Abstract Interfaces
+            $savePath = $this->getAbstractsInterfacesDirectory($definitions['abstractInterface']['file']);
+            if (!file_exists($savePath) || $force) {
+                $this->saveFile($savePath, $this->createAbstractInterfaceOutput($definitions, $columns), $force);
+                $ret [] = 'Abstract Model Interface `' . $definitions['abstractInterface']['file'] . '` created';
             }
             
             // Model
-            $savePath = $this->path . $this->modelsPath . $definitions['model']['file'];
+            $savePath = $this->getModelsDirectory($definitions['model']['file']);
             if (!file_exists($savePath) || $force) {
-                $this->saveFile($savePath, $this->createModelOutput($definitions, $related), $force);
-                $ret [] = 'Model ' . $definitions['model']['file'] . ' created';
+                $this->saveFile($savePath, $this->createModelOutput($definitions, $table, $columns, $tables), $force);
+                $ret [] = 'Model `' . $definitions['model']['file'] . '` created';
             }
             
-            // Create Service
-            $savePath = $this->path . $this->servicesPath . $definitions['service']['file'];
+            // Model Interfaces
+            $savePath = $this->getModelsInterfacesDirectory($definitions['modelInterface']['file']);
             if (!file_exists($savePath) || $force) {
-                $this->saveFile($savePath, $this->createServiceOutput($definitions), $force);
-                $ret [] = 'Service `' . $definitions['service']['file'] . '` created';
+                $this->saveFile($savePath, $this->createModelInterfaceOutput($definitions, $table, $columns, $tables), $force);
+                $ret [] = 'Model Interface `' . $definitions['modelInterface']['file'] . '` created';
             }
-            
-            $this->appendExport($definitions, $exports);
         }
-        
-        // interfaces
-        $exportDirectory = $this->path . $this->modelsPath . $this->abstractsPath . $this->interfacesPath;
-        $this->dispatcher->setParam('directory', $exportDirectory);
-        $this->generateExportsAction();
-        $ret [] = 'Interfaces Export `index.ts` created';
-        
-        // abstracts
-        $exportDirectory = $this->path . $this->modelsPath . $this->abstractsPath;
-        $this->dispatcher->setParam('directory', $exportDirectory);
-        $this->generateExportsAction();
-        $ret [] = 'Abstracts Export `index.ts` created';
-        
-        // models
-        $exportDirectory = $this->path . $this->modelsPath;
-        $this->dispatcher->setParam('directory', $exportDirectory);
-        $this->generateExportsAction();
-        $ret [] = 'Models Export `index.ts` created';
-        
-        // services
-        $exportDirectory = $this->path . $this->servicesPath;
-        $this->dispatcher->setParam('directory', $exportDirectory);
-        $this->generateExportsAction();
-        $ret [] = 'Services Export `index.ts` created';
         
         return $ret;
     }
     
-    public function appendExport(array $definitions, array &$exports) {
-        $exports['models'] []= "export {{$definitions['model']['name']}} from './{$definitions['model']['name']}'";
-        $exports['interfaces'] []= "export {{$definitions['interface']['name']}} from './{$definitions['interface']['name']}'";
-        $exports['services'] []= "export {{$definitions['service']['name']}} from './{$definitions['service']['name']}'";
-        $exports['abstracts'] []= "export {{$definitions['abstract']['name']}} from './{$definitions['abstract']['name']}'";
-    }
-    
-    public function createInterfaceOutput(array $definitions, array $columns) :string
-    {
-        $propertyItems = str_replace('!: ', ': ', $this->getPropertyItems($columns));
-        return <<<EOT
-export interface {$definitions['interface']['name']} {
-{$propertyItems}
-}
-EOT;
-    }
-    
     /**
-     * Creates a typescript abstract model output based on the given definitions.
-     */
-    public function createAbstractOutput(array $definitions, array $columns): string
-    {
-        $from = './' . $this->interfacesPath . $definitions['interface']['name'];
-        $propertyItems = $this->getPropertyItems($columns);
-        return <<<EOT
-import { AbstractModel } from '../AbstractModel';
-import { {$definitions['interface']['name']} } from '$from';
-
-export class {$definitions['abstract']['name']} extends AbstractModel implements {$definitions['interface']['name']} {
-{$propertyItems}
-}
-EOT;
-    }
-    
-    /**
-     * Creates a typescript model output based on the given definitions.
-     */
-    public function createModelOutput(array $definitions, array $related): string
-    {
-        $from = './' . $this->abstractsPath . $definitions['abstract']['name'];
-        $relatedImportItems = $this->getRelatedImportItems($related);
-//        $relatedDefaultItems = $this->getRelatedDefaultItems($related);
-        $relatedPropertyItems = $this->getRelatedProperties($related);
-        $importTypeClassTransformer = !empty($relatedPropertyItems) ?
-            "import { Type } from 'class-transformer';" : '';
-        return <<<EOT
-import 'reflect-metadata';
-{$importTypeClassTransformer}
-import { {$definitions['abstract']['name']} } from '$from';
-{$relatedImportItems}
-
-export class {$definitions['model']['name']} extends {$definitions['abstract']['name']} {
-{$relatedPropertyItems}
-}
-EOT;
-    }
-    
-    /**
+     * Generates the output for a model interface.
      *
+     * @param array $definitions The definitions for generating the model interface.
+     *
+     * @return string The generated model interface output as a string.
      */
-    public function createServiceOutput(array $definitions) {
-        
-        $from = '../' . $this->modelsPath . $definitions['model']['name'];
-        return <<<EOT
-import { AbstractService } from './AbstractService';
-import { {$definitions['model']['name']} } from '$from';
+    public function createModelInterfaceOutput(array $definitions): string
+    {
+        return <<<PHP
+<?php
+{$this->getLicenseStamp()}
+{$this->getStrictTypes()}
+namespace {$this->getModelsInterfacesNamespace()};
 
-export class {$definitions['service']['name']} extends AbstractService {
-    modelUrl = '{$definitions['slug']}';
-    model = {$definitions['model']['name']};
+use {$this->getAbstractsInterfacesNamespace()}\\{$definitions['abstractInterface']['name']};
+
+interface {$definitions['modelInterface']['name']} extends {$definitions['abstractInterface']['name']}
+{
 }
-EOT;
-    }
-    
-    public function getRelatedImportItems(array $related): string
-    {
-        $relatedImportItems = [];
-        if (!empty($related['import'])) {
-            foreach ($related['import'] as $key => $value) {
-                $relatedImportItems []= 'import { ' . $key . ' } from \'./' . $key . '\';';
-            }
-        }
-        return implode(PHP_EOL, $relatedImportItems);
+PHP;
     }
     
     /**
-     * Returns a formatted string representation of the related default items.
+     * Generates the abstract interface output based on the given definitions and columns.
+     *
+     * @param array $definitions The definitions for the abstract interface.
+     * @param array $columns The columns for which to generate getter and setter methods.
+     *
+     * @return string The generated abstract interface output as a string.
      */
-    public function getRelatedDefaultItems(array $related): string
+    public function createAbstractInterfaceOutput(array $definitions, array $columns): string
     {
-        $relatedMapItems = [];
-        if (!empty($related['default'])) {
-            foreach ($related['default'] as $key => $value) {
-                $relatedMapItems []= '  ' . $key . ' = ' . $value . ',';
-            }
-        }
-        return implode(PHP_EOL, $relatedMapItems);
+        $getSetInterfaceItems = $this->getGetSetMethods($columns, true);
+        return <<<PHP
+<?php
+{$this->getLicenseStamp()}
+{$this->getStrictTypes()}
+namespace {$this->getAbstractsInterfacesNamespace()};
+
+use Phalcon\Db\RawValue;
+use Zemit\Mvc\ModelInterface;
+
+interface {$definitions['abstractInterface']['name']} extends ModelInterface
+{
+    {$getSetInterfaceItems}
+}
+PHP;
     }
     
     /**
-     * Returns a formatted string representation of the related map items.
+     * Generates an abstract class output for the given definitions, table, columns, and tables.
+     *
+     * @param array $definitions The definitions for the abstract output.
+     * @param string $table The table name.
+     * @param array $columns The columns.
+     * @param array $tables The tables.
+     *
+     * @return string The abstract output as a string.
      */
-    public function getRelatedMapItems(array $related): string
+    public function createAbstractOutput(array $definitions, string $table, array $columns, array $tables): string
     {
-        $relatedMapItems = [];
-        if (!empty($related['map'])) {
-            foreach ($related['map'] as $key => $value) {
-                $relatedMapItems []= '  ' . $key . '!: ' . $value . ';';
-            }
-        }
-        return implode(PHP_EOL, $relatedMapItems);
+        $propertyItems = $this->getPropertyItems($columns);
+        $getSetMethods = $this->getGetSetMethods($columns);
+        $columnMapMethod = $this->getColumnMapMethod($columns);
+        
+        [$relationshipInjectableItems, $relationshipItems, $relationshipUseItems] = $this->getRelationshipItems($table, $columns, $tables);
+        $validationItems = $this->getValidationItems($columns);
+        
+        return <<<PHP
+<?php
+{$this->getLicenseStamp()}
+{$this->getStrictTypes()}
+namespace {$this->getAbstractsNamespace()};
+
+use Phalcon\Db\RawValue;
+use Zemit\Filter\Validation;
+use Zemit\Models\AbstractModel;
+{$relationshipUseItems}
+use {$this->getAbstractsInterfacesNamespace()}\\{$definitions['abstractInterface']['name']};
+
+/**
+ * Class {$definitions['abstract']['name']}
+ *
+ * This class defines a {$definitions['model']['name']} abstract model that extends the AbstractModel class and implements the {$definitions['abstractInterface']['name']}.
+ * It provides properties and methods for managing {$definitions['model']['name']} data.
+ * 
+{$relationshipInjectableItems}
+ */
+abstract class {$definitions['abstract']['name']} extends AbstractModel implements {$definitions['abstractInterface']['name']}
+{
+    {$propertyItems}
+    
+    {$getSetMethods}
+
+    /**
+     * Adds the default relationships to the model.
+     * @return void
+     */
+    public function addDefaultRelationships(): void
+    {
+        {$relationshipItems}
     }
     
     /**
-     * Returns a formatted string representation of the related map items.
+     * Adds the default validations to the model.
+     * @param Validation|null \$validator
+     * @return Validation
      */
-    public function getRelatedProperties(array $related): string
+    public function addDefaultValidations(?Validation \$validator = null): Validation
     {
-        $relatedMapItems = [];
-        if (!empty($related['data'])) {
-            foreach ($related['data'] as $key => $value) {
-                $type = str_replace('[]', '', $value);
-                $relatedMapItems []= '';
-                $relatedMapItems []= '  @Type(() => ' . $type . ')';
-                $relatedMapItems []= '  ' . $key . '!: ' . $value . ';';
-            }
-        }
-        return implode(PHP_EOL, $relatedMapItems);
+        \$validator ??= new Validation();
+    
+        {$validationItems}
+        
+        return \$validator;
+    }
+
+    {$columnMapMethod}
+}
+PHP;
     }
     
-    public function getPropertyItems(array|ColumnInterface $columns): string
+    /**
+     * Generates a comment for the createModelOutput method.
+     *
+     * @param array $definitions The array of model definitions.
+     * @param string $table The name of the table.
+     * @param array $columns The array of column names.
+     * @param array $tables The array of table names.
+     * @return string The generated comment.
+     */
+    public function createModelOutput(array $definitions, string $table, array $columns, array $tables): string
+    {
+        // @todo add params to add them in model instead of abstract
+//        [$relationshipInjectableItems, $relationshipItems] = $this->getRelationshipItems($table, $columns, $tables);
+//        $validationItems = $this->getValidationItems($columns);
+        
+        return <<<PHP
+<?php
+{$this->getLicenseStamp()}
+{$this->getStrictTypes()}
+namespace {$this->getModelsNamespace()};
+
+use {$this->getAbstractsNamespace()}\\{$definitions['abstract']['name']};
+use {$this->getModelsInterfacesNamespace()}\\{$definitions['modelInterface']['name']};
+{$this->getModelClassComments($definitions)}
+class {$definitions['model']['name']} extends {$definitions['abstract']['name']} implements {$definitions['modelInterface']['name']}
+{
+    public function initialize(): void
+    {
+        parent::initialize();
+        \$this->addDefaultRelationships();
+    }
+
+    public function validation(): bool
+    {
+        \$validator = \$this->genericValidation();
+        \$this->addDefaultValidations(\$validator);
+        return \$this->validate(\$validator);
+    }
+}
+PHP;
+    }
+    
+    public function getModelClassComments(array $definitions): string
+    {
+        if ($this->isNoComments()) {
+            return '';
+        }
+        
+        return <<<PHP
+
+/**
+ * Class {$definitions['model']['name']}
+ *
+ * This class represents a {$definitions['model']['name']} object.
+ * It extends the {$definitions['abstract']['name']} class and implements the {$definitions['modelInterface']['name']}.
+ */
+PHP;
+    }
+    
+    /**
+     * Generates a string containing validation items for each column in the provided array.
+     *
+     * @param array $columns An array of ColumnInterface objects.
+     *
+     * @return string The generated validation items string.
+     */
+    public function getValidationItems(array $columns): string
+    {
+        if ($this->isNoValidations()) {
+            return '';
+        }
+        
+        $validationItems = [];
+        foreach ($columns as $column) {
+            assert($column instanceof ColumnInterface);
+            $columnType = $column->getType();
+            $columnName = $column->getName();
+            
+            $propertyType = $this->getColumnType($column);
+            $propertyName = $this->getPropertyName($columnName);
+            
+            $minSize = 0;
+            $maxSize = is_int($column->getSize())? $column->getSize() : 0;
+            
+            $allowEmpty = $column->isNotNull() && !$column->isAutoIncrement()? 'false' : 'true';
+            
+            if ($columnType === Column::TYPE_DATE) {
+                $validationItems [] = <<<PHP
+        \$this->addDateValidation(\$validator, '{$propertyName}', {$allowEmpty});
+PHP;
+            }
+            
+            if ($columnType === Column::TYPE_JSON) {
+                $validationItems [] = <<<PHP
+        \$this->addJsonValidation(\$validator, '{$propertyName}', {$allowEmpty});
+PHP;
+            }
+            
+            if ($columnType === Column::TYPE_DATETIME) {
+                $validationItems [] = <<<PHP
+        \$this->addDateTimeValidation(\$validator, '{$propertyName}', {$allowEmpty});
+PHP;
+            }
+            
+            if ($columnType === Column::TYPE_ENUM) {
+                $enumValues = $column->getSize();
+                $validationItems [] = <<<PHP
+        \$this->addInclusionInValidation(\$validator, '{$propertyName}', [{$enumValues}], {$allowEmpty});
+PHP;
+            }
+            
+            // String
+            if ($propertyType === 'string' && $maxSize) {
+                $validationItems []= <<<PHP
+        \$this->addStringLengthValidation(\$validator, '{$propertyName}', {$minSize}, {$maxSize}, {$allowEmpty});
+PHP;
+            }
+            
+            // Int
+            if ($propertyType === 'int' && $column->isUnsigned()) {
+                $validationItems []= <<<PHP
+        \$this->addUnsignedIntValidation(\$validator, '{$propertyName}', {$allowEmpty});
+PHP;
+            }
+        }
+        return trim(implode(PHP_EOL, $validationItems));
+    }
+    
+    /**
+     * Generates relationship items for a given table.
+     *
+     * @param string $table The name of the table.
+     * @param array $columns The array of column objects.
+     * @param array $tables The array of table names.
+     *
+     * @return array An array containing the generated relationship items.
+     */
+    public function getRelationshipItems(string $table, array $columns, array $tables): array
+    {
+        if ($this->isNoRelationships()) {
+            return [
+                ' *',
+                '',
+                ''
+            ];
+        }
+        
+        $modelNamespace = 'Zemit\\Models\\';
+        
+        $useModels = [];
+        $relationshipUseItems = [];
+        $relationshipItems = [];
+        $relationshipInjectableItems = [];
+        
+        // Has Many
+        foreach ($tables as $otherTable) {
+            
+            // skip the current table
+            if ($otherTable === $table) {
+                continue;
+            }
+            
+            $otherTableColumns = $this->describeColumns($otherTable);
+            $relationName = $this->getTableName($otherTable);
+            $relationClass = $relationName . '::class';
+            $relationAlias = $relationName . 'List';
+            
+            // foreach columns of that other table
+            foreach ($otherTableColumns as $otherTableColumn) {
+                $otherColumnName = $otherTableColumn->getName();
+                $otherPropertyName = $this->getPropertyName($otherColumnName);
+                
+                // if the column name starts with the current table name
+                if (str_starts_with($otherColumnName, $table . '_')) {
+                    
+                    // foreach column of the current table
+                    foreach ($columns as $column) {
+                        assert($column instanceof ColumnInterface);
+                        $columnName = $column->getName();
+                        
+                        // if the field is matching
+                        if ($otherColumnName === $table . '_' . $columnName) {
+                            $propertyName = $this->getPropertyName($columnName);
+                            $useModels[$relationName] = true;
+                            
+                            $relationshipInjectableItems []= <<<PHP
+ * @property {$relationName}[] \${$relationAlias}
+ * @method {$relationName}[] get{$relationAlias}(?array \$params = null)
+PHP;
+                            
+                            $relationshipItems []= <<<PHP
+        \$this->hasMany('{$propertyName}', {$relationClass}, '{$otherPropertyName}', ['alias' => '{$relationAlias}']);
+PHP;
+                            // check if we have many-to-many
+                            foreach ($otherTableColumns as $manyTableColumn) {
+                                assert($manyTableColumn instanceof ColumnInterface);
+                                $manyColumnName = $manyTableColumn->getName();
+                                $manyPropertyName = $this->getPropertyName($manyColumnName);
+                                
+                                // skip itself
+                                if ($manyColumnName === $otherColumnName) {
+                                    continue;
+                                }
+                                
+                                foreach ($tables as $manyManyTable) {
+                                    $manyManyTableName = $this->getTableName($manyManyTable);
+                                    $manyManyTableClass = $manyManyTableName . '::class';
+                                    $manyManyTableAlias = $manyManyTableName . 'List';
+                                    
+                                    // to prevent duplicates in this specific scenario when we find many-to-many relationships
+                                    // that are not actually nodes, we will enforce the full many-to-many path alias
+                                    if (!(str_starts_with($otherTable, $table . '_') || str_ends_with($otherTable, '_' . $table))) {
+                                        $manyManyTableAlias = $relationName . $manyManyTableName . 'List';
+                                    }
+                                    
+                                    if (str_starts_with($manyColumnName, $manyManyTable . '_')) {
+                                        
+                                        $manyManyTableColumns = $this->describeColumns($manyManyTable);
+                                        foreach ($manyManyTableColumns as $manyManyTableColumn) {
+                                            $manyManyColumnName = $manyManyTableColumn->getName();
+                                            if ($manyColumnName === $manyManyTable . '_' . $manyManyColumnName) {
+                                                $manyManyPropertyName = $this->getPropertyName($manyManyColumnName);
+                                                $useModels[$manyManyTableName] = true;
+                                                
+                                                $relationshipInjectableItems []= <<<PHP
+ * @property {$manyManyTableName}[] \${$manyManyTableAlias}
+ * @method {$manyManyTableName}[] get{$manyManyTableAlias}(?array \$params = null)
+PHP;
+                                                
+                                                $relationshipItems []= <<<PHP
+        \$this->hasManyToMany('{$propertyName}', {$relationClass}, '{$otherPropertyName}',
+            '{$manyPropertyName}', {$manyManyTableClass}, '{$manyManyPropertyName}', ['alias' => '{$manyManyTableAlias}']);
+PHP;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Belongs To
+        foreach ($columns as $column) {
+            assert($column instanceof ColumnInterface);
+            $columnName = $column->getName();
+            $propertyName = $this->getPropertyName($columnName);
+            
+            if (str_ends_with($columnName, '_id')) {
+                $relationName = $this->getTableName(substr($columnName, 0, strlen($columnName) - 3));
+                $relationTableName = $relationName;
+                // @todo improve here and check if table exists
+                
+                switch ($relationName) {
+                    case 'Parent':
+                    case 'Child':
+                    case 'Left':
+                    case 'Right':
+                        $relationTableName = $this->getTableName($table);
+                        if (str_contains($table, '_')) {
+                            $length = strlen($relationTableName);
+                            $midpoint = floor($length / 2);
+                            $firstPart = substr($relationTableName, 0, $midpoint);
+                            $secondPart = substr($relationTableName, $midpoint + (($length % 2 === 0)? 0 : 1));
+                            if ($firstPart === $secondPart) {
+                                $relationTableName = $firstPart;
+                            }
+                        }
+                        
+                        break;
+                }
+                
+                $relationClass = $relationTableName . '::class';
+                $relationAlias = $relationName . 'Entity';
+                
+                $useModels[$relationTableName] = true;
+                
+                $relationshipInjectableItems []= <<<PHP
+ * @property {$relationTableName} \${$relationAlias}
+ * @method {$relationTableName} get{$relationAlias}(?array \$params = null)
+PHP;
+                
+                $relationshipItems []= <<<PHP
+        \$this->belongsTo('{$propertyName}', {$relationClass}, 'id', ['alias' => '{$relationAlias}']);
+PHP;
+            }
+        }
+        
+        foreach (array_keys($useModels) as $useItem) {
+            $relationshipUseItems []= 'use ' . $modelNamespace . $useItem . ';';
+        }
+        
+        // Avoid empty lines if not relationship were found
+        if (empty($relationshipInjectableItems)) {
+            $relationshipInjectableItems = [' * '];
+        }
+        if (empty($relationshipItems)) {
+            $relationshipItems = ['// no default relationship found'];
+        }
+        
+        return [
+            implode(PHP_EOL . ' *' . PHP_EOL, $relationshipInjectableItems),
+            trim(implode(PHP_EOL . PHP_EOL, $relationshipItems)),
+            trim(implode(PHP_EOL, $relationshipUseItems)),
+        ];
+    }
+    
+    public function getColumnMapMethod(array $columns): string
+    {
+        if ($this->isNoColumnMap()) {
+            return '';
+        }
+        
+        $columnMapItems = $this->getColumnMapItems($columns);
+        $columnMapComment = $this->getColumnMapComment();
+        return <<<PHP
+    {$columnMapComment}
+    public function columnMap(): array {
+        return [
+{$columnMapItems}
+        ];
+    }
+PHP;
+    }
+    
+    /**
+     * Returns the documentation comment for the `getColumnMap` method.
+     * 
+     * @return string The documentation comment for the `getColumnMap` method.
+     */
+    public function getColumnMapComment(): string
+    {
+        if ($this->isNoComments()) {
+            return '';
+        }
+        
+        return <<<PHP
+
+    /**
+     * Returns an array that maps the column names of the database
+     * table to the corresponding property names of the model.
+     * 
+     * @returns array The array mapping the column names to the property names
+     */
+PHP;
+    }
+    
+    /**
+     * Generates a string representation of column map items for a given array of columns.
+     *
+     * @param array $columns An array of columns.
+     *
+     * @return string The string representation of the column map items.
+     */
+    public function getColumnMapItems(array $columns): string
+    {
+        $columnMapItems = [];
+        foreach ($columns as $column) {
+            assert($column instanceof ColumnInterface);
+            $columnName = $column->getName();
+            $columnMap = $this->getPropertyName($columnName);
+            $columnMapItems[] = <<<PHP
+            '{$columnName}' => '{$columnMap}',
+PHP;
+        }
+        return implode(PHP_EOL, $columnMapItems);
+    }
+    
+    /**
+     * Generates property items for each column in the given array.
+     *
+     * @param array $columns An array of ColumnInterface objects.
+     *
+     * @return string The generated property items.
+     */
+    public function getPropertyItems(array $columns): string
     {
         $propertyItems = [];
         foreach ($columns as $column) {
-            $columnName = $this->getColumnName($column->getName());
-            $columnType = $this->getColumnTsType($column);
-//            $defaultValue = $this->getDefaultValue($column, $columnType);
-            $propertyItems[] = "  $columnName!: $columnType;";
+            assert($column instanceof ColumnInterface);
+            $definition = $this->getPropertyDefinitions($column);
+            $propertyComment = $this->getPropertyComment($column, $definition);
+            $propertyItems[] = <<<PHP
+    {$propertyComment}
+    {$definition['visibility']} {$definition['property']};
+PHP;
         }
-        return implode(PHP_EOL, $propertyItems);
+        
+        return trim(implode(PHP_EOL, $propertyItems));
     }
     
-    public function getRelatedMeta(string $modelClassName): array
+    /**
+     * Generates the comment for a property with the given column name and property type.
+     *
+     * @param ColumnInterface $column The column object.
+     * @param array $definitions The property definitions.
+     *
+     * @return string The generated property comment.
+     */
+    public function getPropertyComment(ColumnInterface $column, array $definitions): string
     {
-        $related = [
-            'import' => [],
-            'map' => [],
-            'default' => [],
-            'data' => [],
-        ];
-        
-        $modelInstance = $this->getModelInstance($modelClassName);
-        $modelManager = $modelInstance->getModelsManager();
-        $relations = $modelManager->getRelations($modelClassName);
-        foreach ($relations as $relation) {
-            $relationAlias = $relation->getOption('alias');
-            $relationModelName = $this->getModelNameFromClassName($relation->getReferencedModel());
-            // do not import itself
-            $modelName = basename(str_replace('\\', '/', $modelClassName)) . 'Model';
-            if ($relationModelName !== $modelName) {
-                // import related model
-                $related['import'][$relationModelName] = '';
-            }
-            // add related map entry
-            $related['map'][$relationAlias] = $relationModelName;
+        if ($this->isNoComments()) {
+            return '';
+        }
+        $propertyType = $definitions['type'] ?: 'mixed';
+        return <<<PHP
+    
+    /**
+     * Column: {$definitions['columnName']}
+     * Attributes: {$this->getColumnAttributes($column)}
+     * @var {$propertyType}
+     */
+PHP;
+    }
+    
+    /**
+     * Generates getter and setter methods for the given columns.
+     *
+     * @param array $columns The columns for which to generate getter and setter methods.
+     * @param bool $interface Determines whether to generate methods for a class or an interface.
+     *
+     * @return string The generated getter and setter methods as a string.
+     */
+    public function getGetSetMethods(array $columns, bool $interface = false): string
+    {
+        $propertyItems = [];
+        foreach ($columns as $column) {
+            assert($column instanceof ColumnInterface);
+            $definition = $this->getPropertyDefinitions($column);
             
-            if ($relation->getType() === Relation::HAS_MANY ||
-                $relation->getType() === Relation::HAS_MANY_THROUGH
-            ) {
-                // set default value to empty array
-                $related['default'][$relationAlias] = '[]';
-                $related['data'][$relationAlias] = $relationModelName . '[]';
+            $getMethod = 'get' . ucfirst($definition['name']);
+            $setMethod = 'set' . ucfirst($definition['name']);
+            
+            $getMethodComments = $this->getSetMethodComment($column, $definition, true);
+            $setMethodComments = $this->getSetMethodComment($column, $definition, false);
+            
+            if (!$this->isNoTypings()) {
+                $propertyType = isset($definition['type'])? ': ' . $definition['type'] : '';
+                $voidType = ': void';
             } else {
-                $related['data'][$relationAlias] = $relationModelName;
+                $propertyType = '';
+                $voidType = '';
+            }
+            
+            // For Model
+            if (!$interface) {
+                $propertyItems[] = <<<PHP
+    {$getMethodComments}
+    public function {$getMethod}(){$propertyType}
+    {
+        return \$this->{$definition['name']};
+    }
+    {$setMethodComments}
+    public function {$setMethod}({$definition['param']}){$voidType}
+    {
+        \$this->{$definition['name']} = \${$definition['name']};
+    }
+PHP;
+            }
+            
+            // For Interface
+            else {
+                $propertyItems[] = <<<PHP
+    {$getMethodComments}
+    public function {$getMethod}(){$propertyType};
+    {$setMethodComments}
+    public function {$setMethod}({$definition['param']}){$voidType};
+PHP;
             }
         }
-        
-        return $related;
+        return trim(implode(PHP_EOL, $propertyItems));
     }
     
-    public function getColumnTsType(ColumnInterface $column): string
+    /**
+     * Generates a comment for a getter or setter method for a specific column.
+     *
+     * @param ColumnInterface $column The column object.
+     * @param array $definitions The property definitions.
+     * @param bool $get Determines whether the comment is for a getter or setter method.
+     *
+     * @return string The generated comment.
+     */
+    public function getSetMethodComment(ColumnInterface $column, array $definitions, bool $get): string
     {
-        $tsType = 'null';
+        if ($this->isNoComments()) {
+            return '';
+        }
         
+        $propertyType = $definitions['type'] ?: 'mixed';
+        
+        if ($get) {
+            return <<<PHP
+
+    /**
+     * Returns the value of field {$definitions['name']}
+     * Column: {$definitions['columnName']}
+     * Attributes: {$this->getColumnAttributes($column)}
+     * @return {$propertyType}
+     */
+PHP;
+        }
+        
+        else {
+            return <<<PHP
+
+    /**
+     * Sets the value of field {$definitions['name']}
+     * Column: {$definitions['columnName']} 
+     * Attributes: {$this->getColumnAttributes($column)}
+     * @param {$propertyType} \${$definitions['name']}
+     * @return void
+     */
+PHP;
+        }
+    }
+    
+    public function getColumnAttributes(ColumnInterface $column): string
+    {
+        $attributes = [];
+        if ($column->isFirst()) {
+            $attributes []= 'First';
+        }
+        if ($column->isPrimary()) {
+            $attributes []= 'Primary';
+        }
+        if ($column->isNotNull()) {
+            $attributes []= 'NotNull';
+        }
         if ($column->isNumeric()) {
-            $tsType = 'number';
+            $attributes []= 'Numeric';
+        }
+        if ($column->isUnsigned()) {
+            $attributes []= 'Unsigned';
+        }
+        if ($column->isAutoIncrement()) {
+            $attributes []= 'AutoIncrement';
+        }
+        if ($column->getSize()) {
+            $attributes []= 'Size(' . $column->getSize() . ')';
+        }
+        if ($column->getScale()) {
+            $attributes []= 'Scale(' . $column->getSize() . ')';
+        }
+        if ($column->getType()) {
+            $attributes []= 'Type(' . $column->getType() . ')';
+        }
+        return implode(' | ', $attributes);
+    }
+    
+    public function getPropertyDefinitions(ColumnInterface $column): array
+    {
+        $definitions = [];
+        
+        // column
+        $columnName = $column->getName();
+        $columnType = $this->getColumnType($column);
+        $defaultValue = $this->getDefaultValue($column);
+        $optional = !$column->isNotNull() || $column->isAutoIncrement() || is_null($defaultValue);
+        
+        // property
+        $propertyVisibility = $this->isProtectedProperties()? 'protected' : 'public';
+        $propertyName = $this->getPropertyName($column->getName());
+        
+        // property type
+        $propertyType = $this->isNoTypings()? '' : 'mixed';
+        if ($this->isGranularTypings()) {
+            $rawValueType = $this->isAddRawValueType()? 'RawValue|' : '';
+            $nullType = $optional? '|null' : '';
+            $propertyType = $rawValueType . $columnType . $nullType;
         }
         
-        switch ($column->getType()) {
-            case Column::TYPE_TIMESTAMP:
-            case Column::TYPE_BIGINTEGER:
-            case Column::TYPE_MEDIUMINTEGER:
-            case Column::TYPE_SMALLINTEGER:
-//            case Column::TYPE_TINYINTEGER: // conflict with TYPE_BINARY
-            case Column::TYPE_INTEGER:
-            case Column::TYPE_DECIMAL:
-            case Column::TYPE_DOUBLE:
-            case Column::TYPE_FLOAT:
-            case Column::TYPE_BIT:
-                $tsType = 'number';
-                break;
-            
-            case Column::TYPE_ENUM:
-            case Column::TYPE_VARCHAR:
-            case Column::TYPE_CHAR:
-            case Column::TYPE_TEXT:
-            case Column::TYPE_TINYTEXT:
-            case Column::TYPE_MEDIUMTEXT:
-            case Column::TYPE_BLOB:
-            case Column::TYPE_TINYBLOB:
-            case Column::TYPE_LONGBLOB:
-            case Column::TYPE_DATETIME:
-            case Column::TYPE_DATE:
-            case Column::TYPE_TIME:
-            case Column::TYPE_BINARY:
-                $tsType = 'string';
-                break;
-            
-            case Column::TYPE_JSON:
-            case Column::TYPE_JSONB:
-                $tsType = 'object';
-                break;
-            
-            case Column::TYPE_BOOLEAN:
-                $tsType = 'boolean';
-                break;
-            
-            default:
-                break;
+        // property raw value
+        $propertyValue = isset($defaultValue)? ' = ' . $defaultValue : '';
+        if (empty($propertyValue) && $optional) {
+            $propertyValue = ' = null';
         }
         
-        return $tsType;
-    }
-    
-    public function getDefaultValue(ColumnInterface $column, string $type): ?string {
-        $default = null;
-        $columnDefault = $column->getDefault();
-        switch (getType(strtolower($columnDefault ?? ''))) {
-            case 'boolean':
-            case 'integer':
-            case 'double':
-            case 'null':
-                $default = $columnDefault;
-                break;
-            
-            case 'string':
-                if ($type === 'string') {
-                    $default = !empty($columnDefault) ? '"' . addslashes($columnDefault) . '"' : '';
-                }
-                if ($type === 'number') {
-                    $default = !empty($columnDefault) ? $columnDefault : '';
-                }
-                if ($type === 'array') {
-                    $default = '[]';
-                }
-                if ($type === 'object') {
-                    $default = '{}';
-                }
-                break;
-            
-            case 'array':
-                $default = '[]';
-                break;
-            
-            case 'object':
-                $default = '{}';
-                break;
-            
-            default:
-                break;
-        }
+        $param = (empty($propertyType)? '' : $propertyType . ' ') . "\${$propertyName}";
+        $property = "{$param}{$propertyValue}";
         
-        return $default;
+        return [
+            'columnName' => $columnName,
+            'columnType' => $columnType,
+            'defaultValue' => $defaultValue,
+            'optional' => $optional,
+            'visibility' => $propertyVisibility,
+            'name' => $propertyName,
+            'type' => $propertyType,
+            'value' => $propertyValue,
+            'param' => $param,
+            'property' => $property,
+        ];
     }
     
-    public function getColumnName(string $name)
-    {
-        return lcfirst(
-            Helper::camelize(
-                Helper::uncamelize(
-                    $name
-                )
-            )
-        );
-    }
-    
-    public function getTableName(string $name)
-    {
-        return ucfirst(
-            Helper::camelize(
-                Helper::uncamelize(
-                    $name
-                )
-            )
-        );
-    }
-    
-    public function getModelInstance(string $modelClassName): Model
-    {
-        if (class_exists($modelClassName)) {
-            $modelInstance = new $modelClassName();
-            assert($modelInstance instanceof Model);
-            return $modelInstance;
-        }
-        return new Model();
-    }
-    
-    public function getModelNameFromClassName(string $className)
-    {
-        return ucfirst(
-                Helper::camelize(
-                    Helper::uncamelize(
-                        basename(
-                            str_replace(
-                                '\\',
-                                '/',
-                                $className
-                            )
-                        )
-                    )
-                )
-            ) . 'Model';
-    }
-    
+    /**
+     * Saves a file with the given text content.
+     *
+     * @param string $file The path of the file to be saved.
+     * @param string $text The content to be written to the file.
+     * @param bool $force Determines whether to overwrite an existing file. Default is false.
+     *
+     * @return bool Returns true if the file was saved successfully, false otherwise.
+     */
     public function saveFile(string $file, string $text, bool $force = false): bool
     {
         if (!$force && file_exists($file)) {
@@ -517,11 +912,28 @@ EOT;
         $directory = dirname($file);
         
         // Create the directory if it doesn't exist
-        if (!is_dir($directory)) {
-            mkdir($directory, 0755, true);
+        if (!is_dir($directory) && !mkdir($directory, 0755, true) && !is_dir($directory)) {
+            return false; // Failed to create directory
         }
-
-        $file = fopen($file, 'w');
-        return fwrite($file, $text) && fclose($file);
+        
+        // Convert text to UTF-8
+        $utf8Text = mb_convert_encoding($text, 'UTF-8');
+        if (false === $utf8Text) {
+            return false; // Failed to convert to UTF-8
+        }
+        
+        // Optional: Add UTF-8 BOM
+//        $utf8Text = "\xEF\xBB\xBF" . $utf8Text;
+        
+        // Write the file
+        $fileHandle = fopen($file, 'w');
+        if (!$fileHandle) {
+            return false; // Failed to open file
+        }
+        
+        $writeSuccess = fwrite($fileHandle, $utf8Text) !== false;
+        $closeSuccess = fclose($fileHandle);
+        
+        return $writeSuccess && $closeSuccess;
     }
 }
