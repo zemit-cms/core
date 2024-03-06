@@ -10,7 +10,7 @@ if (!function_exists('dump')) {
      */
     function dump(...$params): void
     {
-        if (!in_array(\PHP_SAPI, ['cli', 'phpdbg'], true)) {
+        if (in_array(\PHP_SAPI, ['cli', 'phpdbg'], true)) {
             echo json_encode($params, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . PHP_EOL;
         } else {
             $dump = (new Dump([], true));
