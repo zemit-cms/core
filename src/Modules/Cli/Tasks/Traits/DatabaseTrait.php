@@ -20,6 +20,13 @@ trait DatabaseTrait
 {
     use AbstractInjectable;
     
+    public ?array $drop = null;
+    public ?array $truncate = null;
+    public ?array $engine = null;
+    public ?array $insert = null;
+    public ?array $optimize = null;
+    public ?array $analyze = null;
+    
     /**
      * Default action
      * @throws CliException
@@ -139,11 +146,8 @@ trait DatabaseTrait
                 
                 // Automagically fill passwords
                 if (property_exists($entity, 'password')) {
-                    if (empty($row['password']) && property_exists($entity, 'username')) {
-                        $entity->assign(['password' => $row['username'], 'passwordConfirm' => $row['username']]);
-                    }
-                    elseif (empty($row['passwordConfirm'])) {
-                        $entity->assign(['passwordConfirm' => $row['password']]);
+                    if (empty($row['password']) && property_exists($entity, 'email')) {
+                        $entity->assign(['password' => $entity->hash($row['email'])]);
                     }
                 }
                 

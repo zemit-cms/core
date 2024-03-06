@@ -41,13 +41,6 @@ Options:
   insert:       Insert records
 DOC;
     
-    public ?array $drop = null;
-    public ?array $truncate = null;
-    public ?array $engine = null;
-    public ?array $insert = null;
-    public ?array $optimize = null;
-    public ?array $analyze = null;
-    
     /**
      * @throws Exception
      */
@@ -56,12 +49,12 @@ DOC;
         Utils::setUnlimitedRuntime();
         
         $deploymentConfig = new Deployment();
-        $this->drop ??= $deploymentConfig->pathToArray('drop');
-        $this->truncate ??= $deploymentConfig->pathToArray('truncate');
-        $this->engine ??= $deploymentConfig->pathToArray('engine');
-        $this->insert ??= $deploymentConfig->pathToArray('insert');
-        $this->optimize ??= $deploymentConfig->pathToArray('optimize');
-        $this->analyze ??= $deploymentConfig->pathToArray('analyze');
+        $this->drop ??= $deploymentConfig->pathToArray('drop') ?? [];
+        $this->truncate ??= $deploymentConfig->pathToArray('truncate') ?? [];
+        $this->engine ??= $deploymentConfig->pathToArray('engine') ?? [];
+        $this->insert ??= $deploymentConfig->pathToArray('insert') ?? [];
+        $this->optimize ??= $deploymentConfig->pathToArray('optimize') ?? [];
+        $this->analyze ??= $deploymentConfig->pathToArray('analyze') ?? [];
         
         $this->addModelsPermissions();
     }
