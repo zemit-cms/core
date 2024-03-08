@@ -12,6 +12,7 @@
 namespace Zemit\Config;
 
 use Phalcon\Config\ConfigInterface as PhalconConfigInterface;
+use Zemit\Mvc\Model;
 
 class Config extends \Phalcon\Config\Config implements ConfigInterface
 {
@@ -70,7 +71,18 @@ class Config extends \Phalcon\Config\Config implements ConfigInterface
     }
     
     /**
+     * Return a new model instance from class name
+     * @todo use DI instead
+     */
+    public function getModelInstance(string $class): Model
+    {
+        $modelClass = $this->getModelClass($class);
+        return new $modelClass();
+    }
+    
+    /**
      * Return the mapped model class name from $this->models->$class
+     * @todo use DI instead
      */
     public function getModelClass(string $class): string
     {
@@ -79,6 +91,7 @@ class Config extends \Phalcon\Config\Config implements ConfigInterface
     
     /**
      * Map a new model class
+     * @todo use DI instead
      */
     public function setModelClass(string $class, string $expected): void
     {
@@ -87,6 +100,7 @@ class Config extends \Phalcon\Config\Config implements ConfigInterface
     
     /**
      * Map a new model class
+     * @todo use DI instead
      */
     public function resetModelClass(string $class): void
     {
