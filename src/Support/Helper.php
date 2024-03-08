@@ -75,6 +75,7 @@ namespace Zemit\Support;
  * @method static array  whitelist(array $collection, array $whiteList)
  * 
  * New methods
+ * @method static string recursiveMap(array $collection = [], callable $callback = null)
  * @method static string flattenKeys(array $collection = [], string $delimiter = '.', bool $lowerKey = true)
  * @method static string slugify(string $string, array $replace = [], string $delimiter = '-')
  */

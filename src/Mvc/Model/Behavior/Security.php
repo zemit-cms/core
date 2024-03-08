@@ -20,8 +20,8 @@ use Zemit\Mvc\Model\Behavior\Traits\ProgressTrait;
 use Zemit\Mvc\Model\Behavior\Traits\SkippableTrait;
 
 /**
- * Allows to check if the current identity is allowed to run some model actions
- * this behavior will stop operations if not allowed
+ * The Security class provides methods for access control and permission checking.
+ * This behavior will stop operations if the user is not allowed to run a certain type of action for the model
  */
 class Security extends Behavior
 {
@@ -29,11 +29,13 @@ class Security extends Behavior
     use ProgressTrait;
     
     public static ?array $roles = null;
-    
     public static ?AdapterInterface $acl = null;
     
     /**
-     * Set the ACL
+     * Set the Access Control List (ACL) adapter.
+     *
+     * @param AdapterInterface|null $acl The ACL adapter to set. Defaults to null.
+     * @return void
      */
     public static function setAcl(?AdapterInterface $acl = null): void
     {
@@ -41,7 +43,9 @@ class Security extends Behavior
     }
     
     /**
-     * Get the ACL
+     * Get the Access Control List (ACL) with models and components elements
+     *
+     * @return AdapterInterface The ACL adapter instance
      */
     public static function getAcl(): AdapterInterface
     {
@@ -55,7 +59,11 @@ class Security extends Behavior
     }
     
     /**
-     * Set the current identity's roles
+     * Set the roles
+     *
+     * @param array|null $roles The roles to set. Defaults to null.
+     *
+     * @return void
      */
     public static function setRoles(?array $roles = null): void
     {
@@ -63,25 +71,33 @@ class Security extends Behavior
     }
     
     /**
-     * Return the current identity's acl roles
+     * Get the roles of the current user
+     *
+     * This method retrieves the roles of the current user from the identity object. If the roles have not been
+     * retrieved before, it retrieves them using the 'getAclRoles' method of the identity object. If the roles
+     * have already been retrieved, it returns the cached roles. If the identity object is not found in the
+     * DI container, an exception will be thrown.
+     *
+     * @return array The roles of the current user
      */
     public static function getRoles(): array
     {
         if (!isset(self::$roles)) {
             $identity = Di::getDefault()->get('identity');
             assert($identity instanceof \Zemit\Identity);
-            self::$roles = $identity->getAclRoles();
+            self::setRoles($identity->getAclRoles());
         }
         return self::$roles ?? [];
     }
     
-    public function __construct(array $options = [])
-    {
-        parent::__construct($options);
-    }
-    
     /**
-     * Handling security (acl) on before model's events
+     * @param string $type The type of event to notify. Should be one of the following:
+     *                     'beforeFind', 'beforeFindFirst', 'beforeCount', 'beforeSum', 'beforeAverage', 'beforeCreate', 
+     *                     'beforeUpdate', 'beforeDelete', 'beforeRestore', 'beforeReorder'.
+     * @param ModelInterface $model The model associated with the event.
+     * 
+     * @return bool|null Returns true if the event is allowed, false otherwise.
+     *                   Returns null if the notification is disabled or if the check is skipped while in progress.
      */
     public function notify(string $type, ModelInterface $model): ?bool
     {
@@ -121,6 +137,16 @@ class Security extends Behavior
         return true;
     }
     
+    /**
+     * Check if a specified type of operation is allowed on a model
+     *
+     * @param string $type The type of operation to check
+     * @param ModelInterface $model The model to check permissions on
+     * @param AdapterInterface|null $acl The ACL adapter to use for permission checks (optional, will default to the configured ACL if not provided)
+     * @param array|null $roles The roles to check for permission (optional, will use the configured roles if not provided)
+     * 
+     * @return bool Returns true if the operation is allowed, false otherwise
+     */
     public function isAllowed(string $type, ModelInterface $model, ?AdapterInterface $acl = null, ?array $roles = null): bool
     {
         $acl ??= self::getAcl();

@@ -11,995 +11,247 @@
 
 namespace Zemit\Mvc\Controller\Traits;
 
-use Phalcon\Db\Column;
-use Phalcon\Filter\Exception;
-use Phalcon\Filter\Filter;
-use Phalcon\Messages\Message;
-use Phalcon\Mvc\ModelInterface;
-use Zemit\Identity;
+use Phalcon\Support\Collection;
+use Phalcon\Mvc\Model\ResultsetInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
-use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
-use Zemit\Support\Exposer\Exposer;
-use Zemit\Support\Helper;
-use Zemit\Support\Slug;
+use Zemit\Mvc\Controller\Traits\Query\Bind;
+use Zemit\Mvc\Controller\Traits\Query\Conditions;
+use Zemit\Mvc\Controller\Traits\Query\Distinct;
+use Zemit\Mvc\Controller\Traits\Query\Fields;
+use Zemit\Mvc\Controller\Traits\Query\Group;
+use Zemit\Mvc\Controller\Traits\Query\Having;
+use Zemit\Mvc\Controller\Traits\Query\Joins;
+use Zemit\Mvc\Controller\Traits\Query\Limit;
+use Zemit\Mvc\Controller\Traits\Query\Offset;
+use Zemit\Mvc\Controller\Traits\Query\Order;
+use Zemit\Mvc\Controller\Traits\Query\Save;
+use Zemit\Mvc\Controller\Traits\Query\With;
 
 /**
- * Trait Model
+ * Class Query
+ *
+ * This class provides methods for building and executing database queries.
+ * It is used as a trait in other classes that need query building capabilities.
  */
 trait Query
 {
-    use AbstractParams;
     use AbstractModel;
     
-    protected $_bind = [];
-    protected $_bindTypes = [];
+    use Bind;
+    use Conditions;
+    use Distinct;
+    use Fields;
+    use Group;
+    use Having;
+    use Joins;
+    use Limit;
+    use Offset;
+    use Order;
+    use Save;
+    use With;
+    
+    protected ?Collection $find;
     
     /**
-     * Get the WhiteList parameters for saving
-     * @return null|array
-     * @todo add a whitelist object that would be able to support one configuration for the search, assign, filter
-     *
+     * Initializes the query builder with default values for various properties.
      */
-    protected function getWhiteList()
-    {
-        return null;
+    public function initialize() {
+        $this->initializeBind();
+        $this->initializeConditions();
+        $this->initializeDistinct();
+        $this->initializeFields();
+        $this->initializeGroup();
+        $this->initializeHaving();
+        $this->initializeJoins();
+        $this->initializeLimit();
+        $this->initializeOffset();
+        $this->initializeOrder();
+//        $this->initializeSave();
+        $this->initializeWith();
     }
     
     /**
-     * Get the Flattened WhiteList
+     * Initializes the `find` property with a new Collection object.
+     * The values of various properties are assigned to the corresponding keys of the Collection object.
      *
-     * @param array|null $whiteList
-     *
-     * @return array|null
+     * @return void
      */
-    public function getFlatWhiteList(?array $whiteList = null)
+    public function initializeFind(): void
     {
-        $whiteList ??= $this->getWhiteList();
-        $ret = Exposer::parseColumnsRecursive($whiteList);
-        return $ret ? array_keys($ret) : null;
+        $this->find = new Collection([
+            'conditions' => $this->getConditions(),
+            'bind' => $this->getBind(),
+            'bindTypes' => $this->getBindTypes(),
+            'limit' => $this->getLimit(),
+            'offset' => $this->getOffset(),
+            'order' => $this->getOrder(),
+//            'columns' => $this->getColumns(),
+            'distinct' => $this->getDistinct(),
+            'joins' => $this->getJoins(),
+            'group' => $this->getGroup(),
+            'having' => $this->getHaving(),
+            'cache' => $this->getCache(),
+        ]);
     }
     
     /**
-     * Get the WhiteList parameters for filtering
+     * Sets the value of the `find` property.
      *
-     * @return null|array
+     * @param Collection|null $find The new value for the `find` property.
+     * @return void
      */
-    protected function getFilterWhiteList()
+    public function setFind(?Collection $find): void
     {
-        return $this->getWhiteList();
+        $this->find = $find;
     }
     
     /**
-     * Get the WhiteList parameters for filtering
+     * Retrieves the value of the `find` property.
      *
-     * @return null|array
+     * @return Collection|null The value of the `find` property.
      */
-    protected function getSearchWhiteList()
+    public function getFind(): ?Collection
     {
-        return $this->getFilterWhiteList();
+        return $this->find;
     }
     
     /**
-     * Get the column mapping for crud
+     * Find records in the database using the specified criteria.
      *
-     * @return null|array
+     * @param array|null $find Optional. An array of criteria to determine the records to find.
+     *                         If not provided, the default criteria from `getFind()` method
+     *                         will be used. Defaults to `null`.
+     *
+     * @return mixed The result of the find operation.
      */
-    protected function getColumnMap()
-    {
-        return null;
+    public function find(?array $find = null) {
+        $find ??= $this->getFind() ?? [];
+        return $this->loadModel()::find($find);
     }
     
     /**
-     * Get relationship eager loading definition
+     * Find records in the database using the specified criteria and include related records.
      *
-     * @return null|array
+     * @param array|null $with Optional. An array of related models to include
+     *                         with the found records. Defaults to `null`.
+     * @param array|null $find Optional. An array of criteria to determine the records to find.
+     *                         If not provided, the default criteria from `getFind()` method
+     *                         will be used. Defaults to `null`.
+     *
+     * @return mixed The result of the find operation.
      */
-    protected function getWith()
-    {
-        return null;
+    public function findWith(?array $with = null, ?array $find = null) {
+        $with ??= $this->getWith() ?? [];
+        $find ??= $this->getFind() ?? [];
+        return $this->loadModel()::findWith($with, $find);
     }
     
     /**
-     * Get relationship eager loading definition for a listing
+     * Find the first record in the database using the specified criteria.
      *
-     * @return null|array
+     * @param array|null $find Optional. An array of criteria to determine the record to find.
+     *                         If not provided, the default criteria from `getFind()` method
+     *                         will be used to find the first record. Defaults to `null`.
+     *
+     * @return mixed The result of the find operation, which is the first record that matches the criteria.
      */
-    protected function getListWith()
-    {
-        return $this->getWith();
+    public function findFirst(?array $find = null) {
+        $find ??= $this->getFind() ?? [];
+        return $this->loadModel()::findFirst($find);
     }
     
     /**
-     * Get relationship eager loading definition for a listing
+     * Find the first record in the database using the specified criteria and relations.
      *
-     * @return null|array
+     * @param array|null $with Optional. An array of relations to eager load for the record.
+     *                         If not provided, the default relations from `getWith()` method
+     *                         will be used. Defaults to `null`.
+     * @param array|null $find Optional. An array of criteria to determine the records to find.
+     *                         If not provided, the default criteria from `getFind()` method
+     *                         will be used. Defaults to `null`.
+     *
+     * @return mixed The result of the find operation for the first record.
      */
-    protected function getExportWith()
-    {
-        return $this->getListWith();
+    public function findFirstWith(?array $with = null, ?array $find = null) {
+        $with ??= $this->getWith() ?? [];
+        $find ??= $this->getFind() ?? [];
+        return $this->loadModel()::findFirstWith($with, $find);
     }
     
     /**
-     * Get expose definition for a single entity
+     * Retrieves the total count of items based on the specified model name and find criteria.
+     * Note: limit and offset are removed from the parameters in order to retrieve the total count
      *
-     * @return null|array
-     */
-    protected function getExpose()
-    {
-        return null;
-    }
-    
-    /**
-     * Get expose definition for listing many entities
+     * @param array|null $find An array of find criteria to filter the results. If null, the default criteria will be applied.
      *
-     * @return null|array
-     */
-    protected function getListExpose()
-    {
-        return $this->getExpose();
-    }
-    
-    /**
-     * Get expose definition for export
-     *
-     * @return null|array
-     */
-    protected function getExportExpose()
-    {
-        return $this->getExpose();
-    }
-    
-    /**
-     * Get columns merge definition for export
-     *
-     * @return null|array
-     */
-    public function getExportMergeColum()
-    {
-        return null;
-    }
-    
-    /**
-     * Get columns format field text definition for export
-     *
-     * @param array|null $params
-     *
-     * @return null|array
-     */
-    public function getExportFormatFieldText(?array $params = null)
-    {
-        return null;
-    }
-    
-    /**
-     * Get join definition
-     *
-     * @return null|array
-     */
-    protected function getJoins()
-    {
-        return null;
-    }
-    
-    /**
-     * Get the order definition
-     *
-     * @return null|array
-     */
-    protected function getOrder()
-    {
-        return $this->getParamExplodeArrayMapFilter('order');
-    }
-    
-    /**
-     * Get the current limit value
-     *
-     * @return null|int Default: 1000
-     */
-    protected function getLimit(): ?int
-    {
-        $limit = (int)$this->getParam('limit', 'int', 1000);
-        return $limit === -1? null : (int)abs($limit);
-    }
-    
-    /**
-     * Get the current offset value
-     *
-     * @return null|int Default: 0
-     */
-    protected function getOffset(): int
-    {
-        return (int)$this->getParam('offset', 'int', 0);
-    }
-    
-    /**
-     * Get group
-     * - Automatically group by ID by default if nothing else is provided
-     * - This will fix multiple single records being returned for the same model with joins
-     *
-     * @return array|string|null
-     */
-    protected function getGroup()
-    {
-        $group = $this->getParamExplodeArrayMapFilter('group');
-        
-        // Fix for joins, automatically append grouping if none provided
-        $join = $this->getJoins();
-        if (empty($group) && !empty($join)) {
-            $group = $this->appendModelName('id');
-        }
-        
-        return $group;
-    }
-    
-    /**
-     * Get distinct
-     * @TODO see how to implement this, maybe an action itself
-     *
-     * @return array|null
-     */
-    protected function getDistinct()
-    {
-        return $this->getParamExplodeArrayMapFilter('distinct');
-    }
-    
-    /**
-     * Get columns
-     * @TODO see how to implement this
-     *
-     * @return array|string|null
-     */
-    protected function getColumns()
-    {
-        return $this->getParam('columns', 'string');
-    }
-    
-    /**
-     * Return the whitelisted role list for the current model
-     *
-     * @return string[] By default will return dev and admin role
-     */
-    protected function getRoleList()
-    {
-        return ['dev', 'admin'];
-    }
-    
-    /**
-     * Get Search condition
-     *
-     * @return string Default: deleted = 0
-     */
-    protected function getSearchCondition()
-    {
-        $conditions = [];
-        
-        $searchList = array_values(array_filter(array_unique(explode(' ', $this->getParam('search', 'string') ?? ''))));
-        
-        foreach ($searchList as $searchTerm) {
-            $orConditions = [];
-            $searchWhiteList = $this->getSearchWhiteList();
-            if ($searchWhiteList) {
-                foreach ($searchWhiteList as $whiteList) {
-                    
-                    // Multidimensional arrays not supported yet
-                    // @todo support this properly
-                    if (is_array($whiteList)) {
-                        continue;
-                    }
-                    
-                    $searchTermBinding = '_' . uniqid() . '_';
-                    $orConditions [] = $this->appendModelName($whiteList) . " like :$searchTermBinding:";
-                    $this->setBind([$searchTermBinding => '%' . $searchTerm . '%']);
-                    $this->setBindTypes([$searchTermBinding => Column::BIND_PARAM_STR]);
-                }
-            }
-            
-            if (!empty($orConditions)) {
-                $conditions [] = '(' . implode(' or ', $orConditions) . ')';
-            }
-        }
-        
-        return empty($conditions) ? null : '(' . implode(' and ', $conditions) . ')';
-    }
-    
-    /**
-     * Get Soft delete condition
-     *
-     * @return string Default: deleted = 0
-     */
-    protected function getSoftDeleteCondition(): ?string
-    {
-        return '[' . $this->getModelName() . '].[deleted] = 0';
-    }
-    
-    /**
-     * This function will explode the field based using the glue
-     * and sanitize the values and append the model name
-     */
-    public function getParamExplodeArrayMapFilter(string $field, string $sanitizer = 'string', string $glue = ',', int $limit = PHP_INT_MAX) : ?array
-    {
-        $ret = [];
-        $filter = $this->filter;
-        $params = $this->getParam($field, $sanitizer);
-        foreach (is_array($params)? $params : [$params] as $param) {
-            $ret = array_filter(array_merge($ret, array_map(function ($e) use ($filter, $sanitizer) {
-                return strrpos(strtoupper($e), 'RAND()') === 0? $e : $this->appendModelName(trim($filter->sanitize($e, $sanitizer)));
-            }, explode($glue, $param ?? '', $limit))));
-        }
-        
-        return empty($ret) ? null : $ret;
-    }
-    
-    /**
-     * Set the variables to bind
-     *
-     * @param array $bind Variable bind to merge or replace
-     * @param bool $replace Pass true to replace the entire bind set
-     */
-    public function setBind(array $bind = [], bool $replace = false)
-    {
-        $this->_bind = $replace ? $bind : array_merge($this->getBind(), $bind);
-    }
-    
-    /**
-     * Get the current bind
-     * key => value
-     *
-     * @return array|null
-     */
-    public function getBind()
-    {
-        return $this->_bind ?? null;
-    }
-    
-    /**
-     * Set the variables types to bind
-     *
-     * @param array $bindTypes Variable bind types to merge or replace
-     * @param bool $replace Pass true to replace the entire bind type set
-     */
-    public function setBindTypes(array $bindTypes = [], bool $replace = false)
-    {
-        $this->_bindTypes = $replace ? $bindTypes : array_merge($this->getBindTypes(), $bindTypes);
-    }
-    
-    /**
-     * Get the current bind types
-     *
-     * @return array|null
-     */
-    public function getBindTypes()
-    {
-        return $this->_bindTypes ?? null;
-    }
-    
-    /**
-     * Get the identity condition for querying the database: Default created by
-     *
-     * @param array|null $columns The columns to check for identity condition
-     * @param \Zemit\Mvc\Controller\Traits\Actions\Identity|null $identity The identity object
-     * @param array|null $roleList The list of roles
-     *
-     * @return string|null The generated identity condition or null if no condition is generated
-     */
-    protected function getIdentityCondition(?array $columns = null, ?Identity $identity = null, ?array $roleList = null): ?string
-    {
-        $identity ??= $this->identity ?? false;
-        $roleList ??= $this->getRoleList();
-        $modelName = $this->getModelName();
-        
-        if ($modelName && $identity && !$identity->hasRole($roleList)) {
-            $ret = [];
-            
-            $columns ??= [
-                'createdBy',
-                'ownedBy',
-                'userId',
-            ];
-            
-            foreach ($columns as $column) {
-                if (!property_exists($modelName, $column)) {
-                    continue;
-                }
-                
-                $field = strpos($column, '.') !== false ? $column : $modelName . '.' . $column;
-                $field = '[' . str_replace('.', '].[', $field) . ']';
-                
-                $this->setBind([$column => (int)$identity->getUserId()]);
-                $this->setBindTypes([$column => Column::BIND_PARAM_INT]);
-                $ret [] = $field . ' = :' . $column . ':';
-            }
-            
-            return implode(' or ', $ret);
-        }
-        
-        return null;
-    }
-    
-    public function arrayMapRecursive(callable $callback, array $array): array
-    {
-        $func = function ($item) use (&$func, &$callback) {
-            return is_array($item) ? array_map($func, $item) : call_user_func($callback, $item);
-        };
-        
-        return array_map($func, $array);
-    }
-    
-    /**
-     * Get Filter Condition
-     *
-     * @param array|null $filters
-     * @param array|null $whiteList
-     * @param bool $or
-     *
-     * @return string|null Return the generated query
-     * @throws \Exception Throw an exception if the field property is not valid
-     * @todo escape fields properly
-     *
-     */
-    protected function getFilterCondition(array $filters = null, array $whiteList = null, bool $or = false)
-    {
-        $filters ??= $this->getParam('filters');
-        $whiteList ??= $this->getFilterWhiteList();
-        $whiteList = $this->getFlatWhiteList($whiteList);
-        $lowercaseWhiteList = !is_null($whiteList) ? $this->arrayMapRecursive('mb_strtolower', $whiteList) : $whiteList;
-        
-        // No filter, no query
-        if (empty($filters)) {
-            return null;
-        }
-        
-        $query = [];
-        foreach ($filters as $filter) {
-            $field = $this->filter->sanitize($filter['field'] ?? null, ['string', 'trim']);
-            
-            // @todo logic bitwise operator
-//            $logic = $this->filter->sanitize($filter['logic'] ?? null, ['string', 'trim', 'lower']);
-//            $logic = $logic ?: ($or ? 'or' : 'and');
-//            $logic = ' ' . $logic . ' ';
-            
-            if (!empty($field)) {
-                $lowercaseField = mb_strtolower($field);
-                
-                // whiteList on filter condition
-                if (is_null($whiteList) || !in_array($lowercaseField, $lowercaseWhiteList ?? [], true)) {
-                    // @todo if config is set to throw exception on usage of not allowed filters otherwise continue looping through
-                    throw new \Exception('Not allowed to filter using the following field: `' . $field . '`', 403);
-                }
-                
-                $uniqid = substr(md5(json_encode($filter)), 0, 10);
-//                $queryField = '_' . uniqid($uniqid . '_field_') . '_';
-                $queryValue = '_' . uniqid($uniqid . '_value_') . '_';
-                $queryOperator = strtolower($filter['operator']);
-                
-                // Map alias query operator
-                $mapAlias = [
-                    'equals' => '=',
-                    'not equal' => '!=',
-                    'does not equal' => '!=',
-                    'different than' => '<>',
-                    'greater than' => '>',
-                    'greater than or equal' => '>=',
-                    'less than' => '<',
-                    'less than or equal' => '<=',
-                    'null-safe equal' => '<=>',
-                ];
-                $queryOperator = $mapAlias[$queryOperator] ?? $queryOperator;
-                
-                switch ($queryOperator) {
-                    
-                    // mysql native
-                    case '=': // Equal operator
-                    case '!=': // Not equal operator
-                    case '<>': // Not equal operator
-                    case '>': // Greater than operator
-                    case '>=': // Greater than or equal operator
-                    case '<': // Less than or equal operator
-                    case '<=': // Less than or equal operator
-                    case '<=>': // NULL-safe equal to operator
-                    case 'in': // Whether a value is within a set of values
-                    case 'not in': // Whether a value is not within a set of values
-                    case 'like': // Simple pattern matching
-                    case 'not like': // Negation of simple pattern matching
-                    case 'between': // Whether a value is within a range of values
-                    case 'not between': // Whether a value is not within a range of values
-                    case 'is': // Test a value against a boolean
-                    case 'is not': // Test a value against a boolean
-                    case 'is null': // NULL value test
-                    case 'is not null': // NOT NULL value test
-                    case 'is false': // Test a value against a boolean
-                    case 'is not false': // // Test a value against a boolean
-                    case 'is true': // // Test a value against a boolean
-                    case 'is not true': // // Test a value against a boolean
-                        break;
-                    
-                    // advanced filters
-                    case 'start with':
-                    case 'does not start with':
-                    case 'end with':
-                    case 'does not end with':
-                    case 'regexp':
-                    case 'not regexp':
-                    case 'contains':
-                    case 'does not contain':
-                    case 'contains word':
-                    case 'does not contain word':
-                    case 'distance sphere greater than':
-                    case 'distance sphere greater than or equal':
-                    case 'distance sphere less than':
-                    case 'distance sphere less than or equal':
-                    case 'is empty':
-                    case 'is not empty':
-                        break;
-                    
-                    default:
-                        throw new \Exception('Not allowed to filter using the following operator: `' . $queryOperator . '`', 403);
-                }
-                
-                $bind = [];
-                $bindType = [];
-
-//                $bind[$queryField] = $filter['field'];
-//                $bindType[$queryField] = Column::BIND_PARAM_STR;
-//                $queryFieldBinder = ':' . $queryField . ':';
-//                $queryFieldBinder = '{' . $queryField . '}';
-                
-                // Add the current model name by default
-                $field = $this->appendModelName($field);
-                
-                $queryFieldBinder = $field;
-                $queryValueBinder = ':' . $queryValue . ':';
-                if (isset($filter['value'])) {
-                    
-                    
-                    // special for between and not between
-                    if (in_array($queryOperator, ['between', 'not between'])) {
-                        $queryValue0 = '_' . uniqid($uniqid . '_value_') . '_';
-                        $queryValue1 = '_' . uniqid($uniqid . '_value_') . '_';
-                        
-                        $queryValueIndex = $filter['value'][0] <= $filter['value'][1]? 0 : 1;
-                        $bind[$queryValue0] = $filter['value'][$queryValueIndex? 1 : 0];
-                        $bind[$queryValue1] = $filter['value'][$queryValueIndex? 0 : 1];
-                        
-                        $bindType[$queryValue0] = Column::BIND_PARAM_STR;
-                        $bindType[$queryValue1] = Column::BIND_PARAM_STR;
-                        
-                        $query [] = (($queryOperator === 'not between') ? 'not ' : null) . "$queryFieldBinder between :$queryValue0: and :$queryValue1:";
-                    }
-                    
-                    elseif (in_array($queryOperator, [
-                            'distance sphere equals',
-                            'distance sphere greater than',
-                            'distance sphere greater than or equal',
-                            'distance sphere less than',
-                            'distance sphere less than or equal',
-                        ])
-                    ) {
-                        // Prepare values binding of 2 sphere point to calculate distance
-                        $queryBindValue0 = '_' . uniqid($uniqid . '_value_') . '_';
-                        $queryBindValue1 = '_' . uniqid($uniqid . '_value_') . '_';
-                        $queryBindValue2 = '_' . uniqid($uniqid . '_value_') . '_';
-                        $queryBindValue3 = '_' . uniqid($uniqid . '_value_') . '_';
-                        $bind[$queryBindValue0] = $filter['value'][0];
-                        $bind[$queryBindValue1] = $filter['value'][1];
-                        $bind[$queryBindValue2] = $filter['value'][2];
-                        $bind[$queryBindValue3] = $filter['value'][3];
-                        $bindType[$queryBindValue0] = Column::BIND_PARAM_DECIMAL;
-                        $bindType[$queryBindValue1] = Column::BIND_PARAM_DECIMAL;
-                        $bindType[$queryBindValue2] = Column::BIND_PARAM_DECIMAL;
-                        $bindType[$queryBindValue3] = Column::BIND_PARAM_DECIMAL;
-                        $queryPointLatBinder0 = ':' . $queryBindValue0 . ':';
-                        $queryPointLonBinder0 = ':' . $queryBindValue1 . ':';
-                        $queryPointLatBinder1 = ':' . $queryBindValue2 . ':';
-                        $queryPointLonBinder1 = ':' . $queryBindValue3 . ':';
-                        $queryLogicalOperator =
-                            (strpos($queryOperator, 'greater') !== false ? '>' : null) .
-                            (strpos($queryOperator, 'less') !== false ? '<' : null) .
-                            (strpos($queryOperator, 'equal') !== false ? '=' : null);
-                        
-                        $bind[$queryValue] = $filter['value'];
-                        $query [] = "ST_Distance_Sphere(point($queryPointLatBinder0, $queryPointLonBinder0), point($queryPointLatBinder1, $queryPointLonBinder1)) $queryLogicalOperator $queryValueBinder";
-                    }
-                    
-                    elseif (in_array($queryOperator, [
-                            'in',
-                            'not in',
-                        ])
-                    ) {
-                        $queryValueBinder = '({' . $queryValue . ':array})';
-                        $bind[$queryValue] = $filter['value'];
-                        $bindType[$queryValue] = Column::BIND_PARAM_STR;
-                        $query [] = "$queryFieldBinder $queryOperator $queryValueBinder";
-                    }
-                    
-                    else {
-                        $queryAndOr = [];
-                        
-                        $valueList = is_array($filter['value']) ? $filter['value'] : [$filter['value']];
-                        foreach ($valueList as $value) {
-                            
-                            $queryValue = '_' . uniqid($uniqid . '_value_') . '_';
-                            $queryValueBinder = ':' . $queryValue . ':';
-                            
-                            if (in_array($queryOperator, ['contains', 'does not contain'])) {
-                                $queryValue0 = '_' . uniqid($uniqid . '_value_') . '_';
-                                $queryValue1 = '_' . uniqid($uniqid . '_value_') . '_';
-                                $queryValue2 = '_' . uniqid($uniqid . '_value_') . '_';
-                                $bind[$queryValue0] = '%' . $value . '%';
-                                $bind[$queryValue1] = '%' . $value;
-                                $bind[$queryValue2] = $value . '%';
-                                $bindType[$queryValue0] = Column::BIND_PARAM_STR;
-                                $bindType[$queryValue1] = Column::BIND_PARAM_STR;
-                                $bindType[$queryValue2] = Column::BIND_PARAM_STR;
-                                $queryAndOr [] = ($queryOperator === 'does not contain' ? '!' : '') . "($queryFieldBinder like :$queryValue0: or $queryFieldBinder like :$queryValue1: or $queryFieldBinder like :$queryValue2:)";
-                            }
-                            
-                            elseif (in_array($queryOperator, ['starts with', 'does not start with'])) {
-                                $bind[$queryValue] = $value . '%';
-                                $bindType[$queryValue] = Column::BIND_PARAM_STR;
-                                $queryAndOr [] = ($queryOperator === 'does not start with' ? '!' : '') . "($queryFieldBinder like :$queryValue:)";
-                            }
-                            
-                            elseif (in_array($queryOperator, ['ends with', 'does not end with'])) {
-                                $bind[$queryValue] = '%' . $value;
-                                $bindType[$queryValue] = Column::BIND_PARAM_STR;
-                                $queryAndOr [] = ($queryOperator === 'does not end with' ? '!' : '') . "($queryFieldBinder like :$queryValue:)";
-                            }
-                            
-                            elseif (in_array($queryOperator, ['is empty', 'is not empty'])) {
-                                $queryAndOr [] = ($queryOperator === 'is not empty' ? '!' : '') . "(TRIM($queryFieldBinder) = '' or $queryFieldBinder is null)";
-                            }
-                            
-                            elseif (in_array($queryOperator, ['regexp', 'not regexp'])) {
-                                $bind[$queryValue] = $value;
-                                $queryAndOr [] = $queryOperator . "($queryFieldBinder, :$queryValue:)";
-                            }
-                            
-                            elseif (in_array($queryOperator, ['contains word', 'does not contain word'])) {
-                                $bind[$queryValue] = '\\b' . $value . '\\b';
-                                $regexQueryOperator = str_replace(['contains word', 'does not contain word'], ['regexp', 'not regexp'], $queryOperator);
-                                $queryAndOr [] = $regexQueryOperator . "($queryFieldBinder, :$queryValue:)";
-                            }
-                            
-                            else {
-                                $bind[$queryValue] = $value;
-                                
-                                if (is_string($value)) {
-                                    $bindType[$queryValue] = Column::BIND_PARAM_STR;
-                                }
-                                
-                                elseif (is_int($value)) {
-                                    $bindType[$queryValue] = Column::BIND_PARAM_INT;
-                                }
-                                
-                                elseif (is_bool($value)) {
-                                    $bindType[$queryValue] = Column::BIND_PARAM_BOOL;
-                                }
-                                
-                                elseif (is_float($value)) {
-                                    $bindType[$queryValue] = Column::BIND_PARAM_DECIMAL;
-                                }
-                                
-                                elseif (is_double($value)) {
-                                    $bindType[$queryValue] = Column::BIND_PARAM_DECIMAL;
-                                }
-                                
-                                elseif (is_array($value)) {
-                                    $queryValueBinder = '({' . $queryValue . ':array})';
-                                    $bindType[$queryValue] = Column::BIND_PARAM_STR;
-                                }
-                                
-                                else {
-                                    $bindType[$queryValue] = Column::BIND_PARAM_NULL;
-                                }
-                                
-                                $queryAndOr [] = "$queryFieldBinder $queryOperator $queryValueBinder";
-                            }
-                        }
-                        if (!empty($queryAndOr)) {
-                            $andOr = str_contains($queryOperator, ' not ')? 'and' : 'or';
-                            $query [] = '((' . implode(') ' . $andOr . ' (', $queryAndOr) . '))';
-                        }
-                    }
-                }
-                else {
-                    $query [] = "$queryFieldBinder $queryOperator";
-                }
-                
-                $this->setBind($bind);
-                $this->setBindTypes($bindType);
-            }
-            elseif (is_array($filter)) {
-                $query [] = $this->getFilterCondition($filter, $whiteList, !$or);
-            }
-            else {
-                throw new \Exception('A valid field property is required.', 400);
-            }
-        }
-        
-        return empty($query) ? null : '(' . implode($or ? ' or ' : ' and ', $query) . ')';
-    }
-    
-    /**
-     * Append the current model name alias to the field
-     * So: field -> [Alias].[field]
-     */
-    public function appendModelName(string $field, ?string $modelName = null): string
-    {
-        $modelName ??= $this->getModelName();
-        
-        if (empty($field)) {
-            return $field;
-        }
-        
-        // Add the current model name by default
-        $explode = explode(' ', $field);
-        if (!strpos($field, '.') !== false) {
-            $field = trim('[' . $modelName . '].[' . array_shift($explode) . '] ' . implode(' ', $explode));
-        }
-        elseif (!str_contains($field, ']') && !str_contains($field, '[')) {
-            $field = trim('[' . implode('].[', explode('.', array_shift($explode))) . ']' . implode(' ', $explode));
-        }
-        
-        return $field;
-    }
-    
-    /**
-     * Get Permission Condition
-     *
-     * @return null
-     */
-    protected function getPermissionCondition($type = null, $identity = null)
-    {
-        return null;
-    }
-    
-    protected function fireGet($method)
-    {
-        // @todo
-//        $eventRet = $this->eventsManager->fire('rest:before' . ucfirst($method), $this);
-//        if ($eventRet !== false) {
-//            $ret = $this->{$method}();
-//            $eventRet = $this->eventsManager->fire('rest:after' . ucfirst($method), $this, $ret);
-//        }
-        
-        $ret = $this->{$method}();
-        $eventRet = $this->eventsManager->fire('rest:' . $method, $this, $ret);
-        return $eventRet === false ? null : $eventRet ?? $ret;
-    }
-    
-    /**
-     * Get all conditions
-     *
-     * @return string
+     * @return int|ResultsetInterface The total count of items that match the specified criteria.
      * @throws \Exception
      */
-    protected function getConditions()
+    public function count(?array $find = null): int|ResultsetInterface
     {
-        $conditions = array_values(array_unique(array_filter([
-            $this->fireGet('getSoftDeleteCondition'),
-            $this->fireGet('getIdentityCondition'),
-            $this->fireGet('getFilterCondition'),
-            $this->fireGet('getSearchCondition'),
-            $this->fireGet('getPermissionCondition'),
-        ])));
-        
-        if (empty($conditions)) {
-            $conditions [] = 1;
-        }
-        
-        return '(' . implode(') and (', $conditions) . ')';
+        return $this->loadModel()::count($this->getCalculationFind($find));
     }
     
     /**
-     * Get having conditions
-     */
-    public function getHaving()
-    {
-        return null;
-    }
-    
-    /**
-     * Get find definition
+     * Calculates the sum of values based on a given search criteria.
      *
-     * @return array
-     * @throws \Exception
+     * @param array|null $find Optional: The criteria to find the maximum value from.
+     *                         Default: null (will retrieve the `find` from $this->getFind())
+     *
+     * @return float|ResultsetInterface The calculated sum of values.
      */
-    protected function getFind()
+    public function sum(?array $find = null): float|ResultsetInterface
     {
-        $find = [];
-        $find['conditions'] = $this->fireGet('getConditions');
-        $find['bind'] = $this->fireGet('getBind');
-        $find['bindTypes'] = $this->fireGet('getBindTypes');
-        $find['limit'] = $this->fireGet('getLimit');
-        $find['offset'] = $this->fireGet('getOffset');
-        $find['order'] = $this->fireGet('getOrder');
-        $find['columns'] = $this->fireGet('getColumns');
-        $find['distinct'] = $this->fireGet('getDistinct');
-        $find['joins'] = $this->fireGet('getJoins');
-        $find['group'] = $this->fireGet('getGroup');
-        $find['having'] = $this->fireGet('getHaving');
-        $find['cache'] = $this->fireGet('getCache');
-        
-        // fix for grouping by multiple fields, phalcon only allow string here
-        foreach (['distinct', 'group', 'order'] as $findKey) {
-            if (isset($find[$findKey]) && is_array($find[$findKey])) {
-                $find[$findKey] = implode(', ', $find[$findKey]);
-            }
-        }
-        
-        return array_filter($find);
+        return $this->loadModel()::sum($this->getCalculationFind($find));
     }
     
     /**
-     * Return find lazy loading config for count
-     * @return array|string
+     * Retrieves the minimum value.
+     *
+     * @param array|null $find Optional: The criteria to find the maximum value from.
+     *                         Default: null (will retrieve the `find` from $this->getFind())
+     *
+     * @return float|ResultsetInterface The maximum value from the dataset
+     *                                  or a `ResultsetInterface` that represents the grouped maximum values.
      */
-    protected function getFindCount($find = null)
+    public function maximum(?array $find = null): float|ResultsetInterface
     {
-        $find ??= $this->getFind();
+        return $this->loadModel()::maximum($this->getCalculationFind($find));
+    }
+    
+    /**
+     * Retrieves the minimum value.
+     *
+     * @param array|null $find Optional: The criteria to find the minimum value from.
+     *                         Default: null (will retrieve the `find` from $this->getFind())
+     *
+     * @return float|ResultsetInterface The minimum value from the dataset
+     *                                  or a `ResultsetInterface` that represents the grouped minimum values.
+     */
+    public function minimum(?array $find = null): float|ResultsetInterface
+    {
+        return $this->loadModel()::minimum($this->getCalculationFind($find));
+    }
+    
+    /**
+     * Retrieves the count criteria based on the specified find criteria.
+     *
+     * @param array|null $find An array of find criteria to filter the results. If null, the default criteria will be used.
+     *
+     * @return array An array of filtered find criteria without the 'limit' and 'offset' keys.
+     */
+    protected function getCalculationFind(?array $find = null): array
+    {
+        $find ??= $this->getFind() ?? [];
+        
         if (isset($find['limit'])) {
             unset($find['limit']);
         }
+        
         if (isset($find['offset'])) {
             unset($find['offset']);
         }
-//        if (isset($find['group'])) {
-//            unset($find['group']);
-//        }
         
         return array_filter($find);
-    }
-    
-    /**
-     * Get a single model instance by ID or UUID
-     *
-     * @param int|null $id The ID of the model instance
-     * @param string|null $modelName The name of the model class to retrieve
-     * @param array|null $with An array of relationship names to eager load
-     * @param array|null $find An array of additional find options
-     *
-     * @return ModelInterface|null     The retrieved model instance, or null if no ID or UUID is provided
-     * @throws Exception
-     * @throws \Exception
-     */
-    public function getSingle(?int $id = null, ?string $modelName = null, ?array $with = null, ?array $find = null): ?ModelInterface
-    {
-        $id ??= $this->getParam('id', [Filter::FILTER_INT]);
-        $uuid = $this->getParam('uuid', [Filter::FILTER_ALNUM]);
-        
-        // no ID or UUID provided, avoid doing the request
-        if (empty($id) && empty($uuid)) {
-            return null;
-        }
-        
-        $modelName ??= $this->getModelName();
-        $with ??= $this->getWith();
-        $find ??= $this->getFind();
-        
-        $conditions = [];
-        
-        // Using ID
-        if (!empty($id)) {
-            
-            $conditions []= $this->appendModelName('id', $modelName) . ' = :id:';
-            $find['bind']['id'] = (int)$id;
-            $find['bindTypes']['id'] = Column::BIND_PARAM_INT;
-        }
-        
-        // Using UUID
-        if (!empty($uuid)) {
-            $conditions []= $this->appendModelName('uuid', $modelName) . ' = :uuid:';
-            $find['bind']['uuid'] = $uuid;
-            $find['bindTypes']['uuid'] = Column::BIND_PARAM_STR;
-        }
-        
-        // Append conditions
-        $find['conditions'] .= (empty($find['conditions']) ? null : ' AND (') . implode(') AND (', $conditions) . ')';
-        
-        return $modelName::findFirstWith($with ?? [], $find ?? []);
-    }
-    
-    /**
-     * Saving model automagically
-     *
-     * Note:
-     * If a newly created entity can't be retrieved using the ->getSingle
-     * method after it's creation, the entity will be returned directly
-     *
-     * @TODO Support Composite Primary Key*
-     */
-    protected function save(?int $id = null, ?ModelInterface $entity = null, ?array $post = null, ?string $modelName = null, ?array $whiteList = null, ?array $columnMap = null, ?array $with = null): array
-    {
-        $single = false;
-        $retList = [];
-        
-        // Get the model name to play with
-        $modelName ??= $this->getModelName();
-        $post ??= $this->getParams();
-        $whiteList ??= $this->getWhiteList();
-        $columnMap ??= $this->getColumnMap();
-        $with ??= $this->getWith();
-        $id = (int)$id;
-        
-        // Check if multi-d post
-        if (!empty($id) || !isset($post[0]) || !is_array($post[0])) {
-            $single = true;
-            $post = [$post];
-        }
-        
-        // Save each posts
-        foreach ($post as $key => $singlePost) {
-            $singlePostId = (!$single || empty($id)) ? $this->getParam('id', 'int', $this->getParam('int', 'int', $singlePost['id'] ?? null)) : $id;
-            if (isset($singlePost['id'])) {
-                unset($singlePost['id']);
-            }
-            
-            /** @var \Zemit\Mvc\Model $singlePostEntity */
-            $singlePostEntity = (!$single || !isset($entity)) ? $this->getSingle($singlePostId, $modelName, []) : $entity;
-            
-            // Create entity if not exists
-            if (!$singlePostEntity && empty($singlePostId)) {
-                $singlePostEntity = new $modelName();
-            }
-            
-            if (!$singlePostEntity) {
-                $ret = [
-                    'saved' => false,
-                    'messages' => [new Message('Entity id `' . $singlePostId . '` not found.', $modelName, 'NotFound', 404)],
-                    'model' => $modelName,
-                    'source' => (new $modelName())->getSource(),
-                ];
-            }
-            else {
-                // allow custom manipulations
-                // @todo move this using events
-                $this->beforeAssign($singlePostEntity, $singlePost, $whiteList, $columnMap);
-                
-                // assign & save
-                $singlePostEntity->assign($singlePost, $whiteList, $columnMap);
-                $ret = $this->saveEntity($singlePostEntity);
-                
-                // refetch & expose
-//                $fetchWith = $this->getSingle($singlePostEntity->getId(), $modelName, $with);
-//                $ret['single'] = $this->expose($fetchWith);
-                $fetchWith = $singlePostEntity->load($with ?? []);
-                $ret['single'] = $this->expose($fetchWith);
-            }
-            
-            if ($single) {
-                return $ret;
-            }
-            else {
-                $retList [] = $ret;
-            }
-        }
-        
-        return $retList;
-    }
-    
-    /**
-     * Allow overrides to add alter variables before entity assign & save
-     */
-    public function beforeAssign(ModelInterface &$entity, array &$post, ?array &$whiteList, ?array &$columnMap): void
-    {
-    }
-    
-    /**
-     * Save an entity and return an array of the result
-     *
-     */
-    public function saveEntity(ModelInterface $entity): array
-    {
-        $ret = [];
-        
-        $ret['saved'] = $entity->save();
-        $ret['messages'] = $entity->getMessages();
-        $ret['model'] = get_class($entity);
-        $ret['source'] = $entity->getSource();
-        $ret['entity'] = $entity; // @todo this is to fix a phalcon internal bug (503 segfault during eagerload)
-        $ret['single'] = $this->expose($entity, $this->getExpose());
-        
-        return $ret;
     }
 }

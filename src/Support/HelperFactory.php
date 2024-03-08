@@ -12,6 +12,7 @@
 namespace Zemit\Support;
 
 use Zemit\Support\Helper\Arr\FlattenKeys;
+use Zemit\Support\Helper\Arr\RecursiveMap;
 use Zemit\Support\Helper\Str\Slugify;
 
 /**
@@ -21,6 +22,7 @@ use Zemit\Support\Helper\Str\Slugify;
  * {@inheritdoc}
  * 
  * # New methods
+ * @method string recursiveMap(array $collection = [], callable $callback = null)
  * @method string flattenKeys(array $collection = [], string $delimiter = '.', bool $lowerKey = true)
  * @method string slugify(string $string, array $replace = [], string $delimiter = '-')
  */
@@ -34,6 +36,7 @@ class HelperFactory extends \Phalcon\Support\HelperFactory
     protected function getServices(): array
     {
         return array_merge(parent::getServices(), [
+            'recursiveMap' => RecursiveMap::class,
             'flattenKeys' => FlattenKeys::class,
             'slugify' => Slugify::class,
         ]);
