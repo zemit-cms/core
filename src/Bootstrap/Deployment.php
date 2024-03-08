@@ -11,15 +11,14 @@
 
 namespace Zemit\Bootstrap;
 
+use Phalcon\Config\Config as PhalconConfig;
 use Zemit\Models\Lang;
 use Zemit\Models\Role;
 use Zemit\Models\Setting;
-use Zemit\Models\Workspace;
 use Zemit\Models\Template;
 use Zemit\Models\User;
 use Zemit\Models\UserRole;
-use Zemit\Mvc\Controller\Behavior;
-use Phalcon\Config\Config as PhalconConfig;
+use Zemit\Models\Workspace;
 
 /**
  * Zemit Deployment Configuration
@@ -33,7 +32,7 @@ class Deployment extends \Zemit\Config\Config
 {
     public function __construct(array $data = [], bool $insensitive = true)
     {
-        parent::__construct([
+        $data = $this->internalMergeAppend([
             /**
              * Tables to drop
              */
@@ -153,10 +152,8 @@ class Deployment extends \Zemit\Config\Config
                 Setting::class => [
                 ],
             ],
-        ], $insensitive);
+        ], $data);
         
-        if (!empty($data)) {
-            $this->merge(new PhalconConfig($data, $insensitive), true);
-        }
+        parent::__construct($data, $insensitive);
     }
 }
