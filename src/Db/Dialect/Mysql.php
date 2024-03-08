@@ -10,16 +10,19 @@
 
 namespace Zemit\Db\Dialect;
 
+use Phalcon\Db\Column;
+use Phalcon\Db\ColumnInterface;
+
 /**
  * Class MySQL
- * - Registering custom functions
- * -- Regexp: " %s REGEXP $s"
- * -- Distance: " ST_Distance_Sphere(%s, %s) "
- * -- point: " point(%s, %s) "
+ * 
+ * Mysql class extends \Phalcon\Db\Dialect\Mysql to provide additional functionalities for MySQL database dialect.
+ * - Regexp: " %s REGEXP $s"
+ * - Distance: " ST_Distance_Sphere(%s, %s) "
+ * - point: " point(%s, %s) "
  */
 class Mysql extends \Phalcon\Db\Dialect\Mysql
 {
-    
     public function __construct()
     {
         $this->registerRegexpFunction();
@@ -28,7 +31,9 @@ class Mysql extends \Phalcon\Db\Dialect\Mysql
     }
     
     /**
-     * Register Regexp function
+     * Register a custom REGEXP function for the database dialect.
+     *
+     * @return void
      */
     public function registerRegexpFunction(): void
     {
@@ -43,7 +48,11 @@ class Mysql extends \Phalcon\Db\Dialect\Mysql
     }
     
     /**
-     * Register ST_Distance_Sphere function
+     * Register a custom distance sphere function to be used in SQL queries.
+     *
+     * This method registers the "ST_Distance_Sphere" function, which calculates the spherical distance between two points.
+     *
+     * @return void
      */
     public function registerDistanceSphereFunction(): void
     {
@@ -58,7 +67,9 @@ class Mysql extends \Phalcon\Db\Dialect\Mysql
     }
     
     /**
-     * Register point function
+     * Register a point function for SQL dialect.
+     *
+     * @return void
      */
     public function registerPointFunction(): void
     {
@@ -70,5 +81,49 @@ class Mysql extends \Phalcon\Db\Dialect\Mysql
                 $dialect->getSqlExpression($arguments[1]),
             );
         });
+    }
+    
+    /**
+     * Get the SQL column definition for a given column.
+     *
+     * This is a temporary fix in regard to this github issue:
+     * - https://github.com/phalcon/cphalcon/issues/16532
+     * 
+     * @param ColumnInterface $column The column to get the definition for.
+     * @return string The SQL column definition.
+     */
+    public function getColumnDefinition(ColumnInterface $column): string
+    {
+        try {
+            return parent::getColumnDefinition($column);
+        }
+        catch (\Phalcon\Db\Exception $e) {
+            
+            $columnSql = $this->checkColumnTypeSql($column);
+            $columnType = $this->checkColumnType($column);
+            
+            switch ($columnType) {
+                
+                case Column::TYPE_BINARY:
+                    if (empty($columnSql)) {
+                        $columnSql .= 'BINARY';
+                    }
+                    if ($column->getSize() > 0) {
+                        $columnSql .= $this->getColumnSize($column);
+                    }
+                    break;
+                
+                case Column::TYPE_VARBINARY:
+                    if (empty($columnSql)) {
+                        $columnSql .= 'VARBINARY';
+                    }
+                    if ($column->getSize() > 0) {
+                        $columnSql .= $this->getColumnSize($column);
+                    }
+                    break;
+            }
+            
+            return $columnSql;
+        }
     }
 }
