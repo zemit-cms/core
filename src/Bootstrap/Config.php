@@ -20,6 +20,7 @@ use Zemit\Bootstrap\Permissions\TableConfig;
 use Zemit\Bootstrap\Permissions\WorkspaceConfig;
 use Zemit\Locale;
 use Zemit\Models;
+use Zemit\Modules\Frontend;
 use Zemit\Modules\Api;
 use Zemit\Modules\Cli;
 use Zemit\Mvc\Controller\Behavior;
@@ -305,6 +306,7 @@ class Config extends \Zemit\Config\Config
                 Models\Field::class => Models\Field::class,
                 
                 // User & Permissions
+                Models\Oauth2::class => Models\Oauth2::class,
                 Models\Profile::class => Models\Profile::class,
                 Models\User::class => Models\User::class,
                 Models\UserType::class => Models\UserType::class,
@@ -1379,6 +1381,7 @@ class Config extends \Zemit\Config\Config
                             Cli\Tasks\DataLifeCycleTask::class => ['*'],
                             Cli\Tasks\HelpTask::class => ['*'],
                             Cli\Tasks\ScaffoldTask::class => ['*'],
+                            Cli\Tasks\TsScaffoldTask::class => ['*'],
                             Cli\Tasks\TestTask::class => ['*'],
                             Cli\Tasks\UserTask::class => ['*'],
                         ],
@@ -1390,7 +1393,8 @@ class Config extends \Zemit\Config\Config
                             'base',
                         ],
                         'components' => [
-                            Api\Controllers\ClamavController::class => ['*']
+                            Api\Controllers\ClamavController::class => ['*'],
+                            Frontend\Controllers\CheckController::class => ['*'],
                         ],
                     ],
                     
