@@ -142,32 +142,33 @@ DOC;
             
             $columns = $this->describeColumns($table);
             $definitions = $this->getDefinitionsAction($table);
+            $relationships = $this->getRelationshipItems($table, $columns, $tables);
             
             // Abstract
             $savePath = $this->getAbstractsDirectory($definitions['abstract']['file']);
             if (!file_exists($savePath) || $force) {
-                $this->saveFile($savePath, $this->createAbstractOutput($definitions, $table, $columns, $tables), $force);
+                $this->saveFile($savePath, $this->createAbstractOutput($definitions, $columns, $relationships), $force);
                 $ret [] = 'Abstract Model `' . $definitions['abstract']['file'] . '` created';
             }
             
             // Abstract Interfaces
             $savePath = $this->getAbstractsInterfacesDirectory($definitions['abstractInterface']['file']);
             if (!file_exists($savePath) || $force) {
-                $this->saveFile($savePath, $this->createAbstractInterfaceOutput($definitions, $columns), $force);
+                $this->saveFile($savePath, $this->createAbstractInterfaceOutput($definitions, $columns, $relationships), $force);
                 $ret [] = 'Abstract Model Interface `' . $definitions['abstractInterface']['file'] . '` created';
             }
             
             // Model
             $savePath = $this->getModelsDirectory($definitions['model']['file']);
             if (!file_exists($savePath) || $force) {
-                $this->saveFile($savePath, $this->createModelOutput($definitions, $table, $columns, $tables), $force);
+                $this->saveFile($savePath, $this->createModelOutput($definitions), $force);
                 $ret [] = 'Model `' . $definitions['model']['file'] . '` created';
             }
             
             // Model Interfaces
             $savePath = $this->getModelsInterfacesDirectory($definitions['modelInterface']['file']);
             if (!file_exists($savePath) || $force) {
-                $this->saveFile($savePath, $this->createModelInterfaceOutput($definitions, $table, $columns, $tables), $force);
+                $this->saveFile($savePath, $this->createModelInterfaceOutput($definitions), $force);
                 $ret [] = 'Model Interface `' . $definitions['modelInterface']['file'] . '` created';
             }
         }
@@ -203,10 +204,11 @@ PHP;
      *
      * @param array $definitions The definitions for the abstract interface.
      * @param array $columns The columns for which to generate getter and setter methods.
+     * @param array $relationships The columns for which to generate getter and setter methods.
      *
      * @return string The generated abstract interface output as a string.
      */
-    public function createAbstractInterfaceOutput(array $definitions, array $columns): string
+    public function createAbstractInterfaceOutput(array $definitions, array $columns, array $relationships): string
     {
         $getSetInterfaceItems = $this->getGetSetMethods($columns, true);
         return <<<PHP
@@ -218,6 +220,9 @@ namespace {$this->getAbstractsInterfacesNamespace()};
 use Phalcon\Db\RawValue;
 use Zemit\Mvc\ModelInterface;
 
+/**
+{$relationships['interfaceInjectableItems']}
+ */
 interface {$definitions['abstractInterface']['name']} extends ModelInterface
 {
     {$getSetInterfaceItems}
@@ -229,19 +234,16 @@ PHP;
      * Generates an abstract class output for the given definitions, table, columns, and tables.
      *
      * @param array $definitions The definitions for the abstract output.
-     * @param string $table The table name.
      * @param array $columns The columns.
-     * @param array $tables The tables.
+     * @param array $relationships The relationship items.
      *
      * @return string The abstract output as a string.
      */
-    public function createAbstractOutput(array $definitions, string $table, array $columns, array $tables): string
+    public function createAbstractOutput(array $definitions, array $columns, array $relationships): string
     {
         $propertyItems = $this->getPropertyItems($columns);
         $getSetMethods = $this->getGetSetMethods($columns);
         $columnMapMethod = $this->getColumnMapMethod($columns);
-        
-        [$relationshipInjectableItems, $relationshipItems, $relationshipUseItems] = $this->getRelationshipItems($table, $columns, $tables);
         $validationItems = $this->getValidationItems($columns);
         
         return <<<PHP
@@ -253,7 +255,7 @@ namespace {$this->getAbstractsNamespace()};
 use Phalcon\Db\RawValue;
 use Zemit\Filter\Validation;
 use Zemit\Models\AbstractModel;
-{$relationshipUseItems}
+{$relationships['useItems']}
 use {$this->getAbstractsInterfacesNamespace()}\\{$definitions['abstractInterface']['name']};
 
 /**
@@ -262,7 +264,7 @@ use {$this->getAbstractsInterfacesNamespace()}\\{$definitions['abstractInterface
  * This class defines a {$definitions['model']['name']} abstract model that extends the AbstractModel class and implements the {$definitions['abstractInterface']['name']}.
  * It provides properties and methods for managing {$definitions['model']['name']} data.
  * 
-{$relationshipInjectableItems}
+{$relationships['injectableItems']}
  */
 abstract class {$definitions['abstract']['name']} extends AbstractModel implements {$definitions['abstractInterface']['name']}
 {
@@ -276,7 +278,7 @@ abstract class {$definitions['abstract']['name']} extends AbstractModel implemen
      */
     public function addDefaultRelationships(): void
     {
-        {$relationshipItems}
+        {$relationships['items']}
     }
     
     /**
@@ -302,17 +304,10 @@ PHP;
      * Generates a comment for the createModelOutput method.
      *
      * @param array $definitions The array of model definitions.
-     * @param string $table The name of the table.
-     * @param array $columns The array of column names.
-     * @param array $tables The array of table names.
      * @return string The generated comment.
      */
-    public function createModelOutput(array $definitions, string $table, array $columns, array $tables): string
+    public function createModelOutput(array $definitions): string
     {
-        // @todo add params to add them in model instead of abstract
-//        [$relationshipInjectableItems, $relationshipItems] = $this->getRelationshipItems($table, $columns, $tables);
-//        $validationItems = $this->getValidationItems($columns);
-        
         return <<<PHP
 <?php
 {$this->getLicenseStamp()}
@@ -452,6 +447,10 @@ PHP;
         $relationshipItems = [];
         $relationshipInjectableItems = [];
         
+        $interfaceInjectableItems = [];
+        $interfaceUseItems = [];
+        $useInterfaces = [];
+            
         // Has Many
         foreach ($tables as $otherTable) {
             
@@ -464,6 +463,8 @@ PHP;
             $relationName = $this->getTableName($otherTable);
             $relationClass = $relationName . '::class';
             $relationAlias = $relationName . 'List';
+            $relationEager = strtolower($relationAlias);
+            $relationInterface = $relationName . 'AbstractInterface';
             
             // foreach columns of that other table
             foreach ($otherTableColumns as $otherTableColumn) {
@@ -481,9 +482,17 @@ PHP;
                         // if the field is matching
                         if ($otherColumnName === $table . '_' . $columnName) {
                             $propertyName = $this->getPropertyName($columnName);
-                            $useModels[$relationName] = true;
                             
+                            $useInterfaces[$relationInterface] = true;
+                            $interfaceInjectableItems []= <<<PHP
+ * @property {$relationInterface}[] \${$relationEager}
+ * @property {$relationInterface}[] \${$relationAlias}
+ * @method {$relationInterface}[] get{$relationAlias}(?array \$params = null)
+PHP;
+                            
+                            $useModels[$relationName] = true;
                             $relationshipInjectableItems []= <<<PHP
+ * @property {$relationName}[] \${$relationEager}
  * @property {$relationName}[] \${$relationAlias}
  * @method {$relationName}[] get{$relationAlias}(?array \$params = null)
 PHP;
@@ -504,8 +513,10 @@ PHP;
                                 
                                 foreach ($tables as $manyManyTable) {
                                     $manyManyTableName = $this->getTableName($manyManyTable);
+                                    $manyManyTableInterface = $manyManyTableName . 'AbstractInterface';
                                     $manyManyTableClass = $manyManyTableName . '::class';
                                     $manyManyTableAlias = $manyManyTableName . 'List';
+                                    $manyManyTableEager = strtolower($manyManyTableAlias);
                                     
                                     // to prevent duplicates in this specific scenario when we find many-to-many relationships
                                     // that are not actually nodes, we will enforce the full many-to-many path alias
@@ -520,9 +531,17 @@ PHP;
                                             $manyManyColumnName = $manyManyTableColumn->getName();
                                             if ($manyColumnName === $manyManyTable . '_' . $manyManyColumnName) {
                                                 $manyManyPropertyName = $this->getPropertyName($manyManyColumnName);
-                                                $useModels[$manyManyTableName] = true;
                                                 
+                                                $useInterfaces[$manyManyTableInterface] = true;
+                                                $interfaceInjectableItems []= <<<PHP
+ * @property {$manyManyTableInterface}[] \${$manyManyTableEager}
+ * @property {$manyManyTableInterface}[] \${$manyManyTableAlias}
+ * @method {$manyManyTableInterface}[] get{$manyManyTableAlias}(?array \$params = null)
+PHP;
+                                                
+                                                $useModels[$manyManyTableName] = true;
                                                 $relationshipInjectableItems []= <<<PHP
+ * @property {$manyManyTableName}[] \${$manyManyTableEager}
  * @property {$manyManyTableName}[] \${$manyManyTableAlias}
  * @method {$manyManyTableName}[] get{$manyManyTableAlias}(?array \$params = null)
 PHP;
@@ -572,12 +591,21 @@ PHP;
                         break;
                 }
                 
+                $relationTableInterface = $relationTableName . 'AbstractInterface';
                 $relationClass = $relationTableName . '::class';
                 $relationAlias = $relationName . 'Entity';
+                $relationEager = strtolower($relationAlias);
+                
+                $useInterfaces[$relationTableInterface] = true;
+                $interfaceInjectableItems []= <<<PHP
+ * @property {$relationTableInterface} \${$relationEager}
+ * @property {$relationTableInterface} \${$relationAlias}
+ * @method {$relationTableInterface} get{$relationAlias}(?array \$params = null)
+PHP;
                 
                 $useModels[$relationTableName] = true;
-                
                 $relationshipInjectableItems []= <<<PHP
+ * @property {$relationTableName} \${$relationEager}
  * @property {$relationTableName} \${$relationAlias}
  * @method {$relationTableName} get{$relationAlias}(?array \$params = null)
 PHP;
@@ -591,6 +619,9 @@ PHP;
         foreach (array_keys($useModels) as $useItem) {
             $relationshipUseItems []= 'use ' . $modelNamespace . $useItem . ';';
         }
+        foreach (array_keys($useInterfaces) as $useInterface) {
+            $interfaceUseItems []= 'use ' . $modelNamespace . $useInterface . ';';
+        }
         
         // Avoid empty lines if not relationship were found
         if (empty($relationshipInjectableItems)) {
@@ -601,9 +632,11 @@ PHP;
         }
         
         return [
-            implode(PHP_EOL . ' *' . PHP_EOL, $relationshipInjectableItems),
-            trim(implode(PHP_EOL . PHP_EOL, $relationshipItems)),
-            trim(implode(PHP_EOL, $relationshipUseItems)),
+            'interfaceInjectableItems' => implode(PHP_EOL . ' *' . PHP_EOL, $interfaceInjectableItems),
+            'injectableItems' => implode(PHP_EOL . ' *' . PHP_EOL, $relationshipInjectableItems),
+            'useItems' => trim(implode(PHP_EOL, $relationshipUseItems)),
+            'interfaceUseItems' => trim(implode(PHP_EOL, $interfaceUseItems)),
+            'items' => trim(implode(PHP_EOL . PHP_EOL, $relationshipItems)),
         ];
     }
     
