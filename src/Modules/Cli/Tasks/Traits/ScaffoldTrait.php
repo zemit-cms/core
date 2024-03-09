@@ -187,26 +187,24 @@ PHP;
     
     /**
      * Determines if a given path is an absolute path.
-     * @param string|null $path The path to be checked. (default: null)
+     * @param string $path The path to be checked. (default: null)
      * @return bool Returns true if the path is an absolute path, false otherwise.
      */
-    public function isAbsolutePath(?string $path = null): bool
+    public function isAbsolutePath(string $path = ''): bool
     {
-        return (isset($path) && str_starts_with($path, '/'));
+        return str_starts_with($path, '/');
     }
     
     /**
-     * Determines the absolute directory path for the given file or directory path.
-     * If the provided path is an absolute path, it is returned as is.
-     * Otherwise, the provided path is concatenated with the full path and returned.
+     * Retrieves the absolute file or directory path.
      *
-     * @param string|null $path The relative or absolute path to the file or directory.
-     *                          If null, the full path will be used.
-     * @param string $fullPath The full path for the file or directory.
+     * @param string $path The relative or absolute path to the file or directory.
+     * @param string $fullPath The full path including directory for the file or directory.
      *
-     * @return string The absolute directory path for the given file or directory path.
+     * @return string The absolute file or directory path. If the given path is absolute, it will be returned as is.
+     *                Otherwise, the full path including directory will be returned.
      */
-    public function absolutePathOr(?string $path, string $fullPath): string
+    public function absolutePathOr(string $path = '', string $fullPath = ''): string
     {
         return $this->isAbsolutePath($path)? $path : $fullPath;
     }
@@ -214,47 +212,46 @@ PHP;
     /**
      * Retrieves the directory path for a given file or directory path.
      *
-     * @param string|null $path The relative or absolute path to the file or directory.
-     *                          If null, the default directory will be used.
+     * @param string $path The relative or absolute path to the file or directory.
      *
      * @return string The absolute directory path for the given file or directory path.
      */
-    public function getDirectory(?string $path = null): string
+    public function getDirectory(string $path = ''): string
     {
         $fullPath = ($this->dispatcher->getParam('directory') ?? $this->directory) . '/' . $path;
         return $this->absolutePathOr($path, $fullPath);
     }
     
     // Controllers Directory
-    public function getControllersDirectory(string $path = null): string
+    public function getControllersDirectory(string $path = ''): string
     {
         $fullPath = $this->getDirectory($this->dispatcher->getParam('controllers-directory') ?? $this->controllersDirectory) . $path;
         return $this->absolutePathOr($path, $fullPath);
     }
     
     // Models Directory
-    public function getModelsDirectory(?string $path = null): string
+    public function getModelsDirectory(string $path = ''): string
     {
         $fullPath = $this->getDirectory($this->dispatcher->getParam('models-directory') ?? $this->modelsDirectory) . $path;
         return $this->absolutePathOr($path, $fullPath);
     }
     
     // Models Interfaces Directory
-    public function getModelsInterfacesDirectory(?string $path = null): string
+    public function getModelsInterfacesDirectory(string $path = ''): string
     {
         $fullPath = $this->getModelsDirectory($this->dispatcher->getParam('interfaces-directory') ?? $this->interfacesDirectory) . $path;
         return $this->absolutePathOr($path, $fullPath);
     }
     
     // Models Abstracts Directory
-    public function getAbstractsDirectory(?string $path = null): string
+    public function getAbstractsDirectory(string $path = ''): string
     {
         $fullPath = $this->getModelsDirectory($this->dispatcher->getParam('abstracts-directory') ?? $this->abstractsDirectory) . $path;
         return $this->absolutePathOr($path, $fullPath);
     }
     
     // Models Abstracts Interfaces Directory
-    public function getAbstractsInterfacesDirectory(?string $path = null): string
+    public function getAbstractsInterfacesDirectory(string $path = ''): string
     {
         $fullPath = $this->getAbstractsDirectory($this->dispatcher->getParam('interfaces-directory') ?? $this->interfacesDirectory) . $path;
         return $this->absolutePathOr($path, $fullPath);
