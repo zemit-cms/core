@@ -191,16 +191,16 @@ class Identity extends Injectable implements OptionsInterface
         $typeList = [];
         
         if (isset($user)) {
-            if (isset($user->rolelist) && is_iterable($user->rolelist)) {
+            if (!empty($user->rolelist)) {
                 foreach ($user->rolelist as $role) {
                     $roleList [$role->getIndex()] = $role;
                 }
             }
             
-            if (isset($user->grouplist) && is_iterable($user->grouplist)) {
+            if (!empty($user->grouplist)) {
                 foreach ($user->grouplist as $group) {
                     $groupList [$group->getIndex()] = $group;
-                    if ($group->rolelist) {
+                    if (!empty($group->rolelist)) {
                         foreach ($group->rolelist as $role) {
                             $roleList [$role->getIndex()] = $role;
                         }
@@ -208,13 +208,13 @@ class Identity extends Injectable implements OptionsInterface
                 }
             }
             
-            if (isset($user->typelist) && is_iterable($user->typelist)) {
+            if (!empty($user->typelist)) {
                 foreach ($user->typelist as $type) {
                     $typeList [$type->getIndex()] = $type;
-                    if ($type->grouplist) {
+                    if (!empty($type->grouplist)) {
                         foreach ($type->grouplist as $group) {
                             $groupList [$group->getIndex()] = $group;
-                            if ($group->rolelist) {
+                            if (!empty($group->rolelist)) {
                                 foreach ($group->rolelist as $role) {
                                     $roleList [$role->getIndex()] = $role;
                                 }
