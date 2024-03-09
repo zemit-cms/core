@@ -13,14 +13,12 @@ namespace Zemit;
 
 use Phalcon\Acl\Role;
 use Phalcon\Db\Column;
-use Phalcon\Encryption\Security\Exception;
 use Phalcon\Encryption\Security\JWT\Exceptions\ValidatorException;
 use Phalcon\Filter\Validation\Validator\Confirmation;
 use Phalcon\Filter\Validation\Validator\Numericality;
 use Phalcon\Filter\Validation\Validator\PresenceOf;
 use Phalcon\Messages\Message;
 use Phalcon\Mvc\EntityInterface;
-use Phalcon\Mvc\ModelInterface;
 use Phalcon\Support\Helper\Str\Random;
 use Zemit\Di\Injectable;
 use Zemit\Filter\Validation;
@@ -29,7 +27,6 @@ use Zemit\Models\Interfaces\SessionInterface;
 use Zemit\Models\Interfaces\UserInterface;
 use Zemit\Models\Oauth2;
 use Zemit\Models\User;
-use Zemit\Mvc\Model;
 use Zemit\Mvc\Model\Behavior\Security as SecurityBehavior;
 use Zemit\Support\ModelsMap;
 use Zemit\Support\Options\Options;
@@ -127,7 +124,7 @@ class Identity extends Injectable implements OptionsInterface
     
     /**
      * Create or refresh a session
-     * @throws Exception|ValidatorException
+     * @throws ValidatorException|\Phalcon\Encryption\Security\Exception
      */
     public function getJwt(bool $refresh = false): array
     {
