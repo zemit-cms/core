@@ -1,0 +1,90 @@
+<?php
+
+/**
+ * This file is part of the Zemit Framework.
+ *
+ * (c) Zemit Team <contact@zemit.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
+
+namespace Zemit\Mvc\Controller\Traits\Query\Conditions;
+
+use Phalcon\Db\Column;
+use Phalcon\Filter\Filter;
+use Phalcon\Support\Collection;
+
+trait IdentityConditions
+{
+    protected ?Collection $identityConditions;
+    
+    public function initializeIdentityConditions(): void
+    {
+        $this->setIdentityConditions(new Collection([
+            'default' => $this->defaultIdentityCondition(),
+        ], false));
+    }
+    
+    public function setIdentityConditions(?Collection $identityConditions): void
+    {
+        $this->identityConditions = $identityConditions;
+    }
+    
+    public function getIdentityConditions(): ?Collection
+    {
+        return $this->identityConditions;
+    }
+    
+    /**
+     * Builds the identity condition based on the current user's identity and role.
+     *
+     * @return array|string|null Returns an array with the following elements:
+     *                         - If identity columns are empty, returns null.
+     *                         - If no identity is found, returns ['false'].
+     *                         - If the current user role is a super admin, returns ['true'].
+     *                         - If identity conditions are found, returns an array with the following elements:
+     *                           - The condition string formed by joining the columns with 'or' operators.
+     *                           - An array of bind values for the condition.
+     *                           - An array of bind types for the condition.
+     */
+    public function defaultIdentityCondition(): array|string|null
+    {
+        $columns = $this->getIdentityColumns();
+        
+        if (empty($columns)) {
+            return null;
+        }
+        
+        $query = [];
+        $bind = [];
+        $bindTypes = [];
+        
+        foreach ($columns as $column) {
+            $field = $this->appendModelName($column);
+            $value = $this->generateBindKey('identity');
+            
+            $bind[$value] = $this->getParam($column, [Filter::FILTER_STRING, Filter::FILTER_TRIM]);
+            $bindTypes[$value] = Column::BIND_PARAM_INT;
+            
+            $query [] = "{$field} = :{$value}:";
+        }
+        
+        return [
+            implode(' and ', $query),
+            $bind,
+            $bindTypes,
+        ];
+    }
+    
+    /**
+     * Retrieves the identity columns of the current model.
+     *
+     * @return array The identity columns.
+     */
+    public function getIdentityColumns(): array
+    {
+        // @todo get primary keys from the model
+        return ['id'];
+    }
+}

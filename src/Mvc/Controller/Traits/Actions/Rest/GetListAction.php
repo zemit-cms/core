@@ -40,14 +40,12 @@ trait GetListAction
     public function getListAction(): ResponseInterface
     {
         $model = $this->getModelName();
-        $with = $this->getListWith() ?: [];
-        $find = $this->getFind() ?: [];
+        $with = $this->getListWith() ?? [];
+        $find = $this->getFind() ?? [];
         
-        $totalCount = $model::count($this->getFindCount($find));
-        $totalCount = is_countable($totalCount) ? count($totalCount) : (int)$totalCount;
         $this->view->setVars([
-            'list' => $this->listExpose($model::findWith($with, $find)),
-            'totalCount' => $totalCount,
+            'list' => $this->listExpose($this->getList($model, $with, $find)),
+            'totalCount' => $this->getTotalCount($model, $find),
             'limit' => $find['limit'] ?? null,
             'offset' => $find['offset'] ?? null,
         ]);
