@@ -567,11 +567,10 @@ PHP;
             $columnName = $column->getName();
             $propertyName = $this->getPropertyName($columnName);
             
+            $relationName = $this->getTableName(substr($columnName, 0, strlen($columnName) - 3));;
+            $relationTableName = $relationName;
+            
             if (str_ends_with($columnName, '_id')) {
-                $relationName = $this->getTableName(substr($columnName, 0, strlen($columnName) - 3));
-                $relationTableName = $relationName;
-                // @todo improve here and check if table exists
-                
                 switch ($relationName) {
                     case 'Parent':
                     case 'Child':
@@ -590,7 +589,27 @@ PHP;
                         
                         break;
                 }
+            }
+            
+            if (str_ends_with($columnName, '_as') || str_ends_with($columnName, '_by')) {
+                $relationName = $this->getTableName($columnName);
+                $relationTableName = 'user';
+            }
+            
+            if ($relationName) {
                 
+                $relationTableNameUncamelized = Helper::uncamelize($relationTableName);
+                while (!empty($relationTableNameUncamelized) && !in_array($relationTableNameUncamelized, $tables, true)) {
+                    $index = strpos($relationTableNameUncamelized, '_');
+                    $relationTableNameUncamelized = $index? substr($relationTableNameUncamelized, $index + 1, strlen($relationTableNameUncamelized)) : null;
+                }
+                
+                // can't find the table, skip
+                if (empty($relationTableNameUncamelized)) {
+                    continue;
+                }
+                
+                $relationTableName = $this->getTableName($relationTableNameUncamelized);
                 $relationTableInterface = $relationTableName . 'AbstractInterface';
                 $relationClass = $relationTableName . '::class';
                 $relationAlias = $relationName . 'Entity';
