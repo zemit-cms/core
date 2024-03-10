@@ -135,6 +135,38 @@ use Zemit\Mvc\ModelInterface;
  * @property TableAbstractInterface[] $tablelist
  * @property TableAbstractInterface[] $TranslateFieldTableList
  * @method TableAbstractInterface[] getTranslateFieldTableList(?array $params = null)
+ *
+ * @property UserAbstractInterface $createdbyentity
+ * @property UserAbstractInterface $CreatedByEntity
+ * @method UserAbstractInterface getCreatedByEntity(?array $params = null)
+ *
+ * @property UserAbstractInterface $createdasentity
+ * @property UserAbstractInterface $CreatedAsEntity
+ * @method UserAbstractInterface getCreatedAsEntity(?array $params = null)
+ *
+ * @property UserAbstractInterface $updatedbyentity
+ * @property UserAbstractInterface $UpdatedByEntity
+ * @method UserAbstractInterface getUpdatedByEntity(?array $params = null)
+ *
+ * @property UserAbstractInterface $updatedasentity
+ * @property UserAbstractInterface $UpdatedAsEntity
+ * @method UserAbstractInterface getUpdatedAsEntity(?array $params = null)
+ *
+ * @property UserAbstractInterface $deletedasentity
+ * @property UserAbstractInterface $DeletedAsEntity
+ * @method UserAbstractInterface getDeletedAsEntity(?array $params = null)
+ *
+ * @property UserAbstractInterface $deletedbyentity
+ * @property UserAbstractInterface $DeletedByEntity
+ * @method UserAbstractInterface getDeletedByEntity(?array $params = null)
+ *
+ * @property UserAbstractInterface $restoredbyentity
+ * @property UserAbstractInterface $RestoredByEntity
+ * @method UserAbstractInterface getRestoredByEntity(?array $params = null)
+ *
+ * @property UserAbstractInterface $restoredasentity
+ * @property UserAbstractInterface $RestoredAsEntity
+ * @method UserAbstractInterface getRestoredAsEntity(?array $params = null)
  */
 interface SiteAbstractInterface extends ModelInterface
 {

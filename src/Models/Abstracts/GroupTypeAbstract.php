@@ -17,6 +17,7 @@ use Zemit\Filter\Validation;
 use Zemit\Models\AbstractModel;
 use Zemit\Models\Group;
 use Zemit\Models\Type;
+use Zemit\Models\User;
 use Zemit\Models\Abstracts\Interfaces\GroupTypeAbstractInterface;
 
 /**
@@ -32,6 +33,38 @@ use Zemit\Models\Abstracts\Interfaces\GroupTypeAbstractInterface;
  * @property Type $typeentity
  * @property Type $TypeEntity
  * @method Type getTypeEntity(?array $params = null)
+ *
+ * @property User $createdbyentity
+ * @property User $CreatedByEntity
+ * @method User getCreatedByEntity(?array $params = null)
+ *
+ * @property User $createdasentity
+ * @property User $CreatedAsEntity
+ * @method User getCreatedAsEntity(?array $params = null)
+ *
+ * @property User $updatedbyentity
+ * @property User $UpdatedByEntity
+ * @method User getUpdatedByEntity(?array $params = null)
+ *
+ * @property User $updatedasentity
+ * @property User $UpdatedAsEntity
+ * @method User getUpdatedAsEntity(?array $params = null)
+ *
+ * @property User $deletedasentity
+ * @property User $DeletedAsEntity
+ * @method User getDeletedAsEntity(?array $params = null)
+ *
+ * @property User $deletedbyentity
+ * @property User $DeletedByEntity
+ * @method User getDeletedByEntity(?array $params = null)
+ *
+ * @property User $restoredbyentity
+ * @property User $RestoredByEntity
+ * @method User getRestoredByEntity(?array $params = null)
+ *
+ * @property User $restoredasentity
+ * @property User $RestoredAsEntity
+ * @method User getRestoredAsEntity(?array $params = null)
  */
 abstract class GroupTypeAbstract extends AbstractModel implements GroupTypeAbstractInterface
 {
@@ -554,6 +587,22 @@ abstract class GroupTypeAbstract extends AbstractModel implements GroupTypeAbstr
         $this->belongsTo('groupId', Group::class, 'id', ['alias' => 'GroupEntity']);
 
         $this->belongsTo('typeId', Type::class, 'id', ['alias' => 'TypeEntity']);
+
+        $this->belongsTo('createdBy', User::class, 'id', ['alias' => 'CreatedByEntity']);
+
+        $this->belongsTo('createdAs', User::class, 'id', ['alias' => 'CreatedAsEntity']);
+
+        $this->belongsTo('updatedBy', User::class, 'id', ['alias' => 'UpdatedByEntity']);
+
+        $this->belongsTo('updatedAs', User::class, 'id', ['alias' => 'UpdatedAsEntity']);
+
+        $this->belongsTo('deletedAs', User::class, 'id', ['alias' => 'DeletedAsEntity']);
+
+        $this->belongsTo('deletedBy', User::class, 'id', ['alias' => 'DeletedByEntity']);
+
+        $this->belongsTo('restoredBy', User::class, 'id', ['alias' => 'RestoredByEntity']);
+
+        $this->belongsTo('restoredAs', User::class, 'id', ['alias' => 'RestoredAsEntity']);
     }
     
     /**

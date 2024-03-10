@@ -71,6 +71,34 @@ use Zemit\Mvc\ModelInterface;
  * @property LangAbstractInterface $langentity
  * @property LangAbstractInterface $LangEntity
  * @method LangAbstractInterface getLangEntity(?array $params = null)
+ *
+ * @property UserAbstractInterface $createdbyentity
+ * @property UserAbstractInterface $CreatedByEntity
+ * @method UserAbstractInterface getCreatedByEntity(?array $params = null)
+ *
+ * @property UserAbstractInterface $createdasentity
+ * @property UserAbstractInterface $CreatedAsEntity
+ * @method UserAbstractInterface getCreatedAsEntity(?array $params = null)
+ *
+ * @property UserAbstractInterface $updatedbyentity
+ * @property UserAbstractInterface $UpdatedByEntity
+ * @method UserAbstractInterface getUpdatedByEntity(?array $params = null)
+ *
+ * @property UserAbstractInterface $updatedasentity
+ * @property UserAbstractInterface $UpdatedAsEntity
+ * @method UserAbstractInterface getUpdatedAsEntity(?array $params = null)
+ *
+ * @property UserAbstractInterface $deletedasentity
+ * @property UserAbstractInterface $DeletedAsEntity
+ * @method UserAbstractInterface getDeletedAsEntity(?array $params = null)
+ *
+ * @property UserAbstractInterface $deletedbyentity
+ * @property UserAbstractInterface $DeletedByEntity
+ * @method UserAbstractInterface getDeletedByEntity(?array $params = null)
+ *
+ * @property UserAbstractInterface $restoredbyentity
+ * @property UserAbstractInterface $RestoredByEntity
+ * @method UserAbstractInterface getRestoredByEntity(?array $params = null)
  */
 interface CategoryAbstractInterface extends ModelInterface
 {

@@ -18,6 +18,7 @@ use Zemit\Models\AbstractModel;
 use Zemit\Models\EmailFile;
 use Zemit\Models\File;
 use Zemit\Models\Template;
+use Zemit\Models\User;
 use Zemit\Models\Abstracts\Interfaces\EmailAbstractInterface;
 
 /**
@@ -37,6 +38,46 @@ use Zemit\Models\Abstracts\Interfaces\EmailAbstractInterface;
  * @property Template $templateentity
  * @property Template $TemplateEntity
  * @method Template getTemplateEntity(?array $params = null)
+ *
+ * @property User $sentbyentity
+ * @property User $SentByEntity
+ * @method User getSentByEntity(?array $params = null)
+ *
+ * @property User $sentasentity
+ * @property User $SentAsEntity
+ * @method User getSentAsEntity(?array $params = null)
+ *
+ * @property User $createdbyentity
+ * @property User $CreatedByEntity
+ * @method User getCreatedByEntity(?array $params = null)
+ *
+ * @property User $createdasentity
+ * @property User $CreatedAsEntity
+ * @method User getCreatedAsEntity(?array $params = null)
+ *
+ * @property User $updatedbyentity
+ * @property User $UpdatedByEntity
+ * @method User getUpdatedByEntity(?array $params = null)
+ *
+ * @property User $updatedasentity
+ * @property User $UpdatedAsEntity
+ * @method User getUpdatedAsEntity(?array $params = null)
+ *
+ * @property User $deletedbyentity
+ * @property User $DeletedByEntity
+ * @method User getDeletedByEntity(?array $params = null)
+ *
+ * @property User $deletedasentity
+ * @property User $DeletedAsEntity
+ * @method User getDeletedAsEntity(?array $params = null)
+ *
+ * @property User $restoredbyentity
+ * @property User $RestoredByEntity
+ * @method User getRestoredByEntity(?array $params = null)
+ *
+ * @property User $restoredasentity
+ * @property User $RestoredAsEntity
+ * @method User getRestoredAsEntity(?array $params = null)
  */
 abstract class EmailAbstract extends AbstractModel implements EmailAbstractInterface
 {
@@ -922,6 +963,26 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
             'fileId', File::class, 'id', ['alias' => 'FileList']);
 
         $this->belongsTo('templateId', Template::class, 'id', ['alias' => 'TemplateEntity']);
+
+        $this->belongsTo('sentBy', User::class, 'id', ['alias' => 'SentByEntity']);
+
+        $this->belongsTo('sentAs', User::class, 'id', ['alias' => 'SentAsEntity']);
+
+        $this->belongsTo('createdBy', User::class, 'id', ['alias' => 'CreatedByEntity']);
+
+        $this->belongsTo('createdAs', User::class, 'id', ['alias' => 'CreatedAsEntity']);
+
+        $this->belongsTo('updatedBy', User::class, 'id', ['alias' => 'UpdatedByEntity']);
+
+        $this->belongsTo('updatedAs', User::class, 'id', ['alias' => 'UpdatedAsEntity']);
+
+        $this->belongsTo('deletedBy', User::class, 'id', ['alias' => 'DeletedByEntity']);
+
+        $this->belongsTo('deletedAs', User::class, 'id', ['alias' => 'DeletedAsEntity']);
+
+        $this->belongsTo('restoredBy', User::class, 'id', ['alias' => 'RestoredByEntity']);
+
+        $this->belongsTo('restoredAs', User::class, 'id', ['alias' => 'RestoredAsEntity']);
     }
     
     /**
