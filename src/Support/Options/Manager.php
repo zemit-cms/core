@@ -15,12 +15,12 @@ class Manager implements ManagerInterface
 {
     use Options;
     
-    public function get(string $key, $default = null)
+    public function get(string $key, mixed $default = null): mixed
     {
         return $this->getOption($key, $default);
     }
     
-    public function set(string $key, $value = null): void
+    public function set(string $key, mixed $value = null): void
     {
         $this->setOption($key, $value);
     }

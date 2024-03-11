@@ -23,9 +23,9 @@ interface OptionsInterface
     
     public function getOptions(): array;
     
-    public function setOption(string $key, $value = null): void;
+    public function setOption(string $key, mixed $value = null): void;
     
-    public function getOption(string $key, $default = null);
+    public function getOption(string $key, mixed $default = null): mixed;
     
     public function removeOption(string $key): void;
     
