@@ -11,41 +11,13 @@
 
 namespace Zemit\Mvc\Controller\Traits;
 
-use Phalcon\Assets\Collection;
+use Zemit\Mvc\Controller\Traits\Abstracts\Query\Fields\AbstractExposeFields;
 use Zemit\Mvc\Model\Interfaces\ExposeInterface;
 use Zemit\Support\Exposer\Exposer;
 
 trait Expose
 {
-    /**
-     * Get expose definition for an item
-     *
-     * @return array|null The exposed properties, or null for everything.
-     */
-    protected function getExpose(): ?array
-    {
-        return null;
-    }
-    
-    /**
-     * Get expose definition for a list of entities
-     *
-     * @return null|array The exposed properties, or null for everything.
-     */
-    protected function getListExpose(): ?array
-    {
-        return $this->getExpose();
-    }
-    
-    /**
-     * Get expose definition for exporting
-     *
-     * @return null|array The exposed properties, or null for everything.
-     */
-    protected function getExportExpose(): ?array
-    {
-        return $this->getExpose();
-    }
+    use AbstractExposeFields;
     
     /**
      * Expose properties of an item
@@ -58,7 +30,7 @@ trait Expose
      */
     public function expose(mixed $item, ?array $expose = null): array
     {
-        $expose ??= $this->getExpose();
+        $expose ??= $this->getExposeFields()?->toArray();
         
         if ($item instanceof ExposeInterface) {
             return $item->expose($expose);
@@ -72,18 +44,18 @@ trait Expose
      * List entities with specified expose definition
      *
      * @param iterable $items The iterable collection of items to be listed
-     * @param array|null $listExpose The expose definition for the entities (optional)
-     *                               If not provided, the default $this->getListExpose() method will be used.
+     * @param array|null $expose The expose definition for the entities (optional)
+     *                           If not provided, the default $this->getListExpose() method will be used.
      *
      * @return array The array of exposed entities
      */
-    public function listExpose(iterable $items, ?array $listExpose = null): array
+    public function listExpose(iterable $items, ?array $expose = null): array
     {
-        $listExpose ??= $this->getListExpose();
-        $ret = [];
+        $expose ??= $this->getExposeFields()?->toArray();
         
+        $ret = [];
         foreach ($items as $item) {
-            $ret [] = $this->expose($item, $listExpose);
+            $ret [] = $this->expose($item, $expose);
         }
         
         return $ret;
@@ -93,14 +65,14 @@ trait Expose
      * Export items with expose definition
      *
      * @param iterable $items The items to be exported
-     * @param array|null $exportExpose The expose definition for the items. 
-     *                                 If not provided, the default $this->getExportExpose() definition will be used.
+     * @param array|null $expose The expose definition for the items. 
+     *                           If not provided, the default $this->getExportExpose() definition will be used.
      * 
      * @return array The exported items
      */
-    public function exportExpose(iterable $items, ?array $exportExpose = null): array
+    public function exportExpose(iterable $items, ?array $expose = null): array
     {
-        $exportExpose ??= $this->getExportExpose();
-        return $this->listExpose($items, $exportExpose);
+        $expose ??= $this->getExposeFields()?->toArray();
+        return $this->listExpose($items, $expose);
     }
 }

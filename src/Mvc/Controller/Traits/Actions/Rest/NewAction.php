@@ -13,7 +13,6 @@ namespace Zemit\Mvc\Controller\Traits\Actions\Rest;
 
 use Exception;
 use Phalcon\Http\ResponseInterface;
-use Phalcon\Mvc\ModelInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractExpose;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
@@ -35,14 +34,14 @@ trait NewAction
      */
     public function newAction(): ResponseInterface
     {
-        $model = $this->getModelName();
+        $entity = $this->loadModel();
         
-        $entity = new $model();
-        assert($entity instanceof ModelInterface);
+        $params = $this->getParams();
+        $saveFields = $this->getSaveFields()?->toArray();
+        $mapFields = $this->getMapFields()?->toArray();
+        $entity->assign($params, $saveFields, $mapFields);
         
-        $entity->assign($this->getParams(), $this->getWhiteList(), $this->getColumnMap());
-        
-        $this->view->setVar('single', $this->expose($entity));
+        $this->view->setVar('data', $this->expose($entity));
         return $this->setRestResponse(true);
     }
     

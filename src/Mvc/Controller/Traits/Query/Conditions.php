@@ -30,12 +30,18 @@ trait Conditions
     
     public function initializeConditions(): void
     {
+        $this->initializePermissionConditions();
+        $this->initializeSoftDeleteConditions();
+        $this->initializeIdentityConditions();
+        $this->initializeFilterConditions();
+        $this->initializeSearchConditions();
+        
         $this->setConditions(new Collection([
-            'permission' => $this->getPermissionConditions()?->toArray(),
-            'softDelete' => $this->getSoftDeleteConditions()?->toArray(),
-            'identity' => $this->getIdentityConditions()?->toArray(),
-            'filter' => $this->getFilterConditions()?->toArray(),
-            'search' => $this->getSearchConditions()?->toArray(),
+            'permission' => $this->getPermissionConditions(),
+            'softDelete' => $this->getSoftDeleteConditions(),
+            'identity' => $this->getIdentityConditions(),
+            'filter' => $this->getFilterConditions(),
+            'search' => $this->getSearchConditions(),
         ], false));
     }
     

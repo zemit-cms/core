@@ -14,28 +14,22 @@ namespace Zemit\Mvc\Controller\Traits\Actions\Rest;
 use Exception;
 use Phalcon\Http\ResponseInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
-use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractQuery;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractRestResponse;
 
 trait CountAction
 {
     use AbstractInjectable;
-    use AbstractModel;
+    use AbstractQuery;
     use AbstractRestResponse;
     
     /**
-     * Count a record list
-     * Will use the getFind query
+     * Count request
      * @throws Exception
      */
     public function countAction(): ResponseInterface
     {
-        $model = $this->getModelName();
-        
-        $countResult = $model::count($this->getFindCount($this->getFind()));
-        $count = is_countable($countResult) ? count($countResult) : (int)$countResult;
-        
-        $this->view->setVar('count', $count);
+        $this->view->setVar('count', $this->count());
         return $this->setRestResponse(true);
     }
 }

@@ -11,10 +11,8 @@
 
 namespace Zemit\Mvc\Controller\Traits\Actions\Rest;
 
-use Phalcon\Filter\Exception;
 use Phalcon\Http\ResponseInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractExpose;
-use Zemit\Mvc\Controller\Traits\Abstracts\AbstractGetSingle;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractRestResponse;
 use Zemit\Mvc\Model\Interfaces\SoftDeleteInterface;
@@ -22,30 +20,32 @@ use Zemit\Mvc\Model\Interfaces\SoftDeleteInterface;
 trait RestoreAction
 {
     use AbstractExpose;
-    use AbstractGetSingle;
     use AbstractInjectable;
     use AbstractRestResponse;
     
     /**
-     * Restoring record
-     * @throws Exception
+     * Restores a soft-deleted entity.
+     *
+     * @return ResponseInterface The response indicating the status of the restoration.
+     * @throws \Exception
      */
-    public function restoreAction(?int $id = null): ResponseInterface
+    public function restoreAction(): ResponseInterface
     {
-        $entity = $this->getSingle($id, null, []);
+        $entity = $this->findFirst();
         
         if (!$entity) {
             return $this->setRestErrorResponse(404);
         }
         
         assert($entity instanceof SoftDeleteInterface);
-        $restore = $entity->restore();
+        $restored = $entity->restore();
+        
         $this->view->setVars([
-            'restore' => $restore,
+            'restore' => $restored,
             'single' => $this->expose($entity),
             'messages' => $entity->getMessages(),
         ]);
         
-        return $this->setRestResponse($restore);
+        return $this->setRestResponse($restored);
     }
 }

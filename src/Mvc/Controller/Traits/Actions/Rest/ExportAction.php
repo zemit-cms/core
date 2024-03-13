@@ -21,18 +21,21 @@ trait ExportAction
     use AbstractExport;
     
     /**
-     * Exporting a record list into a CSV stream
+     * Export the data and end the script execution.
+     *
+     * This method retrieves the data by calling the `find` method and then
+     * exposes it using the `exportExpose` method. If the data is successfully
+     * exported using the `export` method, the script execution is ended by
+     * calling `exit` with a status code of 0.
+     *
+     * @return void
      * @throws Exception
      */
     public function exportAction(): void
     {
-        $model = $this->getModelName();
-        $find = $this->getFind();
-        $with = $model::findWith($this->getExportWith() ?: [], $find ?: []);
-        $list = $this->exportExpose($with);
-        if ($this->export($list)) {
-            // @todo avoid sending response instead of die
-            die;
+        $data = $this->exportExpose($this->find());
+        if ($this->export($data)) {
+            exit(0);
         }
     }
     

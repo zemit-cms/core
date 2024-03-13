@@ -18,7 +18,7 @@ trait SoftDeleteConditions
 {
     protected ?Collection $softDeleteConditions;
     
-    public function initializeSoftDeleteConditions()
+    public function initializeSoftDeleteConditions(): void
     {
         $this->setSoftDeleteConditions(new Collection([
             'default' => $this->defaultSoftDeleteCondition(),

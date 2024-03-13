@@ -27,6 +27,7 @@ trait IndexAction
     /**
      * @throws Exception
      * @throws \Phalcon\Filter\Exception
+     * @throws \Exception
      */
     public function indexAction(): ResponseInterface
     {
@@ -41,7 +42,7 @@ trait IndexAction
      */
     protected function restForwarding(): bool
     {
-        $id = $this->getParam('id', [Filter::FILTER_ALNUM]);
+        $id = $this->getParam('id', [Filter::FILTER_INT]);
         if ($this->request->isPost() || $this->request->isPut() || $this->request->isPatch()) {
             $this->dispatcher->forward(['action' => 'save']);
             return true;
@@ -51,7 +52,7 @@ trait IndexAction
             return true;
         }
         else if ($this->request->isGet()) {
-            $this->dispatcher->forward(['action' => is_null($id) ? 'getList' : 'get']);
+            $this->dispatcher->forward(['action' => is_null($id) ? 'find' : 'findFirst']);
             return true;
         }
         return false;

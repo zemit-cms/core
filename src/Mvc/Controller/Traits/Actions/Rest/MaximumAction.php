@@ -15,21 +15,33 @@ use Exception;
 use Phalcon\Http\ResponseInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractQuery;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractRestResponse;
 
-trait MinAction
+trait MaximumAction
 {
     use AbstractInjectable;
-    use AbstractModel;
+    use AbstractQuery;
     use AbstractRestResponse;
     
     /**
-     * Minimum value of a column
-     * Will use the getFind query
+     * Maximum value of a column
+     * Alias for maximumAction
+     * @link maximumAction()
      * @throws Exception
      */
-    public function minAction(): ResponseInterface
+    public function maxAction(): ResponseInterface
     {
-        // @todo
+        return $this->maximumAction();
+    }
+    
+    /**
+     * Maximum value of a column
+     * @throws Exception
+     */
+    public function maximumAction(): ResponseInterface
+    {
+        $this->view->setVar('maximum', $this->maximum());
+        return $this->setRestResponse(true);
     }
 }

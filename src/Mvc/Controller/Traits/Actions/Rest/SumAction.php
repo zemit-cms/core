@@ -14,22 +14,24 @@ namespace Zemit\Mvc\Controller\Traits\Actions\Rest;
 use Exception;
 use Phalcon\Http\ResponseInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
-use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractQuery;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractRestResponse;
 
 trait SumAction
 {
     use AbstractInjectable;
-    use AbstractModel;
+    use AbstractQuery;
     use AbstractRestResponse;
     
     /**
-     * Sum of a column
-     * Will use the getFind query
+     * Calculates the sum of a column.
+     *
+     * @return ResponseInterface The REST response with a status of true.
      * @throws Exception
      */
     public function sumAction(): ResponseInterface
     {
-        // @todo
+        $this->view->setVar('sum', $this->sum());
+        return $this->setRestResponse(true);
     }
 }

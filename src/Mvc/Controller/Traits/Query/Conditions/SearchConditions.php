@@ -18,7 +18,7 @@ trait SearchConditions
 {
     protected ?Collection $searchConditions;
     
-    public function initializeSearchConditions()
+    public function initializeSearchConditions(): void
     {
         $this->setSearchConditions(new Collection([
             'default' => $this->defaultSearchCondition(),

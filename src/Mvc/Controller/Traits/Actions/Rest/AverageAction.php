@@ -14,22 +14,22 @@ namespace Zemit\Mvc\Controller\Traits\Actions\Rest;
 use Exception;
 use Phalcon\Http\ResponseInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
-use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractQuery;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractRestResponse;
 
 trait AverageAction
 {
     use AbstractInjectable;
-    use AbstractModel;
+    use AbstractQuery;
     use AbstractRestResponse;
     
     /**
      * Average column
-     * Will use the getFind query
      * @throws Exception
      */
     public function averageAction(): ResponseInterface
     {
-        // @todo
+        $this->view->setVar('count', $this->average());
+        return $this->setRestResponse(true);
     }
 }

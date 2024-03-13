@@ -15,11 +15,11 @@ trait AbstractModel
 {
     abstract public function getModelName(): ?string;
     
-    abstract public function setModelName(?string $modelName = null): void;
+    abstract public function setModelName(?string $modelName): void;
     
     abstract public function getModelNamespaces(): array;
     
-    abstract public function setModelNamespaces(?array $modelNamespaces = []): void;
+    abstract public function setModelNamespaces(?array $modelNamespaces): void;
     
     abstract public function getModelNameFromController(?array $namespaces = null, string $needle = 'Models'): ?string;
     

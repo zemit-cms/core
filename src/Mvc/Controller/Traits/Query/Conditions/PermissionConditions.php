@@ -57,13 +57,13 @@ trait PermissionConditions
             return null;
         }
         
-        // no permission found
-        if (!isset($this->permission)) {
+        // no identity found
+        if (!isset($this->identity)) {
             return ['false'];
         }
         
         // check if current user role is a super admin
-        if ($this->permission->hasRole($superRoleList)) {
+        if ($this->identity->hasRole($superRoleList)) {
             return ['true'];
         }
         
@@ -105,7 +105,7 @@ trait PermissionConditions
      *
      * @return array The list of super roles, which by default includes 'dev' and 'admin'.
      */
-    protected function getSuperRoles(): array
+    public function getSuperRoles(): array
     {
         return ['dev', 'admin'];
     }

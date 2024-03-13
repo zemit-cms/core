@@ -28,6 +28,7 @@ trait Distinct
         
         if (!isset($distinct)) {
             $this->setDistinct(null);
+            return;
         }
         
         if (!is_array($distinct)) {
@@ -56,7 +57,6 @@ trait Distinct
     
     public function defaultDistinct(): array|string|null
     {
-        // @todo use primary keys from model meta data instead
-        return 'id';
+        return null;
     }
 }

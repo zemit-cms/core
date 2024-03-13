@@ -14,20 +14,25 @@ namespace Zemit\Mvc\Controller\Traits\Actions\Rest;
 use Phalcon\Http\ResponseInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractRestResponse;
-use Zemit\Mvc\Controller\Traits\RestResponse;
+use Zemit\Mvc\Controller\Traits\Abstracts\Query\AbstractSave;
 
 trait SaveAction
 {
     use AbstractInjectable;
     use AbstractRestResponse;
+    use AbstractSave;
     
     /**
-     * Saving a record (create & update)
+     * Save action.
+     *
+     * Saves the record and returns the response based on the save result.
+     *
+     * @return ResponseInterface The response object.
+     * @throws \Exception
      */
-    public function saveAction(?int $id = null): ResponseInterface
+    public function saveAction(): ResponseInterface
     {
-        $ret = $this->save($id);
-        $this->view->setVars($ret);
+        $ret = $this->save();
         $saved = $this->saveResultHasKey($ret, 'saved');
         $messages = $this->saveResultHasKey($ret, 'messages');
         
@@ -40,6 +45,7 @@ trait SaveAction
             }
         }
         
+        $this->view->setVars($ret);
         return $this->setRestResponse($saved);
     }
     

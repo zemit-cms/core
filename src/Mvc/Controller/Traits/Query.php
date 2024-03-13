@@ -57,6 +57,7 @@ trait Query
      */
     public function initialize() {
         $this->initializeBind();
+        $this->initializeBindTypes();
         $this->initializeConditions();
         $this->initializeDistinct();
         $this->initializeFields();
@@ -68,6 +69,7 @@ trait Query
         $this->initializeOrder();
 //        $this->initializeSave();
         $this->initializeWith();
+        $this->initializeFind();
     }
     
     /**
@@ -78,7 +80,7 @@ trait Query
      */
     public function initializeFind(): void
     {
-        $this->find = new Collection([
+        $this->setFind(new Collection([
             'conditions' => $this->getConditions(),
             'bind' => $this->getBind(),
             'bindTypes' => $this->getBindTypes(),
@@ -91,7 +93,7 @@ trait Query
             'group' => $this->getGroup(),
             'having' => $this->getHaving(),
             'cache' => $this->getCache(),
-        ]);
+        ]));
     }
     
     /**
@@ -115,6 +117,26 @@ trait Query
         return $this->find;
     }
     
+    public function buildFind(?Collection $find, bool $ignoreKey = false): array
+    {
+        $build = [];
+        $find ??= $this->getFind();
+        foreach ($find->getIterator() as $key => $value) {
+            if ($value instanceof Collection) {
+                $subIgnoreKey = $ignoreKey || in_array($key, ['conditions', 'joins']);
+                $sub = $this->buildFind($value, $subIgnoreKey);
+                if ($ignoreKey) {
+                    $build = array_merge($build, $sub);
+                } else {
+                    $build[$key] = $sub;
+                }
+            } else {
+                $build[$key] = $value;
+            }
+        }
+        return array_filter($ignoreKey? array_values($build) : $build);
+    }
+    
     /**
      * Find records in the database using the specified criteria.
      *
@@ -124,8 +146,9 @@ trait Query
      *
      * @return mixed The result of the find operation.
      */
-    public function find(?array $find = null) {
-        $find ??= $this->getFind() ?? [];
+    public function find(?array $find = null): ResultsetInterface
+    {
+        $find ??= $this->buildFind($find);
         return $this->loadModel()::find($find);
     }
     
@@ -140,9 +163,10 @@ trait Query
      *
      * @return mixed The result of the find operation.
      */
-    public function findWith(?array $with = null, ?array $find = null) {
-        $with ??= $this->getWith() ?? [];
-        $find ??= $this->getFind() ?? [];
+    public function findWith(?array $with = null, ?array $find = null): array
+    {
+        $with ??= $this->getWith()?->toArray() ?? [];
+        $find ??= $this->getFind()?->toArray() ?? [];
         return $this->loadModel()::findWith($with, $find);
     }
     
@@ -155,8 +179,9 @@ trait Query
      *
      * @return mixed The result of the find operation, which is the first record that matches the criteria.
      */
-    public function findFirst(?array $find = null) {
-        $find ??= $this->getFind() ?? [];
+    public function findFirst(?array $find = null): mixed
+    {
+        $find ??= $this->getFind()?->toArray() ?? [];
         return $this->loadModel()::findFirst($find);
     }
     
@@ -172,10 +197,22 @@ trait Query
      *
      * @return mixed The result of the find operation for the first record.
      */
-    public function findFirstWith(?array $with = null, ?array $find = null) {
-        $with ??= $this->getWith() ?? [];
-        $find ??= $this->getFind() ?? [];
+    public function findFirstWith(?array $with = null, ?array $find = null): mixed
+    {
+        $with ??= $this->getWith()?->toArray() ?? [];
+        $find ??= $this->getFind()?->toArray() ?? [];
         return $this->loadModel()::findFirstWith($with, $find);
+    }
+    
+    /**
+     * Calculates the average value based on a given set of criteria.
+     *
+     * @param array|null $find The criteria to filter the records by (optional).
+     * @return float|ResultsetInterface The average value or a result set containing the average value.
+     */
+    public function average(?array $find = null): float|ResultsetInterface
+    {
+        return $this->loadModel()::average($this->getCalculationFind($find));
     }
     
     /**
@@ -242,7 +279,7 @@ trait Query
      */
     protected function getCalculationFind(?array $find = null): array
     {
-        $find ??= $this->getFind() ?? [];
+        $find ??= $this->getFind()?->toArray() ?? [];
         
         if (isset($find['limit'])) {
             unset($find['limit']);
@@ -253,5 +290,10 @@ trait Query
         }
         
         return array_filter($find);
+    }
+    
+    public function generateBindKey(string $prefix): string
+    {
+        return '_' . uniqid($prefix) . '_';
     }
 }

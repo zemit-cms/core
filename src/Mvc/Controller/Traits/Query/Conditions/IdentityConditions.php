@@ -61,16 +61,21 @@ trait IdentityConditions
         $bindTypes = [];
         
         foreach ($columns as $column) {
+            $rawValue = $this->getParam($column, [Filter::FILTER_STRING, Filter::FILTER_TRIM]);
+            if (!isset($rawValue)) {
+                continue;
+            }
+            
             $field = $this->appendModelName($column);
             $value = $this->generateBindKey('identity');
             
-            $bind[$value] = $this->getParam($column, [Filter::FILTER_STRING, Filter::FILTER_TRIM]);
-            $bindTypes[$value] = Column::BIND_PARAM_INT;
+            $bind[$value] = $rawValue;
+            $bindTypes[$value] = Column::BIND_PARAM_STR;
             
             $query [] = "{$field} = :{$value}:";
         }
         
-        return [
+        return empty($query)? null : [
             implode(' and ', $query),
             $bind,
             $bindTypes,

@@ -19,7 +19,7 @@ trait FilterConditions
 {
     protected ?Collection $filterConditions;
     
-    public function initializeFilterConditions()
+    public function initializeFilterConditions(): void
     {
         $this->setFilterConditions(new Collection([
             'default' => $this->defaultFilterCondition(),
@@ -46,7 +46,7 @@ trait FilterConditions
      *
      * @throws \Exception if a filter field property or filter operator property is empty, or if a filter field is not allowed.
      */
-    protected function defaultFilterCondition(array $filters = null, array $allowedFilters = null, bool $or = false): array|string|null
+    public function defaultFilterCondition(array $filters = null, array $allowedFilters = null, bool $or = false): array|string|null
     {
         $filters ??= $this->getParam('filters');
         
