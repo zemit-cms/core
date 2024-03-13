@@ -13,9 +13,24 @@ namespace Zemit\Mvc\Controller\Traits\Query;
 
 use Phalcon\Messages\Message;
 use Phalcon\Mvc\ModelInterface;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractExpose;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractQuery;
+use Zemit\Mvc\Controller\Traits\Abstracts\Query\AbstractWith;
+use Zemit\Mvc\Controller\Traits\Abstracts\Query\Fields\AbstractMapFields;
+use Zemit\Mvc\Controller\Traits\Abstracts\Query\Fields\AbstractSaveFields;
 
 trait Save
 {
+    use AbstractExpose;
+    use AbstractModel;
+    use AbstractParams;
+    use AbstractQuery;
+    use AbstractWith;
+    use AbstractMapFields;
+    use AbstractSaveFields;
+    
     /**
      * Saves the entity and returns the result as an array.
      *
