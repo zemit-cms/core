@@ -14,9 +14,16 @@ namespace Zemit\Mvc\Controller\Traits\Query\Conditions;
 use Phalcon\Db\Column;
 use Phalcon\Filter\Filter;
 use Phalcon\Support\Collection;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
 
 trait FilterConditions
 {
+    use AbstractInjectable;
+    use AbstractParams;
+    use AbstractModel;
+    
     protected ?Collection $filterConditions;
     
     public function initializeFilterConditions(): void
@@ -46,7 +53,7 @@ trait FilterConditions
      *
      * @throws \Exception if a filter field property or filter operator property is empty, or if a filter field is not allowed.
      */
-    public function defaultFilterCondition(array $filters = null, array $allowedFilters = null, bool $or = false): array|string|null
+    public function defaultFilterCondition(?array $filters = null, ?array $allowedFilters = null, bool $or = false): array|string|null
     {
         $filters ??= $this->getParam('filters');
         
@@ -55,7 +62,7 @@ trait FilterConditions
             return null;
         }
         
-        $allowedFilters ??= $this->getAllowedFilterFields();
+        $allowedFilters ??= $this->getFilterFields()?->toArray();
         
         $query = [];
         $bind = [];
@@ -64,7 +71,7 @@ trait FilterConditions
             
             // nesting filtering, switch logical and append filter group
             if (is_array($filter)) {
-                $query [] = $this->getFilterCondition($filter, $allowedFilters, !$or);
+                $query [] = $this->defaultFilterCondition($filter, $allowedFilters, !$or);
                 continue;
             }
             
