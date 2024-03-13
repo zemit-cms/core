@@ -15,9 +15,7 @@ use Phalcon\Mvc\ModelInterface;
 
 trait AbstractSave
 {
-    abstract protected function save(?int $id = null, ?ModelInterface $entity = null, ?array $post = null, ?string $modelName = null, ?array $whiteList = null, ?array $columnMap = null, ?array $with = null): array;
+    abstract protected function save(): array;
     
-    abstract public function beforeAssign(ModelInterface &$entity, array &$post, ?array &$whiteList, ?array &$columnMap): void;
-    
-    abstract public function saveEntity(ModelInterface $entity): array;
+    abstract public function beforeAssign(ModelInterface &$entity, array &$assign, ?array &$whiteList, ?array &$columnMap): void;
 }
