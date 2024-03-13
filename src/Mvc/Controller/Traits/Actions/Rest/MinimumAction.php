@@ -32,7 +32,7 @@ trait MinimumAction
      */
     public function minAction(): ResponseInterface
     {
-        return $this->maximumAction();
+        return $this->minimumAction();
     }
     
     /**

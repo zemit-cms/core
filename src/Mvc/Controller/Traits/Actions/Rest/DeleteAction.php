@@ -29,7 +29,7 @@ trait DeleteAction
      * Deleting a record
      * @throws Exception
      */
-    public function deleteAction(?int $id = null): ResponseInterface
+    public function deleteAction(): ResponseInterface
     {
         $entity = $this->findFirst();
         

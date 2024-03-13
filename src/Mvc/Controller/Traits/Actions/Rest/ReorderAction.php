@@ -14,6 +14,7 @@ namespace Zemit\Mvc\Controller\Traits\Actions\Rest;
 use Exception;
 use Phalcon\Filter\Filter;
 use Phalcon\Http\ResponseInterface;
+use Phalcon\Mvc\ModelInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractQuery;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
@@ -42,9 +43,10 @@ trait ReorderAction
             return $this->setRestErrorResponse(404);
         }
         
-        $position ??= $this->getParam('position', [Filter::FILTER_INT]);
+        $position = $this->getParam('position', [Filter::FILTER_INT]);
         
         assert($entity instanceof PositionInterface);
+        assert($entity instanceof ModelInterface);
         $reordered = $entity->reorder($position);
         
         $this->view->setVars([

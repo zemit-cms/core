@@ -14,10 +14,12 @@ namespace Zemit\Mvc\Controller\Traits\Actions\Rest;
 use Exception;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractExport;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractQuery;
 
 trait ExportAction
 {
     use AbstractModel;
+    use AbstractQuery;
     use AbstractExport;
     
     /**
