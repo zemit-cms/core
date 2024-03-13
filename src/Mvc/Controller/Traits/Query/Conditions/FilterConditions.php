@@ -17,12 +17,14 @@ use Phalcon\Support\Collection;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
+use Zemit\Mvc\Controller\Traits\Abstracts\Query\Fields\AbstractFilterFields;
 
 trait FilterConditions
 {
     use AbstractInjectable;
-    use AbstractParams;
     use AbstractModel;
+    use AbstractParams;
+    use AbstractFilterFields;
     
     protected ?Collection $filterConditions;
     
