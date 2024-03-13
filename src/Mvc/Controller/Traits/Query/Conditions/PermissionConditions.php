@@ -12,11 +12,17 @@
 namespace Zemit\Mvc\Controller\Traits\Query\Conditions;
 
 use Phalcon\Db\Column;
-use Phalcon\Mvc\Model\Query\Builder;
 use Phalcon\Support\Collection;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractQuery;
 
 trait PermissionConditions
 {
+    use AbstractInjectable;
+    use AbstractModel;
+    use AbstractQuery;
+    
     protected ?Collection $permissionConditions;
     
     public function initializePermissionConditions(): void
