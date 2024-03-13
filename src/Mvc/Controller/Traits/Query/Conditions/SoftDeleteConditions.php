@@ -13,9 +13,12 @@ namespace Zemit\Mvc\Controller\Traits\Query\Conditions;
 
 use Phalcon\Db\Column;
 use Phalcon\Support\Collection;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
 
 trait SoftDeleteConditions
 {
+    use AbstractModel;
+    
     protected ?Collection $softDeleteConditions;
     
     public function initializeSoftDeleteConditions(): void
