@@ -15,11 +15,15 @@ use Phalcon\Support\Collection;
 
 trait AbstractOrder
 {
+    abstract public function initializeDefaultOrder(): void;
+    
     abstract public function initializeOrder(): void;
     
     abstract public function setOrder(?Collection $order): void;
     
     abstract public function getOrder(): ?Collection;
     
-    abstract public function defaultOrder(): array|string|null;
+    abstract public function setDefaultOrder(array|string|null $defaultOrder): void;
+    
+    abstract public function getDefaultOrder(): array|string|null;
 }
