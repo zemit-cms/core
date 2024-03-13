@@ -15,6 +15,7 @@ use Exception;
 use Phalcon\Filter\Filter;
 use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\ModelInterface;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractExpose;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractQuery;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
@@ -23,6 +24,7 @@ use Zemit\Mvc\Model\Interfaces\PositionInterface;
 
 trait ReorderAction
 {
+    use AbstractExpose;
     use AbstractQuery;
     use AbstractInjectable;
     use AbstractParams;
