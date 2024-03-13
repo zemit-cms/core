@@ -12,6 +12,7 @@
 namespace Zemit\Mvc\Controller\Traits\Actions\Rest;
 
 use Exception;
+use Phalcon\Mvc\Model\Resultset;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractExport;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractExpose;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
@@ -37,7 +38,9 @@ trait ExportAction
      */
     public function exportAction(): void
     {
-        $data = $this->exportExpose($this->find());
+        $resultset = $this->find();
+        assert($resultset instanceof Resultset);
+        $data = $this->exportExpose($resultset);
         if ($this->export($data)) {
             exit(0);
         }
