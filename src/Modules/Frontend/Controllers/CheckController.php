@@ -160,7 +160,7 @@ class CheckController extends AbstractController
         ];
         foreach ($versions as $what => $version) {
             if (!version_compare($version, $versionList[$what], '>=')) {
-                $validation->appendMessage(new Message('PHP Version Failed `' . $version . '` received but `' . $this->version[$what] . '` >= expected', $what, 'PhpVersionMismatch', 404));
+                $validation->appendMessage(new Message('PHP Version Failed `' . $version . '` received but `' . $versionList[$what] . '` >= expected', $what, 'PhpVersionMismatch', 404));
             }
         }
         
@@ -219,7 +219,7 @@ class CheckController extends AbstractController
     public function phpinfoAction(): void
     {
         phpinfo();
-        exit();
+        exit(0);
     }
     
     public function extensionsAction(): void
