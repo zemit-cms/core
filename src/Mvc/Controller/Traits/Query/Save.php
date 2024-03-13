@@ -14,16 +14,19 @@ namespace Zemit\Mvc\Controller\Traits\Query;
 use Phalcon\Messages\Message;
 use Phalcon\Mvc\ModelInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractExpose;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractQuery;
 use Zemit\Mvc\Controller\Traits\Abstracts\Query\AbstractWith;
 use Zemit\Mvc\Controller\Traits\Abstracts\Query\Fields\AbstractMapFields;
 use Zemit\Mvc\Controller\Traits\Abstracts\Query\Fields\AbstractSaveFields;
+use Zemit\Mvc\Model\Interfaces\EagerLoadInterface;
 
 trait Save
 {
     use AbstractExpose;
+    use AbstractInjectable;
     use AbstractModel;
     use AbstractParams;
     use AbstractQuery;
@@ -56,9 +59,17 @@ trait Save
         assert($model instanceof ModelInterface);
         
         // before assign event
-        $this->beforeAssign($model, $post, $saveFields, $mapFields);
+        $this->eventsManager->fire('rest:beforeAssign', $this, [&$model, &$post, &$saveFields, &$mapFields], false);
         $model->assign($post, $saveFields, $mapFields);
+        
+        if ($this->eventsManager->fire('rest:beforeSave', $this, [&$model]) === false) {
+            return [
+                'saved' => false,
+                'messages' => $model->getMessages(),
+            ];
+        }
         $saved = $model->save();
+        $this->eventsManager->fire('rest:afterSave', $this, [&$model], false);
         
         $ret = [
             'saved' => $saved,
@@ -68,7 +79,7 @@ trait Save
         if ($saved) {
             // load relationship
             $with = $this->getWith()?->toArray();
-            if (isset($with)) {
+            if (isset($with) && $model instanceof EagerLoadInterface) {
                 $model = $model->load($with);
             }
             
@@ -77,19 +88,5 @@ trait Save
         }
         
         return $ret;
-    }
-    
-    /**
-     * Performs pre-assignment operations before assigning values to the entity properties.
-     *
-     * @param ModelInterface $entity The entity object to assign values to. Passed by reference.
-     * @param array $assign The array of values to assign to the entity properties. Passed by reference.
-     * @param array|null $whiteList An optional array of property names that are allowed to be assigned. Passed by reference.
-     * @param array|null $columnMap An optional array mapping the POST array keys to entity property names. Passed by reference.
-     *
-     * @return void
-     */
-    public function beforeAssign(ModelInterface &$entity, array &$assign, ?array &$whiteList, ?array &$columnMap): void
-    {
     }
 }
