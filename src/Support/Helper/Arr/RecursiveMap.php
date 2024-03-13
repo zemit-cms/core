@@ -34,7 +34,7 @@ class RecursiveMap
      *
      * @return array The processed array with the callback function applied to each element.
      */
-    public function process(array $collection = [], callable $callback = null): array
+    public static function process(array $collection = [], callable $callback = null): array
     {
         $func = function ($item) use (&$func, &$callback) {
             return is_array($item) ? array_map($func, $item) : call_user_func($callback, $item);
