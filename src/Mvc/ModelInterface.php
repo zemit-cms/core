@@ -15,6 +15,7 @@ use Phalcon\Mvc\ModelInterface as PhalconModelInterface;
 use Zemit\Mvc\Model\Interfaces\AttributeInterface;
 use Zemit\Mvc\Model\Interfaces\BehaviorInterface;
 use Zemit\Mvc\Model\Interfaces\BlameableInterface;
+use Zemit\Mvc\Model\Interfaces\EagerLoadInterface;
 use Zemit\Mvc\Model\Interfaces\ExposeInterface;
 use Zemit\Mvc\Model\Interfaces\HashInterface;
 use Zemit\Mvc\Model\Interfaces\IdentityInterface;
@@ -35,6 +36,7 @@ interface ModelInterface extends
     AttributeInterface,
     BehaviorInterface,
     BlameableInterface,
+    EagerLoadInterface,
     ExposeInterface,
     HashInterface,
     IdentityInterface,

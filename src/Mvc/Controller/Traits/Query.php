@@ -26,6 +26,8 @@ use Zemit\Mvc\Controller\Traits\Query\Offset;
 use Zemit\Mvc\Controller\Traits\Query\Order;
 use Zemit\Mvc\Controller\Traits\Query\Save;
 use Zemit\Mvc\Controller\Traits\Query\With;
+use Zemit\Mvc\Model\Interfaces\EagerLoadInterface;
+use Zemit\Mvc\Model\Interfaces\RelationshipInterface;
 
 /**
  * Class Query
@@ -174,7 +176,9 @@ trait Query
     {
         $find ??= $this->prepareFind();
         $with ??= $this->getWith()?->toArray() ?? [];
-        return $this->loadModel()::findWith($with, $find);
+        $model = $this->loadModel();
+        assert($model instanceof EagerLoadInterface);
+        return $model::findWith($with, $find);
     }
     
     /**
@@ -208,7 +212,9 @@ trait Query
     {
         $find ??= $this->prepareFind();
         $with ??= $this->getWith()?->toArray() ?? [];
-        return $this->loadModel()::findFirstWith($with, $find);
+        $model = $this->loadModel();
+        assert($model instanceof EagerLoadInterface);
+        return $model::findFirstWith($with, $find);
     }
     
     /**
