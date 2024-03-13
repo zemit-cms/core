@@ -10,30 +10,24 @@
 
 namespace Zemit\Modules\Api\Controllers;
 
+use Phalcon\Support\Collection;
 use Zemit\Modules\Api\Controller;
 
 class WorkspaceController extends Controller
 {
-
-    public function getWith(): ?array
+    public function initializeWith(): void
     {
-        return ['LangList'];
+        $this->setWith(new Collection([
+            'LangList',
+        ]));
     }
     
-    public function getSearchWhiteList(): ?array
+    public function initializeSearchFields(): void
     {
-        return [
+        $this->setSearchFields(new Collection([
             'uuid',
             'name',
             'description'
-        ];
+        ]));
     }
-    
-    public function getExpose(): ?array
-    {
-        return [
-            true,
-        ];
-    }
-    
 }

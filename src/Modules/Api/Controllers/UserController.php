@@ -10,32 +10,33 @@
 
 namespace Zemit\Modules\Api\Controllers;
 
+use Phalcon\Support\Collection;
 use Zemit\Modules\Api\Controller;
 
 class UserController extends Controller
 {
-    
-    public function getWith(): ?array
+    public function initializeWith(): void
     {
-        return [
+        $this->setWith(new Collection([
             'RoleList',
-        ];
+        ]));
     }
     
-    public function getSearchWhiteList(): ?array
+    public function initializeSearchFields(): void
     {
-        return [
+        $this->setSearchFields(new Collection([
             'id',
             'email',
             'firstName',
             'lastName',
-        ];
+        ]));
     }
     
-    public function getExpose(): ?array
+    public function initializeExposeFields(): void
     {
-        return [
+        $this->setExposeFields(new Collection([
             true,
-        ];
+            'password' => false,
+        ]));
     }
 }
