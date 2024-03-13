@@ -31,5 +31,6 @@ trait DistinctAction
     public function distinctAction(): ResponseInterface
     {
         // @todo
+        return $this->setRestErrorResponse();
     }
 }
