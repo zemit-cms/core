@@ -26,7 +26,7 @@ interface PhalconMigrationsAbstractInterface extends ModelInterface
      * Attributes: First | NotNull | Numeric | Unsigned | AutoIncrement
      * @return mixed
      */
-    public function getId();
+    public function getId(): mixed;
     
     /**
      * Sets the value of field id
@@ -35,7 +35,7 @@ interface PhalconMigrationsAbstractInterface extends ModelInterface
      * @param mixed $id
      * @return void
      */
-    public function setId($id);
+    public function setId(mixed $id): void;
     
     /**
      * Returns the value of field version
@@ -43,7 +43,7 @@ interface PhalconMigrationsAbstractInterface extends ModelInterface
      * Attributes: Primary | NotNull | Size(255) | Type(2)
      * @return mixed
      */
-    public function getVersion();
+    public function getVersion(): mixed;
     
     /**
      * Sets the value of field version
@@ -52,7 +52,7 @@ interface PhalconMigrationsAbstractInterface extends ModelInterface
      * @param mixed $version
      * @return void
      */
-    public function setVersion($version);
+    public function setVersion(mixed $version): void;
     
     /**
      * Returns the value of field startTime
@@ -60,7 +60,7 @@ interface PhalconMigrationsAbstractInterface extends ModelInterface
      * Attributes: NotNull | Type(17)
      * @return mixed
      */
-    public function getStartTime();
+    public function getStartTime(): mixed;
     
     /**
      * Sets the value of field startTime
@@ -69,7 +69,7 @@ interface PhalconMigrationsAbstractInterface extends ModelInterface
      * @param mixed $startTime
      * @return void
      */
-    public function setStartTime($startTime);
+    public function setStartTime(mixed $startTime): void;
     
     /**
      * Returns the value of field endTime
@@ -77,7 +77,7 @@ interface PhalconMigrationsAbstractInterface extends ModelInterface
      * Attributes: NotNull | Type(17)
      * @return mixed
      */
-    public function getEndTime();
+    public function getEndTime(): mixed;
     
     /**
      * Sets the value of field endTime
@@ -86,5 +86,5 @@ interface PhalconMigrationsAbstractInterface extends ModelInterface
      * @param mixed $endTime
      * @return void
      */
-    public function setEndTime($endTime);
+    public function setEndTime(mixed $endTime): void;
 }

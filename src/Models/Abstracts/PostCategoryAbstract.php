@@ -69,112 +69,112 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
      * @var mixed
      */
-    public $id = null;
+    public mixed $id = null;
         
     /**
      * Column: post_id
      * Attributes: NotNull | Numeric | Unsigned
      * @var mixed
      */
-    public $postId = null;
+    public mixed $postId = null;
         
     /**
      * Column: category_id
      * Attributes: NotNull | Numeric | Unsigned
      * @var mixed
      */
-    public $categoryId = null;
+    public mixed $categoryId = null;
         
     /**
      * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Type(26)
      * @var mixed
      */
-    public $deleted = 0;
+    public mixed $deleted = 0;
         
     /**
      * Column: created_at
      * Attributes: NotNull | Type(4)
      * @var mixed
      */
-    public $createdAt = null;
+    public mixed $createdAt = null;
         
     /**
      * Column: created_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $createdBy = null;
+    public mixed $createdBy = null;
         
     /**
      * Column: created_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $createdAs = null;
+    public mixed $createdAs = null;
         
     /**
      * Column: updated_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $updatedAt = null;
+    public mixed $updatedAt = null;
         
     /**
      * Column: updated_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $updatedBy = null;
+    public mixed $updatedBy = null;
         
     /**
      * Column: updated_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $updatedAs = null;
+    public mixed $updatedAs = null;
         
     /**
      * Column: deleted_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $deletedAt = null;
+    public mixed $deletedAt = null;
         
     /**
      * Column: deleted_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $deletedAs = null;
+    public mixed $deletedAs = null;
         
     /**
      * Column: deleted_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $deletedBy = null;
+    public mixed $deletedBy = null;
         
     /**
      * Column: restored_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $restoredAt = null;
+    public mixed $restoredAt = null;
         
     /**
      * Column: restored_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $restoredBy = null;
+    public mixed $restoredBy = null;
         
     /**
      * Column: deleted_copy1
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $deletedCopy1 = null;
+    public mixed $deletedCopy1 = null;
     
     /**
      * Returns the value of field id
@@ -182,7 +182,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
      * @return mixed
      */
-    public function getId()
+    public function getId(): mixed
     {
         return $this->id;
     }
@@ -194,7 +194,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * @param mixed $id
      * @return void
      */
-    public function setId($id)
+    public function setId(mixed $id): void
     {
         $this->id = $id;
     }
@@ -205,7 +205,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * Attributes: NotNull | Numeric | Unsigned
      * @return mixed
      */
-    public function getPostId()
+    public function getPostId(): mixed
     {
         return $this->postId;
     }
@@ -217,7 +217,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * @param mixed $postId
      * @return void
      */
-    public function setPostId($postId)
+    public function setPostId(mixed $postId): void
     {
         $this->postId = $postId;
     }
@@ -228,7 +228,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * Attributes: NotNull | Numeric | Unsigned
      * @return mixed
      */
-    public function getCategoryId()
+    public function getCategoryId(): mixed
     {
         return $this->categoryId;
     }
@@ -240,7 +240,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * @param mixed $categoryId
      * @return void
      */
-    public function setCategoryId($categoryId)
+    public function setCategoryId(mixed $categoryId): void
     {
         $this->categoryId = $categoryId;
     }
@@ -251,7 +251,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * Attributes: NotNull | Numeric | Unsigned | Type(26)
      * @return mixed
      */
-    public function getDeleted()
+    public function getDeleted(): mixed
     {
         return $this->deleted;
     }
@@ -263,7 +263,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * @param mixed $deleted
      * @return void
      */
-    public function setDeleted($deleted)
+    public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
     }
@@ -274,7 +274,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): mixed
     {
         return $this->createdAt;
     }
@@ -286,7 +286,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * @param mixed $createdAt
      * @return void
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -297,7 +297,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedBy()
+    public function getCreatedBy(): mixed
     {
         return $this->createdBy;
     }
@@ -309,7 +309,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * @param mixed $createdBy
      * @return void
      */
-    public function setCreatedBy($createdBy)
+    public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
     }
@@ -320,7 +320,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedAs()
+    public function getCreatedAs(): mixed
     {
         return $this->createdAs;
     }
@@ -332,7 +332,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * @param mixed $createdAs
      * @return void
      */
-    public function setCreatedAs($createdAs)
+    public function setCreatedAs(mixed $createdAs): void
     {
         $this->createdAs = $createdAs;
     }
@@ -343,7 +343,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): mixed
     {
         return $this->updatedAt;
     }
@@ -355,7 +355,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * @param mixed $updatedAt
      * @return void
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -366,7 +366,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedBy()
+    public function getUpdatedBy(): mixed
     {
         return $this->updatedBy;
     }
@@ -378,7 +378,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * @param mixed $updatedBy
      * @return void
      */
-    public function setUpdatedBy($updatedBy)
+    public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
     }
@@ -389,7 +389,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedAs()
+    public function getUpdatedAs(): mixed
     {
         return $this->updatedAs;
     }
@@ -401,7 +401,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * @param mixed $updatedAs
      * @return void
      */
-    public function setUpdatedAs($updatedAs)
+    public function setUpdatedAs(mixed $updatedAs): void
     {
         $this->updatedAs = $updatedAs;
     }
@@ -412,7 +412,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getDeletedAt()
+    public function getDeletedAt(): mixed
     {
         return $this->deletedAt;
     }
@@ -424,7 +424,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * @param mixed $deletedAt
      * @return void
      */
-    public function setDeletedAt($deletedAt)
+    public function setDeletedAt(mixed $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
     }
@@ -435,7 +435,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedAs()
+    public function getDeletedAs(): mixed
     {
         return $this->deletedAs;
     }
@@ -447,7 +447,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * @param mixed $deletedAs
      * @return void
      */
-    public function setDeletedAs($deletedAs)
+    public function setDeletedAs(mixed $deletedAs): void
     {
         $this->deletedAs = $deletedAs;
     }
@@ -458,7 +458,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedBy()
+    public function getDeletedBy(): mixed
     {
         return $this->deletedBy;
     }
@@ -470,7 +470,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * @param mixed $deletedBy
      * @return void
      */
-    public function setDeletedBy($deletedBy)
+    public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;
     }
@@ -481,7 +481,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getRestoredAt()
+    public function getRestoredAt(): mixed
     {
         return $this->restoredAt;
     }
@@ -493,7 +493,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * @param mixed $restoredAt
      * @return void
      */
-    public function setRestoredAt($restoredAt)
+    public function setRestoredAt(mixed $restoredAt): void
     {
         $this->restoredAt = $restoredAt;
     }
@@ -504,7 +504,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getRestoredBy()
+    public function getRestoredBy(): mixed
     {
         return $this->restoredBy;
     }
@@ -516,7 +516,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * @param mixed $restoredBy
      * @return void
      */
-    public function setRestoredBy($restoredBy)
+    public function setRestoredBy(mixed $restoredBy): void
     {
         $this->restoredBy = $restoredBy;
     }
@@ -527,7 +527,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedCopy1()
+    public function getDeletedCopy1(): mixed
     {
         return $this->deletedCopy1;
     }
@@ -539,7 +539,7 @@ abstract class PostCategoryAbstract extends AbstractModel implements PostCategor
      * @param mixed $deletedCopy1
      * @return void
      */
-    public function setDeletedCopy1($deletedCopy1)
+    public function setDeletedCopy1(mixed $deletedCopy1): void
     {
         $this->deletedCopy1 = $deletedCopy1;
     }

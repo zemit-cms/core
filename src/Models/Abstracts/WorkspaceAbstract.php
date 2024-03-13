@@ -82,140 +82,140 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
      * @var mixed
      */
-    public $id = null;
+    public mixed $id = null;
         
     /**
      * Column: uuid
      * Attributes: NotNull | Size(36) | Type(5)
      * @var mixed
      */
-    public $uuid = null;
+    public mixed $uuid = null;
         
     /**
      * Column: name
      * Attributes: NotNull | Size(60) | Type(2)
      * @var mixed
      */
-    public $name = null;
+    public mixed $name = null;
         
     /**
      * Column: description
      * Attributes: Size(240) | Type(2)
      * @var mixed
      */
-    public $description = null;
+    public mixed $description = null;
         
     /**
      * Column: icon
      * Attributes: Size(64) | Type(2)
      * @var mixed
      */
-    public $icon = null;
+    public mixed $icon = null;
         
     /**
      * Column: color
      * Attributes: Size(9) | Type(5)
      * @var mixed
      */
-    public $color = null;
+    public mixed $color = null;
         
     /**
      * Column: status
      * Attributes: NotNull | Size('active','inactive') | Type(18)
      * @var mixed
      */
-    public $status = 'active';
+    public mixed $status = 'active';
         
     /**
      * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Type(26)
      * @var mixed
      */
-    public $deleted = 0;
+    public mixed $deleted = 0;
         
     /**
      * Column: created_at
      * Attributes: NotNull | Type(4)
      * @var mixed
      */
-    public $createdAt = null;
+    public mixed $createdAt = null;
         
     /**
      * Column: created_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $createdBy = null;
+    public mixed $createdBy = null;
         
     /**
      * Column: created_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $createdAs = null;
+    public mixed $createdAs = null;
         
     /**
      * Column: updated_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $updatedAt = null;
+    public mixed $updatedAt = null;
         
     /**
      * Column: updated_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $updatedBy = null;
+    public mixed $updatedBy = null;
         
     /**
      * Column: updated_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $updatedAs = null;
+    public mixed $updatedAs = null;
         
     /**
      * Column: deleted_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $deletedAt = null;
+    public mixed $deletedAt = null;
         
     /**
      * Column: deleted_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $deletedAs = null;
+    public mixed $deletedAs = null;
         
     /**
      * Column: deleted_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $deletedBy = null;
+    public mixed $deletedBy = null;
         
     /**
      * Column: restored_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $restoredAt = null;
+    public mixed $restoredAt = null;
         
     /**
      * Column: restored_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $restoredBy = null;
+    public mixed $restoredBy = null;
         
     /**
      * Column: restored_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $restoredAs = null;
+    public mixed $restoredAs = null;
     
     /**
      * Returns the value of field id
@@ -223,7 +223,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
      * @return mixed
      */
-    public function getId()
+    public function getId(): mixed
     {
         return $this->id;
     }
@@ -235,7 +235,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * @param mixed $id
      * @return void
      */
-    public function setId($id)
+    public function setId(mixed $id): void
     {
         $this->id = $id;
     }
@@ -246,7 +246,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
-    public function getUuid()
+    public function getUuid(): mixed
     {
         return $this->uuid;
     }
@@ -258,7 +258,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * @param mixed $uuid
      * @return void
      */
-    public function setUuid($uuid)
+    public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
     }
@@ -269,7 +269,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * Attributes: NotNull | Size(60) | Type(2)
      * @return mixed
      */
-    public function getName()
+    public function getName(): mixed
     {
         return $this->name;
     }
@@ -281,7 +281,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * @param mixed $name
      * @return void
      */
-    public function setName($name)
+    public function setName(mixed $name): void
     {
         $this->name = $name;
     }
@@ -292,7 +292,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * Attributes: Size(240) | Type(2)
      * @return mixed
      */
-    public function getDescription()
+    public function getDescription(): mixed
     {
         return $this->description;
     }
@@ -304,7 +304,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * @param mixed $description
      * @return void
      */
-    public function setDescription($description)
+    public function setDescription(mixed $description): void
     {
         $this->description = $description;
     }
@@ -315,7 +315,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * Attributes: Size(64) | Type(2)
      * @return mixed
      */
-    public function getIcon()
+    public function getIcon(): mixed
     {
         return $this->icon;
     }
@@ -327,7 +327,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * @param mixed $icon
      * @return void
      */
-    public function setIcon($icon)
+    public function setIcon(mixed $icon): void
     {
         $this->icon = $icon;
     }
@@ -338,7 +338,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * Attributes: Size(9) | Type(5)
      * @return mixed
      */
-    public function getColor()
+    public function getColor(): mixed
     {
         return $this->color;
     }
@@ -350,7 +350,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * @param mixed $color
      * @return void
      */
-    public function setColor($color)
+    public function setColor(mixed $color): void
     {
         $this->color = $color;
     }
@@ -361,7 +361,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * Attributes: NotNull | Size('active','inactive') | Type(18)
      * @return mixed
      */
-    public function getStatus()
+    public function getStatus(): mixed
     {
         return $this->status;
     }
@@ -373,7 +373,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * @param mixed $status
      * @return void
      */
-    public function setStatus($status)
+    public function setStatus(mixed $status): void
     {
         $this->status = $status;
     }
@@ -384,7 +384,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * Attributes: NotNull | Numeric | Unsigned | Type(26)
      * @return mixed
      */
-    public function getDeleted()
+    public function getDeleted(): mixed
     {
         return $this->deleted;
     }
@@ -396,7 +396,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * @param mixed $deleted
      * @return void
      */
-    public function setDeleted($deleted)
+    public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
     }
@@ -407,7 +407,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): mixed
     {
         return $this->createdAt;
     }
@@ -419,7 +419,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * @param mixed $createdAt
      * @return void
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -430,7 +430,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedBy()
+    public function getCreatedBy(): mixed
     {
         return $this->createdBy;
     }
@@ -442,7 +442,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * @param mixed $createdBy
      * @return void
      */
-    public function setCreatedBy($createdBy)
+    public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
     }
@@ -453,7 +453,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedAs()
+    public function getCreatedAs(): mixed
     {
         return $this->createdAs;
     }
@@ -465,7 +465,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * @param mixed $createdAs
      * @return void
      */
-    public function setCreatedAs($createdAs)
+    public function setCreatedAs(mixed $createdAs): void
     {
         $this->createdAs = $createdAs;
     }
@@ -476,7 +476,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): mixed
     {
         return $this->updatedAt;
     }
@@ -488,7 +488,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * @param mixed $updatedAt
      * @return void
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -499,7 +499,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedBy()
+    public function getUpdatedBy(): mixed
     {
         return $this->updatedBy;
     }
@@ -511,7 +511,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * @param mixed $updatedBy
      * @return void
      */
-    public function setUpdatedBy($updatedBy)
+    public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
     }
@@ -522,7 +522,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedAs()
+    public function getUpdatedAs(): mixed
     {
         return $this->updatedAs;
     }
@@ -534,7 +534,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * @param mixed $updatedAs
      * @return void
      */
-    public function setUpdatedAs($updatedAs)
+    public function setUpdatedAs(mixed $updatedAs): void
     {
         $this->updatedAs = $updatedAs;
     }
@@ -545,7 +545,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getDeletedAt()
+    public function getDeletedAt(): mixed
     {
         return $this->deletedAt;
     }
@@ -557,7 +557,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * @param mixed $deletedAt
      * @return void
      */
-    public function setDeletedAt($deletedAt)
+    public function setDeletedAt(mixed $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
     }
@@ -568,7 +568,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedAs()
+    public function getDeletedAs(): mixed
     {
         return $this->deletedAs;
     }
@@ -580,7 +580,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * @param mixed $deletedAs
      * @return void
      */
-    public function setDeletedAs($deletedAs)
+    public function setDeletedAs(mixed $deletedAs): void
     {
         $this->deletedAs = $deletedAs;
     }
@@ -591,7 +591,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedBy()
+    public function getDeletedBy(): mixed
     {
         return $this->deletedBy;
     }
@@ -603,7 +603,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * @param mixed $deletedBy
      * @return void
      */
-    public function setDeletedBy($deletedBy)
+    public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;
     }
@@ -614,7 +614,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getRestoredAt()
+    public function getRestoredAt(): mixed
     {
         return $this->restoredAt;
     }
@@ -626,7 +626,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * @param mixed $restoredAt
      * @return void
      */
-    public function setRestoredAt($restoredAt)
+    public function setRestoredAt(mixed $restoredAt): void
     {
         $this->restoredAt = $restoredAt;
     }
@@ -637,7 +637,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getRestoredBy()
+    public function getRestoredBy(): mixed
     {
         return $this->restoredBy;
     }
@@ -649,7 +649,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * @param mixed $restoredBy
      * @return void
      */
-    public function setRestoredBy($restoredBy)
+    public function setRestoredBy(mixed $restoredBy): void
     {
         $this->restoredBy = $restoredBy;
     }
@@ -660,7 +660,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getRestoredAs()
+    public function getRestoredAs(): mixed
     {
         return $this->restoredAs;
     }
@@ -672,7 +672,7 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * @param mixed $restoredAs
      * @return void
      */
-    public function setRestoredAs($restoredAs)
+    public function setRestoredAs(mixed $restoredAs): void
     {
         $this->restoredAs = $restoredAs;
     }

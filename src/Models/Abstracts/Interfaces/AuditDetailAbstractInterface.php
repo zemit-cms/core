@@ -60,7 +60,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Type(14)
      * @return mixed
      */
-    public function getId();
+    public function getId(): mixed;
     
     /**
      * Sets the value of field id
@@ -69,7 +69,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * @param mixed $id
      * @return void
      */
-    public function setId($id);
+    public function setId(mixed $id): void;
     
     /**
      * Returns the value of field auditId
@@ -77,7 +77,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * Attributes: NotNull | Numeric | Unsigned | Type(14)
      * @return mixed
      */
-    public function getAuditId();
+    public function getAuditId(): mixed;
     
     /**
      * Sets the value of field auditId
@@ -86,7 +86,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * @param mixed $auditId
      * @return void
      */
-    public function setAuditId($auditId);
+    public function setAuditId(mixed $auditId): void;
     
     /**
      * Returns the value of field model
@@ -94,7 +94,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
      */
-    public function getModel();
+    public function getModel(): mixed;
     
     /**
      * Sets the value of field model
@@ -103,7 +103,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * @param mixed $model
      * @return void
      */
-    public function setModel($model);
+    public function setModel(mixed $model): void;
     
     /**
      * Returns the value of field table
@@ -111,7 +111,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * Attributes: NotNull | Size(60) | Type(2)
      * @return mixed
      */
-    public function getTable();
+    public function getTable(): mixed;
     
     /**
      * Sets the value of field table
@@ -120,7 +120,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * @param mixed $table
      * @return void
      */
-    public function setTable($table);
+    public function setTable(mixed $table): void;
     
     /**
      * Returns the value of field primary
@@ -128,7 +128,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * Attributes: NotNull | Numeric | Unsigned
      * @return mixed
      */
-    public function getPrimary();
+    public function getPrimary(): mixed;
     
     /**
      * Sets the value of field primary
@@ -137,7 +137,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * @param mixed $primary
      * @return void
      */
-    public function setPrimary($primary);
+    public function setPrimary(mixed $primary): void;
     
     /**
      * Returns the value of field event
@@ -145,7 +145,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * Attributes: NotNull | Size('create','update','delete','restore','other') | Type(18)
      * @return mixed
      */
-    public function getEvent();
+    public function getEvent(): mixed;
     
     /**
      * Sets the value of field event
@@ -154,7 +154,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * @param mixed $event
      * @return void
      */
-    public function setEvent($event);
+    public function setEvent(mixed $event): void;
     
     /**
      * Returns the value of field column
@@ -162,7 +162,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * Attributes: NotNull | Size(60) | Type(2)
      * @return mixed
      */
-    public function getColumn();
+    public function getColumn(): mixed;
     
     /**
      * Sets the value of field column
@@ -171,7 +171,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * @param mixed $column
      * @return void
      */
-    public function setColumn($column);
+    public function setColumn(mixed $column): void;
     
     /**
      * Returns the value of field map
@@ -179,7 +179,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * Attributes: NotNull | Size(60) | Type(2)
      * @return mixed
      */
-    public function getMap();
+    public function getMap(): mixed;
     
     /**
      * Sets the value of field map
@@ -188,7 +188,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * @param mixed $map
      * @return void
      */
-    public function setMap($map);
+    public function setMap(mixed $map): void;
     
     /**
      * Returns the value of field before
@@ -196,7 +196,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * Attributes: Type(23)
      * @return mixed
      */
-    public function getBefore();
+    public function getBefore(): mixed;
     
     /**
      * Sets the value of field before
@@ -205,7 +205,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * @param mixed $before
      * @return void
      */
-    public function setBefore($before);
+    public function setBefore(mixed $before): void;
     
     /**
      * Returns the value of field after
@@ -213,7 +213,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * Attributes: Type(23)
      * @return mixed
      */
-    public function getAfter();
+    public function getAfter(): mixed;
     
     /**
      * Sets the value of field after
@@ -222,7 +222,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * @param mixed $after
      * @return void
      */
-    public function setAfter($after);
+    public function setAfter(mixed $after): void;
     
     /**
      * Returns the value of field deleted
@@ -230,7 +230,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * Attributes: NotNull | Numeric | Unsigned | Type(26)
      * @return mixed
      */
-    public function getDeleted();
+    public function getDeleted(): mixed;
     
     /**
      * Sets the value of field deleted
@@ -239,7 +239,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * @param mixed $deleted
      * @return void
      */
-    public function setDeleted($deleted);
+    public function setDeleted(mixed $deleted): void;
     
     /**
      * Returns the value of field createdAt
@@ -247,7 +247,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
-    public function getCreatedAt();
+    public function getCreatedAt(): mixed;
     
     /**
      * Sets the value of field createdAt
@@ -256,7 +256,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * @param mixed $createdAt
      * @return void
      */
-    public function setCreatedAt($createdAt);
+    public function setCreatedAt(mixed $createdAt): void;
     
     /**
      * Returns the value of field createdBy
@@ -264,7 +264,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedBy();
+    public function getCreatedBy(): mixed;
     
     /**
      * Sets the value of field createdBy
@@ -273,7 +273,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * @param mixed $createdBy
      * @return void
      */
-    public function setCreatedBy($createdBy);
+    public function setCreatedBy(mixed $createdBy): void;
     
     /**
      * Returns the value of field createdAs
@@ -281,7 +281,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedAs();
+    public function getCreatedAs(): mixed;
     
     /**
      * Sets the value of field createdAs
@@ -290,7 +290,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * @param mixed $createdAs
      * @return void
      */
-    public function setCreatedAs($createdAs);
+    public function setCreatedAs(mixed $createdAs): void;
     
     /**
      * Returns the value of field updatedAt
@@ -298,7 +298,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getUpdatedAt();
+    public function getUpdatedAt(): mixed;
     
     /**
      * Sets the value of field updatedAt
@@ -307,7 +307,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * @param mixed $updatedAt
      * @return void
      */
-    public function setUpdatedAt($updatedAt);
+    public function setUpdatedAt(mixed $updatedAt): void;
     
     /**
      * Returns the value of field updatedBy
@@ -315,7 +315,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedBy();
+    public function getUpdatedBy(): mixed;
     
     /**
      * Sets the value of field updatedBy
@@ -324,7 +324,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * @param mixed $updatedBy
      * @return void
      */
-    public function setUpdatedBy($updatedBy);
+    public function setUpdatedBy(mixed $updatedBy): void;
     
     /**
      * Returns the value of field updatedAs
@@ -332,7 +332,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedAs();
+    public function getUpdatedAs(): mixed;
     
     /**
      * Sets the value of field updatedAs
@@ -341,7 +341,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * @param mixed $updatedAs
      * @return void
      */
-    public function setUpdatedAs($updatedAs);
+    public function setUpdatedAs(mixed $updatedAs): void;
     
     /**
      * Returns the value of field deletedAt
@@ -349,7 +349,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getDeletedAt();
+    public function getDeletedAt(): mixed;
     
     /**
      * Sets the value of field deletedAt
@@ -358,7 +358,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * @param mixed $deletedAt
      * @return void
      */
-    public function setDeletedAt($deletedAt);
+    public function setDeletedAt(mixed $deletedAt): void;
     
     /**
      * Returns the value of field deletedBy
@@ -366,7 +366,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedBy();
+    public function getDeletedBy(): mixed;
     
     /**
      * Sets the value of field deletedBy
@@ -375,7 +375,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * @param mixed $deletedBy
      * @return void
      */
-    public function setDeletedBy($deletedBy);
+    public function setDeletedBy(mixed $deletedBy): void;
     
     /**
      * Returns the value of field deletedAs
@@ -383,7 +383,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedAs();
+    public function getDeletedAs(): mixed;
     
     /**
      * Sets the value of field deletedAs
@@ -392,7 +392,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * @param mixed $deletedAs
      * @return void
      */
-    public function setDeletedAs($deletedAs);
+    public function setDeletedAs(mixed $deletedAs): void;
     
     /**
      * Returns the value of field restoredAt
@@ -400,7 +400,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getRestoredAt();
+    public function getRestoredAt(): mixed;
     
     /**
      * Sets the value of field restoredAt
@@ -409,7 +409,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * @param mixed $restoredAt
      * @return void
      */
-    public function setRestoredAt($restoredAt);
+    public function setRestoredAt(mixed $restoredAt): void;
     
     /**
      * Returns the value of field restoredBy
@@ -417,7 +417,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getRestoredBy();
+    public function getRestoredBy(): mixed;
     
     /**
      * Sets the value of field restoredBy
@@ -426,7 +426,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * @param mixed $restoredBy
      * @return void
      */
-    public function setRestoredBy($restoredBy);
+    public function setRestoredBy(mixed $restoredBy): void;
     
     /**
      * Returns the value of field restoredAs
@@ -434,7 +434,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getRestoredAs();
+    public function getRestoredAs(): mixed;
     
     /**
      * Sets the value of field restoredAs
@@ -443,5 +443,5 @@ interface AuditDetailAbstractInterface extends ModelInterface
      * @param mixed $restoredAs
      * @return void
      */
-    public function setRestoredAs($restoredAs);
+    public function setRestoredAs(mixed $restoredAs): void;
 }

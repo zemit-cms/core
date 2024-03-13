@@ -72,7 +72,7 @@ interface FileAbstractInterface extends ModelInterface
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
      * @return mixed
      */
-    public function getId();
+    public function getId(): mixed;
     
     /**
      * Sets the value of field id
@@ -81,7 +81,7 @@ interface FileAbstractInterface extends ModelInterface
      * @param mixed $id
      * @return void
      */
-    public function setId($id);
+    public function setId(mixed $id): void;
     
     /**
      * Returns the value of field userId
@@ -89,7 +89,7 @@ interface FileAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUserId();
+    public function getUserId(): mixed;
     
     /**
      * Sets the value of field userId
@@ -98,7 +98,7 @@ interface FileAbstractInterface extends ModelInterface
      * @param mixed $userId
      * @return void
      */
-    public function setUserId($userId);
+    public function setUserId(mixed $userId): void;
     
     /**
      * Returns the value of field category
@@ -106,7 +106,7 @@ interface FileAbstractInterface extends ModelInterface
      * Attributes: NotNull | Size('partner','speaker','event','other') | Type(18)
      * @return mixed
      */
-    public function getCategory();
+    public function getCategory(): mixed;
     
     /**
      * Sets the value of field category
@@ -115,7 +115,7 @@ interface FileAbstractInterface extends ModelInterface
      * @param mixed $category
      * @return void
      */
-    public function setCategory($category);
+    public function setCategory(mixed $category): void;
     
     /**
      * Returns the value of field key
@@ -123,7 +123,7 @@ interface FileAbstractInterface extends ModelInterface
      * Attributes: Size(50) | Type(2)
      * @return mixed
      */
-    public function getKey();
+    public function getKey(): mixed;
     
     /**
      * Sets the value of field key
@@ -132,7 +132,7 @@ interface FileAbstractInterface extends ModelInterface
      * @param mixed $key
      * @return void
      */
-    public function setKey($key);
+    public function setKey(mixed $key): void;
     
     /**
      * Returns the value of field path
@@ -140,7 +140,7 @@ interface FileAbstractInterface extends ModelInterface
      * Attributes: Size(120) | Type(2)
      * @return mixed
      */
-    public function getPath();
+    public function getPath(): mixed;
     
     /**
      * Sets the value of field path
@@ -149,7 +149,7 @@ interface FileAbstractInterface extends ModelInterface
      * @param mixed $path
      * @return void
      */
-    public function setPath($path);
+    public function setPath(mixed $path): void;
     
     /**
      * Returns the value of field type
@@ -157,7 +157,7 @@ interface FileAbstractInterface extends ModelInterface
      * Attributes: Size(100) | Type(2)
      * @return mixed
      */
-    public function getType();
+    public function getType(): mixed;
     
     /**
      * Sets the value of field type
@@ -166,7 +166,7 @@ interface FileAbstractInterface extends ModelInterface
      * @param mixed $type
      * @return void
      */
-    public function setType($type);
+    public function setType(mixed $type): void;
     
     /**
      * Returns the value of field typeReal
@@ -174,7 +174,7 @@ interface FileAbstractInterface extends ModelInterface
      * Attributes: Size(100) | Type(2)
      * @return mixed
      */
-    public function getTypeReal();
+    public function getTypeReal(): mixed;
     
     /**
      * Sets the value of field typeReal
@@ -183,7 +183,7 @@ interface FileAbstractInterface extends ModelInterface
      * @param mixed $typeReal
      * @return void
      */
-    public function setTypeReal($typeReal);
+    public function setTypeReal(mixed $typeReal): void;
     
     /**
      * Returns the value of field extension
@@ -191,7 +191,7 @@ interface FileAbstractInterface extends ModelInterface
      * Attributes: Size(6) | Type(5)
      * @return mixed
      */
-    public function getExtension();
+    public function getExtension(): mixed;
     
     /**
      * Sets the value of field extension
@@ -200,7 +200,7 @@ interface FileAbstractInterface extends ModelInterface
      * @param mixed $extension
      * @return void
      */
-    public function setExtension($extension);
+    public function setExtension(mixed $extension): void;
     
     /**
      * Returns the value of field name
@@ -208,7 +208,7 @@ interface FileAbstractInterface extends ModelInterface
      * Attributes: Size(100) | Type(2)
      * @return mixed
      */
-    public function getName();
+    public function getName(): mixed;
     
     /**
      * Sets the value of field name
@@ -217,7 +217,7 @@ interface FileAbstractInterface extends ModelInterface
      * @param mixed $name
      * @return void
      */
-    public function setName($name);
+    public function setName(mixed $name): void;
     
     /**
      * Returns the value of field nameTemp
@@ -225,7 +225,7 @@ interface FileAbstractInterface extends ModelInterface
      * Attributes: Size(120) | Type(2)
      * @return mixed
      */
-    public function getNameTemp();
+    public function getNameTemp(): mixed;
     
     /**
      * Sets the value of field nameTemp
@@ -234,7 +234,7 @@ interface FileAbstractInterface extends ModelInterface
      * @param mixed $nameTemp
      * @return void
      */
-    public function setNameTemp($nameTemp);
+    public function setNameTemp(mixed $nameTemp): void;
     
     /**
      * Returns the value of field size
@@ -242,7 +242,7 @@ interface FileAbstractInterface extends ModelInterface
      * Attributes: Size(45) | Type(2)
      * @return mixed
      */
-    public function getSize();
+    public function getSize(): mixed;
     
     /**
      * Sets the value of field size
@@ -251,7 +251,7 @@ interface FileAbstractInterface extends ModelInterface
      * @param mixed $size
      * @return void
      */
-    public function setSize($size);
+    public function setSize(mixed $size): void;
     
     /**
      * Returns the value of field error
@@ -259,7 +259,7 @@ interface FileAbstractInterface extends ModelInterface
      * Attributes: Type(6)
      * @return mixed
      */
-    public function getError();
+    public function getError(): mixed;
     
     /**
      * Sets the value of field error
@@ -268,7 +268,7 @@ interface FileAbstractInterface extends ModelInterface
      * @param mixed $error
      * @return void
      */
-    public function setError($error);
+    public function setError(mixed $error): void;
     
     /**
      * Returns the value of field deleted
@@ -276,7 +276,7 @@ interface FileAbstractInterface extends ModelInterface
      * Attributes: NotNull | Numeric | Unsigned | Type(26)
      * @return mixed
      */
-    public function getDeleted();
+    public function getDeleted(): mixed;
     
     /**
      * Sets the value of field deleted
@@ -285,7 +285,7 @@ interface FileAbstractInterface extends ModelInterface
      * @param mixed $deleted
      * @return void
      */
-    public function setDeleted($deleted);
+    public function setDeleted(mixed $deleted): void;
     
     /**
      * Returns the value of field createdAt
@@ -293,7 +293,7 @@ interface FileAbstractInterface extends ModelInterface
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
-    public function getCreatedAt();
+    public function getCreatedAt(): mixed;
     
     /**
      * Sets the value of field createdAt
@@ -302,7 +302,7 @@ interface FileAbstractInterface extends ModelInterface
      * @param mixed $createdAt
      * @return void
      */
-    public function setCreatedAt($createdAt);
+    public function setCreatedAt(mixed $createdAt): void;
     
     /**
      * Returns the value of field createdBy
@@ -310,7 +310,7 @@ interface FileAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedBy();
+    public function getCreatedBy(): mixed;
     
     /**
      * Sets the value of field createdBy
@@ -319,7 +319,7 @@ interface FileAbstractInterface extends ModelInterface
      * @param mixed $createdBy
      * @return void
      */
-    public function setCreatedBy($createdBy);
+    public function setCreatedBy(mixed $createdBy): void;
     
     /**
      * Returns the value of field createdAs
@@ -327,7 +327,7 @@ interface FileAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedAs();
+    public function getCreatedAs(): mixed;
     
     /**
      * Sets the value of field createdAs
@@ -336,7 +336,7 @@ interface FileAbstractInterface extends ModelInterface
      * @param mixed $createdAs
      * @return void
      */
-    public function setCreatedAs($createdAs);
+    public function setCreatedAs(mixed $createdAs): void;
     
     /**
      * Returns the value of field updatedAt
@@ -344,7 +344,7 @@ interface FileAbstractInterface extends ModelInterface
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getUpdatedAt();
+    public function getUpdatedAt(): mixed;
     
     /**
      * Sets the value of field updatedAt
@@ -353,7 +353,7 @@ interface FileAbstractInterface extends ModelInterface
      * @param mixed $updatedAt
      * @return void
      */
-    public function setUpdatedAt($updatedAt);
+    public function setUpdatedAt(mixed $updatedAt): void;
     
     /**
      * Returns the value of field updatedBy
@@ -361,7 +361,7 @@ interface FileAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedBy();
+    public function getUpdatedBy(): mixed;
     
     /**
      * Sets the value of field updatedBy
@@ -370,7 +370,7 @@ interface FileAbstractInterface extends ModelInterface
      * @param mixed $updatedBy
      * @return void
      */
-    public function setUpdatedBy($updatedBy);
+    public function setUpdatedBy(mixed $updatedBy): void;
     
     /**
      * Returns the value of field updatedAs
@@ -378,7 +378,7 @@ interface FileAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedAs();
+    public function getUpdatedAs(): mixed;
     
     /**
      * Sets the value of field updatedAs
@@ -387,7 +387,7 @@ interface FileAbstractInterface extends ModelInterface
      * @param mixed $updatedAs
      * @return void
      */
-    public function setUpdatedAs($updatedAs);
+    public function setUpdatedAs(mixed $updatedAs): void;
     
     /**
      * Returns the value of field deletedAt
@@ -395,7 +395,7 @@ interface FileAbstractInterface extends ModelInterface
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getDeletedAt();
+    public function getDeletedAt(): mixed;
     
     /**
      * Sets the value of field deletedAt
@@ -404,7 +404,7 @@ interface FileAbstractInterface extends ModelInterface
      * @param mixed $deletedAt
      * @return void
      */
-    public function setDeletedAt($deletedAt);
+    public function setDeletedAt(mixed $deletedAt): void;
     
     /**
      * Returns the value of field deletedAs
@@ -412,7 +412,7 @@ interface FileAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedAs();
+    public function getDeletedAs(): mixed;
     
     /**
      * Sets the value of field deletedAs
@@ -421,7 +421,7 @@ interface FileAbstractInterface extends ModelInterface
      * @param mixed $deletedAs
      * @return void
      */
-    public function setDeletedAs($deletedAs);
+    public function setDeletedAs(mixed $deletedAs): void;
     
     /**
      * Returns the value of field deletedBy
@@ -429,7 +429,7 @@ interface FileAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedBy();
+    public function getDeletedBy(): mixed;
     
     /**
      * Sets the value of field deletedBy
@@ -438,7 +438,7 @@ interface FileAbstractInterface extends ModelInterface
      * @param mixed $deletedBy
      * @return void
      */
-    public function setDeletedBy($deletedBy);
+    public function setDeletedBy(mixed $deletedBy): void;
     
     /**
      * Returns the value of field restoredAt
@@ -446,7 +446,7 @@ interface FileAbstractInterface extends ModelInterface
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getRestoredAt();
+    public function getRestoredAt(): mixed;
     
     /**
      * Sets the value of field restoredAt
@@ -455,7 +455,7 @@ interface FileAbstractInterface extends ModelInterface
      * @param mixed $restoredAt
      * @return void
      */
-    public function setRestoredAt($restoredAt);
+    public function setRestoredAt(mixed $restoredAt): void;
     
     /**
      * Returns the value of field restoredBy
@@ -463,7 +463,7 @@ interface FileAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getRestoredBy();
+    public function getRestoredBy(): mixed;
     
     /**
      * Sets the value of field restoredBy
@@ -472,7 +472,7 @@ interface FileAbstractInterface extends ModelInterface
      * @param mixed $restoredBy
      * @return void
      */
-    public function setRestoredBy($restoredBy);
+    public function setRestoredBy(mixed $restoredBy): void;
     
     /**
      * Returns the value of field restoredAs
@@ -480,7 +480,7 @@ interface FileAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getRestoredAs();
+    public function getRestoredAs(): mixed;
     
     /**
      * Sets the value of field restoredAs
@@ -489,5 +489,5 @@ interface FileAbstractInterface extends ModelInterface
      * @param mixed $restoredAs
      * @return void
      */
-    public function setRestoredAs($restoredAs);
+    public function setRestoredAs(mixed $restoredAs): void;
 }

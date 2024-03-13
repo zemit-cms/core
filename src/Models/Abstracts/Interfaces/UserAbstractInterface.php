@@ -104,7 +104,7 @@ interface UserAbstractInterface extends ModelInterface
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
      * @return mixed
      */
-    public function getId();
+    public function getId(): mixed;
     
     /**
      * Sets the value of field id
@@ -113,7 +113,7 @@ interface UserAbstractInterface extends ModelInterface
      * @param mixed $id
      * @return void
      */
-    public function setId($id);
+    public function setId(mixed $id): void;
     
     /**
      * Returns the value of field uuid
@@ -121,7 +121,7 @@ interface UserAbstractInterface extends ModelInterface
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
-    public function getUuid();
+    public function getUuid(): mixed;
     
     /**
      * Sets the value of field uuid
@@ -130,7 +130,7 @@ interface UserAbstractInterface extends ModelInterface
      * @param mixed $uuid
      * @return void
      */
-    public function setUuid($uuid);
+    public function setUuid(mixed $uuid): void;
     
     /**
      * Returns the value of field email
@@ -138,7 +138,7 @@ interface UserAbstractInterface extends ModelInterface
      * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
      */
-    public function getEmail();
+    public function getEmail(): mixed;
     
     /**
      * Sets the value of field email
@@ -147,7 +147,7 @@ interface UserAbstractInterface extends ModelInterface
      * @param mixed $email
      * @return void
      */
-    public function setEmail($email);
+    public function setEmail(mixed $email): void;
     
     /**
      * Returns the value of field password
@@ -155,7 +155,7 @@ interface UserAbstractInterface extends ModelInterface
      * Attributes: Size(255) | Type(2)
      * @return mixed
      */
-    public function getPassword();
+    public function getPassword(): mixed;
     
     /**
      * Sets the value of field password
@@ -164,7 +164,7 @@ interface UserAbstractInterface extends ModelInterface
      * @param mixed $password
      * @return void
      */
-    public function setPassword($password);
+    public function setPassword(mixed $password): void;
     
     /**
      * Returns the value of field deleted
@@ -172,7 +172,7 @@ interface UserAbstractInterface extends ModelInterface
      * Attributes: NotNull | Numeric | Unsigned | Type(26)
      * @return mixed
      */
-    public function getDeleted();
+    public function getDeleted(): mixed;
     
     /**
      * Sets the value of field deleted
@@ -181,7 +181,7 @@ interface UserAbstractInterface extends ModelInterface
      * @param mixed $deleted
      * @return void
      */
-    public function setDeleted($deleted);
+    public function setDeleted(mixed $deleted): void;
     
     /**
      * Returns the value of field createdAt
@@ -189,7 +189,7 @@ interface UserAbstractInterface extends ModelInterface
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
-    public function getCreatedAt();
+    public function getCreatedAt(): mixed;
     
     /**
      * Sets the value of field createdAt
@@ -198,7 +198,7 @@ interface UserAbstractInterface extends ModelInterface
      * @param mixed $createdAt
      * @return void
      */
-    public function setCreatedAt($createdAt);
+    public function setCreatedAt(mixed $createdAt): void;
     
     /**
      * Returns the value of field createdBy
@@ -206,7 +206,7 @@ interface UserAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedBy();
+    public function getCreatedBy(): mixed;
     
     /**
      * Sets the value of field createdBy
@@ -215,7 +215,7 @@ interface UserAbstractInterface extends ModelInterface
      * @param mixed $createdBy
      * @return void
      */
-    public function setCreatedBy($createdBy);
+    public function setCreatedBy(mixed $createdBy): void;
     
     /**
      * Returns the value of field createdAs
@@ -223,7 +223,7 @@ interface UserAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedAs();
+    public function getCreatedAs(): mixed;
     
     /**
      * Sets the value of field createdAs
@@ -232,7 +232,7 @@ interface UserAbstractInterface extends ModelInterface
      * @param mixed $createdAs
      * @return void
      */
-    public function setCreatedAs($createdAs);
+    public function setCreatedAs(mixed $createdAs): void;
     
     /**
      * Returns the value of field updatedAt
@@ -240,7 +240,7 @@ interface UserAbstractInterface extends ModelInterface
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getUpdatedAt();
+    public function getUpdatedAt(): mixed;
     
     /**
      * Sets the value of field updatedAt
@@ -249,7 +249,7 @@ interface UserAbstractInterface extends ModelInterface
      * @param mixed $updatedAt
      * @return void
      */
-    public function setUpdatedAt($updatedAt);
+    public function setUpdatedAt(mixed $updatedAt): void;
     
     /**
      * Returns the value of field updatedBy
@@ -257,7 +257,7 @@ interface UserAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedBy();
+    public function getUpdatedBy(): mixed;
     
     /**
      * Sets the value of field updatedBy
@@ -266,7 +266,7 @@ interface UserAbstractInterface extends ModelInterface
      * @param mixed $updatedBy
      * @return void
      */
-    public function setUpdatedBy($updatedBy);
+    public function setUpdatedBy(mixed $updatedBy): void;
     
     /**
      * Returns the value of field updatedAs
@@ -274,7 +274,7 @@ interface UserAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedAs();
+    public function getUpdatedAs(): mixed;
     
     /**
      * Sets the value of field updatedAs
@@ -283,7 +283,7 @@ interface UserAbstractInterface extends ModelInterface
      * @param mixed $updatedAs
      * @return void
      */
-    public function setUpdatedAs($updatedAs);
+    public function setUpdatedAs(mixed $updatedAs): void;
     
     /**
      * Returns the value of field deletedAt
@@ -291,7 +291,7 @@ interface UserAbstractInterface extends ModelInterface
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getDeletedAt();
+    public function getDeletedAt(): mixed;
     
     /**
      * Sets the value of field deletedAt
@@ -300,7 +300,7 @@ interface UserAbstractInterface extends ModelInterface
      * @param mixed $deletedAt
      * @return void
      */
-    public function setDeletedAt($deletedAt);
+    public function setDeletedAt(mixed $deletedAt): void;
     
     /**
      * Returns the value of field deletedAs
@@ -308,7 +308,7 @@ interface UserAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedAs();
+    public function getDeletedAs(): mixed;
     
     /**
      * Sets the value of field deletedAs
@@ -317,7 +317,7 @@ interface UserAbstractInterface extends ModelInterface
      * @param mixed $deletedAs
      * @return void
      */
-    public function setDeletedAs($deletedAs);
+    public function setDeletedAs(mixed $deletedAs): void;
     
     /**
      * Returns the value of field deletedBy
@@ -325,7 +325,7 @@ interface UserAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedBy();
+    public function getDeletedBy(): mixed;
     
     /**
      * Sets the value of field deletedBy
@@ -334,7 +334,7 @@ interface UserAbstractInterface extends ModelInterface
      * @param mixed $deletedBy
      * @return void
      */
-    public function setDeletedBy($deletedBy);
+    public function setDeletedBy(mixed $deletedBy): void;
     
     /**
      * Returns the value of field restoredAt
@@ -342,7 +342,7 @@ interface UserAbstractInterface extends ModelInterface
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getRestoredAt();
+    public function getRestoredAt(): mixed;
     
     /**
      * Sets the value of field restoredAt
@@ -351,7 +351,7 @@ interface UserAbstractInterface extends ModelInterface
      * @param mixed $restoredAt
      * @return void
      */
-    public function setRestoredAt($restoredAt);
+    public function setRestoredAt(mixed $restoredAt): void;
     
     /**
      * Returns the value of field restoredBy
@@ -359,7 +359,7 @@ interface UserAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getRestoredBy();
+    public function getRestoredBy(): mixed;
     
     /**
      * Sets the value of field restoredBy
@@ -368,7 +368,7 @@ interface UserAbstractInterface extends ModelInterface
      * @param mixed $restoredBy
      * @return void
      */
-    public function setRestoredBy($restoredBy);
+    public function setRestoredBy(mixed $restoredBy): void;
     
     /**
      * Returns the value of field restoredAs
@@ -376,7 +376,7 @@ interface UserAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getRestoredAs();
+    public function getRestoredAs(): mixed;
     
     /**
      * Sets the value of field restoredAs
@@ -385,5 +385,5 @@ interface UserAbstractInterface extends ModelInterface
      * @param mixed $restoredAs
      * @return void
      */
-    public function setRestoredAs($restoredAs);
+    public function setRestoredAs(mixed $restoredAs): void;
 }

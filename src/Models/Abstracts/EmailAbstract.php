@@ -86,203 +86,203 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
      * @var mixed
      */
-    public $id = null;
+    public mixed $id = null;
         
     /**
      * Column: template_id
      * Attributes: NotNull | Numeric | Unsigned
      * @var mixed
      */
-    public $templateId = null;
+    public mixed $templateId = null;
         
     /**
      * Column: uuid
      * Attributes: NotNull | Size(36) | Type(5)
      * @var mixed
      */
-    public $uuid = null;
+    public mixed $uuid = null;
         
     /**
      * Column: from
      * Attributes: NotNull | Size(500) | Type(2)
      * @var mixed
      */
-    public $from = null;
+    public mixed $from = null;
         
     /**
      * Column: to
      * Attributes: NotNull | Type(6)
      * @var mixed
      */
-    public $to = null;
+    public mixed $to = null;
         
     /**
      * Column: cc
      * Attributes: Type(6)
      * @var mixed
      */
-    public $cc = null;
+    public mixed $cc = null;
         
     /**
      * Column: bcc
      * Attributes: Type(6)
      * @var mixed
      */
-    public $bcc = null;
+    public mixed $bcc = null;
         
     /**
      * Column: read_receipt_to
      * Attributes: Type(6)
      * @var mixed
      */
-    public $readReceiptTo = null;
+    public mixed $readReceiptTo = null;
         
     /**
      * Column: subject
      * Attributes: NotNull | Size(255) | Type(2)
      * @var mixed
      */
-    public $subject = null;
+    public mixed $subject = null;
         
     /**
      * Column: content
      * Attributes: NotNull | Type(23)
      * @var mixed
      */
-    public $content = null;
+    public mixed $content = null;
         
     /**
      * Column: meta
      * Attributes: Type(23)
      * @var mixed
      */
-    public $meta = null;
+    public mixed $meta = null;
         
     /**
      * Column: view_path
      * Attributes: Size(255) | Type(2)
      * @var mixed
      */
-    public $viewPath = null;
+    public mixed $viewPath = null;
         
     /**
      * Column: sent
      * Attributes: NotNull | Numeric | Unsigned | Type(26)
      * @var mixed
      */
-    public $sent = 0;
+    public mixed $sent = 0;
         
     /**
      * Column: sent_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $sentAt = null;
+    public mixed $sentAt = null;
         
     /**
      * Column: sent_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $sentBy = null;
+    public mixed $sentBy = null;
         
     /**
      * Column: sent_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $sentAs = null;
+    public mixed $sentAs = null;
         
     /**
      * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Type(26)
      * @var mixed
      */
-    public $deleted = 0;
+    public mixed $deleted = 0;
         
     /**
      * Column: created_at
      * Attributes: NotNull | Type(4)
      * @var mixed
      */
-    public $createdAt = null;
+    public mixed $createdAt = null;
         
     /**
      * Column: created_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $createdBy = null;
+    public mixed $createdBy = null;
         
     /**
      * Column: created_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $createdAs = null;
+    public mixed $createdAs = null;
         
     /**
      * Column: updated_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $updatedAt = null;
+    public mixed $updatedAt = null;
         
     /**
      * Column: updated_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $updatedBy = null;
+    public mixed $updatedBy = null;
         
     /**
      * Column: updated_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $updatedAs = null;
+    public mixed $updatedAs = null;
         
     /**
      * Column: deleted_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $deletedAt = null;
+    public mixed $deletedAt = null;
         
     /**
      * Column: deleted_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $deletedBy = null;
+    public mixed $deletedBy = null;
         
     /**
      * Column: deleted_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $deletedAs = null;
+    public mixed $deletedAs = null;
         
     /**
      * Column: restored_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $restoredAt = null;
+    public mixed $restoredAt = null;
         
     /**
      * Column: restored_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $restoredBy = null;
+    public mixed $restoredBy = null;
         
     /**
      * Column: restored_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $restoredAs = null;
+    public mixed $restoredAs = null;
     
     /**
      * Returns the value of field id
@@ -290,7 +290,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
      * @return mixed
      */
-    public function getId()
+    public function getId(): mixed
     {
         return $this->id;
     }
@@ -302,7 +302,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $id
      * @return void
      */
-    public function setId($id)
+    public function setId(mixed $id): void
     {
         $this->id = $id;
     }
@@ -313,7 +313,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: NotNull | Numeric | Unsigned
      * @return mixed
      */
-    public function getTemplateId()
+    public function getTemplateId(): mixed
     {
         return $this->templateId;
     }
@@ -325,7 +325,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $templateId
      * @return void
      */
-    public function setTemplateId($templateId)
+    public function setTemplateId(mixed $templateId): void
     {
         $this->templateId = $templateId;
     }
@@ -336,7 +336,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
-    public function getUuid()
+    public function getUuid(): mixed
     {
         return $this->uuid;
     }
@@ -348,7 +348,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $uuid
      * @return void
      */
-    public function setUuid($uuid)
+    public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
     }
@@ -359,7 +359,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: NotNull | Size(500) | Type(2)
      * @return mixed
      */
-    public function getFrom()
+    public function getFrom(): mixed
     {
         return $this->from;
     }
@@ -371,7 +371,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $from
      * @return void
      */
-    public function setFrom($from)
+    public function setFrom(mixed $from): void
     {
         $this->from = $from;
     }
@@ -382,7 +382,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: NotNull | Type(6)
      * @return mixed
      */
-    public function getTo()
+    public function getTo(): mixed
     {
         return $this->to;
     }
@@ -394,7 +394,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $to
      * @return void
      */
-    public function setTo($to)
+    public function setTo(mixed $to): void
     {
         $this->to = $to;
     }
@@ -405,7 +405,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: Type(6)
      * @return mixed
      */
-    public function getCc()
+    public function getCc(): mixed
     {
         return $this->cc;
     }
@@ -417,7 +417,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $cc
      * @return void
      */
-    public function setCc($cc)
+    public function setCc(mixed $cc): void
     {
         $this->cc = $cc;
     }
@@ -428,7 +428,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: Type(6)
      * @return mixed
      */
-    public function getBcc()
+    public function getBcc(): mixed
     {
         return $this->bcc;
     }
@@ -440,7 +440,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $bcc
      * @return void
      */
-    public function setBcc($bcc)
+    public function setBcc(mixed $bcc): void
     {
         $this->bcc = $bcc;
     }
@@ -451,7 +451,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: Type(6)
      * @return mixed
      */
-    public function getReadReceiptTo()
+    public function getReadReceiptTo(): mixed
     {
         return $this->readReceiptTo;
     }
@@ -463,7 +463,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $readReceiptTo
      * @return void
      */
-    public function setReadReceiptTo($readReceiptTo)
+    public function setReadReceiptTo(mixed $readReceiptTo): void
     {
         $this->readReceiptTo = $readReceiptTo;
     }
@@ -474,7 +474,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
      */
-    public function getSubject()
+    public function getSubject(): mixed
     {
         return $this->subject;
     }
@@ -486,7 +486,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $subject
      * @return void
      */
-    public function setSubject($subject)
+    public function setSubject(mixed $subject): void
     {
         $this->subject = $subject;
     }
@@ -497,7 +497,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: NotNull | Type(23)
      * @return mixed
      */
-    public function getContent()
+    public function getContent(): mixed
     {
         return $this->content;
     }
@@ -509,7 +509,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $content
      * @return void
      */
-    public function setContent($content)
+    public function setContent(mixed $content): void
     {
         $this->content = $content;
     }
@@ -520,7 +520,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: Type(23)
      * @return mixed
      */
-    public function getMeta()
+    public function getMeta(): mixed
     {
         return $this->meta;
     }
@@ -532,7 +532,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $meta
      * @return void
      */
-    public function setMeta($meta)
+    public function setMeta(mixed $meta): void
     {
         $this->meta = $meta;
     }
@@ -543,7 +543,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: Size(255) | Type(2)
      * @return mixed
      */
-    public function getViewPath()
+    public function getViewPath(): mixed
     {
         return $this->viewPath;
     }
@@ -555,7 +555,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $viewPath
      * @return void
      */
-    public function setViewPath($viewPath)
+    public function setViewPath(mixed $viewPath): void
     {
         $this->viewPath = $viewPath;
     }
@@ -566,7 +566,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: NotNull | Numeric | Unsigned | Type(26)
      * @return mixed
      */
-    public function getSent()
+    public function getSent(): mixed
     {
         return $this->sent;
     }
@@ -578,7 +578,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $sent
      * @return void
      */
-    public function setSent($sent)
+    public function setSent(mixed $sent): void
     {
         $this->sent = $sent;
     }
@@ -589,7 +589,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getSentAt()
+    public function getSentAt(): mixed
     {
         return $this->sentAt;
     }
@@ -601,7 +601,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $sentAt
      * @return void
      */
-    public function setSentAt($sentAt)
+    public function setSentAt(mixed $sentAt): void
     {
         $this->sentAt = $sentAt;
     }
@@ -612,7 +612,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getSentBy()
+    public function getSentBy(): mixed
     {
         return $this->sentBy;
     }
@@ -624,7 +624,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $sentBy
      * @return void
      */
-    public function setSentBy($sentBy)
+    public function setSentBy(mixed $sentBy): void
     {
         $this->sentBy = $sentBy;
     }
@@ -635,7 +635,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getSentAs()
+    public function getSentAs(): mixed
     {
         return $this->sentAs;
     }
@@ -647,7 +647,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $sentAs
      * @return void
      */
-    public function setSentAs($sentAs)
+    public function setSentAs(mixed $sentAs): void
     {
         $this->sentAs = $sentAs;
     }
@@ -658,7 +658,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: NotNull | Numeric | Unsigned | Type(26)
      * @return mixed
      */
-    public function getDeleted()
+    public function getDeleted(): mixed
     {
         return $this->deleted;
     }
@@ -670,7 +670,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $deleted
      * @return void
      */
-    public function setDeleted($deleted)
+    public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
     }
@@ -681,7 +681,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): mixed
     {
         return $this->createdAt;
     }
@@ -693,7 +693,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $createdAt
      * @return void
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -704,7 +704,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedBy()
+    public function getCreatedBy(): mixed
     {
         return $this->createdBy;
     }
@@ -716,7 +716,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $createdBy
      * @return void
      */
-    public function setCreatedBy($createdBy)
+    public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
     }
@@ -727,7 +727,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedAs()
+    public function getCreatedAs(): mixed
     {
         return $this->createdAs;
     }
@@ -739,7 +739,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $createdAs
      * @return void
      */
-    public function setCreatedAs($createdAs)
+    public function setCreatedAs(mixed $createdAs): void
     {
         $this->createdAs = $createdAs;
     }
@@ -750,7 +750,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): mixed
     {
         return $this->updatedAt;
     }
@@ -762,7 +762,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $updatedAt
      * @return void
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -773,7 +773,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedBy()
+    public function getUpdatedBy(): mixed
     {
         return $this->updatedBy;
     }
@@ -785,7 +785,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $updatedBy
      * @return void
      */
-    public function setUpdatedBy($updatedBy)
+    public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
     }
@@ -796,7 +796,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedAs()
+    public function getUpdatedAs(): mixed
     {
         return $this->updatedAs;
     }
@@ -808,7 +808,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $updatedAs
      * @return void
      */
-    public function setUpdatedAs($updatedAs)
+    public function setUpdatedAs(mixed $updatedAs): void
     {
         $this->updatedAs = $updatedAs;
     }
@@ -819,7 +819,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getDeletedAt()
+    public function getDeletedAt(): mixed
     {
         return $this->deletedAt;
     }
@@ -831,7 +831,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $deletedAt
      * @return void
      */
-    public function setDeletedAt($deletedAt)
+    public function setDeletedAt(mixed $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
     }
@@ -842,7 +842,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedBy()
+    public function getDeletedBy(): mixed
     {
         return $this->deletedBy;
     }
@@ -854,7 +854,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $deletedBy
      * @return void
      */
-    public function setDeletedBy($deletedBy)
+    public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;
     }
@@ -865,7 +865,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedAs()
+    public function getDeletedAs(): mixed
     {
         return $this->deletedAs;
     }
@@ -877,7 +877,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $deletedAs
      * @return void
      */
-    public function setDeletedAs($deletedAs)
+    public function setDeletedAs(mixed $deletedAs): void
     {
         $this->deletedAs = $deletedAs;
     }
@@ -888,7 +888,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getRestoredAt()
+    public function getRestoredAt(): mixed
     {
         return $this->restoredAt;
     }
@@ -900,7 +900,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $restoredAt
      * @return void
      */
-    public function setRestoredAt($restoredAt)
+    public function setRestoredAt(mixed $restoredAt): void
     {
         $this->restoredAt = $restoredAt;
     }
@@ -911,7 +911,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getRestoredBy()
+    public function getRestoredBy(): mixed
     {
         return $this->restoredBy;
     }
@@ -923,7 +923,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $restoredBy
      * @return void
      */
-    public function setRestoredBy($restoredBy)
+    public function setRestoredBy(mixed $restoredBy): void
     {
         $this->restoredBy = $restoredBy;
     }
@@ -934,7 +934,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getRestoredAs()
+    public function getRestoredAs(): mixed
     {
         return $this->restoredAs;
     }
@@ -946,7 +946,7 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * @param mixed $restoredAs
      * @return void
      */
-    public function setRestoredAs($restoredAs)
+    public function setRestoredAs(mixed $restoredAs): void
     {
         $this->restoredAs = $restoredAs;
     }

@@ -122,126 +122,126 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
      * @var mixed
      */
-    public $id = null;
+    public mixed $id = null;
         
     /**
      * Column: site_id
      * Attributes: NotNull | Numeric | Unsigned
      * @var mixed
      */
-    public $siteId = null;
+    public mixed $siteId = null;
         
     /**
      * Column: lang_id
      * Attributes: NotNull | Numeric | Unsigned
      * @var mixed
      */
-    public $langId = null;
+    public mixed $langId = null;
         
     /**
      * Column: name
      * Attributes: NotNull | Size(255) | Type(2)
      * @var mixed
      */
-    public $name = null;
+    public mixed $name = null;
         
     /**
      * Column: index
      * Attributes: NotNull | Size(255) | Type(2)
      * @var mixed
      */
-    public $index = null;
+    public mixed $index = null;
         
     /**
      * Column: description
      * Attributes: Type(23)
      * @var mixed
      */
-    public $description = null;
+    public mixed $description = null;
         
     /**
      * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Type(26)
      * @var mixed
      */
-    public $deleted = 0;
+    public mixed $deleted = 0;
         
     /**
      * Column: created_at
      * Attributes: NotNull | Type(4)
      * @var mixed
      */
-    public $createdAt = null;
+    public mixed $createdAt = null;
         
     /**
      * Column: created_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $createdBy = null;
+    public mixed $createdBy = null;
         
     /**
      * Column: created_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $createdAs = null;
+    public mixed $createdAs = null;
         
     /**
      * Column: updated_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $updatedAt = null;
+    public mixed $updatedAt = null;
         
     /**
      * Column: updated_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $updatedBy = null;
+    public mixed $updatedBy = null;
         
     /**
      * Column: updated_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $updatedAs = null;
+    public mixed $updatedAs = null;
         
     /**
      * Column: deleted_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $deletedAt = null;
+    public mixed $deletedAt = null;
         
     /**
      * Column: deleted_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $deletedAs = null;
+    public mixed $deletedAs = null;
         
     /**
      * Column: deleted_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $deletedBy = null;
+    public mixed $deletedBy = null;
         
     /**
      * Column: restored_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $restoredAt = null;
+    public mixed $restoredAt = null;
         
     /**
      * Column: restored_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $restoredBy = null;
+    public mixed $restoredBy = null;
     
     /**
      * Returns the value of field id
@@ -249,7 +249,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
      * @return mixed
      */
-    public function getId()
+    public function getId(): mixed
     {
         return $this->id;
     }
@@ -261,7 +261,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * @param mixed $id
      * @return void
      */
-    public function setId($id)
+    public function setId(mixed $id): void
     {
         $this->id = $id;
     }
@@ -272,7 +272,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * Attributes: NotNull | Numeric | Unsigned
      * @return mixed
      */
-    public function getSiteId()
+    public function getSiteId(): mixed
     {
         return $this->siteId;
     }
@@ -284,7 +284,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * @param mixed $siteId
      * @return void
      */
-    public function setSiteId($siteId)
+    public function setSiteId(mixed $siteId): void
     {
         $this->siteId = $siteId;
     }
@@ -295,7 +295,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * Attributes: NotNull | Numeric | Unsigned
      * @return mixed
      */
-    public function getLangId()
+    public function getLangId(): mixed
     {
         return $this->langId;
     }
@@ -307,7 +307,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * @param mixed $langId
      * @return void
      */
-    public function setLangId($langId)
+    public function setLangId(mixed $langId): void
     {
         $this->langId = $langId;
     }
@@ -318,7 +318,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
      */
-    public function getName()
+    public function getName(): mixed
     {
         return $this->name;
     }
@@ -330,7 +330,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * @param mixed $name
      * @return void
      */
-    public function setName($name)
+    public function setName(mixed $name): void
     {
         $this->name = $name;
     }
@@ -341,7 +341,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
      */
-    public function getIndex()
+    public function getIndex(): mixed
     {
         return $this->index;
     }
@@ -353,7 +353,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * @param mixed $index
      * @return void
      */
-    public function setIndex($index)
+    public function setIndex(mixed $index): void
     {
         $this->index = $index;
     }
@@ -364,7 +364,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * Attributes: Type(23)
      * @return mixed
      */
-    public function getDescription()
+    public function getDescription(): mixed
     {
         return $this->description;
     }
@@ -376,7 +376,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * @param mixed $description
      * @return void
      */
-    public function setDescription($description)
+    public function setDescription(mixed $description): void
     {
         $this->description = $description;
     }
@@ -387,7 +387,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * Attributes: NotNull | Numeric | Unsigned | Type(26)
      * @return mixed
      */
-    public function getDeleted()
+    public function getDeleted(): mixed
     {
         return $this->deleted;
     }
@@ -399,7 +399,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * @param mixed $deleted
      * @return void
      */
-    public function setDeleted($deleted)
+    public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
     }
@@ -410,7 +410,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): mixed
     {
         return $this->createdAt;
     }
@@ -422,7 +422,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * @param mixed $createdAt
      * @return void
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -433,7 +433,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedBy()
+    public function getCreatedBy(): mixed
     {
         return $this->createdBy;
     }
@@ -445,7 +445,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * @param mixed $createdBy
      * @return void
      */
-    public function setCreatedBy($createdBy)
+    public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
     }
@@ -456,7 +456,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedAs()
+    public function getCreatedAs(): mixed
     {
         return $this->createdAs;
     }
@@ -468,7 +468,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * @param mixed $createdAs
      * @return void
      */
-    public function setCreatedAs($createdAs)
+    public function setCreatedAs(mixed $createdAs): void
     {
         $this->createdAs = $createdAs;
     }
@@ -479,7 +479,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): mixed
     {
         return $this->updatedAt;
     }
@@ -491,7 +491,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * @param mixed $updatedAt
      * @return void
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -502,7 +502,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedBy()
+    public function getUpdatedBy(): mixed
     {
         return $this->updatedBy;
     }
@@ -514,7 +514,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * @param mixed $updatedBy
      * @return void
      */
-    public function setUpdatedBy($updatedBy)
+    public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
     }
@@ -525,7 +525,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedAs()
+    public function getUpdatedAs(): mixed
     {
         return $this->updatedAs;
     }
@@ -537,7 +537,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * @param mixed $updatedAs
      * @return void
      */
-    public function setUpdatedAs($updatedAs)
+    public function setUpdatedAs(mixed $updatedAs): void
     {
         $this->updatedAs = $updatedAs;
     }
@@ -548,7 +548,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getDeletedAt()
+    public function getDeletedAt(): mixed
     {
         return $this->deletedAt;
     }
@@ -560,7 +560,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * @param mixed $deletedAt
      * @return void
      */
-    public function setDeletedAt($deletedAt)
+    public function setDeletedAt(mixed $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
     }
@@ -571,7 +571,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedAs()
+    public function getDeletedAs(): mixed
     {
         return $this->deletedAs;
     }
@@ -583,7 +583,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * @param mixed $deletedAs
      * @return void
      */
-    public function setDeletedAs($deletedAs)
+    public function setDeletedAs(mixed $deletedAs): void
     {
         $this->deletedAs = $deletedAs;
     }
@@ -594,7 +594,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedBy()
+    public function getDeletedBy(): mixed
     {
         return $this->deletedBy;
     }
@@ -606,7 +606,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * @param mixed $deletedBy
      * @return void
      */
-    public function setDeletedBy($deletedBy)
+    public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;
     }
@@ -617,7 +617,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getRestoredAt()
+    public function getRestoredAt(): mixed
     {
         return $this->restoredAt;
     }
@@ -629,7 +629,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * @param mixed $restoredAt
      * @return void
      */
-    public function setRestoredAt($restoredAt)
+    public function setRestoredAt(mixed $restoredAt): void
     {
         $this->restoredAt = $restoredAt;
     }
@@ -640,7 +640,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getRestoredBy()
+    public function getRestoredBy(): mixed
     {
         return $this->restoredBy;
     }
@@ -652,7 +652,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * @param mixed $restoredBy
      * @return void
      */
-    public function setRestoredBy($restoredBy)
+    public function setRestoredBy(mixed $restoredBy): void
     {
         $this->restoredBy = $restoredBy;
     }

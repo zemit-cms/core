@@ -123,119 +123,119 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
      * @var mixed
      */
-    public $id = null;
+    public mixed $id = null;
         
     /**
      * Column: uuid
      * Attributes: NotNull | Size(36) | Type(5)
      * @var mixed
      */
-    public $uuid = null;
+    public mixed $uuid = null;
         
     /**
      * Column: email
      * Attributes: NotNull | Size(255) | Type(2)
      * @var mixed
      */
-    public $email = null;
+    public mixed $email = null;
         
     /**
      * Column: password
      * Attributes: Size(255) | Type(2)
      * @var mixed
      */
-    public $password = null;
+    public mixed $password = null;
         
     /**
      * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Type(26)
      * @var mixed
      */
-    public $deleted = 0;
+    public mixed $deleted = 0;
         
     /**
      * Column: created_at
      * Attributes: NotNull | Type(4)
      * @var mixed
      */
-    public $createdAt = null;
+    public mixed $createdAt = null;
         
     /**
      * Column: created_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $createdBy = null;
+    public mixed $createdBy = null;
         
     /**
      * Column: created_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $createdAs = null;
+    public mixed $createdAs = null;
         
     /**
      * Column: updated_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $updatedAt = null;
+    public mixed $updatedAt = null;
         
     /**
      * Column: updated_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $updatedBy = null;
+    public mixed $updatedBy = null;
         
     /**
      * Column: updated_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $updatedAs = null;
+    public mixed $updatedAs = null;
         
     /**
      * Column: deleted_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $deletedAt = null;
+    public mixed $deletedAt = null;
         
     /**
      * Column: deleted_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $deletedAs = null;
+    public mixed $deletedAs = null;
         
     /**
      * Column: deleted_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $deletedBy = null;
+    public mixed $deletedBy = null;
         
     /**
      * Column: restored_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $restoredAt = null;
+    public mixed $restoredAt = null;
         
     /**
      * Column: restored_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $restoredBy = null;
+    public mixed $restoredBy = null;
         
     /**
      * Column: restored_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $restoredAs = null;
+    public mixed $restoredAs = null;
     
     /**
      * Returns the value of field id
@@ -243,7 +243,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
      * @return mixed
      */
-    public function getId()
+    public function getId(): mixed
     {
         return $this->id;
     }
@@ -255,7 +255,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * @param mixed $id
      * @return void
      */
-    public function setId($id)
+    public function setId(mixed $id): void
     {
         $this->id = $id;
     }
@@ -266,7 +266,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
-    public function getUuid()
+    public function getUuid(): mixed
     {
         return $this->uuid;
     }
@@ -278,7 +278,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * @param mixed $uuid
      * @return void
      */
-    public function setUuid($uuid)
+    public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
     }
@@ -289,7 +289,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
      */
-    public function getEmail()
+    public function getEmail(): mixed
     {
         return $this->email;
     }
@@ -301,7 +301,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * @param mixed $email
      * @return void
      */
-    public function setEmail($email)
+    public function setEmail(mixed $email): void
     {
         $this->email = $email;
     }
@@ -312,7 +312,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * Attributes: Size(255) | Type(2)
      * @return mixed
      */
-    public function getPassword()
+    public function getPassword(): mixed
     {
         return $this->password;
     }
@@ -324,7 +324,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * @param mixed $password
      * @return void
      */
-    public function setPassword($password)
+    public function setPassword(mixed $password): void
     {
         $this->password = $password;
     }
@@ -335,7 +335,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * Attributes: NotNull | Numeric | Unsigned | Type(26)
      * @return mixed
      */
-    public function getDeleted()
+    public function getDeleted(): mixed
     {
         return $this->deleted;
     }
@@ -347,7 +347,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * @param mixed $deleted
      * @return void
      */
-    public function setDeleted($deleted)
+    public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
     }
@@ -358,7 +358,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): mixed
     {
         return $this->createdAt;
     }
@@ -370,7 +370,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * @param mixed $createdAt
      * @return void
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -381,7 +381,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedBy()
+    public function getCreatedBy(): mixed
     {
         return $this->createdBy;
     }
@@ -393,7 +393,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * @param mixed $createdBy
      * @return void
      */
-    public function setCreatedBy($createdBy)
+    public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
     }
@@ -404,7 +404,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedAs()
+    public function getCreatedAs(): mixed
     {
         return $this->createdAs;
     }
@@ -416,7 +416,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * @param mixed $createdAs
      * @return void
      */
-    public function setCreatedAs($createdAs)
+    public function setCreatedAs(mixed $createdAs): void
     {
         $this->createdAs = $createdAs;
     }
@@ -427,7 +427,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): mixed
     {
         return $this->updatedAt;
     }
@@ -439,7 +439,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * @param mixed $updatedAt
      * @return void
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -450,7 +450,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedBy()
+    public function getUpdatedBy(): mixed
     {
         return $this->updatedBy;
     }
@@ -462,7 +462,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * @param mixed $updatedBy
      * @return void
      */
-    public function setUpdatedBy($updatedBy)
+    public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
     }
@@ -473,7 +473,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedAs()
+    public function getUpdatedAs(): mixed
     {
         return $this->updatedAs;
     }
@@ -485,7 +485,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * @param mixed $updatedAs
      * @return void
      */
-    public function setUpdatedAs($updatedAs)
+    public function setUpdatedAs(mixed $updatedAs): void
     {
         $this->updatedAs = $updatedAs;
     }
@@ -496,7 +496,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getDeletedAt()
+    public function getDeletedAt(): mixed
     {
         return $this->deletedAt;
     }
@@ -508,7 +508,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * @param mixed $deletedAt
      * @return void
      */
-    public function setDeletedAt($deletedAt)
+    public function setDeletedAt(mixed $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
     }
@@ -519,7 +519,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedAs()
+    public function getDeletedAs(): mixed
     {
         return $this->deletedAs;
     }
@@ -531,7 +531,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * @param mixed $deletedAs
      * @return void
      */
-    public function setDeletedAs($deletedAs)
+    public function setDeletedAs(mixed $deletedAs): void
     {
         $this->deletedAs = $deletedAs;
     }
@@ -542,7 +542,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedBy()
+    public function getDeletedBy(): mixed
     {
         return $this->deletedBy;
     }
@@ -554,7 +554,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * @param mixed $deletedBy
      * @return void
      */
-    public function setDeletedBy($deletedBy)
+    public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;
     }
@@ -565,7 +565,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getRestoredAt()
+    public function getRestoredAt(): mixed
     {
         return $this->restoredAt;
     }
@@ -577,7 +577,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * @param mixed $restoredAt
      * @return void
      */
-    public function setRestoredAt($restoredAt)
+    public function setRestoredAt(mixed $restoredAt): void
     {
         $this->restoredAt = $restoredAt;
     }
@@ -588,7 +588,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getRestoredBy()
+    public function getRestoredBy(): mixed
     {
         return $this->restoredBy;
     }
@@ -600,7 +600,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * @param mixed $restoredBy
      * @return void
      */
-    public function setRestoredBy($restoredBy)
+    public function setRestoredBy(mixed $restoredBy): void
     {
         $this->restoredBy = $restoredBy;
     }
@@ -611,7 +611,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getRestoredAs()
+    public function getRestoredAs(): mixed
     {
         return $this->restoredAs;
     }
@@ -623,7 +623,7 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * @param mixed $restoredAs
      * @return void
      */
-    public function setRestoredAs($restoredAs)
+    public function setRestoredAs(mixed $restoredAs): void
     {
         $this->restoredAs = $restoredAs;
     }

@@ -71,147 +71,147 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
      * @var mixed
      */
-    public $id = null;
+    public mixed $id = null;
         
     /**
      * Column: user_id
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $userId = null;
+    public mixed $userId = null;
         
     /**
      * Column: as_user_id
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $asUserId = null;
+    public mixed $asUserId = null;
         
     /**
      * Column: key
      * Attributes: NotNull | Size(60) | Type(2)
      * @var mixed
      */
-    public $key = null;
+    public mixed $key = null;
         
     /**
      * Column: token
      * Attributes: NotNull | Size(128) | Type(2)
      * @var mixed
      */
-    public $token = null;
+    public mixed $token = null;
         
     /**
      * Column: jwt
      * Attributes: Type(6)
      * @var mixed
      */
-    public $jwt = null;
+    public mixed $jwt = null;
         
     /**
      * Column: meta
      * Attributes: Type(6)
      * @var mixed
      */
-    public $meta = null;
+    public mixed $meta = null;
         
     /**
      * Column: date
      * Attributes: NotNull | Type(4)
      * @var mixed
      */
-    public $date = null;
+    public mixed $date = null;
         
     /**
      * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Type(26)
      * @var mixed
      */
-    public $deleted = 0;
+    public mixed $deleted = 0;
         
     /**
      * Column: created_at
      * Attributes: NotNull | Type(4)
      * @var mixed
      */
-    public $createdAt = null;
+    public mixed $createdAt = null;
         
     /**
      * Column: created_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $createdBy = null;
+    public mixed $createdBy = null;
         
     /**
      * Column: created_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $createdAs = null;
+    public mixed $createdAs = null;
         
     /**
      * Column: updated_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $updatedAt = null;
+    public mixed $updatedAt = null;
         
     /**
      * Column: updated_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $updatedBy = null;
+    public mixed $updatedBy = null;
         
     /**
      * Column: updated_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $updatedAs = null;
+    public mixed $updatedAs = null;
         
     /**
      * Column: deleted_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $deletedAt = null;
+    public mixed $deletedAt = null;
         
     /**
      * Column: deleted_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $deletedBy = null;
+    public mixed $deletedBy = null;
         
     /**
      * Column: deleted_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $deletedAs = null;
+    public mixed $deletedAs = null;
         
     /**
      * Column: restored_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $restoredAt = null;
+    public mixed $restoredAt = null;
         
     /**
      * Column: restored_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $restoredBy = null;
+    public mixed $restoredBy = null;
         
     /**
      * Column: restored_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $restoredAs = null;
+    public mixed $restoredAs = null;
     
     /**
      * Returns the value of field id
@@ -219,7 +219,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
      * @return mixed
      */
-    public function getId()
+    public function getId(): mixed
     {
         return $this->id;
     }
@@ -231,7 +231,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * @param mixed $id
      * @return void
      */
-    public function setId($id)
+    public function setId(mixed $id): void
     {
         $this->id = $id;
     }
@@ -242,7 +242,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUserId()
+    public function getUserId(): mixed
     {
         return $this->userId;
     }
@@ -254,7 +254,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * @param mixed $userId
      * @return void
      */
-    public function setUserId($userId)
+    public function setUserId(mixed $userId): void
     {
         $this->userId = $userId;
     }
@@ -265,7 +265,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getAsUserId()
+    public function getAsUserId(): mixed
     {
         return $this->asUserId;
     }
@@ -277,7 +277,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * @param mixed $asUserId
      * @return void
      */
-    public function setAsUserId($asUserId)
+    public function setAsUserId(mixed $asUserId): void
     {
         $this->asUserId = $asUserId;
     }
@@ -288,7 +288,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * Attributes: NotNull | Size(60) | Type(2)
      * @return mixed
      */
-    public function getKey()
+    public function getKey(): mixed
     {
         return $this->key;
     }
@@ -300,7 +300,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * @param mixed $key
      * @return void
      */
-    public function setKey($key)
+    public function setKey(mixed $key): void
     {
         $this->key = $key;
     }
@@ -311,7 +311,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * Attributes: NotNull | Size(128) | Type(2)
      * @return mixed
      */
-    public function getToken()
+    public function getToken(): mixed
     {
         return $this->token;
     }
@@ -323,7 +323,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * @param mixed $token
      * @return void
      */
-    public function setToken($token)
+    public function setToken(mixed $token): void
     {
         $this->token = $token;
     }
@@ -334,7 +334,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * Attributes: Type(6)
      * @return mixed
      */
-    public function getJwt()
+    public function getJwt(): mixed
     {
         return $this->jwt;
     }
@@ -346,7 +346,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * @param mixed $jwt
      * @return void
      */
-    public function setJwt($jwt)
+    public function setJwt(mixed $jwt): void
     {
         $this->jwt = $jwt;
     }
@@ -357,7 +357,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * Attributes: Type(6)
      * @return mixed
      */
-    public function getMeta()
+    public function getMeta(): mixed
     {
         return $this->meta;
     }
@@ -369,7 +369,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * @param mixed $meta
      * @return void
      */
-    public function setMeta($meta)
+    public function setMeta(mixed $meta): void
     {
         $this->meta = $meta;
     }
@@ -380,7 +380,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
-    public function getDate()
+    public function getDate(): mixed
     {
         return $this->date;
     }
@@ -392,7 +392,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * @param mixed $date
      * @return void
      */
-    public function setDate($date)
+    public function setDate(mixed $date): void
     {
         $this->date = $date;
     }
@@ -403,7 +403,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * Attributes: NotNull | Numeric | Unsigned | Type(26)
      * @return mixed
      */
-    public function getDeleted()
+    public function getDeleted(): mixed
     {
         return $this->deleted;
     }
@@ -415,7 +415,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * @param mixed $deleted
      * @return void
      */
-    public function setDeleted($deleted)
+    public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
     }
@@ -426,7 +426,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): mixed
     {
         return $this->createdAt;
     }
@@ -438,7 +438,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * @param mixed $createdAt
      * @return void
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -449,7 +449,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedBy()
+    public function getCreatedBy(): mixed
     {
         return $this->createdBy;
     }
@@ -461,7 +461,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * @param mixed $createdBy
      * @return void
      */
-    public function setCreatedBy($createdBy)
+    public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
     }
@@ -472,7 +472,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedAs()
+    public function getCreatedAs(): mixed
     {
         return $this->createdAs;
     }
@@ -484,7 +484,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * @param mixed $createdAs
      * @return void
      */
-    public function setCreatedAs($createdAs)
+    public function setCreatedAs(mixed $createdAs): void
     {
         $this->createdAs = $createdAs;
     }
@@ -495,7 +495,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): mixed
     {
         return $this->updatedAt;
     }
@@ -507,7 +507,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * @param mixed $updatedAt
      * @return void
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -518,7 +518,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedBy()
+    public function getUpdatedBy(): mixed
     {
         return $this->updatedBy;
     }
@@ -530,7 +530,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * @param mixed $updatedBy
      * @return void
      */
-    public function setUpdatedBy($updatedBy)
+    public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
     }
@@ -541,7 +541,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedAs()
+    public function getUpdatedAs(): mixed
     {
         return $this->updatedAs;
     }
@@ -553,7 +553,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * @param mixed $updatedAs
      * @return void
      */
-    public function setUpdatedAs($updatedAs)
+    public function setUpdatedAs(mixed $updatedAs): void
     {
         $this->updatedAs = $updatedAs;
     }
@@ -564,7 +564,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getDeletedAt()
+    public function getDeletedAt(): mixed
     {
         return $this->deletedAt;
     }
@@ -576,7 +576,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * @param mixed $deletedAt
      * @return void
      */
-    public function setDeletedAt($deletedAt)
+    public function setDeletedAt(mixed $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
     }
@@ -587,7 +587,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedBy()
+    public function getDeletedBy(): mixed
     {
         return $this->deletedBy;
     }
@@ -599,7 +599,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * @param mixed $deletedBy
      * @return void
      */
-    public function setDeletedBy($deletedBy)
+    public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;
     }
@@ -610,7 +610,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedAs()
+    public function getDeletedAs(): mixed
     {
         return $this->deletedAs;
     }
@@ -622,7 +622,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * @param mixed $deletedAs
      * @return void
      */
-    public function setDeletedAs($deletedAs)
+    public function setDeletedAs(mixed $deletedAs): void
     {
         $this->deletedAs = $deletedAs;
     }
@@ -633,7 +633,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getRestoredAt()
+    public function getRestoredAt(): mixed
     {
         return $this->restoredAt;
     }
@@ -645,7 +645,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * @param mixed $restoredAt
      * @return void
      */
-    public function setRestoredAt($restoredAt)
+    public function setRestoredAt(mixed $restoredAt): void
     {
         $this->restoredAt = $restoredAt;
     }
@@ -656,7 +656,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getRestoredBy()
+    public function getRestoredBy(): mixed
     {
         return $this->restoredBy;
     }
@@ -668,7 +668,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * @param mixed $restoredBy
      * @return void
      */
-    public function setRestoredBy($restoredBy)
+    public function setRestoredBy(mixed $restoredBy): void
     {
         $this->restoredBy = $restoredBy;
     }
@@ -679,7 +679,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getRestoredAs()
+    public function getRestoredAs(): mixed
     {
         return $this->restoredAs;
     }
@@ -691,7 +691,7 @@ abstract class SessionAbstract extends AbstractModel implements SessionAbstractI
      * @param mixed $restoredAs
      * @return void
      */
-    public function setRestoredAs($restoredAs)
+    public function setRestoredAs(mixed $restoredAs): void
     {
         $this->restoredAs = $restoredAs;
     }

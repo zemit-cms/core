@@ -33,28 +33,28 @@ abstract class PhalconMigrationsAbstract extends AbstractModel implements Phalco
      * Attributes: First | NotNull | Numeric | Unsigned | AutoIncrement
      * @var mixed
      */
-    public $id = null;
+    public mixed $id = null;
         
     /**
      * Column: version
      * Attributes: Primary | NotNull | Size(255) | Type(2)
      * @var mixed
      */
-    public $version = null;
+    public mixed $version = null;
         
     /**
      * Column: start_time
      * Attributes: NotNull | Type(17)
      * @var mixed
      */
-    public $startTime = 0;
+    public mixed $startTime = 0;
         
     /**
      * Column: end_time
      * Attributes: NotNull | Type(17)
      * @var mixed
      */
-    public $endTime = 0;
+    public mixed $endTime = 0;
     
     /**
      * Returns the value of field id
@@ -62,7 +62,7 @@ abstract class PhalconMigrationsAbstract extends AbstractModel implements Phalco
      * Attributes: First | NotNull | Numeric | Unsigned | AutoIncrement
      * @return mixed
      */
-    public function getId()
+    public function getId(): mixed
     {
         return $this->id;
     }
@@ -74,7 +74,7 @@ abstract class PhalconMigrationsAbstract extends AbstractModel implements Phalco
      * @param mixed $id
      * @return void
      */
-    public function setId($id)
+    public function setId(mixed $id): void
     {
         $this->id = $id;
     }
@@ -85,7 +85,7 @@ abstract class PhalconMigrationsAbstract extends AbstractModel implements Phalco
      * Attributes: Primary | NotNull | Size(255) | Type(2)
      * @return mixed
      */
-    public function getVersion()
+    public function getVersion(): mixed
     {
         return $this->version;
     }
@@ -97,7 +97,7 @@ abstract class PhalconMigrationsAbstract extends AbstractModel implements Phalco
      * @param mixed $version
      * @return void
      */
-    public function setVersion($version)
+    public function setVersion(mixed $version): void
     {
         $this->version = $version;
     }
@@ -108,7 +108,7 @@ abstract class PhalconMigrationsAbstract extends AbstractModel implements Phalco
      * Attributes: NotNull | Type(17)
      * @return mixed
      */
-    public function getStartTime()
+    public function getStartTime(): mixed
     {
         return $this->startTime;
     }
@@ -120,7 +120,7 @@ abstract class PhalconMigrationsAbstract extends AbstractModel implements Phalco
      * @param mixed $startTime
      * @return void
      */
-    public function setStartTime($startTime)
+    public function setStartTime(mixed $startTime): void
     {
         $this->startTime = $startTime;
     }
@@ -131,7 +131,7 @@ abstract class PhalconMigrationsAbstract extends AbstractModel implements Phalco
      * Attributes: NotNull | Type(17)
      * @return mixed
      */
-    public function getEndTime()
+    public function getEndTime(): mixed
     {
         return $this->endTime;
     }
@@ -143,7 +143,7 @@ abstract class PhalconMigrationsAbstract extends AbstractModel implements Phalco
      * @param mixed $endTime
      * @return void
      */
-    public function setEndTime($endTime)
+    public function setEndTime(mixed $endTime): void
     {
         $this->endTime = $endTime;
     }

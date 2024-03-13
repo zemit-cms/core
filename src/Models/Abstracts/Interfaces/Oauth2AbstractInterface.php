@@ -56,7 +56,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
      * @return mixed
      */
-    public function getId();
+    public function getId(): mixed;
     
     /**
      * Sets the value of field id
@@ -65,7 +65,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * @param mixed $id
      * @return void
      */
-    public function setId($id);
+    public function setId(mixed $id): void;
     
     /**
      * Returns the value of field userId
@@ -73,7 +73,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * Attributes: NotNull | Numeric | Unsigned
      * @return mixed
      */
-    public function getUserId();
+    public function getUserId(): mixed;
     
     /**
      * Sets the value of field userId
@@ -82,7 +82,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * @param mixed $userId
      * @return void
      */
-    public function setUserId($userId);
+    public function setUserId(mixed $userId): void;
     
     /**
      * Returns the value of field provider
@@ -90,7 +90,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * Attributes: NotNull | Size('google','microsoft') | Type(18)
      * @return mixed
      */
-    public function getProvider();
+    public function getProvider(): mixed;
     
     /**
      * Sets the value of field provider
@@ -99,7 +99,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * @param mixed $provider
      * @return void
      */
-    public function setProvider($provider);
+    public function setProvider(mixed $provider): void;
     
     /**
      * Returns the value of field providerUuid
@@ -107,7 +107,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * Attributes: NotNull | Size(120) | Type(2)
      * @return mixed
      */
-    public function getProviderUuid();
+    public function getProviderUuid(): mixed;
     
     /**
      * Sets the value of field providerUuid
@@ -116,7 +116,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * @param mixed $providerUuid
      * @return void
      */
-    public function setProviderUuid($providerUuid);
+    public function setProviderUuid(mixed $providerUuid): void;
     
     /**
      * Returns the value of field accessToken
@@ -124,7 +124,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * Attributes: NotNull | Size(120) | Type(2)
      * @return mixed
      */
-    public function getAccessToken();
+    public function getAccessToken(): mixed;
     
     /**
      * Sets the value of field accessToken
@@ -133,7 +133,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * @param mixed $accessToken
      * @return void
      */
-    public function setAccessToken($accessToken);
+    public function setAccessToken(mixed $accessToken): void;
     
     /**
      * Returns the value of field refreshToken
@@ -141,7 +141,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * Attributes: Size(120) | Type(2)
      * @return mixed
      */
-    public function getRefreshToken();
+    public function getRefreshToken(): mixed;
     
     /**
      * Sets the value of field refreshToken
@@ -150,7 +150,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * @param mixed $refreshToken
      * @return void
      */
-    public function setRefreshToken($refreshToken);
+    public function setRefreshToken(mixed $refreshToken): void;
     
     /**
      * Returns the value of field email
@@ -158,7 +158,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * Attributes: Size(320) | Type(2)
      * @return mixed
      */
-    public function getEmail();
+    public function getEmail(): mixed;
     
     /**
      * Sets the value of field email
@@ -167,7 +167,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * @param mixed $email
      * @return void
      */
-    public function setEmail($email);
+    public function setEmail(mixed $email): void;
     
     /**
      * Returns the value of field name
@@ -175,7 +175,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * Attributes: Size(120) | Type(2)
      * @return mixed
      */
-    public function getName();
+    public function getName(): mixed;
     
     /**
      * Sets the value of field name
@@ -184,7 +184,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * @param mixed $name
      * @return void
      */
-    public function setName($name);
+    public function setName(mixed $name): void;
     
     /**
      * Returns the value of field firstName
@@ -192,7 +192,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * Attributes: Size(60) | Type(2)
      * @return mixed
      */
-    public function getFirstName();
+    public function getFirstName(): mixed;
     
     /**
      * Sets the value of field firstName
@@ -201,7 +201,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * @param mixed $firstName
      * @return void
      */
-    public function setFirstName($firstName);
+    public function setFirstName(mixed $firstName): void;
     
     /**
      * Returns the value of field lastName
@@ -209,7 +209,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * Attributes: Size(60) | Type(2)
      * @return mixed
      */
-    public function getLastName();
+    public function getLastName(): mixed;
     
     /**
      * Sets the value of field lastName
@@ -218,7 +218,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * @param mixed $lastName
      * @return void
      */
-    public function setLastName($lastName);
+    public function setLastName(mixed $lastName): void;
     
     /**
      * Returns the value of field meta
@@ -226,7 +226,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * Attributes: Type(15)
      * @return mixed
      */
-    public function getMeta();
+    public function getMeta(): mixed;
     
     /**
      * Sets the value of field meta
@@ -235,7 +235,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * @param mixed $meta
      * @return void
      */
-    public function setMeta($meta);
+    public function setMeta(mixed $meta): void;
     
     /**
      * Returns the value of field deleted
@@ -243,7 +243,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * Attributes: NotNull | Numeric | Unsigned | Type(26)
      * @return mixed
      */
-    public function getDeleted();
+    public function getDeleted(): mixed;
     
     /**
      * Sets the value of field deleted
@@ -252,7 +252,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * @param mixed $deleted
      * @return void
      */
-    public function setDeleted($deleted);
+    public function setDeleted(mixed $deleted): void;
     
     /**
      * Returns the value of field createdAt
@@ -260,7 +260,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
-    public function getCreatedAt();
+    public function getCreatedAt(): mixed;
     
     /**
      * Sets the value of field createdAt
@@ -269,7 +269,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * @param mixed $createdAt
      * @return void
      */
-    public function setCreatedAt($createdAt);
+    public function setCreatedAt(mixed $createdAt): void;
     
     /**
      * Returns the value of field createdBy
@@ -277,7 +277,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedBy();
+    public function getCreatedBy(): mixed;
     
     /**
      * Sets the value of field createdBy
@@ -286,7 +286,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * @param mixed $createdBy
      * @return void
      */
-    public function setCreatedBy($createdBy);
+    public function setCreatedBy(mixed $createdBy): void;
     
     /**
      * Returns the value of field createdAs
@@ -294,7 +294,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedAs();
+    public function getCreatedAs(): mixed;
     
     /**
      * Sets the value of field createdAs
@@ -303,7 +303,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * @param mixed $createdAs
      * @return void
      */
-    public function setCreatedAs($createdAs);
+    public function setCreatedAs(mixed $createdAs): void;
     
     /**
      * Returns the value of field updatedAt
@@ -311,7 +311,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getUpdatedAt();
+    public function getUpdatedAt(): mixed;
     
     /**
      * Sets the value of field updatedAt
@@ -320,7 +320,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * @param mixed $updatedAt
      * @return void
      */
-    public function setUpdatedAt($updatedAt);
+    public function setUpdatedAt(mixed $updatedAt): void;
     
     /**
      * Returns the value of field updatedBy
@@ -328,7 +328,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedBy();
+    public function getUpdatedBy(): mixed;
     
     /**
      * Sets the value of field updatedBy
@@ -337,7 +337,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * @param mixed $updatedBy
      * @return void
      */
-    public function setUpdatedBy($updatedBy);
+    public function setUpdatedBy(mixed $updatedBy): void;
     
     /**
      * Returns the value of field updatedAs
@@ -345,7 +345,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedAs();
+    public function getUpdatedAs(): mixed;
     
     /**
      * Sets the value of field updatedAs
@@ -354,7 +354,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * @param mixed $updatedAs
      * @return void
      */
-    public function setUpdatedAs($updatedAs);
+    public function setUpdatedAs(mixed $updatedAs): void;
     
     /**
      * Returns the value of field deletedAt
@@ -362,7 +362,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getDeletedAt();
+    public function getDeletedAt(): mixed;
     
     /**
      * Sets the value of field deletedAt
@@ -371,7 +371,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * @param mixed $deletedAt
      * @return void
      */
-    public function setDeletedAt($deletedAt);
+    public function setDeletedAt(mixed $deletedAt): void;
     
     /**
      * Returns the value of field deletedAs
@@ -379,7 +379,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedAs();
+    public function getDeletedAs(): mixed;
     
     /**
      * Sets the value of field deletedAs
@@ -388,7 +388,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * @param mixed $deletedAs
      * @return void
      */
-    public function setDeletedAs($deletedAs);
+    public function setDeletedAs(mixed $deletedAs): void;
     
     /**
      * Returns the value of field deletedBy
@@ -396,7 +396,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedBy();
+    public function getDeletedBy(): mixed;
     
     /**
      * Sets the value of field deletedBy
@@ -405,7 +405,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * @param mixed $deletedBy
      * @return void
      */
-    public function setDeletedBy($deletedBy);
+    public function setDeletedBy(mixed $deletedBy): void;
     
     /**
      * Returns the value of field restoredAt
@@ -413,7 +413,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getRestoredAt();
+    public function getRestoredAt(): mixed;
     
     /**
      * Sets the value of field restoredAt
@@ -422,7 +422,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * @param mixed $restoredAt
      * @return void
      */
-    public function setRestoredAt($restoredAt);
+    public function setRestoredAt(mixed $restoredAt): void;
     
     /**
      * Returns the value of field restoredBy
@@ -430,7 +430,7 @@ interface Oauth2AbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getRestoredBy();
+    public function getRestoredBy(): mixed;
     
     /**
      * Sets the value of field restoredBy
@@ -439,5 +439,5 @@ interface Oauth2AbstractInterface extends ModelInterface
      * @param mixed $restoredBy
      * @return void
      */
-    public function setRestoredBy($restoredBy);
+    public function setRestoredBy(mixed $restoredBy): void;
 }

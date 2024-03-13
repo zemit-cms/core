@@ -68,161 +68,161 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Type(14)
      * @var mixed
      */
-    public $id = null;
+    public mixed $id = null;
         
     /**
      * Column: audit_id
      * Attributes: NotNull | Numeric | Unsigned | Type(14)
      * @var mixed
      */
-    public $auditId = null;
+    public mixed $auditId = null;
         
     /**
      * Column: model
      * Attributes: NotNull | Size(255) | Type(2)
      * @var mixed
      */
-    public $model = null;
+    public mixed $model = null;
         
     /**
      * Column: table
      * Attributes: NotNull | Size(60) | Type(2)
      * @var mixed
      */
-    public $table = null;
+    public mixed $table = null;
         
     /**
      * Column: primary
      * Attributes: NotNull | Numeric | Unsigned
      * @var mixed
      */
-    public $primary = null;
+    public mixed $primary = null;
         
     /**
      * Column: event
      * Attributes: NotNull | Size('create','update','delete','restore','other') | Type(18)
      * @var mixed
      */
-    public $event = 'other';
+    public mixed $event = 'other';
         
     /**
      * Column: column
      * Attributes: NotNull | Size(60) | Type(2)
      * @var mixed
      */
-    public $column = null;
+    public mixed $column = null;
         
     /**
      * Column: map
      * Attributes: NotNull | Size(60) | Type(2)
      * @var mixed
      */
-    public $map = null;
+    public mixed $map = null;
         
     /**
      * Column: before
      * Attributes: Type(23)
      * @var mixed
      */
-    public $before = null;
+    public mixed $before = null;
         
     /**
      * Column: after
      * Attributes: Type(23)
      * @var mixed
      */
-    public $after = null;
+    public mixed $after = null;
         
     /**
      * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Type(26)
      * @var mixed
      */
-    public $deleted = 0;
+    public mixed $deleted = 0;
         
     /**
      * Column: created_at
      * Attributes: NotNull | Type(4)
      * @var mixed
      */
-    public $createdAt = null;
+    public mixed $createdAt = null;
         
     /**
      * Column: created_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $createdBy = null;
+    public mixed $createdBy = null;
         
     /**
      * Column: created_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $createdAs = null;
+    public mixed $createdAs = null;
         
     /**
      * Column: updated_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $updatedAt = null;
+    public mixed $updatedAt = null;
         
     /**
      * Column: updated_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $updatedBy = null;
+    public mixed $updatedBy = null;
         
     /**
      * Column: updated_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $updatedAs = null;
+    public mixed $updatedAs = null;
         
     /**
      * Column: deleted_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $deletedAt = null;
+    public mixed $deletedAt = null;
         
     /**
      * Column: deleted_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $deletedBy = null;
+    public mixed $deletedBy = null;
         
     /**
      * Column: deleted_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $deletedAs = null;
+    public mixed $deletedAs = null;
         
     /**
      * Column: restored_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $restoredAt = null;
+    public mixed $restoredAt = null;
         
     /**
      * Column: restored_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $restoredBy = null;
+    public mixed $restoredBy = null;
         
     /**
      * Column: restored_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $restoredAs = null;
+    public mixed $restoredAs = null;
     
     /**
      * Returns the value of field id
@@ -230,7 +230,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Type(14)
      * @return mixed
      */
-    public function getId()
+    public function getId(): mixed
     {
         return $this->id;
     }
@@ -242,7 +242,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * @param mixed $id
      * @return void
      */
-    public function setId($id)
+    public function setId(mixed $id): void
     {
         $this->id = $id;
     }
@@ -253,7 +253,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * Attributes: NotNull | Numeric | Unsigned | Type(14)
      * @return mixed
      */
-    public function getAuditId()
+    public function getAuditId(): mixed
     {
         return $this->auditId;
     }
@@ -265,7 +265,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * @param mixed $auditId
      * @return void
      */
-    public function setAuditId($auditId)
+    public function setAuditId(mixed $auditId): void
     {
         $this->auditId = $auditId;
     }
@@ -276,7 +276,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
      */
-    public function getModel()
+    public function getModel(): mixed
     {
         return $this->model;
     }
@@ -288,7 +288,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * @param mixed $model
      * @return void
      */
-    public function setModel($model)
+    public function setModel(mixed $model): void
     {
         $this->model = $model;
     }
@@ -299,7 +299,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * Attributes: NotNull | Size(60) | Type(2)
      * @return mixed
      */
-    public function getTable()
+    public function getTable(): mixed
     {
         return $this->table;
     }
@@ -311,7 +311,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * @param mixed $table
      * @return void
      */
-    public function setTable($table)
+    public function setTable(mixed $table): void
     {
         $this->table = $table;
     }
@@ -322,7 +322,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * Attributes: NotNull | Numeric | Unsigned
      * @return mixed
      */
-    public function getPrimary()
+    public function getPrimary(): mixed
     {
         return $this->primary;
     }
@@ -334,7 +334,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * @param mixed $primary
      * @return void
      */
-    public function setPrimary($primary)
+    public function setPrimary(mixed $primary): void
     {
         $this->primary = $primary;
     }
@@ -345,7 +345,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * Attributes: NotNull | Size('create','update','delete','restore','other') | Type(18)
      * @return mixed
      */
-    public function getEvent()
+    public function getEvent(): mixed
     {
         return $this->event;
     }
@@ -357,7 +357,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * @param mixed $event
      * @return void
      */
-    public function setEvent($event)
+    public function setEvent(mixed $event): void
     {
         $this->event = $event;
     }
@@ -368,7 +368,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * Attributes: NotNull | Size(60) | Type(2)
      * @return mixed
      */
-    public function getColumn()
+    public function getColumn(): mixed
     {
         return $this->column;
     }
@@ -380,7 +380,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * @param mixed $column
      * @return void
      */
-    public function setColumn($column)
+    public function setColumn(mixed $column): void
     {
         $this->column = $column;
     }
@@ -391,7 +391,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * Attributes: NotNull | Size(60) | Type(2)
      * @return mixed
      */
-    public function getMap()
+    public function getMap(): mixed
     {
         return $this->map;
     }
@@ -403,7 +403,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * @param mixed $map
      * @return void
      */
-    public function setMap($map)
+    public function setMap(mixed $map): void
     {
         $this->map = $map;
     }
@@ -414,7 +414,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * Attributes: Type(23)
      * @return mixed
      */
-    public function getBefore()
+    public function getBefore(): mixed
     {
         return $this->before;
     }
@@ -426,7 +426,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * @param mixed $before
      * @return void
      */
-    public function setBefore($before)
+    public function setBefore(mixed $before): void
     {
         $this->before = $before;
     }
@@ -437,7 +437,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * Attributes: Type(23)
      * @return mixed
      */
-    public function getAfter()
+    public function getAfter(): mixed
     {
         return $this->after;
     }
@@ -449,7 +449,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * @param mixed $after
      * @return void
      */
-    public function setAfter($after)
+    public function setAfter(mixed $after): void
     {
         $this->after = $after;
     }
@@ -460,7 +460,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * Attributes: NotNull | Numeric | Unsigned | Type(26)
      * @return mixed
      */
-    public function getDeleted()
+    public function getDeleted(): mixed
     {
         return $this->deleted;
     }
@@ -472,7 +472,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * @param mixed $deleted
      * @return void
      */
-    public function setDeleted($deleted)
+    public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
     }
@@ -483,7 +483,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): mixed
     {
         return $this->createdAt;
     }
@@ -495,7 +495,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * @param mixed $createdAt
      * @return void
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -506,7 +506,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedBy()
+    public function getCreatedBy(): mixed
     {
         return $this->createdBy;
     }
@@ -518,7 +518,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * @param mixed $createdBy
      * @return void
      */
-    public function setCreatedBy($createdBy)
+    public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
     }
@@ -529,7 +529,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedAs()
+    public function getCreatedAs(): mixed
     {
         return $this->createdAs;
     }
@@ -541,7 +541,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * @param mixed $createdAs
      * @return void
      */
-    public function setCreatedAs($createdAs)
+    public function setCreatedAs(mixed $createdAs): void
     {
         $this->createdAs = $createdAs;
     }
@@ -552,7 +552,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): mixed
     {
         return $this->updatedAt;
     }
@@ -564,7 +564,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * @param mixed $updatedAt
      * @return void
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -575,7 +575,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedBy()
+    public function getUpdatedBy(): mixed
     {
         return $this->updatedBy;
     }
@@ -587,7 +587,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * @param mixed $updatedBy
      * @return void
      */
-    public function setUpdatedBy($updatedBy)
+    public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
     }
@@ -598,7 +598,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedAs()
+    public function getUpdatedAs(): mixed
     {
         return $this->updatedAs;
     }
@@ -610,7 +610,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * @param mixed $updatedAs
      * @return void
      */
-    public function setUpdatedAs($updatedAs)
+    public function setUpdatedAs(mixed $updatedAs): void
     {
         $this->updatedAs = $updatedAs;
     }
@@ -621,7 +621,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getDeletedAt()
+    public function getDeletedAt(): mixed
     {
         return $this->deletedAt;
     }
@@ -633,7 +633,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * @param mixed $deletedAt
      * @return void
      */
-    public function setDeletedAt($deletedAt)
+    public function setDeletedAt(mixed $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
     }
@@ -644,7 +644,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedBy()
+    public function getDeletedBy(): mixed
     {
         return $this->deletedBy;
     }
@@ -656,7 +656,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * @param mixed $deletedBy
      * @return void
      */
-    public function setDeletedBy($deletedBy)
+    public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;
     }
@@ -667,7 +667,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedAs()
+    public function getDeletedAs(): mixed
     {
         return $this->deletedAs;
     }
@@ -679,7 +679,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * @param mixed $deletedAs
      * @return void
      */
-    public function setDeletedAs($deletedAs)
+    public function setDeletedAs(mixed $deletedAs): void
     {
         $this->deletedAs = $deletedAs;
     }
@@ -690,7 +690,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getRestoredAt()
+    public function getRestoredAt(): mixed
     {
         return $this->restoredAt;
     }
@@ -702,7 +702,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * @param mixed $restoredAt
      * @return void
      */
-    public function setRestoredAt($restoredAt)
+    public function setRestoredAt(mixed $restoredAt): void
     {
         $this->restoredAt = $restoredAt;
     }
@@ -713,7 +713,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getRestoredBy()
+    public function getRestoredBy(): mixed
     {
         return $this->restoredBy;
     }
@@ -725,7 +725,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * @param mixed $restoredBy
      * @return void
      */
-    public function setRestoredBy($restoredBy)
+    public function setRestoredBy(mixed $restoredBy): void
     {
         $this->restoredBy = $restoredBy;
     }
@@ -736,7 +736,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getRestoredAs()
+    public function getRestoredAs(): mixed
     {
         return $this->restoredAs;
     }
@@ -748,7 +748,7 @@ abstract class AuditDetailAbstract extends AbstractModel implements AuditDetailA
      * @param mixed $restoredAs
      * @return void
      */
-    public function setRestoredAs($restoredAs)
+    public function setRestoredAs(mixed $restoredAs): void
     {
         $this->restoredAs = $restoredAs;
     }

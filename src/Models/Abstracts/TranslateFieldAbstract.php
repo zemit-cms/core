@@ -74,133 +74,133 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
      * @var mixed
      */
-    public $id = null;
+    public mixed $id = null;
         
     /**
      * Column: site_id
      * Attributes: NotNull | Numeric | Unsigned
      * @var mixed
      */
-    public $siteId = null;
+    public mixed $siteId = null;
         
     /**
      * Column: lang_id
      * Attributes: NotNull | Numeric | Unsigned
      * @var mixed
      */
-    public $langId = null;
+    public mixed $langId = null;
         
     /**
      * Column: table
      * Attributes: NotNull | Size(60) | Type(5)
      * @var mixed
      */
-    public $table = null;
+    public mixed $table = null;
         
     /**
      * Column: table_id
      * Attributes: NotNull | Numeric | Unsigned
      * @var mixed
      */
-    public $tableId = null;
+    public mixed $tableId = null;
         
     /**
      * Column: field
      * Attributes: NotNull | Size(60) | Type(5)
      * @var mixed
      */
-    public $field = null;
+    public mixed $field = null;
         
     /**
      * Column: value
      * Attributes: Type(23)
      * @var mixed
      */
-    public $value = null;
+    public mixed $value = null;
         
     /**
      * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Type(26)
      * @var mixed
      */
-    public $deleted = 0;
+    public mixed $deleted = 0;
         
     /**
      * Column: created_at
      * Attributes: NotNull | Type(4)
      * @var mixed
      */
-    public $createdAt = null;
+    public mixed $createdAt = null;
         
     /**
      * Column: created_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $createdBy = null;
+    public mixed $createdBy = null;
         
     /**
      * Column: created_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $createdAs = null;
+    public mixed $createdAs = null;
         
     /**
      * Column: updated_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $updatedAt = null;
+    public mixed $updatedAt = null;
         
     /**
      * Column: updated_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $updatedBy = null;
+    public mixed $updatedBy = null;
         
     /**
      * Column: updated_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $updatedAs = null;
+    public mixed $updatedAs = null;
         
     /**
      * Column: deleted_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $deletedAt = null;
+    public mixed $deletedAt = null;
         
     /**
      * Column: deleted_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $deletedAs = null;
+    public mixed $deletedAs = null;
         
     /**
      * Column: deleted_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $deletedBy = null;
+    public mixed $deletedBy = null;
         
     /**
      * Column: restored_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $restoredAt = null;
+    public mixed $restoredAt = null;
         
     /**
      * Column: restored_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $restoredBy = null;
+    public mixed $restoredBy = null;
     
     /**
      * Returns the value of field id
@@ -208,7 +208,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
      * @return mixed
      */
-    public function getId()
+    public function getId(): mixed
     {
         return $this->id;
     }
@@ -220,7 +220,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * @param mixed $id
      * @return void
      */
-    public function setId($id)
+    public function setId(mixed $id): void
     {
         $this->id = $id;
     }
@@ -231,7 +231,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * Attributes: NotNull | Numeric | Unsigned
      * @return mixed
      */
-    public function getSiteId()
+    public function getSiteId(): mixed
     {
         return $this->siteId;
     }
@@ -243,7 +243,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * @param mixed $siteId
      * @return void
      */
-    public function setSiteId($siteId)
+    public function setSiteId(mixed $siteId): void
     {
         $this->siteId = $siteId;
     }
@@ -254,7 +254,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * Attributes: NotNull | Numeric | Unsigned
      * @return mixed
      */
-    public function getLangId()
+    public function getLangId(): mixed
     {
         return $this->langId;
     }
@@ -266,7 +266,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * @param mixed $langId
      * @return void
      */
-    public function setLangId($langId)
+    public function setLangId(mixed $langId): void
     {
         $this->langId = $langId;
     }
@@ -277,7 +277,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * Attributes: NotNull | Size(60) | Type(5)
      * @return mixed
      */
-    public function getTable()
+    public function getTable(): mixed
     {
         return $this->table;
     }
@@ -289,7 +289,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * @param mixed $table
      * @return void
      */
-    public function setTable($table)
+    public function setTable(mixed $table): void
     {
         $this->table = $table;
     }
@@ -300,7 +300,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * Attributes: NotNull | Numeric | Unsigned
      * @return mixed
      */
-    public function getTableId()
+    public function getTableId(): mixed
     {
         return $this->tableId;
     }
@@ -312,7 +312,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * @param mixed $tableId
      * @return void
      */
-    public function setTableId($tableId)
+    public function setTableId(mixed $tableId): void
     {
         $this->tableId = $tableId;
     }
@@ -323,7 +323,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * Attributes: NotNull | Size(60) | Type(5)
      * @return mixed
      */
-    public function getField()
+    public function getField(): mixed
     {
         return $this->field;
     }
@@ -335,7 +335,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * @param mixed $field
      * @return void
      */
-    public function setField($field)
+    public function setField(mixed $field): void
     {
         $this->field = $field;
     }
@@ -346,7 +346,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * Attributes: Type(23)
      * @return mixed
      */
-    public function getValue()
+    public function getValue(): mixed
     {
         return $this->value;
     }
@@ -358,7 +358,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * @param mixed $value
      * @return void
      */
-    public function setValue($value)
+    public function setValue(mixed $value): void
     {
         $this->value = $value;
     }
@@ -369,7 +369,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * Attributes: NotNull | Numeric | Unsigned | Type(26)
      * @return mixed
      */
-    public function getDeleted()
+    public function getDeleted(): mixed
     {
         return $this->deleted;
     }
@@ -381,7 +381,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * @param mixed $deleted
      * @return void
      */
-    public function setDeleted($deleted)
+    public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
     }
@@ -392,7 +392,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): mixed
     {
         return $this->createdAt;
     }
@@ -404,7 +404,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * @param mixed $createdAt
      * @return void
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -415,7 +415,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedBy()
+    public function getCreatedBy(): mixed
     {
         return $this->createdBy;
     }
@@ -427,7 +427,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * @param mixed $createdBy
      * @return void
      */
-    public function setCreatedBy($createdBy)
+    public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
     }
@@ -438,7 +438,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedAs()
+    public function getCreatedAs(): mixed
     {
         return $this->createdAs;
     }
@@ -450,7 +450,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * @param mixed $createdAs
      * @return void
      */
-    public function setCreatedAs($createdAs)
+    public function setCreatedAs(mixed $createdAs): void
     {
         $this->createdAs = $createdAs;
     }
@@ -461,7 +461,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): mixed
     {
         return $this->updatedAt;
     }
@@ -473,7 +473,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * @param mixed $updatedAt
      * @return void
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -484,7 +484,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedBy()
+    public function getUpdatedBy(): mixed
     {
         return $this->updatedBy;
     }
@@ -496,7 +496,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * @param mixed $updatedBy
      * @return void
      */
-    public function setUpdatedBy($updatedBy)
+    public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
     }
@@ -507,7 +507,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedAs()
+    public function getUpdatedAs(): mixed
     {
         return $this->updatedAs;
     }
@@ -519,7 +519,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * @param mixed $updatedAs
      * @return void
      */
-    public function setUpdatedAs($updatedAs)
+    public function setUpdatedAs(mixed $updatedAs): void
     {
         $this->updatedAs = $updatedAs;
     }
@@ -530,7 +530,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getDeletedAt()
+    public function getDeletedAt(): mixed
     {
         return $this->deletedAt;
     }
@@ -542,7 +542,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * @param mixed $deletedAt
      * @return void
      */
-    public function setDeletedAt($deletedAt)
+    public function setDeletedAt(mixed $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
     }
@@ -553,7 +553,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedAs()
+    public function getDeletedAs(): mixed
     {
         return $this->deletedAs;
     }
@@ -565,7 +565,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * @param mixed $deletedAs
      * @return void
      */
-    public function setDeletedAs($deletedAs)
+    public function setDeletedAs(mixed $deletedAs): void
     {
         $this->deletedAs = $deletedAs;
     }
@@ -576,7 +576,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedBy()
+    public function getDeletedBy(): mixed
     {
         return $this->deletedBy;
     }
@@ -588,7 +588,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * @param mixed $deletedBy
      * @return void
      */
-    public function setDeletedBy($deletedBy)
+    public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;
     }
@@ -599,7 +599,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getRestoredAt()
+    public function getRestoredAt(): mixed
     {
         return $this->restoredAt;
     }
@@ -611,7 +611,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * @param mixed $restoredAt
      * @return void
      */
-    public function setRestoredAt($restoredAt)
+    public function setRestoredAt(mixed $restoredAt): void
     {
         $this->restoredAt = $restoredAt;
     }
@@ -622,7 +622,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getRestoredBy()
+    public function getRestoredBy(): mixed
     {
         return $this->restoredBy;
     }
@@ -634,7 +634,7 @@ abstract class TranslateFieldAbstract extends AbstractModel implements Translate
      * @param mixed $restoredBy
      * @return void
      */
-    public function setRestoredBy($restoredBy)
+    public function setRestoredBy(mixed $restoredBy): void
     {
         $this->restoredBy = $restoredBy;
     }

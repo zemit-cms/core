@@ -176,7 +176,7 @@ interface SiteAbstractInterface extends ModelInterface
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
      * @return mixed
      */
-    public function getId();
+    public function getId(): mixed;
     
     /**
      * Sets the value of field id
@@ -185,7 +185,7 @@ interface SiteAbstractInterface extends ModelInterface
      * @param mixed $id
      * @return void
      */
-    public function setId($id);
+    public function setId(mixed $id): void;
     
     /**
      * Returns the value of field uuid
@@ -193,7 +193,7 @@ interface SiteAbstractInterface extends ModelInterface
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
-    public function getUuid();
+    public function getUuid(): mixed;
     
     /**
      * Sets the value of field uuid
@@ -202,7 +202,7 @@ interface SiteAbstractInterface extends ModelInterface
      * @param mixed $uuid
      * @return void
      */
-    public function setUuid($uuid);
+    public function setUuid(mixed $uuid): void;
     
     /**
      * Returns the value of field name
@@ -210,7 +210,7 @@ interface SiteAbstractInterface extends ModelInterface
      * Attributes: NotNull | Size(60) | Type(2)
      * @return mixed
      */
-    public function getName();
+    public function getName(): mixed;
     
     /**
      * Sets the value of field name
@@ -219,7 +219,7 @@ interface SiteAbstractInterface extends ModelInterface
      * @param mixed $name
      * @return void
      */
-    public function setName($name);
+    public function setName(mixed $name): void;
     
     /**
      * Returns the value of field description
@@ -227,7 +227,7 @@ interface SiteAbstractInterface extends ModelInterface
      * Attributes: Size(240) | Type(2)
      * @return mixed
      */
-    public function getDescription();
+    public function getDescription(): mixed;
     
     /**
      * Sets the value of field description
@@ -236,7 +236,7 @@ interface SiteAbstractInterface extends ModelInterface
      * @param mixed $description
      * @return void
      */
-    public function setDescription($description);
+    public function setDescription(mixed $description): void;
     
     /**
      * Returns the value of field icon
@@ -244,7 +244,7 @@ interface SiteAbstractInterface extends ModelInterface
      * Attributes: Size(64) | Type(2)
      * @return mixed
      */
-    public function getIcon();
+    public function getIcon(): mixed;
     
     /**
      * Sets the value of field icon
@@ -253,7 +253,7 @@ interface SiteAbstractInterface extends ModelInterface
      * @param mixed $icon
      * @return void
      */
-    public function setIcon($icon);
+    public function setIcon(mixed $icon): void;
     
     /**
      * Returns the value of field color
@@ -261,7 +261,7 @@ interface SiteAbstractInterface extends ModelInterface
      * Attributes: Size(9) | Type(5)
      * @return mixed
      */
-    public function getColor();
+    public function getColor(): mixed;
     
     /**
      * Sets the value of field color
@@ -270,7 +270,7 @@ interface SiteAbstractInterface extends ModelInterface
      * @param mixed $color
      * @return void
      */
-    public function setColor($color);
+    public function setColor(mixed $color): void;
     
     /**
      * Returns the value of field status
@@ -278,7 +278,7 @@ interface SiteAbstractInterface extends ModelInterface
      * Attributes: NotNull | Size('active','inactive') | Type(18)
      * @return mixed
      */
-    public function getStatus();
+    public function getStatus(): mixed;
     
     /**
      * Sets the value of field status
@@ -287,7 +287,7 @@ interface SiteAbstractInterface extends ModelInterface
      * @param mixed $status
      * @return void
      */
-    public function setStatus($status);
+    public function setStatus(mixed $status): void;
     
     /**
      * Returns the value of field deleted
@@ -295,7 +295,7 @@ interface SiteAbstractInterface extends ModelInterface
      * Attributes: NotNull | Numeric | Unsigned | Type(26)
      * @return mixed
      */
-    public function getDeleted();
+    public function getDeleted(): mixed;
     
     /**
      * Sets the value of field deleted
@@ -304,7 +304,7 @@ interface SiteAbstractInterface extends ModelInterface
      * @param mixed $deleted
      * @return void
      */
-    public function setDeleted($deleted);
+    public function setDeleted(mixed $deleted): void;
     
     /**
      * Returns the value of field createdAt
@@ -312,7 +312,7 @@ interface SiteAbstractInterface extends ModelInterface
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
-    public function getCreatedAt();
+    public function getCreatedAt(): mixed;
     
     /**
      * Sets the value of field createdAt
@@ -321,7 +321,7 @@ interface SiteAbstractInterface extends ModelInterface
      * @param mixed $createdAt
      * @return void
      */
-    public function setCreatedAt($createdAt);
+    public function setCreatedAt(mixed $createdAt): void;
     
     /**
      * Returns the value of field createdBy
@@ -329,7 +329,7 @@ interface SiteAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedBy();
+    public function getCreatedBy(): mixed;
     
     /**
      * Sets the value of field createdBy
@@ -338,7 +338,7 @@ interface SiteAbstractInterface extends ModelInterface
      * @param mixed $createdBy
      * @return void
      */
-    public function setCreatedBy($createdBy);
+    public function setCreatedBy(mixed $createdBy): void;
     
     /**
      * Returns the value of field createdAs
@@ -346,7 +346,7 @@ interface SiteAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedAs();
+    public function getCreatedAs(): mixed;
     
     /**
      * Sets the value of field createdAs
@@ -355,7 +355,7 @@ interface SiteAbstractInterface extends ModelInterface
      * @param mixed $createdAs
      * @return void
      */
-    public function setCreatedAs($createdAs);
+    public function setCreatedAs(mixed $createdAs): void;
     
     /**
      * Returns the value of field updatedAt
@@ -363,7 +363,7 @@ interface SiteAbstractInterface extends ModelInterface
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getUpdatedAt();
+    public function getUpdatedAt(): mixed;
     
     /**
      * Sets the value of field updatedAt
@@ -372,7 +372,7 @@ interface SiteAbstractInterface extends ModelInterface
      * @param mixed $updatedAt
      * @return void
      */
-    public function setUpdatedAt($updatedAt);
+    public function setUpdatedAt(mixed $updatedAt): void;
     
     /**
      * Returns the value of field updatedBy
@@ -380,7 +380,7 @@ interface SiteAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedBy();
+    public function getUpdatedBy(): mixed;
     
     /**
      * Sets the value of field updatedBy
@@ -389,7 +389,7 @@ interface SiteAbstractInterface extends ModelInterface
      * @param mixed $updatedBy
      * @return void
      */
-    public function setUpdatedBy($updatedBy);
+    public function setUpdatedBy(mixed $updatedBy): void;
     
     /**
      * Returns the value of field updatedAs
@@ -397,7 +397,7 @@ interface SiteAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedAs();
+    public function getUpdatedAs(): mixed;
     
     /**
      * Sets the value of field updatedAs
@@ -406,7 +406,7 @@ interface SiteAbstractInterface extends ModelInterface
      * @param mixed $updatedAs
      * @return void
      */
-    public function setUpdatedAs($updatedAs);
+    public function setUpdatedAs(mixed $updatedAs): void;
     
     /**
      * Returns the value of field deletedAt
@@ -414,7 +414,7 @@ interface SiteAbstractInterface extends ModelInterface
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getDeletedAt();
+    public function getDeletedAt(): mixed;
     
     /**
      * Sets the value of field deletedAt
@@ -423,7 +423,7 @@ interface SiteAbstractInterface extends ModelInterface
      * @param mixed $deletedAt
      * @return void
      */
-    public function setDeletedAt($deletedAt);
+    public function setDeletedAt(mixed $deletedAt): void;
     
     /**
      * Returns the value of field deletedAs
@@ -431,7 +431,7 @@ interface SiteAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedAs();
+    public function getDeletedAs(): mixed;
     
     /**
      * Sets the value of field deletedAs
@@ -440,7 +440,7 @@ interface SiteAbstractInterface extends ModelInterface
      * @param mixed $deletedAs
      * @return void
      */
-    public function setDeletedAs($deletedAs);
+    public function setDeletedAs(mixed $deletedAs): void;
     
     /**
      * Returns the value of field deletedBy
@@ -448,7 +448,7 @@ interface SiteAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedBy();
+    public function getDeletedBy(): mixed;
     
     /**
      * Sets the value of field deletedBy
@@ -457,7 +457,7 @@ interface SiteAbstractInterface extends ModelInterface
      * @param mixed $deletedBy
      * @return void
      */
-    public function setDeletedBy($deletedBy);
+    public function setDeletedBy(mixed $deletedBy): void;
     
     /**
      * Returns the value of field restoredAt
@@ -465,7 +465,7 @@ interface SiteAbstractInterface extends ModelInterface
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getRestoredAt();
+    public function getRestoredAt(): mixed;
     
     /**
      * Sets the value of field restoredAt
@@ -474,7 +474,7 @@ interface SiteAbstractInterface extends ModelInterface
      * @param mixed $restoredAt
      * @return void
      */
-    public function setRestoredAt($restoredAt);
+    public function setRestoredAt(mixed $restoredAt): void;
     
     /**
      * Returns the value of field restoredBy
@@ -482,7 +482,7 @@ interface SiteAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getRestoredBy();
+    public function getRestoredBy(): mixed;
     
     /**
      * Sets the value of field restoredBy
@@ -491,7 +491,7 @@ interface SiteAbstractInterface extends ModelInterface
      * @param mixed $restoredBy
      * @return void
      */
-    public function setRestoredBy($restoredBy);
+    public function setRestoredBy(mixed $restoredBy): void;
     
     /**
      * Returns the value of field restoredAs
@@ -499,7 +499,7 @@ interface SiteAbstractInterface extends ModelInterface
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getRestoredAs();
+    public function getRestoredAs(): mixed;
     
     /**
      * Sets the value of field restoredAs
@@ -508,5 +508,5 @@ interface SiteAbstractInterface extends ModelInterface
      * @param mixed $restoredAs
      * @return void
      */
-    public function setRestoredAs($restoredAs);
+    public function setRestoredAs(mixed $restoredAs): void;
 }

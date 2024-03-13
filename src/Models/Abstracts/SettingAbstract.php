@@ -63,126 +63,126 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
      * @var mixed
      */
-    public $id = null;
+    public mixed $id = null;
         
     /**
      * Column: category
      * Attributes: Size(255) | Type(2)
      * @var mixed
      */
-    public $category = null;
+    public mixed $category = null;
         
     /**
      * Column: index
      * Attributes: NotNull | Size(255) | Type(2)
      * @var mixed
      */
-    public $index = null;
+    public mixed $index = null;
         
     /**
      * Column: label
      * Attributes: Size(255) | Type(2)
      * @var mixed
      */
-    public $label = null;
+    public mixed $label = null;
         
     /**
      * Column: value
      * Attributes: Type(6)
      * @var mixed
      */
-    public $value = null;
+    public mixed $value = null;
         
     /**
      * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Type(26)
      * @var mixed
      */
-    public $deleted = 0;
+    public mixed $deleted = 0;
         
     /**
      * Column: created_at
      * Attributes: NotNull | Type(4)
      * @var mixed
      */
-    public $createdAt = null;
+    public mixed $createdAt = null;
         
     /**
      * Column: created_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $createdBy = null;
+    public mixed $createdBy = null;
         
     /**
      * Column: created_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $createdAs = null;
+    public mixed $createdAs = null;
         
     /**
      * Column: updated_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $updatedAt = null;
+    public mixed $updatedAt = null;
         
     /**
      * Column: updated_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $updatedBy = null;
+    public mixed $updatedBy = null;
         
     /**
      * Column: updated_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $updatedAs = null;
+    public mixed $updatedAs = null;
         
     /**
      * Column: deleted_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $deletedAt = null;
+    public mixed $deletedAt = null;
         
     /**
      * Column: deleted_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $deletedAs = null;
+    public mixed $deletedAs = null;
         
     /**
      * Column: deleted_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $deletedBy = null;
+    public mixed $deletedBy = null;
         
     /**
      * Column: restored_at
      * Attributes: Type(4)
      * @var mixed
      */
-    public $restoredAt = null;
+    public mixed $restoredAt = null;
         
     /**
      * Column: restored_by
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $restoredBy = null;
+    public mixed $restoredBy = null;
         
     /**
      * Column: restored_as
      * Attributes: Numeric | Unsigned
      * @var mixed
      */
-    public $restoredAs = null;
+    public mixed $restoredAs = null;
     
     /**
      * Returns the value of field id
@@ -190,7 +190,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
      * @return mixed
      */
-    public function getId()
+    public function getId(): mixed
     {
         return $this->id;
     }
@@ -202,7 +202,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * @param mixed $id
      * @return void
      */
-    public function setId($id)
+    public function setId(mixed $id): void
     {
         $this->id = $id;
     }
@@ -213,7 +213,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * Attributes: Size(255) | Type(2)
      * @return mixed
      */
-    public function getCategory()
+    public function getCategory(): mixed
     {
         return $this->category;
     }
@@ -225,7 +225,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * @param mixed $category
      * @return void
      */
-    public function setCategory($category)
+    public function setCategory(mixed $category): void
     {
         $this->category = $category;
     }
@@ -236,7 +236,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
      */
-    public function getIndex()
+    public function getIndex(): mixed
     {
         return $this->index;
     }
@@ -248,7 +248,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * @param mixed $index
      * @return void
      */
-    public function setIndex($index)
+    public function setIndex(mixed $index): void
     {
         $this->index = $index;
     }
@@ -259,7 +259,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * Attributes: Size(255) | Type(2)
      * @return mixed
      */
-    public function getLabel()
+    public function getLabel(): mixed
     {
         return $this->label;
     }
@@ -271,7 +271,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * @param mixed $label
      * @return void
      */
-    public function setLabel($label)
+    public function setLabel(mixed $label): void
     {
         $this->label = $label;
     }
@@ -282,7 +282,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * Attributes: Type(6)
      * @return mixed
      */
-    public function getValue()
+    public function getValue(): mixed
     {
         return $this->value;
     }
@@ -294,7 +294,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * @param mixed $value
      * @return void
      */
-    public function setValue($value)
+    public function setValue(mixed $value): void
     {
         $this->value = $value;
     }
@@ -305,7 +305,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * Attributes: NotNull | Numeric | Unsigned | Type(26)
      * @return mixed
      */
-    public function getDeleted()
+    public function getDeleted(): mixed
     {
         return $this->deleted;
     }
@@ -317,7 +317,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * @param mixed $deleted
      * @return void
      */
-    public function setDeleted($deleted)
+    public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
     }
@@ -328,7 +328,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): mixed
     {
         return $this->createdAt;
     }
@@ -340,7 +340,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * @param mixed $createdAt
      * @return void
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -351,7 +351,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedBy()
+    public function getCreatedBy(): mixed
     {
         return $this->createdBy;
     }
@@ -363,7 +363,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * @param mixed $createdBy
      * @return void
      */
-    public function setCreatedBy($createdBy)
+    public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
     }
@@ -374,7 +374,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getCreatedAs()
+    public function getCreatedAs(): mixed
     {
         return $this->createdAs;
     }
@@ -386,7 +386,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * @param mixed $createdAs
      * @return void
      */
-    public function setCreatedAs($createdAs)
+    public function setCreatedAs(mixed $createdAs): void
     {
         $this->createdAs = $createdAs;
     }
@@ -397,7 +397,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): mixed
     {
         return $this->updatedAt;
     }
@@ -409,7 +409,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * @param mixed $updatedAt
      * @return void
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -420,7 +420,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedBy()
+    public function getUpdatedBy(): mixed
     {
         return $this->updatedBy;
     }
@@ -432,7 +432,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * @param mixed $updatedBy
      * @return void
      */
-    public function setUpdatedBy($updatedBy)
+    public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
     }
@@ -443,7 +443,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getUpdatedAs()
+    public function getUpdatedAs(): mixed
     {
         return $this->updatedAs;
     }
@@ -455,7 +455,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * @param mixed $updatedAs
      * @return void
      */
-    public function setUpdatedAs($updatedAs)
+    public function setUpdatedAs(mixed $updatedAs): void
     {
         $this->updatedAs = $updatedAs;
     }
@@ -466,7 +466,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getDeletedAt()
+    public function getDeletedAt(): mixed
     {
         return $this->deletedAt;
     }
@@ -478,7 +478,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * @param mixed $deletedAt
      * @return void
      */
-    public function setDeletedAt($deletedAt)
+    public function setDeletedAt(mixed $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
     }
@@ -489,7 +489,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedAs()
+    public function getDeletedAs(): mixed
     {
         return $this->deletedAs;
     }
@@ -501,7 +501,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * @param mixed $deletedAs
      * @return void
      */
-    public function setDeletedAs($deletedAs)
+    public function setDeletedAs(mixed $deletedAs): void
     {
         $this->deletedAs = $deletedAs;
     }
@@ -512,7 +512,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getDeletedBy()
+    public function getDeletedBy(): mixed
     {
         return $this->deletedBy;
     }
@@ -524,7 +524,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * @param mixed $deletedBy
      * @return void
      */
-    public function setDeletedBy($deletedBy)
+    public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;
     }
@@ -535,7 +535,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * Attributes: Type(4)
      * @return mixed
      */
-    public function getRestoredAt()
+    public function getRestoredAt(): mixed
     {
         return $this->restoredAt;
     }
@@ -547,7 +547,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * @param mixed $restoredAt
      * @return void
      */
-    public function setRestoredAt($restoredAt)
+    public function setRestoredAt(mixed $restoredAt): void
     {
         $this->restoredAt = $restoredAt;
     }
@@ -558,7 +558,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getRestoredBy()
+    public function getRestoredBy(): mixed
     {
         return $this->restoredBy;
     }
@@ -570,7 +570,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * @param mixed $restoredBy
      * @return void
      */
-    public function setRestoredBy($restoredBy)
+    public function setRestoredBy(mixed $restoredBy): void
     {
         $this->restoredBy = $restoredBy;
     }
@@ -581,7 +581,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * Attributes: Numeric | Unsigned
      * @return mixed
      */
-    public function getRestoredAs()
+    public function getRestoredAs(): mixed
     {
         return $this->restoredAs;
     }
@@ -593,7 +593,7 @@ abstract class SettingAbstract extends AbstractModel implements SettingAbstractI
      * @param mixed $restoredAs
      * @return void
      */
-    public function setRestoredAs($restoredAs)
+    public function setRestoredAs(mixed $restoredAs): void
     {
         $this->restoredAs = $restoredAs;
     }
