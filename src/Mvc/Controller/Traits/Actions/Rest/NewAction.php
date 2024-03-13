@@ -15,6 +15,7 @@ use Exception;
 use Phalcon\Http\ResponseInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractExpose;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractRestResponse;
 use Zemit\Mvc\Controller\Traits\Abstracts\Query\AbstractFields;
@@ -23,6 +24,7 @@ trait NewAction
 {
     use AbstractExpose;
     use AbstractInjectable;
+    use AbstractModel;
     use AbstractParams;
     use AbstractRestResponse;
     use AbstractFields;
