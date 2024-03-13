@@ -17,6 +17,7 @@ use Phalcon\Filter\Filter;
 use Phalcon\Support\Collection;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractQuery;
 use Zemit\Mvc\Controller\Traits\Abstracts\Query\AbstractFields;
 
 /**
@@ -27,6 +28,7 @@ trait SearchConditions
     use AbstractParams;
     use AbstractFields;
     use AbstractModel;
+    use AbstractQuery;
     
     protected ?Collection $searchConditions;
     
@@ -58,7 +60,7 @@ trait SearchConditions
     /**
      * Returns the search conditions.
      *
-     * @return \Phalcon\Collection|null The search conditions, represented as a collection.
+     * @return Collection|null The search conditions, represented as a collection.
      */
     public function getSearchConditions(): ?Collection
     {

@@ -26,4 +26,6 @@ trait AbstractModel
     abstract public function getControllerName(): string;
     
     abstract public function loadModel(?string $modelName = null): \Phalcon\Mvc\ModelInterface;
+    
+    abstract public function appendModelName(string $field, ?string $modelName = null): string;
 }
