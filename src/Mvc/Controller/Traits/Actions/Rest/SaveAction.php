@@ -26,6 +26,7 @@ trait SaveAction
      * Save action.
      *
      * Saves the record and returns the response based on the save result.
+     * @see save()
      *
      * @return ResponseInterface The response object.
      * @throws \Exception
@@ -33,11 +34,9 @@ trait SaveAction
     public function saveAction(): ResponseInterface
     {
         $ret = $this->save();
-        $saved = $this->saveResultHasKey($ret, 'saved');
-        $messages = $this->saveResultHasKey($ret, 'messages');
         
-        if (!$saved) {
-            if (!$messages) {
+        if (!$ret['saved']) {
+            if (empty($ret['messages'])) {
                 $this->response->setStatusCode(422, 'Unprocessable Entity');
             }
             else {
@@ -46,32 +45,6 @@ trait SaveAction
         }
         
         $this->view->setVars($ret);
-        return $this->setRestResponse($saved);
-    }
-    
-    /**
-     * Return true if the record or the records where saved
-     * Return false if one record wasn't saved
-     * Return null if nothing was saved
-     */
-    public function saveResultHasKey(array $array, string $key): bool
-    {
-        $ret = $array[$key] ?? null;
-        
-        if (isset($array[0])) {
-            foreach ($array as $k => $r) {
-                if (isset($r[$key])) {
-                    if ($r[$key]) {
-                        $ret = true;
-                    }
-                    else {
-                        $ret = false;
-                        break;
-                    }
-                }
-            }
-        }
-        
-        return (bool)$ret;
+        return $this->setRestResponse($ret['saved']);
     }
 }
