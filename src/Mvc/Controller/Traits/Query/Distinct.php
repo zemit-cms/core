@@ -21,10 +21,15 @@ trait Distinct
     
     protected ?Collection $distinct;
     
-    // @todo add model name to distinct attributes
+    /**
+     * Initialize the distinct parameter for the query.
+     *
+     * @return void
+     * @throws \Phalcon\Filter\Exception If an error occurs during filtering
+     */
     public function initializeDistinct(): void
     {
-        $distinct = $this->getParam('distinct', [Filter::FILTER_STRING, Filter::FILTER_TRIM], $this->defaultDistinct());
+        $distinct = $this->getParam('distinct', [Filter::FILTER_STRING, Filter::FILTER_TRIM]);
         
         if (!isset($distinct)) {
             $this->setDistinct(null);
@@ -45,18 +50,25 @@ trait Distinct
         $this->setDistinct(new Collection($distinct, false));
     }
     
+    /**
+     * Sets the distinct collection.
+     *
+     * @param Collection|null $distinct The distinct collection to set.
+     *
+     * @return void
+     */
     public function setDistinct(?Collection $distinct): void
     {
         $this->distinct = $distinct;
     }
     
+    /**
+     * Gets the distinct collection.
+     *
+     * @return Collection|null The distinct collection, if set; otherwise, null.
+     */
     public function getDistinct(): ?Collection
     {
         return $this->distinct;
-    }
-    
-    public function defaultDistinct(): array|string|null
-    {
-        return null;
     }
 }
