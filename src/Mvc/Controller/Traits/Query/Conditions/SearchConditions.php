@@ -12,12 +12,30 @@
 namespace Zemit\Mvc\Controller\Traits\Query\Conditions;
 
 use Phalcon\Db\Column;
+use Phalcon\Filter\Exception;
+use Phalcon\Filter\Filter;
 use Phalcon\Support\Collection;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
+use Zemit\Mvc\Controller\Traits\Abstracts\Query\AbstractFields;
 
+/**
+ * This trait provides methods for managing search conditions.
+ */
 trait SearchConditions
 {
+    use AbstractParams;
+    use AbstractFields;
+    use AbstractModel;
+    
     protected ?Collection $searchConditions;
     
+    /**
+     * Initializes the search conditions.
+     *
+     * @return void
+     * @throws Exception
+     */
     public function initializeSearchConditions(): void
     {
         $this->setSearchConditions(new Collection([
@@ -25,46 +43,62 @@ trait SearchConditions
         ], false));
     }
     
+    /**
+     * Set the search conditions for this object.
+     *
+     * @param Collection|null $searchConditions The search conditions to be set.
+     *
+     * @return void
+     */
     public function setSearchConditions(?Collection $searchConditions): void
     {
         $this->searchConditions = $searchConditions;
     }
     
+    /**
+     * Returns the search conditions.
+     *
+     * @return \Phalcon\Collection|null The search conditions, represented as a collection.
+     */
     public function getSearchConditions(): ?Collection
     {
         return $this->searchConditions;
     }
     
+    /**
+     * Generates the default search condition for the method.
+     *
+     * @return array|string|null The default search condition, represented as an array containing the query, bind parameters, and bind types.
+     * @throws \Phalcon\Filter\Exception If an error occurs while filtering the search parameter.
+     */
     public function defaultSearchCondition(): array|string|null
     {
-        $conditions = [];
+        $searchList = array_values(array_filter(array_unique(
+            explode(' ', $this->getParam('search', [
+                Filter::FILTER_STRING,
+                Filter::FILTER_TRIM]
+            ) ?? '')
+        )));
         
-        $searchList = array_values(array_filter(array_unique(explode(' ', $this->getParam('search', 'string') ?? ''))));
+        $query = [];
+        $bind = [];
+        $bindTypes = [];
         
         foreach ($searchList as $searchTerm) {
-            $orConditions = [];
-            $searchWhiteList = $this->getSearchFields();
-            if ($searchWhiteList) {
-                foreach ($searchWhiteList as $whiteList) {
-                    
-                    // Multidimensional arrays not supported yet
-                    // @todo support this properly
-                    if (is_array($whiteList)) {
-                        continue;
-                    }
-                    
-                    $searchTermBinding = '_' . uniqid() . '_';
-                    $orConditions [] = $this->appendModelName($whiteList) . " like :$searchTermBinding:";
-                    $this->setBind([$searchTermBinding => '%' . $searchTerm . '%']);
-                    $this->setBindTypes([$searchTermBinding => Column::BIND_PARAM_STR]);
-                }
-            }
-            
-            if (!empty($orConditions)) {
-                $conditions [] = '(' . implode(' or ', $orConditions) . ')';
+            foreach ($this->getSearchFields()?->toArray() as $searchField) {
+                $field = $this->appendModelName($searchField);
+                $value = $this->generateBindKey('search');
+                
+                $query [] = "{$field} like :{$value}:";
+                $bind[$field] = '%' . $searchTerm . '%';
+                $bindTypes[$field] = Column::BIND_PARAM_STR;
             }
         }
         
-        return empty($conditions) ? null : '(' . implode(' and ', $conditions) . ')';
+        return [
+            implode(' or ', $query),
+            $bind,
+            $bindTypes,
+        ];
     }
 }
