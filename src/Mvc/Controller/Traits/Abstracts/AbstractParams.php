@@ -13,7 +13,7 @@ namespace Zemit\Mvc\Controller\Traits\Abstracts;
 
 trait AbstractParams
 {
-    abstract public function getParam(string $key, array|string|null $filters = null, string $default = null, array $params = null): mixed;
+    abstract public function getParam(string $key, array|string|null $filters = null, mixed $default = null, array $params = null): mixed;
     
     abstract public function getParams(array $filters = null): array;
 }
