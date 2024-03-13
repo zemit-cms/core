@@ -41,4 +41,6 @@ trait AbstractQuery
     abstract public function minimum(?array $find = null): float|ResultsetInterface;
     
     abstract protected function getCalculationFind(?array $find = null): array;
+    
+    abstract public function generateBindKey(string $prefix): string;
 }
