@@ -117,14 +117,21 @@ trait Query
         return $this->find;
     }
     
-    public function buildFind(?Collection $find, bool $ignoreKey = false): array
+    /**
+     * Builds the `find` array for a query.
+     *
+     * @param Collection|null $find The collection to build the find array from. Defaults to null.
+     * @param bool $ignoreKey Whether to ignore the keys in the collection. Defaults to false.
+     * @return array The built find array.
+     */
+    public function prepareFind(?Collection $find = null, bool $ignoreKey = false): array
     {
         $build = [];
         $find ??= $this->getFind();
-        foreach ($find->getIterator() as $key => $value) {
+        foreach ($find?->getIterator() as $key => $value) {
             if ($value instanceof Collection) {
                 $subIgnoreKey = $ignoreKey || in_array($key, ['conditions', 'joins']);
-                $sub = $this->buildFind($value, $subIgnoreKey);
+                $sub = $this->prepareFind($value, $subIgnoreKey);
                 if ($ignoreKey) {
                     $build = array_merge($build, $sub);
                 } else {
@@ -148,7 +155,7 @@ trait Query
      */
     public function find(?array $find = null): ResultsetInterface
     {
-        $find ??= $this->buildFind($find);
+        $find ??= $this->prepareFind();
         return $this->loadModel()::find($find);
     }
     
@@ -165,8 +172,8 @@ trait Query
      */
     public function findWith(?array $with = null, ?array $find = null): array
     {
+        $find ??= $this->prepareFind();
         $with ??= $this->getWith()?->toArray() ?? [];
-        $find ??= $this->getFind()?->toArray() ?? [];
         return $this->loadModel()::findWith($with, $find);
     }
     
@@ -181,7 +188,7 @@ trait Query
      */
     public function findFirst(?array $find = null): mixed
     {
-        $find ??= $this->getFind()?->toArray() ?? [];
+        $find ??= $this->prepareFind();
         return $this->loadModel()::findFirst($find);
     }
     
@@ -199,8 +206,8 @@ trait Query
      */
     public function findFirstWith(?array $with = null, ?array $find = null): mixed
     {
+        $find ??= $this->prepareFind();
         $with ??= $this->getWith()?->toArray() ?? [];
-        $find ??= $this->getFind()?->toArray() ?? [];
         return $this->loadModel()::findFirstWith($with, $find);
     }
     
@@ -212,6 +219,7 @@ trait Query
      */
     public function average(?array $find = null): float|ResultsetInterface
     {
+        $find ??= $this->prepareFind();
         return $this->loadModel()::average($this->getCalculationFind($find));
     }
     
@@ -226,6 +234,7 @@ trait Query
      */
     public function count(?array $find = null): int|ResultsetInterface
     {
+        $find ??= $this->prepareFind();
         return $this->loadModel()::count($this->getCalculationFind($find));
     }
     
@@ -239,6 +248,7 @@ trait Query
      */
     public function sum(?array $find = null): float|ResultsetInterface
     {
+        $find ??= $this->prepareFind();
         return $this->loadModel()::sum($this->getCalculationFind($find));
     }
     
@@ -253,6 +263,7 @@ trait Query
      */
     public function maximum(?array $find = null): float|ResultsetInterface
     {
+        $find ??= $this->prepareFind();
         return $this->loadModel()::maximum($this->getCalculationFind($find));
     }
     
@@ -267,6 +278,7 @@ trait Query
      */
     public function minimum(?array $find = null): float|ResultsetInterface
     {
+        $find ??= $this->prepareFind();
         return $this->loadModel()::minimum($this->getCalculationFind($find));
     }
     
@@ -292,8 +304,15 @@ trait Query
         return array_filter($find);
     }
     
+    /**
+     * Generates a unique bind key with the given prefix.
+     *
+     * @param string $prefix The prefix to be used in the bind key.
+     *
+     * @return string The generated bind key.
+     */
     public function generateBindKey(string $prefix): string
     {
-        return '_' . uniqid($prefix) . '_';
+        return '_' . uniqid($prefix . '_') . '_';
     }
 }

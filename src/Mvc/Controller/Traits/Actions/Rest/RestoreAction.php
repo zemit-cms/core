@@ -12,8 +12,10 @@
 namespace Zemit\Mvc\Controller\Traits\Actions\Rest;
 
 use Phalcon\Http\ResponseInterface;
+use Phalcon\Mvc\ModelInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractExpose;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractQuery;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractRestResponse;
 use Zemit\Mvc\Model\Interfaces\SoftDeleteInterface;
 
@@ -21,6 +23,7 @@ trait RestoreAction
 {
     use AbstractExpose;
     use AbstractInjectable;
+    use AbstractQuery;
     use AbstractRestResponse;
     
     /**
@@ -38,6 +41,7 @@ trait RestoreAction
         }
         
         assert($entity instanceof SoftDeleteInterface);
+        assert($entity instanceof ModelInterface);
         $restored = $entity->restore();
         
         $this->view->setVars([
