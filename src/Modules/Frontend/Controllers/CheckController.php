@@ -218,8 +218,8 @@ class CheckController extends AbstractController
     
     public function phpinfoAction(): void
     {
+        $this->view->disable();
         phpinfo();
-        exit(0);
     }
     
     public function extensionsAction(): void
