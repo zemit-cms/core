@@ -15,6 +15,7 @@ use Phalcon\Support\Collection;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
 use Zemit\Mvc\Controller\Traits\Query\Bind;
+use Zemit\Mvc\Controller\Traits\Query\Cache;
 use Zemit\Mvc\Controller\Traits\Query\Conditions;
 use Zemit\Mvc\Controller\Traits\Query\Distinct;
 use Zemit\Mvc\Controller\Traits\Query\Fields;
@@ -40,6 +41,7 @@ trait Query
     use AbstractModel;
     
     use Bind;
+    use Cache;
     use Conditions;
     use Distinct;
     use Fields;

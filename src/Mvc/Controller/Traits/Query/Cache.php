@@ -14,6 +14,7 @@ namespace Zemit\Mvc\Controller\Traits\Query;
 use Phalcon\Filter\Exception;
 use Phalcon\Filter\Filter;
 use Phalcon\Support\Collection;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
 
 /**
@@ -21,10 +22,12 @@ use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
  */
 trait Cache
 {
+    use AbstractInjectable;
     use AbstractParams;
     
     public ?Collection $cache;
     public ?string $cacheKey;
+    public ?int $cacheLifetime;
     
     /**
      * Initializes the cache.
@@ -37,18 +40,28 @@ trait Cache
     public function initializeCache(): void
     {
         $this->initializeCacheKey();
-        
-        $lifetime = $this->getParam('lifetime', [Filter::FILTER_ABSINT]);
-        
-        if (!isset($lifetime)) {
-            $this->setCache(null);
-            return;
-        }
+        $this->initializeCacheLifetime();
         
         $this->setCache(new Collection([
-            'lifetime' => $lifetime,
+            'lifetime' => $this->getCacheLifetime(),
             'key' => $this->getCacheKey()
         ]));
+    }
+    
+    /**
+     * Initializes the cache lifetime.
+     *
+     * This method retrieves the 'lifetime' parameter using `getParam()` method,
+     * applies the 'FILTER_ABSINT' filter to it, and then sets the cache lifetime
+     * using `setCacheLifetime()` method with the filtered value.
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function initializeCacheLifetime(): void
+    {
+        $lifetime = $this->getParam('lifetime', [Filter::FILTER_ABSINT]);
+        $this->setCacheLifetime($lifetime);
     }
     
     /**
@@ -61,9 +74,30 @@ trait Cache
      */
     public function initializeCacheKey(): void
     {
-        $paramsKey = md5(json_encode($this->getParams()));
+        $paramsKey = hash('sha512', json_encode($this->getParams()));
         $identityKey = $this->identity->getUserId();
-        $this->setCacheKey($identityKey . '-' . $paramsKey);
+        $this->setCacheKey('_' . $identityKey . '-' . $paramsKey . '_');
+    }
+    
+    /**
+     * Sets the cache lifetime.
+     *
+     * @param string|null $cacheLifetime The cache lifetime.
+     * @return void
+     */
+    public function setCacheLifetime(?string $cacheLifetime): void
+    {
+        $this->cacheLifetime = $cacheLifetime;
+    }
+    
+    /**
+     * Retrieves the cache lifetime.
+     *
+     * @return string|null The cache lifetime.
+     */
+    public function getCacheLifetime(): ?string
+    {
+        return $this->cacheLifetime;
     }
     
     /**

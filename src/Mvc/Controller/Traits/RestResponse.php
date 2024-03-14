@@ -11,10 +11,10 @@
 
 namespace Zemit\Mvc\Controller\Traits;
 
+use Phalcon\Filter\Filter;
 use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\Dispatcher;
 use Zemit\Http\StatusCode as HttpStatusCode;
-use Zemit\Mvc\Controller\Traits\Abstracts\AbstractCache;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractDebug;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
 use Zemit\Support\Utils;
@@ -23,7 +23,6 @@ trait RestResponse
 {
     use AbstractInjectable;
     use AbstractDebug;
-    use AbstractCache;
     
     /**
      * Set the REST response error
@@ -65,12 +64,12 @@ trait RestResponse
         // set response status code
         $this->response->setStatusCode($code, $code . ' ' . $status);
         
-        // @todo handle this correctly
-        // @todo private vs public cache type
-        $cache = $this->getCache();
-        if (!empty($cache['lifetime'])) {
+        // @todo handle this correctly (private vs public, with cache result stored)
+        // @todo etag should be the cache key
+        $lifetime = $this->getParam('lifetime', [Filter::FILTER_ABSINT]);
+        if (!empty($lifetime)) {
             if ($this->response->getStatusCode() === 200) {
-                $this->response->setCache($cache['lifetime']);
+                $this->response->setCache($lifetime);
                 $this->response->setEtag($hash);
             }
         }
