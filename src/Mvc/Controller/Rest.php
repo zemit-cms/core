@@ -12,9 +12,7 @@
 namespace Zemit\Mvc\Controller;
 
 use Zemit\Mvc\Controller\Traits\Behavior;
-use Zemit\Mvc\Controller\Traits\Cache;
 use Zemit\Mvc\Controller\Traits\Debug;
-use Zemit\Mvc\Controller\Traits\Expose;
 use Zemit\Mvc\Controller\Traits\Fractal;
 use Zemit\Mvc\Controller\Traits\Params;
 use Zemit\Mvc\Controller\Traits\RestResponse;
@@ -22,7 +20,6 @@ use Zemit\Mvc\Controller\Traits\RestResponse;
 class Rest extends \Zemit\Mvc\Controller implements RestInterface
 {
     use Behavior;
-    use Cache;
     use Debug;
     use Fractal;
     use Params;
