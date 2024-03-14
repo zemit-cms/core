@@ -17,6 +17,7 @@ use League\Csv\CannotInsertRecord;
 use League\Csv\CharsetConverter;
 use League\Csv\InvalidArgument;
 use League\Csv\Writer;
+use Phalcon\Http\ResponseInterface;
 use Shuchkin\SimpleXLSXGen;
 use Spatie\ArrayToXml\ArrayToXml;
 use Zemit\Support\Slug;
@@ -114,34 +115,23 @@ trait Export
      * @param string|null $contentType The content type of the exported file. If not provided, the default content type will be used.
      * @param array|null $params Additional parameters for the export process. If not provided, the default parameters will be used.
      *
-     * @return bool Returns true if the export was successful, otherwise false.
+     * @return ResponseInterface Returns true if the export was successful, otherwise false.
      *
      * @throws Exception Thrown if the specified content type is not supported.
      */
-    public function export(array $list = [], string $filename = null, string $contentType = null, array $params = null): bool
+    public function export(array $list = [], string $filename = null, string $contentType = null, array $params = null): ResponseInterface
     {
         $params ??= $this->getParams();
         $contentType ??= $this->getContentType();
         $filename ??= $this->getFilename();
         
-        if ($contentType === 'json') {
-            $this->exportJson($list, $filename);
-        }
-        
-        if ($contentType === 'xml') {
-            $this->exportXml($list, $filename);
-        }
-        
-        if ($contentType === 'csv') {
-            $this->exportCsv($list, $filename, $params);
-        }
-        
-        if ($contentType === 'xlsx') {
-            $this->exportExcel($list, $filename);
-        }
-        
-        // Unsupported content-type
-        throw new Exception('Failed to export `' . $this->getModelName() . '` using unsupported content-type `' . $contentType . '`', 400);
+        return match ($contentType) {
+            'json' => $this->exportJson($list, $filename),
+            'xml' => $this->exportXml($list, $filename),
+            'csv' => $this->exportCsv($list, $filename, $params),
+            'xlsx' => $this->exportExcel($list, $filename),
+            default => throw new Exception('Failed to export `' . $this->getModelName() . '` using unsupported content-type `' . $contentType . '`', 400)
+        };
     }
     
     /**
@@ -150,9 +140,9 @@ trait Export
      * @param array $list The list of data to export.
      * @param string|null $filename The filename of the exported XML file. If not provided, a default filename will be used.
      *
-     * @return bool Returns true if the export of the XML file was successful, otherwise false.
+     * @return ResponseInterface
      */
-    public function exportXml(array $list, ?string $filename = null, ?array $params = null): bool
+    public function exportXml(array $list, ?string $filename = null, ?array $params = null): ResponseInterface
     {
         $params ??= $this->getParams();
         $filename ??= $this->getFilename();
@@ -181,9 +171,8 @@ trait Export
         $this->response->setContent($result);
         $this->response->setContentType('application/xml');
         $this->response->setHeader('Content-disposition', 'attachment; filename="' . addslashes($filename) . '.xml"');
-        $this->response->send();
         
-        return $this->response->isSent();
+        return $this->response;
     }
     
     /**
@@ -194,9 +183,9 @@ trait Export
      * @param int $flags Optional JSON encoding options. Default is JSON_PRETTY_PRINT.
      * @param int $depth Optional maximum depth of recursion. Default is 2048.
      *
-     * @return bool Indicates whether the response was sent successfully
+     * @return ResponseInterface
      */
-    public function exportJson(mixed $list, ?string $filename = null, int $flags = JSON_PRETTY_PRINT, int $depth = 2048): bool
+    public function exportJson(mixed $list, ?string $filename = null, int $flags = JSON_PRETTY_PRINT, int $depth = 2048): ResponseInterface
     {
         $filename ??= $this->getFilename();
 
@@ -204,9 +193,8 @@ trait Export
         $this->response->setContent(json_encode($list, $flags, $depth));
         $this->response->setContentType('application/json');
         $this->response->setHeader('Content-disposition', 'attachment; filename="' . addslashes($filename) . '.json"');
-        $this->response->send();
         
-        return $this->response->isSent();
+        return $this->response;
     }
     
     /**
@@ -215,9 +203,9 @@ trait Export
      * @param array $list The data to be exported
      * @param string|null $filename The desired filename for the exported file (optional)
      *
-     * @return bool True if the export was successful, false otherwise
+     * @return ResponseInterface
      */
-    public function exportExcel(array $list, ?string $filename = null): bool
+    public function exportExcel(array $list, ?string $filename = null): ResponseInterface
     {
         $filename ??= $this->getFilename();
         $columns = $this->getExportColumns($list);
@@ -234,15 +222,22 @@ trait Export
         }
         
         $xlsx = SimpleXLSXGen::fromArray($export);
-        return $xlsx->downloadAs($filename . '.xlsx');
+        
+        $this->response->setContent($xlsx);
+        $this->response->setContentType('application/json');
+        $this->response->setHeader('Content-disposition', 'attachment; filename="' . addslashes($filename) . '.json"');
+        
+        return $this->response;
+//        return $xlsx->downloadAs($filename . '.xlsx');
     }
     
     /**
+     * @return ResponseInterface
      * @throws InvalidArgument
      * @throws CannotInsertRecord
      * @throws \League\Csv\Exception
      */
-    public function exportCsv(array $list, ?string $filename = null, ?array $params = null): bool
+    public function exportCsv(array $list, ?string $filename = null, ?array $params = null): ResponseInterface
     {
         $filename ??= $this->getFilename();
         $params ??= $this->getParams();
@@ -332,8 +327,12 @@ trait Export
             $csv->insertOne($outputRow);
         }
         
-        // CSV
-        $csv->output($filename . '.csv');
-        return true;
+        $this->response->setContent($csv);
+        $this->response->setContentType('text/csv');
+        $this->response->setHeader('Content-disposition', 'attachment; filename="' . addslashes($filename) . '.csv"');
+        
+        return $this->response;
+//        $csv->output($filename . '.csv');
+//        return true;
     }
 }

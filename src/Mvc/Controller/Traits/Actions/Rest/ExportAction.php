@@ -12,6 +12,7 @@
 namespace Zemit\Mvc\Controller\Traits\Actions\Rest;
 
 use Exception;
+use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\Model\Resultset;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractExport;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractExpose;
@@ -33,17 +34,15 @@ trait ExportAction
      * exported using the `export` method, the script execution is ended by
      * calling `exit` with a status code of 0.
      *
-     * @return void
+     * @return ResponseInterface
      * @throws Exception
      */
-    public function exportAction(): void
+    public function exportAction(): ResponseInterface
     {
         $resultset = $this->find();
         assert($resultset instanceof Resultset);
         $data = $this->exportExpose($resultset);
-        if ($this->export($data)) {
-            exit(0);
-        }
+        return $this->export($data);
     }
     
 }
