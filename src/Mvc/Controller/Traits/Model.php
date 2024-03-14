@@ -13,9 +13,12 @@ namespace Zemit\Mvc\Controller\Traits;
 
 use Phalcon\Mvc\ModelInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
 
 trait Model
 {
+    use AbstractModel;
+    
     use AbstractInjectable;
     
     /**

@@ -18,6 +18,7 @@ use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractQuery;
+use Zemit\Mvc\Controller\Traits\Abstracts\Query\AbstractSave;
 use Zemit\Mvc\Controller\Traits\Abstracts\Query\AbstractWith;
 use Zemit\Mvc\Controller\Traits\Abstracts\Query\Fields\AbstractMapFields;
 use Zemit\Mvc\Controller\Traits\Abstracts\Query\Fields\AbstractSaveFields;
@@ -25,6 +26,8 @@ use Zemit\Mvc\Model\Interfaces\EagerLoadInterface;
 
 trait Save
 {
+    use AbstractSave;
+    
     use AbstractExpose;
     use AbstractInjectable;
     use AbstractModel;

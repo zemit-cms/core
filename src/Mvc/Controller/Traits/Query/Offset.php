@@ -14,12 +14,15 @@ namespace Zemit\Mvc\Controller\Traits\Query;
 use Phalcon\Filter\Exception;
 use Phalcon\Filter\Filter;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
+use Zemit\Mvc\Controller\Traits\Abstracts\Query\AbstractOffset;
 
 /**
  * This trait provides functionality to set and get an offset value for a query.
  */
 trait Offset
 {
+    use AbstractOffset;
+    
     use AbstractParams;
     
     protected ?int $offset;

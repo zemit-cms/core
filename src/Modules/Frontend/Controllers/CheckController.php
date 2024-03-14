@@ -199,7 +199,7 @@ class CheckController extends AbstractController
         
         // return that nonsense thing
         $messages = $validation->getMessages();
-        if (!empty($messages)) {
+        if (count($messages)) {
             $ret = [];
             foreach ($messages as $message) {
                 $ret [] = implode(' - ', [

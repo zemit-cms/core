@@ -11,6 +11,7 @@
 
 namespace Zemit\Modules\Cli\Tasks;
 
+use Phalcon\Mvc\Model\Resultset;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Zemit\Modules\Cli\Task;
 use Zemit\Mvc\Model;
@@ -88,7 +89,7 @@ DOC;
             
             // find all record matching the defined retention policy
             $records = $model::findLifeCycle($policy['query'] ?? null);
-            assert($records instanceof ResultsetInterface);
+            assert($records instanceof Resultset);
             
             // temporarily disable soft-delete
             $model->disableSoftDelete();

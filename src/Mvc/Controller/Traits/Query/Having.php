@@ -12,9 +12,12 @@
 namespace Zemit\Mvc\Controller\Traits\Query;
 
 use Phalcon\Support\Collection;
+use Zemit\Mvc\Controller\Traits\Abstracts\Query\AbstractHaving;
 
 trait Having
 {
+    use AbstractHaving;
+    
     protected ?Collection $having;
     
     public function initializeHaving(): void

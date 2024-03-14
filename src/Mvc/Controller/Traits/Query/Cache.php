@@ -16,12 +16,15 @@ use Phalcon\Filter\Filter;
 use Phalcon\Support\Collection;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
+use Zemit\Mvc\Controller\Traits\Abstracts\Query\AbstractCache;
 
 /**
  * This trait provides methods for caching data for the query.
  */
 trait Cache
 {
+    use AbstractCache;
+    
     use AbstractInjectable;
     use AbstractParams;
     
@@ -82,10 +85,10 @@ trait Cache
     /**
      * Sets the cache lifetime.
      *
-     * @param string|null $cacheLifetime The cache lifetime.
+     * @param int|null $cacheLifetime The cache lifetime.
      * @return void
      */
-    public function setCacheLifetime(?string $cacheLifetime): void
+    public function setCacheLifetime(?int $cacheLifetime): void
     {
         $this->cacheLifetime = $cacheLifetime;
     }
@@ -93,9 +96,9 @@ trait Cache
     /**
      * Retrieves the cache lifetime.
      *
-     * @return string|null The cache lifetime.
+     * @return int|null The cache lifetime.
      */
-    public function getCacheLifetime(): ?string
+    public function getCacheLifetime(): ?int
     {
         return $this->cacheLifetime;
     }

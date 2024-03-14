@@ -50,6 +50,7 @@ namespace Zemit\Di;
  * @property \Zemit\Bootstrap $bootstrap
  * @property \Zemit\Provider\Jwt\Jwt $jwt
  * @property \Zemit\Http\Request|\Zemit\Http\RequestInterface $request
+ * @property \Zemit\Support\Models $models
  * 
  * // @todo review Phalcon & Zemit DI
  */

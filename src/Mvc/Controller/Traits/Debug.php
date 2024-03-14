@@ -11,8 +11,12 @@
 
 namespace Zemit\Mvc\Controller\Traits;
 
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractDebug;
+
 trait Debug
 {
+    use AbstractDebug;
+    
     /**
      * Returns whether debug mode is enabled.
      *

@@ -11,6 +11,7 @@
 
 namespace Zemit\Mvc\Controller\Traits\Query;
 
+use Zemit\Mvc\Controller\Traits\Abstracts\Query\AbstractFields;
 use Zemit\Mvc\Controller\Traits\Query\Fields\ExposeFields;
 use Zemit\Mvc\Controller\Traits\Query\Fields\FilterFields;
 use Zemit\Mvc\Controller\Traits\Query\Fields\MapFields;
@@ -19,6 +20,8 @@ use Zemit\Mvc\Controller\Traits\Query\Fields\SearchFields;
 
 trait Fields
 {
+    use AbstractFields;
+    
     use ExposeFields;
     use FilterFields;
     use MapFields;

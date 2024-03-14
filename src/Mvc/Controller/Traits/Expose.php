@@ -11,12 +11,15 @@
 
 namespace Zemit\Mvc\Controller\Traits;
 
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractExpose;
 use Zemit\Mvc\Controller\Traits\Abstracts\Query\Fields\AbstractExposeFields;
 use Zemit\Mvc\Model\Interfaces\ExposeInterface;
 use Zemit\Support\Exposer\Exposer;
 
 trait Expose
 {
+    use AbstractExpose;
+    
     use AbstractExposeFields;
     
     /**

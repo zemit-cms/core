@@ -20,7 +20,4 @@ trait AbstractDistinct
     abstract public function setDistinct(?Collection $distinct): void;
     
     abstract public function getDistinct(): ?Collection;
-    
-    abstract public function defaultDistinct(): array|string|null;
-    
 }

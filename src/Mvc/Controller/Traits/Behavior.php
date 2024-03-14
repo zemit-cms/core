@@ -13,10 +13,13 @@ namespace Zemit\Mvc\Controller\Traits;
 
 use Phalcon\Di\Injectable;
 use Phalcon\Events\Manager;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractBehavior;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
 
 trait Behavior
 {
+    use AbstractBehavior;
+    
     use AbstractInjectable;
     
     public function beforeExecuteRoute(): void

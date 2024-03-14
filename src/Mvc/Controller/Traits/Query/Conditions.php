@@ -12,6 +12,7 @@
 namespace Zemit\Mvc\Controller\Traits\Query;
 
 use Phalcon\Support\Collection;
+use Zemit\Mvc\Controller\Traits\Abstracts\Query\AbstractConditions;
 use Zemit\Mvc\Controller\Traits\Query\Conditions\FilterConditions;
 use Zemit\Mvc\Controller\Traits\Query\Conditions\IdentityConditions;
 use Zemit\Mvc\Controller\Traits\Query\Conditions\PermissionConditions;
@@ -20,6 +21,8 @@ use Zemit\Mvc\Controller\Traits\Query\Conditions\SoftDeleteConditions;
 
 trait Conditions
 {
+    use AbstractConditions;
+    
     use FilterConditions;
     use IdentityConditions;
     use PermissionConditions;

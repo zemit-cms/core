@@ -20,7 +20,7 @@ class RecursiveMap
 {
     public function __invoke(array $collection = [], callable $callback = null): array
     {
-        return self::process($collection, $callback) ?? [];
+        return self::process($collection, $callback);
     }
     
     /**

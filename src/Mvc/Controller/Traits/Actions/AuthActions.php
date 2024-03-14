@@ -73,7 +73,7 @@ trait AuthActions
     public function logoutAction(): bool
     {
         $this->view->setVars($this->identity->logout());
-        return !$this->view->getVar('loggedIn') ?? false;
+        return !$this->view->getVar('loggedIn');
     }
 
     /**

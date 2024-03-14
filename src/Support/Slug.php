@@ -23,7 +23,7 @@ class Slug
         // Save the old locale and set the new locale to UTF-8
         $oldLocale = setlocale(LC_ALL, '0');
         setlocale(LC_ALL, 'en_US.UTF-8');
-        if (!empty($replace) && is_array($replace)) {
+        if (!empty($replace)) {
             $string = str_replace(array_keys($replace), array_values($replace), $string);
         }
         $transliterator = Transliterator::create('Any-Latin; Latin-ASCII');

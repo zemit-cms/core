@@ -13,9 +13,12 @@ namespace Zemit\Mvc\Controller\Traits;
 
 use Phalcon\Filter\Exception;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
 
 trait Params
 {
+    use AbstractParams;
+    
     use AbstractInjectable;
     
     /**

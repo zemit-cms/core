@@ -26,7 +26,7 @@ trait Events
         
         if (!$ret) {
             $that = new self();
-            assert($that instanceof ModelInterface);
+            assert($that instanceof ModelInterface); // @phpstan-ignore-line
             $columnMap = $that->getModelsMetaData()->getColumnMap($that);
             return new Simple($columnMap, $that, false);
         }

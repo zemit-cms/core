@@ -12,9 +12,12 @@
 namespace Zemit\Mvc\Controller\Traits\Query;
 
 use Phalcon\Support\Collection;
+use Zemit\Mvc\Controller\Traits\Abstracts\Query\AbstractBind;
 
 trait Bind
 {
+    use AbstractBind;
+    
     protected ?Collection $bind;
     protected ?Collection $bindTypes;
     

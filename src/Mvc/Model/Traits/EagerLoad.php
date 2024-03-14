@@ -11,6 +11,7 @@
 
 namespace Zemit\Mvc\Model\Traits;
 
+use JetBrains\PhpStorm\Deprecated;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\ModelInterface;
 use Zemit\Mvc\Model\EagerLoading\Loader;
@@ -40,13 +41,14 @@ trait EagerLoad
      *
      * </code>
      *
-     * @param mixed ...$arguments
+     * @param array ...$arguments
      */
     public static function findWith(array ...$arguments): array
     {
         $parameters = self::getParametersFromArguments($arguments);
         $list = static::find($parameters);
-        if ($list->count()) {
+        
+        if (is_countable($list) && $list->count()) {
             return Loader::fromResultset($list, ...$arguments);
         }
         
@@ -56,24 +58,29 @@ trait EagerLoad
     /**
      * Same as EagerLoadingTrait::findWith() for a single record
      *
-     * @param mixed ...$arguments
+     * @param array ...$arguments
      * @return ?ModelInterface
      */
     public static function findFirstWith(array ...$arguments): ?ModelInterface
     {
         $parameters = self::getParametersFromArguments($arguments);
         $entity = static::findFirst($parameters);
-        if ($entity) {
+        
+        if ($entity instanceof ModelInterface) {
             return Loader::fromModel($entity, ...$arguments);
         }
         
-        return $entity;
+        return null;
     }
     
     /**
      * @deprecated
-     * Alias of findWith
+     * @link self::findWith()
      */
+    #[Deprecated(
+        reason: 'since Zemit 1.0, use findWith() instead',
+        replacement: '%class%::findWith(%parametersList%)'
+    )]
     public static function with(array ...$arguments)
     {
         return self::findWith(...$arguments);
@@ -81,8 +88,12 @@ trait EagerLoad
     
     /**
      * @deprecated
-     * Alias of findWith
+     * @link self::findFirstWith()
      */
+    #[Deprecated(
+        reason: 'since Zemit 1.0, use findFirstWith() instead',
+        replacement: '%class%::findFirstWith(%parametersList%)'
+    )]
     public static function firstWith(array ...$arguments)
     {
         return self::findWith(...$arguments);
@@ -119,12 +130,11 @@ trait EagerLoad
         $parameters = self::getParametersFromArguments($arguments);
         $entity = @parent::$forwardMethod($parameters); // @todo refactor for php83+
     
-        if ($entity) {
-            assert($entity instanceof ModelInterface);
+        if ($entity instanceof ModelInterface) {
             return Loader::fromModel($entity, ...$arguments);
         }
     
-        return $entity;
+        return null;
     }
     
     /**
@@ -135,8 +145,8 @@ trait EagerLoad
         $parameters = self::getParametersFromArguments($arguments);
         $list = parent::$forwardMethod($parameters);
         assert($list instanceof ResultsetInterface);
-    
-        if ($list->count()) {
+        
+        if (is_countable($list) && $list->count()) {
             return Loader::fromResultset($list, ...$arguments);
         }
     
@@ -156,8 +166,8 @@ trait EagerLoad
      *
      * </code>
      *
-     * @param mixed ...$arguments
-     * @return \Phalcon\Mvc\ModelInterface
+     * @param array ...$arguments
+     * @return ModelInterface
      */
     public function load(array ...$arguments)
     {

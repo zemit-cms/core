@@ -11,10 +11,14 @@
 
 use Phalcon\Autoload\Loader;
 
-const APP_NAMESPACE = 'App';
-const ROOT_PATH = __DIR__;
-const VENDOR_PATH = ROOT_PATH . '/vendor';
-const APP_PATH = ROOT_PATH . '/app';
+const APP_NAMESPACE = 'Zemit';
+const ROOT_PATH = __DIR__ . '/';
+const VENDOR_PATH = ROOT_PATH . 'vendor/';
+const APP_PATH = ROOT_PATH . 'src/';
+const CORE_PATH = ROOT_PATH . 'src/';
+const STORAGE_PATH = ROOT_PATH . 'storage/';
+const RESOURCES_PATH = ROOT_PATH . 'resources/';
+const PUBLIC_PATH = ROOT_PATH . 'public/';
 
 $loader = new Loader();
 $loader->setFiles([VENDOR_PATH . '/autoload.php']);

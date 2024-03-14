@@ -171,6 +171,7 @@ final class EagerLoad
             unset($record);
             
             foreach ($parentSubject as $record) {
+                assert($record instanceof EntityInterface);
                 $referencedFieldValue = $record->readAttribute($relField);
                 
                 if (isset($modelReferencedModelValues[$referencedFieldValue])) {
@@ -239,6 +240,7 @@ final class EagerLoad
                 }
                 
                 foreach ($parentSubject as $record) {
+                    assert($record instanceof EntityInterface);
                     $referencedFieldValue = $record->readAttribute($relField);
                     
                     if (isset($indexedRecords[$referencedFieldValue])) {

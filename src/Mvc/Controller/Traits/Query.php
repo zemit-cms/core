@@ -14,8 +14,10 @@ namespace Zemit\Mvc\Controller\Traits;
 use Phalcon\Support\Collection;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractQuery;
 use Zemit\Mvc\Controller\Traits\Query\Bind;
 use Zemit\Mvc\Controller\Traits\Query\Cache;
+use Zemit\Mvc\Controller\Traits\Query\Column;
 use Zemit\Mvc\Controller\Traits\Query\Conditions;
 use Zemit\Mvc\Controller\Traits\Query\Distinct;
 use Zemit\Mvc\Controller\Traits\Query\Fields;
@@ -38,10 +40,13 @@ use Zemit\Mvc\Model\Interfaces\RelationshipInterface;
  */
 trait Query
 {
+    use AbstractQuery;
+    
     use AbstractModel;
     
     use Bind;
     use Cache;
+    use Column;
     use Conditions;
     use Distinct;
     use Fields;
@@ -155,7 +160,7 @@ trait Query
      *                         If not provided, the default criteria from `getFind()` method
      *                         will be used. Defaults to `null`.
      *
-     * @return mixed The result of the find operation.
+     * @return ResultsetInterface The result of the find operation.
      */
     public function find(?array $find = null): ResultsetInterface
     {
@@ -172,7 +177,7 @@ trait Query
      *                         If not provided, the default criteria from `getFind()` method
      *                         will be used. Defaults to `null`.
      *
-     * @return mixed The result of the find operation.
+     * @return array The result of the find operation with loaded relationships.
      */
     public function findWith(?array $with = null, ?array $find = null): array
     {
@@ -190,6 +195,7 @@ trait Query
      *                         If not provided, the default criteria from `getFind()` method
      *                         will be used to find the first record. Defaults to `null`.
      *
+     * // @todo \Phalcon\Mvc\ModelInterface|\Phalcon\Mvc\Model\Row|null
      * @return mixed The result of the find operation, which is the first record that matches the criteria.
      */
     public function findFirst(?array $find = null): mixed

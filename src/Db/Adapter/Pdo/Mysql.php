@@ -19,6 +19,7 @@ class Mysql extends \Phalcon\Db\Adapter\Pdo\Mysql
     {
         $definitions = parent::describeColumns($table, $schema);
         
+        // @phpstan-ignore-next-line
         if (Column::TYPE_TINYINTEGER !== Column::TYPE_BINARY) {
             return $definitions;
         }

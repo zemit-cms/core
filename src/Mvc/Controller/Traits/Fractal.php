@@ -20,12 +20,15 @@ use Phalcon\Mvc\ModelInterface;
 use Zemit\Fractal\Manager;
 use Zemit\Fractal\ModelTransformer;
 use Zemit\Fractal\Serializer\RawArraySerializer;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractFractal;
 
 /**
  * This trait provides methods for working with Fractal, a library for transforming data structures.
  */
 trait Fractal
 {
+    use AbstractFractal;
+    
     public Manager $fractalManager;
     public SerializerAbstract $fractalSerializer;
     public TransformerAbstract $transformer;

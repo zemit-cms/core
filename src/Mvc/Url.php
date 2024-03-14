@@ -51,7 +51,9 @@ class Url extends \Phalcon\Mvc\Url
         }
         
         $path = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
-        $parts = array_filter(explode(DIRECTORY_SEPARATOR, $path), 'mb_strlen');
+        $parts = array_filter(explode(DIRECTORY_SEPARATOR, $path), function(mixed $string) {
+            return !empty($string);
+        });
         $absolutes = [];
         foreach ($parts as $part) {
             if ('.' === $part) {

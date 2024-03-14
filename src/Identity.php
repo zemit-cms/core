@@ -235,16 +235,16 @@ class Identity extends Injectable implements OptionsInterface
             $inheritedRoleIndexList = $this->getInheritedRoleList($roleIndexList);
             if (!empty($inheritedRoleIndexList)) {
                 
-                /** @var RoleInterface $roleClass */
                 SecurityBehavior::staticStart();
                 $roleClass = $this->getRoleClass();
-                $inheritedRoleList = $roleClass::find([
+                $inheritedRoleList = $this->models->getRole()::find([
                     'index in ({role:array})',
                     'bind' => ['role' => $inheritedRoleIndexList],
                     'bindTypes' => ['role' => Column::BIND_PARAM_STR],
                 ]);
                 SecurityBehavior::staticStop();
                 
+                assert(is_iterable($inheritedRoleList));
                 foreach ($inheritedRoleList as $inheritedRoleEntity) {
                     assert($inheritedRoleEntity instanceof RoleInterface);
                     $inheritedRoleIndex = $inheritedRoleEntity->getIndex();
@@ -370,9 +370,7 @@ class Identity extends Injectable implements OptionsInterface
             if (!empty($userId)) {
                 SecurityBehavior::staticStart();
                 
-                /** @var User $userClass */
-                $userClass = $this->getUserClass();
-                $user = $userClass::findFirstWith([
+                $user = $this->models->getUser()::findFirstWith([
                     'RoleList',
                     'GroupList.RoleList',
                     'TypeList.GroupList.RoleList',
@@ -381,6 +379,9 @@ class Identity extends Injectable implements OptionsInterface
                     'bind' => ['id' => (int)$userId],
                     'bindTypes' => ['id' => Column::BIND_PARAM_INT]
                 ]);
+                if ($user) {
+                    assert($user instanceof UserInterface);
+                }
                 
                 SecurityBehavior::staticStop();
             }
@@ -779,8 +780,11 @@ class Identity extends Injectable implements OptionsInterface
         else {
             $user = false;
             if (isset($params['email'])) {
-                $userClass = $this->getUserClass();
-                $user = $userClass::findFirstByEmail($params['email']);
+                $user = $this->models->getUser()::findFirst([
+                    'email = :email:',
+                    'bind' => ['email' => $params['email']],
+                    'bindTypes' => ['email', Column::BIND_PARAM_STR]
+                ]);
             }
             
             // Reset
@@ -1036,17 +1040,12 @@ class Identity extends Injectable implements OptionsInterface
      */
     public function findUserById(int $id): ?UserInterface
     {
-        /** @var User $userClass */
-        $userClass = $this->getUserClass();
-        $user = $userClass::findFirst([
+        $user = $this->models->getUser()::findFirst([
             'id = :id:',
             'bind' => ['id' => $id],
             'bindTypes' => ['id' => Column::BIND_PARAM_INT],
         ]);
-        if (isset($user)) {
-            assert($user instanceof UserInterface);
-        }
-        return $user;
+        return $user instanceof UserInterface? $user : null;
     }
     
     /**
@@ -1054,9 +1053,7 @@ class Identity extends Injectable implements OptionsInterface
      */
     public function findUser(string $string): ?UserInterface
     {
-        /** @var User $userClass */
-        $userClass = $this->getUserClass();
-        $user = $userClass::findFirst([
+        $user = $this->models->getUser()::findFirst([
             'email = :email:',
             'bind' => [
                 'email' => $string,
@@ -1065,9 +1062,6 @@ class Identity extends Injectable implements OptionsInterface
                 'email' => Column::BIND_PARAM_STR,
             ],
         ]);
-        if (isset($user)) {
-            assert($user instanceof UserInterface);
-        }
-        return $user;
+        return $user instanceof UserInterface? $user : null;
     }
 }

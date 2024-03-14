@@ -205,12 +205,10 @@ class Tag extends PhalconTag
         
         $beforeHtml = '<' . $tag . $tagParams . (empty($content) ? '/' : '') . '>';
         $afterHtml = (empty($content)) ? '' : '</' . $tag . '>';
-        if (is_null($glue)) {
-            $glue = $afterHtml . $beforeHtml;
-        }
+        $glue ??= $afterHtml . $beforeHtml;
         
         // Execute the tag generator
-        return $beforeHtml . implode($glue ?? '', $html) . $afterHtml . PHP_EOL;
+        return $beforeHtml . implode($glue, $html) . $afterHtml . PHP_EOL;
     }
     
     public static function getTag(string $tag, array $params = [], array $html = [], ?string $glue = null): string
@@ -244,7 +242,7 @@ class Tag extends PhalconTag
      * Tag::getParams(['class' => 'class1 class2', 'id' => 'my-id'])
      * class="class1 class2" id="my-id"
      *
-     * @param string|array $params Array to implode & sprintf
+     * @param array $params Array to implode & sprintf
      *
      * @return string Return the imploded sprintf "%2$s="%1$s" from an array
      */

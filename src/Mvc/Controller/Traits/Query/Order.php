@@ -16,12 +16,15 @@ use Phalcon\Support\Collection;
 use Phalcon\Filter\Filter;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
+use Zemit\Mvc\Controller\Traits\Abstracts\Query\AbstractOrder;
 
 /**
  * The Order trait sets and retrieves the order parameter for the query.
  */
 trait Order
 {
+    use AbstractOrder;
+    
     use AbstractModel;
     use AbstractParams;
     
@@ -75,7 +78,8 @@ trait Order
                 }
                 $collection->set($item[0], $this->appendModelName($item[0]) . ' ' . $this->getSide($item[1] ?? 'asc'));
             }
-            else if (is_string($key)) {
+            // string
+            else {
                 $collection->set($key, $this->appendModelName($key) . ' ' . $this->getSide($item ?? 'asc'));
             }
         }

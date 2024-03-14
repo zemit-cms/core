@@ -145,7 +145,7 @@ trait DispatcherTrait
         ];
         
         foreach ($parts as $part) {
-            if (is_null($forward[$part] ?? false)) {
+            if (is_null($forward[$part] ?? null)) {
                 unset($forward[$part]);
             }
         }

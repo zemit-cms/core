@@ -28,20 +28,9 @@ class FlattenKeys
      */
     public static function process(array $collection = [], string $delimiter = '.', bool $lowerKey = true, string $context = null): ?array
     {
-        // nothing passed
-        if (!isset($collection)) {
-            return null;
-        }
-        
         $ret = [];
         
         foreach ($collection as $key => $value) {
-            
-            // handle our special attribute
-            if (is_bool($key)) {
-                $value = $key;
-                $key = null;
-            }
             
             // flip value to key
             if (is_int($key)) {

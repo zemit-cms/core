@@ -73,7 +73,7 @@ trait FilterConditions
             
             // nesting filtering, switch logical and append filter group
             if (is_array($filter)) {
-                $query [] = $this->defaultFilterCondition($filter, $allowedFilters, !$or);
+                [$query[], $bind[], $bindTypes[]] = $this->defaultFilterCondition($filter, $allowedFilters, !$or);
                 continue;
             }
             
@@ -232,7 +232,7 @@ trait FilterConditions
                 
                 $bind[$value] = $rawValue;
                 $bindTypes[$value] = $this->getBindTypeFromRawValue($rawValue);
-                $queryAndOr [] = "{$field} {$operator} " . is_array($value) ? "({{$value}:array})" : ":{$value}:";
+                $queryAndOr [] = "{$field} {$operator} " . (is_array($rawValue) ? "({{$value}:array})" : ":{$value}:");
             }
             
             if (!empty($queryAndOr)) {
@@ -344,11 +344,12 @@ trait FilterConditions
             return Column::BIND_PARAM_BOOL;
         }
         
-        if (is_float($rawValue)) {
-            return Column::BIND_PARAM_DECIMAL;
-        }
+        // identical to is_float
+//        if (is_double($rawValue)) {
+//            return Column::BIND_PARAM_DECIMAL;
+//        }
         
-        if (is_double($rawValue)) {
+        if (is_float($rawValue)) {
             return Column::BIND_PARAM_DECIMAL;
         }
         

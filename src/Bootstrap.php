@@ -198,7 +198,9 @@ DOC;
             if (!class_exists($provider)) {
                 throw new Exception('Service Provider `' . $key . '` class  `' . $provider . '` not found.', 404);
             }
-            $this->di->register(new $provider($this->di));
+            if ($this->di instanceof Di) {
+                $this->di->register(new $provider($this->di));
+            }
         }
     }
     

@@ -144,6 +144,8 @@ trait UserTrait
                     'bind' => ['username' => $username, 'email' => $username],
                     'bindTypes' => ['username' => Column::BIND_PARAM_STR, 'email' => Column::BIND_PARAM_STR],
                 ]);
+                
+                assert(is_iterable($list));
                 foreach ($list as $entity) {
                     $assign = [];
                     foreach ($fields as $field => $value) {

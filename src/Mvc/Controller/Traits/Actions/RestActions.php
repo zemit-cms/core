@@ -14,6 +14,7 @@ namespace Zemit\Mvc\Controller\Traits\Actions;
 use Zemit\Mvc\Controller\Traits\Actions\Rest\AverageAction;
 use Zemit\Mvc\Controller\Traits\Actions\Rest\CountAction;
 use Zemit\Mvc\Controller\Traits\Actions\Rest\DeleteAction;
+use Zemit\Mvc\Controller\Traits\Actions\Rest\DistinctAction;
 use Zemit\Mvc\Controller\Traits\Actions\Rest\ExportAction;
 use Zemit\Mvc\Controller\Traits\Actions\Rest\FindAction;
 use Zemit\Mvc\Controller\Traits\Actions\Rest\FindFirstAction;
@@ -31,6 +32,7 @@ trait RestActions
     use AverageAction;
     use CountAction;
     use DeleteAction;
+    use DistinctAction;
     use ExportAction;
     use FindAction;
     use FindFirstAction;

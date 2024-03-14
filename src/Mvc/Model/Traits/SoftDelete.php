@@ -90,8 +90,8 @@ trait SoftDelete
      */
     public function isDeleted(?string $field = null, ?int $deletedValue = null): bool
     {
-        $field ??= $this->getSoftDeleteBehavior()->getField() ?? 'deleted';
-        $deletedValue ??= $this->getSoftDeleteBehavior()->getValue() ?? 1;
+        $field ??= $this->getSoftDeleteBehavior()->getField();
+        $deletedValue ??= $this->getSoftDeleteBehavior()->getValue();
         return $this->readAttribute($field) === $deletedValue;
     }
     
@@ -116,6 +116,7 @@ trait SoftDelete
                 return false;
             }
             
+            // @phpstan-ignore-next-line
             if ($this->skipped) {
                 return true;
             }

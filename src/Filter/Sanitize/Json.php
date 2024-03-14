@@ -18,14 +18,7 @@ class Json
         if (is_null($input)) {
             return $input;
         }
-        
-        try {
-            $before = json_decode($input);
-            $valid = !empty($before);
-        } catch (\Exception $e) {
-            $valid = false;
-        }
 
-        return $valid ? $input : null;
+        return json_validate($input) ? $input : null;
     }
 }

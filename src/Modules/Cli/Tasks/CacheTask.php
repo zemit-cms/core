@@ -62,7 +62,7 @@ DOC;
     /**
      * Deletes multiple cache entries specified by the given keys.
      *
-     * @param mixed ...$keys A variable number of keys representing the cache entries to be deleted.
+     * @param string ...$keys A variable number of keys representing the cache entries to be deleted.
      *
      * @return bool Returns true if all cache entries were successfully deleted, false otherwise.
      */

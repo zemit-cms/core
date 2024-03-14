@@ -292,8 +292,6 @@ trait Relationship
                 // we got something to assign
                 $keepMissingRelationship = $this->keepMissingRelated[$alias] ?? null;
                 if (!empty($assign) || $keepMissingRelationship === false) {
-                    
-                    $assign = is_array($assign) ? array_values(array_filter($assign)) : $assign;
                     $this->{$alias} = $assign;
                     
                     // fix to force recursive parent save from children entities within _preSaveRelatedRecords method

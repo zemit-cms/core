@@ -35,7 +35,7 @@ trait Options
     /**
      * Get the Options Manager for the current instance
      *
-     * @return Manager The Options Manager for the current instance
+     * @return ManagerInterface The Options Manager for the current instance
      */
     public function getOptionsManager(): ManagerInterface
     {
@@ -45,7 +45,7 @@ trait Options
     /**
      * Sets the options manager.
      *
-     * @param Manager $optionsManager The options manager to be set.
+     * @param ManagerInterface $optionsManager The options manager to be set.
      * 
      * @return void
      */

@@ -15,6 +15,7 @@ use Phalcon\Config\Exception;
 use Phalcon\Mvc\Model;
 use Zemit\Exception\CliException;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
+use Zemit\Mvc\Model\Interfaces\HashInterface;
 
 trait DatabaseTrait
 {
@@ -147,7 +148,9 @@ trait DatabaseTrait
                 // Automagically fill passwords
                 if (property_exists($entity, 'password')) {
                     if (empty($row['password']) && property_exists($entity, 'email')) {
-                        $entity->assign(['password' => $entity->hash($row['email'])]);
+                        if ($entity instanceof HashInterface) {
+                            $entity->assign(['password' => $entity->hash($row['email'])]);
+                        }
                     }
                 }
                 

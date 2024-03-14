@@ -14,9 +14,12 @@ namespace Zemit\Mvc\Controller\Traits\Query;
 use Phalcon\Filter\Filter;
 use Phalcon\Support\Collection;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
+use Zemit\Mvc\Controller\Traits\Abstracts\Query\AbstractGroup;
 
 trait Group
 {
+    use AbstractGroup;
+    
     use AbstractParams;
     
     protected ?Collection $group;

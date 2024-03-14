@@ -12,12 +12,15 @@
 namespace Zemit\Mvc\Controller\Traits;
 
 use Phalcon\Http\ResponseInterface;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractStatusCode;
 
 /**
  * Set the status code to the response
  */
 trait StatusCode
 {
+    use AbstractStatusCode;
+    
     /**
      * Sets the status code and message for a response.
      *

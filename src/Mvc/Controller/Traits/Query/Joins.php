@@ -12,9 +12,12 @@
 namespace Zemit\Mvc\Controller\Traits\Query;
 
 use Phalcon\Support\Collection;
+use Zemit\Mvc\Controller\Traits\Abstracts\Query\AbstractJoins;
 
 trait Joins
 {
+    use AbstractJoins;
+    
     protected ?Collection $joins;
     
     /**

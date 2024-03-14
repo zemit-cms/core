@@ -13,6 +13,7 @@ namespace Zemit\Mvc\Dispatcher;
 
 use JetBrains\PhpStorm\NoReturn;
 use Phalcon\Http\Response;
+use Phalcon\Http\ResponseInterface;
 use Zemit\Di\Injectable;
 
 /**
@@ -53,7 +54,7 @@ class Preflight extends Injectable
      *
      * This method sets the CORS (Cross-Origin Resource Sharing) headers on the given response object.
      *
-     * @param Response $response The response object to set the headers on.
+     * @param ResponseInterface $response The response object to set the headers on.
      * @param string $origin The origin value to be checked against the allowed origins.
      * @param array $headers An optional array of additional headers to be set on the response.
      *                       Each header should be represented as key-value pairs in the array.
@@ -61,7 +62,7 @@ class Preflight extends Injectable
      *                       If a header key exists in the response object, it will not be overwritten.
      * @return void
      */
-    public function setCorsHeaders(Response $response, string $origin, array $headers = []): void
+    public function setCorsHeaders(ResponseInterface $response, string $origin, array $headers = []): void
     {
         // Set cors headers
         foreach ($headers as $headerKey => $headerValue) {
@@ -86,11 +87,11 @@ class Preflight extends Injectable
      * This method sends a "No Content" response by setting the status code to 204 and sending the response.
      * After sending the response, the script execution is terminated by calling the exit function with a status code of 0.
      *
-     * @param Response $response The response object to send.
+     * @param ResponseInterface $response The response object to send.
      * @return void
      */
     #[NoReturn]
-    public function sendNoContent(Response $response): void
+    public function sendNoContent(ResponseInterface $response): void
     {
         $response->setStatusCode(204)->send();
         exit(0);

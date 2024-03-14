@@ -1,0 +1,26 @@
+includes:
+    - ./vendor/phpstan/phpstan/conf/bleedingEdge.neon # Optional: For cutting-edge rules
+
+parameters:
+    level: 5 # Set PHPStan level here (0 to 8)
+    paths:
+        - src
+#        - tests
+    scanFiles:
+        - loader.php
+        - index.php
+        - devtools.php
+    excludePaths:
+        - */generated/* # Exclude generated files
+        - */vendor/* # Exclude vendor directory
+    fileExtensions:
+        - php
+    parallel:
+        maximumNumberOfProcesses: 12
+    treatPhpDocTypesAsCertain: false # Treat PHPDoc types as certain to be more strict
+    checkMissingIterableValueType: false # Optional: Disable or enable specific checks
+    polluteScopeWithLoopInitialAssignments: false # Optional: Configures scope behaviour in loops
+    universalObjectCratesClasses:
+        - DateTime # Classes that are considered to hold any property
+#    ignoreErrors: # Ignore specific errors (use with caution)
+#        - '#Call to an undefined method [a-zA-Z0-9\\_]+::methodNotExisting\(\)#'

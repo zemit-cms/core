@@ -59,7 +59,8 @@ if (!function_exists('sprintfn')) {
             }
             
             // replace the named argument with the corresponding numeric one
-            $format = (string)substr_replace($format, $replace = $array[$key], $position, $length);
+            $replace = (string)$array[$key];
+            $format = (string)substr_replace($format, $replace, $position, $length);
             $pos = $position + strlen($replace);
             
             // skip to end of replacement for next iteration

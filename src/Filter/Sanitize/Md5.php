@@ -15,6 +15,6 @@ class Md5
 {
     public function __invoke(?string $input = null): ?string
     {
-        return preg_replace('/[^0-9a-f]/', null, $input);
+        return preg_replace('/[^0-9a-f]/', '', $input);
     }
 }

@@ -14,12 +14,15 @@ namespace Zemit\Mvc\Controller\Traits\Query;
 use Phalcon\Filter\Exception;
 use Phalcon\Filter\Filter;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
+use Zemit\Mvc\Controller\Traits\Abstracts\Query\AbstractLimit;
 
 /**
  * The Limit trait provides methods to handle query limits.
  */
 trait Limit
 {
+    use AbstractLimit;
+    
     use AbstractParams;
     
     protected ?int $limit = 10;

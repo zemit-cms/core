@@ -64,14 +64,16 @@ use Zemit\Support\Version;
  */
 class Config extends \Zemit\Config\Config
 {
-    public function defineConst()
+    public function defineConst(): void
     {
-        defined('VENDOR_PATH') || define('VENDOR_PATH', Env::get('ROOT_PATH', 'vendor/'));
         defined('ROOT_PATH') || define('ROOT_PATH', Env::get('ROOT_PATH'));
-        defined('APP_PATH') || define('APP_PATH', Env::get('APP_PATH'));
-        defined('APPLICATION_ENV') || define('APPLICATION_ENV', Env::get('APPLICATION_ENV', 'development'));
+        defined('VENDOR_PATH') || define('VENDOR_PATH', Env::get('ROOT_PATH', 'vendor/'));
         defined('CORE_PATH') || define('CORE_PATH', Env::get('CORE_PATH', mb_substr(__DIR__, 0, mb_strlen(basename(__DIR__)) * -1)));
-        defined('PRIVATE_PATH') || define('PRIVATE_PATH', Env::get('APP_PRIVATE_PATH', constant('APP_PATH') . '/private/'));
+        defined('APP_PATH') || define('APP_PATH', Env::get('APP_PATH'));
+        defined('APP_ENV') || define('APP_ENV', Env::get('APP_ENV'));
+        defined('PUBLIC_PATH') || define('PUBLIC_PATH', Env::get('PUBLIC_PATH', ROOT_PATH . 'public/'));
+        defined('STORAGE_PATH') || define('STORAGE_PATH', Env::get('STORAGE_PATH', ROOT_PATH . 'storage/'));
+        defined('RESOURCES_PATH') || define('RESOURCES_PATH', Env::get('RESOURCES_PATH', ROOT_PATH . 'resources/'));
     }
     
     /**
@@ -136,7 +138,7 @@ class Config extends \Zemit\Config\Config
                 'namespace' => Env::get('APP_NAMESPACE', 'Zemit'), // Namespace of your application
                 'version' => Env::get('APP_VERSION', date('Ymd')), // allow to set and force a specific version
                 'maintenance' => Env::get('APP_MAINTENANCE', false), // Set true to force the maintenance page
-                'env' => Env::get('APP_ENV', Env::get('APPLICATION_ENV', null)), // Set the current environment
+                'env' => Env::get('APP_ENV', 'prod'), // Set the current environment
                 'debug' => Env::get('APP_DEBUG', false), // Set true to display debug
                 'cache' => Env::get('APP_CACHE', false), // Set true to activate the cache
                 'minify' => Env::get('APP_MINIFY', false), // Set true to activate minifying
@@ -153,26 +155,30 @@ class Config extends \Zemit\Config\Config
                 
                 'dir' => [
                     // project
-                    'root' => Env::get('APP_ROOT_PATH', defined('ROOT_PATH') ? ROOT_PATH ?: getcwd() : getcwd()),
-                    'vendor' => Env::get('APP_VENDOR_PATH', VENDOR_PATH),
-                    'app' => Env::get('APP_PATH', APP_PATH . '/'),
-                    'public' => Env::get('APP_PUBLIC_PATH', getcwd()),
+                    'app' => Env::get('APP_PATH', APP_PATH),
+                    'core' => Env::get('CORE_PATH', CORE_PATH),
+                    'root' => Env::get('ROOT_PATH', ROOT_PATH),
+                    'vendor' => Env::get('VENDOR_PATH', VENDOR_PATH),
+                    'public' => Env::get('PUBLIC_PATH', PUBLIC_PATH),
+                    'resources' => Env::get('RESOURCES_PATH', RESOURCES_PATH),
+                    'storage' => Env::get('STORAGE_PATH', STORAGE_PATH),
                     
                     // app
-                    'bootstrap' => Env::get('APP_BOOTSTRAP_PATH', APP_PATH . '/Bootstrap/'),
-                    'common' => Env::get('APP_COMMON_PATH', APP_PATH . '/Common/'),
-                    'config' => Env::get('APP_CONFIG_PATH', APP_PATH . '/Config/'),
-                    'modules' => Env::get('APP_MODULES_PATH', APP_PATH . '/Modules/'),
-                    'plugins' => Env::get('APP_PLUGINS_PATH', APP_PATH . '/Plugins/'),
-                    'private' => PRIVATE_PATH,
+                    'bootstrap' => Env::get('APP_BOOTSTRAP_PATH', APP_PATH . 'Bootstrap/'),
+                    'common' => Env::get('APP_COMMON_PATH', APP_PATH . 'Common/'),
+                    'config' => Env::get('APP_CONFIG_PATH', APP_PATH . 'Config/'),
+                    'modules' => Env::get('APP_MODULES_PATH', APP_PATH . 'Modules/'),
+                    'plugins' => Env::get('APP_PLUGINS_PATH', APP_PATH . 'Plugins/'),
                     
-                    // private
-                    'cache' => Env::get('APP_CACHE_PATH', PRIVATE_PATH . '/cache/'),
-                    'log' => Env::get('APP_LOG_PATH', PRIVATE_PATH . '/log/'),
-                    'files' => Env::get('APP_FILE_PATH', PRIVATE_PATH . '/files/'),
-                    'trash' => Env::get('APP_TRASH_PATH', PRIVATE_PATH . '/trash/'),
-                    'tmp' => Env::get('APP_TMP_PATH', PRIVATE_PATH . '/tmp/'),
-                    'migrations' => Env::get('APP_MIGRATION_PATH', PRIVATE_PATH . '/migrations/'),
+                    // storage
+                    'cache' => Env::get('CACHE_PATH', STORAGE_PATH . 'cache/'),
+                    'log' => Env::get('LOG_PATH', STORAGE_PATH . 'log/'),
+                    'files' => Env::get('FILE_PATH', STORAGE_PATH . 'files/'),
+                    'trash' => Env::get('TRASH_PATH', STORAGE_PATH . 'trash/'),
+                    'tmp' => Env::get('TMP_PATH', STORAGE_PATH . 'tmp/'),
+                    
+                    // resources
+                    'migrations' => Env::get('MIGRATIONS_PATH', RESOURCES_PATH . 'migrations/'),
                 ],
             ],
             
@@ -393,6 +399,7 @@ class Config extends \Zemit\Config\Config
                 Provider\Dispatcher\ServiceProvider::class => Env::get('PROVIDER_DISPATCHER', Provider\Dispatcher\ServiceProvider::class),
                 Provider\Request\ServiceProvider::class => Env::get('PROVIDER_REQUEST', Provider\Request\ServiceProvider::class),
                 Provider\Response\ServiceProvider::class => Env::get('PROVIDER_RESPONSE', Provider\Response\ServiceProvider::class),
+                Provider\Models\ServiceProvider::class => Env::get('PROVIDER_MODELS', Provider\Models\ServiceProvider::class),
                 
                 // Security
                 Provider\Acl\ServiceProvider::class => Env::get('PROVIDER_ACL', Provider\Acl\ServiceProvider::class),
@@ -494,7 +501,7 @@ class Config extends \Zemit\Config\Config
                     ],
                 ],
                 'default' => [
-                    'path' => Env::get('LOGGER_PATH', PRIVATE_PATH . '/log/'),
+                    'path' => Env::get('LOGGER_PATH', STORAGE_PATH . '/log/'),
                     'format' => Env::get('LOGGER_FORMAT', '[%date%][%type%] %message%'),
                     'date' => Env::get('LOGGER_DATE', 'Y-m-d H:i:s'),
                     'filename' => Env::get('LOGGER_DEFAULT_FILENAME', 'zemit'),
@@ -818,7 +825,7 @@ class Config extends \Zemit\Config\Config
                     ],
                     'stream' => [
                         'adapter' => Env::get('CACHE_STREAM_ADAPTER', \Phalcon\Cache\Adapter\Stream::class),
-                        'cacheDir' => Env::get('CACHE_STREAM_DIR', PRIVATE_PATH . '/cache/data/'),
+                        'cacheDir' => Env::get('CACHE_STREAM_DIR', STORAGE_PATH . '/cache/data/'),
                     ],
                     'memcached' => [
                         'adapter' => Env::get('CACHE_MEMCACHED_ADAPTER', \Phalcon\Cache\Adapter\Libmemcached::class),
@@ -865,7 +872,7 @@ class Config extends \Zemit\Config\Config
                     ],
                     'stream' => [
                         'adapter' => Env::get('METADATA_STREAM_ADAPTER', \Phalcon\Mvc\Model\MetaData\Stream::class),
-                        'metaDataDir' => Env::get('METADATA_STREAM_DIR', PRIVATE_PATH . '/cache/metadata/'),
+                        'metaDataDir' => Env::get('METADATA_STREAM_DIR', STORAGE_PATH . '/cache/metadata/'),
                     ],
                     'memcached' => [
                         'adapter' => Env::get('METADATA_MEMCACHED_ADAPTER', \Phalcon\Mvc\Model\MetaData\Libmemcached::class),
@@ -913,7 +920,7 @@ class Config extends \Zemit\Config\Config
                     ],
                     'file' => [
                         'adapter' => Env::get('ANNOTATIONS_STREAM_ADAPTER', \Phalcon\Annotations\Adapter\Stream::class),
-                        'annotationsDir' => Env::get('ANNOTATIONS_STREAM_DIR', PRIVATE_PATH . '/cache/annotations'),
+                        'annotationsDir' => Env::get('ANNOTATIONS_STREAM_DIR', STORAGE_PATH . '/cache/annotations'),
                     ],
                 ],
                 'default' => [
@@ -1027,7 +1034,7 @@ class Config extends \Zemit\Config\Config
                         'host' => Env::get('FILE_SYSTEM_SFTP_HOST'), // required
                         'username' => Env::get('FILE_SYSTEM_SFTP_USERNAME'), // required
                         'password' => Env::get('FILE_SYSTEM_SFTP_PASSWORD'), // set to null if privateKey is used
-                        'privateKey' => Env::get('FILE_SYSTEM_SFTP_PRIVATE_KEY'), // can be used instead of password, set to null if password is set
+                        'privateKey' => Env::get('FILE_SYSTEM_SFTP_STORAGE_KEY'), // can be used instead of password, set to null if password is set
                         'passphrase' => Env::get('FILE_SYSTEM_SFTP_PASSPHRASE'), //  set to null if privateKey is not used or has no passphrase
                         'port' => Env::get('FILE_SYSTEM_SFTP_PORT', 22),
                         'useAgent' => Env::get('FILE_SYSTEM_SFTP_USE_AGENT', false),

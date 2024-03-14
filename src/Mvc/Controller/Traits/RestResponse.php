@@ -18,10 +18,13 @@ use Zemit\Http\StatusCode as HttpStatusCode;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractDebug;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
+use Zemit\Mvc\Controller\Traits\Abstracts\AbstractRestResponse;
 use Zemit\Support\Utils;
 
 trait RestResponse
 {
+    use AbstractRestResponse;
+    
     use AbstractDebug;
     use AbstractInjectable;
     use AbstractParams;

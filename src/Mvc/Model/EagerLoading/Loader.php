@@ -57,7 +57,7 @@ final class Loader
         elseif ($from instanceof Simple) {
             $from = iterator_to_array($from);
             if (isset($from[0])) {
-                $className ??= get_class($from[0]);
+                $className = get_class($from[0]);
             }
             else {
                 $from = null;
@@ -68,7 +68,7 @@ final class Loader
         elseif (is_array($from)) {
             $from = array_filter($from);
             if (isset($from[0])) {
-                $className ??= get_class($from[0]);
+                $className = get_class($from[0]);
             }
             foreach ($from as $el) {
                 if ($el instanceof ModelInterface) {
@@ -185,7 +185,7 @@ final class Loader
      * @param mixed ...$arguments
      * @return ?ModelInterface
      */
-    public static function fromModel(ModelInterface $subject, ...$arguments): ?ModelInterface
+    public static function fromModel(ModelInterface $subject, mixed ...$arguments): ?ModelInterface
     {
         return (new self($subject, ...$arguments))->execute()->getFirstSubject();
     }
@@ -197,7 +197,7 @@ final class Loader
      * @param mixed ...$arguments
      * @return array
      */
-    public static function fromArray(array $subject, ...$arguments): array
+    public static function fromArray(array $subject, mixed ...$arguments): array
     {
         return (new self($subject, ...$arguments))->execute()->getSubject() ?? [];
     }
@@ -209,7 +209,7 @@ final class Loader
      * @param mixed ...$arguments
      * @return ?ModelInterface
      */
-    public static function fromModelWithoutSoftDelete(ModelInterface $subject, ...$arguments): ?ModelInterface
+    public static function fromModelWithoutSoftDelete(ModelInterface $subject, mixed ...$arguments): ?ModelInterface
     {
         $options = ['softDelete' => 'softDelete'];
         $obj = new self($subject, ...$arguments);
@@ -223,7 +223,7 @@ final class Loader
      * @param mixed ...$arguments
      * @return array
      */
-    public static function fromArrayWithoutSoftDelete(array $subject, ...$arguments): array
+    public static function fromArrayWithoutSoftDelete(array $subject, mixed ...$arguments): array
     {
         $options = ['softDelete' => 'softDelete'];
         $obj = new self($subject, ...$arguments);
@@ -237,7 +237,7 @@ final class Loader
      * @param mixed ...$arguments
      * @return array
      */
-    public static function fromResultset(ResultsetInterface $subject, ...$arguments): array
+    public static function fromResultset(ResultsetInterface $subject, mixed ...$arguments): array
     {
         return (new self($subject, ...$arguments))->execute()->getSubject() ?? [];
     }
@@ -249,7 +249,7 @@ final class Loader
      * @return array
      * @throws \InvalidArgumentException
      */
-    private static function parseArguments(array $arguments)
+    private static function parseArguments(array $arguments): array
     {
         if (empty($arguments)) {
             throw new \InvalidArgumentException('Arguments can not be empty');
@@ -297,7 +297,7 @@ final class Loader
      * @return EagerLoad[]
      * @throws \RuntimeException
      */
-    private function buildTree()
+    private function buildTree(): array
     {
         uksort($this->eagerLoads, 'strcmp');
         
@@ -315,8 +315,9 @@ final class Loader
                 do {
                     $alias = $relationAliases[$nestingLevel];
                     $name = implode('.', array_slice($relationAliases, 0, $nestingLevel + 1));
+                    $nestingLevel++;
                 }
-                while (isset($eagerLoads[$name]) && ++$nestingLevel);
+                while (isset($eagerLoads[$name]));
                 
                 if ($nestingLevel === 0) {
                     $parentClassName = $this->className;

@@ -47,7 +47,8 @@ class ServiceProvider extends AbstractServiceProvider
             $scheme = $request->getScheme() . '://';
             $host = $request->getHttpHost();
             $port = $request->getPort();
-            $port = ($port !== $secure ? '443' : '80') ? ':' . $port : null;
+            $defaultPort = $secure ? 443 : 80;
+            $port = $port !== $defaultPort? ':' . $port : null;
             $oauthFacebookConfig['redirectUri'] = $scheme . $host . $port . ($oauthFacebookConfig['redirectUri'] ?: '');
             
             return new Facebook($oauthFacebookConfig);

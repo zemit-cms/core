@@ -56,22 +56,42 @@ class Locale extends Injectable implements OptionsInterface
     public $locale = null;
     
     /**
-     * @var mixed|null|string
+     * Session key for storing the locale
+     * @var string $sessionKey The session key for storing the locale.
      */
     public string $sessionKey = 'zemit-locale';
     
     /**
-     * Default locale to fall back
+     * Default locale
+     *
+     * This variable holds the default locale value for the application.
+     * If no locale is explicitly specified, this value will be used.
+     *
+     * @var string $default
      */
     public string $default = 'en';
     
     /**
-     * List of allowed locale
+     * Array of allowed languages.
+     *
+     * @var array $allowed An array of allowed languages.
      */
     public array $allowed = ['en'];
     
     /**
-     * Set options and prepare locale
+     * Initializes the object by setting its properties based on the provided options.
+     *
+     * This method retrieves the values of the sessionKey, allowed, default, and mode options using the getOption()
+     * method. If these options are not provided, the default values specified in the class properties are used instead.
+     *
+     * It then sets the obtained values to the corresponding class properties using the appropriate setter methods,
+     * namely setAllowed(), setDefault(), and setMode(). Additionally, it assigns the obtained sessionKey value directly
+     * to the sessionKey property.
+     *
+     * Finally, the initialize() method prepares the default value by calling the prepare() method with the getDefault()
+     * method as its parameter.
+     *
+     * @return void
      */
     public function initialize(): void
     {
