@@ -567,7 +567,7 @@ PHP;
             $columnName = $column->getName();
             $propertyName = $this->getPropertyName($columnName);
             
-            $relationName = $this->getTableName(substr($columnName, 0, strlen($columnName) - 3));;
+            $relationName = $this->getTableName(substr($columnName, 0, strlen($columnName) - 3));
             $relationTableName = $relationName;
             
             if (str_ends_with($columnName, '_id')) {
