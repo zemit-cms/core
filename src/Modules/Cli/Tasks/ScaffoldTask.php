@@ -579,7 +579,7 @@ PHP;
                         $relationTableName = $this->getTableName($table);
                         if (str_contains($table, '_')) {
                             $length = strlen($relationTableName);
-                            $midpoint = floor($length / 2);
+                            $midpoint = (int)floor($length / 2);
                             $firstPart = substr($relationTableName, 0, $midpoint);
                             $secondPart = substr($relationTableName, $midpoint + (($length % 2 === 0)? 0 : 1));
                             if ($firstPart === $secondPart) {
@@ -903,8 +903,6 @@ PHP;
     
     public function getPropertyDefinitions(ColumnInterface $column): array
     {
-        $definitions = [];
-        
         // column
         $columnName = $column->getName();
         $columnType = $this->getColumnType($column);
@@ -970,7 +968,7 @@ PHP;
         
         // Convert text to UTF-8
         $utf8Text = mb_convert_encoding($text, 'UTF-8');
-        if (false === $utf8Text) {
+        if ($utf8Text === false) {
             return false; // Failed to convert to UTF-8
         }
         
@@ -979,7 +977,7 @@ PHP;
         
         // Write the file
         $fileHandle = fopen($file, 'w');
-        if (!$fileHandle) {
+        if ($fileHandle === false) {
             return false; // Failed to open file
         }
         

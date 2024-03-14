@@ -144,8 +144,8 @@ trait DescribesTrait
             'int' => (int)$columnDefault,
             'double' => (double)$columnDefault,
             'float' => (float)$columnDefault,
-            default => $this->isRawValue($columnDefault) ? null
-                : '\'' . addslashes((string)$columnDefault) . '\'',
+            default => ($this->isRawValue($columnDefault) ? null
+                : '\'' . addslashes((string)$columnDefault) . '\''),
         };
     }
     
