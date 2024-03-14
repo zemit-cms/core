@@ -10,10 +10,10 @@
 
 namespace Zemit\Modules\Api\Controllers;
 
-use Zemit\Modules\Api\Controller;
+use Zemit\Mvc\Controller\Rest;
 use Zemit\Mvc\Controller\Traits\Actions\ClamavActions;
 
-class ClamavController extends Controller
+class ClamavController extends Rest
 {
     use ClamavActions;
 }
