@@ -129,23 +129,27 @@ trait DescribesTrait
     /**
      * Retrieves the default value for a column.
      * @param ColumnInterface $column The column object to retrieve the default value from.
-     * @return string|int|bool|float|null Returns the default value of the column as a string, integer, boolean, float, or null based on the column type.
+     * @return mixed Returns the default value of the column as a string, integer, boolean, float, or null based on the column type.
      */
-    public function getDefaultValue(ColumnInterface $column): string|int|bool|float|null
+    public function getDefaultValue(ColumnInterface $column): mixed
     {
         if (!$column->hasDefault()) {
             return null;
         }
         
-        $type = $this->getColumnType($column);
         $columnDefault = $column->getDefault();
+        if (!isset($columnDefault)) {
+            return null;
+        }
+        
+        $type = $this->getColumnType($column);
         return match ($type) {
             'bool' => (bool)$columnDefault,
             'int' => (int)$columnDefault,
             'double' => (double)$columnDefault,
             'float' => (float)$columnDefault,
-            default => ($this->isRawValue($columnDefault) ? null
-                : '\'' . addslashes((string)$columnDefault) . '\''),
+            default => $this->isRawValue($columnDefault) ? null
+                : '\'' . addslashes((string)$columnDefault) . '\'',
         };
     }
     
