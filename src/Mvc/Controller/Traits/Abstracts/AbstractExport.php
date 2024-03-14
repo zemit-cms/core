@@ -11,6 +11,8 @@
 
 namespace Zemit\Mvc\Controller\Traits\Abstracts;
 
+use Phalcon\Http\ResponseInterface;
+
 trait AbstractExport
 {
     abstract public function getContentType(?array $params = null): string;
@@ -19,13 +21,13 @@ trait AbstractExport
     
     abstract public function getExportColumns(array $list): array;
     
-    abstract public function export(array $list, ?string $filename = null, string $contentType = null, array $params = null): bool;
+    abstract public function export(array $list, ?string $filename = null, string $contentType = null, array $params = null): ResponseInterface;
     
-    abstract public function exportXml(array $list, ?string $filename = null, ?array $params = null): bool;
+    abstract public function exportXml(array $list, ?string $filename = null, ?array $params = null): ResponseInterface;
     
-    abstract public function exportJson(mixed $list, ?string $filename = null, int $flags = JSON_PRETTY_PRINT, int $depth = 2048): bool;
+    abstract public function exportJson(mixed $list, ?string $filename = null, int $flags = JSON_PRETTY_PRINT, int $depth = 2048): ResponseInterface;
     
-    abstract public function exportExcel(array $list, ?string $filename = null): bool;
+    abstract public function exportExcel(array $list, ?string $filename = null): ResponseInterface;
     
-    abstract public function exportCsv(array $list, ?string $filename = null, ?array $params = null): bool;
+    abstract public function exportCsv(array $list, ?string $filename = null, ?array $params = null): ResponseInterface;
 }
