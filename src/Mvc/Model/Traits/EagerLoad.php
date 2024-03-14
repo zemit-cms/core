@@ -57,7 +57,7 @@ trait EagerLoad
      * Same as EagerLoadingTrait::findWith() for a single record
      *
      * @param mixed ...$arguments
-     * @return false|\Phalcon\Mvc\ModelInterface
+     * @return ?ModelInterface
      */
     public static function findFirstWith(array ...$arguments): ?ModelInterface
     {

@@ -372,11 +372,15 @@ class Identity extends Injectable implements OptionsInterface
                 
                 /** @var User $userClass */
                 $userClass = $this->getUserClass();
-                $user = $userClass::findFirstWithById([
+                $user = $userClass::findFirstWith([
                     'RoleList',
                     'GroupList.RoleList',
                     'TypeList.GroupList.RoleList',
-                ], $userId);
+                ], [
+                    'id = :id:',
+                    'bind' => ['id' => (int)$userId],
+                    'bindTypes' => ['id' => Column::BIND_PARAM_INT]
+                ]);
                 
                 SecurityBehavior::staticStop();
             }
@@ -385,7 +389,7 @@ class Identity extends Injectable implements OptionsInterface
                 ? $this->setUserAs($user)
                 : $this->setUser($user);
             
-            return $user;
+            return $user instanceof UserInterface? $user : null;
         }
         
         return $as
@@ -487,7 +491,8 @@ class Identity extends Injectable implements OptionsInterface
         $validation = new Validation();
         $validation->add('userId', new PresenceOf(['message' => 'required']));
         $validation->add('userId', new Numericality(['message' => 'not-numeric']));
-        $messages = $validation->validate($params);
+        $validation->validate($params);
+        $messages = $validation->getMessages();
     
         $saved = false;
         
