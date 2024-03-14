@@ -133,12 +133,12 @@ trait DescribesTrait
      */
     public function getDefaultValue(ColumnInterface $column): string|int|bool|float|null
     {
-        $columnDefault = $column->getDefault();
-        if (!isset($columnDefault)) {
+        if (!$column->hasDefault()) {
             return null;
         }
         
         $type = $this->getColumnType($column);
+        $columnDefault = $column->getDefault();
         return match ($type) {
             'bool' => (bool)$columnDefault,
             'int' => (int)$columnDefault,
