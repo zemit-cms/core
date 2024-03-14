@@ -981,7 +981,7 @@ PHP;
             return false; // Failed to open file
         }
         
-        $writeSuccess = fwrite($fileHandle, $utf8Text) !== false;
+        $writeSuccess = fwrite($fileHandle, (string)$utf8Text) !== false;
         $closeSuccess = fclose($fileHandle);
         
         return $writeSuccess && $closeSuccess;
