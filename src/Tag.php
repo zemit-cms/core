@@ -164,6 +164,10 @@ class Tag extends PhalconTag
         $escaper = self::getEscaperService();
         assert($escaper instanceof \Zemit\Html\Escaper);
         
+        if (!isset($value)) {
+            return [$value, $attr];
+        }
+        
         $attr = $escaper->attributes($attr);
         switch ($attr) {
             case 'css':
