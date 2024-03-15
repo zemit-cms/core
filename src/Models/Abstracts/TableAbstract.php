@@ -34,11 +34,11 @@ use Zemit\Models\Abstracts\Interfaces\TableAbstractInterface;
  * @property Data[] $DataList
  * @method Data[] getDataList(?array $params = null)
  *
- * @property Site[] $sitelist
+ * @property Site[] $datasitelist
  * @property Site[] $DataSiteList
  * @method Site[] getDataSiteList(?array $params = null)
  *
- * @property Field[] $fieldlist
+ * @property Field[] $datafieldlist
  * @property Field[] $DataFieldList
  * @method Field[] getDataFieldList(?array $params = null)
  *
@@ -46,7 +46,7 @@ use Zemit\Models\Abstracts\Interfaces\TableAbstractInterface;
  * @property Field[] $FieldList
  * @method Field[] getFieldList(?array $params = null)
  *
- * @property Site[] $sitelist
+ * @property Site[] $fieldsitelist
  * @property Site[] $FieldSiteList
  * @method Site[] getFieldSiteList(?array $params = null)
  *
@@ -54,11 +54,11 @@ use Zemit\Models\Abstracts\Interfaces\TableAbstractInterface;
  * @property TranslateField[] $TranslateFieldList
  * @method TranslateField[] getTranslateFieldList(?array $params = null)
  *
- * @property Site[] $sitelist
+ * @property Site[] $translatefieldsitelist
  * @property Site[] $TranslateFieldSiteList
  * @method Site[] getTranslateFieldSiteList(?array $params = null)
  *
- * @property Lang[] $langlist
+ * @property Lang[] $translatefieldlanglist
  * @property Lang[] $TranslateFieldLangList
  * @method Lang[] getTranslateFieldLangList(?array $params = null)
  *
@@ -618,24 +618,59 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
     {
         $this->hasMany('id', Data::class, 'tableId', ['alias' => 'DataList']);
 
-        $this->hasManyToMany('id', Data::class, 'tableId',
-            'siteId', Site::class, 'id', ['alias' => 'DataSiteList']);
+        $this->hasManyToMany(
+            'id',
+            Data::class,
+            'tableId',
+            'siteId',
+            Site::class,
+            'id',
+            ['alias' => 'DataSiteList']
+        );
 
-        $this->hasManyToMany('id', Data::class, 'tableId',
-            'fieldId', Field::class, 'id', ['alias' => 'DataFieldList']);
+        $this->hasManyToMany(
+            'id',
+            Data::class,
+            'tableId',
+            'fieldId',
+            Field::class,
+            'id',
+            ['alias' => 'DataFieldList']
+        );
 
         $this->hasMany('id', Field::class, 'tableId', ['alias' => 'FieldList']);
 
-        $this->hasManyToMany('id', Field::class, 'tableId',
-            'siteId', Site::class, 'id', ['alias' => 'FieldSiteList']);
+        $this->hasManyToMany(
+            'id',
+            Field::class,
+            'tableId',
+            'siteId',
+            Site::class,
+            'id',
+            ['alias' => 'FieldSiteList']
+        );
 
         $this->hasMany('id', TranslateField::class, 'tableId', ['alias' => 'TranslateFieldList']);
 
-        $this->hasManyToMany('id', TranslateField::class, 'tableId',
-            'siteId', Site::class, 'id', ['alias' => 'TranslateFieldSiteList']);
+        $this->hasManyToMany(
+            'id',
+            TranslateField::class,
+            'tableId',
+            'siteId',
+            Site::class,
+            'id',
+            ['alias' => 'TranslateFieldSiteList']
+        );
 
-        $this->hasManyToMany('id', TranslateField::class, 'tableId',
-            'langId', Lang::class, 'id', ['alias' => 'TranslateFieldLangList']);
+        $this->hasManyToMany(
+            'id',
+            TranslateField::class,
+            'tableId',
+            'langId',
+            Lang::class,
+            'id',
+            ['alias' => 'TranslateFieldLangList']
+        );
 
         $this->belongsTo('langId', Lang::class, 'id', ['alias' => 'LangEntity']);
 
@@ -693,7 +728,8 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
      * 
      * @returns array The array mapping the column names to the property names
      */
-    public function columnMap(): array {
+    public function columnMap(): array
+    {
         return [
             'id' => 'id',
             'uuid' => 'uuid',

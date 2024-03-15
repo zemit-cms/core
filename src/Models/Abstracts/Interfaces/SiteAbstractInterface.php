@@ -20,7 +20,7 @@ use Zemit\Mvc\ModelInterface;
  * @property CategoryAbstractInterface[] $CategoryList
  * @method CategoryAbstractInterface[] getCategoryList(?array $params = null)
  *
- * @property LangAbstractInterface[] $langlist
+ * @property LangAbstractInterface[] $categorylanglist
  * @property LangAbstractInterface[] $CategoryLangList
  * @method LangAbstractInterface[] getCategoryLangList(?array $params = null)
  *
@@ -28,11 +28,11 @@ use Zemit\Mvc\ModelInterface;
  * @property DataAbstractInterface[] $DataList
  * @method DataAbstractInterface[] getDataList(?array $params = null)
  *
- * @property TableAbstractInterface[] $tablelist
+ * @property TableAbstractInterface[] $datatablelist
  * @property TableAbstractInterface[] $DataTableList
  * @method TableAbstractInterface[] getDataTableList(?array $params = null)
  *
- * @property FieldAbstractInterface[] $fieldlist
+ * @property FieldAbstractInterface[] $datafieldlist
  * @property FieldAbstractInterface[] $DataFieldList
  * @method FieldAbstractInterface[] getDataFieldList(?array $params = null)
  *
@@ -40,7 +40,7 @@ use Zemit\Mvc\ModelInterface;
  * @property FieldAbstractInterface[] $FieldList
  * @method FieldAbstractInterface[] getFieldList(?array $params = null)
  *
- * @property TableAbstractInterface[] $tablelist
+ * @property TableAbstractInterface[] $fieldtablelist
  * @property TableAbstractInterface[] $FieldTableList
  * @method TableAbstractInterface[] getFieldTableList(?array $params = null)
  *
@@ -48,11 +48,11 @@ use Zemit\Mvc\ModelInterface;
  * @property FlagAbstractInterface[] $FlagList
  * @method FlagAbstractInterface[] getFlagList(?array $params = null)
  *
- * @property PageAbstractInterface[] $pagelist
+ * @property PageAbstractInterface[] $flagpagelist
  * @property PageAbstractInterface[] $FlagPageList
  * @method PageAbstractInterface[] getFlagPageList(?array $params = null)
  *
- * @property LangAbstractInterface[] $langlist
+ * @property LangAbstractInterface[] $flaglanglist
  * @property LangAbstractInterface[] $FlagLangList
  * @method LangAbstractInterface[] getFlagLangList(?array $params = null)
  *
@@ -60,19 +60,19 @@ use Zemit\Mvc\ModelInterface;
  * @property MetaAbstractInterface[] $MetaList
  * @method MetaAbstractInterface[] getMetaList(?array $params = null)
  *
- * @property LangAbstractInterface[] $langlist
+ * @property LangAbstractInterface[] $metalanglist
  * @property LangAbstractInterface[] $MetaLangList
  * @method LangAbstractInterface[] getMetaLangList(?array $params = null)
  *
- * @property PageAbstractInterface[] $pagelist
+ * @property PageAbstractInterface[] $metapagelist
  * @property PageAbstractInterface[] $MetaPageList
  * @method PageAbstractInterface[] getMetaPageList(?array $params = null)
  *
- * @property PostAbstractInterface[] $postlist
+ * @property PostAbstractInterface[] $metapostlist
  * @property PostAbstractInterface[] $MetaPostList
  * @method PostAbstractInterface[] getMetaPostList(?array $params = null)
  *
- * @property CategoryAbstractInterface[] $categorylist
+ * @property CategoryAbstractInterface[] $metacategorylist
  * @property CategoryAbstractInterface[] $MetaCategoryList
  * @method CategoryAbstractInterface[] getMetaCategoryList(?array $params = null)
  *
@@ -80,7 +80,7 @@ use Zemit\Mvc\ModelInterface;
  * @property PageAbstractInterface[] $PageList
  * @method PageAbstractInterface[] getPageList(?array $params = null)
  *
- * @property LangAbstractInterface[] $langlist
+ * @property LangAbstractInterface[] $pagelanglist
  * @property LangAbstractInterface[] $PageLangList
  * @method LangAbstractInterface[] getPageLangList(?array $params = null)
  *
@@ -88,11 +88,11 @@ use Zemit\Mvc\ModelInterface;
  * @property PostAbstractInterface[] $PostList
  * @method PostAbstractInterface[] getPostList(?array $params = null)
  *
- * @property LangAbstractInterface[] $langlist
+ * @property LangAbstractInterface[] $postlanglist
  * @property LangAbstractInterface[] $PostLangList
  * @method LangAbstractInterface[] getPostLangList(?array $params = null)
  *
- * @property PageAbstractInterface[] $pagelist
+ * @property PageAbstractInterface[] $postpagelist
  * @property PageAbstractInterface[] $PostPageList
  * @method PageAbstractInterface[] getPostPageList(?array $params = null)
  *
@@ -108,19 +108,19 @@ use Zemit\Mvc\ModelInterface;
  * @property TranslateAbstractInterface[] $TranslateList
  * @method TranslateAbstractInterface[] getTranslateList(?array $params = null)
  *
- * @property LangAbstractInterface[] $langlist
+ * @property LangAbstractInterface[] $translatelanglist
  * @property LangAbstractInterface[] $TranslateLangList
  * @method LangAbstractInterface[] getTranslateLangList(?array $params = null)
  *
- * @property PageAbstractInterface[] $pagelist
+ * @property PageAbstractInterface[] $translatepagelist
  * @property PageAbstractInterface[] $TranslatePageList
  * @method PageAbstractInterface[] getTranslatePageList(?array $params = null)
  *
- * @property PostAbstractInterface[] $postlist
+ * @property PostAbstractInterface[] $translatepostlist
  * @property PostAbstractInterface[] $TranslatePostList
  * @method PostAbstractInterface[] getTranslatePostList(?array $params = null)
  *
- * @property CategoryAbstractInterface[] $categorylist
+ * @property CategoryAbstractInterface[] $translatecategorylist
  * @property CategoryAbstractInterface[] $TranslateCategoryList
  * @method CategoryAbstractInterface[] getTranslateCategoryList(?array $params = null)
  *
@@ -128,11 +128,11 @@ use Zemit\Mvc\ModelInterface;
  * @property TranslateFieldAbstractInterface[] $TranslateFieldList
  * @method TranslateFieldAbstractInterface[] getTranslateFieldList(?array $params = null)
  *
- * @property LangAbstractInterface[] $langlist
+ * @property LangAbstractInterface[] $translatefieldlanglist
  * @property LangAbstractInterface[] $TranslateFieldLangList
  * @method LangAbstractInterface[] getTranslateFieldLangList(?array $params = null)
  *
- * @property TableAbstractInterface[] $tablelist
+ * @property TableAbstractInterface[] $translatefieldtablelist
  * @property TableAbstractInterface[] $TranslateFieldTableList
  * @method TableAbstractInterface[] getTranslateFieldTableList(?array $params = null)
  *

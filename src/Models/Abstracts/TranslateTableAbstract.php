@@ -635,7 +635,8 @@ abstract class TranslateTableAbstract extends AbstractModel implements Translate
      * 
      * @returns array The array mapping the column names to the property names
      */
-    public function columnMap(): array {
+    public function columnMap(): array
+    {
         return [
             'id' => 'id',
             'table' => 'table',

@@ -642,7 +642,8 @@ abstract class GroupFeatureAbstract extends AbstractModel implements GroupFeatur
      * 
      * @returns array The array mapping the column names to the property names
      */
-    public function columnMap(): array {
+    public function columnMap(): array
+    {
         return [
             'id' => 'id',
             'group_id' => 'groupId',

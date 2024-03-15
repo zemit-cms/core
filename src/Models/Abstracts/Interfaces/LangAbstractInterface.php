@@ -20,7 +20,7 @@ use Zemit\Mvc\ModelInterface;
  * @property CategoryAbstractInterface[] $CategoryList
  * @method CategoryAbstractInterface[] getCategoryList(?array $params = null)
  *
- * @property SiteAbstractInterface[] $sitelist
+ * @property SiteAbstractInterface[] $categorysitelist
  * @property SiteAbstractInterface[] $CategorySiteList
  * @method SiteAbstractInterface[] getCategorySiteList(?array $params = null)
  *
@@ -28,11 +28,11 @@ use Zemit\Mvc\ModelInterface;
  * @property FlagAbstractInterface[] $FlagList
  * @method FlagAbstractInterface[] getFlagList(?array $params = null)
  *
- * @property SiteAbstractInterface[] $sitelist
+ * @property SiteAbstractInterface[] $flagsitelist
  * @property SiteAbstractInterface[] $FlagSiteList
  * @method SiteAbstractInterface[] getFlagSiteList(?array $params = null)
  *
- * @property PageAbstractInterface[] $pagelist
+ * @property PageAbstractInterface[] $flagpagelist
  * @property PageAbstractInterface[] $FlagPageList
  * @method PageAbstractInterface[] getFlagPageList(?array $params = null)
  *
@@ -40,19 +40,19 @@ use Zemit\Mvc\ModelInterface;
  * @property MetaAbstractInterface[] $MetaList
  * @method MetaAbstractInterface[] getMetaList(?array $params = null)
  *
- * @property SiteAbstractInterface[] $sitelist
+ * @property SiteAbstractInterface[] $metasitelist
  * @property SiteAbstractInterface[] $MetaSiteList
  * @method SiteAbstractInterface[] getMetaSiteList(?array $params = null)
  *
- * @property PageAbstractInterface[] $pagelist
+ * @property PageAbstractInterface[] $metapagelist
  * @property PageAbstractInterface[] $MetaPageList
  * @method PageAbstractInterface[] getMetaPageList(?array $params = null)
  *
- * @property PostAbstractInterface[] $postlist
+ * @property PostAbstractInterface[] $metapostlist
  * @property PostAbstractInterface[] $MetaPostList
  * @method PostAbstractInterface[] getMetaPostList(?array $params = null)
  *
- * @property CategoryAbstractInterface[] $categorylist
+ * @property CategoryAbstractInterface[] $metacategorylist
  * @property CategoryAbstractInterface[] $MetaCategoryList
  * @method CategoryAbstractInterface[] getMetaCategoryList(?array $params = null)
  *
@@ -60,7 +60,7 @@ use Zemit\Mvc\ModelInterface;
  * @property PageAbstractInterface[] $PageList
  * @method PageAbstractInterface[] getPageList(?array $params = null)
  *
- * @property SiteAbstractInterface[] $sitelist
+ * @property SiteAbstractInterface[] $pagesitelist
  * @property SiteAbstractInterface[] $PageSiteList
  * @method SiteAbstractInterface[] getPageSiteList(?array $params = null)
  *
@@ -68,11 +68,11 @@ use Zemit\Mvc\ModelInterface;
  * @property PostAbstractInterface[] $PostList
  * @method PostAbstractInterface[] getPostList(?array $params = null)
  *
- * @property SiteAbstractInterface[] $sitelist
+ * @property SiteAbstractInterface[] $postsitelist
  * @property SiteAbstractInterface[] $PostSiteList
  * @method SiteAbstractInterface[] getPostSiteList(?array $params = null)
  *
- * @property PageAbstractInterface[] $pagelist
+ * @property PageAbstractInterface[] $postpagelist
  * @property PageAbstractInterface[] $PostPageList
  * @method PageAbstractInterface[] getPostPageList(?array $params = null)
  *
@@ -88,7 +88,7 @@ use Zemit\Mvc\ModelInterface;
  * @property TableAbstractInterface[] $TableList
  * @method TableAbstractInterface[] getTableList(?array $params = null)
  *
- * @property WorkspaceAbstractInterface[] $workspacelist
+ * @property WorkspaceAbstractInterface[] $tableworkspacelist
  * @property WorkspaceAbstractInterface[] $TableWorkspaceList
  * @method WorkspaceAbstractInterface[] getTableWorkspaceList(?array $params = null)
  *
@@ -96,19 +96,19 @@ use Zemit\Mvc\ModelInterface;
  * @property TranslateAbstractInterface[] $TranslateList
  * @method TranslateAbstractInterface[] getTranslateList(?array $params = null)
  *
- * @property SiteAbstractInterface[] $sitelist
+ * @property SiteAbstractInterface[] $translatesitelist
  * @property SiteAbstractInterface[] $TranslateSiteList
  * @method SiteAbstractInterface[] getTranslateSiteList(?array $params = null)
  *
- * @property PageAbstractInterface[] $pagelist
+ * @property PageAbstractInterface[] $translatepagelist
  * @property PageAbstractInterface[] $TranslatePageList
  * @method PageAbstractInterface[] getTranslatePageList(?array $params = null)
  *
- * @property PostAbstractInterface[] $postlist
+ * @property PostAbstractInterface[] $translatepostlist
  * @property PostAbstractInterface[] $TranslatePostList
  * @method PostAbstractInterface[] getTranslatePostList(?array $params = null)
  *
- * @property CategoryAbstractInterface[] $categorylist
+ * @property CategoryAbstractInterface[] $translatecategorylist
  * @property CategoryAbstractInterface[] $TranslateCategoryList
  * @method CategoryAbstractInterface[] getTranslateCategoryList(?array $params = null)
  *
@@ -116,11 +116,11 @@ use Zemit\Mvc\ModelInterface;
  * @property TranslateFieldAbstractInterface[] $TranslateFieldList
  * @method TranslateFieldAbstractInterface[] getTranslateFieldList(?array $params = null)
  *
- * @property SiteAbstractInterface[] $sitelist
+ * @property SiteAbstractInterface[] $translatefieldsitelist
  * @property SiteAbstractInterface[] $TranslateFieldSiteList
  * @method SiteAbstractInterface[] getTranslateFieldSiteList(?array $params = null)
  *
- * @property TableAbstractInterface[] $tablelist
+ * @property TableAbstractInterface[] $translatefieldtablelist
  * @property TableAbstractInterface[] $TranslateFieldTableList
  * @method TableAbstractInterface[] getTranslateFieldTableList(?array $params = null)
  *

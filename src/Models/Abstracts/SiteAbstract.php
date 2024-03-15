@@ -40,7 +40,7 @@ use Zemit\Models\Abstracts\Interfaces\SiteAbstractInterface;
  * @property Category[] $CategoryList
  * @method Category[] getCategoryList(?array $params = null)
  *
- * @property Lang[] $langlist
+ * @property Lang[] $categorylanglist
  * @property Lang[] $CategoryLangList
  * @method Lang[] getCategoryLangList(?array $params = null)
  *
@@ -48,11 +48,11 @@ use Zemit\Models\Abstracts\Interfaces\SiteAbstractInterface;
  * @property Data[] $DataList
  * @method Data[] getDataList(?array $params = null)
  *
- * @property Table[] $tablelist
+ * @property Table[] $datatablelist
  * @property Table[] $DataTableList
  * @method Table[] getDataTableList(?array $params = null)
  *
- * @property Field[] $fieldlist
+ * @property Field[] $datafieldlist
  * @property Field[] $DataFieldList
  * @method Field[] getDataFieldList(?array $params = null)
  *
@@ -60,7 +60,7 @@ use Zemit\Models\Abstracts\Interfaces\SiteAbstractInterface;
  * @property Field[] $FieldList
  * @method Field[] getFieldList(?array $params = null)
  *
- * @property Table[] $tablelist
+ * @property Table[] $fieldtablelist
  * @property Table[] $FieldTableList
  * @method Table[] getFieldTableList(?array $params = null)
  *
@@ -68,11 +68,11 @@ use Zemit\Models\Abstracts\Interfaces\SiteAbstractInterface;
  * @property Flag[] $FlagList
  * @method Flag[] getFlagList(?array $params = null)
  *
- * @property Page[] $pagelist
+ * @property Page[] $flagpagelist
  * @property Page[] $FlagPageList
  * @method Page[] getFlagPageList(?array $params = null)
  *
- * @property Lang[] $langlist
+ * @property Lang[] $flaglanglist
  * @property Lang[] $FlagLangList
  * @method Lang[] getFlagLangList(?array $params = null)
  *
@@ -80,19 +80,19 @@ use Zemit\Models\Abstracts\Interfaces\SiteAbstractInterface;
  * @property Meta[] $MetaList
  * @method Meta[] getMetaList(?array $params = null)
  *
- * @property Lang[] $langlist
+ * @property Lang[] $metalanglist
  * @property Lang[] $MetaLangList
  * @method Lang[] getMetaLangList(?array $params = null)
  *
- * @property Page[] $pagelist
+ * @property Page[] $metapagelist
  * @property Page[] $MetaPageList
  * @method Page[] getMetaPageList(?array $params = null)
  *
- * @property Post[] $postlist
+ * @property Post[] $metapostlist
  * @property Post[] $MetaPostList
  * @method Post[] getMetaPostList(?array $params = null)
  *
- * @property Category[] $categorylist
+ * @property Category[] $metacategorylist
  * @property Category[] $MetaCategoryList
  * @method Category[] getMetaCategoryList(?array $params = null)
  *
@@ -100,7 +100,7 @@ use Zemit\Models\Abstracts\Interfaces\SiteAbstractInterface;
  * @property Page[] $PageList
  * @method Page[] getPageList(?array $params = null)
  *
- * @property Lang[] $langlist
+ * @property Lang[] $pagelanglist
  * @property Lang[] $PageLangList
  * @method Lang[] getPageLangList(?array $params = null)
  *
@@ -108,11 +108,11 @@ use Zemit\Models\Abstracts\Interfaces\SiteAbstractInterface;
  * @property Post[] $PostList
  * @method Post[] getPostList(?array $params = null)
  *
- * @property Lang[] $langlist
+ * @property Lang[] $postlanglist
  * @property Lang[] $PostLangList
  * @method Lang[] getPostLangList(?array $params = null)
  *
- * @property Page[] $pagelist
+ * @property Page[] $postpagelist
  * @property Page[] $PostPageList
  * @method Page[] getPostPageList(?array $params = null)
  *
@@ -128,19 +128,19 @@ use Zemit\Models\Abstracts\Interfaces\SiteAbstractInterface;
  * @property Translate[] $TranslateList
  * @method Translate[] getTranslateList(?array $params = null)
  *
- * @property Lang[] $langlist
+ * @property Lang[] $translatelanglist
  * @property Lang[] $TranslateLangList
  * @method Lang[] getTranslateLangList(?array $params = null)
  *
- * @property Page[] $pagelist
+ * @property Page[] $translatepagelist
  * @property Page[] $TranslatePageList
  * @method Page[] getTranslatePageList(?array $params = null)
  *
- * @property Post[] $postlist
+ * @property Post[] $translatepostlist
  * @property Post[] $TranslatePostList
  * @method Post[] getTranslatePostList(?array $params = null)
  *
- * @property Category[] $categorylist
+ * @property Category[] $translatecategorylist
  * @property Category[] $TranslateCategoryList
  * @method Category[] getTranslateCategoryList(?array $params = null)
  *
@@ -148,11 +148,11 @@ use Zemit\Models\Abstracts\Interfaces\SiteAbstractInterface;
  * @property TranslateField[] $TranslateFieldList
  * @method TranslateField[] getTranslateFieldList(?array $params = null)
  *
- * @property Lang[] $langlist
+ * @property Lang[] $translatefieldlanglist
  * @property Lang[] $TranslateFieldLangList
  * @method Lang[] getTranslateFieldLangList(?array $params = null)
  *
- * @property Table[] $tablelist
+ * @property Table[] $translatefieldtablelist
  * @property Table[] $TranslateFieldTableList
  * @method Table[] getTranslateFieldTableList(?array $params = null)
  *
@@ -798,83 +798,223 @@ abstract class SiteAbstract extends AbstractModel implements SiteAbstractInterfa
     {
         $this->hasMany('id', Category::class, 'siteId', ['alias' => 'CategoryList']);
 
-        $this->hasManyToMany('id', Category::class, 'siteId',
-            'langId', Lang::class, 'id', ['alias' => 'CategoryLangList']);
+        $this->hasManyToMany(
+            'id',
+            Category::class,
+            'siteId',
+            'langId',
+            Lang::class,
+            'id',
+            ['alias' => 'CategoryLangList']
+        );
 
         $this->hasMany('id', Data::class, 'siteId', ['alias' => 'DataList']);
 
-        $this->hasManyToMany('id', Data::class, 'siteId',
-            'tableId', Table::class, 'id', ['alias' => 'DataTableList']);
+        $this->hasManyToMany(
+            'id',
+            Data::class,
+            'siteId',
+            'tableId',
+            Table::class,
+            'id',
+            ['alias' => 'DataTableList']
+        );
 
-        $this->hasManyToMany('id', Data::class, 'siteId',
-            'fieldId', Field::class, 'id', ['alias' => 'DataFieldList']);
+        $this->hasManyToMany(
+            'id',
+            Data::class,
+            'siteId',
+            'fieldId',
+            Field::class,
+            'id',
+            ['alias' => 'DataFieldList']
+        );
 
         $this->hasMany('id', Field::class, 'siteId', ['alias' => 'FieldList']);
 
-        $this->hasManyToMany('id', Field::class, 'siteId',
-            'tableId', Table::class, 'id', ['alias' => 'FieldTableList']);
+        $this->hasManyToMany(
+            'id',
+            Field::class,
+            'siteId',
+            'tableId',
+            Table::class,
+            'id',
+            ['alias' => 'FieldTableList']
+        );
 
         $this->hasMany('id', Flag::class, 'siteId', ['alias' => 'FlagList']);
 
-        $this->hasManyToMany('id', Flag::class, 'siteId',
-            'pageId', Page::class, 'id', ['alias' => 'FlagPageList']);
+        $this->hasManyToMany(
+            'id',
+            Flag::class,
+            'siteId',
+            'pageId',
+            Page::class,
+            'id',
+            ['alias' => 'FlagPageList']
+        );
 
-        $this->hasManyToMany('id', Flag::class, 'siteId',
-            'langId', Lang::class, 'id', ['alias' => 'FlagLangList']);
+        $this->hasManyToMany(
+            'id',
+            Flag::class,
+            'siteId',
+            'langId',
+            Lang::class,
+            'id',
+            ['alias' => 'FlagLangList']
+        );
 
         $this->hasMany('id', Meta::class, 'siteId', ['alias' => 'MetaList']);
 
-        $this->hasManyToMany('id', Meta::class, 'siteId',
-            'langId', Lang::class, 'id', ['alias' => 'MetaLangList']);
+        $this->hasManyToMany(
+            'id',
+            Meta::class,
+            'siteId',
+            'langId',
+            Lang::class,
+            'id',
+            ['alias' => 'MetaLangList']
+        );
 
-        $this->hasManyToMany('id', Meta::class, 'siteId',
-            'pageId', Page::class, 'id', ['alias' => 'MetaPageList']);
+        $this->hasManyToMany(
+            'id',
+            Meta::class,
+            'siteId',
+            'pageId',
+            Page::class,
+            'id',
+            ['alias' => 'MetaPageList']
+        );
 
-        $this->hasManyToMany('id', Meta::class, 'siteId',
-            'postId', Post::class, 'id', ['alias' => 'MetaPostList']);
+        $this->hasManyToMany(
+            'id',
+            Meta::class,
+            'siteId',
+            'postId',
+            Post::class,
+            'id',
+            ['alias' => 'MetaPostList']
+        );
 
-        $this->hasManyToMany('id', Meta::class, 'siteId',
-            'categoryId', Category::class, 'id', ['alias' => 'MetaCategoryList']);
+        $this->hasManyToMany(
+            'id',
+            Meta::class,
+            'siteId',
+            'categoryId',
+            Category::class,
+            'id',
+            ['alias' => 'MetaCategoryList']
+        );
 
         $this->hasMany('id', Page::class, 'siteId', ['alias' => 'PageList']);
 
-        $this->hasManyToMany('id', Page::class, 'siteId',
-            'langId', Lang::class, 'id', ['alias' => 'PageLangList']);
+        $this->hasManyToMany(
+            'id',
+            Page::class,
+            'siteId',
+            'langId',
+            Lang::class,
+            'id',
+            ['alias' => 'PageLangList']
+        );
 
         $this->hasMany('id', Post::class, 'siteId', ['alias' => 'PostList']);
 
-        $this->hasManyToMany('id', Post::class, 'siteId',
-            'langId', Lang::class, 'id', ['alias' => 'PostLangList']);
+        $this->hasManyToMany(
+            'id',
+            Post::class,
+            'siteId',
+            'langId',
+            Lang::class,
+            'id',
+            ['alias' => 'PostLangList']
+        );
 
-        $this->hasManyToMany('id', Post::class, 'siteId',
-            'pageId', Page::class, 'id', ['alias' => 'PostPageList']);
+        $this->hasManyToMany(
+            'id',
+            Post::class,
+            'siteId',
+            'pageId',
+            Page::class,
+            'id',
+            ['alias' => 'PostPageList']
+        );
 
         $this->hasMany('id', SiteLang::class, 'siteId', ['alias' => 'SiteLangList']);
 
-        $this->hasManyToMany('id', SiteLang::class, 'siteId',
-            'langId', Lang::class, 'id', ['alias' => 'LangList']);
+        $this->hasManyToMany(
+            'id',
+            SiteLang::class,
+            'siteId',
+            'langId',
+            Lang::class,
+            'id',
+            ['alias' => 'LangList']
+        );
 
         $this->hasMany('id', Translate::class, 'siteId', ['alias' => 'TranslateList']);
 
-        $this->hasManyToMany('id', Translate::class, 'siteId',
-            'langId', Lang::class, 'id', ['alias' => 'TranslateLangList']);
+        $this->hasManyToMany(
+            'id',
+            Translate::class,
+            'siteId',
+            'langId',
+            Lang::class,
+            'id',
+            ['alias' => 'TranslateLangList']
+        );
 
-        $this->hasManyToMany('id', Translate::class, 'siteId',
-            'pageId', Page::class, 'id', ['alias' => 'TranslatePageList']);
+        $this->hasManyToMany(
+            'id',
+            Translate::class,
+            'siteId',
+            'pageId',
+            Page::class,
+            'id',
+            ['alias' => 'TranslatePageList']
+        );
 
-        $this->hasManyToMany('id', Translate::class, 'siteId',
-            'postId', Post::class, 'id', ['alias' => 'TranslatePostList']);
+        $this->hasManyToMany(
+            'id',
+            Translate::class,
+            'siteId',
+            'postId',
+            Post::class,
+            'id',
+            ['alias' => 'TranslatePostList']
+        );
 
-        $this->hasManyToMany('id', Translate::class, 'siteId',
-            'categoryId', Category::class, 'id', ['alias' => 'TranslateCategoryList']);
+        $this->hasManyToMany(
+            'id',
+            Translate::class,
+            'siteId',
+            'categoryId',
+            Category::class,
+            'id',
+            ['alias' => 'TranslateCategoryList']
+        );
 
         $this->hasMany('id', TranslateField::class, 'siteId', ['alias' => 'TranslateFieldList']);
 
-        $this->hasManyToMany('id', TranslateField::class, 'siteId',
-            'langId', Lang::class, 'id', ['alias' => 'TranslateFieldLangList']);
+        $this->hasManyToMany(
+            'id',
+            TranslateField::class,
+            'siteId',
+            'langId',
+            Lang::class,
+            'id',
+            ['alias' => 'TranslateFieldLangList']
+        );
 
-        $this->hasManyToMany('id', TranslateField::class, 'siteId',
-            'tableId', Table::class, 'id', ['alias' => 'TranslateFieldTableList']);
+        $this->hasManyToMany(
+            'id',
+            TranslateField::class,
+            'siteId',
+            'tableId',
+            Table::class,
+            'id',
+            ['alias' => 'TranslateFieldTableList']
+        );
 
         $this->belongsTo('createdBy', User::class, 'id', ['alias' => 'CreatedByEntity']);
 
@@ -933,7 +1073,8 @@ abstract class SiteAbstract extends AbstractModel implements SiteAbstractInterfa
      * 
      * @returns array The array mapping the column names to the property names
      */
-    public function columnMap(): array {
+    public function columnMap(): array
+    {
         return [
             'id' => 'id',
             'uuid' => 'uuid',

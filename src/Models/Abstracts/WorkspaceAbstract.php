@@ -31,7 +31,7 @@ use Zemit\Models\Abstracts\Interfaces\WorkspaceAbstractInterface;
  * @property Table[] $TableList
  * @method Table[] getTableList(?array $params = null)
  *
- * @property Lang[] $langlist
+ * @property Lang[] $tablelanglist
  * @property Lang[] $TableLangList
  * @method Lang[] getTableLangList(?array $params = null)
  *
@@ -685,13 +685,27 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
     {
         $this->hasMany('id', Table::class, 'workspaceId', ['alias' => 'TableList']);
 
-        $this->hasManyToMany('id', Table::class, 'workspaceId',
-            'langId', Lang::class, 'id', ['alias' => 'TableLangList']);
+        $this->hasManyToMany(
+            'id',
+            Table::class,
+            'workspaceId',
+            'langId',
+            Lang::class,
+            'id',
+            ['alias' => 'TableLangList']
+        );
 
         $this->hasMany('id', WorkspaceLang::class, 'workspaceId', ['alias' => 'WorkspaceLangList']);
 
-        $this->hasManyToMany('id', WorkspaceLang::class, 'workspaceId',
-            'langId', Lang::class, 'id', ['alias' => 'LangList']);
+        $this->hasManyToMany(
+            'id',
+            WorkspaceLang::class,
+            'workspaceId',
+            'langId',
+            Lang::class,
+            'id',
+            ['alias' => 'LangList']
+        );
 
         $this->belongsTo('createdBy', User::class, 'id', ['alias' => 'CreatedByEntity']);
 
@@ -750,7 +764,8 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      * 
      * @returns array The array mapping the column names to the property names
      */
-    public function columnMap(): array {
+    public function columnMap(): array
+    {
         return [
             'id' => 'id',
             'uuid' => 'uuid',

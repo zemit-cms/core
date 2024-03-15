@@ -605,18 +605,39 @@ abstract class FeatureAbstract extends AbstractModel implements FeatureAbstractI
     {
         $this->hasMany('id', GroupFeature::class, 'featureId', ['alias' => 'GroupFeatureList']);
 
-        $this->hasManyToMany('id', GroupFeature::class, 'featureId',
-            'groupId', Group::class, 'id', ['alias' => 'GroupList']);
+        $this->hasManyToMany(
+            'id',
+            GroupFeature::class,
+            'featureId',
+            'groupId',
+            Group::class,
+            'id',
+            ['alias' => 'GroupList']
+        );
 
         $this->hasMany('id', RoleFeature::class, 'featureId', ['alias' => 'RoleFeatureList']);
 
-        $this->hasManyToMany('id', RoleFeature::class, 'featureId',
-            'roleId', Role::class, 'id', ['alias' => 'RoleList']);
+        $this->hasManyToMany(
+            'id',
+            RoleFeature::class,
+            'featureId',
+            'roleId',
+            Role::class,
+            'id',
+            ['alias' => 'RoleList']
+        );
 
         $this->hasMany('id', UserFeature::class, 'featureId', ['alias' => 'UserFeatureList']);
 
-        $this->hasManyToMany('id', UserFeature::class, 'featureId',
-            'userId', User::class, 'id', ['alias' => 'UserList']);
+        $this->hasManyToMany(
+            'id',
+            UserFeature::class,
+            'featureId',
+            'userId',
+            User::class,
+            'id',
+            ['alias' => 'UserList']
+        );
 
         $this->belongsTo('createdBy', User::class, 'id', ['alias' => 'CreatedByEntity']);
 
@@ -672,7 +693,8 @@ abstract class FeatureAbstract extends AbstractModel implements FeatureAbstractI
      * 
      * @returns array The array mapping the column names to the property names
      */
-    public function columnMap(): array {
+    public function columnMap(): array
+    {
         return [
             'id' => 'id',
             'index' => 'index',

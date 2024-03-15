@@ -642,7 +642,8 @@ abstract class RoleFeatureAbstract extends AbstractModel implements RoleFeatureA
      * 
      * @returns array The array mapping the column names to the property names
      */
-    public function columnMap(): array {
+    public function columnMap(): array
+    {
         return [
             'id' => 'id',
             'role_id' => 'roleId',

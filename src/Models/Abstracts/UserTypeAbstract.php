@@ -641,7 +641,8 @@ abstract class UserTypeAbstract extends AbstractModel implements UserTypeAbstrac
      * 
      * @returns array The array mapping the column names to the property names
      */
-    public function columnMap(): array {
+    public function columnMap(): array
+    {
         return [
             'id' => 'id',
             'user_id' => 'userId',

@@ -179,7 +179,8 @@ abstract class PhalconMigrationsAbstract extends AbstractModel implements Phalco
      * 
      * @returns array The array mapping the column names to the property names
      */
-    public function columnMap(): array {
+    public function columnMap(): array
+    {
         return [
             'id' => 'id',
             'version' => 'version',

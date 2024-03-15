@@ -20,19 +20,19 @@ use Zemit\Mvc\ModelInterface;
  * @property MetaAbstractInterface[] $MetaList
  * @method MetaAbstractInterface[] getMetaList(?array $params = null)
  *
- * @property LangAbstractInterface[] $langlist
+ * @property LangAbstractInterface[] $metalanglist
  * @property LangAbstractInterface[] $MetaLangList
  * @method LangAbstractInterface[] getMetaLangList(?array $params = null)
  *
- * @property SiteAbstractInterface[] $sitelist
+ * @property SiteAbstractInterface[] $metasitelist
  * @property SiteAbstractInterface[] $MetaSiteList
  * @method SiteAbstractInterface[] getMetaSiteList(?array $params = null)
  *
- * @property PageAbstractInterface[] $pagelist
+ * @property PageAbstractInterface[] $metapagelist
  * @property PageAbstractInterface[] $MetaPageList
  * @method PageAbstractInterface[] getMetaPageList(?array $params = null)
  *
- * @property PostAbstractInterface[] $postlist
+ * @property PostAbstractInterface[] $metapostlist
  * @property PostAbstractInterface[] $MetaPostList
  * @method PostAbstractInterface[] getMetaPostList(?array $params = null)
  *
@@ -48,19 +48,19 @@ use Zemit\Mvc\ModelInterface;
  * @property TranslateAbstractInterface[] $TranslateList
  * @method TranslateAbstractInterface[] getTranslateList(?array $params = null)
  *
- * @property LangAbstractInterface[] $langlist
+ * @property LangAbstractInterface[] $translatelanglist
  * @property LangAbstractInterface[] $TranslateLangList
  * @method LangAbstractInterface[] getTranslateLangList(?array $params = null)
  *
- * @property SiteAbstractInterface[] $sitelist
+ * @property SiteAbstractInterface[] $translatesitelist
  * @property SiteAbstractInterface[] $TranslateSiteList
  * @method SiteAbstractInterface[] getTranslateSiteList(?array $params = null)
  *
- * @property PageAbstractInterface[] $pagelist
+ * @property PageAbstractInterface[] $translatepagelist
  * @property PageAbstractInterface[] $TranslatePageList
  * @method PageAbstractInterface[] getTranslatePageList(?array $params = null)
  *
- * @property PostAbstractInterface[] $postlist
+ * @property PostAbstractInterface[] $translatepostlist
  * @property PostAbstractInterface[] $TranslatePostList
  * @method PostAbstractInterface[] getTranslatePostList(?array $params = null)
  *

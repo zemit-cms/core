@@ -560,7 +560,8 @@ abstract class BackupAbstract extends AbstractModel implements BackupAbstractInt
      * 
      * @returns array The array mapping the column names to the property names
      */
-    public function columnMap(): array {
+    public function columnMap(): array
+    {
         return [
             'id' => 'id',
             'uuid' => 'uuid',

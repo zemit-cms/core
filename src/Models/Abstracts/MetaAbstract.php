@@ -749,7 +749,8 @@ abstract class MetaAbstract extends AbstractModel implements MetaAbstractInterfa
      * 
      * @returns array The array mapping the column names to the property names
      */
-    public function columnMap(): array {
+    public function columnMap(): array
+    {
         return [
             'id' => 'id',
             'lang_id' => 'langId',

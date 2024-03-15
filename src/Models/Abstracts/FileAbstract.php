@@ -835,8 +835,15 @@ abstract class FileAbstract extends AbstractModel implements FileAbstractInterfa
     {
         $this->hasMany('id', EmailFile::class, 'fileId', ['alias' => 'EmailFileList']);
 
-        $this->hasManyToMany('id', EmailFile::class, 'fileId',
-            'emailId', Email::class, 'id', ['alias' => 'EmailList']);
+        $this->hasManyToMany(
+            'id',
+            EmailFile::class,
+            'fileId',
+            'emailId',
+            Email::class,
+            'id',
+            ['alias' => 'EmailList']
+        );
 
         $this->hasMany('id', FileRelation::class, 'fileId', ['alias' => 'FileRelationList']);
 
@@ -903,7 +910,8 @@ abstract class FileAbstract extends AbstractModel implements FileAbstractInterfa
      * 
      * @returns array The array mapping the column names to the property names
      */
-    public function columnMap(): array {
+    public function columnMap(): array
+    {
         return [
             'id' => 'id',
             'user_id' => 'userId',

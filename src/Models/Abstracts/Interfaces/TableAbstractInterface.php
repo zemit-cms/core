@@ -20,11 +20,11 @@ use Zemit\Mvc\ModelInterface;
  * @property DataAbstractInterface[] $DataList
  * @method DataAbstractInterface[] getDataList(?array $params = null)
  *
- * @property SiteAbstractInterface[] $sitelist
+ * @property SiteAbstractInterface[] $datasitelist
  * @property SiteAbstractInterface[] $DataSiteList
  * @method SiteAbstractInterface[] getDataSiteList(?array $params = null)
  *
- * @property FieldAbstractInterface[] $fieldlist
+ * @property FieldAbstractInterface[] $datafieldlist
  * @property FieldAbstractInterface[] $DataFieldList
  * @method FieldAbstractInterface[] getDataFieldList(?array $params = null)
  *
@@ -32,7 +32,7 @@ use Zemit\Mvc\ModelInterface;
  * @property FieldAbstractInterface[] $FieldList
  * @method FieldAbstractInterface[] getFieldList(?array $params = null)
  *
- * @property SiteAbstractInterface[] $sitelist
+ * @property SiteAbstractInterface[] $fieldsitelist
  * @property SiteAbstractInterface[] $FieldSiteList
  * @method SiteAbstractInterface[] getFieldSiteList(?array $params = null)
  *
@@ -40,11 +40,11 @@ use Zemit\Mvc\ModelInterface;
  * @property TranslateFieldAbstractInterface[] $TranslateFieldList
  * @method TranslateFieldAbstractInterface[] getTranslateFieldList(?array $params = null)
  *
- * @property SiteAbstractInterface[] $sitelist
+ * @property SiteAbstractInterface[] $translatefieldsitelist
  * @property SiteAbstractInterface[] $TranslateFieldSiteList
  * @method SiteAbstractInterface[] getTranslateFieldSiteList(?array $params = null)
  *
- * @property LangAbstractInterface[] $langlist
+ * @property LangAbstractInterface[] $translatefieldlanglist
  * @property LangAbstractInterface[] $TranslateFieldLangList
  * @method LangAbstractInterface[] getTranslateFieldLangList(?array $params = null)
  *

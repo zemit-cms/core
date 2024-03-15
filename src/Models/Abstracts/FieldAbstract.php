@@ -32,11 +32,11 @@ use Zemit\Models\Abstracts\Interfaces\FieldAbstractInterface;
  * @property Data[] $DataList
  * @method Data[] getDataList(?array $params = null)
  *
- * @property Site[] $sitelist
+ * @property Site[] $datasitelist
  * @property Site[] $DataSiteList
  * @method Site[] getDataSiteList(?array $params = null)
  *
- * @property Table[] $tablelist
+ * @property Table[] $datatablelist
  * @property Table[] $DataTableList
  * @method Table[] getDataTableList(?array $params = null)
  *
@@ -660,11 +660,25 @@ abstract class FieldAbstract extends AbstractModel implements FieldAbstractInter
     {
         $this->hasMany('id', Data::class, 'fieldId', ['alias' => 'DataList']);
 
-        $this->hasManyToMany('id', Data::class, 'fieldId',
-            'siteId', Site::class, 'id', ['alias' => 'DataSiteList']);
+        $this->hasManyToMany(
+            'id',
+            Data::class,
+            'fieldId',
+            'siteId',
+            Site::class,
+            'id',
+            ['alias' => 'DataSiteList']
+        );
 
-        $this->hasManyToMany('id', Data::class, 'fieldId',
-            'tableId', Table::class, 'id', ['alias' => 'DataTableList']);
+        $this->hasManyToMany(
+            'id',
+            Data::class,
+            'fieldId',
+            'tableId',
+            Table::class,
+            'id',
+            ['alias' => 'DataTableList']
+        );
 
         $this->hasMany('id', Validator::class, 'fieldId', ['alias' => 'ValidatorList']);
 
@@ -726,7 +740,8 @@ abstract class FieldAbstract extends AbstractModel implements FieldAbstractInter
      * 
      * @returns array The array mapping the column names to the property names
      */
-    public function columnMap(): array {
+    public function columnMap(): array
+    {
         return [
             'id' => 'id',
             'site_id' => 'siteId',

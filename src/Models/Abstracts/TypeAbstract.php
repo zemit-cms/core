@@ -595,13 +595,27 @@ abstract class TypeAbstract extends AbstractModel implements TypeAbstractInterfa
     {
         $this->hasMany('id', GroupType::class, 'typeId', ['alias' => 'GroupTypeList']);
 
-        $this->hasManyToMany('id', GroupType::class, 'typeId',
-            'groupId', Group::class, 'id', ['alias' => 'GroupList']);
+        $this->hasManyToMany(
+            'id',
+            GroupType::class,
+            'typeId',
+            'groupId',
+            Group::class,
+            'id',
+            ['alias' => 'GroupList']
+        );
 
         $this->hasMany('id', UserType::class, 'typeId', ['alias' => 'UserTypeList']);
 
-        $this->hasManyToMany('id', UserType::class, 'typeId',
-            'userId', User::class, 'id', ['alias' => 'UserList']);
+        $this->hasManyToMany(
+            'id',
+            UserType::class,
+            'typeId',
+            'userId',
+            User::class,
+            'id',
+            ['alias' => 'UserList']
+        );
 
         $this->belongsTo('createdBy', User::class, 'id', ['alias' => 'CreatedByEntity']);
 
@@ -657,7 +671,8 @@ abstract class TypeAbstract extends AbstractModel implements TypeAbstractInterfa
      * 
      * @returns array The array mapping the column names to the property names
      */
-    public function columnMap(): array {
+    public function columnMap(): array
+    {
         return [
             'id' => 'id',
             'index' => 'index',

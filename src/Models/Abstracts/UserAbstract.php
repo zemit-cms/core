@@ -644,23 +644,51 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
 
         $this->hasMany('id', UserFeature::class, 'userId', ['alias' => 'UserFeatureList']);
 
-        $this->hasManyToMany('id', UserFeature::class, 'userId',
-            'featureId', Feature::class, 'id', ['alias' => 'FeatureList']);
+        $this->hasManyToMany(
+            'id',
+            UserFeature::class,
+            'userId',
+            'featureId',
+            Feature::class,
+            'id',
+            ['alias' => 'FeatureList']
+        );
 
         $this->hasMany('id', UserGroup::class, 'userId', ['alias' => 'UserGroupList']);
 
-        $this->hasManyToMany('id', UserGroup::class, 'userId',
-            'groupId', Group::class, 'id', ['alias' => 'GroupList']);
+        $this->hasManyToMany(
+            'id',
+            UserGroup::class,
+            'userId',
+            'groupId',
+            Group::class,
+            'id',
+            ['alias' => 'GroupList']
+        );
 
         $this->hasMany('id', UserRole::class, 'userId', ['alias' => 'UserRoleList']);
 
-        $this->hasManyToMany('id', UserRole::class, 'userId',
-            'roleId', Role::class, 'id', ['alias' => 'RoleList']);
+        $this->hasManyToMany(
+            'id',
+            UserRole::class,
+            'userId',
+            'roleId',
+            Role::class,
+            'id',
+            ['alias' => 'RoleList']
+        );
 
         $this->hasMany('id', UserType::class, 'userId', ['alias' => 'UserTypeList']);
 
-        $this->hasManyToMany('id', UserType::class, 'userId',
-            'typeId', Type::class, 'id', ['alias' => 'TypeList']);
+        $this->hasManyToMany(
+            'id',
+            UserType::class,
+            'userId',
+            'typeId',
+            Type::class,
+            'id',
+            ['alias' => 'TypeList']
+        );
 
         $this->belongsTo('createdBy', User::class, 'id', ['alias' => 'CreatedByEntity']);
 
@@ -716,7 +744,8 @@ abstract class UserAbstract extends AbstractModel implements UserAbstractInterfa
      * 
      * @returns array The array mapping the column names to the property names
      */
-    public function columnMap(): array {
+    public function columnMap(): array
+    {
         return [
             'id' => 'id',
             'uuid' => 'uuid',

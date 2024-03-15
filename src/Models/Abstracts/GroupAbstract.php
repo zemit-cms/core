@@ -615,23 +615,51 @@ abstract class GroupAbstract extends AbstractModel implements GroupAbstractInter
     {
         $this->hasMany('id', GroupFeature::class, 'groupId', ['alias' => 'GroupFeatureList']);
 
-        $this->hasManyToMany('id', GroupFeature::class, 'groupId',
-            'featureId', Feature::class, 'id', ['alias' => 'FeatureList']);
+        $this->hasManyToMany(
+            'id',
+            GroupFeature::class,
+            'groupId',
+            'featureId',
+            Feature::class,
+            'id',
+            ['alias' => 'FeatureList']
+        );
 
         $this->hasMany('id', GroupRole::class, 'groupId', ['alias' => 'GroupRoleList']);
 
-        $this->hasManyToMany('id', GroupRole::class, 'groupId',
-            'roleId', Role::class, 'id', ['alias' => 'RoleList']);
+        $this->hasManyToMany(
+            'id',
+            GroupRole::class,
+            'groupId',
+            'roleId',
+            Role::class,
+            'id',
+            ['alias' => 'RoleList']
+        );
 
         $this->hasMany('id', GroupType::class, 'groupId', ['alias' => 'GroupTypeList']);
 
-        $this->hasManyToMany('id', GroupType::class, 'groupId',
-            'typeId', Type::class, 'id', ['alias' => 'TypeList']);
+        $this->hasManyToMany(
+            'id',
+            GroupType::class,
+            'groupId',
+            'typeId',
+            Type::class,
+            'id',
+            ['alias' => 'TypeList']
+        );
 
         $this->hasMany('id', UserGroup::class, 'groupId', ['alias' => 'UserGroupList']);
 
-        $this->hasManyToMany('id', UserGroup::class, 'groupId',
-            'userId', User::class, 'id', ['alias' => 'UserList']);
+        $this->hasManyToMany(
+            'id',
+            UserGroup::class,
+            'groupId',
+            'userId',
+            User::class,
+            'id',
+            ['alias' => 'UserList']
+        );
 
         $this->belongsTo('createdBy', User::class, 'id', ['alias' => 'CreatedByEntity']);
 
@@ -687,7 +715,8 @@ abstract class GroupAbstract extends AbstractModel implements GroupAbstractInter
      * 
      * @returns array The array mapping the column names to the property names
      */
-    public function columnMap(): array {
+    public function columnMap(): array
+    {
         return [
             'id' => 'id',
             'index' => 'index',

@@ -20,7 +20,7 @@ use Zemit\Mvc\ModelInterface;
  * @property TableAbstractInterface[] $TableList
  * @method TableAbstractInterface[] getTableList(?array $params = null)
  *
- * @property LangAbstractInterface[] $langlist
+ * @property LangAbstractInterface[] $tablelanglist
  * @property LangAbstractInterface[] $TableLangList
  * @method LangAbstractInterface[] getTableLangList(?array $params = null)
  *

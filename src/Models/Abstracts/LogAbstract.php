@@ -718,7 +718,8 @@ abstract class LogAbstract extends AbstractModel implements LogAbstractInterface
      * 
      * @returns array The array mapping the column names to the property names
      */
-    public function columnMap(): array {
+    public function columnMap(): array
+    {
         return [
             'id' => 'id',
             'level' => 'level',

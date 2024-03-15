@@ -959,8 +959,15 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
     {
         $this->hasMany('id', EmailFile::class, 'emailId', ['alias' => 'EmailFileList']);
 
-        $this->hasManyToMany('id', EmailFile::class, 'emailId',
-            'fileId', File::class, 'id', ['alias' => 'FileList']);
+        $this->hasManyToMany(
+            'id',
+            EmailFile::class,
+            'emailId',
+            'fileId',
+            File::class,
+            'id',
+            ['alias' => 'FileList']
+        );
 
         $this->belongsTo('templateId', Template::class, 'id', ['alias' => 'TemplateEntity']);
 
@@ -1028,7 +1035,8 @@ abstract class EmailAbstract extends AbstractModel implements EmailAbstractInter
      * 
      * @returns array The array mapping the column names to the property names
      */
-    public function columnMap(): array {
+    public function columnMap(): array
+    {
         return [
             'id' => 'id',
             'template_id' => 'templateId',

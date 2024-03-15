@@ -642,7 +642,8 @@ abstract class GroupRoleAbstract extends AbstractModel implements GroupRoleAbstr
      * 
      * @returns array The array mapping the column names to the property names
      */
-    public function columnMap(): array {
+    public function columnMap(): array
+    {
         return [
             'id' => 'id',
             'group_id' => 'groupId',
