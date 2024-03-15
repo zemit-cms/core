@@ -315,7 +315,9 @@ final class Loader
                 do {
                     $alias = $relationAliases[$nestingLevel];
                     $name = implode('.', array_slice($relationAliases, 0, $nestingLevel + 1));
-                    $nestingLevel++;
+                    if (isset($eagerLoads[$name])) {
+                        $nestingLevel++;
+                    }
                 }
                 while (isset($eagerLoads[$name]));
                 

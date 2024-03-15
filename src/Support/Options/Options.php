@@ -11,18 +11,37 @@
 
 namespace Zemit\Support\Options;
 
+/**
+ * The Options trait provides a set of methods for managing options in a class.
+ */
 trait Options
 {
+    /**
+     * @var array $defaultOptions Default options for something.
+     */
     protected array $defaultOptions = [];
+    
+    /**
+     * @var array $options Options for something.
+     */
     protected array $options = [];
     
-    public function __construct(array $options = null)
+    /**
+     * Constructs a new instance of the class.
+     *
+     * @param array|null $options An optional array of options to initialize the instance with. Default is null.
+     */
+    public function __construct(?array $options = null)
     {
         $this->initializeOptions($options);
     }
-
+    
     /**
-     * Initialize Options
+     * Initializes the options for the object.
+     *
+     * @param array|null $options The options to be initialized. If null, an empty array will be used.
+     *
+     * @return void
      */
     public function initializeOptions(?array $options = null): void
     {
@@ -31,34 +50,49 @@ trait Options
         $this->setOptions($options);
         $this->initialize();
     }
-
+    
     /**
-     * Classes can use this as a constructor after options are initialized
+     * Initializes the object.
+     *
+     * This method is responsible for performing any necessary setup or initialization tasks for the object.
+     * It does not accept any parameters and does not return a value.
+     *
+     * @return void
      */
     public function initialize(): void
     {
     }
-
+    
     /**
-     * Set options array
+     * Sets the options for the object.
+     *
+     * @param array $options The array of options to be set.
+     * @param bool $merge Whether to merge the existing options with the new options. Defaults to false.
+     *
+     * @return void
      */
     public function setOptions(array $options, bool $merge = false): void
     {
         $this->options = $merge? array_merge($this->options, $options) : $options;
     }
-
+    
     /**
-     * Get options array
+     * Retrieves all options.
+     *
+     * @return array An array containing all the options.
      */
     public function getOptions(): array
     {
         return $this->options;
     }
-
+    
     /**
-     * Set an option value
-     * @param string $key
-     * @param ?mixed $value
+     * Sets the value of the option specified by the given key.
+     *
+     * @param string $key The key of the option.
+     * @param mixed $value The value to be set for the option.
+     * @param bool $merge Whether to merge the new value with an existing value if the option already exists.
+     *
      * @return void
      */
     public function setOption(string $key, mixed $value = null, bool $merge = false): void
@@ -69,21 +103,27 @@ trait Options
             $this->options[$key] = $value;
         }
     }
-
+    
     /**
-     * Retrieve an option value by key
-     * - Return default value if null
-     * @param string $key The key to retrieve
-     * @param mixed $default Returned if the option couldn't be found
-     * @return mixed
+     * Retrieves the value of the option specified by the given key.
+     *
+     * @param string $key The key of the option.
+     * @param mixed $default The default value to be returned if the option does not exist.
+     * 
+     * @return mixed The value of the option specified by the key, or the default value if the option does not exist.
      */
     public function getOption(string $key, mixed $default = null): mixed
     {
         return $this->options[$key] ?? $default;
     }
-
+    
     /**
      * Remove an option by key
+     *
+     * Removes the option with the given key from the options array.
+     *
+     * @param string $key The key of the option to be removed
+     * @return void
      */
     public function removeOption(string $key): void
     {
@@ -91,17 +131,25 @@ trait Options
             unset($this->options[$key]);
         }
     }
-
+    
     /**
-     * Reset options to default values
+     * Reset all options to their default values
+     * - Uses the defaultOptions property to set the options
+     * 
+     * @return void
      */
     public function resetOptions(): void
     {
         $this->setOptions($this->defaultOptions);
     }
-
+    
     /**
-     * Clear options by forcing an empty array
+     * Clear all options
+     *
+     * This method clears all the options stored in the class.
+     * After calling this method, the options array will be empty.
+     *
+     * @return void
      */
     public function clearOptions(): void
     {

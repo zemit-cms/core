@@ -11,6 +11,7 @@
 
 namespace Zemit\Mvc\Controller\Traits;
 
+use Phalcon\Filter\Exception;
 use Phalcon\Support\Collection;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
@@ -63,8 +64,12 @@ trait Query
     
     /**
      * Initializes the query builder with default values for various properties.
+     * @throws Exception
+     * @throws \Exception
      */
-    public function initialize() {
+    public function initialize()
+    {
+        $this->initializeCache();
         $this->initializeBind();
         $this->initializeBindTypes();
         $this->initializeConditions();
@@ -139,7 +144,7 @@ trait Query
         $find ??= $this->getFind();
         foreach ($find?->getIterator() as $key => $value) {
             if ($value instanceof Collection) {
-                $subIgnoreKey = $ignoreKey || in_array($key, ['conditions', 'joins']);
+                $subIgnoreKey = $ignoreKey || in_array($key, ['conditions', 'joins', 'group']);
                 $sub = $this->prepareFind($value, $subIgnoreKey);
                 if ($ignoreKey) {
                     $build = array_merge($build, $sub);

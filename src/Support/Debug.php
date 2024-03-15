@@ -28,9 +28,9 @@ class Debug extends \Phalcon\Support\Debug
         $phalconVersion = new PhalconVersion();
         return
             '<div class="version">' .
-                ' Phalcon Framework <a href="https://docs.phalcon.io/' . PhalconVersion::VERSION_MAJOR . '.0/en/" target="_new">' . $phalconVersion->get() . '</a>' .
-                '&nbsp;&nbsp; – &nbsp;' .
-                ' Zemit CMS <a href="https://docs.zemit.com/" target="_new">' . $zemitVersion->get() . '</a>' .
+                ' Zemit Core <a href="https://docs.zemit.com/" target="_new">' . $zemitVersion->get() . '</a>' .
+                '&nbsp;-&nbsp;' .
+                'Phalcon Framework <a href="https://docs.phalcon.io/' . PhalconVersion::VERSION_MAJOR . '.0/en/" target="_new">' . $phalconVersion->get() . '</a>' .
             '</div>'
             ;
     }

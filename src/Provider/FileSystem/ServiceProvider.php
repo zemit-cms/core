@@ -25,7 +25,7 @@ class ServiceProvider extends AbstractServiceProvider
         $di->setShared($this->getName(), function ($root = null) use ($di) {
 
             $config = $di->get('config');
-            $root ??= $config->path('app.dir.root');
+            $root ??= $config->path('app.dir.root') ?? getcwd();
             
             return new Filesystem(new LocalFilesystemAdapter($root));
         });

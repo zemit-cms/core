@@ -88,7 +88,7 @@ trait PermissionConditions
             $query [] = "{$field} = :{$value}:";
         }
         
-        return [
+        return empty($query)? null : [
             implode(' or ', $query),
             $bind,
             $bindTypes,

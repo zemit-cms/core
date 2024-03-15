@@ -241,7 +241,7 @@ trait FilterConditions
             }
         }
         
-        return [
+        return empty($query)? null : [
             '(' . implode($or ? ' or ' : ' and ', $query) . ')',
             $bind,
             $bindTypes,

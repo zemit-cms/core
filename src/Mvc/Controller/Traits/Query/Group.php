@@ -37,14 +37,17 @@ trait Group
             $group = explode(',', $group);
         }
         
+        $collection = new Collection([], false);
         foreach ($group as $key => $item) {
+            $item = trim($item);
             if (is_int($key)) {
-                $group[trim($item)] = true;
+                $collection->set($item, $this->appendModelName($item));
+            } else {
+                $collection->set(trim($key), $this->appendModelName($item));
             }
-            unset($group[$key]);
         }
         
-        $this->setGroup(new Collection($group, false));
+        $this->setGroup($collection);
     }
     
     public function setGroup(?Collection $group): void
