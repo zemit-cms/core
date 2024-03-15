@@ -26,3 +26,6 @@ public/dist
 phpunit-clover.xml
 .phpunit.result.cache
 .phpunit.cache/
+
+# PHPCS
+.php-cs-fixer.cache
