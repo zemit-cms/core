@@ -148,7 +148,7 @@ trait DatabaseTrait
                 // Automagically fill passwords
                 if (property_exists($entity, 'password')) {
                     if (empty($row['password']) && property_exists($entity, 'email')) {
-                        if ($entity instanceof HashInterface) {
+                        if (method_exists($entity, 'hash')) {
                             $entity->assign(['password' => $entity->hash($row['email'])]);
                         }
                     }
