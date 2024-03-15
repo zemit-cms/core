@@ -4,7 +4,7 @@ namespace Zemit\Support\Options;
 
 interface ManagerInterface
 {
-    public function get(string $key, mixed $default = null);
+    public function get(string $key, mixed $default = null): mixed;
     
     public function set(string $key, mixed $value = null): void;
     
