@@ -196,6 +196,7 @@ use {$this->getAbstractsInterfacesNamespace()}\\{$definitions['abstractInterface
 interface {$definitions['modelInterface']['name']} extends {$definitions['abstractInterface']['name']}
 {
 }
+
 PHP;
     }
     
@@ -227,6 +228,7 @@ interface {$definitions['abstractInterface']['name']} extends ModelInterface
 {
     {$getSetInterfaceItems}
 }
+
 PHP;
     }
     
@@ -297,6 +299,7 @@ abstract class {$definitions['abstract']['name']} extends AbstractModel implemen
 
     {$columnMapMethod}
 }
+
 PHP;
     }
     
@@ -332,6 +335,7 @@ class {$definitions['model']['name']} extends {$definitions['abstract']['name']}
         return \$this->validate(\$validator);
     }
 }
+
 PHP;
     }
     
@@ -418,7 +422,7 @@ PHP;
 PHP;
             }
         }
-        return trim(implode(PHP_EOL, $validationItems));
+        return trim(implode("\n", $validationItems));
     }
     
     /**
@@ -547,8 +551,15 @@ PHP;
 PHP;
                                                 
                                                 $relationshipItems []= <<<PHP
-        \$this->hasManyToMany('{$propertyName}', {$relationClass}, '{$otherPropertyName}',
-            '{$manyPropertyName}', {$manyManyTableClass}, '{$manyManyPropertyName}', ['alias' => '{$manyManyTableAlias}']);
+        \$this->hasManyToMany(
+            '{$propertyName}',
+            {$relationClass},
+            '{$otherPropertyName}',
+            '{$manyPropertyName}',
+            {$manyManyTableClass},
+            '{$manyManyPropertyName}',
+            ['alias' => '{$manyManyTableAlias}']
+        );
 PHP;
                                             }
                                         }
@@ -651,11 +662,11 @@ PHP;
         }
         
         return [
-            'interfaceInjectableItems' => implode(PHP_EOL . ' *' . PHP_EOL, $interfaceInjectableItems),
-            'injectableItems' => implode(PHP_EOL . ' *' . PHP_EOL, $relationshipInjectableItems),
-            'useItems' => trim(implode(PHP_EOL, $relationshipUseItems)),
-            'interfaceUseItems' => trim(implode(PHP_EOL, $interfaceUseItems)),
-            'items' => trim(implode(PHP_EOL . PHP_EOL, $relationshipItems)),
+            'interfaceInjectableItems' => implode("\n" . ' *' . "\n", $interfaceInjectableItems),
+            'injectableItems' => implode("\n" . ' *' . "\n", $relationshipInjectableItems),
+            'useItems' => trim(implode("\n", $relationshipUseItems)),
+            'interfaceUseItems' => trim(implode("\n", $interfaceUseItems)),
+            'items' => trim(implode("\n" . "\n", $relationshipItems)),
         ];
     }
     
@@ -669,7 +680,8 @@ PHP;
         $columnMapComment = $this->getColumnMapComment();
         return <<<PHP
     {$columnMapComment}
-    public function columnMap(): array {
+    public function columnMap(): array
+    {
         return [
 {$columnMapItems}
         ];
@@ -717,7 +729,7 @@ PHP;
             '{$columnName}' => '{$columnMap}',
 PHP;
         }
-        return implode(PHP_EOL, $columnMapItems);
+        return implode("\n", $columnMapItems);
     }
     
     /**
@@ -740,7 +752,7 @@ PHP;
 PHP;
         }
         
-        return trim(implode(PHP_EOL, $propertyItems));
+        return trim(implode("\n", $propertyItems));
     }
     
     /**
@@ -822,7 +834,7 @@ PHP;
 PHP;
             }
         }
-        return trim(implode(PHP_EOL, $propertyItems));
+        return trim(implode("\n", $propertyItems));
     }
     
     /**

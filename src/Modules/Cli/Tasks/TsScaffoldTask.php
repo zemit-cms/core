@@ -97,7 +97,7 @@ DOC;
         
         $ret ['exports'] = $exports;
         $ret ['filePath'] = $interfacesExportPath;
-        $ret ['saved']= $this->saveFile($interfacesExportPath, implode(PHP_EOL, $exports));
+        $ret ['saved']= $this->saveFile($interfacesExportPath, implode("\n", $exports));
         
         return $ret;
     }
@@ -184,7 +184,8 @@ DOC;
         return $ret;
     }
     
-    public function appendExport(array $definitions, array &$exports) {
+    public function appendExport(array $definitions, array &$exports)
+    {
         $exports['models'] []= "export {{$definitions['model']['name']}} from './{$definitions['model']['name']}'";
         $exports['interfaces'] []= "export {{$definitions['interface']['name']}} from './{$definitions['interface']['name']}'";
         $exports['services'] []= "export {{$definitions['service']['name']}} from './{$definitions['service']['name']}'";
@@ -244,7 +245,8 @@ EOT;
     /**
      *
      */
-    public function createServiceOutput(array $definitions) {
+    public function createServiceOutput(array $definitions)
+    {
         
         $from = '../' . $this->modelsPath . $definitions['model']['name'];
         return <<<EOT
@@ -266,7 +268,7 @@ EOT;
                 $relatedImportItems []= 'import { ' . $key . ' } from \'./' . $key . '\';';
             }
         }
-        return implode(PHP_EOL, $relatedImportItems);
+        return implode("\n", $relatedImportItems);
     }
     
     /**
@@ -280,7 +282,7 @@ EOT;
                 $relatedMapItems []= '  ' . $key . ' = ' . $value . ',';
             }
         }
-        return implode(PHP_EOL, $relatedMapItems);
+        return implode("\n", $relatedMapItems);
     }
     
     /**
@@ -294,7 +296,7 @@ EOT;
                 $relatedMapItems []= '  ' . $key . '!: ' . $value . ';';
             }
         }
-        return implode(PHP_EOL, $relatedMapItems);
+        return implode("\n", $relatedMapItems);
     }
     
     /**
@@ -311,7 +313,7 @@ EOT;
                 $relatedMapItems []= '  ' . $key . '!: ' . $value . ';';
             }
         }
-        return implode(PHP_EOL, $relatedMapItems);
+        return implode("\n", $relatedMapItems);
     }
     
     public function getPropertyItems(array|ColumnInterface $columns): string
@@ -323,7 +325,7 @@ EOT;
 //            $defaultValue = $this->getDefaultValue($column, $columnType);
             $propertyItems[] = "  $columnName!: $columnType;";
         }
-        return implode(PHP_EOL, $propertyItems);
+        return implode("\n", $propertyItems);
     }
     
     public function getRelatedMeta(string $modelClassName): array
@@ -418,7 +420,8 @@ EOT;
         return $tsType;
     }
     
-    public function getDefaultValue(ColumnInterface $column, string $type): ?string {
+    public function getDefaultValue(ColumnInterface $column, string $type): ?string
+    {
         $default = null;
         $columnDefault = $column->getDefault();
         switch (getType(strtolower($columnDefault ?? ''))) {
@@ -494,18 +497,18 @@ EOT;
     public function getModelNameFromClassName(string $className)
     {
         return ucfirst(
-                Helper::camelize(
-                    Helper::uncamelize(
-                        basename(
-                            str_replace(
-                                '\\',
-                                '/',
-                                $className
-                            )
+            Helper::camelize(
+                Helper::uncamelize(
+                    basename(
+                        str_replace(
+                            '\\',
+                            '/',
+                            $className
                         )
                     )
                 )
-            ) . 'Model';
+            )
+        ) . 'Model';
     }
     
     public function saveFile(string $file, string $text, bool $force = false): bool
