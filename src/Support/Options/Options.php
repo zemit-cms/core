@@ -17,19 +17,19 @@ namespace Zemit\Support\Options;
 trait Options
 {
     /**
-     * @var array $defaultOptions Default options for something.
+     * @var mixed[] $defaultOptions Default options for something.
      */
     protected array $defaultOptions = [];
     
     /**
-     * @var array $options Options for something.
+     * @var mixed[] $options Options for something.
      */
     protected array $options = [];
     
     /**
      * Constructs a new instance of the class.
      *
-     * @param array|null $options An optional array of options to initialize the instance with. Default is null.
+     * @param mixed[]|null $options An optional array of options to initialize the instance with. Default is null.
      */
     public function __construct(?array $options = null)
     {
@@ -39,7 +39,7 @@ trait Options
     /**
      * Initializes the options for the object.
      *
-     * @param array|null $options The options to be initialized. If null, an empty array will be used.
+     * @param mixed[]|null $options The options to be initialized. If null, an empty array will be used.
      *
      * @return void
      */
@@ -66,7 +66,7 @@ trait Options
     /**
      * Sets the options for the object.
      *
-     * @param array $options The array of options to be set.
+     * @param mixed[] $options The array of options to be set.
      * @param bool $merge Whether to merge the existing options with the new options. Defaults to false.
      *
      * @return void
@@ -79,7 +79,7 @@ trait Options
     /**
      * Retrieves all options.
      *
-     * @return array An array containing all the options.
+     * @return mixed[] An array containing all the options.
      */
     public function getOptions(): array
     {
