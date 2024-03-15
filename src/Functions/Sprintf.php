@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * This file is part of the Zemit Framework.
+ *
+ * (c) Zemit Team <contact@zemit.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
+
 if (!function_exists('implode_sprintf')) {
     /**
      * Will implode an array_map return of the sprintf or mb_sprintf results
