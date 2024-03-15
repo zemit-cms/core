@@ -520,13 +520,14 @@ PHP;
                                     $manyManyTableInterface = $manyManyTableName . 'AbstractInterface';
                                     $manyManyTableClass = $manyManyTableName . '::class';
                                     $manyManyTableAlias = $manyManyTableName . 'List';
-                                    $manyManyTableEager = strtolower($manyManyTableAlias);
                                     
                                     // to prevent duplicates in this specific scenario when we find many-to-many relationships
                                     // that are not actually nodes, we will enforce the full many-to-many path alias
                                     if (!(str_starts_with($otherTable, $table . '_') || str_ends_with($otherTable, '_' . $table))) {
                                         $manyManyTableAlias = $relationName . $manyManyTableName . 'List';
                                     }
+                                    
+                                    $manyManyTableEager = strtolower($manyManyTableAlias);
                                     
                                     if (str_starts_with($manyColumnName, $manyManyTable . '_')) {
                                         
