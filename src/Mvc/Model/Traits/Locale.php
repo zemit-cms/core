@@ -63,7 +63,7 @@ trait Locale
         }
         
 //        return $this->$method(...$arguments);
-        return @parent::__call($method, $arguments);
+        return parent::__call($method, $arguments);
     }
     
     /**
@@ -90,7 +90,7 @@ trait Locale
             }
         }
         
-        @parent::__set($property, $value);
+        parent::__set($property, $value);
     }
     
     /**
@@ -115,6 +115,6 @@ trait Locale
             }
         }
         
-        return @parent::__get($property);
+        return parent::__get($property);
     }
 }
