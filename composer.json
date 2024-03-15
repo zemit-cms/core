@@ -51,10 +51,7 @@
     "apcu-autoloader": true,
     "apcu-autoloader-prefix": "zemit-core-",
     "preferred-install": "dist",
-    "sort-packages": true,
-    "allow-plugins": {
-      "funkjedi/composer-include-files": false
-    }
+    "sort-packages": true
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
