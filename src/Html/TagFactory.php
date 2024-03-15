@@ -11,10 +11,15 @@
 
 namespace Zemit\Html;
 
+use Phalcon\Html\TagFactory as PhalconTagFactory;
+
 /**
- * {@inheritDoc}
+ * Class TagFactory
+ *
+ * The TagFactory class is responsible for generating HTML tags.
+ * It extends the \Phalcon\Html\TagFactory class.
+ * @see PhalconTagFactory
  */
-class TagFactory extends \Phalcon\Html\TagFactory
+class TagFactory extends PhalconTagFactory
 {
-    
 }
