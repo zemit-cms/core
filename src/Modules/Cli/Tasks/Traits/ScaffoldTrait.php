@@ -21,7 +21,7 @@ use Zemit\Support\Helper;
  * Trait DescribesTrait
  *
  * This trait provides methods to describe columns, references, and indexes of a database table.
- * 
+ *
  * @property Dispatcher $dispatcher
  */
 trait ScaffoldTrait
@@ -99,89 +99,106 @@ PHP;
         }
         return !empty($this->excludedTables) && in_array($table, $this->excludedTables);
     }
-
+    
     // Method for --no-controllers
-    public function isNoControllers(): bool {
+    public function isNoControllers(): bool
+    {
         return $this->dispatcher->getParameter('noControllers');
     }
     
     // Method for --no-interfaces
-    public function isNoInterfaces(): bool {
+    public function isNoInterfaces(): bool
+    {
         return $this->dispatcher->getParameter('noInterfaces');
     }
     
     // Method for --no-abstracts
-    public function isNoAbstracts(): bool {
+    public function isNoAbstracts(): bool
+    {
         return $this->dispatcher->getParameter('noAbstracts');
     }
     
     // Method for --no-models
-    public function isNoModels(): bool {
+    public function isNoModels(): bool
+    {
         return $this->dispatcher->getParameter('noModels');
     }
     
     // Method for --no-enums
-    public function isNoEnums(): bool {
+    public function isNoEnums(): bool
+    {
         return $this->dispatcher->getParameter('noEnums');
     }
     
     // Method for --no-strict-types
-    public function isNoStrictTypes(): bool {
+    public function isNoStrictTypes(): bool
+    {
         return $this->dispatcher->getParameter('noStrictTypes');
     }
     
     // Method for --no-license
-    public function isNoLicense(): bool {
+    public function isNoLicense(): bool
+    {
         return $this->dispatcher->getParameter('noLicense');
     }
     
     // Method for --no-comments
-    public function isNoComments(): bool {
+    public function isNoComments(): bool
+    {
         return $this->dispatcher->getParameter('noComments');
     }
     
     // Method for --no-get-set-methods
-    public function isNoGetSetMethods(): bool {
+    public function isNoGetSetMethods(): bool
+    {
         return $this->dispatcher->getParameter('noGetSetMethods');
     }
     
     // Method for --no-validations
-    public function isNoValidations(): bool {
+    public function isNoValidations(): bool
+    {
         return $this->dispatcher->getParameter('noValidations');
     }
     
     // Method for --no-relationships
-    public function isNoRelationships(): bool {
+    public function isNoRelationships(): bool
+    {
         return $this->dispatcher->getParameter('noRelationships');
     }
     
     // Method for --no-column-map
-    public function isNoColumnMap(): bool {
+    public function isNoColumnMap(): bool
+    {
         return $this->dispatcher->getParameter('noColumnMap');
     }
     
     // Method for --no-set-source
-    public function isNoSetSource(): bool {
+    public function isNoSetSource(): bool
+    {
         return $this->dispatcher->getParameter('noSetSource');
     }
     
     // Method for --no-typings
-    public function isNoTypings(): bool {
+    public function isNoTypings(): bool
+    {
         return $this->dispatcher->getParameter('noTypings');
     }
     
     // Method for --granular-typings
-    public function isGranularTypings(): bool {
+    public function isGranularTypings(): bool
+    {
         return $this->dispatcher->getParameter('granularTypings');
     }
     
     // Method for --add-raw-value-type
-    public function isAddRawValueType(): bool {
+    public function isAddRawValueType(): bool
+    {
         return $this->dispatcher->getParameter('addRawValueType');
     }
     
     // Method for --protected-properties
-    public function isProtectedProperties(): bool {
+    public function isProtectedProperties(): bool
+    {
         return $this->dispatcher->getParameter('protectedProperties');
     }
     
@@ -268,7 +285,9 @@ PHP;
         $namespace = $baseNamespace . '\\' .
             Helper::camelize(
                 Helper::uncamelize(
-                    str_replace('/', '\\',
+                    str_replace(
+                        '/',
+                        '\\',
                         ltrim($path, isset($baseNamespace)? $this->getDirectory() : '')
                     )
                 )
