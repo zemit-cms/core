@@ -51,18 +51,19 @@ use Zemit\Models\GroupType;
 use Zemit\Models\GroupFeature;
 use Zemit\Models\Type;
 use Zemit\Models\Feature;
+use Zemit\Mvc\ModelInterface;
 
 /**
  * Allow to get mapped classes without using magic methods
  */
 trait ModelsMap
 {
+    abstract public function getDI(): DiInterface;
+    
     /**
-     * Store an array of mapped models
+     * @var ModelInterface[]|null $modelsMap Description of the variable $modelsMap
      */
     public ?array $modelsMap = null;
-    
-    abstract public function getDI(): DiInterface;
     
     /**
      * Retrieve the config from DI

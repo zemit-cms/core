@@ -78,8 +78,7 @@ trait SearchConditions
         $searchList = array_values(array_filter(array_unique(
             explode(' ', $this->getParam('search', [
                 Filter::FILTER_STRING,
-                Filter::FILTER_TRIM]
-            ) ?? '')
+                Filter::FILTER_TRIM]) ?? '')
         )));
         
         $query = [];

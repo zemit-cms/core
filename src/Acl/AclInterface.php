@@ -13,8 +13,7 @@ namespace Zemit\Acl;
 
 use Phalcon\Acl\Adapter\Memory;
 
-interface AclInterface {
-    
+interface AclInterface
+{
     public function get(array $componentsName = ['components'], ?array $permissions = null, string $inherit = 'inherit'): Memory;
-    
 }
