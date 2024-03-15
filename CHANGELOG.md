@@ -4,16 +4,18 @@
 
 ### Planned
 
-- New Restful system (v2)
+- New Restful system - V2 (Using query builder instead of lazy & eager loading)
 - Support for PHP 8.3+
+- Use DI for model mapping
 
 ## [1.0.0](https://github.com/zemit-cms/core/releases/tag/1.0.0) (2024-03-04)
 
 ### Changed
 
+- New Restful system
 - Strict PHP Typings
 - Bump support to PHP 8.2+
-- Bump support to Phalcon 5.6.1+
+- Bump support to Phalcon 5.6.2+
 - Stable Release 1.0.0
 
 ### Added
