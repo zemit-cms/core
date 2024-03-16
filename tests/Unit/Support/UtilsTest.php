@@ -10,11 +10,12 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit;
+namespace Unit\Support;
 
 use Zemit\Support\Helper;
 use Zemit\Support\HelperFactory;
 use Zemit\Support\Utils;
+use Zemit\Tests\Unit\AbstractUnit;
 
 /**
  * Class ProviderTest
@@ -24,8 +25,6 @@ class UtilsTest extends AbstractUnit
 {
     public function testProvider(): void
     {
-        $this->assertTrue(true);
-        
         $collection = [
             [
                 'transform' => [
@@ -175,7 +174,7 @@ class UtilsTest extends AbstractUnit
         $this->assertEquals(__DIR__, $dirname);
         
         $dirname = Utils::getDirname(new Utils());
-        $this->assertEquals(dirname(__DIR__, 2) . '/src/Support', $dirname);
+        $this->assertEquals(dirname(__DIR__, 3) . '/src/Support', $dirname);
     }
     
     public function testGetMemoryUsage(): void

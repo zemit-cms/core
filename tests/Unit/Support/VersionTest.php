@@ -10,10 +10,11 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit;
+namespace Unit\Support;
 
-use Zemit\Support\Version as ZemitVersion;
 use Phalcon\Support\Version as PhalconVersion;
+use Zemit\Support\Version as ZemitVersion;
+use Zemit\Tests\Unit\AbstractUnit;
 
 /**
  * Class VersionTest
@@ -24,7 +25,8 @@ class VersionTest extends AbstractUnit
     /**
      * Testing the version class
      */
-    public function testVersion() {
+    public function testVersion(): void
+    {
         $version = new ZemitVersion();
         $phalconVersion = new PhalconVersion();
         

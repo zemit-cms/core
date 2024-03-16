@@ -10,12 +10,13 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit;
+namespace Unit\Mvc\Model;
 
 use Phalcon\Db\Column;
 use Zemit\Models\Role;
 use Zemit\Models\User;
 use Zemit\Models\UserRole;
+use Zemit\Tests\Unit\AbstractUnit;
 
 class ModelTest extends AbstractUnit
 {

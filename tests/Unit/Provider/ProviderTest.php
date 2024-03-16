@@ -10,10 +10,11 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit;
+namespace Unit\Provider;
 
 use League\Flysystem\Filesystem;
 use Zemit\Provider\ServiceProviderInterface;
+use Zemit\Tests\Unit\AbstractUnit;
 
 class ProviderTest extends AbstractUnit
 {

@@ -10,21 +10,20 @@
 
 declare(strict_types=1);
 
-namespace Unit;
+namespace Unit\Mvc;
 
-use Zemit\Tests\Unit\AbstractUnit;
 use Zemit\Mvc\Url;
+use Zemit\Tests\Unit\AbstractUnit;
 
-/**
- * Class UrlTest
- */
 class UrlTest extends AbstractUnit
 {
-    public function getUrl(): Url {
+    public function getUrl(): Url
+    {
         return $this->bootstrap->di->get('url');
     }
     
-    public function testUrl() {
+    public function testUrl(): void
+    {
         $tests = [
             'https://' => 'https://',
             'https://test' => 'https://test',
@@ -34,7 +33,6 @@ class UrlTest extends AbstractUnit
             '//test' => '//test',
             '/' => '/',
             '/test' => '/test',
-            
             '/test/../' => '/',
             '/test/../../' => '/',
             '/test/test/../../' => '/',
@@ -44,6 +42,13 @@ class UrlTest extends AbstractUnit
             '/test/test/.././.././////' => '/',
             '/test/test/test/.././.././////' => '/test',
             '/test/test/../' => '/test',
+            'https://zemit.com' => 'https://zemit.com',
+            
+            // @todo fix these ones
+//            'https://zemit.com/test/../' => 'https://zemit.com/',
+//            'https://zemit.com/test/../../' => 'https://zemit.com/',
+//            'https://zemit.com/test/test/../../' => 'https://zemit.com/',
+//            'http://zemit.com/test/test/.././.././////' => 'http://zemit.com/test' 
         ];
         
         foreach ($tests as $test => $result) {

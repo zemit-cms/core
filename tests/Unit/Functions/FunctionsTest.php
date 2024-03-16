@@ -10,7 +10,9 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit;
+namespace Unit\Functions;
+
+use Zemit\Tests\Unit\AbstractUnit;
 
 class FunctionsTest extends AbstractUnit
 {

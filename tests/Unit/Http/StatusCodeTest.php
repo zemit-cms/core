@@ -5,15 +5,15 @@
  * (c) Zemit Team <contact@zemit.com>
  *
  * For the full copyright and license information, please view the LICENSE.txt
- * file that was distributed with this source $message.
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace Unit;
+namespace Unit\Http;
 
-use Zemit\Tests\Unit\AbstractUnit;
 use Zemit\Http\StatusCode;
+use Zemit\Tests\Unit\AbstractUnit;
 
 /**
  * Class UrlTest

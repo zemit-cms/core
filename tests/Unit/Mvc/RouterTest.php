@@ -10,25 +10,23 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit;
+namespace Unit\Mvc;
 
 use Phalcon\Mvc\Router\RouteInterface;
-use Zemit\Mvc\Application;
 use Zemit\Router\RouterInterface;
+use Zemit\Tests\Unit\AbstractUnit;
 
 /**
  * Class RouterTest
  */
 class RouterTest extends AbstractUnit
 {
-    public function getRouter(): RouterInterface
-    {
-        return $this->di->get('router');
-    }
+    public RouterInterface $router;
     
-    public function getApplication(): Application
+    protected function setUp(): void
     {
-        return $this->di->get('application');
+        parent::setUp();
+        $this->router = $this->di->get('router');
     }
     
     /**
@@ -36,7 +34,7 @@ class RouterTest extends AbstractUnit
      */
     public function testRouter(): void
     {
-        $routerToArray = $this->getRouter()->toArray();
+        $routerToArray = $this->router->toArray();
         $this->assertIsArray($routerToArray);
         $this->assertIsString($routerToArray['namespace']);
         $this->assertEmpty($routerToArray['namespace']);
@@ -112,13 +110,13 @@ class RouterTest extends AbstractUnit
                 $uris = [];
             }
             
-            $routeByName = $this->getRouter()->getRouteByName($name);
+            $routeByName = $this->router->getRouteByName($name);
             
             $this->assertInstanceOf(RouteInterface::class, $routeByName, $name . ' : ' . (is_object($routeByName) ? get_class($routeByName) : $routeByName));
             
             foreach ($uris as $uri) {
-                $this->getRouter()->handle($uri);
-                $matchedRoute = $this->getRouter()->getMatchedRoute();
+                $this->router->handle($uri);
+                $matchedRoute = $this->router->getMatchedRoute();
                 $this->assertInstanceOf(RouteInterface::class, $matchedRoute, get_class($matchedRoute));
                 
                 $message = $uri . ' : ' . json_encode($matchedRoute->getPaths());
@@ -126,17 +124,17 @@ class RouterTest extends AbstractUnit
                 
                 foreach ($modules as $module) {
                     if (strpos($name, $module) !== false) {
-                        $this->assertEquals($module, $this->getRouter()->getModuleName(), $message);
+                        $this->assertEquals($module, $this->router->getModuleName(), $message);
                     }
                 }
                 if (strpos($name, '-controller') !== false) {
-                    $this->assertEquals('controller', $this->getRouter()->getControllerName(), $message);
+                    $this->assertEquals('controller', $this->router->getControllerName(), $message);
                 }
                 if (strpos($name, '-action') !== false) {
-                    $this->assertEquals('action', $this->getRouter()->getActionName(), $message);
+                    $this->assertEquals('action', $this->router->getActionName(), $message);
                 }
-                $this->assertIsString($this->getRouter()->getNamespaceName(), $message);
-                $this->assertIsArray($this->getRouter()->getParams(), $message);
+                $this->assertIsString($this->router->getNamespaceName(), $message);
+                $this->assertIsArray($this->router->getParams(), $message);
             }
         }
     }
