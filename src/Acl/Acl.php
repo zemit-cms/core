@@ -20,7 +20,7 @@ use Zemit\Support\Options\Options;
 /**
  * Class Acl
  *
- * This class represents an Access Control List (ACL) and is used 
+ * This class represents an Access Control List (ACL) and is used
  * to configure and manage access permissions for different components.
  */
 class Acl extends AbstractInjectionAware
@@ -28,12 +28,13 @@ class Acl extends AbstractInjectionAware
     use Options;
     
     /**
-     * Return an ACL for the specified components name
-     * @param array $componentsName
-     * @param array|null $permissions
-     * @param string $inherit
-     * @return Memory
-     * @todo cache the ACL
+     * Retrieves the ACL (Access Control List) based on the provided components and permissions.
+     *
+     * @param array $componentsName An array of component names to include in the ACL. Defaults to ['components'].
+     * @param array|null $permissions The permissions array to use for building the ACL. Defaults to null.
+     * @param string $inherit The type of role inheritance to use. Defaults to 'inherit'.
+     *
+     * @return Memory The ACL (Access Control List) object.
      */
     public function get(array $componentsName = ['components'], ?array $permissions = null, string $inherit = 'inherit'): Memory
     {
