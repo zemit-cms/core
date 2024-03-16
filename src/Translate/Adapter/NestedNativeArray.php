@@ -11,16 +11,65 @@
 
 namespace Zemit\Translate\Adapter;
 
+use JetBrains\PhpStorm\Deprecated;
 use Phalcon\Translate\Adapter\AbstractAdapter;
 use Phalcon\Translate\Exception;
 use Phalcon\Translate\InterpolatorFactory;
 
+/**
+ * NestedNativeArray class is an implementation of the Translate Adapter interface that uses
+ * a nested array as the translation source.
+ *
+ * Usage example:
+ * ```
+ * $interpolator = new InterpolatorFactory();
+ * $options = [
+ *     'content' => [
+ *         'en' => [
+ *             'welcome' => 'Welcome to our website!',
+ *             'goodbye' => 'Goodbye!',
+ *         ],
+ *         'fr' => [
+ *             'welcome' => 'Bienvenue sur notre site web!',
+ *             'goodbye' => 'Au revoir!',
+ *         ],
+ *     ],
+ *     'triggerError' => false,
+ *     'delimiter' => '.',
+ * ];
+ *
+ * $translator = new NestedNativeArray($interpolator, $options);
+ *
+ * // Check if translation exists
+ * $translator->exists('en.welcome'); // returns true
+ *
+ * // Get translated string
+ * $translator->query('fr.goodbye'); // returns 'Au revoir!'
+ *
+ * // Get translated string with placeholders
+ * $translator->query('en.welcome', ['name' => 'John']); // returns 'Welcome to our website, John!'
+ * ```
+ *
+ * @package Zemit\Translate\Adapter
+ */
 class NestedNativeArray extends AbstractAdapter implements \ArrayAccess
 {
+    /**
+     * Translation array.
+     * @var array $translate
+     */
     private array $translate = [];
     
+    /**
+     * @var bool $triggerError Determines whether to trigger an error or not.
+     */
     private bool $triggerError = false;
     
+    /**
+     * Sets the value of the delimiter.
+     *
+     * @param string $delimiter The delimiter value to set.
+     */
     protected string $delimiter = '.';
     
     /**
@@ -42,16 +91,26 @@ class NestedNativeArray extends AbstractAdapter implements \ArrayAccess
     }
     
     /**
-     * Check whether is defined a translation key in the internal array
-     * @deprecated
+     * Returns whether a translation exists for the given index
+     *
+     * @param string $index The translation index to check
+     * @return bool True if a translation exists for the index, false otherwise
+     * @deprecated since Zemit 1.0, use has() instead. The replacement method is %class%->has(%parametersList%)
+     * @see has()
      */
+    #[Deprecated(
+        reason: 'since Zemit 1.0, use has() instead',
+        replacement: '%class%->has(%parametersList%)'
+    )]
     public function exists(string $index): bool
     {
         return $this->has($index);
     }
     
     /**
-     * Check whether is defined a translation key in the internal array
+     * Returns true if the translation for the given index exists, false otherwise.
+     * @param string $index The index of the translation to check.
+     * @return bool Returns true if the translation for the given index exists, false otherwise.
      */
     public function has(string $index): bool
     {
@@ -74,6 +133,14 @@ class NestedNativeArray extends AbstractAdapter implements \ArrayAccess
         return true;
     }
     
+    /**
+     * Returns the index if translation key is not found
+     * Throws exception if triggerError is enabled and translation key is not found
+     * 
+     * @param string $index The translation key
+     * @return string Returns the index
+     * @throws Exception Throws exception if triggerError is enabled and translation key is not found
+     */
     public function notFound(string $index): string
     {
         if ($this->triggerError) {
@@ -84,7 +151,12 @@ class NestedNativeArray extends AbstractAdapter implements \ArrayAccess
     }
     
     /**
-     * Returns the translation related to the given key
+     * Queries for a translated string based on the given translate key and optional placeholders.
+     *
+     * @param string $translateKey The translate key to query for a translated string.
+     * @param array $placeholders An optional array of placeholders to replace in the translated string.
+     * @return string The translated string or the not found string if the translate key is not found.
+     * @throws Exception Throws exception if triggerError is enabled and translation key is not found
      */
     public function query(string $translateKey, array $placeholders = []): string
     {
@@ -105,5 +177,15 @@ class NestedNativeArray extends AbstractAdapter implements \ArrayAccess
         }
         
         return $this->replacePlaceholders($translate, $placeholders);
+    }
+    
+    /**
+     * Converts the translate data to an array.
+     *
+     * @return array The translate data as an array.
+     */
+    public function toArray(): array
+    {
+        return $this->translate;
     }
 }
