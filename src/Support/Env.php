@@ -15,45 +15,122 @@ use Dotenv\Dotenv;
 use Phalcon\Di\DiInterface;
 
 /**
- * Allow to access environment variable easily
+ * This class provides utilities for managing environment variables and loading .env files.
+ * It allows for easy access to environment variables and provides methods for setting and getting values.
+ * It also initializes a Dotenv instance and loads .env files based on specified configurations.
  *
- * Example usage:
- * ```php
- * $this->SET_APPLICATION_ENV('production'); // SET APPLICATION_ENV to 'production'
- * self::SET_APPLICATION_ENV('production'); // SET APPLICATION_ENV to 'production'
- * $this->GET_APPLICATION_ENV('default'); // GET APPLICATION_ENV value or 'default'
- * self::GET_APPLICATION_ENV('default'); // GET APPLICATION_ENV value or 'default'
- * ```
- * @todo fix dotenv mandatory file
+ * @package Zemit\Support
  */
 class Env
 {
+    /**
+     * Represents the initialization status of the code.
+     *
+     * This variable is used to keep track of whether the code has been initialized
+     * or not.
+     *
+     * @var bool
+     */
     public static bool $initialized = false;
     
+    /**
+     * Represents the instance of the Dotenv class.
+     *
+     * The Dotenv class is responsible for loading environment variables from the
+     * ".env" file into the application.
+     *
+     * @var Dotenv
+     */
     public static Dotenv $dotenv;
+    
+    /**
+     * Represents an array of variables.
+     *
+     * The $vars variable is used to store a collection of key-value pairs,
+     * where each key represents a variable name and the corresponding value
+     * represents the value of that variable.
+     *
+     * @var array
+     */
     public static array $vars = [];
     
+    /**
+     * Holds the value of the paths.
+     *
+     * This variable represents the value of the paths and is initially set to null.
+     * It can be assigned a different value during the runtime of the program.
+     *
+     * @var string[]|null
+     */
     public static ?array $paths = null;
+    
+    /**
+     * Represents the array of filenames.
+     *
+     * The $names variable is an array that holds the filenames of the ".env" file(s) to be loaded.
+     * This variable is used as an argument in the Dotenv class to specify the filenames to load.
+     *
+     * @var string[]
+     */
     public static array $names = ['.env'];
+    
+    /**
+     * Represents the type of data being declared.
+     *
+     * The $type variable is a string that indicates the mutability of the data. It can
+     * have two possible values: "mutable" or "immutable".
+     *
+     * @var string
+     */
     public static string $type = 'mutable';
+    
+    /**
+     * Represents a boolean flag that enables short-circuiting in the code.
+     *
+     * When the $shortCircuit variable is set to true, it indicates that the code
+     * should perform short-circuit evaluation. Short-circuit evaluation allows
+     * skipping the evaluation of subsequent conditions in a logical expression if
+     * the final result can be determined early.
+     *
+     * @var bool
+     */
     public static bool $shortCircuit = true;
+    
+    /**
+     * Represents the encoding of the file.
+     *
+     * The $fileEncoding variable is used to store the encoding of the file that
+     * will be processed by the application. It is initially set to null and will be
+     * updated with the actual encoding value during the file processing.
+     *
+     * @var string|null
+     */
     public static ?string $fileEncoding = null;
     
+    /**
+     * Constructs a new instance of the class.
+     *
+     * Initializes the class by invoking the initialize method.
+     *
+     * @return void
+     */
     public function __construct()
     {
         self::initialize();
     }
     
     /**
+     * Initializes the Dotenv instance with the specified configurations
+     * and returns the initialized instance.
      *
-     * @param $paths
-     * @param $names
-     * @param bool $shortCircuit
-     * @param string|null $fileEncoding
-     * @param $type
-     * @return Dotenv
+     * @param array|null $paths The paths to search for dotenv files.
+     * @param array|null $names The names of the dotenv files to load.
+     * @param bool|null $shortCircuit Whether to stop loading dotenv files after finding the first one.
+     * @param string|null $fileEncoding The encoding of the dotenv files.
+     * @param string|null $type The type of dotenv files to load.
+     * @return Dotenv The initialized Dotenv instance.
      */
-    public static function initialize($paths = null, $names = null, bool $shortCircuit = null, string $fileEncoding = null, $type = null): Dotenv
+    public static function initialize(?array $paths = null, ?array $names = null, ?bool $shortCircuit = null, ?string $fileEncoding = null, ?string $type = null): Dotenv
     {
         if (!self::$initialized) {
             $type ??= self::getType();
@@ -70,10 +147,12 @@ class Env
     }
     
     /**
-     * Get .env directories
-     * @return array
+     * Retrieves an array of paths.
+     * If the paths array is not yet created, it will be initialized and returned.
+     *
+     * @return array The array of paths.
      */
-    public static function getPaths()
+    public static function getPaths(): array
     {
         if (is_null(self::$paths)) {
             self::$paths = [];
@@ -94,8 +173,13 @@ class Env
     }
     
     /**
-     * Set .env directories
-     * @param $paths
+     * Sets the paths for the application. If no paths are provided,
+     * the paths will be set to null.
+     *
+     * @param array|null $paths The paths to be set for the application.
+     *                         If null is provided, the paths will be set to null.
+     *                         Default is null.
+     *
      * @return void
      */
     public static function setPaths(array $paths = null): void
@@ -105,36 +189,41 @@ class Env
     
     /**
      * Get .env file names
-     * @return string|string[]
+     * @return string[]
      */
-    public static function getNames()
+    public static function getNames(): array
     {
         return self::$names;
     }
     
     /**
-     * Set .env file names
-     * @param $names
+     * Sets the names array. If the specified array is null, the existing names array will be cleared.
+     *
+     * @param string[] $names The array of names. If null, the existing names array will be cleared.
+     *
      * @return void
      */
-    public static function setNames($names = null): void
+    public static function setNames(array $names): void
     {
         self::$names = $names;
     }
     
     /**
-     * Get Dotenv type
-     * @return string
+     * Retrieves the type of the instance. If the type is not set, it will default to 'mutable'.
+     * The type is then transformed into a camel case string and the first letter is capitalized.
+     *
+     * @return string The type of the instance.
      */
-    public static function getType()
+    public static function getType(): string
     {
         return ucfirst(Helper::camelize(strtolower(self::$type ?? 'mutable')));
     }
     
     /**
-     * Sets the Dotenv type ('mutable', 'immutable', 'unsafe-mutable', 'unsafe-immutable')
+     * Sets the type of the object. If the type is not provided or is not one of the allowed types,
+     * the type will be set to 'mutable' by default.
      *
-     * @param string|null $type The type to set. If null, the type will default to 'mutable'.
+     * @param string|null $type The type of the object. Available types: 'mutable', 'immutable', 'unsafe-mutable', 'unsafe-immutable'.
      * @return void
      */
     public static function setType(?string $type = null): void
@@ -144,7 +233,10 @@ class Env
     }
     
     /**
-     * @return boolean
+     * Retrieves the short circuit value. If the short circuit value is not yet set,
+     * it will return the default value.
+     *
+     * @return bool The short circuit value.
      */
     public static function getShortCircuit(): bool
     {
@@ -152,16 +244,20 @@ class Env
     }
     
     /**
-     * @param bool $shortCircuit
+     * Sets the value of the shortCircuit property.
+     *
+     * @param bool $shortCircuit The new value for the shortCircuit property.
      * @return void
      */
     public static function setShortCircuit(bool $shortCircuit = true): void
     {
-        self::$shortCircuit = (bool)$shortCircuit;
+        self::$shortCircuit = $shortCircuit;
     }
     
     /**
-     * @return ?string
+     * Retrieves the file encoding. If the encoding is not yet set, it will return null.
+     *
+     * @return ?string The file encoding.
      */
     public static function getFileEncoding(): ?string
     {
@@ -169,7 +265,10 @@ class Env
     }
     
     /**
-     * @param ?string $fileEncoding
+     * Sets the file encoding for the env file. If no file encoding is specified,
+     * the default encoding will be used.
+     *
+     * @param string|null $fileEncoding The file encoding to be set. Defaults to null.
      * @return void
      */
     public static function setFileEncoding(?string $fileEncoding = null): void
@@ -177,11 +276,13 @@ class Env
         self::$fileEncoding = $fileEncoding;
     }
     
-    
     /**
-     * @return Dotenv
+     * Retrieves the Dotenv instance. If the instance is not yet created,
+     * it will be initialized and returned.
+     *
+     * @return Dotenv The Dotenv instance.
      */
-    public static function getDotenv()
+    public static function getDotenv(): Dotenv
     {
         return self::$dotenv ?? self::initialize();
     }
@@ -198,24 +299,24 @@ class Env
      * @param mixed $arguments Default fallback value for get, or value to set for set
      * @return mixed Return void for set, and return the environment variable value, or default value for get
      */
-    public static function call($name, $arguments)
+    public static function call(string $name, mixed $arguments): mixed
     {
         $getSet = 'set';
         
-        if (strpos($name, 'SET_') === 0) {
+        if (str_starts_with($name, 'SET_')) {
             $name = substr($name, 0, 4);
         }
         
-        elseif (strpos($name, 'set') === 0) {
+        elseif (str_starts_with($name, 'set')) {
             $name = substr($name, 0, 3);
         }
         
-        elseif (strpos($name, 'GET_') === 0) {
+        elseif (str_starts_with($name, 'GET_')) {
             $getSet = 'get';
             $name = substr($name, 0, 4);
         }
         
-        elseif (strpos($name, 'get') === 0) {
+        elseif (str_starts_with($name, 'get')) {
             $getSet = 'get';
             $name = substr($name, 0, 3);
         }
@@ -229,7 +330,7 @@ class Env
      * @param mixed $default Value to fallback if the key can't be found
      * @return mixed Return the environment variable value or the default value
      */
-    public static function get(string $key, $default = null)
+    public static function get(string $key, mixed $default = null): mixed
     {
         self::getDotenv();
         
@@ -264,7 +365,7 @@ class Env
      * @param string $key Key to set
      * @param mixed $value Value to set
      */
-    public static function set(string $key, $value)
+    public static function set(string $key, mixed $value): void
     {
         self::$vars[$key] = $value;
         $_ENV[$key] = $value;
@@ -275,7 +376,7 @@ class Env
      * @param string $name Env key to fetch
      * @return mixed Env value
      */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         return self::get($name);
     }
@@ -285,7 +386,7 @@ class Env
      * @param string $name Env key to set
      * @param mixed $value Value to set
      */
-    public function __set(string $name, $value)
+    public function __set(string $name, mixed $value): void
     {
         self::set($name, $value);
     }
@@ -300,7 +401,7 @@ class Env
      * @param $arguments array Default fallback value for get, or value to set for set
      * @return mixed Return void for set, and return the environment variable value, or default value for get
      */
-    public static function __callStatic(string $name, array $arguments)
+    public static function __callStatic(string $name, array $arguments): mixed
     {
         return self::call($name, $arguments);
     }
@@ -313,7 +414,7 @@ class Env
      * @param $arguments array Default fallback value for get, or value to set for set
      * @return mixed Return void for set, and return the environment variable value, or default value for get
      */
-    public function __call(string $name, array $arguments)
+    public function __call(string $name, array $arguments): mixed
     {
         return self::call($name, $arguments);
     }
