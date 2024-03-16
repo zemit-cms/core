@@ -27,6 +27,7 @@ class FunctionsTest extends AbstractUnit
             'sprintfn',
             'mb_sprintf',
             'mb_vsprintf',
+            'json_validate',
         ];
         foreach ($functions as $function) {
             $this->assertTrue(function_exists($function), 'function_exists : ' . $function);

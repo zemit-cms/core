@@ -230,7 +230,7 @@ class Locale extends Injectable implements OptionsInterface
      * of getBestLanguage() header
      * or HTTP_ACCEPT_LANGUAGE header
      */
-    public function getFromHttp(?String $default = null): ?string
+    public function getFromHttp(?string $default = null): ?string
     {
         return
             $this->lookup($this->request->getBestLanguage()) ??
@@ -241,13 +241,12 @@ class Locale extends Injectable implements OptionsInterface
     /**
      * Save locale into session if mode contain session handling
      */
-    public function saveIntoSession(?string $locale = null, bool $force = null): void
+    public function saveIntoSession(?string $locale = null, bool $force = false): void
     {
         $locale ??= $this->getLocale();
         
         // save into session
-        $force = $force || $this->mode === self::MODE_SESSION;
-        if ($force) {
+        if ($force || $this->mode === self::MODE_SESSION) {
             $this->session->set($this->sessionKey, $locale);
         }
     }

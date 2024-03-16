@@ -40,14 +40,19 @@ class ServiceProvider extends AbstractServiceProvider
             $driverOptions = $sessionConfig['drivers'][$driverName] ?? [];
             $options = array_merge($defaultOptions, $driverOptions);
             
+            // Create the new session manager
+            $session = new Manager();
+            
+            // this is for unit testing purpose and should not have to happen
+            if ($session->exists()) {
+                $session->destroy();
+            }
+            
             // ini_set
             $sessionIniConfig = $sessionConfig['ini'] ?? [];
             foreach ($sessionIniConfig as $sessionIniKey => $sessionIniValue) {
                 ini_set($sessionIniKey, $sessionIniValue);
             }
-            
-            // Create the new session manager
-            $session = new Manager();
             
             // Set the storage adapter
             $adapter = $options['adapter'];
