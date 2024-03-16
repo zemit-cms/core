@@ -15,12 +15,14 @@ use Zemit\Support\Version as ZemitVersion;
 use Phalcon\Support\Version as PhalconVersion;
 
 /**
- * {@inheritDoc}
+ * Provides debug capabilities to Zemit applications
  */
 class Debug extends \Phalcon\Support\Debug
 {
     /**
-     * {@inheritDoc}
+     * Returns the version information for Zemit and Phalcon Framework.
+     *
+     * @return string The version information as HTML string.
      */
     public function getVersion(): string
     {
@@ -29,9 +31,8 @@ class Debug extends \Phalcon\Support\Debug
         return
             '<div class="version">' .
                 ' Zemit Core <a href="https://docs.zemit.com/" target="_new">' . $zemitVersion->get() . '</a>' .
-                '&nbsp;-&nbsp;' .
+                '&nbsp;&vert;&nbsp;' .
                 'Phalcon Framework <a href="https://docs.phalcon.io/' . PhalconVersion::VERSION_MAJOR . '.0/en/" target="_new">' . $phalconVersion->get() . '</a>' .
-            '</div>'
-            ;
+            '</div>';
     }
 }

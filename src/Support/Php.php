@@ -11,25 +11,44 @@
 
 namespace Zemit\Support;
 
+/**
+ * Class Php
+ *
+ * Provides utility methods for working with PHP settings and environment.
+ */
 class Php
 {
-    public static function isCli(): bool
+    /**
+     * Check if the script is running in a command-line interface (CLI) environment.
+     *
+     * @return bool Returns true if the script is running in a CLI environment, false otherwise.
+     */
+    public static function isCli(string $sapi = PHP_SAPI): bool
     {
-        return PHP_SAPI === 'cli';
+        return in_array($sapi, ['cli', 'phpdbg'], true);
     }
     
     /**
-     * Trust forwarded protocol and force $_SERVER['https'] to 'on'
+     * Trust the forwarded protocol from the reverse proxy server.
+     * If trusted and HTTP_X_FORWARDED_PROTO is https force $_SERVER['https'] to 'on'
+     * 
+     * @return void
      */
     public static function trustForwardedProto(): void
     {
-        if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '', 'https') !== false) {
-            $_SERVER['HTTPS'] = 'on';
+        if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+            if (str_starts_with($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https')) {
+                $_SERVER['HTTPS'] = 'on';
+            }
         }
     }
-
+    
     /**
-     * Set debugging values
+     * Enable or disable debug mode
+     *
+     * @param bool|null $debug Set to true to enable debug mode, false to disable it. If null, debug mode remains unchanged.
+     *
+     * @return void
      */
     public static function debug(?bool $debug = null): void
     {
@@ -45,10 +64,12 @@ class Php
             ini_set('display_errors', '0');
         }
     }
-
+    
     /**
-     * Prepare some PHP config
-     * @todo review to implement this properly
+     * Set the configuration options for the application.
+     *
+     * @param array $config The configuration options for the application.
+     * @return void
      */
     public static function set(array $config = []): void
     {
@@ -59,7 +80,6 @@ class Php
         $config['timeoutLimit'] ??= '60';
         
         date_default_timezone_set($config['timezone']);
-        
         setlocale(LC_ALL, $config['locale'] . '.' . $config['encoding']);
         mb_internal_encoding($config['encoding']);
         mb_http_output($config['encoding']);

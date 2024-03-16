@@ -28,8 +28,6 @@ class Version extends \Phalcon\Support\Version
      */
     protected function getVersion(): array
     {
-        $composerPath = dirname(__DIR__, 2) . '/composer.json';
-        $composerData = json_decode(file_get_contents($composerPath), true);
-        return [...explode('.', $composerData['version'] ?? '0.0.0'), ...[4, 0]];
+        return [1, 0, 0, 4, 0];
     }
 }

@@ -23,21 +23,29 @@ use Zemit\Tests\Unit\AbstractUnit;
  */
 class DebugTest extends AbstractUnit
 {
-    /**
-     * @covers \Zemit\Support\Debug::getVersion
-     */
-    public function testGetVersion()
+    public Debug $debug;
+    
+    protected function setUp() : void
     {
-        // Prepare
-        $debug = new Debug();
+        parent::setUp();
+        $this->debug = $this->di->get('debug');
+    }
+    
+    public function testDebugFromDi(): void
+    {
+        $this->assertInstanceOf(Debug::class, $this->debug);
+        $this->testGetVersion($this->debug);
+    }
+    
+    public function testGetVersion(?Debug $debug = null): void
+    {
+        $debug ??= new Debug();
         
-        // Test
         $result = $debug->getVersion();
         
         $zemitVersion = new ZemitVersion();
         $phalconVersion = new PhalconVersion();
         
-        // Assert
         $this->assertStringContainsString($zemitVersion->get(), $result);
         $this->assertStringContainsString($phalconVersion->get(), $result);
         $this->assertStringContainsString('Zemit Core', $result);
