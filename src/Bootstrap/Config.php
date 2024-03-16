@@ -658,7 +658,7 @@ class Config extends \Zemit\Config\Config
              * Translate Service Settings
              */
             'translate' => [
-                'locale' => explode(',', Env::get('TRANSLATE_LOCALE', 'en_CA.utf8')),
+                'locale' => explode(',', Env::get('TRANSLATE_LOCALE', 'en_CA.UTF-8')),
                 'defaultDomain' => Env::get('TRANSLATE_DEFAULT_DOMAIN', 'messages'),
                 'category' => Env::get('TRANSLATE_CATEGORY', defined('LC_MESSAGES')? LC_MESSAGES : 5),
                 'directory' => Env::get('TRANSLATE_DEFAULT_PATH', RESOURCES_PATH . 'translations'),
