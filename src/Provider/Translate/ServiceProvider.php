@@ -15,6 +15,7 @@ use Phalcon\Di\DiInterface;
 use Phalcon\Translate\Adapter\Gettext;
 use Phalcon\Translate\InterpolatorFactory;
 use Zemit\Config\ConfigInterface;
+use Zemit\Locale;
 use Zemit\Provider\AbstractServiceProvider;
 
 class ServiceProvider extends AbstractServiceProvider
@@ -29,8 +30,11 @@ class ServiceProvider extends AbstractServiceProvider
             assert($config instanceof ConfigInterface);
             $translateConfig = $config->pathToArray('translate') ?? [];
             
+            $locale = $di->get('locale');
+            assert($locale instanceof Locale);
+            
             $translate = new Gettext(new InterpolatorFactory(), $translateConfig);
-            $translate->setLocale(LC_MESSAGES, [$di->get('locale')->get() . '.utf8']);
+            $translate->setLocale(LC_ALL, [$locale->getLocale() . '.UTF-8']);
             
             return $translate;
         });

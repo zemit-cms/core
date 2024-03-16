@@ -22,7 +22,7 @@ class En extends NativeArray
             'zemit' => '<a href="https://www.zemit.com/">Zemit</a>'
         ]);
         parent::__construct($interpolator, array_merge_recursive([
-            'locale' => 'en_US.UTF-8',
+            'locale' => 'en_CA.UTF-8',
             'defaultDomain' => 'zemit',
             'category' => LC_MESSAGES,
             'content' => [
