@@ -21,7 +21,7 @@ class Module implements ModuleDefinitionInterface
 {
     public const NAME_CLI = 'cli';
     
-    public string $name;
+    public string $name = self::NAME_CLI;
     
     public Config $config;
     

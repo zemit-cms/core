@@ -66,6 +66,7 @@ abstract class AbstractUnit extends TestCase
         
         $this->bootstrap = new Bootstrap($this->mode);
         $this->di = $this->bootstrap->di;
+        $this->loader = $loader;
         $this->loaded = true;
         parent::setUp();
     }
