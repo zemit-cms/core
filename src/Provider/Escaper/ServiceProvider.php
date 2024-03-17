@@ -21,9 +21,6 @@ class ServiceProvider extends AbstractServiceProvider
     
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function () {
-            
-            return new Escaper();
-        });
+        $di->set($this->getName(), Escaper::class);
     }
 }
