@@ -20,7 +20,7 @@ class ProviderTest extends AbstractUnit
 {
     public function testProvider(): void
     {
-        $providers = $this->bootstrap->config->providers->toArray();
+        $providers = $this->bootstrap->config->pathToArray('providers') ?? [];
         $this->assertIsArray($providers);
         
         foreach ($providers as $assumption => $concrete) {
