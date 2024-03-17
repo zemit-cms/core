@@ -56,6 +56,7 @@ abstract class AbstractUnit extends TestCase
     {
         $rootDir = dirname(dirname(__DIR__)) . '/';
         Env::setNames(['.env.testing']);
+        Env::load();
         
         $loader = new Loader();
         $loader->setFiles([$rootDir . '/vendor/autoload.php']);
