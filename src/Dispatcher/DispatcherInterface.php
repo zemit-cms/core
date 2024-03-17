@@ -13,5 +13,7 @@ namespace Zemit\Dispatcher;
 
 interface DispatcherInterface extends \Phalcon\Dispatcher\DispatcherInterface
 {
+    public function canForward(array $forward): bool;
+    
     public function toArray(): array;
 }

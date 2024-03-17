@@ -115,10 +115,10 @@ trait DispatcherTrait
     private function canForwardController(?string $controller = null): bool
     {
         if ($this instanceof MvcDispatcher && isset($controller) && $this->getControllerName() !== $controller) {
-            return false;
+            return true;
         }
         
-        return true;
+        return false;
     }
     
     /**
@@ -127,10 +127,10 @@ trait DispatcherTrait
     private function canForwardTask(?string $task = null): bool
     {
         if ($this instanceof CliDispatcher && isset($task) && $this->getTaskName() !== $task) {
-            return false;
+            return true;
         }
         
-        return true;
+        return false;
     }
     
     public function unsetForwardNullParts(array $forward, ?array $parts = null): array
