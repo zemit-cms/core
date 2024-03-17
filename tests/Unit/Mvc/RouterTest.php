@@ -12,16 +12,12 @@ declare(strict_types=1);
 
 namespace Unit\Mvc;
 
-use Phalcon\Mvc\Router\RouteInterface;
-use Zemit\Router\RouterInterface;
 use Zemit\Tests\Unit\AbstractUnit;
+use Phalcon\Mvc\Router\RouteInterface;
 
-/**
- * Class RouterTest
- */
 class RouterTest extends AbstractUnit
 {
-    public RouterInterface $router;
+    public \Zemit\Mvc\Router $router;
     
     protected function setUp(): void
     {
@@ -29,10 +25,15 @@ class RouterTest extends AbstractUnit
         $this->router = $this->di->get('router');
     }
     
-    /**
-     * Testing the bootstrap service
-     */
-    public function testRouter(): void
+    public function testRouterFromDi(): void
+    {
+        $this->assertInstanceOf(\Zemit\Router\RouterInterface::class, $this->router);
+        $this->assertInstanceOf(\Phalcon\Mvc\Router::class, $this->router);
+        $this->assertInstanceOf(\Phalcon\Mvc\RouterInterface::class, $this->router);
+        $this->assertInstanceOf(\Zemit\Mvc\Router::class, $this->router);
+    }
+    
+    public function testToArray(): void
     {
         $routerToArray = $this->router->toArray();
         $this->assertIsArray($routerToArray);
@@ -72,7 +73,7 @@ class RouterTest extends AbstractUnit
         $modules = array_keys($applicationModules);
         $locales = [
             'locale',
-            ...$this->bootstrap->config->locale->allowed->toArray(),
+            ...$this->bootstrap->config->pathToArray('locale.allowed') ?? [],
         ];
         
         $routePrefixes = [
@@ -99,14 +100,14 @@ class RouterTest extends AbstractUnit
         foreach ($testRoutes as $name => $uris) {
             
             // add some testing for -action routes
-            if (strpos($name, '-action') !== false) {
+            if (str_contains($name, '-action')) {
                 $uris [] = $uris[0] . '/params';
                 $uris [] = $uris[0] . '/params/1';
                 $uris [] = $uris[0] . '/params/1/2';
             }
             
             // can't match locale route, it should match the locale route itself
-            if (strpos($name, 'locale') === 0) {
+            if (str_starts_with($name, 'locale')) {
                 $uris = [];
             }
             
@@ -123,14 +124,14 @@ class RouterTest extends AbstractUnit
                 $this->assertEquals($name, $matchedRoute->getName(), $message);
                 
                 foreach ($modules as $module) {
-                    if (strpos($name, $module) !== false) {
+                    if (str_contains($name, $module)) {
                         $this->assertEquals($module, $this->router->getModuleName(), $message);
                     }
                 }
-                if (strpos($name, '-controller') !== false) {
+                if (str_contains($name, '-controller')) {
                     $this->assertEquals('controller', $this->router->getControllerName(), $message);
                 }
-                if (strpos($name, '-action') !== false) {
+                if (str_contains($name, '-action')) {
                     $this->assertEquals('action', $this->router->getActionName(), $message);
                 }
                 $this->assertIsString($this->router->getNamespaceName(), $message);
