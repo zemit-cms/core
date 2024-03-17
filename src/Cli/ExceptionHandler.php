@@ -13,8 +13,11 @@ namespace Zemit\Cli;
 
 class ExceptionHandler
 {
-    public function __construct($e)
+    private $outputStream;
+    
+    public function __construct(string|\Exception $e, mixed $outputStream = STDERR)
     {
-        fwrite(STDERR, $e . PHP_EOL);
+        $this->outputStream = $outputStream;
+        fwrite($this->outputStream, $e . PHP_EOL);
     }
 }
