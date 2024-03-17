@@ -197,12 +197,12 @@ class Tag extends PhalconTag
                     
                     // deep array escaper
                     else {
-                        $value = $escaper->escapeJson(json_encode($value));
+                        $value = $escaper->json(json_encode($value));
                     }
                 }
                 // other object escaper
                 elseif (is_object($value)) {
-                    $value = $escaper->escapeJson(json_encode($value));
+                    $value = $escaper->json(json_encode($value));
                 }
                 // default escaper
                 else {
