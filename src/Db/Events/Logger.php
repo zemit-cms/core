@@ -13,48 +13,46 @@ namespace Zemit\Db\Events;
 
 use Phalcon\Db\Adapter\AbstractAdapter;
 use Phalcon\Events\EventInterface;
+use Phalcon\Logger\Exception;
 use Zemit\Di\Injectable;
 
 /**
- * @todo review
+ * Responsible for logging database query events.
  */
 class Logger extends Injectable
 {
-    public bool $inProgress = false;
-    
+    /**
+     * Executes before a database query is executed.
+     *
+     * @param EventInterface $event The event object.
+     * @param AbstractAdapter $connection The database connection object.
+     * @return void
+     * @throws Exception|\Exception If an error occurs while logging.
+     */
     public function beforeQuery(EventInterface $event, AbstractAdapter $connection): void
     {
         if ($this->config->path('logger.enable') || $this->config->path('app.logger')) {
-            if ($this->config->path('logger.logDatabaseQuery')) {
-                if (!$this->inProgress) {
-                    
-                    // deactivate logger
-                    $this->inProgress = true;
-                    $sessionId = $this->identity->getSession()?->getId();
-                    $userId = $this->identity->getUserId() ?: null;
-                    $userAsId = $this->identity->getUserAsId() ?: null;
-                    
-                    $log = json_encode([
-                        'type' => 'query',
-                        'sessionId' => $sessionId,
-                        'userId' => $userId,
-                        'userAsId' => $userAsId,
-                        'event' => [
-                            'type' => $event->getType(),
-                            'data' => $event->getData(),
-                        ],
-                        'meta' => [
-//                            'identity' => $this->identity->getIdentity(),
-                            'sqlStatement' => $connection->getSQLStatement(),
-                            'sqlVariables' => $connection->getSQLVariables(),
-                        ],
-                    ]);
-                    
-                    $this->logger->info($log);
-                    
-                    // reactivate logger
-                    $this->inProgress = false;
-                }
+            if ($this->config->path('loggers.database.enable')) {
+                $sessionId = $this->identity->getSession()?->getId();
+                $userId = $this->identity->getUserId() ?: null;
+                $userAsId = $this->identity->getUserAsId() ?: null;
+                
+                $log = json_encode([
+                    'type' => 'query',
+                    'sessionId' => $sessionId,
+                    'userId' => $userId,
+                    'userAsId' => $userAsId,
+                    'event' => [
+                        'type' => $event->getType(),
+                        'data' => $event->getData(),
+                    ],
+                    'meta' => [
+                        'sqlStatement' => $connection->getSQLStatement(),
+                        'sqlVariables' => $connection->getSQLVariables(),
+                    ],
+                ]);
+                
+                $this->loggers->get('database')->info($log);
             }
         }
     }

@@ -47,7 +47,8 @@ use Phalcon\Di\DiInterface;
  * @property \Zemit\Locale $locale
  * @property \Zemit\Support\Utils $utils
  * @property \Zemit\Profiler $profiler
- * @property \Zemit\Logger $logger
+ * @property \Phalcon\Logger\Logger $logger
+ * @property \Zemit\Logger\Loggers $loggers
  * @property \Zemit\Jwt $jwt
  * @property \Zemit\OpenAi $openAi
  * @property \Zemit\LoremIpsum $loremIpsum

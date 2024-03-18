@@ -66,7 +66,7 @@ class Config extends \Zemit\Config\Config
 {
     public function defineConst(): void
     {
-        defined('ROOT_PATH') || define('ROOT_PATH', Env::get('ROOT_PATH', getcwd()));
+        defined('ROOT_PATH') || define('ROOT_PATH', Env::get('ROOT_PATH', getcwd() . '/'));
         defined('VENDOR_PATH') || define('VENDOR_PATH', Env::get('ROOT_PATH', 'vendor/'));
         defined('CORE_PATH') || define('CORE_PATH', Env::get('CORE_PATH', mb_substr(__DIR__, 0, mb_strlen(basename(__DIR__)) * -1)));
         defined('APP_PATH') || define('APP_PATH', Env::get('APP_PATH'));
@@ -431,6 +431,7 @@ class Config extends \Zemit\Config\Config
                 
                 // Profiling & Logging
                 Provider\Profiler\ServiceProvider::class => Env::get('PROVIDER_PROFILER', Provider\Profiler\ServiceProvider::class),
+                Provider\Loggers\ServiceProvider::class => Env::get('PROVIDER_LOGGERS', Provider\Loggers\ServiceProvider::class),
                 Provider\Logger\ServiceProvider::class => Env::get('PROVIDER_LOGGER', Provider\Logger\ServiceProvider::class),
                 
                 // Caching
@@ -478,33 +479,109 @@ class Config extends \Zemit\Config\Config
              * Logger Configuration
              */
             'logger' => [
-                'enable' => Env::get('LOGGER_ENABLE', false),
+                'enable' => Env::get('LOGGER_ENABLE', Env::get('LOGGER', false)),
                 
-                'error' => Env::get('LOGGER_ERROR', false),
-                'database' => Env::get('LOGGER_DATABASE', false),
-                'dispatcher' => Env::get('LOGGER_DISPATCHER', false),
-                'profiler' => Env::get('LOGGER_PROFILER', false),
-                'mailer' => Env::get('LOGGER_MAILER', false),
-                'cron' => Env::get('LOGGER_CRON', false),
-                'auth' => Env::get('LOGGER_AUTH', false),
-                
-                'driver' => explode(',', Env::get('LOGGER_DRIVER', 'noop')),
                 'drivers' => [
-                    'noop' => [
-                        'adapter' => \Phalcon\Logger\Adapter\Noop::class,
-                    ],
-                    'stream' => [
-                        'adapter' => \Phalcon\Logger\Adapter\Stream::class,
-                    ],
-                    'syslog' => [
-                        'adapter' => \Phalcon\Logger\Adapter\Syslog::class,
-                    ],
+                    'noop' => Env::get('LOGGER_DRIVER_NOOP', \Phalcon\Logger\Adapter\Noop::class),
+                    'stream' => Env::get('LOGGER_DRIVER_STREAM', \Phalcon\Logger\Adapter\Stream::class),
+                    'syslog' => Env::get('LOGGER_DRIVER_SYSLOG', \Phalcon\Logger\Adapter\Syslog::class),
+                ],
+                'formatters' => [
+                    'json' => Env::get('LOGGER_FORMATTER_JSON', \Phalcon\Logger\Formatter\Json::class),
+                    'line' => Env::get('LOGGER_FORMATTER_LINE', \Phalcon\Logger\Formatter\Line::class),
                 ],
                 'default' => [
-                    'path' => Env::get('LOGGER_PATH', STORAGE_PATH . '/log/'),
+                    'driver' => Env::get('LOGGER_DRIVER', 'stream'),
+                    'formatter' => Env::get('LOGGER_FORMATTER', 'line'),
                     'format' => Env::get('LOGGER_FORMAT', '[%date%][%type%] %message%'),
                     'date' => Env::get('LOGGER_DATE', 'Y-m-d H:i:s'),
-                    'filename' => Env::get('LOGGER_DEFAULT_FILENAME', 'zemit'),
+                    'path' => Env::get('LOGGER_PATH', STORAGE_PATH . '/log/'),
+                    'filename' => Env::get('LOGGER_FILENAME', 'default'),
+                ],
+            ],
+            
+            /**
+             * Loggers Configuration
+             */
+            'loggers' => [
+                'error' => [
+                    'enable' => Env::get('LOGGER_ERROR_ENABLE', Env::get('LOGGER_ERROR', false)),
+                    'driver' => Env::get('LOGGER_ERROR_DRIVER', Env::get('LOGGER_DRIVER', 'stream')),
+                    'formatter' => Env::get('LOGGER_ERROR_FORMATTER', Env::get('LOGGER_FORMATTER', 'line')),
+                    'format' => Env::get('LOGGER_ERROR_FORMAT', Env::get('LOGGER_FORMAT', '[%date%][%type%] %message%')),
+                    'date' => Env::get('LOGGER_ERROR_DATE', Env::get('LOGGER_DATE', 'Y-m-d H:i:s')),
+                    'path' => Env::get('LOGGER_ERROR_PATH', Env::get('LOGGER_PATH', STORAGE_PATH . '/log/')),
+                    'filename' => Env::get('LOGGER_ERROR_FILENAME', 'error.log'),
+                ],
+                
+                'database' => [
+                    'enable' => Env::get('LOGGER_DATABASE_ENABLE', Env::get('LOGGER_DATABASE', false)),
+                    'driver' => Env::get('LOGGER_DATABASE_DRIVER', Env::get('LOGGER_DRIVER', 'stream')),
+                    'formatter' => Env::get('LOGGER_DATABASE_FORMATTER', Env::get('LOGGER_FORMATTER', 'line')),
+                    'format' => Env::get('LOGGER_DATABASE_FORMAT', Env::get('LOGGER_FORMAT', '[%date%][%type%] %message%')),
+                    'date' => Env::get('LOGGER_DATABASE_DATE', Env::get('LOGGER_DATE', 'Y-m-d H:i:s')),
+                    'path' => Env::get('LOGGER_DATABASE_PATH', Env::get('LOGGER_PATH', STORAGE_PATH . '/log/')),
+                    'filename' => Env::get('LOGGER_DATABASE_FILENAME', 'database.log'),
+                ],
+                
+                'request' => [
+                    'enable' => Env::get('LOGGER_REQUEST_ENABLE', Env::get('LOGGER_REQUEST', false)),
+                    'driver' => Env::get('LOGGER_REQUEST_DRIVER', Env::get('LOGGER_DRIVER', 'stream')),
+                    'formatter' => Env::get('LOGGER_REQUEST_FORMATTER', Env::get('LOGGER_FORMATTER', 'line')),
+                    'format' => Env::get('LOGGER_REQUEST_FORMAT', Env::get('LOGGER_FORMAT', '[%date%][%type%] %message%')),
+                    'date' => Env::get('LOGGER_REQUEST_DATE', Env::get('LOGGER_DATE', 'Y-m-d H:i:s')),
+                    'path' => Env::get('LOGGER_REQUEST_PATH', Env::get('LOGGER_PATH', STORAGE_PATH . '/log/')),
+                    'filename' => Env::get('LOGGER_REQUEST_FILENAME', 'request.log'),
+                ],
+                
+                'dispatcher' => [
+                    'enable' => Env::get('LOGGER_DISPATCHER_ENABLE', Env::get('LOGGER_DISPATCHER', false)),
+                    'driver' => Env::get('LOGGER_DISPATCHER_DRIVER', Env::get('LOGGER_DRIVER', 'stream')),
+                    'formatter' => Env::get('LOGGER_DISPATCHER_FORMATTER', Env::get('LOGGER_FORMATTER', 'line')),
+                    'format' => Env::get('LOGGER_DISPATCHER_FORMAT', Env::get('LOGGER_FORMAT', '[%date%][%type%] %message%')),
+                    'date' => Env::get('LOGGER_DISPATCHER_DATE', Env::get('LOGGER_DATE', 'Y-m-d H:i:s')),
+                    'path' => Env::get('LOGGER_DISPATCHER_PATH', Env::get('LOGGER_PATH', STORAGE_PATH . '/log/')),
+                    'filename' => Env::get('LOGGER_DISPATCHER_FILENAME', 'dispatcher.log'),
+                ],
+                
+                'profiler' => [
+                    'enable' => Env::get('LOGGER_PROFILER_ENABLE', Env::get('LOGGER_PROFILER', false)),
+                    'driver' => Env::get('LOGGER_PROFILER_DRIVER', Env::get('LOGGER_DRIVER', 'stream')),
+                    'formatter' => Env::get('LOGGER_PROFILER_FORMATTER', Env::get('LOGGER_FORMATTER', 'line')),
+                    'format' => Env::get('LOGGER_PROFILER_FORMAT', Env::get('LOGGER_FORMAT', '[%date%][%type%] %message%')),
+                    'date' => Env::get('LOGGER_PROFILER_DATE', Env::get('LOGGER_DATE', 'Y-m-d H:i:s')),
+                    'path' => Env::get('LOGGER_PROFILER_PATH', Env::get('LOGGER_PATH', STORAGE_PATH . '/log/')),
+                    'filename' => Env::get('LOGGER_PROFILER_FILENAME', 'profiler.log'),
+                ],
+                
+                'mailer' => [
+                    'enable' => Env::get('LOGGER_MAILER_ENABLE', Env::get('LOGGER_MAILER', false)),
+                    'driver' => Env::get('LOGGER_MAILER_DRIVER', Env::get('LOGGER_DRIVER', 'stream')),
+                    'formatter' => Env::get('LOGGER_MAILER_FORMATTER', Env::get('LOGGER_FORMATTER', 'line')),
+                    'format' => Env::get('LOGGER_MAILER_FORMAT', Env::get('LOGGER_FORMAT', '[%date%][%type%] %message%')),
+                    'date' => Env::get('LOGGER_MAILER_DATE', Env::get('LOGGER_DATE', 'Y-m-d H:i:s')),
+                    'path' => Env::get('LOGGER_MAILER_PATH', Env::get('LOGGER_PATH', STORAGE_PATH . '/log/')),
+                    'filename' => Env::get('LOGGER_MAILER_FILENAME', 'mailer.log'),
+                ],
+                
+                'cron' => [
+                    'enable' => Env::get('LOGGER_CRON_ENABLE', Env::get('LOGGER_CRON', false)),
+                    'driver' => Env::get('LOGGER_CRON_DRIVER', Env::get('LOGGER_DRIVER', 'stream')),
+                    'formatter' => Env::get('LOGGER_CRON_FORMATTER', Env::get('LOGGER_FORMATTER', 'line')),
+                    'format' => Env::get('LOGGER_CRON_FORMAT', Env::get('LOGGER_FORMAT', '[%date%][%type%] %message%')),
+                    'date' => Env::get('LOGGER_CRON_DATE', Env::get('LOGGER_DATE', 'Y-m-d H:i:s')),
+                    'path' => Env::get('LOGGER_CRON_PATH', Env::get('LOGGER_PATH', STORAGE_PATH . '/log/')),
+                    'filename' => Env::get('LOGGER_CRON_FILENAME', 'cron.log'),
+                ],
+                
+                'auth' => [
+                    'enable' => Env::get('LOGGER_AUTH_ENABLE', Env::get('LOGGER_AUTH', false)),
+                    'driver' => Env::get('LOGGER_AUTH_DRIVER', Env::get('LOGGER_DRIVER', 'stream')),
+                    'formatter' => Env::get('LOGGER_AUTH_FORMATTER', Env::get('LOGGER_FORMATTER', 'line')),
+                    'format' => Env::get('LOGGER_AUTH_FORMAT', Env::get('LOGGER_FORMAT', '[%date%][%type%] %message%')),
+                    'date' => Env::get('LOGGER_AUTH_DATE', Env::get('LOGGER_DATE', 'Y-m-d H:i:s')),
+                    'path' => Env::get('LOGGER_AUTH_PATH', Env::get('LOGGER_PATH', STORAGE_PATH . '/log/')),
+                    'filename' => Env::get('LOGGER_AUTH_FILENAME', 'auth.log'),
                 ],
             ],
             

@@ -46,6 +46,7 @@ namespace Zemit\Di;
  * @property \Zemit\Support\HelperFactory $helper
  * @property \Zemit\Bootstrap\Config $config
  * @property \Phalcon\Logger\Logger $logger
+ * @property \Zemit\Logger\Loggers $loggers
  * @property \Zemit\Db\Profiler $profiler
  * @property \Zemit\Bootstrap $bootstrap
  * @property \Zemit\Provider\Jwt\Jwt $jwt

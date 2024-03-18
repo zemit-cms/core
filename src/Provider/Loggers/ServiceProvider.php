@@ -9,28 +9,28 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Provider\Logger;
+namespace Zemit\Provider\Loggers;
 
 use Phalcon\Di\DiInterface;
-use Phalcon\Logger\LoggerInterface;
+use Zemit\Config\ConfigInterface;
 use Zemit\Logger\Loggers;
 use Zemit\Provider\AbstractServiceProvider;
 
 class ServiceProvider extends AbstractServiceProvider
 {
-    protected string $serviceName = 'logger';
+    protected string $serviceName = 'loggers';
     
     public function register(DiInterface $di): void
     {
         $di->setShared($this->getName(), function () use ($di) {
             
-            $loggers = $di->get('loggers');
-            assert($loggers instanceof Loggers);
+            $config = $di->get('config');
+            assert($config instanceof ConfigInterface);
             
-            $logger = $loggers->get('default');
-            assert($logger instanceof LoggerInterface);
+            $options = $config->pathToArray('logger') ?? [];
+            $options['loggers'] = $config->pathToArray('loggers') ?? [];
             
-            return $logger;
+            return new Loggers($options);
         });
     }
 }
