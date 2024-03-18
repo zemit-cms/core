@@ -109,14 +109,14 @@ if (!function_exists('mb_vsprintf')) {
      * @author Viktor Söderqvist <viktor@textalk.se>
      * @link http://php.net/manual/en/function.sprintf.php#89020
      */
-    function mb_vsprintf($format, $argv, $encoding = null)
+    function mb_vsprintf(string $format, $argv, $encoding = null)
     {
         if (is_null($encoding)) {
             $encoding = mb_internal_encoding();
         }
         
         // Use UTF-8 in the format so we can use the u flag in preg_split
-        $format = mb_convert_encoding($format, 'UTF-8', $encoding);
+        $format = strval(mb_convert_encoding($format, 'UTF-8', $encoding));
         
         $newFormat = ''; // build a new format in UTF-8
         $newArgv = []; // unhandled args in unchanged encoding
@@ -153,7 +153,7 @@ if (!function_exists('mb_vsprintf')) {
             }
             else if ($type == 's') {
                 $arg = array_shift($argv);
-                $arg = mb_convert_encoding($arg, 'UTF-8', $encoding);
+                $arg = strval(mb_convert_encoding($arg, 'UTF-8', $encoding));
                 $padding_pre = '';
                 $padding_post = '';
                 
@@ -161,7 +161,7 @@ if (!function_exists('mb_vsprintf')) {
                 if ($precision !== '') {
                     $precision = intval(substr($precision, 1));
                     if ($precision > 0 && mb_strlen($arg, $encoding) > $precision) {
-                        $arg = mb_substr((string)$precision, 0, $precision, $encoding);
+                        $arg = mb_substr(strval($precision), 0, $precision, $encoding);
                     }
                 }
                 
@@ -192,7 +192,7 @@ if (!function_exists('mb_vsprintf')) {
             $format = strval($post);
         }
         // Convert new format back from UTF-8 to the original encoding
-        $newFormat = mb_convert_encoding($newFormat, $encoding, 'UTF-8');
+        $newFormat = strval(mb_convert_encoding($newFormat, $encoding, 'UTF-8'));
         return vsprintf($newFormat, $newArgv);
     }
 }
