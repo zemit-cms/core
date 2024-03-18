@@ -15,6 +15,8 @@ namespace Unit\Di;
 
 use Phalcon\Di\DiInterface;
 use Phalcon\Di\InjectionAwareInterface;
+use Phalcon\Flash\Session;
+use Zemit\Bootstrap;
 use Zemit\Di\InjectableTrait;
 use Zemit\Tests\Unit\AbstractUnit;
 
@@ -28,7 +30,6 @@ class InjectableTraitTest extends AbstractUnit
         $this->injectable = new class extends \stdClass implements InjectionAwareInterface {
             use InjectableTrait;
         };
-        $this->injectable->setDI($this->di);
     }
     
     public function testInjectableTrait(): void
@@ -43,5 +44,20 @@ class InjectableTraitTest extends AbstractUnit
         
         $this->assertTrue(isset($this->injectable->di));
         $this->assertFalse(isset($this->injectable->nonExistingProperty));
+        
+        // bootstrap should be defined
+        $this->assertInstanceOf(Bootstrap::class, $this->injectable->bootstrap);
+        
+        // unset sessionBag and persistent should trigger an exception
+        $this->expectException(\Phalcon\Di\Exception::class);
+        $this->assertNull($this->injectable->persistent);
+        
+        // unset unknown should trigger an exception
+        $this->expectException(\Phalcon\Di\Exception::class);
+        $this->assertNull($this->injectable->nonExistingProperty);
+        
+        // persistent should return sessionBag
+        $this->di->set('sessionBag', new Session());
+        $this->assertInstanceOf(Session::class, $this->injectable->persistent);
     }
 }
