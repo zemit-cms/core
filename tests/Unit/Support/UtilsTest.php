@@ -18,8 +18,9 @@ use Zemit\Support\Utils;
 use Zemit\Tests\Unit\AbstractUnit;
 
 /**
- * Class ProviderTest
- * @package Tests\Unit
+ * Class UtilsTest
+ *
+ * This class contains unit tests for the Utils class.
  */
 class UtilsTest extends AbstractUnit
 {

@@ -25,8 +25,12 @@ class ModelsTest extends AbstractUnit
         $this->models = new Models();
     }
     
-    public function testModelsMap(): void
+    public function testInstances(): void
     {
+        // no instance should be loaded
+        $this->assertEquals([], $this->models->getInstances());
+        
+        // load all instances
         $instances = [
             \Zemit\Models\Backup::class => $this->models->getBackup(),
             \Zemit\Models\Audit::class => $this->models->getAudit(),
@@ -67,8 +71,18 @@ class ModelsTest extends AbstractUnit
             \Zemit\Models\Feature::class => $this->models->getFeature(),
         ];
         
+        // check instance types
         foreach ($instances as $expected => $actual) {
             $this->assertInstanceOf($expected, $actual);
+            $this->assertInstanceOf($expected, $this->models->getInstance($expected));
         }
+        
+        // all instances should be loaded
+        $this->assertSame($instances, $this->models->getInstances());
+        
+        // test unset instance
+        $this->models->unsetInstance(\Zemit\Models\Backup::class);
+        unset($instances[\Zemit\Models\Backup::class]);
+        $this->assertSame($instances, $this->models->getInstances());
     }
 }
