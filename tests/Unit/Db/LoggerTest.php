@@ -44,7 +44,7 @@ class LoggerTest extends AbstractUnit
         $this->getConfig()->set('loggers.database.enable', false);
         
         // remove existing logs
-        unlink($filePath);
+        $this->assertTrue(!file_exists($filePath) || unlink($filePath));
         $this->assertFalse(file_exists($filePath));
         
         // make a query
@@ -66,5 +66,9 @@ class LoggerTest extends AbstractUnit
         // add this to check if log file contains the query
         $logContent = file_get_contents($filePath);
         $this->assertTrue(str_contains($logContent, $query));
+        
+        // remove logs
+        $this->assertTrue(unlink($filePath));
+        $this->assertFalse(file_exists($filePath));
     }
 }
