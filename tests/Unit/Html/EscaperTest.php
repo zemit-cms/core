@@ -37,11 +37,31 @@ class EscaperTest extends AbstractUnit
      * Test the JSON method on the Escaper class when providing null as input.
      * The method should return 'null' when null is passed as input.
      */
-    public function testJsonWithNull(): void
+    public function testJsonWithNullString(): void
     {
         $result = $this->escaper->json(json_encode(null));
-        
         $this->assertSame('null', $result);
+    }
+    
+    /**
+     * Test the JSON method on the Escaper class when providing null as input.
+     * The method should return 'null' when null is passed as input.
+     * @todo check if we should return nothing instead
+     */
+    public function testJsonWithNullType(): void
+    {
+        $result = $this->escaper->json(null);
+        $this->assertSame('null', $result);
+    }
+    
+    /**
+     * Test the JSON method on the Escaper class when providing an empty string as input.
+     * The method should return the URL-encoded version of an empty JSON string ('""').
+     */
+    public function testJsonWithEmptyString(): void
+    {
+        $result = $this->escaper->json('');
+        $this->assertSame(rawurlencode('""'), $result);
     }
     
     /**
