@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Unit\Encryption;
 
+use Phalcon\Encryption\Security;
 use Zemit\Tests\Unit\AbstractUnit;
 
 class SecurityTest extends AbstractUnit
@@ -28,6 +29,28 @@ class SecurityTest extends AbstractUnit
     {
         $this->assertInstanceOf(\Zemit\Encryption\Security::class, $this->security);
         $this->assertInstanceOf(\Phalcon\Encryption\Security::class, $this->security);
+    }
+    
+    public function testArgonDefaultHash(): void
+    {
+        $this->assertEquals(\Phalcon\Encryption\Security::CRYPT_ARGON2ID, $this->security->getDefaultHash());
+        
+        $options = $this->getConfig()->pathToArray('security.argon2');
+        $this->assertIsArray($options);
+        $this->assertArrayHasKey('memoryCost', $options);
+        $this->assertArrayHasKey('timeCost', $options);
+        $this->assertArrayHasKey('threads', $options);
+        
+        $this->assertTrue(password_verify('test', $this->security->hash('test')));
+        $this->assertTrue(password_verify('test', $this->security->hash('test', $options)));
+        $this->assertStringStartsWith('$argon2id$', $this->security->hash('test'));
+        $this->assertStringStartsWith('$argon2id$', $this->security->hash('test', $options));
+        
+        $this->security->setDefaultHash(\Phalcon\Encryption\Security::CRYPT_ARGON2I);
+        $this->assertTrue(password_verify('test', $this->security->hash('test')));
+        $this->assertTrue(password_verify('test', $this->security->hash('test', $options)));
+        $this->assertStringStartsWith('$argon2i$', $this->security->hash('test'));
+        $this->assertStringStartsWith('$argon2i$', $this->security->hash('test', $options));
     }
     
     /**
