@@ -69,13 +69,7 @@ class InjectableTraitTest extends AbstractUnit
     
     public function testThrowNonExistingProperty(): void
     {
-        set_error_handler(
-            static function ( $errno, $errstr ) {
-                restore_error_handler();
-                throw new \Exception( $errstr, $errno );
-            },
-            E_ALL
-        );
+        $this->setErrorHandler();
         $this->expectException(\Exception::class);
         $this->expectExceptionMessageMatches('/Access to undefined property/');
         $this->assertNull($this->injectable->__get('nonExistingProperty'));
@@ -84,17 +78,11 @@ class InjectableTraitTest extends AbstractUnit
     
     public function testThrowNonExistingPropertyStrict(): void
     {
-        set_error_handler(
-            static function ( $errno, $errstr ) {
-                restore_error_handler();
-                throw new \Exception( $errstr, $errno );
-            },
-            E_ALL
-        );
         $strictInjectable = new class implements InjectionAwareInterface {
             use InjectableTrait;
         };
         $strictInjectable->setDI(new Di());
+        $this->setErrorHandler();
         $this->expectException(\Exception::class);
         $this->expectExceptionMessageMatches('/Access to undefined property/');
         $this->assertNull($strictInjectable->__get('nonExistingProperty'));

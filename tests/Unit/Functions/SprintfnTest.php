@@ -48,13 +48,15 @@ class SprintfnTest extends AbstractUnit
         $this->assertEquals('Name: Alice', sprintfn($format, $args));
     }
     
-    // @todo
-//    public function testSprintfnMissingArguments(): void
-//    {
-//        $format = 'Name: %name$s, Age: %age$d';
-//        $args = ['name' => 'Alice']; // Missing 'age'
-//        $this->assertFalse(sprintfn($format, $args));
-//    }
+    public function testSprintfnMissingArguments(): void
+    {
+        $format = 'Name: %name$s, Age: %age$d';
+        $args = ['name' => 'Alice']; // Missing 'age'
+        
+        $this->setErrorHandler();
+        $this->expectException(\Exception::class);
+        $this->assertFalse(sprintfn($format, $args));
+    }
     
     public function testSprintfnMixedArguments(): void
     {
@@ -70,7 +72,7 @@ class SprintfnTest extends AbstractUnit
         $this->assertEquals('Data: $pecial@Character!', sprintfn($format, $args));
     }
     
-    // @todo
+    // @todo maybe support nested arguments or fail
 //    public function testSprintfnNestedNamedArguments(): void
 //    {
 //        $format = 'Outer: %outer$s, Inner: %outer.inner$s';
@@ -96,5 +98,15 @@ class SprintfnTest extends AbstractUnit
         $format = 'Name: %-10s | Age: %04d | Salary: %.2f';
         $args = ['name' => 'Alice', 'age' => 30, 'salary' => 12345.678];
         $this->assertEquals('Name: Alice      | Age: 0030 | Salary: 12345.68', sprintfn($format, $args));
+    }
+    
+    public function testSprintfnMissingArgument(): void
+    {
+        $format = 'Name: %name$s, Age: %age$d';
+        $args = ['name' => 'Alice']; // 'age' argument is missing
+        
+        $this->setErrorHandler();
+        $this->expectException(\Exception::class);
+        $this->assertFalse(sprintfn($format, $args));
     }
 }
