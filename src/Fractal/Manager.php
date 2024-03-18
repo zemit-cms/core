@@ -11,7 +11,9 @@
 
 namespace Zemit\Fractal;
 
+/**
+ * The Manager class extends the League\Fractal\Manager class and provides additional functionality.
+ */
 class Manager extends \League\Fractal\Manager
 {
-
 }

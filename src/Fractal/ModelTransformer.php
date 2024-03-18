@@ -16,6 +16,9 @@ use Phalcon\Di\InjectionAwareInterface;
 use Zemit\Di\InjectableTrait;
 use Phalcon\Mvc\Model;
 
+/**
+ * This class is responsible for transforming a Model object into an array representation.
+ */
 class ModelTransformer extends TransformerAbstract implements InjectionAwareInterface
 {
     use InjectableTrait;

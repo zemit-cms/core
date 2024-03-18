@@ -15,6 +15,10 @@ use League\Fractal\TransformerAbstract;
 use Phalcon\Di\InjectionAwareInterface;
 use Zemit\Di\InjectableTrait;
 
+/**
+ * This class extends the TransformerAbstract class and implements the InjectionAwareInterface.
+ * It also uses the InjectableTrait.
+ */
 class Transformer extends TransformerAbstract implements InjectionAwareInterface
 {
     use InjectableTrait;

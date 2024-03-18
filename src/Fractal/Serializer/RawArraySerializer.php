@@ -13,6 +13,13 @@ namespace Zemit\Fractal\Serializer;
 
 use League\Fractal\Serializer\ArraySerializer;
 
+/**
+ * Class RawArraySerializer
+ *
+ * This class is responsible for serializing data in the form of arrays.
+ * It extends the ArraySerializer class and provides methods for serializing
+ * collections, items, and null values.
+ */
 class RawArraySerializer extends ArraySerializer
 {
     /**
