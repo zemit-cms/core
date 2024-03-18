@@ -109,7 +109,7 @@ if (!function_exists('mb_vsprintf')) {
      * @author Viktor Söderqvist <viktor@textalk.se>
      * @link http://php.net/manual/en/function.sprintf.php#89020
      */
-    function mb_vsprintf(string $format, $argv, $encoding = null)
+    function mb_vsprintf(string $format, array $argv, ?string $encoding = null)
     {
         if (is_null($encoding)) {
             $encoding = mb_internal_encoding();
