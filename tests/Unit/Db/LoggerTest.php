@@ -12,12 +12,8 @@ declare(strict_types=1);
 
 namespace Unit\Db;
 
-use Phalcon\Db\Column;
 use Phalcon\Logger\AbstractLogger;
 use Phalcon\Logger\LoggerInterface;
-use Zemit\Bootstrap;
-use Zemit\Db\Adapter\Pdo\Mysql;
-use Zemit\Logger\Loggers;
 use Zemit\Tests\Unit\AbstractUnit;
 
 class LoggerTest extends AbstractUnit
