@@ -44,6 +44,7 @@ class FilterTest extends AbstractUnit
     
     public function testJson(): void
     {
+        $this->assertSame(null, $this->filter->sanitize(null, [Filter::FILTER_JSON]));
         for ($i = 0; $i < 20; $i++) {
             $json = json_encode(uniqid());
             $this->assertSame($json, $this->filter->sanitize($json, [Filter::FILTER_JSON]));
