@@ -13,6 +13,7 @@ namespace Zemit\Events;
 
 use Phalcon\Di\Di;
 use Phalcon\Events\ManagerInterface;
+use Zemit\Support\Helper;
 use Zemit\Support\Slug;
 
 /**
@@ -57,7 +58,17 @@ trait EventsAwareTrait
      */
     public static function getEventsPrefix(): ?string
     {
-        self::$eventsPrefix ??= Slug::generate(basename(str_replace('\\', '/', __CLASS__)));
+        self::$eventsPrefix ??= Helper::slugify(
+            Helper::uncamelize(
+                basename(
+                    str_replace(
+                        '\\',
+                        '/',
+                        __CLASS__
+                    )
+                )
+            )
+        );
         return self::$eventsPrefix;
     }
     
@@ -79,7 +90,7 @@ trait EventsAwareTrait
      * @param string $task The task to execute.
      * @param mixed|null $data The optional data to pass to the event.
      * @param bool $cancelable Whether the event is cancelable or not. Defaults to false.
-     * 
+     *
      * @return mixed
      */
     public function fire(string $task, mixed $data = null, bool $cancelable = false): mixed
