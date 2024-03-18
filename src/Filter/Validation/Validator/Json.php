@@ -46,7 +46,7 @@ class Json extends AbstractValidator implements ValidatorInterface
         $depth = $this->getOption('depth', 512);
         $flags = $this->getOption('flags', 0);
         
-        if (!json_validate($value, $depth, $flags)) {
+        if (!is_string($value) || !json_validate($value, $depth, $flags)) {
             
             $validation->appendMessage(
                 $this->messageFactory($validation, $field)
