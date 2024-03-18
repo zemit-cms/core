@@ -11,20 +11,48 @@
 
 namespace Zemit\Filter;
 
-use Phalcon\Config\ConfigInterface;
-use Phalcon\Di\Di;
 use Zemit\Filter\Sanitize\IPv4;
 use Zemit\Filter\Sanitize\IPv6;
 use Zemit\Filter\Sanitize\Json;
 use Zemit\Filter\Sanitize\Md5;
 
 /**
- * {@inheritDoc}
+ *  Lazy loads, stores and exposes sanitizer objects
+ *
+ * @method absint(mixed $input): int
+ * @method alnum(mixed $input): string
+ * @method alpha(mixed $input): string
+ * @method bool(mixed $input): bool
+ * @method email(string $input): string
+ * @method float(mixed $input): float
+ * @method int(string $input): int
+ * @method lower(string $input): string
+ * @method lowerfirst(string $input): string
+ * @method regex(mixed $input, mixed $pattern, mixed $replace): mixed
+ * @method remove(mixed $input, mixed $replace): mixed
+ * @method replace(mixed $input, mixed $source, mixed $target): mixed
+ * @method special(string $input): string
+ * @method specialfull(string $input): string
+ * @method string(string $input): string
+ * @method stringlegacy(mixed $input): string
+ * @method striptags(string $input): string
+ * @method trim(string $input): string
+ * @method upper(string $input): string
+ * @method upperFirst(string $input): string
+ * @method upperWords(string $input): string|null
+ * @method url(string $input): string|null
+ *
+ * @property array $mapper
+ * @property array $services
+ *
+ * // new methods
+ * @method md5(string $input): string
+ * @method json(string $input): string
+ * @method ipv4(string $input): string
+ * @method ipv6(string $input): string
  */
 class Filter extends \Phalcon\Filter\Filter
 {
-    public ConfigInterface $config;
-    
     public const FILTER_MD5 = 'md5';
     
     public const FILTER_JSON = 'json';
@@ -33,43 +61,13 @@ class Filter extends \Phalcon\Filter\Filter
     
     public const FILTER_IPV6 = 'ipv6';
     
-    /**
-     * Key value pairs with name as the key and a callable as the value for
-     * the service object
-     *
-     * @param array $mapper
-     * @param ConfigInterface|null $config
-     */
-    public function __construct(array $mapper = [], ?ConfigInterface $config = null)
-    {
-        parent::__construct($mapper);
-        $this->setConfig($config ?? Di::getDefault()->get('config'));
-    }
-    
     protected function init(array $mapper): void
     {
         parent::init($mapper);
-    
+        
         $this->set(self::FILTER_MD5, Md5::class);
         $this->set(self::FILTER_JSON, Json::class);
         $this->set(self::FILTER_IPV4, IPv4::class);
         $this->set(self::FILTER_IPV6, IPv6::class);
-        
-        // Adding App Filters defined from the user config
-        $config = $this->getConfig();
-        $configFilters = $config->get('filters')->toArray() ?? [];
-        foreach ($configFilters as $key => $filter) {
-            $this->set($key, $filter);
-        }
-    }
-    
-    public function getConfig(): ConfigInterface
-    {
-        return $this->config;
-    }
-    
-    public function setConfig(ConfigInterface $config): void
-    {
-        $this->config = $config;
     }
 }
