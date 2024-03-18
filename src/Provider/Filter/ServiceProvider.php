@@ -12,6 +12,7 @@
 namespace Zemit\Provider\Filter;
 
 use Phalcon\Di\DiInterface;
+use Zemit\Filter\Filter;
 use Zemit\Filter\FilterFactory;
 use Zemit\Config\ConfigInterface;
 use Zemit\Provider\AbstractServiceProvider;
@@ -25,6 +26,7 @@ class ServiceProvider extends AbstractServiceProvider
         $di->set($this->getName(), function () use ($di) {
 
             $locator = (new FilterFactory())->newInstance();
+            assert($locator instanceof Filter);
             
             $config = $di->get('config');
             assert($config instanceof ConfigInterface);
