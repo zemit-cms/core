@@ -11,6 +11,8 @@
 
 namespace Zemit\Support;
 
+use Phalcon\Di\Di;
+
 /**
  * Class Helper
  *
@@ -79,23 +81,40 @@ namespace Zemit\Support;
  * @method static string flattenKeys(array $collection = [], string $delimiter = '.', bool $lowerKey = true)
  * @method static string slugify(string $string, array $replace = [], string $delimiter = '-')
  */
-class Helper extends \Phalcon\Di\Injectable
+class Helper
 {
-    public function getHelper(): HelperFactory
+    /**
+     * @var HelperFactory
+     */
+    public static HelperFactory $helperFactory;
+    
+    /**
+     * Returns the instance of the HelperFactory class.
+     *
+     * This method is responsible for providing the HelperFactory instance.
+     * If the instance is already set, it returns the existing instance.
+     * If the instance is not set, it tries to retrieve it from the dependency injection container.
+     * If the instance is not found in the container, it creates a new instance of HelperFactory.
+     *
+     * @return HelperFactory The instance of the HelperFactory class.
+     */
+    public static function getHelperFactory(): HelperFactory
     {
-        if ($this->container) {
-            $helper = $this->getDI()->get('helper');
-            
-            if ($helper) {
-                return $helper;
-            }
-        }
-        
-        return new HelperFactory();
+        return self::$helperFactory ??= Di::getDefault()?->get('helper') ?? new HelperFactory();
     }
     
+    /**
+     * Magic method __callStatic
+     *
+     * This method is a magic method that allows calling static methods dynamically.
+     *
+     * @param string $name The name of the static method to call.
+     * @param array $arguments Arguments to pass to the static method.
+     * 
+     * @return mixed The result of the static method call.
+     */
     public static function __callStatic(string $name, array $arguments): mixed
     {
-        return (new self())->getHelper()->$name(...$arguments);
+        return self::getHelperFactory()->$name(...$arguments);
     }
 }
