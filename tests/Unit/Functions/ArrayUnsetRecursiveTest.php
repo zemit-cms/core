@@ -16,7 +16,7 @@ use Zemit\Tests\Unit\AbstractUnit;
 
 class ArrayUnsetRecursiveTest extends AbstractUnit
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
     }
     
