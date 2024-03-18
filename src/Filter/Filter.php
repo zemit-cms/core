@@ -20,10 +20,10 @@ use Zemit\Filter\Sanitize\Md5;
  * Filter class extends the \Phalcon\Filter\Filter class and provides additional methods for filtering data.
  * {@inheritdoc }
  * 
- * @method md5(string $input): string
- * @method json(string $input): string
- * @method ipv4(string $input): string
- * @method ipv6(string $input): string
+ * @method string md5(string $input)
+ * @method string json(string $input)
+ * @method string ipv4(string $input)
+ * @method string ipv6(string $input)
  */
 class Filter extends \Phalcon\Filter\Filter
 {
