@@ -17,8 +17,9 @@ use Zemit\Filter\Sanitize\Json;
 use Zemit\Filter\Sanitize\Md5;
 
 /**
- * {@inheritdoc}
- *
+ * Filter class extends the \Phalcon\Filter\Filter class and provides additional methods for filtering data.
+ * {@inheritdoc }
+ * 
  * @method md5(string $input): string
  * @method json(string $input): string
  * @method ipv4(string $input): string
