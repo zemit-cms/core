@@ -12,7 +12,6 @@
 namespace Zemit\Provider\Logger;
 
 use Phalcon\Di\DiInterface;
-use Phalcon\Logger\LoggerInterface;
 use Zemit\Logger\Loggers;
 use Zemit\Provider\AbstractServiceProvider;
 
@@ -27,10 +26,7 @@ class ServiceProvider extends AbstractServiceProvider
             $loggers = $di->get('loggers');
             assert($loggers instanceof Loggers);
             
-            $logger = $loggers->get('default');
-            assert($logger instanceof LoggerInterface);
-            
-            return $logger;
+            return $loggers->get('default');
         });
     }
 }
