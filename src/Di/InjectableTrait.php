@@ -57,7 +57,7 @@ trait InjectableTrait
 {
     public ?DiInterface $container;
     
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         $container = $this->getDI();
         
