@@ -11,13 +11,18 @@
 
 namespace Zemit\Support\Options;
 
-class Manager implements ManagerInterface
+class Manager implements ManagerInterface, OptionsInterface
 {
     use Options;
     
     public function get(string $key, mixed $default = null): mixed
     {
         return $this->getOption($key, $default);
+    }
+    
+    public function has(string $key): bool
+    {
+        return $this->hasOption($key);
     }
     
     public function set(string $key, mixed $value = null): void

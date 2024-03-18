@@ -118,6 +118,18 @@ trait Options
     }
     
     /**
+     * Checks if the option specified by the given key exists.
+     *
+     * @param string $key The key of the option.
+     *
+     * @return bool Returns true if the option exists, false otherwise.
+     */
+    public function hasOption(string $key): bool
+    {
+        return isset($this->options[$key]);
+    }
+    
+    /**
      * Remove an option by key
      *
      * Removes the option with the given key from the options array.
