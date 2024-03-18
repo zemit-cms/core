@@ -79,6 +79,7 @@ trait InjectableTrait
         }
         
         trigger_error('Access to undefined property `' . $name . '`');
+        return null;
     }
     
     public function __isset(string $name): bool
