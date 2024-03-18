@@ -51,7 +51,10 @@ class InjectableTraitTest extends AbstractUnit
         
         // bootstrap should be defined
         $this->assertInstanceOf(Bootstrap::class, $this->injectable->bootstrap);
-        
+    }
+    
+    public function testPersistentSessionBag(): void
+    {
         // persistent should return sessionBag
         $this->di->set('sessionBag', new Bag($this->di->get('session'), 'default'));
         $this->assertInstanceOf(BagInterface::class, $this->injectable->persistent);
@@ -66,17 +69,35 @@ class InjectableTraitTest extends AbstractUnit
     
     public function testThrowNonExistingProperty(): void
     {
-        // unset unknown should trigger an exception
-//        $this->expectException(Notice::class); // @todo ?
-        $this->assertNull(@$this->injectable->nonExistingProperty);
+        set_error_handler(
+            static function ( $errno, $errstr ) {
+                restore_error_handler();
+                throw new \Exception( $errstr, $errno );
+            },
+            E_ALL
+        );
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessageMatches('/Access to undefined property/');
+        $this->assertNull($this->injectable->__get('nonExistingProperty'));
+        $this->assertNull($this->injectable->nonExistingProperty);
     }
     
     public function testThrowNonExistingPropertyStrict(): void
     {
+        set_error_handler(
+            static function ( $errno, $errstr ) {
+                restore_error_handler();
+                throw new \Exception( $errstr, $errno );
+            },
+            E_ALL
+        );
         $strictInjectable = new class implements InjectionAwareInterface {
             use InjectableTrait;
         };
         $strictInjectable->setDI(new Di());
-        $this->assertNull(@$strictInjectable->__get('nonExistingProperty'));
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessageMatches('/Access to undefined property/');
+        $this->assertNull($strictInjectable->__get('nonExistingProperty'));
+        $this->assertNull($strictInjectable->nonExistingProperty);
     }
 }
