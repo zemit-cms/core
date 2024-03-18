@@ -186,4 +186,24 @@ class UtilsTest extends AbstractUnit
         $this->assertIsString($memoryUsage['realMemory']);
         $this->assertIsString($memoryUsage['realMemoryPeak']);
     }
+    
+    public function testGetShortName(): void
+    {
+        $shortName = Utils::getShortName($this);
+        $this->assertIsString($shortName);
+        $this->assertEquals('UtilsTest', $shortName);
+        
+        $shortName = Utils::getShortName(new Utils());
+        $this->assertEquals('Utils', $shortName);
+    }
+    
+    public function testGetName(): void
+    {
+        $name = Utils::getName($this);
+        $this->assertIsString($name);
+        $this->assertEquals('Unit\Support\UtilsTest', $name);
+        
+        $name = Utils::getName(new Utils());
+        $this->assertEquals('Zemit\Support\Utils', $name);
+    }
 }
