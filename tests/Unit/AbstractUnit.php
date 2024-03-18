@@ -79,4 +79,15 @@ abstract class AbstractUnit extends TestCase
         $this->loaded = false;
         parent::tearDown();
     }
+    
+    public function setErrorHandler(int $errorLevels = E_ALL): void
+    {
+        set_error_handler(
+            static function (int $code, string $message) {
+                restore_error_handler();
+                throw new \Exception($message, $code);
+            },
+            $errorLevels
+        );
+    }
 }
