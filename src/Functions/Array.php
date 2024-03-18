@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 if (!function_exists('array_unset_recursive')) {
     
     function array_unset_recursive(array &$array, array $keyList, bool $strict = true): int
@@ -18,9 +20,8 @@ if (!function_exists('array_unset_recursive')) {
             if (in_array($key, $keyList, $strict)) {
                 unset($array[$key]);
                 $removeCount++;
-            }
-            elseif (is_array($element)) {
-                array_unset_recursive($array[$key], $keyList, $strict);
+            } elseif (is_array($element)) {
+                $removeCount += array_unset_recursive($array[$key], $keyList, $strict);
             }
         }
         return $removeCount;
