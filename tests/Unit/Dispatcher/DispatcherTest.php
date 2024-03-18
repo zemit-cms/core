@@ -189,5 +189,21 @@ class DispatcherTest extends AbstractUnit
         $this->assertEquals('Action', $dispatcherArray['activeMethod']);
         $this->assertIsString($dispatcherArray['actionSuffix']);
         $this->assertEquals('Action', $dispatcherArray['actionSuffix']);
+        
+        $mvcArray = $this->mvcDispatcher->toArray();
+        $this->assertIsString($mvcArray['controller']);
+        $this->assertEquals('index', $mvcArray['controller']);
+        $this->assertIsString($mvcArray['previousNamespace']);
+        $this->assertEquals('', $mvcArray['previousNamespace']);
+        $this->assertIsString($mvcArray['previousController']);
+        $this->assertEquals('', $mvcArray['previousController']);
+        $this->assertIsString($mvcArray['previousAction']);
+        $this->assertEquals('', $mvcArray['previousAction']);
+        
+        $cliArray = $this->cliDispatcher->toArray();
+        $this->assertIsString($cliArray['task']);
+        $this->assertEquals('main', $cliArray['task']);
+        $this->assertIsString($cliArray['taskSuffix']);
+        $this->assertEquals('Task', $cliArray['taskSuffix']);
     }
 }
