@@ -62,33 +62,52 @@ class EventsAwareTraitTest extends AbstractUnit
     {
         $manager = new Manager();
         $data = ['data' => 'value'];
-        $bag = ['event' => null, 'subject' => null, 'data' => null];
-        $task = 'test';
+        $bag = [];
+        $task = 'testFire';
         
-        $manager->attach($this->events->getEventsPrefix() . ':' . $task, function ($event, $subject, $data) use (&$bag) {
+        $manager->attach($this->events->getEventsPrefix() . ':' . $task, function (EventInterface $event, $subject, $data) use (&$bag) {
             $bag = [
                 'event' => $event,
                 'subject' => $subject,
                 'data' => $data,
+                'afterCancel' => false,
             ];
-        });
+            return 'first-return';
+        }, 0);
         
-        $manager->attach($task, function ($event, $subject, $data) {
-            return false;
-        });
+        $manager->attach($this->events->getEventsPrefix() . ':' . $task, function (EventInterface $event) {
+            $event->stop();
+            return 'second-return';
+        }, 1);
         
-        $afterCancel = false;
-        $manager->attach($task, function ($event, $subject, $data) use (&$afterCancel) {
-            $afterCancel = true;
-        });
+        $manager->attach($this->events->getEventsPrefix() . ':' . $task, function () use (&$bag) {
+            $bag['afterCancel'] = true;
+            return 'third-return';
+        }, 2);
         
         $this->events->setEventsManager($manager);
-        $this->events->fire($task, $data, true);
+        $result = $this->events->fire($task, $data, true);
         
+        $this->assertEquals('second-return', $result); // @todo why only second is returned and not third even if we do not stop event?
         $this->assertInstanceOf(Event::class, $bag['event']);
         $this->assertInstanceOf(EventInterface::class, $bag['event']);
         $this->assertInstanceOf($this->events::class, $bag['subject']);
+        $this->assertEquals($data, $bag['event']->getData());
         $this->assertEquals($data, $bag['data']);
-        $this->assertFalse($afterCancel);
+        $this->assertFalse($bag['afterCancel']);
+    }
+    
+    public function testFireCancelException(): void
+    {
+        $task = 'testFireCancelException';
+        $manager = new Manager();
+        $manager->attach($this->events->getEventsPrefix() . ':' . $task, function ($event) {
+            $event->stop();
+            return 'first-return';
+        }, 1);
+        $this->events->setEventsManager($manager);
+        $this->expectException(\Phalcon\Events\Exception::class);
+        $this->expectExceptionMessageMatches('/Trying to cancel a non-cancelable event/');
+        $result = $this->events->fire($task, [], false);
     }
 }
