@@ -12,7 +12,6 @@
 namespace Zemit\Support;
 
 use Dotenv\Dotenv;
-use Phalcon\Di\DiInterface;
 
 /**
  * This class provides utilities for managing environment variables and loading .env files.
@@ -195,10 +194,17 @@ class Env
      * The type is then transformed into a camel case string and the first letter is capitalized.
      *
      * @return string The type of the instance.
+     * @throws \Exception
      */
     public static function getType(): string
     {
-        return ucfirst(Helper::camelize(strtolower(self::$type ?? 'mutable')));
+        return match (strtolower(self::$type)) {
+            'mutable' => 'Mutable',
+            'immutable' => 'Immutable',
+            'unsafe-mutable' => 'UnsafeMutable',
+            'unsafe-immutable' => 'UnsafeImmutable',
+            default => throw new \Exception('Unsupported Env::$type defined'),
+        };
     }
     
     /**
