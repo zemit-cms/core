@@ -1,0 +1,333 @@
+<?php
+/**
+ * This file is part of the Zemit Framework.
+ *
+ * (c) Zemit Team <contact@zemit.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
+namespace Zemit\Tests\Unit\Models;
+
+use Zemit\Models\Abstracts\Oauth2Abstract;
+use Zemit\Models\Abstracts\Interfaces\Oauth2AbstractInterface;
+use Zemit\Models\Oauth2;
+use Zemit\Models\Interfaces\Oauth2Interface;
+
+/**
+ * Class Oauth2Test
+ *
+ * This class contains unit tests for the User class.
+ */
+class Oauth2Test extends \Zemit\Tests\Unit\AbstractUnit
+{
+    public Oauth2Interface $oauth2;
+    
+    protected function setUp(): void
+    {
+        $this->oauth2 = new Oauth2();
+    }
+    
+    public function testInstanceOf(): void
+    {
+        // Model
+        $this->assertInstanceOf(Oauth2::class, $this->oauth2);
+        $this->assertInstanceOf(Oauth2Interface::class, $this->oauth2);
+    
+        // Abstract
+        $this->assertInstanceOf(Oauth2Abstract::class, $this->oauth2);
+        $this->assertInstanceOf(Oauth2AbstractInterface::class, $this->oauth2);
+        
+        // Zemit
+        $this->assertInstanceOf(\Zemit\Mvc\ModelInterface::class, $this->oauth2);
+        $this->assertInstanceOf(\Zemit\Mvc\Model::class, $this->oauth2);
+        
+        // Phalcon
+        $this->assertInstanceOf(\Phalcon\Mvc\ModelInterface::class, $this->oauth2);
+        $this->assertInstanceOf(\Phalcon\Mvc\Model::class, $this->oauth2);
+    }
+    
+    public function testGetId(): void
+    {
+        $this->assertEquals(null, $this->oauth2->getId());
+    }
+    
+    public function testSetId(): void
+    {
+        $value = uniqid();
+        $this->oauth2->setId($value);
+        $this->assertEquals($value, $this->oauth2->getId());
+    }
+
+    public function testGetUserId(): void
+    {
+        $this->assertEquals(null, $this->oauth2->getUserId());
+    }
+    
+    public function testSetUserId(): void
+    {
+        $value = uniqid();
+        $this->oauth2->setUserId($value);
+        $this->assertEquals($value, $this->oauth2->getUserId());
+    }
+
+    public function testGetProvider(): void
+    {
+        $this->assertEquals(null, $this->oauth2->getProvider());
+    }
+    
+    public function testSetProvider(): void
+    {
+        $value = uniqid();
+        $this->oauth2->setProvider($value);
+        $this->assertEquals($value, $this->oauth2->getProvider());
+    }
+
+    public function testGetProviderUuid(): void
+    {
+        $this->assertEquals(null, $this->oauth2->getProviderUuid());
+    }
+    
+    public function testSetProviderUuid(): void
+    {
+        $value = uniqid();
+        $this->oauth2->setProviderUuid($value);
+        $this->assertEquals($value, $this->oauth2->getProviderUuid());
+    }
+
+    public function testGetAccessToken(): void
+    {
+        $this->assertEquals(null, $this->oauth2->getAccessToken());
+    }
+    
+    public function testSetAccessToken(): void
+    {
+        $value = uniqid();
+        $this->oauth2->setAccessToken($value);
+        $this->assertEquals($value, $this->oauth2->getAccessToken());
+    }
+
+    public function testGetRefreshToken(): void
+    {
+        $this->assertEquals(null, $this->oauth2->getRefreshToken());
+    }
+    
+    public function testSetRefreshToken(): void
+    {
+        $value = uniqid();
+        $this->oauth2->setRefreshToken($value);
+        $this->assertEquals($value, $this->oauth2->getRefreshToken());
+    }
+
+    public function testGetEmail(): void
+    {
+        $this->assertEquals(null, $this->oauth2->getEmail());
+    }
+    
+    public function testSetEmail(): void
+    {
+        $value = uniqid();
+        $this->oauth2->setEmail($value);
+        $this->assertEquals($value, $this->oauth2->getEmail());
+    }
+
+    public function testGetName(): void
+    {
+        $this->assertEquals(null, $this->oauth2->getName());
+    }
+    
+    public function testSetName(): void
+    {
+        $value = uniqid();
+        $this->oauth2->setName($value);
+        $this->assertEquals($value, $this->oauth2->getName());
+    }
+
+    public function testGetFirstName(): void
+    {
+        $this->assertEquals(null, $this->oauth2->getFirstName());
+    }
+    
+    public function testSetFirstName(): void
+    {
+        $value = uniqid();
+        $this->oauth2->setFirstName($value);
+        $this->assertEquals($value, $this->oauth2->getFirstName());
+    }
+
+    public function testGetLastName(): void
+    {
+        $this->assertEquals(null, $this->oauth2->getLastName());
+    }
+    
+    public function testSetLastName(): void
+    {
+        $value = uniqid();
+        $this->oauth2->setLastName($value);
+        $this->assertEquals($value, $this->oauth2->getLastName());
+    }
+
+    public function testGetMeta(): void
+    {
+        $this->assertEquals(null, $this->oauth2->getMeta());
+    }
+    
+    public function testSetMeta(): void
+    {
+        $value = uniqid();
+        $this->oauth2->setMeta($value);
+        $this->assertEquals($value, $this->oauth2->getMeta());
+    }
+
+    public function testGetDeleted(): void
+    {
+        $this->assertEquals(null, $this->oauth2->getDeleted());
+    }
+    
+    public function testSetDeleted(): void
+    {
+        $value = uniqid();
+        $this->oauth2->setDeleted($value);
+        $this->assertEquals($value, $this->oauth2->getDeleted());
+    }
+
+    public function testGetCreatedAt(): void
+    {
+        $this->assertEquals(null, $this->oauth2->getCreatedAt());
+    }
+    
+    public function testSetCreatedAt(): void
+    {
+        $value = uniqid();
+        $this->oauth2->setCreatedAt($value);
+        $this->assertEquals($value, $this->oauth2->getCreatedAt());
+    }
+
+    public function testGetCreatedBy(): void
+    {
+        $this->assertEquals(null, $this->oauth2->getCreatedBy());
+    }
+    
+    public function testSetCreatedBy(): void
+    {
+        $value = uniqid();
+        $this->oauth2->setCreatedBy($value);
+        $this->assertEquals($value, $this->oauth2->getCreatedBy());
+    }
+
+    public function testGetCreatedAs(): void
+    {
+        $this->assertEquals(null, $this->oauth2->getCreatedAs());
+    }
+    
+    public function testSetCreatedAs(): void
+    {
+        $value = uniqid();
+        $this->oauth2->setCreatedAs($value);
+        $this->assertEquals($value, $this->oauth2->getCreatedAs());
+    }
+
+    public function testGetUpdatedAt(): void
+    {
+        $this->assertEquals(null, $this->oauth2->getUpdatedAt());
+    }
+    
+    public function testSetUpdatedAt(): void
+    {
+        $value = uniqid();
+        $this->oauth2->setUpdatedAt($value);
+        $this->assertEquals($value, $this->oauth2->getUpdatedAt());
+    }
+
+    public function testGetUpdatedBy(): void
+    {
+        $this->assertEquals(null, $this->oauth2->getUpdatedBy());
+    }
+    
+    public function testSetUpdatedBy(): void
+    {
+        $value = uniqid();
+        $this->oauth2->setUpdatedBy($value);
+        $this->assertEquals($value, $this->oauth2->getUpdatedBy());
+    }
+
+    public function testGetUpdatedAs(): void
+    {
+        $this->assertEquals(null, $this->oauth2->getUpdatedAs());
+    }
+    
+    public function testSetUpdatedAs(): void
+    {
+        $value = uniqid();
+        $this->oauth2->setUpdatedAs($value);
+        $this->assertEquals($value, $this->oauth2->getUpdatedAs());
+    }
+
+    public function testGetDeletedAt(): void
+    {
+        $this->assertEquals(null, $this->oauth2->getDeletedAt());
+    }
+    
+    public function testSetDeletedAt(): void
+    {
+        $value = uniqid();
+        $this->oauth2->setDeletedAt($value);
+        $this->assertEquals($value, $this->oauth2->getDeletedAt());
+    }
+
+    public function testGetDeletedAs(): void
+    {
+        $this->assertEquals(null, $this->oauth2->getDeletedAs());
+    }
+    
+    public function testSetDeletedAs(): void
+    {
+        $value = uniqid();
+        $this->oauth2->setDeletedAs($value);
+        $this->assertEquals($value, $this->oauth2->getDeletedAs());
+    }
+
+    public function testGetDeletedBy(): void
+    {
+        $this->assertEquals(null, $this->oauth2->getDeletedBy());
+    }
+    
+    public function testSetDeletedBy(): void
+    {
+        $value = uniqid();
+        $this->oauth2->setDeletedBy($value);
+        $this->assertEquals($value, $this->oauth2->getDeletedBy());
+    }
+
+    public function testGetRestoredAt(): void
+    {
+        $this->assertEquals(null, $this->oauth2->getRestoredAt());
+    }
+    
+    public function testSetRestoredAt(): void
+    {
+        $value = uniqid();
+        $this->oauth2->setRestoredAt($value);
+        $this->assertEquals($value, $this->oauth2->getRestoredAt());
+    }
+
+    public function testGetRestoredBy(): void
+    {
+        $this->assertEquals(null, $this->oauth2->getRestoredBy());
+    }
+    
+    public function testSetRestoredBy(): void
+    {
+        $value = uniqid();
+        $this->oauth2->setRestoredBy($value);
+        $this->assertEquals($value, $this->oauth2->getRestoredBy());
+    }
+    
+    public function testGetColumnMapShouldBeAnArray(): void
+    {
+        $this->assertIsArray($this->oauth2->getColumnMap());
+    }
+}
