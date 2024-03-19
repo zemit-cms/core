@@ -855,12 +855,13 @@ PHP;
     }
     
     /**
-     * Generates getter and setter methods for the given columns.
+     * Generates a string representation of getters and setters for a given array of columns.
      *
-     * @param array $columns The columns for which to generate getter and setter methods.
-     * @param bool $interface Determines whether to generate methods for a class or an interface.
+     * @param array $columns An array of columns.
+     * @param string $type (optional) The type of code to generate. Can be 'default', 'interface', or 'test'. Default is 'default'.
+     * @param string $property (optional) The name of the property to use in setter methods. Default is 'model'.
      *
-     * @return string The generated getter and setter methods as a string.
+     * @return string The string representation of the getters and setters.
      */
     public function getGetSetMethods(array $columns, string $type = 'default', string $property = 'model'): string
     {
