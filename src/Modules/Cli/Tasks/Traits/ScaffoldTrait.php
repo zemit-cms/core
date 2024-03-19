@@ -28,7 +28,11 @@ trait ScaffoldTrait
 {
     // Paths & directories
     protected ?string $namespace = null;
+    
     protected string $directory = './';
+    protected string $srcDirectory = 'src/';
+    protected string $testsDirectory = 'tests/';
+    
     protected string $enumsDirectory = 'Enums/';
     protected string $modelsDirectory = 'Models/';
     protected string $abstractsDirectory = 'Abstracts/';
@@ -239,38 +243,58 @@ PHP;
         return $this->absolutePathOr($path, $fullPath);
     }
     
+    public function getSrcDirectory(string $path = ''): string
+    {
+        $fullPath = $this->getDirectory($this->dispatcher->getParam('srcDir') ?? $this->srcDirectory) . $path;
+        return $this->absolutePathOr($path, $fullPath);
+    }
+    
+    // Tests Directory
+    public function getTestsDirectory(string $path = ''): string
+    {
+        $fullPath = $this->getDirectory($this->dispatcher->getParam('testsDir') ?? $this->testsDirectory) . $path;
+        return $this->absolutePathOr($path, $fullPath);
+    }
+    
     // Controllers Directory
     public function getControllersDirectory(string $path = ''): string
     {
-        $fullPath = $this->getDirectory($this->dispatcher->getParam('controllers-directory') ?? $this->controllersDirectory) . $path;
+        $fullPath = $this->getSrcDirectory($this->dispatcher->getParam('controllersDir') ?? $this->controllersDirectory) . $path;
         return $this->absolutePathOr($path, $fullPath);
     }
     
     // Models Directory
     public function getModelsDirectory(string $path = ''): string
     {
-        $fullPath = $this->getDirectory($this->dispatcher->getParam('models-directory') ?? $this->modelsDirectory) . $path;
+        $fullPath = $this->getSrcDirectory($this->dispatcher->getParam('modelsDir') ?? $this->modelsDirectory) . $path;
         return $this->absolutePathOr($path, $fullPath);
     }
     
     // Models Interfaces Directory
     public function getModelsInterfacesDirectory(string $path = ''): string
     {
-        $fullPath = $this->getModelsDirectory($this->dispatcher->getParam('interfaces-directory') ?? $this->interfacesDirectory) . $path;
+        $fullPath = $this->getModelsDirectory($this->dispatcher->getParam('interfacesDir') ?? $this->interfacesDirectory) . $path;
         return $this->absolutePathOr($path, $fullPath);
     }
     
     // Models Abstracts Directory
     public function getAbstractsDirectory(string $path = ''): string
     {
-        $fullPath = $this->getModelsDirectory($this->dispatcher->getParam('abstracts-directory') ?? $this->abstractsDirectory) . $path;
+        $fullPath = $this->getModelsDirectory($this->dispatcher->getParam('abstractsDir') ?? $this->abstractsDirectory) . $path;
         return $this->absolutePathOr($path, $fullPath);
     }
     
     // Models Abstracts Interfaces Directory
     public function getAbstractsInterfacesDirectory(string $path = ''): string
     {
-        $fullPath = $this->getAbstractsDirectory($this->dispatcher->getParam('interfaces-directory') ?? $this->interfacesDirectory) . $path;
+        $fullPath = $this->getAbstractsDirectory($this->dispatcher->getParam('interfaceDir') ?? $this->interfacesDirectory) . $path;
+        return $this->absolutePathOr($path, $fullPath);
+    }
+    
+    // Models Tests Directory
+    public function getModelsTestsDirectory(string $path = ''): string
+    {
+        $fullPath = $this->getTestsDirectory($this->dispatcher->getParam('modelsDir') ?? $this->modelsDirectory) . $path;
         return $this->absolutePathOr($path, $fullPath);
     }
     
@@ -288,7 +312,7 @@ PHP;
                     str_replace(
                         '/',
                         '\\',
-                        ltrim($path, isset($baseNamespace)? $this->getDirectory() : '')
+                        ltrim($path, isset($baseNamespace)? $this->getSrcDirectory() : '')
                     )
                 )
             );
@@ -329,5 +353,11 @@ PHP;
     public function getAbstractsInterfacesNamespace(): string
     {
         return $this->getNamespaceFromPath($this->getAbstractsInterfacesDirectory());
+    }
+    
+    // Models Tests Namespace
+    public function getModelsTestsNamespace(): string
+    {
+        return $this->getNamespaceFromPath($this->getModelsTestsDirectory());
     }
 }

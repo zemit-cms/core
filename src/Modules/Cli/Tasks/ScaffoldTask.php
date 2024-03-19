@@ -30,8 +30,9 @@ Usage:
                               [--table=<table>] [--exclude=<exclude>] [--license=<license>]
                               [--controllers-dir=<controllers-dir>] [--controllers-dir=<controllers-dir>]
                               [--interfaces-dir=<interfaces-dir>] [--abstracts-dir=<abstracts-dir>]
-                              [--models-dir=<models-dir>] [--enums-dir=<enums-dir>] [--models-extend=<models-extend>]
-                              [--interfaces-extend=<interface-extend>] [--controllers-extend=<controllers-extend>]
+                              [--models-dir=<models-dir>] [--enums-dir=<enums-dir>] [--tests-dir=<tests-dir>]
+                              [--models-extend=<models-extend>] [--interfaces-extend=<interface-extend>]
+                              [--controllers-extend=<controllers-extend>] [--tests-extend=<tests-extend>]
                               [--no-controllers] [--no-interfaces] [--no-abstracts] [--no-models] [--no-enums]
                               [--no-strict-types] [--no-license] [--no-comments] [--no-get-set-methods]
                               [--no-validations] [--no-relationships] [--no-column-map] [--no-set-source]
@@ -56,16 +57,19 @@ Options:
   --abstracts-dir=<abstracts-dir>             Set your own abstract directory (Default: "Abstracts")
   --models-dir=<models-dir>                   Set your own models directory (Default: "Models")
   --enums-dir=<enums-dir>                     Set your own enums directory (Default: "Enums")
+  --tests-dir=<tests-dir>                     Set your own tests directory (Default: "Tests")
 
   --models-extend=<models-extend>             Extend models with this base class (Default: "\Zemit\Models\ModelAbstract")
   --interfaces-extend=<interface-extend>      Extend models interfaces with this base interface (Default: "\Zemit\Models\ModelInterface")
   --controllers-extend=<controllers-extends>  Extend controllers with this base class (Default: "Zemit\Mvc\Controller\Rest")
+  --tests-extend=<tests-extends>              Extend tests with this base class (Default: "Zemit\Tests\Unit\AbstractUnit")
 
   --no-controllers                            Do not generate controllers
   --no-interfaces                             Do not generate interfaces
   --no-abstracts                              Do not generate abstracts
   --no-models                                 Do not generate models
   --no-enums                                  Do not generate enums
+  --no-tests                                  Do not generate tests
 
   --no-strict-types                           Do not generate declare(strict_types=1);
   --no-license                                Do not generate license stamps
@@ -117,6 +121,10 @@ DOC;
         // models interfaces
         $definitions['modelInterface']['name'] = $definitions['model']['name'] . 'Interface';
         $definitions['modelInterface']['file'] = $definitions['modelInterface']['name'] . '.php';
+        
+        // models tests
+        $definitions['modelTest']['name'] = $definitions['model']['name'] . 'Test';
+        $definitions['modelTest']['file'] = $definitions['modelTest']['name'] . '.php';
         
         return $definitions;
     }
@@ -171,6 +179,13 @@ DOC;
                 $this->saveFile($savePath, $this->createModelInterfaceOutput($definitions), $force);
                 $ret [] = 'Model Interface `' . $definitions['modelInterface']['file'] . '` created';
             }
+            
+            // Model Test
+            $savePath = $this->getModelsTestsDirectory($definitions['modelTest']['file']);
+            if (!file_exists($savePath) || $force) {
+                $this->saveFile($savePath, $this->createModelTestOutput($definitions, $columns), $force);
+                $ret [] = 'Model Test `' . $definitions['modelTest']['file'] . '` created';
+            }
         }
         
         return $ret;
@@ -211,7 +226,7 @@ PHP;
      */
     public function createAbstractInterfaceOutput(array $definitions, array $columns, array $relationships): string
     {
-        $getSetInterfaceItems = $this->getGetSetMethods($columns, true);
+        $getSetInterfaceItems = $this->getGetSetMethods($columns, 'interface');
         return <<<PHP
 <?php
 {$this->getLicenseStamp()}
@@ -337,6 +352,65 @@ class {$definitions['model']['name']} extends {$definitions['abstract']['name']}
 }
 
 PHP;
+    }
+    
+    public function createModelTestOutput(array $definitions, array $columns): string
+    {
+        $property = lcfirst($definitions['model']['name']);
+        $getSetTestItems = $this->getGetSetMethods($columns, 'test', $property);
+        return <<<PHP
+<?php
+{$this->getLicenseStamp()}
+{$this->getStrictTypes()}
+namespace {$this->getModelsTestsNamespace()};
+
+use {$this->getAbstractsNamespace()}\\{$definitions['abstract']['name']};
+use {$this->getAbstractsInterfacesNamespace()}\\{$definitions['abstractInterface']['name']};
+use {$this->getModelsNamespace()}\\{$definitions['model']['name']};
+use {$this->getModelsInterfacesNamespace()}\\{$definitions['modelInterface']['name']};
+
+/**
+ * Class {$definitions['modelTest']['name']}
+ *
+ * This class contains unit tests for the User class.
+ */
+class {$definitions['modelTest']['name']} extends \Zemit\Tests\Unit\AbstractUnit
+{
+    public {$definitions['modelInterface']['name']} \${$property};
+    
+    protected function setUp(): void
+    {
+        \$this->{$property} = new {$definitions['model']['name']}();
+    }
+    
+    public function testInstanceOf(): void
+    {
+        // Model
+        \$this->assertInstanceOf({$definitions['model']['name']}::class, \$this->{$property});
+        \$this->assertInstanceOf({$definitions['modelInterface']['name']}::class, \$this->{$property});
+    
+        // Abstract
+        \$this->assertInstanceOf({$definitions['abstract']['name']}::class, \$this->{$property});
+        \$this->assertInstanceOf({$definitions['abstractInterface']['name']}::class, \$this->{$property});
+        
+        // Zemit
+        \$this->assertInstanceOf(\Zemit\Mvc\ModelInterface::class, \$this->{$property});
+        \$this->assertInstanceOf(\Zemit\Mvc\Model::class, \$this->{$property});
+        
+        // Phalcon
+        \$this->assertInstanceOf(\Phalcon\Mvc\ModelInterface::class, \$this->{$property});
+        \$this->assertInstanceOf(\Phalcon\Mvc\Model::class, \$this->{$property});
+    }
+    
+    {$getSetTestItems}
+    
+    public function testGetColumnMapShouldBeAnArray(): void
+    {
+        \$this->assertIsArray(\$this->{$property}->getColumnMap());
+    }
+}
+PHP;
+
     }
     
     public function getModelClassComments(array $definitions): string
@@ -788,7 +862,7 @@ PHP;
      *
      * @return string The generated getter and setter methods as a string.
      */
-    public function getGetSetMethods(array $columns, bool $interface = false): string
+    public function getGetSetMethods(array $columns, string $type = 'default', string $property = 'model'): string
     {
         $propertyItems = [];
         foreach ($columns as $column) {
@@ -797,6 +871,10 @@ PHP;
             
             $getMethod = 'get' . ucfirst($definition['name']);
             $setMethod = 'set' . ucfirst($definition['name']);
+            
+            $testGetMethod = 'test' . ucfirst($getMethod);
+            $testSetMethod = 'test' . ucfirst($setMethod);
+            $defaultValue = $definition['defaultValue'] ?: 'null';
             
             $getMethodComments = $this->getSetMethodComment($column, $definition, true);
             $setMethodComments = $this->getSetMethodComment($column, $definition, false);
@@ -810,7 +888,7 @@ PHP;
             }
             
             // For Model
-            if (!$interface) {
+            if ($type === 'default') {
                 $propertyItems[] = <<<PHP
     {$getMethodComments}
     public function {$getMethod}(){$propertyType}
@@ -826,12 +904,30 @@ PHP;
             }
             
             // For Interface
-            else {
+            if ($type === 'interface') {
                 $propertyItems[] = <<<PHP
     {$getMethodComments}
     public function {$getMethod}(){$propertyType};
     {$setMethodComments}
     public function {$setMethod}({$definition['param']}){$voidType};
+PHP;
+            }
+            
+            // For Tests
+            if ($type === 'test') {
+                $propertyItems[] = <<<PHP
+
+    public function {$testGetMethod}(){$voidType}
+    {
+        \$this->assertEquals({$defaultValue}, \$this->{$property}->{$getMethod}());
+    }
+    
+    public function {$testSetMethod}(){$voidType}
+    {
+        \$value = uniqid();
+        \$this->{$property}->{$setMethod}(\$value);
+        \$this->assertEquals(\$value, \$this->{$property}->{$getMethod}());
+    }
 PHP;
             }
         }
