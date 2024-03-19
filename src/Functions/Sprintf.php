@@ -112,7 +112,7 @@ if (!function_exists('mb_vsprintf')) {
     function mb_vsprintf(string $format, array $argv, ?string $encoding = null)
     {
         if (is_null($encoding)) {
-            $encoding = mb_internal_encoding();
+            $encoding = strval(mb_internal_encoding());
         }
         
         // Use UTF-8 in the format so we can use the u flag in preg_split
