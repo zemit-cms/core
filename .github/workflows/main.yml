@@ -1,0 +1,57 @@
+# This file is part of the Zemit Framework.
+#
+# (c) Zemit Team <contact@zemit.com>
+#
+# For the full copyright and license information, please view the LICENSE.txt
+# file that was distributed with this source code.
+
+name: Zemit CI
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # Daily at 02:00 runs only on default branch
+  push:
+    paths-ignore:
+      - '**.md'
+      - '**.txt'
+  pull_request:
+  workflow_dispatch:
+
+env:
+  # All versions should be declared here
+  PHALCON_VERSION: 5.6.2
+
+  # For tests
+  LANG: en_US.UTF-8
+  LANGUAGE: en_US.UTF-8
+  LC_ALL: en_US.UTF-8
+
+  # PHP extensions required by Composer
+  EXTENSIONS: apcu, gettext, gd, igbinary, imagick, intl, json, mbstring, msgpack, memcached, sqlite3, yaml, redis, :memcache, openssl, phalcon5
+
+permissions: {}
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: ${{ env.EXTENSIONS }}
+          tools: composer, cs2pr
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Run Code Sniffer
+        run: ./vendor/bin/phpcs
+        
+      - name: Run PHPStan
+        run: ./vendor/bin/phpstan
+
+      - name: Run tests
+        run: ./vendor/bin/phpunit
