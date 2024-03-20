@@ -409,8 +409,8 @@ class {$definitions['modelTest']['name']} extends \Zemit\Tests\Unit\AbstractUnit
         \$this->assertIsArray(\$this->{$property}->getColumnMap());
     }
 }
-PHP;
 
+PHP;
     }
     
     public function getModelClassComments(array $definitions): string
