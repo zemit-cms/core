@@ -39,7 +39,7 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-          MYSQL_ROOT_PASSWORD: zemit_core
+          MYSQL_DATABASE: zemit_core
         ports:
           - 3306:3306
         options: >-
@@ -62,6 +62,18 @@ jobs:
           php-version: '8.2'
           extensions: ${{ env.EXTENSIONS }}
           tools: composer, cs2pr
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
 
       - name: Composer Install
         run: composer install --prefer-dist --no-progress --no-suggest
