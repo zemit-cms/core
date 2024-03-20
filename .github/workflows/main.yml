@@ -29,10 +29,29 @@ env:
   # PHP extensions required by Composer
   EXTENSIONS: apcu, gettext, gd, igbinary, imagick, intl, json, mbstring, msgpack, memcached, sqlite3, yaml, redis, :memcache, openssl, phalcon5
 
-permissions: {}
+permissions: { }
 jobs:
   build:
     runs-on: ubuntu-latest
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+          MYSQL_ROOT_PASSWORD: zemit_core
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+      
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
     
     steps:
       - uses: actions/checkout@v2
@@ -44,14 +63,33 @@ jobs:
           extensions: ${{ env.EXTENSIONS }}
           tools: composer, cs2pr
 
-      - name: Install Composer dependencies
+      - name: Composer Install
         run: composer install --prefer-dist --no-progress --no-suggest
 
-      - name: Run Code Sniffer
-        run: ./vendor/bin/phpcs
-        
-      - name: Run PHPStan
+      - name: Install additional Composer packages
+        run: |
+          composer require --dev phalcon/ide-stubs:5.6.2
+          composer require --dev phpunit/phpunit
+          composer require --dev squizlabs/php_codesniffer
+          composer require --dev phpstan/phpstan
+          
+      - name: Set permissions and environment
+        run: |
+          chmod +x ./bin/* ./vendor/bin/* ./zemit
+          mkdir .phalcon
+          touch .env
+          cp .env.github .env
+          
+      - name: Run migrations
+        run: |
+          ./bin/migration-list.sh
+          ./bin/migration-run.sh
+
+      - name: PHP Code Sniffer
+        run: vendor/bin/phpcs -q --report=checkstyle | cs2pr --graceful-warnings
+
+      - name: PHP Stan
         run: ./vendor/bin/phpstan
 
-      - name: Run tests
+      - name: PHP Unit
         run: ./vendor/bin/phpunit
