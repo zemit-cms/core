@@ -55,6 +55,15 @@ jobs:
     
     steps:
       - uses: actions/checkout@v2
+        
+      - name: Generate Locale
+        run: |
+          sudo locale-gen en_IN.UTF-8
+          sudo update-locale LANG=en_IN.UTF-8
+          sudo locale-gen en_CA.UTF-8
+          sudo update-locale LANG=en_CA.UTF-8
+          sudo locale-gen fr_CA.UTF-8
+          sudo update-locale LANG=fr_CA.UTF-8
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
