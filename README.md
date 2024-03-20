@@ -1,4 +1,5 @@
 # Zemit Core
+[![Zemit CI](https://github.com/zemit-cms/core/actions/workflows/main.yml/badge.svg)](https://github.com/zemit-cms/core/actions/workflows/main.yml)
 [![Build Status](https://scrutinizer-ci.com/g/zemit-cms/core/badges/build.png?b=master)](https://scrutinizer-ci.com/g/zemit-cms/core/build-status/master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/zemit-cms/core/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/zemit-cms/core/?branch=master)
 [![Code Intelligence Status](https://scrutinizer-ci.com/g/zemit-cms/core/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
