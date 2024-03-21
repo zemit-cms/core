@@ -18,8 +18,6 @@ on:
   workflow_dispatch:
 
 env:
-  MYSQL_VERSION: '8.0'
-  REDIS_VERSION: 'latest'
   # PHP extensions required by Composer
   EXTENSIONS: apcu, gettext, gd, igbinary, imagick, intl, json, mbstring, msgpack, memcached, sqlite3, yaml, redis, :memcache, openssl, phalcon5
 
@@ -156,7 +154,7 @@ jobs:
         
     services:
       mysql:
-        image: mysql:${{ env.MYSQL_VERSION }}
+        image: mysql:8.0
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
           MYSQL_DATABASE: zemit_core
@@ -169,7 +167,7 @@ jobs:
           --health-retries=3
 
       redis:
-        image: redis:${{ env.REDIS_VERSION }}
+        image: redis:latest
         ports:
           - 6379:6379
 
