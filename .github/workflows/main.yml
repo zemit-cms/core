@@ -18,18 +18,21 @@ on:
   workflow_dispatch:
 
 env:
-  PHP_VERSIONS: '["8.2"]'
+  MYSQL_VERSION: '8.0'
+  REDIS_VERSION: 'latest'
   # PHP extensions required by Composer
   EXTENSIONS: apcu, gettext, gd, igbinary, imagick, intl, json, mbstring, msgpack, memcached, sqlite3, yaml, redis, :memcache, openssl, phalcon5
 
 permissions: { }
 jobs:
+  
+  # PHP SETUP
   setup:
     runs-on: ubuntu-latest
     
     strategy:
       matrix:
-        php: ${{fromJson(env.PHP_VERSIONS)}}
+        php: ["8.2", "8.3"]
     
     outputs:
       cache-key: ${{ steps.composer-cache.outputs.key }}
@@ -46,13 +49,16 @@ jobs:
 
       - name: Get Composer Cache Directory
         id: composer-cache
-        run: echo "::set-output name=key::${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}"
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
       - name: Cache Composer dependencies
         uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ steps.composer-cache.outputs.key }}
+          key: ${{ runner.os }}-composer-${{ matrix.php }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ matrix.php }}-
+            ${{ runner.os }}-composer-
 
       - name: Composer Install
         run: composer install --prefer-dist --no-progress --no-suggest
@@ -64,6 +70,7 @@ jobs:
           composer require --dev squizlabs/php_codesniffer
           composer require --dev phpstan/phpstan
   
+  # PHP CODE SNIFFER
   code-sniffer:
     needs: setup
     
@@ -71,27 +78,37 @@ jobs:
     
     strategy:
       matrix:
-        php: ${{fromJson(env.PHP_VERSIONS)}}
+        php: [ "8.2", "8.3" ]
         
     steps:
       - uses: actions/checkout@v2
-        
+
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           extensions: ${{ env.EXTENSIONS }}
           tools: composer, cs2pr
+        
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
       - name: Cache Composer dependencies
         uses: actions/cache@v2
         with:
-          path: ${{ github.workspace }}/vendor
-          key: ${{ needs.setup.outputs.cache-key }}
+          path: |
+            ${{ steps.composer-cache.outputs.dir }}
+            vendor
+          key: ${{ runner.os }}-composer-${{ matrix.php }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ matrix.php }}-
+            ${{ runner.os }}-composer-
 
       - name: PHP Code Sniffer
         run: vendor/bin/phpcs -q --report=checkstyle | cs2pr --graceful-warnings
         
+  # PHP STATIC ANALYSIS
   static-analysis:
     needs: setup
     
@@ -99,7 +116,7 @@ jobs:
     
     strategy:
       matrix:
-        php: ${{fromJson(env.PHP_VERSIONS)}}
+        php: [ "8.2", "8.3" ]
         
     steps:
       - uses: actions/checkout@v2
@@ -111,25 +128,35 @@ jobs:
           extensions: ${{ env.EXTENSIONS }}
           tools: composer, cs2pr
 
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
       - name: Cache Composer dependencies
         uses: actions/cache@v2
         with:
-          path: ${{ github.workspace }}/vendor
-          key: ${{ needs.setup.outputs.cache-key }}
+          path: |
+            ${{ steps.composer-cache.outputs.dir }}
+            vendor
+          key: ${{ runner.os }}-composer-${{ matrix.php }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ matrix.php }}-
+            ${{ runner.os }}-composer-
 
       - name: PHP Stan
         run: ./vendor/bin/phpstan
   
+  # PHP UNIT TEST
   unit-tests:
     needs: setup
     
     strategy:
       matrix:
-        php: ${{fromJson(env.PHP_VERSIONS)}}
+        php: [ "8.2", "8.3" ]
         
     services:
       mysql:
-        image: mysql:8.0
+        image: mysql:${{ env.MYSQL_VERSION }}
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
           MYSQL_DATABASE: zemit_core
@@ -142,7 +169,7 @@ jobs:
           --health-retries=3
 
       redis:
-        image: redis
+        image: redis:${{ env.REDIS_VERSION }}
         ports:
           - 6379:6379
 
@@ -166,11 +193,20 @@ jobs:
           extensions: ${{ env.EXTENSIONS }}
           tools: composer, cs2pr
 
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
       - name: Cache Composer dependencies
         uses: actions/cache@v2
         with:
-          path: ${{ github.workspace }}/vendor
-          key: ${{ needs.setup.outputs.cache-key }}
+          path: |
+            ${{ steps.composer-cache.outputs.dir }}
+            vendor
+          key: ${{ runner.os }}-composer-${{ matrix.php }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ matrix.php }}-
+            ${{ runner.os }}-composer-
           
       - name: Set permissions and environment
         run: |
