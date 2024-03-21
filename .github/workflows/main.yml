@@ -52,7 +52,9 @@ jobs:
       - name: Cache Composer dependencies
         uses: actions/cache@v2
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
+          path: |
+            ${{ steps.composer-cache.outputs.dir }}
+            vendor
           key: ${{ runner.os }}-composer-${{ matrix.php }}-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-${{ matrix.php }}-
@@ -92,17 +94,6 @@ jobs:
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
-      - name: Cache Composer dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            ${{ steps.composer-cache.outputs.dir }}
-            vendor
-          key: ${{ runner.os }}-composer-${{ matrix.php }}-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-${{ matrix.php }}-
-            ${{ runner.os }}-composer-
-
       - name: PHP Code Sniffer
         run: vendor/bin/phpcs -q --report=checkstyle | cs2pr --graceful-warnings
         
@@ -129,17 +120,6 @@ jobs:
       - name: Get Composer Cache Directory
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache Composer dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            ${{ steps.composer-cache.outputs.dir }}
-            vendor
-          key: ${{ runner.os }}-composer-${{ matrix.php }}-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-${{ matrix.php }}-
-            ${{ runner.os }}-composer-
 
       - name: PHP Stan
         run: ./vendor/bin/phpstan
@@ -194,17 +174,6 @@ jobs:
       - name: Get Composer Cache Directory
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache Composer dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            ${{ steps.composer-cache.outputs.dir }}
-            vendor
-          key: ${{ runner.os }}-composer-${{ matrix.php }}-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-${{ matrix.php }}-
-            ${{ runner.os }}-composer-
           
       - name: Set permissions and environment
         run: |
