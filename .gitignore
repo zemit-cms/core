@@ -29,3 +29,7 @@ phpunit-clover.xml
 
 # PHPCS
 .php-cs-fixer.cache
+
+# PSALM
+results.sarif
+taints.dot
