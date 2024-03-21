@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+  ~ This file is part of the Zemit Framework.
+  ~
+  ~ (c) Zemit Team <contact@zemit.com>
+  ~
+  ~ For the full copyright and license information, please view the LICENSE.txt
+  ~ file that was distributed with this source code.
+  -->
+
+<psalm
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://getpsalm.org/schema/config"
+        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+        xmlns:xi="http://www.w3.org/2001/XInclude"
+        errorLevel="3"
+        resolveFromConfigFile="true"
+        hideExternalErrors="false"
+        totallyTyped="false">
+
+    <projectFiles>
+        <directory name="src"/>
+        <ignoreFiles>
+            <directory name="vendor"/>
+        </ignoreFiles>
+    </projectFiles>
+
+    <issueHandlers>
+        <!-- You can customize how certain issues are reported -->
+    </issueHandlers>
+</psalm>
