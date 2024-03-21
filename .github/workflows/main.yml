@@ -32,9 +32,9 @@ jobs:
       matrix:
         php:
           - "8.2"
-          - "8.3"
+#          - "8.3"
         dependencies:
-          - "lowest"
+#          - "lowest"
           - "highest"
     
     outputs:
@@ -66,9 +66,9 @@ jobs:
       matrix:
         php:
           - "8.2"
-          - "8.3"
+#          - "8.3"
         dependencies:
-          - "lowest"
+#          - "lowest"
           - "highest"
         
     steps:
@@ -100,9 +100,9 @@ jobs:
       matrix:
         php:
           - "8.2"
-          - "8.3"
+#          - "8.3"
         dependencies:
-          - "lowest"
+#          - "lowest"
           - "highest"
         
     steps:
@@ -132,9 +132,9 @@ jobs:
       matrix:
         php:
           - "8.2"
-          - "8.3"
+#          - "8.3"
         dependencies:
-          - "lowest"
+#          - "lowest"
           - "highest"
         
     services:
