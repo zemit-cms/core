@@ -1,0 +1,35 @@
+# .github/dependabot.yml
+version: 2
+updates:
+  - package-ecosystem: "composer" # Targeting PHP Composer
+    directory: "/" # Assuming your composer.json is in the root directory
+    schedule:
+      interval: "daily" # Check for updates daily
+
+    # Limit the number of open pull requests to avoid overwhelming your repository
+    open-pull-requests-limit: 10
+
+    # Use labels to help organize pull requests created by Dependabot
+    labels:
+      - "dependencies"
+      - "php"
+
+    # Assign reviewers to pull requests for dependencies
+    # You can specify GitHub usernames, team names, or email addresses
+    reviewers:
+      - "jturbide" # Replace with actual GitHub usernames or team names
+
+    # Configure commit message options
+    commit-message:
+      prefix: "chore" # Prefix like "chore", "fix", "feat"
+      include: "scope" # Include the scope of the dependency in the commit message
+
+    # You can ignore certain dependencies, either permanently or specific versions
+    # ignore:
+    #   - dependency-name: "example-package"
+    #     versions: ["1.0.x", "1.x.x"]
+
+    # Allow only specific versions or dependency names
+    # allow:
+    #   - dependency-name: "other-package"
+    #     versions: ["2.3.x"]
