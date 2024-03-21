@@ -50,11 +50,11 @@ jobs:
           extensions: ${{ env.EXTENSIONS }}
           tools: composer, cs2pr
 
-      - uses: "ramsey/composer-install@v3"
+      - uses: ramsey/composer-install@v3
         with:
-          dependency-versions: "${{ matrix.dependencies }}"
-          composer-options: "${{ matrix.composer-options }}"
-          custom-cache-suffix: "zemit-composer"
+          dependency-versions: ${{ matrix.dependencies }}
+          composer-options: ${{ matrix.composer-options }}
+          custom-cache-suffix: zemit-composer
   
   # PHP CODE SNIFFER
   code-sniffer:
@@ -81,11 +81,11 @@ jobs:
           extensions: ${{ env.EXTENSIONS }}
           tools: composer, cs2pr
           
-      - uses: "ramsey/composer-install@v3"
+      - uses: ramsey/composer-install@v3
         with:
-          dependency-versions: "${{ matrix.dependencies }}"
-          composer-options: "${{ matrix.composer-options }}"
-          custom-cache-suffix: "zemit-composer"
+          dependency-versions: ${{ matrix.dependencies }}
+          composer-options: ${{ matrix.composer-options }}
+          custom-cache-suffix: zemit-composer
 
       - name: PHP Code Sniffer
         run: vendor/bin/phpcs -q --report=checkstyle | cs2pr --graceful-warnings
@@ -115,11 +115,11 @@ jobs:
           extensions: ${{ env.EXTENSIONS }}
           tools: composer, cs2pr
           
-      - uses: "ramsey/composer-install@v3"
+      - uses: ramsey/composer-install@v3
         with:
-          dependency-versions: "${{ matrix.dependencies }}"
-          composer-options: "${{ matrix.composer-options }}"
-          custom-cache-suffix: "zemit-composer"
+          dependency-versions: ${{ matrix.dependencies }}
+          composer-options: ${{ matrix.composer-options }}
+          custom-cache-suffix: zemit-composer
 
       - name: PHP Stan
         run: ./vendor/bin/phpstan
@@ -146,6 +146,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: ${{ env.EXTENSIONS }}
+          tools: composer, cs2pr
+
+      - uses: ramsey/composer-install@v3
+        with:
+          dependency-versions: ${{ matrix.dependencies }}
+          composer-options: ${{ matrix.composer-options }}
+          custom-cache-suffix: zemit-composer
 
       - name: Psalm Security Scan
         uses: docker://ghcr.io/psalm/psalm-security-scan
@@ -207,11 +220,11 @@ jobs:
           extensions: ${{ env.EXTENSIONS }}
           tools: composer, cs2pr
           
-      - uses: "ramsey/composer-install@v3"
+      - uses: ramsey/composer-install@v3
         with:
-          dependency-versions: "${{ matrix.dependencies }}"
-          composer-options: "${{ matrix.composer-options }}"
-          custom-cache-suffix: "zemit-composer"
+          dependency-versions: ${{ matrix.dependencies }}
+          composer-options: ${{ matrix.composer-options }}
+          custom-cache-suffix: zemit-composer
           
       - name: Set permissions and environment
         run: |
