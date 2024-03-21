@@ -30,7 +30,12 @@ jobs:
     
     strategy:
       matrix:
-        php: ["8.2", "8.3"]
+        php:
+          - "8.2"
+          - "8.3"
+        dependencies:
+          - "lowest"
+          - "highest"
     
     outputs:
       cache-key: ${{ steps.composer-cache.outputs.key }}
@@ -45,30 +50,11 @@ jobs:
           extensions: ${{ env.EXTENSIONS }}
           tools: composer, cs2pr
 
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache Composer dependencies
-        uses: actions/cache@v2
+      - uses: "ramsey/composer-install@v3"
         with:
-          path: |
-            ${{ steps.composer-cache.outputs.dir }}
-            vendor
-          key: ${{ runner.os }}-composer-${{ matrix.php }}-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-${{ matrix.php }}-
-            ${{ runner.os }}-composer-
-
-      - name: Composer Install
-        run: composer install --prefer-dist --no-progress --no-suggest
-        
-      - name: Install additional Composer packages
-        run: |
-          composer require --dev phalcon/ide-stubs:5.6.2
-          composer require --dev phpunit/phpunit
-          composer require --dev squizlabs/php_codesniffer
-          composer require --dev phpstan/phpstan
+          dependency-versions: "${{ matrix.dependencies }}"
+          composer-options: "${{ matrix.composer-options }}"
+          custom-cache-suffix: "zemit-composer"
   
   # PHP CODE SNIFFER
   code-sniffer:
@@ -78,7 +64,12 @@ jobs:
     
     strategy:
       matrix:
-        php: [ "8.2", "8.3" ]
+        php:
+          - "8.2"
+          - "8.3"
+        dependencies:
+          - "lowest"
+          - "highest"
         
     steps:
       - uses: actions/checkout@v2
@@ -89,6 +80,12 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: ${{ env.EXTENSIONS }}
           tools: composer, cs2pr
+          
+      - uses: "ramsey/composer-install@v3"
+        with:
+          dependency-versions: "${{ matrix.dependencies }}"
+          composer-options: "${{ matrix.composer-options }}"
+          custom-cache-suffix: "zemit-composer"
 
       - name: PHP Code Sniffer
         run: vendor/bin/phpcs -q --report=checkstyle | cs2pr --graceful-warnings
@@ -101,7 +98,12 @@ jobs:
     
     strategy:
       matrix:
-        php: [ "8.2", "8.3" ]
+        php:
+          - "8.2"
+          - "8.3"
+        dependencies:
+          - "lowest"
+          - "highest"
         
     steps:
       - uses: actions/checkout@v2
@@ -112,6 +114,12 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: ${{ env.EXTENSIONS }}
           tools: composer, cs2pr
+          
+      - uses: "ramsey/composer-install@v3"
+        with:
+          dependency-versions: "${{ matrix.dependencies }}"
+          composer-options: "${{ matrix.composer-options }}"
+          custom-cache-suffix: "zemit-composer"
 
       - name: PHP Stan
         run: ./vendor/bin/phpstan
@@ -122,7 +130,12 @@ jobs:
     
     strategy:
       matrix:
-        php: [ "8.2", "8.3" ]
+        php:
+          - "8.2"
+          - "8.3"
+        dependencies:
+          - "lowest"
+          - "highest"
         
     services:
       mysql:
@@ -162,6 +175,12 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: ${{ env.EXTENSIONS }}
           tools: composer, cs2pr
+          
+      - uses: "ramsey/composer-install@v3"
+        with:
+          dependency-versions: "${{ matrix.dependencies }}"
+          composer-options: "${{ matrix.composer-options }}"
+          custom-cache-suffix: "zemit-composer"
           
       - name: Set permissions and environment
         run: |
