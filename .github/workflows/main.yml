@@ -18,18 +18,115 @@ on:
   workflow_dispatch:
 
 env:
+  PHP_VERSIONS: '["8.2"]'
   # PHP extensions required by Composer
   EXTENSIONS: apcu, gettext, gd, igbinary, imagick, intl, json, mbstring, msgpack, memcached, sqlite3, yaml, redis, :memcache, openssl, phalcon5
 
 permissions: { }
 jobs:
-  build:
+  setup:
     runs-on: ubuntu-latest
     
     strategy:
       matrix:
-        php: [ '8.2', '8.3' ]
+        php: ${{fromJson(env.PHP_VERSIONS)}}
     
+    outputs:
+      cache-key: ${{ steps.composer-cache.outputs.key }}
+      
+    steps:
+      - uses: actions/checkout@v2
+        
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: ${{ env.EXTENSIONS }}
+          tools: composer, cs2pr
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=key::${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}"
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ steps.composer-cache.outputs.key }}
+
+      - name: Composer Install
+        run: composer install --prefer-dist --no-progress --no-suggest
+        
+      - name: Install additional Composer packages
+        run: |
+          composer require --dev phalcon/ide-stubs:5.6.2
+          composer require --dev phpunit/phpunit
+          composer require --dev squizlabs/php_codesniffer
+          composer require --dev phpstan/phpstan
+  
+  code-sniffer:
+    needs: setup
+    
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        php: ${{fromJson(env.PHP_VERSIONS)}}
+        
+    steps:
+      - uses: actions/checkout@v2
+        
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: ${{ env.EXTENSIONS }}
+          tools: composer, cs2pr
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ github.workspace }}/vendor
+          key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: PHP Code Sniffer
+        run: vendor/bin/phpcs -q --report=checkstyle | cs2pr --graceful-warnings
+        
+  static-analysis:
+    needs: setup
+    
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        php: ${{fromJson(env.PHP_VERSIONS)}}
+        
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: ${{ env.EXTENSIONS }}
+          tools: composer, cs2pr
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ github.workspace }}/vendor
+          key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: PHP Stan
+        run: ./vendor/bin/phpstan
+  
+  unit-tests:
+    needs: setup
+    
+    strategy:
+      matrix:
+        php: ${{fromJson(env.PHP_VERSIONS)}}
+        
     services:
       mysql:
         image: mysql:8.0
@@ -43,16 +140,17 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
-      
+
       redis:
         image: redis
         ports:
           - 6379:6379
-    
+
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        
-      - name: Generate Locale
+
+      - name: Prepare Locale
         run: |
           sudo locale-gen en_IN.UTF-8
           sudo update-locale LANG=en_IN.UTF-8
@@ -68,27 +166,11 @@ jobs:
           extensions: ${{ env.EXTENSIONS }}
           tools: composer, cs2pr
 
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
       - name: Cache Composer dependencies
         uses: actions/cache@v2
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
-
-      - name: Composer Install
-        run: composer install --prefer-dist --no-progress --no-suggest
-
-      - name: Install additional Composer packages
-        run: |
-          composer require --dev phalcon/ide-stubs:5.6.2
-          composer require --dev phpunit/phpunit
-          composer require --dev squizlabs/php_codesniffer
-          composer require --dev phpstan/phpstan
+          path: ${{ github.workspace }}/vendor
+          key: ${{ needs.setup.outputs.cache-key }}
           
       - name: Set permissions and environment
         run: |
@@ -101,12 +183,7 @@ jobs:
         run: |
           ./bin/migration-list.sh
           ./bin/migration-run.sh
-
-      - name: PHP Code Sniffer
-        run: vendor/bin/phpcs -q --report=checkstyle | cs2pr --graceful-warnings
-
-      - name: PHP Stan
-        run: ./vendor/bin/phpstan
-
+      
       - name: PHP Unit
         run: ./vendor/bin/phpunit
+        
