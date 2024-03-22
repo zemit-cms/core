@@ -13,8 +13,8 @@ namespace Zemit\Filter\Sanitize;
 
 class IPv4
 {
-    public function __invoke(?string $input = null): ?string
+    public function __invoke(?string $input = null): string
     {
-        return filter_var($input, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ?: null;
+        return filter_var($input, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ?: '';
     }
 }

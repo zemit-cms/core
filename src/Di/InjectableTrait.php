@@ -67,7 +67,7 @@ trait InjectableTrait
      */
     public function __isset(string $name): bool
     {
-        return $this->getDI()->has($name);
+        return isset($this->instanceContainer[$name]) || $this->getDI()->has($name);
     }
     
     /**
