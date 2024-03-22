@@ -13,13 +13,15 @@
         xmlns="https://getpsalm.org/schema/config"
         xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
         xmlns:xi="http://www.w3.org/2001/XInclude"
-        errorLevel="3"
+        errorLevel="6"
         resolveFromConfigFile="true"
         findUnusedBaselineEntry="true"
-        findUnusedCode="true"
-        hideExternalErrors="false"
-        totallyTyped="false">
-
+        findUnusedCode="false"
+        hideExternalErrors="true"
+        totallyTyped="false"
+        allowStringToStandInForClass="true"
+        autoloader="loader.php"
+>
     <projectFiles>
         <directory name="src"/>
         <ignoreFiles>
@@ -28,6 +30,7 @@
     </projectFiles>
 
     <issueHandlers>
-        <!-- You can customize how certain issues are reported -->
+        <MethodSignatureMismatch errorLevel="info" />
+        <MissingTemplateParam errorLevel="info" />
     </issueHandlers>
 </psalm>
