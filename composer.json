@@ -66,7 +66,6 @@
     "docopt/docopt": "^1.0",
     "league/flysystem": "^3.25",
     "league/fractal": "^0.20",
-    "phalcon/cphalcon": "^5.6",
     "phalcon/devtools": "~5.0",
     "phalcon/incubator-mailer": "^2.0",
     "vlucas/phpdotenv": "^5.6"
@@ -162,7 +161,28 @@
       "Zemit\\Tests\\Unit\\": "tests/Unit"
     }
   },
+  "archive": {
+    "exclude": [
+      "/.github",
+      "/.phalcon",
+      "/.phpunit.cache",
+      "/tests",
+      "CHANGELOG.md",
+      "codeception.yml",
+      "phpcs.xml",
+      "phpcs.xml.dist",
+      "phpstan.neon",
+      "phpstan.neon.dist",
+      "phpunit.xml",
+      "phpunit.xml.dist",
+      "psalm.xml",
+      "psalm.xml.dist"
+    ]
+  },
   "bin": [
     "zemit"
-  ]
+  ],
+  "scripts": {
+    "psalm": "vendor/bin/psalm --config=psalm.xml"
+  }
 }
