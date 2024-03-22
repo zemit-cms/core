@@ -121,7 +121,8 @@ DOC;
     
     public function setMode(?string $mode = null): void
     {
-        $this->mode = $mode ?? (Php::isCli()
+        $this->mode = $mode ?? (
+            Php::isCli()
             ? self::MODE_CLI
             : self::MODE_MVC
         );

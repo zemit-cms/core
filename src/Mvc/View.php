@@ -71,14 +71,14 @@ class View extends \Phalcon\Mvc\View
         if ($minify ?? $this->getMinify()) {
             
             // Clean comments
-            $content = preg_replace('/<!--([^\[|(<!)].*)/', '', $content);
-            $content = preg_replace('/(?<!\S)\/\/\s*[^\r\n]*/', '', $content);
+            $content = (string)preg_replace('/<!--([^\[|(<!)].*)/', '', $content);
+            $content = (string)preg_replace('/(?<!\S)\/\/\s*[^\r\n]*/', '', $content);
             
             // Clean Whitespace
-            $content = preg_replace('/\s{2,}/u', ' ', preg_replace('/\s{2,}/u', ' ', $content));
-            $content = preg_replace('/(\r?\n)/', '', $content);
+            $content = (string)preg_replace('/\s{2,}/u', ' ', preg_replace('/\s{2,}/u', ' ', $content));
+            $content = (string)preg_replace('/(\r?\n)/', '', $content);
         }
         
-        return $content ?? '';
+        return $content;
     }
 }

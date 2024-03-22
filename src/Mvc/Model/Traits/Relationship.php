@@ -729,6 +729,10 @@ trait Relationship
         $whiteList = $configuration['whiteList'] ?? null;
         $dataColumnMap = $configuration['dataColumnMap'] ?? null;
         
+        if (!isset($modelClass)) {
+            throw new \Exception('Parameter `modelClass` is mandatory');
+        }
+        
         $entity = false;
         
         if ($type === Relation::HAS_ONE || $type === Relation::BELONGS_TO) {

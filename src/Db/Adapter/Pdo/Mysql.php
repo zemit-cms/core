@@ -32,7 +32,7 @@ class Mysql extends \Phalcon\Db\Adapter\Pdo\Mysql
                 $newDefinition = [];
                 
                 // protected to public
-                $prefix = chr(0).'*'.chr(0);
+                $prefix = chr(0) . '*' . chr(0);
                 foreach ((array)$definition as $key => $value) {
                     $newDefinition[str_replace($prefix, '', $key)] = $value;
                 }
@@ -41,7 +41,10 @@ class Mysql extends \Phalcon\Db\Adapter\Pdo\Mysql
                 $newDefinition['type'] = Column::TYPE_VARBINARY;
                 unset($newDefinition['scale']);
                 
-                // reset definition
+                /**
+                 * reset definition
+                 * @psalm-suppress InvalidArgument
+                 */
                 $definitions[$definitionKey] = new Column($definition->getName(), $newDefinition);
             }
         }

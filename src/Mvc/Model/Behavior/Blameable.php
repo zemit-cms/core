@@ -139,7 +139,7 @@ class Blameable extends Behavior
             $model->appendMessage($message);
         }
         
-        self::$parentId = (!empty($model->hasDirtyRelated())) ? $audit->getId() : null;
+        self::$parentId = (!empty($model->getDirtyRelated())) ? $audit->getId() : null;
         return $save;
     }
     

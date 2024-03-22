@@ -61,9 +61,10 @@ trait ModelsMap
     abstract public function getDI(): DiInterface;
     
     /**
-     * @var ModelInterface[]|null $modelsMap Description of the variable $modelsMap
+     * Store the mapped model classes
+     * @var string[] $modelsMap
      */
-    public ?array $modelsMap = null;
+    public array $modelsMap = [];
     
     /**
      * Retrieve the config from DI
@@ -71,17 +72,6 @@ trait ModelsMap
     public function getConfig(): Config
     {
         return $this->getDI()->get('config');
-    }
-    
-    /**
-     * Get an array of mapped models
-     */
-    public function getModelsMap(): array
-    {
-        if (!isset($this->modelsMap)) {
-            $this->setModelsMap();
-        }
-        return $this->modelsMap ?? [];
     }
     
     /**
@@ -93,9 +83,17 @@ trait ModelsMap
     }
     
     /**
+     * Get an array of mapped models
+     */
+    public function getModelsMap(): array
+    {
+        return $this->modelsMap;
+    }
+    
+    /**
      * Map a new class
      */
-    public function setClassMap(string $map, ?string $class): void
+    public function setClassMap(string $map, string $class): void
     {
         $this->modelsMap[$map] = $class;
     }

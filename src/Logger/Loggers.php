@@ -27,11 +27,9 @@ class Loggers
     use Options;
     
     /**
+     * An array to store logger objects
+     * 
      * @var LoggerInterface[] $loggers
-     *
-     * This variable represents an array that stores logger objects.
-     * It is initialized as an empty array and will be populated with
-     * logger objects during the execution of the program.
      */
     public array $loggers = [];
     

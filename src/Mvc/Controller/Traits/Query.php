@@ -69,7 +69,7 @@ trait Query
      */
     public function initialize()
     {
-        $this->initializeCache();
+        $this->initializeCacheConfig();
         $this->initializeBind();
         $this->initializeBindTypes();
         $this->initializeConditions();
@@ -106,7 +106,7 @@ trait Query
             'joins' => $this->getJoins(),
             'group' => $this->getGroup(),
             'having' => $this->getHaving(),
-            'cache' => $this->getCache(),
+            'cache' => $this->getCacheConfig(),
         ]));
     }
     

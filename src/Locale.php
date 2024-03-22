@@ -17,6 +17,7 @@ use Zemit\Support\Options\OptionsInterface;
 
 /**
  * Allow to manage and lookup the locale for the localisation
+ * @property string|null $locale The current locale
  */
 class Locale extends Injectable implements OptionsInterface
 {
@@ -53,7 +54,7 @@ class Locale extends Injectable implements OptionsInterface
      * The actual locale that was picked
      * @var string|null
      */
-    public $locale = null;
+    public ?string $locale = null;
     
     /**
      * Session key for storing the locale
@@ -111,8 +112,12 @@ class Locale extends Injectable implements OptionsInterface
     }
     
     /**
-     * Get the locale directly from the variable
-     * without processing the defined mode
+     * Retrieves the locale value of the object.
+     *
+     * This method returns the value of the locale property, which represents the current locale of the object.
+     * The locale property is set using the setLocale() method or may be null if no locale is set.
+     *
+     * @return string|null The locale value of the object, or null if no locale is set.
      */
     public function getLocale(): ?string
     {
@@ -148,7 +153,7 @@ class Locale extends Injectable implements OptionsInterface
      */
     public function getAllowed(): array
     {
-        return $this->allowed ?? [];
+        return $this->allowed;
     }
     
     /**

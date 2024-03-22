@@ -28,8 +28,22 @@ trait Cache
     use AbstractInjectable;
     use AbstractParams;
     
-    public ?Collection $cache;
+    /**
+     * This variable holds the configuration settings for caching.
+     * @var Collection|null $cacheConfig
+     */
+    public ?Collection $cacheConfig;
+    
+    /**
+     * The cache key used for storing data in the cache.
+     * @var string|null
+     */
     public ?string $cacheKey;
+    
+    /**
+     * The lifetime of the cache data in seconds.
+     * @var int|null
+     */
     public ?int $cacheLifetime;
     
     /**
@@ -40,12 +54,12 @@ trait Cache
      * @return void
      * @throws Exception
      */
-    public function initializeCache(): void
+    public function initializeCacheConfig(): void
     {
         $this->initializeCacheKey();
         $this->initializeCacheLifetime();
         
-        $this->setCache(new Collection([
+        $this->setCacheConfig(new Collection([
             'lifetime' => $this->getCacheLifetime(),
             'key' => $this->getCacheKey()
         ]));
@@ -125,23 +139,23 @@ trait Cache
     }
     
     /**
-     * Set the cache collection for the query.
+     * Set the cache config collection for the query.
      *
-     * @param Collection|null $cache The cache collection, or null to disable.
+     * @param Collection|null $cacheConfig The cache config collection, or null to disable.
      * @return void
      */
-    public function setCache(?Collection $cache): void
+    public function setCacheConfig(?Collection $cacheConfig): void
     {
-        $this->cache = $cache;
+        $this->cacheConfig = $cacheConfig;
     }
     
     /**
      * Retrieves the cache collection for the query.
      *
-     * @return Collection|null The cache, or null if no cache is set.
+     * @return Collection|null The cache config collection, or null if no cache is set.
      */
-    public function getCache(): ?Collection
+    public function getCacheConfig(): ?Collection
     {
-        return $this->cache;
+        return $this->cacheConfig;
     }
 }

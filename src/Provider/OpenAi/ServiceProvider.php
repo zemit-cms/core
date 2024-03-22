@@ -18,7 +18,7 @@ use Zemit\Provider\AbstractServiceProvider;
 
 class ServiceProvider extends AbstractServiceProvider
 {
-    protected string $serviceName = 'openai';
+    protected string $serviceName = 'openAi';
     
     public function register(DiInterface $di): void
     {

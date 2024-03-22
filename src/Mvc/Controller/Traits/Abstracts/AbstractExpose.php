@@ -15,7 +15,7 @@ trait AbstractExpose
 {
     abstract public function expose(mixed $item, ?array $expose = null): array;
 
-    abstract public function listExpose(iterable $items, ?array $listExpose = null): array;
+    abstract public function listExpose(iterable $items, ?array $expose = null): array;
 
-    abstract public function exportExpose(iterable $items, ?array $exportExpose = null): array;
+    abstract public function exportExpose(iterable $items, ?array $expose = null): array;
 }

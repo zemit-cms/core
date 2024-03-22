@@ -30,7 +30,7 @@ abstract class AbstractServiceProvider extends Injectable implements ServiceProv
      */
     public function __construct(DiInterface $di)
     {
-        if (!$this->serviceName) {
+        if (empty($this->serviceName)) {
             throw new LogicException(sprintf('The service provider defined in "%s" cannot have an empty name.', get_class($this)));
         }
         $this->setDI($di);

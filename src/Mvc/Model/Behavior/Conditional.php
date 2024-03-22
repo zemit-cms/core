@@ -45,7 +45,8 @@ class Conditional extends Behavior
 
         $field = $this->getOption('field', $options, [$type, $model]);
         $condition = $this->getOption('condition', $options, [$type, $model, $field]);
-        if ($condition) {
+        
+        if (!empty($field) && is_string($field) && $condition === true) {
             $value = $this->getOption('value', $options, [$type, $model, $field]);
             $transformedValue = $this->getOption('transform', $options, [$type, $model, $field, $value]);
             $model->assign([$field => $transformedValue]);
@@ -61,7 +62,7 @@ class Conditional extends Behavior
      *
      * @return mixed|null
      */
-    public function getOption(string $key, array $options, array $params = null)
+    public function getOption(string $key, array $options, array $params = null): mixed
     {
         $ret = $options[$key] ?? null;
         if (is_callable($ret)) {

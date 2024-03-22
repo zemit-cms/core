@@ -56,7 +56,7 @@ class Identity extends Injectable implements OptionsInterface
     public function initialize(): void
     {
         $this->sessionKey = $this->getOption('sessionKey') ?? $this->sessionKey;
-        $this->modelsMap = $this->getOption('modelsMap') ?? $this->modelsMap;
+        $this->setModelsMap($this->getOption('modelsMap'));
     }
     
     /**
@@ -111,8 +111,7 @@ class Identity extends Injectable implements OptionsInterface
         foreach ($needles as $needle) {
             if (is_array($needle)) {
                 $result [] = $this->has($needle, $haystack, !$or);
-            }
-            else {
+            } else {
                 $result [] = in_array($needle, $haystack, true);
             }
         }

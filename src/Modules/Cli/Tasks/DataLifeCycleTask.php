@@ -63,10 +63,13 @@ DOC;
         $response = [];
         
         $parsedTables = [];
-        foreach ($tables as $key => $table) {
-            $parsedTables[$key] = array_map('trim', explode(',', $table));
+        foreach ($tables as $table) {
+            // Explode each table by comma, trim values, and merge into $parsedTables
+            $parsedTables = array_merge($parsedTables, array_map('trim', explode(',', $table)));
         }
-        $parsedTables = array_flip(array_merge_recursive(...$parsedTables));
+        
+        // Flip the array to swap keys and values
+        $parsedTables = array_flip($parsedTables);
         
         foreach ($this->models as $modelClass => $policyName) {
             

@@ -13,7 +13,6 @@ namespace Zemit\Modules\Cli;
 
 use Phalcon\Cli\Dispatcher;
 use Zemit\Exception\CliException;
-use Zemit\Http\StatusCode;
 use Zemit\Support\Helper;
 use Zemit\Support\Utils;
 
@@ -37,7 +36,6 @@ DOC;
         foreach ($response as $key => $value) {
             if (!is_null($value) && preg_match('/(<(.*?)>|\-\-(.*))/', $key, $match)) {
                 $key = lcfirst(Helper::camelize(Helper::uncamelize(array_pop($match))));
-                $args[$key] = $value;
                 $this->dispatcher->setParam($key, $value);
             }
         }
@@ -58,30 +56,18 @@ DOC;
     public function normalizeResponse(bool $response = true, ?int $code = null, ?string $status = null): array
     {
         $debug = $this->config->path('app.debug') ?? false;
-        
-        // keep forced status code or set our own
-        $statusCode = $this->response->getStatusCode();
-        $reasonPhrase = $this->response->getReasonPhrase();
-        $code ??= (int)$statusCode ?: 200;
-        $status ??= $reasonPhrase ?: StatusCode::getMessage($code);
-        
         $view = $this->view->getParamsToView();
-        $hash = hash('sha512', json_encode($view));
-        
-        // set response status code
-        $this->response->setStatusCode($code, $status);
         
         $ret = [];
         $ret['api'] = [];
         $ret['api']['version'] = ['0.1']; // @todo
         $ret['timestamp'] = date('c');
-        $ret['hash'] = $hash;
         $ret['status'] = $status;
         $ret['code'] = $code;
         $ret['response'] = $response;
         $ret['view'] = $view;
         
-        if ($debug) {
+        if ($debug !== false) {
             $ret['api']['php'] = phpversion();
             $ret['api']['phalcon'] = $this->config->path('phalcon.version');
             $ret['api']['zemit'] = $this->config->path('core.version');

@@ -11,6 +11,7 @@
 
 namespace Zemit\Mvc\Model\EagerLoading;
 
+use Phalcon\Di\Di;
 use Phalcon\Mvc\Model\Relation;
 use Phalcon\Mvc\Model\Resultset\Simple;
 use Phalcon\Mvc\Model\ResultsetInterface;
@@ -301,7 +302,7 @@ final class Loader
     {
         uksort($this->eagerLoads, 'strcmp');
         
-        $di = \Phalcon\DI\Di::getDefault();
+        $di = Di::getDefault();
         $mM = $di['modelsManager'];
         
         $eagerLoads = $resolvedRelations = [];

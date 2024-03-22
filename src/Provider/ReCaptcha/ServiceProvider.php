@@ -17,7 +17,7 @@ use Zemit\Provider\AbstractServiceProvider;
 
 class ServiceProvider extends AbstractServiceProvider
 {
-    protected string $serviceName = 'recaptcha';
+    protected string $serviceName = 'reCaptcha';
     
     public function register(DiInterface $di): void
     {

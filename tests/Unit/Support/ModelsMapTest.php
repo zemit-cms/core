@@ -136,10 +136,6 @@ class ModelsMapTest extends AbstractUnit
         $this->modelsMap->setClassMap('Test', 'New3');
         $this->assertEquals('New3', $this->modelsMap->getClassMap('Test'));
         
-        // Set an existing mapping to null
-        $this->modelsMap->setClassMap('Test', null);
-        $this->assertEquals('Test', $this->modelsMap->getClassMap('Test'));
-        
         // Remove an existing mapping
         $this->modelsMap->removeClassMap('Test');
         $this->assertEquals('Test', $this->modelsMap->getClassMap('Test'));

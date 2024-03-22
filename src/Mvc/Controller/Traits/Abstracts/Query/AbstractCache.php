@@ -15,15 +15,21 @@ use Phalcon\Support\Collection;
 
 trait AbstractCache
 {
-    abstract public function initializeCache(): void;
+    abstract public function initializeCacheConfig(): void;
     
     abstract public function initializeCacheKey(): void;
+
+    abstract public function initializeCacheLifetime(): void;
     
     abstract public function setCacheKey(?string $cacheKey): void;
     
     abstract public function getCacheKey(): ?string;
     
-    abstract public function setCache(?Collection $cache): void;
+    abstract public function setCacheLifetime(?int $cacheLifetime): void;
     
-    abstract public function getCache(): ?Collection;
+    abstract public function getCacheLifetime(): ?int;
+    
+    abstract public function setCacheConfig(?Collection $cacheConfig): void;
+    
+    abstract public function getCacheConfig(): ?Collection;
 }

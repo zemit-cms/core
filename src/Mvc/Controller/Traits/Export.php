@@ -100,7 +100,7 @@ trait Export
     {
         $columns = [];
         foreach ($list as $row) {
-            foreach (array_keys($row) as $key) {
+            foreach ($row as $key => $value) {
                 $columns[$key] = true;
             }
         }
