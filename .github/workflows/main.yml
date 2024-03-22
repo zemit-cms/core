@@ -165,7 +165,8 @@ jobs:
         run: ./vendor/bin/psalm --output-format=sarif > results.sarif
 
       - name: Import Security Analysis results into GitHub Security Code Scanning
-        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: results.sarif
   
