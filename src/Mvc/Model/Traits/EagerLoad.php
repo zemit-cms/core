@@ -167,9 +167,9 @@ trait EagerLoad
      * </code>
      *
      * @param array ...$arguments
-     * @return ModelInterface
+     * @return ?ModelInterface
      */
-    public function load(array ...$arguments)
+    public function load(array ...$arguments): ?ModelInterface
     {
         assert($this instanceof ModelInterface);
         return Loader::fromModel($this, ...$arguments);

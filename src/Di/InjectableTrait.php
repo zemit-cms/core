@@ -15,79 +15,29 @@ use Phalcon\Di\Di;
 use Phalcon\Di\DiInterface;
 
 /**
- * @property \Zemit\Cli\Dispatcher|\Zemit\Mvc\Dispatcher|\Zemit\Dispatcher\DispatcherInterface|\Phalcon\Mvc\Dispatcher|\Phalcon\Mvc\DispatcherInterface $dispatcher
- * @property \Zemit\Cli\Router|\Zemit\Mvc\Router|\Zemit\Router\RouterInterface|\Phalcon\Mvc\Router|\Phalcon\Mvc\RouterInterface $router
- * @property \Phalcon\Url|\Phalcon\Url\UrlInterface $url
- * @property \Zemit\Http\Request|\Zemit\Http\RequestInterface|\Phalcon\Http\Request|\Phalcon\Http\RequestInterface $request
- * @property \Phalcon\Http\Response|\Phalcon\Http\ResponseInterface $response
- * @property \Phalcon\Http\Response\Cookies|\Phalcon\Http\Response\CookiesInterface $cookies
- * @property \Zemit\Filter|\Phalcon\Filter $filter
- * @property \Phalcon\Flash\Direct $flash
- * @property \Phalcon\Flash\Session $flashSession
- * @property \Phalcon\Session\ManagerInterface $session
- * @property \Phalcon\Events\Manager|\Phalcon\Events\ManagerInterface $eventsManager
- * @property \Phalcon\Db\Adapter\AdapterInterface $db
- * @property \Zemit\Encryption\Security|\Phalcon\Encryption\Security $security
- * @property \Phalcon\Crypt|\Phalcon\CryptInterface $crypt
- * @property \Zemit\Tag|\Phalcon\Tag $tag
- * @property \Zemit\Escaper|\Phalcon\Escaper|\Phalcon\Escaper\EscaperInterface $escaper
- * @property \Phalcon\Annotations\Adapter\Memory|\Phalcon\Annotations\Adapter $annotations
- * @property \Phalcon\Mvc\Model\Manager|\Phalcon\Mvc\Model\ManagerInterface $modelsManager
- * @property \Phalcon\Mvc\Model\MetaData\Memory|\Phalcon\Mvc\Model\MetadataInterface $modelsMetadata
- * @property \Phalcon\Mvc\Model\Transaction\Manager|\Phalcon\Mvc\Model\Transaction\ManagerInterface $transactionManager
- * @property \Phalcon\Assets\Manager $assets
- * @property \Phalcon\Di|\Phalcon\Di\DiInterface $di
- * @property \Phalcon\Session\Bag|\Phalcon\Session\BagInterface $persistent
- * @property \Phalcon\Mvc\View|\Phalcon\Mvc\ViewInterface $view
- *
- * @property \Zemit\Bootstrap\Config $config
- * @property \Zemit\Bootstrap $bootstrap
- * @property \Zemit\Debug $debug
- * @property \Zemit\Identity $identity
- * @property \Zemit\Locale $locale
- * @property \Zemit\Support\Utils $utils
- * @property \Zemit\Profiler $profiler
- * @property \Phalcon\Logger\Logger $logger
- * @property \Zemit\Logger\Loggers $loggers
- * @property \Zemit\Jwt $jwt
- * @property \Zemit\OpenAi $openAi
- * @property \Zemit\LoremIpsum $loremIpsum
- * @property \Zemit\Support\Models $models
+ * The InjectableTrait trait provides methods for using dependency injection within an object.
  */
 trait InjectableTrait
 {
+    use InjectableProperties;
+    
+    /**
+     * Holds the container instance.
+     * @var DiInterface|null
+     */
     public ?DiInterface $container;
     
-    public function __get(string $name): mixed
-    {
-        $container = $this->getDI();
-        
-        if ($name === 'di') {
-            $this->{'di'} = $container;
-            return $container;
-        }
-        
-        if ($name === 'persistent') {
-            $persistent = $container->get('sessionBag', [get_class($this)]);
-            $this->{'persistent'} = $persistent;
-            return $persistent;
-        }
-        
-        if ($container->has($name)) {
-            $service = $container->getShared($name);
-            $this->{$name} = $service;
-            return $service;
-        }
-        
-        trigger_error('Access to undefined property `' . $name . '`');
-        return null;
-    }
+    /**
+     * Holds a list of loaded services from the container
+     * @var array
+     */
+    public array $instanceContainer;
     
-    public function __isset(string $name): bool
-    {
-        return $this->getDI()->has($name);
-    }
-    
+    /**
+     * Returns the Dependency Injection (DI) container used by this object.
+     *
+     * @return DiInterface The DI container instance.
+     */
     public function getDI(): DiInterface
     {
         if (!isset($this->container)) {
@@ -97,8 +47,63 @@ trait InjectableTrait
         return $this->container ?? new DI();
     }
     
+    /**
+     * Sets the dependency injection container.
+     *
+     * @param DiInterface $container The dependency injection container.
+     *
+     * @return void
+     */
     public function setDI(DiInterface $container): void
     {
         $this->container = $container;
+    }
+    
+    /**
+     * Checks if a property is set.
+     *
+     * @param string $name The name of the property to check.
+     * @return bool True if the property is set, false otherwise.
+     */
+    public function __isset(string $name): bool
+    {
+        return $this->getDI()->has($name);
+    }
+    
+    /**
+     * Magic method __get.
+     *
+     * Retrieves the value of a non-existent or inaccessible property.
+     *
+     * @param string $name The name of the property.
+     * @return mixed The value of the property if it exists, or null if the property is undefined.
+     */
+    public function __get(string $name): mixed
+    {
+        $container = $this->getDI();
+        
+        if (isset($this->instanceContainer[$name])) {
+            return $this->instanceContainer[$name];
+        }
+        
+        if ($name === 'di') {
+            $this->instanceContainer[$name] = $container;
+            return $container;
+        }
+        
+        if ($name === 'persistent') {
+            $persistent = $container->get('sessionBag', [get_class($this)]);
+            $this->instanceContainer[$name] = $persistent;
+            return $persistent;
+        }
+        
+        if ($container->has($name)) {
+            $service = $container->getShared($name);
+            $this->instanceContainer[$name] = $service;
+            return $service;
+        }
+        
+        trigger_error('Access to undefined property `' . $name . '`');
+        return null;
     }
 }
