@@ -17,7 +17,7 @@ namespace Zemit\Di;
  * @todo make wrapper for externals
  * @todo make wrapper for phalcon
  *
- * @property \Phalcon\Di\DiInterface $di
+ * @property \Phalcon\Di\FactoryDefault|\Phalcon\Di\Di|\Phalcon\Di\DiInterface $di
  * @property \Zemit\Bootstrap $bootstrap
  * @property \Zemit\Acl\AclInterface|\Zemit\Acl\Acl $acl
  * @property \Zemit\Mvc\Application $application

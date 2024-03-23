@@ -11,13 +11,6 @@
 
 namespace Zemit\Cli;
 
-class ExceptionHandler
+interface DispatcherInterface extends \Phalcon\Cli\DispatcherInterface, \Zemit\Dispatcher\DispatcherInterface
 {
-    private $outputStream;
-    
-    public function __construct(string|\Exception|\Throwable $e, mixed $outputStream = STDERR)
-    {
-        $this->outputStream = $outputStream;
-        fwrite($this->outputStream, $e . PHP_EOL);
-    }
 }

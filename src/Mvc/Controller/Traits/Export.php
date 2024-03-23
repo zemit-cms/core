@@ -327,7 +327,7 @@ trait Export
             $csv->insertOne($outputRow);
         }
         
-        $this->response->setContent($csv);
+        $this->response->setContent((string)$csv);
         $this->response->setContentType('text/csv');
         $this->response->setHeader('Content-disposition', 'attachment; filename="' . addslashes($filename) . '.csv"');
         

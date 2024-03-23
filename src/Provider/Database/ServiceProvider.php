@@ -40,9 +40,7 @@ class ServiceProvider extends AbstractServiceProvider
             
             // readonly
             if (!$readonly) {
-                $readonlyOptions = array_filter($driverOptions['readonly'] ?? [], function ($value) {
-                    return !is_null($value);
-                });
+                $readonlyOptions = array_filter($driverOptions['readonly'] ?? []);
                 $driverOptions = array_merge($driverOptions, $readonlyOptions);
                 unset($driverOptions['readonly']);
                 unset($driverOptions['enable']);

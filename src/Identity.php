@@ -574,12 +574,23 @@ class Identity extends Injectable implements OptionsInterface
     {
         $loggedInUser = null;
         
+        // get the current session
+        $session = $this->getSession();
+        
+        // prepare validation
+        $validation = new Validation();
+        
+        // a session is required
+        if (!isset($session)) {
+            $validation->appendMessage(new Message('A session is required', 'session', 'PresenceOf', 403));
+        }
+        
         // retrieve and prepare oauth2 entity
         $oauth2 = Oauth2::findFirst([
             'provider = :provider: and provider_uuid = :providerUuid:',
             'bind' => [
                 'provider' => $this->filter->sanitize($provider, 'string'),
-                'providerUuid' => (int)$providerUuid,
+                'providerUuid' => $providerUuid,
             ],
             'bindTypes' => [
                 'provider' => Column::BIND_PARAM_STR,
@@ -599,9 +610,6 @@ class Identity extends Injectable implements OptionsInterface
         $oauth2->setLastName($meta['last_name'] ?? null);
         $oauth2->setEmail($meta['email'] ?? null);
         
-        // get the current session
-        $session = $this->getSession();
-        
         // link the current user to the oauth2 entity
         $oauth2UserId = $oauth2->getUserId();
         $sessionUserId = $session->getUserId();
@@ -609,20 +617,12 @@ class Identity extends Injectable implements OptionsInterface
             $oauth2->setUserId($sessionUserId);
         }
         
-        // prepare validation
-        $validation = new Validation();
-        
         // save the oauth2 entity
         $saved = $oauth2->save();
         
         // append oauth2 error messages
         foreach ($oauth2->getMessages() as $message) {
             $validation->appendMessage($message);
-        }
-        
-        // a session is required
-        if (!isset($session)) {
-            $validation->appendMessage(new Message('A session is required', 'session', 'PresenceOf', 403));
         }
         
         // user id is required

@@ -12,6 +12,7 @@
 namespace Zemit\Modules\Cli\Tasks\Traits;
 
 use Phalcon\Db\Column;
+use Phalcon\Mvc\Model\Resultset;
 use Zemit\Models\Role;
 use Zemit\Models\User;
 use Zemit\Models\UserRole;
@@ -127,47 +128,38 @@ trait UserTrait
     {
         $response = [];
         
-        foreach ($this->getDefinitions() as $table => $fields) {
-            if ($table !== User::class) {
-                continue;
-            }
+        $class = $this->models->getClassMap(User::class);
+        $instance = $this->models->getInstance(User::class);
+        $fields = $this->getDefinitions()[$class] ?? [];
             
-            // Using a model (run validations, events, etc.)
-            if (class_exists($table)) {
-                $response[$table] = [
-                    'errors' => [],
-                    'save' => 0,
-                ];
-                
-                $list = empty($username) ? $table::find() : $table::find([
-                    'username = :username: or email = :email:',
-                    'bind' => ['username' => $username, 'email' => $username],
-                    'bindTypes' => ['username' => Column::BIND_PARAM_STR, 'email' => Column::BIND_PARAM_STR],
-                ]);
-                
-                assert(is_iterable($list));
-                foreach ($list as $entity) {
-                    $assign = [];
-                    foreach ($fields as $field => $value) {
-                        $assign[$field] = is_callable($value) ? $value($entity) : $value;
-                    }
-                    if (!empty($password)) {
-                        $assign['password'] = $password;
-                        $assign['passwordConfirm'] = $password;
-                    }
-                    $entity->assign($assign);
-                    if (!$entity->save()) {
-                        $response[$table]['errors'] = $entity->getMessages();
-                    }
-                    else {
-                        $response[$table]['save']++;
-                    }
-                }
+        // Using a model (run validations, events, etc.)
+        $response[$class] = [
+            'errors' => [],
+            'save' => 0,
+        ];
+        
+        $list = empty($username) ? $instance::find() : $instance::find([
+            'username = :username: or email = :email:',
+            'bind' => ['username' => $username, 'email' => $username],
+            'bindTypes' => ['username' => Column::BIND_PARAM_STR, 'email' => Column::BIND_PARAM_STR],
+        ]);
+        
+        assert($list instanceof \Iterator);
+        foreach ($list as $entity) {
+            $assign = [];
+            foreach ($fields as $field => $value) {
+                $assign[$field] = is_callable($value) ? $value($entity) : $value;
             }
-            
-            // Using raw request (avoid model validation, events etc.)
+            if (!empty($password)) {
+                $assign['password'] = $password;
+                $assign['passwordConfirm'] = $password;
+            }
+            $entity->assign($assign);
+            if (!$entity->save()) {
+                $response[$class]['errors'] = $entity->getMessages();
+            }
             else {
-            
+                $response[$class]['save']++;
             }
         }
         

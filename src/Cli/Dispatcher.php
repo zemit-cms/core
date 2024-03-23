@@ -11,7 +11,6 @@
 
 namespace Zemit\Cli;
 
-use Zemit\Dispatcher\DispatcherInterface;
 use Zemit\Dispatcher\DispatcherTrait;
 
 class Dispatcher extends \Phalcon\Cli\Dispatcher implements DispatcherInterface

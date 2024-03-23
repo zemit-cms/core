@@ -116,7 +116,11 @@ trait SoftDelete
                 return false;
             }
             
-            // @phpstan-ignore-next-line
+            /**
+             * Can be modified by the previous event
+             * @psalm-suppress TypeDoesNotContainType
+             * @phpstan-ignore-next-line
+             */
             if ($this->skipped) {
                 return true;
             }

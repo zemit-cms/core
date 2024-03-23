@@ -29,9 +29,9 @@ trait Fractal
 {
     use AbstractFractal;
     
-    public Manager $fractalManager;
-    public SerializerAbstract $fractalSerializer;
-    public TransformerAbstract $transformer;
+    public ?Manager $fractalManager = null;
+    public ?SerializerAbstract $fractalSerializer = null;
+    public ?TransformerAbstract $transformer = null;
     
     /**
      * Get the Fractal Manager object.

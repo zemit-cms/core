@@ -84,9 +84,9 @@ use Phalcon\Di\Di;
 class Helper
 {
     /**
-     * @var HelperFactory
+     * @var ?HelperFactory
      */
-    public static HelperFactory $helperFactory;
+    public static ?HelperFactory $helperFactory = null;
     
     /**
      * Returns the instance of the HelperFactory class.

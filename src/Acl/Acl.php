@@ -72,7 +72,7 @@ class Acl extends AbstractInjectionAware
                     if ($component !== '*') {
                         $aclComponent = new Component($component);
                         $acl->addComponent($aclComponent, $accessList);
-                        $acl->allow($aclRole, $aclComponent, $accessList);
+                        $acl->allow((string)$aclRole, (string)$aclComponent, $accessList);
                     }
                 }
             }
@@ -85,7 +85,7 @@ class Acl extends AbstractInjectionAware
             $inheritList = $permissions[$role][$inherit] ?? [];
             $inheritList = is_array($inheritList) ? $inheritList : [$inheritList];
             foreach ($inheritList as $inheritRole) {
-                $acl->addInherit($aclRole, $aclRoleList[$inheritRole]);
+                $acl->addInherit((string)$aclRole, $aclRoleList[$inheritRole]);
             }
         }
         

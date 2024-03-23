@@ -13,7 +13,7 @@
         xmlns="https://getpsalm.org/schema/config"
         xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
         xmlns:xi="http://www.w3.org/2001/XInclude"
-        errorLevel="5"
+        errorLevel="4"
         resolveFromConfigFile="true"
         findUnusedBaselineEntry="true"
         findUnusedCode="false"
@@ -30,7 +30,8 @@
     </projectFiles>
 
     <issueHandlers>
-        <MethodSignatureMismatch errorLevel="info" />
+        <NoInterfaceProperties errorLevel="info" /> <!-- Used for EagerLoaded properties -->
+        <MethodSignatureMismatch errorLevel="info" /> <!-- Because psalm can't properly read Phalcon Stubs -->
         <MissingTemplateParam errorLevel="info" />
     </issueHandlers>
 </psalm>

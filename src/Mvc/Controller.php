@@ -15,6 +15,10 @@ use Zemit\Di\InjectableProperties;
 
 /**
  * Class Controller
+ * 
+ * @property \Zemit\Mvc\Dispatcher $dispatcher
+ * @property \Zemit\Mvc\Router $router
+ * @property \Zemit\Mvc\Application $application
  */
 class Controller extends \Phalcon\Mvc\Controller
 {

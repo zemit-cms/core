@@ -39,8 +39,8 @@ trait ScaffoldTrait
     protected string $interfacesDirectory = 'Interfaces/';
     protected string $controllersDirectory = 'Controllers/';
     
-    protected array $whitelistedTables = [];
-    protected array $excludedTables = [];
+    protected ?array $whitelistedTables = null;
+    protected ?array $excludedTables = null;
     
     public string $licenseStamp = <<<PHP
 /**
@@ -99,7 +99,7 @@ PHP;
     public function isExcludedTable(string $table): bool
     {
         if (!isset($this->excludedTables)) {
-            $this->excludedTables = array_filter(explode(',', $this->dispatcher->getParam('table') ?? ''));
+            $this->excludedTables = array_filter(explode(',', $this->dispatcher->getParam('exclude') ?? ''));
         }
         return !empty($this->excludedTables) && in_array($table, $this->excludedTables);
     }

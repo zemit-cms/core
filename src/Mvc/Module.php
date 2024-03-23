@@ -30,17 +30,17 @@ class Module extends Injectable implements ModuleDefinitionInterface
     
     public string $name;
     
-    public Config $config;
+    public ?Config $config = null;
     
-    public Dispatcher $dispatcher;
+    public ?Dispatcher $dispatcher = null;
     
-    public Loader $loader;
+    public ?Loader $loader = null;
     
-    public Router $router;
+    public ?Router $router = null;
     
-    public View $view;
+    public ?View $view = null;
     
-    public Url $url;
+    public ?Url $url = null;
     
     /**
      * Registers an autoloader related to the frontend module

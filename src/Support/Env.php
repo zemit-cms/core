@@ -28,9 +28,9 @@ class Env
      * The Dotenv class is responsible for loading environment variables from the
      * ".env" file into the application.
      *
-     * @var Dotenv
+     * @var ?Dotenv
      */
-    public static Dotenv $dotenv;
+    public static ?Dotenv $dotenv = null;
     
     /**
      * Represents an array of variables.

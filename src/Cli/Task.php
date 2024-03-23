@@ -11,52 +11,14 @@
 
 namespace Zemit\Cli;
 
-use joshtronic\LoremIpsum;
-use Orhanerday\OpenAi\OpenAi;
-use Phalcon\Db\Adapter\Pdo\AbstractPdo;
-use Phalcon\Logger\Logger;
-use Zemit\Bootstrap\Config;
-use Zemit\Bootstrap;
-use Zemit\Cache\Cache;
-use Zemit\Db\Adapter\Pdo\Mysql;
-use Zemit\Db\Profiler;
-use Zemit\Html\Escaper;
-use Zemit\Support\Debug;
-use Zemit\Encryption\Security;
-use Zemit\Filter\Filter;
-use Zemit\Identity;
-use Zemit\Locale;
-use Zemit\Mvc\View;
-use Zemit\Provider\Jwt\Jwt;
-use Zemit\Support\Utils;
-
-use Zemit\Mvc\Model\Manager as ModelsManager;
-use Zemit\Mvc\Model\ManagerInterface as ModelsManagerInterface;
+use Zemit\Di\InjectableProperties;
 
 /**
- * @property Console $console
- * @property Config $config
- * @property Bootstrap $bootstrap
- * @property Debug $debug
- * @property Router $router
- * @property Dispatcher $dispatcher
- * @property View $view
- * @property Security $security
- * @property Profiler $profiler
- * @property Jwt $jwt
- * @property Escaper $escaper
- * @property Filter $filter
- * @property Identity $identity
- * @property Locale $locale
- * @property Logger $logger
- * @property Utils $utils
- * @property LoremIpsum $loremIpsum
- * @property OpenAi $openAi
- * @property Cache $cache
- * @property ModelsManagerInterface|ModelsManager $modelsManager
- * @property AbstractPdo|Mysql $db
+ * @property \Zemit\Cli\Console $console
+ * @property \Zemit\Cli\Router $router
+ * @property \Zemit\Cli\Dispatcher $dispatcher
  */
 class Task extends \Phalcon\Cli\Task implements TaskInterface
 {
-
+    use InjectableProperties;
 }

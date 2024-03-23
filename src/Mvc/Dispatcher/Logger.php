@@ -13,7 +13,6 @@ namespace Zemit\Mvc\Dispatcher;
 
 use Phalcon\Events\Event;
 use Phalcon\Logger\Exception;
-use Phalcon\Mvc\EntityInterface;
 use Zemit\Di\Injectable;
 use Zemit\Dispatcher\DispatcherInterface;
 

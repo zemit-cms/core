@@ -47,11 +47,11 @@ class Bootstrap
     
     public DiInterface $di;
     
-    public ConfigInterface $config;
+    public ?ConfigInterface $config = null;
     
-    public RouterInterface $router;
+    public ?RouterInterface $router = null;
     
-    public ?ResponseInterface $response;
+    public ?ResponseInterface $response = null;
     
     public string $cliDoc = <<<DOC
 Zemit CLI
@@ -152,7 +152,7 @@ DOC;
     /**
      * Get the Config
      */
-    public function getConfig(): ConfigInterface
+    public function getConfig(): ?ConfigInterface
     {
         return $this->config;
     }
@@ -168,7 +168,7 @@ DOC;
     /**
      * Get the MVC or CLI Router
      */
-    public function getRouter(): RouterInterface
+    public function getRouter(): ?RouterInterface
     {
         return $this->router;
     }

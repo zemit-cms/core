@@ -23,13 +23,13 @@ class Module implements ModuleDefinitionInterface
     
     public string $name = self::NAME_CLI;
     
-    public Config $config;
+    public ?Config $config = null;
     
-    public Dispatcher $dispatcher;
+    public ?Dispatcher $dispatcher = null;
     
-    public Loader $loader;
+    public ?Loader $loader = null;
     
-    public Router $router;
+    public ?Router $router = null;
     
     /**
      * Registers an autoloader related to the frontend module

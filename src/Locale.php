@@ -238,8 +238,8 @@ class Locale extends Injectable implements OptionsInterface
     public function getFromHttp(?string $default = null): ?string
     {
         return
-            $this->lookup($this->request->getBestLanguage()) ??
-            \Locale::acceptFromHttp($this->request->getHeader('HTTP_ACCEPT_LANGUAGE')) ??
+            $this->lookup($this->request->getBestLanguage()) ?:
+            \Locale::acceptFromHttp($this->request->getHeader('HTTP_ACCEPT_LANGUAGE')) ?:
             $default;
     }
     
