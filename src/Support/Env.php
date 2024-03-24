@@ -121,10 +121,11 @@ class Env
         $shortCircuit ??= self::getShortCircuit();
         $fileEncoding ??= self::getFileEncoding();
         
-        self::$dotenv = Dotenv::{'create' . $type}($paths, $names, $shortCircuit, $fileEncoding);
-        self::$vars = self::$dotenv->safeLoad();
+        $dotenv = Dotenv::{'create' . $type}($paths, $names, $shortCircuit, $fileEncoding);
+        self::$vars = $dotenv->safeLoad();
+        self::$dotenv = $dotenv;
         
-        return self::$dotenv;
+        return $dotenv;
     }
     
     /**

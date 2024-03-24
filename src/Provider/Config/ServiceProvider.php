@@ -33,12 +33,13 @@ class ServiceProvider extends AbstractServiceProvider
             assert($bootstrap instanceof Bootstrap);
             
             $bootstrap->config ??= new Config();
+            $config = $bootstrap->getConfig();
             
             // Launch bootstrap prepare raw php configs
-            Php::set($bootstrap->config->pathToArray('app') ?? []);
+            Php::set($config->pathToArray('app') ?? []);
             
             // Set the config
-            return $bootstrap->config;
+            return $config;
         });
     }
 }
