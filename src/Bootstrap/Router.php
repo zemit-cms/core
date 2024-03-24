@@ -11,7 +11,7 @@
 
 namespace Zemit\Bootstrap;
 
-use Phalcon\Config\ConfigInterface;
+use Zemit\Config\ConfigInterface;
 
 /**
  * Zemit Router
@@ -34,7 +34,7 @@ class Router extends \Zemit\Mvc\Router
     /**
      * Router constructor.
      */
-    public function __construct($defaultRoutes = true, ?ConfigInterface $config = null)
+    public function __construct(bool $defaultRoutes = true, ?ConfigInterface $config = null)
     {
         parent::__construct($defaultRoutes, $config);
     }

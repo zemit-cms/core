@@ -715,7 +715,6 @@ class Identity extends Injectable implements OptionsInterface
                 $loggedInUser = $user;
             }
             
-            assert($session instanceof SessionInterface);
             $session->setUserId($loggedInUser?->getId());
             $saved = $session->save();
             foreach ($session->getMessages() as $message) {
