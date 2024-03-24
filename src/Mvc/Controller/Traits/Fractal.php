@@ -30,7 +30,9 @@ trait Fractal
     use AbstractFractal;
     
     public ?Manager $fractalManager = null;
+    
     public ?SerializerAbstract $fractalSerializer = null;
+    
     public ?TransformerAbstract $transformer = null;
     
     /**
@@ -45,8 +47,9 @@ trait Fractal
     public function getFractalManager(): Manager
     {
         if (!isset($this->fractalManager)) {
-            $this->fractalManager = new Manager();
-            $this->fractalManager->setSerializer($this->getFractalSerializer());
+            $fractalManager = new Manager();
+            $fractalManager->setSerializer($this->getFractalSerializer());
+            $this->fractalManager = $fractalManager;
         }
         
         return $this->fractalManager;
@@ -71,11 +74,7 @@ trait Fractal
      */
     public function getFractalSerializer(): SerializerAbstract
     {
-        if (!isset($this->fractalSerializer)) {
-            $this->fractalSerializer = new RawArraySerializer();
-        }
-        
-        return $this->fractalSerializer;
+        return $this->fractalSerializer ??= new RawArraySerializer();
     }
     
     /**
@@ -99,11 +98,7 @@ trait Fractal
      */
     public function getTransformer(): TransformerAbstract
     {
-        if (!isset($this->transformer)) {
-            $this->transformer = new ModelTransformer();
-        }
-        
-        return $this->transformer;
+        return $this->transformer ??= new ModelTransformer();
     }
     
     /**
