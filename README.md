@@ -107,13 +107,12 @@ Here is virtual host example using apache 2.4 + php-fpm 7.4 from remi repository
 
 
 ## Requirements
-Zemit Core requires multiple PHP extensions. Please use `composer` to make sure that you meet the requirements.
+Zemit Core requires multiple PHP extensions including PhalconPHP. Please use `composer` to make sure that you meet the requirements.
 
 #### Languages & compatibilities
-- [PHP](https://secure.php.net/) ~7.4
-- [MySQL](https://www.mysql.com/) ~5.7
-- [MariaDB](https://mariadb.com/) ~10.4
-- [PhalconPHP](https://phalconphp.com/) ~4.1
+- [PHP](https://secure.php.net/) >=8.2
+- [MySQL](https://www.mysql.com/) >=8.0
+- [PhalconPHP](https://phalconphp.com/) >=5.6.2
 
 ## External Links
 * [Website](https://www.zemit.com)
