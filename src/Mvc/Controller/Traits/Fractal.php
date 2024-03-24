@@ -46,13 +46,14 @@ trait Fractal
      */
     public function getFractalManager(): Manager
     {
-        if (!isset($this->fractalManager)) {
-            $fractalManager = new Manager();
-            $fractalManager->setSerializer($this->getFractalSerializer());
-            $this->fractalManager = $fractalManager;
+        if (isset($this->fractalManager)) {
+            return $this->fractalManager;
         }
         
-        return $this->fractalManager;
+        $fractalManager = new Manager();
+        $fractalManager->setSerializer($this->getFractalSerializer());
+        $this->fractalManager = $fractalManager;
+        return $fractalManager;
     }
     
     /**
