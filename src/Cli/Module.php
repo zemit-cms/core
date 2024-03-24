@@ -52,7 +52,8 @@ class Module implements ModuleDefinitionInterface
         $this->getServices($container);
         
         assert($this->dispatcher instanceof DispatcherInterface);
-        assert($this->router instanceof RouterInterface);
+//        assert($this->router instanceof RouterInterface); // @todo add this when phalcon pushed the fix
+        assert($this->router instanceof \Zemit\Router\RouterInterface);
         
         // dispatcher settings
         $defaultNamespace = $this->getDefaultNamespace();
