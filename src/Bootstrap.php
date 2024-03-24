@@ -152,8 +152,9 @@ DOC;
     /**
      * Get the Config
      */
-    public function getConfig(): ?ConfigInterface
+    public function getConfig(): ConfigInterface
     {
+        assert($this->config instanceof ConfigInterface);
         return $this->config;
     }
     
@@ -191,7 +192,7 @@ DOC;
      */
     public function registerServices(?array $providers = null): void
     {
-        $providers ??= $this->config->pathToArray('providers') ?? [];
+        $providers ??= $this->getConfig()->pathToArray('providers') ?? [];
         foreach ($providers as $key => $provider) {
             if (!is_string($provider)) {
                 throw new Exception('Service Provider `' . $key . '` class name must be a string.', 400);
@@ -235,10 +236,12 @@ DOC;
             : $this->di->get('console');
         assert($application instanceof AbstractApplication);
         
-        $modules ??= $this->config->pathToArray('modules') ?? [];
+        $config = $this->getConfig();
+        
+        $modules ??= $config->pathToArray('modules') ?? [];
         $application->registerModules($modules);
         
-        $defaultModule ??= $this->config->path('router.defaults.module');
+        $defaultModule ??= $config->path('router.defaults.module') ?? '';
         $application->setDefaultModule($defaultModule);
     }
     

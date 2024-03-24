@@ -45,43 +45,28 @@ class Tag extends PhalconTag
     
     /**
      * Represents a service for managing assets.
-     * @var Manager|null $assetsService
+     * @var Manager|null $assetsManager
      */
-    protected static ?Manager $assetsService = null;
+    protected static ?Manager $assetsManager = null;
     
     /**
      * Retrieves the instance of the Assets Manager.
-     *
-     * @param array|null $params An optional set of parameters to be passed to the Assets Manager service.
-     *                           If provided, these parameters will be used to configure the Assets Manager instance.
-     * @return Manager|null The instance of the Assets Manager, if it has been previously set. Otherwise, null is returned.
+     * 
+     * @return Manager The instance of the Assets Manager
      */
-    public static function getAssets(?array $params = null): ?Manager
+    public static function getAssetsManager(): Manager
     {
-        self::$assetsService ??= self::getDI()->get('assets', $params);
-        return self::$assetsService;
+        return self::$assetsManager ??= self::getDI()->get('assets');
     }
     
     /**
-     * Returns the assets service.
-     *
-     * @return Manager|null The assets service. Returns null if the service is not available.
-     */
-    public static function getAssetsService(): ?Manager
-    {
-        self::$assetsService ??= self::getDI()->getService('assets');
-        return self::$assetsService;
-    }
-    
-    /**
-     * Sets the assets service for the class.
-     *
-     * @param Manager|null $assets The assets service to be set. Pass null to unset the assets service.
+     * Sets the assets manager to be used.
+     * @param Manager|null $assetsManager The assets manager to be set. Pass null to unset the current assets manager.
      * @return void
      */
-    public static function setAssetsService(?Manager $assets): void
+    public static function setAssetsManager(?Manager $assetsManager): void
     {
-        self::$assetsService = $assets;
+        self::$assetsManager = $assetsManager;
     }
     
     /**
@@ -632,7 +617,7 @@ class Tag extends PhalconTag
      */
     public static function getCss(?string $collection = null): ?string
     {
-        $assets = self::getAssets();
+        $assets = self::getAssetsManager();
         $assets->useImplicitOutput(false);
         return $assets->outputCss($collection);
     }
@@ -659,7 +644,7 @@ class Tag extends PhalconTag
      */
     public static function getJs(?string $collection = null): ?string
     {
-        $assets = self::getAssets();
+        $assets = self::getAssetsManager();
         $assets->useImplicitOutput(false);
         return $assets->outputJs($collection);
     }

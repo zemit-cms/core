@@ -23,11 +23,11 @@ trait Json
      *
      * @param mixed $value The value to be encoded.
      * @param int $flags [Optional] Bitmask of JSON encode options.
-     *                             Defaults to JSON_UNESCAPED_SLASHES.
+     *                              Defaults to JSON_UNESCAPED_SLASHES.
      * @param int $depth [Optional] The maximum depth of recursion when encoding nested objects.
-     *                             Defaults to 512.
+     *                              Defaults to 512.
      *
-     * @return string|false        The JSON encoded string on success, or `false` on failure.
+     * @return string|false The JSON encoded string on success, or `false` on failure.
      */
     public function jsonEncode(mixed $value, int $flags = JSON_UNESCAPED_SLASHES, int $depth = 512): string|false
     {
@@ -42,11 +42,11 @@ trait Json
      *                                         When `false`, objects will be returned as generic objects. If `null`, objects
      *                                         will be returned based on the JSON_NUMERIC_CHECK flag.
      * @param int $depth [Optional] The maximum depth of recursion when decoding nested objects.
-     *                             Defaults to 512.
+     *                              Defaults to 512.
      * @param int $flags [Optional] Bitmask of JSON decode options.
-     *                             Defaults to 0.
+     *                              Defaults to 0.
      *
-     * @return mixed                 The decoded value on success, or the original JSON string on failure.
+     * @return mixed The decoded value on success, or the original JSON string on failure.
      */
     public function jsonDecode(string $json, ?bool $associative = null, int $depth = 512, int $flags = 0): mixed
     {

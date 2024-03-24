@@ -497,7 +497,7 @@ class Identity extends Injectable implements OptionsInterface
         $saved = false;
         
         // must be an admin
-        if (!count($messages) && $this->hasRole(['admin', 'dev']) && $session) {
+        if (isset($session, $params['userId']) && !$messages->count() && $this->hasRole(['admin', 'dev'])) {
             $userId = $session->getUserId();
             
             // himself, return back to normal login
@@ -573,6 +573,7 @@ class Identity extends Injectable implements OptionsInterface
     public function oauth2(string $provider, int $providerUuid, string $accessToken, ?string $refreshToken = null, ?array $meta = []): array
     {
         $loggedInUser = null;
+        $saved = false;
         
         // get the current session
         $session = $this->getSession();
@@ -584,77 +585,78 @@ class Identity extends Injectable implements OptionsInterface
         if (!isset($session)) {
             $validation->appendMessage(new Message('A session is required', 'session', 'PresenceOf', 403));
         }
-        
-        // retrieve and prepare oauth2 entity
-        $oauth2 = Oauth2::findFirst([
-            'provider = :provider: and provider_uuid = :providerUuid:',
-            'bind' => [
-                'provider' => $this->filter->sanitize($provider, 'string'),
-                'providerUuid' => $providerUuid,
-            ],
-            'bindTypes' => [
-                'provider' => Column::BIND_PARAM_STR,
-                'id' => Column::BIND_PARAM_STR,
-            ],
-        ]);
-        if (!$oauth2) {
-            $oauth2 = new Oauth2();
-            $oauth2->setProvider($provider);
-            $oauth2->setProviderUuid($providerUuid);
-        }
-        $oauth2->setAccessToken($accessToken);
-        $oauth2->setRefreshToken($refreshToken);
-        $oauth2->setMeta(!empty($meta)? json_encode($meta) : null);
-        $oauth2->setName($meta['name'] ?? null);
-        $oauth2->setFirstName($meta['first_name'] ?? null);
-        $oauth2->setLastName($meta['last_name'] ?? null);
-        $oauth2->setEmail($meta['email'] ?? null);
-        
-        // link the current user to the oauth2 entity
-        $oauth2UserId = $oauth2->getUserId();
-        $sessionUserId = $session->getUserId();
-        if (empty($oauth2UserId) && !empty($sessionUserId)) {
-            $oauth2->setUserId($sessionUserId);
-        }
-        
-        // save the oauth2 entity
-        $saved = $oauth2->save();
-        
-        // append oauth2 error messages
-        foreach ($oauth2->getMessages() as $message) {
-            $validation->appendMessage($message);
-        }
-        
-        // user id is required
-        $validation->add('userId', new PresenceOf(['message' => 'userId is required']));
-        $validation->validate($oauth2->toArray());
-        
-        // All validation passed
-        if ($saved && !$validation->getMessages()->count()) {
-            $user = $this->findUserById($oauth2->getUserId());
+        else {
+            // retrieve and prepare oauth2 entity
+            $oauth2 = Oauth2::findFirst([
+                'provider = :provider: and provider_uuid = :providerUuid:',
+                'bind' => [
+                    'provider' => $this->filter->sanitize($provider, 'string'),
+                    'providerUuid' => $providerUuid,
+                ],
+                'bindTypes' => [
+                    'provider' => Column::BIND_PARAM_STR,
+                    'id' => Column::BIND_PARAM_STR,
+                ],
+            ]);
+            if (!$oauth2) {
+                $oauth2 = new Oauth2();
+                $oauth2->setProvider($provider);
+                $oauth2->setProviderUuid($providerUuid);
+            }
+            $oauth2->setAccessToken($accessToken);
+            $oauth2->setRefreshToken($refreshToken);
+            $oauth2->setMeta(!empty($meta)? json_encode($meta) : null);
+            $oauth2->setName($meta['name'] ?? null);
+            $oauth2->setFirstName($meta['first_name'] ?? null);
+            $oauth2->setLastName($meta['last_name'] ?? null);
+            $oauth2->setEmail($meta['email'] ?? null);
             
-            // user not found, login failed
-            if (!isset($user)) {
-                $validation->appendMessage(new Message('Login Failed', ['id'], 'LoginFailed', 401));
+            // link the current user to the oauth2 entity
+            $oauth2UserId = $oauth2->getUserId();
+            $sessionUserId = $session->getUserId();
+            if (empty($oauth2UserId) && !empty($sessionUserId)) {
+                $oauth2->setUserId($sessionUserId);
             }
             
-            // access forbidden, login failed
-            elseif ($user->isDeleted()) {
-                $validation->appendMessage(new Message('Login Forbidden', 'password', 'LoginForbidden', 403));
-            }
+            // save the oauth2 entity
+            $saved = $oauth2->save();
             
-            // login success
-            else {
-                $loggedInUser = $user;
-            }
-            
-            // Set the oauth user id into the session
-            $session->setUserId($loggedInUser?->getId());
-            $saved = $session->save();
-            
-            // append session error messages
-            foreach ($session->getMessages() as $message) {
+            // append oauth2 error messages
+            foreach ($oauth2->getMessages() as $message) {
                 $validation->appendMessage($message);
+            }
+            
+            // user id is required
+            $validation->add('userId', new PresenceOf(['message' => 'userId is required']));
+            $validation->validate($oauth2->toArray());
+            
+            // All validation passed
+            if ($saved && !$validation->getMessages()->count()) {
+                $user = $this->findUserById($oauth2->getUserId());
+                
+                // user not found, login failed
+                if (!isset($user)) {
+                    $validation->appendMessage(new Message('Login Failed', ['id'], 'LoginFailed', 401));
+                }
+                
+                // access forbidden, login failed
+                elseif ($user->isDeleted()) {
+                    $validation->appendMessage(new Message('Login Forbidden', 'password', 'LoginForbidden', 403));
+                }
+                
+                // login success
+                else {
+                    $loggedInUser = $user;
+                }
+                
+                // Set the oauth user id into the session
+                $session->setUserId($loggedInUser?->getId());
+                $saved = $session->save();
+                
+                // append session error messages
+                foreach ($session->getMessages() as $message) {
+                    $validation->appendMessage($message);
+                }
             }
         }
         
@@ -685,8 +687,8 @@ class Identity extends Injectable implements OptionsInterface
         }
         
         $messages = $validation->getMessages();
-        if (!$messages->count()) {
-            $user = $this->findUser($params['email'] ?? $params['username']);
+        if (isset($session, $params['email'], $params['password']) && !$messages->count()) {
+            $user = empty($params['email'])? null : $this->findUser($params['email']);
             
             $loginFailedMessage = new Message('Login Failed', ['email', 'password'], 'LoginFailed', 401);
             $loginForbiddenMessage = new Message('Login Forbidden', ['email', 'password'], 'LoginForbidden', 403);
@@ -713,6 +715,7 @@ class Identity extends Injectable implements OptionsInterface
                 $loggedInUser = $user;
             }
             
+            assert($session instanceof SessionInterface);
             $session->setUserId($loggedInUser?->getId());
             $saved = $session->save();
             foreach ($session->getMessages() as $message) {
@@ -729,11 +732,11 @@ class Identity extends Injectable implements OptionsInterface
     }
     
     /**
-     * Log the user out from the database session
-     *
-     * @return bool|mixed|null
+     * Logout the user and return the logout status, login status, and validation messages
+     * 
+     * @return array The array containing the logout status, login status, and validation messages
      */
-    public function logout()
+    public function logout(): array
     {
         $saved = false;
         $sessionEntity = $this->getSession();
@@ -829,7 +832,7 @@ class Identity extends Injectable implements OptionsInterface
                     if (!$user->checkToken($params['token'])) {
                         $validation->appendMessage(new Message('invalid token', 'token', 'NotValid', 400));
                     }
-                    elseif (!count($validation->getMessages())) {
+                    elseif (!$validation->getMessages()->count()) {
                         $params['token'] = null;
                         $user->assign($params, ['token', 'password', 'passwordConfirm']);
                         $saved = $user->save();

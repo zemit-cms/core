@@ -30,7 +30,7 @@ class Security extends PhalconSecurity
             PhalconSecurity::CRYPT_ARGON2I,
             PhalconSecurity::CRYPT_ARGON2ID
         ])) {
-            $defaultOptions = $this->getConfig()->pathToArray('security.argon2');
+            $defaultOptions = $this->getConfig()->pathToArray('security.argon2') ?? [];
             $options['memory_cost'] ??= $defaultOptions['memoryCost'];
             $options['time_cost'] ??= $defaultOptions['timeCost'];
             $options['threads'] ??= $defaultOptions['threads'];

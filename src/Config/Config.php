@@ -11,8 +11,12 @@
 
 namespace Zemit\Config;
 
+use DateTimeImmutable;
 use Phalcon\Config\ConfigInterface as PhalconConfigInterface;
 use Zemit\Mvc\Model;
+use DateTimeInterface;
+use Exception;
+use Zemit\Mvc\ModelInterface;
 
 class Config extends \Phalcon\Config\Config implements ConfigInterface
 {
@@ -71,13 +75,35 @@ class Config extends \Phalcon\Config\Config implements ConfigInterface
     }
     
     /**
+     * Get a modified DateTime.
+     * Note: This is a helper to enhance strict typings and safely use DateTime within config
+     *
+     * @param string $modifier The modifier string to modify the DateTime.
+     * @param DateTimeImmutable|null $dateTime Optional. The DateTime to modify. Defaults to current DateTime if not provided.
+     *
+     * @return DateTimeImmutable The modified DateTime object.
+     * @throws Exception If the modification of the DateTime fails.
+     */
+    public function getDateTime(string $modifier, ?DateTimeImmutable $dateTime = null): DateTimeImmutable
+    {
+        $dateTime ??= new DateTimeImmutable();
+        $modified = $dateTime->modify($modifier);
+        if ($modified === false) {
+            throw new Exception("Failed to modify the date with the period '{$modifier}'.");
+        }
+        return $modified;
+    }
+    
+    /**
      * Return a new model instance from class name
      * @todo use DI instead
      */
-    public function getModelInstance(string $class): Model
+    public function getModelInstance(string $class): ModelInterface
     {
         $modelClass = $this->getModelClass($class);
-        return new $modelClass();
+        $modelInstance = new $modelClass();
+        assert($modelInstance instanceof ModelInterface);
+        return $modelInstance;
     }
     
     /**

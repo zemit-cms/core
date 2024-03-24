@@ -18,7 +18,7 @@ namespace Zemit\Support\Helper\Arr;
  */
 class RecursiveMap
 {
-    public function __invoke(array $collection = [], callable $callback = null): array
+    public function __invoke(array $collection, callable $callback): array
     {
         return self::process($collection, $callback);
     }
@@ -28,15 +28,15 @@ class RecursiveMap
      *
      * @param array $collection The array to be processed.
      * 
-     * @param ?callable $callback The callback function to be applied to each array element.
+     * @param callable $callback The callback function to be applied to each array element.
      *                           The callback function should accept one argument, which is the current array element,
      *                           and can return a modified value for that element.
      *
      * @return array The processed array with the callback function applied to each element.
      */
-    public static function process(array $collection = [], callable $callback = null): array
+    public static function process(array $collection, callable $callback): array
     {
-        $func = function ($item) use (&$func, &$callback) {
+        $func = function ($item) use (&$func, &$callback): mixed {
             return is_array($item) ? array_map($func, $item) : call_user_func($callback, $item);
         };
         

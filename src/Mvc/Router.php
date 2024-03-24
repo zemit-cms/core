@@ -11,8 +11,8 @@
 
 namespace Zemit\Mvc;
 
-use Phalcon\Config\ConfigInterface;
 use Phalcon\Di\Di;
+use Zemit\Config\ConfigInterface;
 use Zemit\Mvc\Router\ModuleRoute;
 use Zemit\Router\RouterInterface;
 
@@ -60,8 +60,8 @@ class Router extends \Phalcon\Mvc\Router implements RouterInterface
     {
         $this->removeExtraSlashes(true);
         
-        $routerConfig = $this->getConfig()->get('router')->toArray();
-        $localeConfig = $this->getConfig()->get('locale')->toArray();
+        $routerConfig = $this->getConfig()->pathToArray('router') ?? [];
+        $localeConfig = $this->getConfig()->pathToArray('locale') ?? [];
         
         $this->setDefaults($routerConfig['defaults'] ?? $this->getDefaults());
         $this->notFound($routerConfig['notFound'] ?? $this->notFoundPaths ?? []);
@@ -75,7 +75,7 @@ class Router extends \Phalcon\Mvc\Router implements RouterInterface
      */
     public function hostnamesRoutes(array $hostnames = null, array $defaults = null): void
     {
-        $routerConfig = $this->getConfig()->get('router')->toArray();
+        $routerConfig = $this->getConfig()->pathToArray('router') ?? [];
         $hostnames ??= $routerConfig['hostnames'] ?? [];
         $defaults ??= $this->getDefaults();
         
@@ -83,8 +83,8 @@ class Router extends \Phalcon\Mvc\Router implements RouterInterface
             if (!isset($hostnameRoute['module']) || !is_string($hostnameRoute['module'])) {
                 throw new \InvalidArgumentException('Router hostname config parameter "module" must be a string under "' . $hostname . '"');
             }
-            $localeConfig = $this->getConfig()->get('locale')->toArray();
-            $this->mount((new ModuleRoute(array_merge($defaults, $hostnameRoute), $localeConfig['allowed'] ?? [], $hostname))->setHostname($hostname));
+            $localeConfig = $this->getConfig()->pathToArray('locale') ?? [];
+            $this->mount((new ModuleRoute(array_merge($defaults, (array)$hostnameRoute), $localeConfig['allowed'] ?? [], $hostname))->setHostname($hostname));
         }
     }
     
@@ -99,7 +99,7 @@ class Router extends \Phalcon\Mvc\Router implements RouterInterface
             if (!isset($module['className'])) {
                 throw new \InvalidArgumentException('Module parameter "className" must be a string under "' . $key . '"');
             }
-            $localeConfig = $this->getConfig()->get('locale')->toArray();
+            $localeConfig = $this->getConfig()->pathToArray('locale') ?? [];
             $namespace = rtrim($module['className'], 'Module') . 'Controllers';
             $moduleDefaults = ['namespace' => $namespace, 'module' => $key];
             $this->mount(new ModuleRoute(array_merge($defaults, $moduleDefaults), $localeConfig['allowed'] ?? []));

@@ -13,12 +13,13 @@
         xmlns="https://getpsalm.org/schema/config"
         xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
         xmlns:xi="http://www.w3.org/2001/XInclude"
-        errorLevel="4"
+        phpVersion="8.2"
+        errorLevel="3"
         resolveFromConfigFile="true"
         findUnusedBaselineEntry="true"
         findUnusedCode="false"
         hideExternalErrors="true"
-        totallyTyped="false"
+        totallyTyped="true"
         allowStringToStandInForClass="true"
         autoloader="loader.php"
 >
@@ -30,8 +31,21 @@
     </projectFiles>
 
     <issueHandlers>
-        <NoInterfaceProperties errorLevel="info" /> <!-- Used for EagerLoaded properties -->
-        <MethodSignatureMismatch errorLevel="info" /> <!-- Because psalm can't properly read Phalcon Stubs -->
-        <MissingTemplateParam errorLevel="info" />
+        <!-- Used for EagerLoaded properties -->
+        <NoInterfaceProperties errorLevel="info" />
+
+        <!-- Phalcon Stubs are not read correctly -->
+        <MethodSignatureMismatch errorLevel="suppress" />
+        
+        <!-- We are not templating params -->
+        <MissingTemplateParam errorLevel="suppress" />
+
+        <!-- To not validate int range for json functions -->
+        <ArgumentTypeCoercion errorLevel="suppress">
+            <errorLevel type="suppress">
+                <referencedFunction name="json_encode" />
+                <referencedFunction name="json_decode" />
+            </errorLevel>
+        </ArgumentTypeCoercion>
     </issueHandlers>
 </psalm>

@@ -142,7 +142,8 @@ trait Query
     {
         $build = [];
         $find ??= $this->getFind();
-        foreach ($find?->getIterator() as $key => $value) {
+        $iterator = $find?->getIterator() ?? [];
+        foreach ($iterator as $key => $value) {
             if ($value instanceof Collection) {
                 $subIgnoreKey = $ignoreKey || in_array($key, ['conditions', 'joins', 'group']);
                 $sub = $this->prepareFind($value, $subIgnoreKey);

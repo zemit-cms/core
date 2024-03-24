@@ -35,7 +35,7 @@ trait ClamavActions
     public function scanAction(?string $filePath = null): bool
     {
         $this->clamav->startSession();
-        $result = $this->clamav->scanFile($filePath);
+        $result = $this->clamav->scanFile($filePath ?? '');
         $this->clamav->endSession();
         
         $ret = [];

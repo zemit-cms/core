@@ -53,7 +53,9 @@ class Jwt
     {
         $signer ??= $this->options['signer'] ?? Hmac::class;
         $algo ??= $this->options['algo'] ?? 'sha512';
-        $this->signer = new $signer($algo);
+        $signerInstance = new $signer($algo);
+        assert($signerInstance instanceof AbstractSigner);
+        $this->signer = $signerInstance;
         return $this->signer;
     }
     

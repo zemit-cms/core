@@ -89,7 +89,7 @@ DOC;
         foreach ($files as $file) {
             $fileName = pathinfo($file, PATHINFO_FILENAME);
             if ($fileName !== 'index') {
-                $exports []= "export {{$fileName}} from './{$fileName}'";
+                $exports [] = "export {{$fileName}} from './{$fileName}'";
             }
         }
         
@@ -97,7 +97,7 @@ DOC;
         
         $ret ['exports'] = $exports;
         $ret ['filePath'] = $interfacesExportPath;
-        $ret ['saved']= $this->saveFile($interfacesExportPath, implode("\n", $exports));
+        $ret ['saved'] = $this->saveFile($interfacesExportPath, implode("\n", $exports));
         
         return $ret;
     }
@@ -186,13 +186,13 @@ DOC;
     
     public function appendExport(array $definitions, array &$exports)
     {
-        $exports['models'] []= "export {{$definitions['model']['name']}} from './{$definitions['model']['name']}'";
-        $exports['interfaces'] []= "export {{$definitions['interface']['name']}} from './{$definitions['interface']['name']}'";
-        $exports['services'] []= "export {{$definitions['service']['name']}} from './{$definitions['service']['name']}'";
-        $exports['abstracts'] []= "export {{$definitions['abstract']['name']}} from './{$definitions['abstract']['name']}'";
+        $exports['models'] [] = "export {{$definitions['model']['name']}} from './{$definitions['model']['name']}'";
+        $exports['interfaces'] [] = "export {{$definitions['interface']['name']}} from './{$definitions['interface']['name']}'";
+        $exports['services'] [] = "export {{$definitions['service']['name']}} from './{$definitions['service']['name']}'";
+        $exports['abstracts'] [] = "export {{$definitions['abstract']['name']}} from './{$definitions['abstract']['name']}'";
     }
     
-    public function createInterfaceOutput(array $definitions, array $columns) :string
+    public function createInterfaceOutput(array $definitions, array $columns): string
     {
         $propertyItems = str_replace('!: ', ': ', $this->getPropertyItems($columns));
         return <<<EOT
@@ -265,7 +265,7 @@ EOT;
         $relatedImportItems = [];
         if (!empty($related['import'])) {
             foreach ($related['import'] as $key => $value) {
-                $relatedImportItems []= 'import { ' . $key . ' } from \'./' . $key . '\';';
+                $relatedImportItems [] = 'import { ' . $key . ' } from \'./' . $key . '\';';
             }
         }
         return implode("\n", $relatedImportItems);
@@ -279,7 +279,7 @@ EOT;
         $relatedMapItems = [];
         if (!empty($related['default'])) {
             foreach ($related['default'] as $key => $value) {
-                $relatedMapItems []= '  ' . $key . ' = ' . $value . ',';
+                $relatedMapItems [] = '  ' . $key . ' = ' . $value . ',';
             }
         }
         return implode("\n", $relatedMapItems);
@@ -293,7 +293,7 @@ EOT;
         $relatedMapItems = [];
         if (!empty($related['map'])) {
             foreach ($related['map'] as $key => $value) {
-                $relatedMapItems []= '  ' . $key . '!: ' . $value . ';';
+                $relatedMapItems [] = '  ' . $key . '!: ' . $value . ';';
             }
         }
         return implode("\n", $relatedMapItems);
@@ -308,15 +308,22 @@ EOT;
         if (!empty($related['data'])) {
             foreach ($related['data'] as $key => $value) {
                 $type = str_replace('[]', '', $value);
-                $relatedMapItems []= '';
-                $relatedMapItems []= '  @Type(() => ' . $type . ')';
-                $relatedMapItems []= '  ' . $key . '!: ' . $value . ';';
+                assert(is_string($type));
+                $relatedMapItems [] = '';
+                $relatedMapItems [] = '  @Type(() => ' . $type . ')';
+                $relatedMapItems [] = '  ' . $key . '!: ' . $value . ';';
             }
         }
         return implode("\n", $relatedMapItems);
     }
     
-    public function getPropertyItems(array|ColumnInterface $columns): string
+    /**
+     * Returns a formatted string representation of the property items.
+     *
+     * @param ColumnInterface[] $columns An array of column objects.
+     * @return string A string representation of the property items.
+     */
+    public function getPropertyItems(array $columns): string
     {
         $propertyItems = [];
         foreach ($columns as $column) {
@@ -352,13 +359,15 @@ EOT;
             // add related map entry
             $related['map'][$relationAlias] = $relationModelName;
             
-            if ($relation->getType() === Relation::HAS_MANY ||
+            if (
+                $relation->getType() === Relation::HAS_MANY ||
                 $relation->getType() === Relation::HAS_MANY_THROUGH
             ) {
                 // set default value to empty array
                 $related['default'][$relationAlias] = '[]';
                 $related['data'][$relationAlias] = $relationModelName . '[]';
-            } else {
+            }
+            else {
                 $related['data'][$relationAlias] = $relationModelName;
             }
         }
@@ -523,7 +532,7 @@ EOT;
         if (!is_dir($directory)) {
             mkdir($directory, 0755, true);
         }
-
+        
         $file = fopen($file, 'w');
         return fwrite($file, $text) && fclose($file);
     }

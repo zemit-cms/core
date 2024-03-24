@@ -31,7 +31,7 @@ class ServiceProvider extends AbstractServiceProvider
             $secret = $options['secret'] ?? null;
             $requestMethod = $options['requestMethod'] ?? null;
             
-            $reCaptcha = new \ReCaptcha\ReCaptcha($secret, $requestMethod);
+            $reCaptcha = new \ReCaptcha\ReCaptcha($secret ?: '', $requestMethod);
             $reCaptcha->setExpectedHostname($options['expectedHostname'] ?? '');
             $reCaptcha->setExpectedApkPackageName($options['expectedApkPackageName'] ?? '');
             $reCaptcha->setExpectedAction($options['expectedAction'] ?? '');

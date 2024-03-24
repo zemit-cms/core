@@ -19,7 +19,6 @@ use Zemit\Provider\AbstractServiceProvider;
 
 class ServiceProvider extends AbstractServiceProvider
 {
-    
     protected string $serviceName = 'router';
     
     public function register(DiInterface $di): void
@@ -29,17 +28,19 @@ class ServiceProvider extends AbstractServiceProvider
             $bootstrap = $di->get('bootstrap');
             assert($bootstrap instanceof Bootstrap);
             
+            $config = $bootstrap->getConfig();
+            
             $router = $bootstrap->router ?? $bootstrap->isCli()
                 ? new CliRouter(true)
-                : new Router(true, $bootstrap->config);
+                : new Router(true, $config);
             
-            $defaults = $bootstrap->config->pathToArray($bootstrap->isCli() ? 'router.cli' : 'router.defaults') ?? [];
+            $defaults = $config->pathToArray($bootstrap->isCli() ? 'router.cli' : 'router.defaults') ?? [];
             $router->setDefaults($defaults);
             $router->setDI($di);
             
             if ($router instanceof Router) {
                 $router->setEventsManager($di->get('eventsManager'));
-                $router->setConfig($bootstrap->config);
+                $router->setConfig($config);
                 $router->baseRoutes();
                 $router->hostnamesRoutes();
                 $router->modulesRoutes($di->get('application'));

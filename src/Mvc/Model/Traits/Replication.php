@@ -13,6 +13,7 @@ namespace Zemit\Mvc\Model\Traits;
 
 use Phalcon\Config\ConfigInterface;
 use Phalcon\Db\Adapter\AdapterInterface;
+use Phalcon\Events\ManagerInterface;
 use Zemit\Mvc\Model\Traits\Abstracts\AbstractEventsManager;
 use Zemit\Mvc\Model\Traits\Abstracts\AbstractInjectable;
 
@@ -132,6 +133,7 @@ trait Replication
         
         // @todo change to behavior or check if this is added multiple times
         $eventsManager = $this->getEventsManager();
+        assert($eventsManager instanceof ManagerInterface);
         $eventsManager->attach('model:afterSave', $forceMasterConnectionService);
         $eventsManager->attach('model:afterCreate', $forceMasterConnectionService);
         $eventsManager->attach('model:afterUpdate', $forceMasterConnectionService);

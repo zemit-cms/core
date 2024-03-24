@@ -61,7 +61,7 @@ class Exposer
         $value = $builder->getValue();
         
         // Check if the key itself exists at first
-        if (isset($columns[$fullKey])) {
+        if (isset($fullKey, $columns[$fullKey])) {
             $column = $columns[$fullKey];
             
             // If boolean, set expose to the boolean value
@@ -92,11 +92,11 @@ class Exposer
                 
                 // If array is returned, parse the columns from the current context key and merge it with the builder
                 elseif (is_iterable($callbackReturn)) {
-                    $columns = self::parseColumnsRecursive($callbackReturn, $builder->getFullKey()) ?? [];
+                    $columns = self::parseColumnsRecursive($callbackReturn, $fullKey) ?? [];
                     
                     // If not set, set expose to false by default
-                    if (!isset($columns[$builder->getFullKey()])) {
-                        $columns[$builder->getFullKey()] = false;
+                    if (!isset($columns[$fullKey])) {
+                        $columns[$fullKey] = false;
                     }
                     
                     //@TODO handle with array_merge_recursive and handle array inside the columns parameters ^^
@@ -114,9 +114,9 @@ class Exposer
         // Otherwise, check if a parent key exists
         else {
             $parentKey = $fullKey;
-            $parentIndex = strrpos($parentKey, '.');
+            $parentIndex = isset($parentKey)? strrpos($parentKey, '.') : false;
             do {
-                $parentKey = $parentIndex ? substr($parentKey, 0, $parentIndex) : '';
+                $parentKey = $parentIndex && isset($parentKey) ? substr($parentKey, 0, $parentIndex) : '';
                 if (isset($columns[$parentKey])) {
                     $column = $columns[$parentKey];
                     if (is_bool($column)) {

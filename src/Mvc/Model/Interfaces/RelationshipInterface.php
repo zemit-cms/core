@@ -35,9 +35,9 @@ interface RelationshipInterface
     
     public function setRelationshipContext(string $context): void;
     
-    public function getDirtyRelated(): ?array;
+    public function getDirtyRelated(): array;
     
-    public function setDirtyRelated(?array $dirtyRelated = null): void;
+    public function setDirtyRelated(array $dirtyRelated): void;
     
     public function getDirtyRelatedAlias(string $alias): mixed;
     

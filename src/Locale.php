@@ -135,7 +135,7 @@ class Locale extends Injectable implements OptionsInterface
     /**
      * Get the default locale
      */
-    public function getDefault(): ?string
+    public function getDefault(): string
     {
         return $this->default;
     }
@@ -143,7 +143,7 @@ class Locale extends Injectable implements OptionsInterface
     /**
      * Set the default locale value
      */
-    public function setDefault(?string $locale = null): void
+    public function setDefault(string $locale): void
     {
         $this->default = $locale;
     }
@@ -276,7 +276,7 @@ class Locale extends Injectable implements OptionsInterface
         
         // base locale found without the region
         $force = false;
-        if ($locale === $lookup || strlen($lookup) === 2) {
+        if (isset($lookup) && ($locale === $lookup || strlen($lookup) === 2)) {
             $locale = $lookup;
             $force = true;
         }

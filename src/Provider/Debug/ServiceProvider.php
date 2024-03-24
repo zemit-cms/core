@@ -41,7 +41,7 @@ class ServiceProvider extends AbstractServiceProvider
             $debug = new Debug();
             
             if ($isEnabled && !$causeCyclicError && !$bootstrap->isCli()) {
-                $debugConfig = $config->pathToArray('debug');
+                $debugConfig = $config->pathToArray('debug') ?? [];
                 
                 $debug->listen($debugConfig['exception'] ?? true, $debugConfig['lowSeverity'] ?? false);
                 $debug->setBlacklist($debugConfig['blacklist'] ?? []);

@@ -96,6 +96,12 @@ trait EventsAwareTrait
     public function fire(string $task, mixed $data = null, bool $cancelable = false): mixed
     {
         $eventType = $this->getEventsPrefix() . ':' . $task;
-        return $this->getEventsManager()->fire($eventType, $this, $data, $cancelable);
+        $eventsManager = $this->getEventsManager();
+        
+        if (!$eventsManager instanceof ManagerInterface) {
+            throw new \InvalidArgumentException("Events manager must be an instance of '" . ManagerInterface::class . "'.");
+        }
+        
+        return $eventsManager->fire($eventType, $this, $data, $cancelable);
     }
 }

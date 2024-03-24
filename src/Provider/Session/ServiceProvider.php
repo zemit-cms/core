@@ -57,12 +57,16 @@ class ServiceProvider extends AbstractServiceProvider
             // Set the storage adapter
             $adapter = $options['adapter'];
             if (in_array($adapter, [Noop::class, Stream::class])) {
-                $session->setAdapter(new $adapter($options));
+                $adapterInstance = new $adapter($options);
+                assert($adapterInstance instanceof \SessionHandlerInterface);
+                $session->setAdapter($adapterInstance);
             }
             else {
                 $serializerFactory = new SerializerFactory();
                 $adapterFactory = new AdapterFactory($serializerFactory);
-                $session->setAdapter(new $adapter($adapterFactory, $options));
+                $adapterInstance = new $adapter($options);
+                assert($adapterInstance instanceof \SessionHandlerInterface);
+                $session->setAdapter($adapterInstance);
                 
                 // ini_set save_handler and save_path for redis
                 if ($adapter instanceof Redis) {

@@ -86,7 +86,8 @@ trait SearchConditions
         $bindTypes = [];
         
         foreach ($searchList as $searchTerm) {
-            foreach ($this->getSearchFields()?->toArray() as $searchField) {
+            $searchFields = $this->getSearchFields()?->toArray() ?? [];
+            foreach ($searchFields as $searchField) {
                 $field = $this->appendModelName($searchField);
                 $value = $this->generateBindKey('search');
                 

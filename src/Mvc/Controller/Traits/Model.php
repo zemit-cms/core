@@ -158,7 +158,7 @@ trait Model
      */
     public function appendModelName(string $field, ?string $modelName = null): string
     {
-        $modelName ??= $this->getModelName();
+        $modelName ??= $this->getModelName() ?? '';
         
         if (empty($field)) {
             return $field;

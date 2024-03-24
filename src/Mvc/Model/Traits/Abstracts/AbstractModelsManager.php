@@ -17,5 +17,5 @@ trait AbstractModelsManager
 {
     use AbstractInjectable;
     
-    abstract public function getModelsManager(): ?ManagerInterface;
+    abstract public function getModelsManager(): ManagerInterface;
 }

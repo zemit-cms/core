@@ -15,6 +15,7 @@ use JetBrains\PhpStorm\Deprecated;
 use Phalcon\Translate\Adapter\AbstractAdapter;
 use Phalcon\Translate\Exception;
 use Phalcon\Translate\InterpolatorFactory;
+use phpDocumentor\Reflection\PseudoTypes\NonEmptyString;
 
 /**
  * NestedNativeArray class is an implementation of the Translate Adapter interface that uses
@@ -68,7 +69,7 @@ class NestedNativeArray extends AbstractAdapter implements \ArrayAccess
     /**
      * Sets the value of the delimiter.
      *
-     * @param string $delimiter The delimiter value to set.
+     * @param non-empty-string $delimiter The delimiter value to set.
      */
     protected string $delimiter = '.';
     
@@ -85,7 +86,7 @@ class NestedNativeArray extends AbstractAdapter implements \ArrayAccess
     public function __construct(InterpolatorFactory $interpolator, array $options)
     {
         parent::__construct($interpolator, $options);
-        $this->delimiter = $options['delimiter'] ?? $this->delimiter;
+        $this->delimiter = $options['delimiter'] ?? $this->delimiter ?: '.';
         $this->triggerError = $options['triggerError'] ?? $this->triggerError;
         $this->translate = $options['content'] ?? $this->translate;
     }
@@ -120,7 +121,7 @@ class NestedNativeArray extends AbstractAdapter implements \ArrayAccess
             return $translate[$index];
         }
         
-        foreach (explode($this->delimiter, $index) as $nestedIndex) {
+        foreach (explode($this->delimiter ?: '.', $index) as $nestedIndex) {
             
             if (is_array($translate) && array_key_exists($nestedIndex, $translate)) {
                 $translate = $translate[$nestedIndex];
@@ -166,7 +167,7 @@ class NestedNativeArray extends AbstractAdapter implements \ArrayAccess
             return $translate[$translateKey];
         }
         
-        foreach (explode($this->delimiter, $translateKey) as $nestedIndex) {
+        foreach (explode($this->delimiter ?: '.', $translateKey) as $nestedIndex) {
             
             if (is_array($translate) && array_key_exists($nestedIndex, $translate)) {
                 $translate = $translate[$nestedIndex];

@@ -27,17 +27,23 @@ class Slug
             $string = str_replace(array_keys($replace), array_values($replace), $string);
         }
         $transliterator = Transliterator::create('Any-Latin; Latin-ASCII');
+        assert($transliterator instanceof Transliterator);
         $string = $transliterator->transliterate((string)mb_convert_encoding(htmlspecialchars_decode($string), 'UTF-8', 'auto'));
         self::restoreLocale($oldLocale);
         return self::cleanString($string, $delimiter);
     }
     
     /**
-     * Revert back to the old locale
+     * Restore the locale settings based on the provided old locale.
+     *
+     * @param string|string[] $oldLocale The old locale settings.
+     *                                   Can be either a string or an array of locale settings.
+     *                                   If a string, it will be parsed and converted to an array of locale settings.
+     * @return void
      */
-    private static function restoreLocale(string $oldLocale): void
+    private static function restoreLocale(string|array $oldLocale): void
     {
-        if ((stripos($oldLocale, '=') > 0)) {
+        if (is_string($oldLocale)) {
             parse_str(str_replace(';', '&', $oldLocale), $locales);
             $oldLocale = array_values($locales);
         }

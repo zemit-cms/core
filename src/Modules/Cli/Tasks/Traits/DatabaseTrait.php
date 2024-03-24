@@ -21,12 +21,12 @@ trait DatabaseTrait
 {
     use AbstractInjectable;
     
-    public ?array $drop = null;
-    public ?array $truncate = null;
-    public ?array $engine = null;
-    public ?array $insert = null;
-    public ?array $optimize = null;
-    public ?array $analyze = null;
+    public array $drop = [];
+    public array $truncate = [];
+    public array $engine = [];
+    public array $insert = [];
+    public array $optimize = [];
+    public array $analyze = [];
     
     /**
      * Default action
@@ -131,6 +131,7 @@ trait DatabaseTrait
             }
             
             foreach ($insert as $key => $row) {
+                assert(is_string($modelName) && class_exists($modelName));
                 $entity = new $modelName();
                 assert($entity instanceof Model);
                 

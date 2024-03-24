@@ -23,6 +23,7 @@ use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Support\Collection\CollectionInterface;
 use Zemit\Mvc\Model\Interfaces\RelationshipInterface;
+use Zemit\Mvc\Model\Interfaces\SoftDeleteInterface;
 use Zemit\Mvc\Model\Traits\Abstracts\AbstractEntity;
 use Zemit\Mvc\Model\Traits\Abstracts\AbstractMetaData;
 use Zemit\Mvc\Model\Traits\Abstracts\AbstractModelsManager;
@@ -42,7 +43,7 @@ trait Relationship
     
     private string $relationshipContext = '';
     
-    protected $dirtyRelated;
+//    protected $dirtyRelated = [];
     
     /**
      * Set the missing related configuration list
@@ -95,7 +96,7 @@ trait Relationship
     /**
      * Return the dirtyRelated entities
      */
-    public function getDirtyRelated(): ?array
+    public function getDirtyRelated(): array
     {
         return $this->dirtyRelated;
     }
@@ -103,7 +104,7 @@ trait Relationship
     /**
      * Set the dirtyRelated entities
      */
-    public function setDirtyRelated(?array $dirtyRelated = null): void
+    public function setDirtyRelated(array $dirtyRelated): void
     {
         $this->dirtyRelated = $dirtyRelated;
     }
@@ -525,13 +526,12 @@ trait Relationship
                             $nodeIdListToKeep [] = implode('.', $buildPrimaryKey);
                             
                             // Restoring node entities if previously soft deleted
-                            if (method_exists($nodeEntity, 'restore') && method_exists($nodeEntity, 'isDeleted')) {
-                                if ($nodeEntity->isDeleted() && !$nodeEntity->restore()) {
-                                    $this->appendMessagesFromRecord($nodeEntity, $lowerCaseAlias, $key);
-                                    $this->appendMessage(new Message('Unable to restored previously deleted related node `' . $intermediateModelClass . '`', $lowerCaseAlias, 'Bad Request', 400));
-                                    $connection->rollback($nesting);
-                                    return false;
-                                }
+                            if ($nodeEntity instanceof SoftDeleteInterface && $nodeEntity->isDeleted() && !$nodeEntity->restore()) {
+                                assert($nodeEntity instanceof ModelInterface);
+                                $this->appendMessagesFromRecord($nodeEntity, $lowerCaseAlias, $key);
+                                $this->appendMessage(new Message('Unable to restored previously deleted related node `' . $intermediateModelClass . '`', $lowerCaseAlias, 'Bad Request', 400));
+                                $connection->rollback($nesting);
+                                return false;
                             }
                             
                             // save edge record
@@ -544,8 +544,12 @@ trait Relationship
                             }
                             
                             // remove it
-                            unset($assign[$key]);
                             unset($related[$lowerCaseAlias][$key]);
+                            
+                            // @todo see if we have to remove from object too
+                            if (is_array($assign)) {
+                                unset($assign[$key]);
+                            }
 
 //                            // add to assign
 //                            $nodeAssign [] = $nodeEntity;
@@ -722,12 +726,16 @@ trait Relationship
         assert($this instanceof EntityInterface);
         
         $alias = $configuration['alias'] ?? null;
-        $fields = $configuration['fields'] ?? null;
+        $fields = $configuration['fields'] ?? [];
         $modelClass = $configuration['modelClass'] ?? null;
         $readFields = $configuration['readFields'] ?? null;
         $type = $configuration['type'] ?? null;
         $whiteList = $configuration['whiteList'] ?? null;
         $dataColumnMap = $configuration['dataColumnMap'] ?? null;
+        
+        if (!is_array($fields)) {
+            throw new \Exception('Parameter `fields` must be an array');
+        }
         
         if (!isset($modelClass)) {
             throw new \Exception('Parameter `modelClass` is mandatory');
@@ -793,7 +801,9 @@ trait Relationship
         
         // assign new values
         // can be null to bypass, empty array for nothing or filled array
-        $entity->assign($data, $whiteList[$alias] ?? null, $dataColumnMap[$alias] ?? null);
+        $whiteListAlias = isset($whiteList, $alias)? $whiteList[$alias] ?? [] : null;
+        $dataColumnMapAlias = isset($dataColumnMap, $alias)? $dataColumnMap[$alias] ?? [] : null;
+        $entity->assign($data, $whiteListAlias, $dataColumnMapAlias);
 //        $entity->setDirtyState(self::DIRTY_STATE_TRANSIENT);
         
         return $entity;

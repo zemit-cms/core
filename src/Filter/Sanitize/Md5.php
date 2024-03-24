@@ -13,7 +13,7 @@ namespace Zemit\Filter\Sanitize;
 
 class Md5
 {
-    public function __invoke(?string $input = null): ?string
+    public function __invoke(string $input): ?string
     {
         return preg_replace('/[^0-9a-f]/', '', $input);
     }

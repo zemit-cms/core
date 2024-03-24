@@ -33,10 +33,10 @@ class ServiceProvider extends AbstractServiceProvider
             $config = $di->get('config');
             assert($config instanceof ConfigInterface);
             
-            $cacheConfig = $config->pathToArray('cache', []);
+            $cacheConfig = $config->pathToArray('cache') ?? [];
             
             $driverNameKey = $bootstrap->isCli() ? 'cli' : 'driver';
-            $driverName = $cacheConfig[$driverNameKey];
+            $driverName = $cacheConfig[$driverNameKey] ?? 'memory';
             $driverOptions = $cacheConfig['drivers'][$driverName] ?? [];
             $defaultOptions = $cacheConfig['default'] ?? [];
             $options = array_merge($defaultOptions, $driverOptions);

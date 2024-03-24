@@ -49,12 +49,12 @@ DOC;
         Utils::setUnlimitedRuntime();
         
         $deploymentConfig = new Deployment();
-        $this->drop ??= $deploymentConfig->pathToArray('drop') ?? [];
-        $this->truncate ??= $deploymentConfig->pathToArray('truncate') ?? [];
-        $this->engine ??= $deploymentConfig->pathToArray('engine') ?? [];
-        $this->insert ??= $deploymentConfig->pathToArray('insert') ?? [];
-        $this->optimize ??= $deploymentConfig->pathToArray('optimize') ?? [];
-        $this->analyze ??= $deploymentConfig->pathToArray('analyze') ?? [];
+        $this->drop = $deploymentConfig->pathToArray('drop') ?? [];
+        $this->truncate = $deploymentConfig->pathToArray('truncate') ?? [];
+        $this->engine = $deploymentConfig->pathToArray('engine') ?? [];
+        $this->insert = $deploymentConfig->pathToArray('insert') ?? [];
+        $this->optimize = $deploymentConfig->pathToArray('optimize') ?? [];
+        $this->analyze = $deploymentConfig->pathToArray('analyze') ?? [];
         
         $this->addModelsPermissions();
     }

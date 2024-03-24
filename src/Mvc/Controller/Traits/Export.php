@@ -80,10 +80,11 @@ trait Export
     public function getFilename(): string
     {
         $suffix = ' List (' . date('Y-m-d') . ')';
+        $modelName = $this->getModelName() ?? '';
         return ucfirst(
             Slug::generate(
                 basename(
-                    str_replace('\\', '/', $this->getModelName())
+                    str_replace('\\', '/', $modelName)
                 )
             )
         ) . $suffix;

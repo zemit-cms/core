@@ -73,7 +73,14 @@ trait FilterConditions
             
             // nesting filtering, switch logical and append filter group
             if (is_array($filter)) {
-                [$query[], $bind[], $bindTypes[]] = $this->defaultFilterCondition($filter, $allowedFilters, !$or);
+                $defaultFilterCondition = $this->defaultFilterCondition($filter, $allowedFilters, !$or);
+                if (is_string($defaultFilterCondition)) {
+                    $query []= $defaultFilterCondition;
+                } elseif (is_array($defaultFilterCondition)) {
+                    $query[] = $defaultFilterCondition[0] ?? null;
+                    $bind[] = $defaultFilterCondition[1] ?? null;
+                    $bindTypes[] = $defaultFilterCondition[2] ?? null;
+                }
                 continue;
             }
             

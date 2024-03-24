@@ -29,7 +29,8 @@ final class Loader
     
     public array $options = [];
     
-    private const E_INVALID_SUBJECT = 'Expected value of `subject` to be either a ModelInterface object, a Simple object or an array of ModelInterface objects';
+    private const E_INVALID_SUBJECT = 'Expected value of `subject` to be either a ModelInterface object, a Simple object or an array of ModelInterface objects.';
+    private const E_INVALID_CLASSNAME = 'Expected value of `className` to be either an existing class name.';
     
     /**
      * Constructs a new instance of the class.
@@ -102,6 +103,9 @@ final class Loader
         
         if ($error) {
             throw new \InvalidArgumentException(self::E_INVALID_SUBJECT);
+        }
+        if (!isset($className) || !class_exists($className)) {
+            throw new \InvalidArgumentException(self::E_INVALID_CLASSNAME);
         }
         
         $this->subject = $from;

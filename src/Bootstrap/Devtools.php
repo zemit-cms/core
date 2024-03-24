@@ -19,11 +19,15 @@ class Devtools extends Config
     
         $databaseConfig = $this->pathToArray('database');
         $driverName = $databaseConfig['default'] ?? 'mysql';
-        $driverOptions = $databaseConfig['drivers'][$driverName];
+        $driverOptions = $databaseConfig['drivers'][$driverName] ?? [];
+        $adapterClass = $driverOptions['adapter'] ?? null;
+        
+        if (!isset($adapterClass) || !is_string($adapterClass)) {
+            throw new \InvalidArgumentException('A valid database adapter class must be provided.');
+        }
     
-        $driverOptions['adapter'] = basename(str_replace('\\', '/', ($driverOptions['adapter'])));
+        $driverOptions['adapter'] = basename(str_replace('\\', '/', $adapterClass));
         unset($driverOptions['readonly']);
-//        unset($driverOptions['options']);
         
         $this->set('database', $driverOptions);
     }

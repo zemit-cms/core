@@ -54,7 +54,7 @@ class Router extends \Zemit\Mvc\Router
             'params' => 3,
         ])->setName('default-controller-action');
         
-        $localeConfig = $this->getConfig()->get('locale')->toArray();
+        $localeConfig = $this->getConfig()->pathToArray('locale') ?? [];
         
         if (!empty($localeConfig['allowed'])) {
             $localeRegex = '{locale:(' . implode('|', $localeConfig['allowed']) . ')}';

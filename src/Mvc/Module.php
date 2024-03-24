@@ -47,7 +47,9 @@ class Module extends Injectable implements ModuleDefinitionInterface
      */
     public function registerAutoloaders(DiInterface $container = null): void
     {
-        $this->getServices($container);
+        $this->loader ??= $container['loader'] ?? new Loader();
+        assert($this->loader instanceof Loader);
+        
         $this->loader->setNamespaces($this->getNamespaces(), true);
         $this->loader->register();
     }
@@ -58,6 +60,11 @@ class Module extends Injectable implements ModuleDefinitionInterface
     public function registerServices(DiInterface $container): void
     {
         $this->getServices($container);
+        
+        assert($this->url instanceof Url);
+        assert($this->view instanceof View);
+        assert($this->router instanceof Router);
+        assert($this->dispatcher instanceof Dispatcher);
         
         $defaultNamespace = $this->getDefaultNamespace();
         $this->dispatcher->setDefaultNamespace($defaultNamespace);
@@ -86,12 +93,12 @@ class Module extends Injectable implements ModuleDefinitionInterface
     
     public function getServices(DiInterface $container = null): void
     {
-        $this->config ??= $container['config'] ??= new Config();
-        $this->loader ??= $container['loader'] ??= new Loader();
-        $this->router ??= $container['router'] ??= new Router();
-        $this->dispatcher ??= $container['dispatcher'] ??= new Dispatcher();
-        $this->view ??= $container['view'] ??= new View();
-        $this->url ??= $container['url'] ??= new Url();
+        $this->loader ??= $container['loader'] ?? new Loader();
+        $this->config ??= $container['config'] ?? new Config();
+        $this->router ??= $container['router'] ?? new Router();
+        $this->dispatcher ??= $container['dispatcher'] ?? new Dispatcher();
+        $this->view ??= $container['view'] ?? new View();
+        $this->url ??= $container['url'] ?? new Url();
     }
     
     public function setServices(DiInterface $container): void

@@ -74,7 +74,7 @@ DOC;
         foreach ($this->models as $modelClass => $policyName) {
             
             // retrieve configured model the policy
-            $policy = $this->policies[$policyName] ?? null;
+            $policy = $this->policies[$policyName] ?? [];
             
             // load an instance of the model class
             $model = $this->modelsManager->load($modelClass);
