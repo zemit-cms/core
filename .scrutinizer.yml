@@ -36,17 +36,17 @@ build:
             - redis
             - memcached
             - apcu
-            - phalcon-5.6.1
+            - phalcon-5.6.2
           ini:
             memory_limit: -1
       dependencies:
         before:
           - composer self-update
         after:
-          - composer require --dev phalcon/ide-stubs:5.6.1
-          - composer require --dev phpunit/phpunit
-          - composer require --dev squizlabs/php_codesniffer
-          - composer require --dev phpstan/phpstan
+#          - composer require --dev phalcon/ide-stubs:5.6.2
+#          - composer require --dev phpunit/phpunit
+#          - composer require --dev squizlabs/php_codesniffer
+#          - composer require --dev phpstan/phpstan
           - mysql -h 127.0.0.1 -u root -e 'create database zemit_core'
           - chmod +x ./bin/* ./vendor/bin/* ./zemit
           - mkdir .phalcon
