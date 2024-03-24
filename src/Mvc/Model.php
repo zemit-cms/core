@@ -67,6 +67,18 @@ class Model extends \Phalcon\Mvc\Model implements ModelInterface
     use Model\Traits\Uuid;
     use Model\Traits\Validate;
     
+    /**
+     * Fix bug phalcon, despite phalcon stub and core code state that dirtyRelated is defined
+     * with an empty array, it seems that the dirtyRelated default value is not set at all.
+     * This is why we are redefining it here, so we can make the static code analyzers happy.
+     * 
+     * Fatal error: Phalcon\Mvc\Model and Zemit\Mvc\Model\Traits\Relationship
+     * define the same property ($dirtyRelated) in the composition of Zemit\Mvc\Model.
+     * However, the definition differs and is considered incompatible.
+     * @var array 
+     */
+    protected $dirtyRelated = [];
+    
     public function initialize(): void
     {
         // Initialize options manager

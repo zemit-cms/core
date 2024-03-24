@@ -43,7 +43,7 @@ trait Relationship
     
     private string $relationshipContext = '';
     
-//    protected $dirtyRelated = [];
+    protected $dirtyRelated = [];
     
     /**
      * Set the missing related configuration list
