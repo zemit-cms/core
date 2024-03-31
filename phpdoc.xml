@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor
+        configVersion="3"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://www.phpdoc.org"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/phpDocumentor/phpDocumentor/master/data/xsd/phpdoc.xsd"
+>
+    <title>Zemit Project Documentation</title>
+    
+    <paths>
+        <output>docs</output>
+    </paths>
+
+    <version number="latest">
+        <api>
+            <source dsn=".">
+                <path>src</path>
+            </source>
+            <ignore hidden="true" symlinks="true">
+                <path>tests/**/*</path>
+                <path>vendor/**/*</path>
+            </ignore>
+        </api>
+    </version>
+    
+    <template name="vendor/saggre/phpdocumentor-markdown/themes/markdown"/>
+</phpdocumentor>
