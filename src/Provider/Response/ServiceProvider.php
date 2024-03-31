@@ -12,7 +12,7 @@
 namespace Zemit\Provider\Response;
 
 use Phalcon\Di\DiInterface;
-use Phalcon\Http\Response;
+use Zemit\Http\Response;
 use Zemit\Config\ConfigInterface;
 use Zemit\Provider\AbstractServiceProvider;
 
