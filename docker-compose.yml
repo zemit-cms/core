@@ -1,0 +1,69 @@
+version: '3'
+
+services:
+  php-fpm:
+    build:
+      context: .
+      dockerfile: docker/php-fpm-alpine-phalcon/Dockerfile
+      args:
+        PHP_VERSION: "8.2-fpm-alpine"
+        PHALCON_VERSION: "5.6.2"
+    entrypoint: ["sh", "/usr/local/bin/entrypoint.sh", "php-fpm"]
+    volumes:
+      - ./docker/entrypoint.sh:/usr/local/bin/entrypoint.sh
+      - ./:/var/www/html
+    depends_on:
+      - db
+      - redis
+    networks:
+      - zemit-network
+
+  apache:
+    image: httpd:alpine
+    volumes:
+      - ./:/var/www/html
+      - ../AdminV3/dist/:/var/www/html/public/admin/
+      - ./docker/apache/conf/zemit-httpd.conf:/usr/local/apache2/conf/zemit-httpd.conf
+    command: >
+      /bin/sh -c "
+      apk update &&
+      apk add --no-cache openssl &&
+      openssl req -x509 -nodes -days 365 -newkey rsa:2048 
+      -keyout /usr/local/apache2/conf/server.key -out /usr/local/apache2/conf/server.crt 
+      -subj '/C=US/ST=State/L=City/O=Organization/CN=localhost' &&
+      echo 'Include /usr/local/apache2/conf/zemit-httpd.conf' >> /usr/local/apache2/conf/httpd.conf &&
+      httpd-foreground"
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+#      - ssl-generator
+      - php-fpm
+    networks:
+      - zemit-network
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DATABASE_DBNAME}
+      MYSQL_USER: ${DATABASE_USERNAME}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./docker/mysql/init-scripts:/docker-entrypoint-initdb.d
+    networks:
+        - zemit-network
+
+  redis:
+    image: redis:alpine
+    networks:
+      - zemit-network
+
+networks:
+  zemit-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+  ssl_certs:
