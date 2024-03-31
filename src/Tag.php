@@ -12,6 +12,7 @@
 namespace Zemit;
 
 use AssertionError;
+use Phalcon\Di\Di;
 use Phalcon\Tag as PhalconTag;
 use Phalcon\Html\Escaper;
 use Phalcon\Html\Escaper\EscaperInterface;
@@ -98,7 +99,8 @@ class Tag extends PhalconTag
      */
     public static function getEscaperService(): EscaperInterface
     {
-        @$escaper = PhalconTag::getEscaperService();
+//        $escaper = PhalconTag::getEscaperService();
+        $escaper = Di::getDefault()->get('escaper');
         assert($escaper instanceof Escaper);
         return $escaper;
     }
