@@ -36,14 +36,31 @@ trait DatabaseTrait
     {
         $response = [];
         
-        $response ['truncate'] = $this->truncateAction();
-        $response ['drop'] = $this->dropAction();
         $response ['engine'] = $this->fixEngineAction();
-        $response ['insert'] = $this->insertAction();
         $response ['optimize'] = $this->optimizeAction();
         $response ['analyze'] = $this->analyzeAction();
         
         return $response;
+    }
+    
+    /**
+     * The resetAction method is responsible for resetting the state of the application by performing
+     * the following actions:
+     * 
+     * 1. Truncate database tables using the truncateAction method.
+     * 2. Insert initial data into the database using the insertAction method.
+     *
+     * Use Case:
+     * 
+     * This method can be used when you need to reset the state of the application to its initial state.
+     * It is commonly used for testing or when you want to re-populate the database with initial data.
+     *
+     * @return void
+     */
+    public function resetAction(): void
+    {
+        $response ['truncate'] = $this->truncateAction();
+        $response ['insert'] = $this->insertAction();
     }
     
     /**
