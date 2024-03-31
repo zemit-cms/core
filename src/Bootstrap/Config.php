@@ -253,7 +253,7 @@ class Config extends \Zemit\Config\Config
                 'corsHeaders' => [
                     'Access-Control-Allow-Origin' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_ALLOW_ORIGIN', '*'),
                     'Access-Control-Allow-Methods' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_ALLOW_METHODS', 'GET, POST, OPTIONS, PUT, PATCH, DELETE'),
-                    'Access-Control-Allow-Headers' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_ALLOW_HEADERS', 'Origin, X-Requested-With, Content-Range, Content-Disposition, Content-Type, Authorization'),
+                    'Access-Control-Allow-Headers' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_ALLOW_HEADERS', 'Origin, X-Requested-With, Content-Range, Content-Disposition, Content-Type, Authorization, X-Authorization'),
                     'Access-Control-Allow-Credentials' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_ALLOW_CREDENTIALS', 'true'),
                     'Access-Control-Max-Age' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_MAX_AGE', '600'),
 //                    'Access-Control-Expose-Headers' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_EXPOSE_HEADERS', '*'),
@@ -726,9 +726,9 @@ class Config extends \Zemit\Config\Config
              */
             'locale' => [
                 'default' => Env::get('LOCALE_DEFAULT', 'en'),
+                'allowed' => explode(',', Env::get('LOCALE_ALLOWED', 'en')),
                 'sessionKey' => Env::get('LOCALE_SESSION_KEY', 'zemit-locale'),
                 'mode' => Env::get('LOCALE_MODE', Locale::MODE_DEFAULT),
-                'allowed' => explode(',', Env::get('LOCALE_ALLOWED', 'en')),
             ],
             
             /**
@@ -1012,7 +1012,7 @@ class Config extends \Zemit\Config\Config
                 'drivers' => [
                     'mysql' => [
                         'adapter' => Env::get('DATABASE_MYSQL_ADAPTER', \Zemit\Db\Adapter\Pdo\Mysql::class),
-                        'dialectClass' => Env::get('DATABASE_DIALECT_CLASS', \Zemit\Db\Dialect\Mysql::class),
+                        'dialectClass' => Env::get('DATABASE_MYSQL_DIALECT', \Zemit\Db\Dialect\Mysql::class),
                         'host' => Env::get('DATABASE_HOST', 'localhost'),
                         'port' => Env::get('DATABASE_PORT', 3306),
                         'dbname' => Env::get('DATABASE_DBNAME', ''),
@@ -1020,12 +1020,12 @@ class Config extends \Zemit\Config\Config
                         'password' => Env::get('DATABASE_PASSWORD', ''),
                         'charset' => Env::get('DATABASE_CHARSET', 'utf8'),
                         'options' => [
-                            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . Env::get('DATABASE_CHARSET', 'utf8') .
+                            \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . Env::get('DATABASE_CHARSET', 'utf8') .
                             ', sql_mode = \'' . Env::get('DATABASE_SQL_MODE', 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION') . '\'',
-                            PDO::ATTR_EMULATE_PREPARES => Env::get('DATABASE_PDO_EMULATE_PREPARES', false), // https://stackoverflow.com/questions/10113562/pdo-mysql-use-pdoattr-emulate-prepares-or-not
-                            PDO::ATTR_STRINGIFY_FETCHES => Env::get('DATABASE_PDO_STRINGIFY_FETCHES', false),
-                            PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => Env::get('MYSQL_ATTR_SSL_VERIFY_SERVER_CERT', true),
-                            PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => Env::get('MYSQL_ATTR_USE_BUFFERED_QUERY', true),
+                            \PDO::ATTR_EMULATE_PREPARES => Env::get('DATABASE_EMULATE_PREPARES', false), // https://stackoverflow.com/questions/10113562/pdo-mysql-use-pdoattr-emulate-prepares-or-not
+                            \PDO::ATTR_STRINGIFY_FETCHES => Env::get('DATABASE_STRINGIFY_FETCHES', false),
+                            \PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => Env::get('DATABASE_SSL_VERIFY_SERVER_CERT', true),
+                            \PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => Env::get('DATABASE_USE_BUFFERED_QUERY', true),
                         ],
                         /**
                          * Readonly Configuration
