@@ -28,10 +28,6 @@ trait DispatcherTrait
     
     abstract public function getHandlerSuffix(): string;
 
-//    abstract public function getTaskName(): string;
-
-//    abstract public function getControllerName(): string;
-    
     abstract public function getActionSuffix(): string;
     
     abstract public function getActiveMethod(): string;
