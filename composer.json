@@ -61,7 +61,6 @@
     "ext-mbstring": "*",
     "ext-pdo": "*",
     "ext-phalcon": ">=5.6",
-    "ext-psr": "*",
     "ext-sodium": "*",
     "docopt/docopt": "^1.0",
     "league/flysystem": "^3.25",
@@ -136,6 +135,7 @@
     "phpspec/phpspec": "^7.5",
     "phpstan/phpstan": "^1.10",
     "phpunit/phpunit": "^10.5",
+    "saggre/phpdocumentor-markdown": "^0.1.4",
     "shuchkin/simplexlsxgen": "^1.4",
     "smarty/smarty": "^4.4",
     "spatie/array-to-xml": "^3.2",
@@ -183,6 +183,7 @@
     "zemit"
   ],
   "scripts": {
-    "psalm": "vendor/bin/psalm --config=psalm.xml"
+    "psalm": "vendor/bin/psalm --config=psalm.xml",
+    "docs": "phpDocumentor -c phpdoc.xml"
   }
 }
