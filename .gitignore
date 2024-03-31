@@ -38,4 +38,5 @@ taints.dot
 phive.phar.asc
 
 # PHPDocumentor
+.phpdoc/
 build/api-cache
