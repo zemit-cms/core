@@ -33,3 +33,9 @@ phpunit-clover.xml
 # PSALM
 results.sarif
 taints.dot
+
+# Phive Phar
+phive.phar.asc
+
+# PHPDocumentor
+build/api-cache
