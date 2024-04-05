@@ -55,12 +55,16 @@ trait DatabaseTrait
      * This method can be used when you need to reset the state of the application to its initial state.
      * It is commonly used for testing or when you want to re-populate the database with initial data.
      *
-     * @return void
+     * @return array
      */
-    public function resetAction(): void
+    public function resetAction(): array
     {
+        $response = [];
+        
         $response ['truncate'] = $this->truncateAction();
         $response ['insert'] = $this->insertAction();
+        
+        return $response;
     }
     
     /**
