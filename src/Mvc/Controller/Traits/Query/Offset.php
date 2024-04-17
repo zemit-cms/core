@@ -52,8 +52,8 @@ trait Offset
      */
     public function setOffset(?int $offset): void
     {
-        if ($this->limit < 0) {
-            throw new \Exception("Query offset ({$this->limit}) must be higher than or equal to 0", 400);
+        if ($this->offset < 0) {
+            throw new \Exception("Query offset ({$this->offset}) must be higher than or equal to 0", 400);
         }
         
         $this->offset = $offset;
