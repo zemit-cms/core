@@ -56,12 +56,29 @@ trait Params
                 $this->request->setParameterFilters($filter['name'], $filter['filters'], $filter['scope']);
             }
         }
+        
+        if ($this->request->isGet()) {
+            $params = $this->request->getFilteredQuery();
+        }
+        else if ($this->request->isPost()) {
+            $params = $this->request->getFilteredPost();
+        }
+        else if ($this->request->isPatch()) {
+            $params = $this->request->getFilteredPatch();
+        }
+        else if ($this->request->isPut()) {
+            $params = $this->request->getFilteredPut();
+        }
+        else {
+            $params = [];
+        }
 
-        $params = array_merge_recursive(
-            $this->request->getFilteredQuery(), // $_GET
-            $this->request->getFilteredPut(), // $_PUT
-            $this->request->getFilteredPost(), // $_POST
-        );
+//        $params = array_merge_recursive(
+//            $this->request->getFilteredQuery(), // $_GET
+////            $this->request->getFilteredPatch(), // $_PATCH
+//            $this->request->getFilteredPut(), // $_PUT
+//            $this->request->getFilteredPost(), // $_POST
+//        );
         
         // remove default phalcon _url param
         if (isset($params['_url'])) {
