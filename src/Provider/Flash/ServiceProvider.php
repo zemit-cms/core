@@ -30,6 +30,7 @@ class ServiceProvider extends AbstractServiceProvider
         $cssStyle = $this->cssStyle;
         $di->setShared($this->getName(), function () use ($di, $cssStyle) {
             
+            // @todo
             $flash = new Direct();
             $flash->setAutoescape(true);
             $flash->setDI($di);
