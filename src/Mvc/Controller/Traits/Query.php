@@ -866,7 +866,7 @@ trait Query
     public function getSingle(?int $id = null, ?string $modelName = null, ?array $with = null, ?array $find = null): ?ModelInterface
     {
         $id ??= $this->getParam('id', [Filter::FILTER_INT]);
-        $uuid = $this->getParam('uuid', [Filter::FILTER_ALNUM]);
+        $uuid = $this->getParam('uuid', [Filter::FILTER_STRING]);
         
         // no ID or UUID provided, avoid doing the request
         if (empty($id) && empty($uuid)) {
