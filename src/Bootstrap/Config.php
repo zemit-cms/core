@@ -213,7 +213,7 @@ class Config extends \Zemit\Config\Config
                 'showFileFragment' => Env::get('DEBUG_SHOW_FRAGMENT', true),
                 'uri' => Env::get('DEBUG_URI'),
                 'blacklist' => [
-                    'server' => [
+                    'server' => array_merge(explode(' ', Env::get('DEBUG_BLACKLIST', '')), [
                         'PWD',
                         'PASS',
                         'PASSWD',
@@ -234,7 +234,7 @@ class Config extends \Zemit\Config\Config
                         'SECRET',
                         'API_SECRET',
                         'API_KEY',
-                    ],
+                    ]),
                 ],
             ],
             
@@ -283,59 +283,43 @@ class Config extends \Zemit\Config\Config
              *
              */
             'models' => [
-                
-                // Base system
-                Models\Backup::class => Models\Backup::class,
-                Models\Audit::class => Models\Audit::class,
-                Models\AuditDetail::class => Models\AuditDetail::class,
-                Models\Log::class => Models\Log::class,
-                Models\Email::class => Models\Email::class,
-                Models\Job::class => Models\Job::class,
-                Models\File::class => Models\File::class,
-                Models\Session::class => Models\Session::class,
-                Models\Flag::class => Models\Flag::class,
-                Models\Setting::class => Models\Setting::class,
-                
-                // Translate
-                Models\Lang::class => Models\Lang::class,
-                Models\Translate::class => Models\Translate::class,
-                Models\TranslateField::class => Models\TranslateField::class,
-                Models\TranslateTable::class => Models\TranslateTable::class,
-                
-                // Site & CMS
-                Models\Workspace::class => Models\Workspace::class,
-                Models\WorkspaceLang::class => Models\WorkspaceLang::class,
-                Models\Page::class => Models\Page::class,
-                Models\Post::class => Models\Post::class,
-                Models\Template::class => Models\Template::class,
-                Models\Table::class => Models\Table::class,
-                Models\Field::class => Models\Field::class,
-                
-                // User & Permissions
-                Models\Oauth2::class => Models\Oauth2::class,
-                Models\Profile::class => Models\Profile::class,
-                Models\User::class => Models\User::class,
-                Models\UserType::class => Models\UserType::class,
-                Models\UserGroup::class => Models\UserGroup::class,
-                Models\UserRole::class => Models\UserRole::class,
-                Models\UserFeature::class => Models\UserFeature::class,
-                
-                // Role
-                Models\Role::class => Models\Role::class,
-                Models\RoleRole::class => Models\RoleRole::class,
-                Models\RoleFeature::class => Models\RoleFeature::class,
-                
-                // Group
-                Models\Group::class => Models\Group::class,
-                Models\GroupRole::class => Models\GroupRole::class,
-                Models\GroupType::class => Models\GroupType::class,
-                Models\GroupFeature::class => Models\GroupFeature::class,
-                
-                // Type
-                Models\Type::class => Models\Type::class,
-                
-                // Feature
-                Models\Feature::class => Models\Feature::class,
+                \Zemit\Models\Backup::class => Env::get('MODEL_BACKUP', \Zemit\Models\Backup::class),
+                \Zemit\Models\Audit::class => Env::get('MODEL_AUDIT', \Zemit\Models\Audit::class),
+                \Zemit\Models\AuditDetail::class => Env::get('MODEL_AUDIT_DETAIL', \Zemit\Models\AuditDetail::class),
+                \Zemit\Models\Log::class => Env::get('MODEL_LOG', \Zemit\Models\Log::class),
+                \Zemit\Models\Email::class => Env::get('MODEL_EMAIL', \Zemit\Models\Email::class),
+                \Zemit\Models\Job::class => Env::get('MODEL_JOB', \Zemit\Models\Job::class),
+                \Zemit\Models\File::class => Env::get('MODEL_FILE', \Zemit\Models\File::class),
+                \Zemit\Models\Session::class => Env::get('MODEL_SESSION', \Zemit\Models\Session::class),
+                \Zemit\Models\Flag::class => Env::get('MODEL_FLAG', \Zemit\Models\Flag::class),
+                \Zemit\Models\Setting::class => Env::get('MODEL_SETTING', \Zemit\Models\Setting::class),
+                \Zemit\Models\Lang::class => Env::get('MODEL_LANG', \Zemit\Models\Lang::class),
+                \Zemit\Models\Translate::class => Env::get('MODEL_TRANSLATE', \Zemit\Models\Translate::class),
+                \Zemit\Models\TranslateField::class => Env::get('MODEL_TRANSLATE_FIELD', \Zemit\Models\TranslateField::class),
+                \Zemit\Models\TranslateTable::class => Env::get('MODEL_TRANSLATE_TABLE', \Zemit\Models\TranslateTable::class),
+                \Zemit\Models\Workspace::class => Env::get('MODEL_WORKSPACE', \Zemit\Models\Workspace::class),
+                \Zemit\Models\WorkspaceLang::class => Env::get('MODEL_WORKSPACE_LANG', \Zemit\Models\WorkspaceLang::class),
+                \Zemit\Models\Page::class => Env::get('MODEL_PAGE', \Zemit\Models\Page::class),
+                \Zemit\Models\Post::class => Env::get('MODEL_POST', \Zemit\Models\Post::class),
+                \Zemit\Models\Template::class => Env::get('MODEL_TEMPLATE', \Zemit\Models\Template::class),
+                \Zemit\Models\Table::class => Env::get('MODEL_TABLE', \Zemit\Models\Table::class),
+                \Zemit\Models\Field::class => Env::get('MODEL_FIELD', \Zemit\Models\Field::class),
+                \Zemit\Models\Oauth2::class => Env::get('MODEL_OAUTH_2', \Zemit\Models\Oauth2::class),
+                \Zemit\Models\Profile::class => Env::get('MODEL_PROFILE', \Zemit\Models\Profile::class),
+                \Zemit\Models\User::class => Env::get('MODEL_USER', \Zemit\Models\User::class),
+                \Zemit\Models\UserType::class => Env::get('MODEL_USER_TYPE', \Zemit\Models\UserType::class),
+                \Zemit\Models\UserGroup::class => Env::get('MODEL_USER_GROUP', \Zemit\Models\UserGroup::class),
+                \Zemit\Models\UserRole::class => Env::get('MODEL_USER_ROLE', \Zemit\Models\UserRole::class),
+                \Zemit\Models\UserFeature::class => Env::get('MODEL_USER_FEATURE', \Zemit\Models\UserFeature::class),
+                \Zemit\Models\Role::class => Env::get('MODEL_ROLE', \Zemit\Models\Role::class),
+                \Zemit\Models\RoleRole::class => Env::get('MODEL_ROLE_ROLE', \Zemit\Models\RoleRole::class),
+                \Zemit\Models\RoleFeature::class => Env::get('MODEL_ROLE_FEATURE', \Zemit\Models\RoleFeature::class),
+                \Zemit\Models\Group::class => Env::get('MODEL_GROUP', \Zemit\Models\Group::class),
+                \Zemit\Models\GroupRole::class => Env::get('MODEL_GROUP_ROLE', \Zemit\Models\GroupRole::class),
+                \Zemit\Models\GroupType::class => Env::get('MODEL_GROUP_TYPE', \Zemit\Models\GroupType::class),
+                \Zemit\Models\GroupFeature::class => Env::get('MODEL_GROUP_FEATURE', \Zemit\Models\GroupFeature::class),
+                \Zemit\Models\Type::class => Env::get('MODEL_TYPE', \Zemit\Models\Type::class),
+                \Zemit\Models\Feature::class => Env::get('MODEL_FEATURE', \Zemit\Models\Feature::class),
             ],
             
             'dataLifeCycle' => [
@@ -473,6 +457,32 @@ class Config extends \Zemit\Config\Config
              * Filter Services
              */
             'filters' => [
+            ],
+            
+            /**
+             * Flash Service
+             */
+            'flash' => [
+                'driver' => Env::get('FLASH_DRIVER', 'direct'),
+                'drivers' => [
+                    'direct' => Env::get('FLASH_DRIVER_DIRECT', \Phalcon\Flash\Direct::class),
+                    'session' => Env::get('FLASH_DRIVER_SESSION', \Phalcon\Flash\Session::class),
+                ],
+                'automaticHtml' => Env::get('FLASH_AUTOMATIC_HTML', true),
+                'autoEscape' => Env::get('FLASH_AUTO_ESCAPE', false),
+                'implicitFlush' => Env::get('FLASH_IMPLICIT_FLUSH', true),
+                'cssClasses' => [
+                    'error' => Env::get('FLASH_CSS_CLASS_ERROR', 'alert alert-danger fade in'),
+                    'success' => Env::get('FLASH_CSS_CLASS_SUCCESS', 'alert alert-success fade in'),
+                    'notice' => Env::get('FLASH_CSS_CLASS_NOTICE', 'alert alert-info fade in'),
+                    'warning' => Env::get('FLASH_CSS_CLASS_WARNING', 'alert alert-warning fade in'),
+                ],
+                'cssIconsClasses' => [
+                    'error' => Env::get('FLASH_CSS_ICON_CLASS_ERROR'),
+                    'success' => Env::get('FLASH_CSS_ICON_CLASS_SUCCESS'),
+                    'notice' => Env::get('FLASH_CSS_ICON_CLASS_NOTICE'),
+                    'warning' => Env::get('FLASH_CSS_ICON_CLASS_WARNING'),
+                ],
             ],
             
             /**
@@ -877,12 +887,17 @@ class Config extends \Zemit\Config\Config
     
             /**
              * Default crypt settings
-             * @todo
              */
             'crypt' => [
+                'paddingFactory' => Env::get('CRYPT_PAD_FACTORY', \Phalcon\Encryption\Crypt\PadFactory::class),
+                'paddingScheme' => Env::get('CRYPT_PADDING_SCHEME', \Phalcon\Encryption\Crypt::PADDING_DEFAULT),
+                'hashAlgorithm' => Env::get('CRYPT_HASH_ALGORITHM', 'sha256'),
+                'useSigning' => Env::get('CRYPT_USE_SIGNING', true),
                 'cipher' => Env::get('CRYPT_CIPHER', 'aes-256-cfb'),
-                'hash' => Env::get('CRYPT_HASH', 'sha256'),
-                'useSigning' => Env::get('CRYPT_USE_SIGNING', false),
+                'key' => Env::get('CRYPT_KEY', 'T4\xb1\x8d\xa9\x98\x05\\x8c\xbe\x1d\x07&[\x99\x18\xa4~Lc1\xbeW\xb3'),
+                'authData' => Env::get('CRYPT_AUTH_DATA', ''),
+                'authTag' => Env::get('CRYPT_AUTH_TAG', ''),
+                'authTagLength' => Env::get('CRYPT_AUTH_TAG_LENGTH', 16),
             ],
             
             /**
@@ -1223,8 +1238,8 @@ class Config extends \Zemit\Config\Config
                 'path' => Env::get('IMAP_PATH'), // IMAP server and mailbox folder
                 'login' => Env::get('IMAP_LOGIN'), // Username for the before configured mailbox
                 'password' => Env::get('IMAP_PASSWORD'), // Password for the before configured username
-                'attachmentsDir' => Env::get('IMAP_ATTACHMENTS_DIR'), // Server encoding (optional)
-                'serverEncoding' => Env::get('IMAP_SERVER_ENCODING', 'UTF-8'), // Directory, where attachments will be saved (optional)
+                'attachmentsDir' => Env::get('IMAP_ATTACHMENTS_DIR'), // Directory, where attachments will be saved (optional)
+                'serverEncoding' => Env::get('IMAP_SERVER_ENCODING', 'UTF-8'), // Server encoding (optional)
                 'trimImapPath' => Env::get('IMAP_TRIM_IMAP_PATH', true),   // Trim leading/ending whitespaces of IMAP path (optional)
                 'attachmentFilenameMode' => Env::get('IMAP_ATTACHMENT_FILENAME_MODE', false), // Attachment filename mode (optional; false = random filename; true = original filename)
             ],
