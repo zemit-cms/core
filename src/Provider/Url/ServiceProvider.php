@@ -27,7 +27,7 @@ class ServiceProvider extends AbstractServiceProvider
             
             $config = $di->get('config');
             assert($config instanceof ConfigInterface);
-            $urlConfig = $config->pathToArray('ur') ?? [];
+            $urlConfig = $config->pathToArray('url') ?? [];
             
             $router = $di->get('router');
             $url = new Url($router instanceof Mvc\RouterInterface ? $router : null);
