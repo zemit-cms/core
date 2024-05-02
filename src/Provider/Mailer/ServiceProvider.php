@@ -43,6 +43,11 @@ class ServiceProvider extends AbstractServiceProvider
                 $manager->setEventsManager($eventsManager);
             }
             
+            // temporary fix for smtp auth
+            if ($driver === 'smtp') {
+                $manager->getMailer()->SMTPAuth = true;
+            }
+            
             return $manager;
         });
     }
