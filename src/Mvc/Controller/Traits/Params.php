@@ -61,7 +61,10 @@ trait Params
             $params = $this->request->getFilteredQuery();
         }
         else if ($this->request->isPost()) {
-            $params = $this->request->getFilteredPost();
+            $params = array_merge_recursive(
+                $this->request->getFilteredPost(),
+                $this->request->getFilteredPatch()
+            );
         }
         else if ($this->request->isPatch()) {
             $params = $this->request->getFilteredPatch();
