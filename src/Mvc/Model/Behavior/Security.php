@@ -127,7 +127,7 @@ class Security extends Behavior
         if ($beforeEvents[$type] ?? false) {
             self::staticStart();
             
-            $type = (strpos($type, 'before') === 0) ? lcfirst(substr($type, 6)) : $type;
+            $type = (str_starts_with($type, 'before')) ? lcfirst(substr($type, 6)) : $type;
             $isAllowed = $this->isAllowed($type, $model);
             
             self::staticStop();
