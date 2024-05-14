@@ -26,6 +26,7 @@ use Zemit\Identity;
 use Zemit\Locale;
 use Zemit\Mvc\View;
 use Zemit\Provider\Jwt\Jwt;
+use Zemit\Support\Models;
 use Zemit\Support\Utils;
 
 /**
@@ -48,6 +49,7 @@ use Zemit\Support\Utils;
  * @property LoremIpsum $loremIpsum
  * @property OpenAi $openAi
  * @property Cache $cache
+ * @property Models $models
  */
 class Task extends \Phalcon\Cli\Task implements TaskInterface
 {
