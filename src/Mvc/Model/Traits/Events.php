@@ -20,7 +20,7 @@ trait Events
 {
     abstract public function fireEventCancel(string $eventName): bool;
     
-    public static function find($parameters = null): ResultsetInterface
+    public static function find($parameters = null)
     {
         $ret = self::fireEventCancelCall(__FUNCTION__, func_get_args());
         
