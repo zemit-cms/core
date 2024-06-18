@@ -217,7 +217,7 @@ trait Export
      *
      * @return bool True if the export was successful, false otherwise
      */
-    public function exportExcel(array $list, ?string $filename = null): bool
+    public function exportExcel(array $list, ?string $filename = null, bool $forceRawValue = true): bool
     {
         $filename ??= $this->getFilename();
         $columns = $this->getExportColumns($list);
@@ -228,7 +228,8 @@ trait Export
         foreach ($list as $record) {
             $row = [];
             foreach ($columns as $column) {
-                $row[$column] = $record[$column] ?? '';
+                // Prefix #0 cell value to force raw value
+                $row[$column] = ($forceRawValue? "\0" : '')  . $record[$column] ?? '';
             }
             $export [] = array_values($row);
         }
