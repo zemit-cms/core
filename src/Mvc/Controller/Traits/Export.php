@@ -125,19 +125,19 @@ trait Export
         $filename ??= $this->getFilename();
         
         if ($contentType === 'json') {
-            $this->exportJson($list, $filename);
+            return $this->exportJson($list, $filename);
         }
         
         if ($contentType === 'xml') {
-            $this->exportXml($list, $filename);
+            return $this->exportXml($list, $filename);
         }
         
         if ($contentType === 'csv') {
-            $this->exportCsv($list, $filename, $params);
+            return $this->exportCsv($list, $filename, $params);
         }
         
         if ($contentType === 'xlsx') {
-            $this->exportExcel($list, $filename);
+            return $this->exportExcel($list, $filename);
         }
         
         // Unsupported content-type
