@@ -253,7 +253,7 @@ trait Export
         $delimiter = $params['delimiter'] ?? null;
         $enclosure = $params['enclosure'] ?? null;
         $endOfLine = $params['endOfLine'] ?? null;
-        $escape = $params['escape'] ?? '';
+        $escape = $params['escape'] ?? '\\';
         $outputBOM = $params['outputBOM'] ?? null;
         $skipIncludeBOM = $params['skipIncludeBOM'] ?? false;
         $relaxEnclosure = $params['relaxEnclosure'] ?? false;
