@@ -838,7 +838,7 @@ trait Relationship
                 $modelsManager = $this->getModelsManager();
                 $relatedModel = $modelsManager->load($modelClass);
                 
-                return $relatedModel::findFirst([
+                $entity = $relatedModel::findFirst([
                     'conditions' => implode_sprintf($fields, ' and ', '[' . $relatedModel::class . '].[%s] = ?%s'),
                     'bind' => array_values($dataKeys),
                     'bindTypes' => array_fill(0, count($dataKeys), Column::BIND_PARAM_STR),
