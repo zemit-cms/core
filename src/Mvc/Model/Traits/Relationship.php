@@ -637,7 +637,7 @@ trait Relationship
             } catch (\Exception $e) {
 //                dd($test, $recordAfter->toArray());
                 $this->appendMessages([
-                    new Message($e->getMessage(), $lowerCaseAlias, 'Exception', $e->getCode()),
+                    new Message($e->getMessage() . ' - ' . $e->getCode(), $lowerCaseAlias, 'Exception', (int)$e->getCode()),
                 ]);
                 return false;
             }
