@@ -450,12 +450,12 @@ trait Query
         }
         
         $query = [];
-        foreach ($filters as $filter) {
+        foreach ($filters as $filterIndex => $filter) {
             $field = $this->filter->sanitize($filter['field'] ?? null, ['string', 'trim']);
             
             // get logical operator
             $logic = $this->filter->sanitize($filter['logic'] ?? null, ['string', 'trim', 'lower']);
-            $queryLogic = $logic ?: ($or ? 'or' : 'and'); // fallback for old way
+            $queryLogic = $logic ?: ($or ? ($filterIndex === 0? 'and' : 'or') : ($filterIndex === 0? 'or' : 'and')); // fallback for old way
             if (!in_array($queryLogic, ['or', 'and', 'xor'])) {
                 throw new \Exception('Unsupported logical operator: `' . $queryLogic . '`', 400);
             }
