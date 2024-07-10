@@ -39,7 +39,7 @@ class ServiceProvider extends AbstractServiceProvider
             $driverOptions = $databaseConfig['drivers'][$driverName] ?? [];
             
             // readonly
-            if (!$readonly) {
+            if ($readonly) {
                 $readonlyOptions = array_filter($driverOptions['readonly'] ?? [], function ($value) {
                     return !is_null($value);
                 });
