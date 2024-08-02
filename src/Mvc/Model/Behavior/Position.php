@@ -130,8 +130,8 @@ class Position extends Behavior
                     $positionFieldRaw = $field;
                 }
                 
-                $primaryKeyConditionRaw = implode_mb_sprintf($modelPrimaryKeys, ' and ', '`' . $model->getSource() . '`.`%s` <> ?%s');
-                $primaryKeyCondition = implode_mb_sprintf($modelPrimaryKeys, ' and ', '[' . get_class($model) . '].[%s] <> ?%s');
+                $primaryKeyConditionRaw = implode_mb_sprintf($modelPrimaryKeys, ' and ', '`' . $model->getSource() . '`.id <> :id');
+                $primaryKeyCondition = implode_mb_sprintf($modelPrimaryKeys, ' and ', '[' . get_class($model) . '].id <> :id');
                 
                 $updatePositionQuery = null;
                 if ($snapshot[$field] > $modelPosition) {
@@ -150,12 +150,14 @@ class Position extends Behavior
                         $model->getWriteConnection()->query($updatePositionQuery, [
                             'position' => $modelPosition,
                             'oldPosition' => $snapshot[$field],
+                            'id' => $snapshot['id'],
                         ]);
                     }
                     else {
                         $model->getModelsManager()->executeQuery($updatePositionQuery, [
                             $modelPosition,
-                            $snapshot[$field]
+                            $snapshot[$field],
+                            $snapshot['id'],
                         ]);
                     }
                 }
