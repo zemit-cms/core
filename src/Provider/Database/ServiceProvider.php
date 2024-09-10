@@ -44,9 +44,9 @@ class ServiceProvider extends AbstractServiceProvider
                     return !is_null($value);
                 });
                 $driverOptions = array_merge($driverOptions, $readonlyOptions);
-                unset($driverOptions['readonly']);
                 unset($driverOptions['enable']);
             }
+            unset($driverOptions['readonly']);
             
             // dialect
             if (!empty($driverOptions['dialectClass'])) {
