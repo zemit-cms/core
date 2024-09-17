@@ -903,6 +903,22 @@ trait Query
     }
     
     /**
+     * Get a count result from the find query
+     * @param string|null $model
+     * @param array|null $find
+     * @return int
+     * @throws \Exception
+     */
+    protected function count(?string $model = null, ?array $find = null): int
+    {
+        $model ??= $this->getModelName();
+        $find ??= $this->getFind();
+        
+        $countResult = $model::count($this->getFindCount($find));
+        return is_countable($countResult) ? count($countResult) : (int)$countResult;
+    }
+    
+    /**
      * Saving model automagically
      *
      * Note:

@@ -30,12 +30,7 @@ trait CountAction
      */
     public function countAction(): ResponseInterface
     {
-        $model = $this->getModelName();
-        
-        $countResult = $model::count($this->getFindCount($this->getFind()));
-        $count = is_countable($countResult) ? count($countResult) : (int)$countResult;
-        
-        $this->view->setVar('count', $count);
+        $this->view->setVar('count', $this->count());
         return $this->setRestResponse(true);
     }
 }

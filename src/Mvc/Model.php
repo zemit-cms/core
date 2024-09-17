@@ -46,6 +46,7 @@ class Model extends \Phalcon\Mvc\Model implements ModelInterface
     use Model\Traits\Attribute;
     use Model\Traits\Blameable;
     use Model\Traits\Cache;
+    use Model\Traits\Count;
     use Model\Traits\EagerLoad;
     use Model\Traits\Events;
     use Model\Traits\Expose;
