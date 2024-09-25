@@ -548,11 +548,22 @@ trait Query
                 
                 // Add the current model name by default
                 $field = $this->appendModelName($field);
-                
                 $queryFieldBinder = $field;
-                $queryValueBinder = ':' . $queryValue . ':';
-                if (isset($filter['value'])) {
-                    
+                
+                // is or not empty
+                if (in_array($queryOperator, ['is empty', 'is not empty'])) {
+                    $queryOperator = ($queryOperator === 'is not empty' ? '!' : '');
+                    $query [] = "$queryLogic $queryOperator(TRIM($queryFieldBinder) = '' or $queryFieldBinder is null)";
+                }
+                
+                // raw queries without values
+                elseif (!isset($filter['value'])) {
+                    $query [] = "$queryLogic $queryFieldBinder $queryOperator";
+                }
+                
+                // queries with values
+                else{
+                    $queryValueBinder = ':' . $queryValue . ':';
                     
                     // special for between and not between
                     if (in_array($queryOperator, ['between', 'not between'])) {
@@ -648,10 +659,6 @@ trait Query
                                 $queryAndOr [] = ($queryOperator === 'does not end with' ? '!' : '') . "($queryFieldBinder like :$queryValue:)";
                             }
                             
-                            elseif (in_array($queryOperator, ['is empty', 'is not empty'])) {
-                                $queryAndOr [] = ($queryOperator === 'is not empty' ? '!' : '') . "(TRIM($queryFieldBinder) = '' or $queryFieldBinder is null)";
-                            }
-                            
                             elseif (in_array($queryOperator, ['regexp', 'not regexp'])) {
                                 $bind[$queryValue] = $value;
                                 $queryAndOr [] = $queryOperator . "($queryFieldBinder, :$queryValue:)";
@@ -703,9 +710,6 @@ trait Query
                             $query [] = $queryLogic . ' ((' . implode(') ' . $andOr . ' (', $queryAndOr) . '))';
                         }
                     }
-                }
-                else {
-                    $query [] = "$queryLogic $queryFieldBinder $queryOperator";
                 }
                 
                 $this->setBind($bind);
