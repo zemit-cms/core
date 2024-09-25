@@ -734,6 +734,11 @@ trait Query
             return $field;
         }
         
+        // fields with brackets are ignored
+        if (str_starts_with($field, '[') && str_ends_with($field, ']')) {
+            return $field;
+        }
+        
         // Add the current model name by default
         $explode = explode(' ', $field);
         if (!strpos($field, '.') !== false) {
