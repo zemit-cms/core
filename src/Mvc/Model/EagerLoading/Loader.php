@@ -69,12 +69,14 @@ final class Loader
         // Handle Complex Resultset
         elseif ($from instanceof Complex) {
             // we will consider the first model to be the main model
-            foreach ($from as &$row) {
+            $tmp = [];
+            foreach ($from as $row) {
                 assert($row instanceof Row);
                 $array = $row->toArray();
                 $firstModel = reset($array);
-                $row = $firstModel;
+                $tmp []= $firstModel;
             }
+            $from = $tmp;
             if (isset($from[0])) {
                 $className ??= get_class($from[0]);
             }
