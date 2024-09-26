@@ -104,7 +104,8 @@
     "squizlabs/php_codesniffer": "^3.9",
     "thiagoalessio/tesseract_ocr": "^2.13",
     "twig/twig": "^3.8",
-    "xenolope/quahog": "^3.0"
+    "xenolope/quahog": "^3.0",
+    "fakerphp/faker": "^1.23"
   },
   "require-dev": {
     "ext-apcu": "*",
@@ -143,7 +144,8 @@
     "thiagoalessio/tesseract_ocr": "^2.13",
     "twig/twig": "^3.8",
     "vimeo/psalm": "^5.23",
-    "xenolope/quahog": "^3.0"
+    "xenolope/quahog": "^3.0",
+    "fakerphp/faker": "^1.23"
   },
   "autoload": {
     "psr-4": {
