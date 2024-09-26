@@ -1,14 +1,5 @@
 <?php
 
-/**
- * This file is part of the Zemit Framework.
- *
- * (c) Zemit Team <contact@zemit.com>
- *
- * For the full copyright and license information, please view the LICENSE.txt
- * file that was distributed with this source code.
- */
-
 use Phalcon\Db\Column;
 use Phalcon\Db\Exception;
 use Phalcon\Db\Index;
@@ -75,8 +66,35 @@ class TableMigration_100 extends Migration
                     [
                         'type' => Column::TYPE_VARCHAR,
                         'notNull' => true,
-                        'size' => 120,
+                        'size' => 60,
                         'after' => 'workspace_id'
+                    ]
+                ),
+                new Column(
+                    'description',
+                    [
+                        'type' => Column::TYPE_VARCHAR,
+                        'notNull' => false,
+                        'size' => 240,
+                        'after' => 'name'
+                    ]
+                ),
+                new Column(
+                    'icon',
+                    [
+                        'type' => Column::TYPE_VARCHAR,
+                        'notNull' => false,
+                        'size' => 64,
+                        'after' => 'description'
+                    ]
+                ),
+                new Column(
+                    'color',
+                    [
+                        'type' => Column::TYPE_CHAR,
+                        'notNull' => false,
+                        'size' => 9,
+                        'after' => 'icon'
                     ]
                 ),
                 new Column(
@@ -87,7 +105,7 @@ class TableMigration_100 extends Migration
                         'unsigned' => true,
                         'notNull' => true,
                         'size' => 1,
-                        'after' => 'name'
+                        'after' => 'color'
                     ]
                 ),
                 new Column(
@@ -197,8 +215,8 @@ class TableMigration_100 extends Migration
             'indexes' => [
                 new Index('PRIMARY', ['id'], 'PRIMARY'),
                 new Index('id_UNIQUE', ['id'], 'UNIQUE'),
-                new Index('name_UNIQUE', ['name'], 'UNIQUE'),
                 new Index('uuid_UNIQUE', ['uuid'], 'UNIQUE'),
+                new Index('workspace_id_index', ['workspace_id'], ''),
             ],
             'options' => [
                 'TABLE_TYPE' => 'BASE TABLE',

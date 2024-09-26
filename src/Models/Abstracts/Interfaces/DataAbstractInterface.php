@@ -16,17 +16,21 @@ use Phalcon\Db\RawValue;
 use Zemit\Mvc\ModelInterface;
 
 /**
- * @property SiteAbstractInterface $siteentity
- * @property SiteAbstractInterface $SiteEntity
- * @method SiteAbstractInterface getSiteEntity(?array $params = null)
+ * @property WorkspaceAbstractInterface $workspaceentity
+ * @property WorkspaceAbstractInterface $WorkspaceEntity
+ * @method WorkspaceAbstractInterface getWorkspaceEntity(?array $params = null)
  *
  * @property TableAbstractInterface $tableentity
  * @property TableAbstractInterface $TableEntity
  * @method TableAbstractInterface getTableEntity(?array $params = null)
  *
- * @property FieldAbstractInterface $fieldentity
- * @property FieldAbstractInterface $FieldEntity
- * @method FieldAbstractInterface getFieldEntity(?array $params = null)
+ * @property ColumnAbstractInterface $columnentity
+ * @property ColumnAbstractInterface $ColumnEntity
+ * @method ColumnAbstractInterface getColumnEntity(?array $params = null)
+ *
+ * @property RecordAbstractInterface $recordentity
+ * @property RecordAbstractInterface $RecordEntity
+ * @method RecordAbstractInterface getRecordEntity(?array $params = null)
  *
  * @property UserAbstractInterface $createdbyentity
  * @property UserAbstractInterface $CreatedByEntity
@@ -76,21 +80,21 @@ interface DataAbstractInterface extends ModelInterface
     public function setId(mixed $id): void;
     
     /**
-     * Returns the value of field siteId
-     * Column: site_id
+     * Returns the value of field workspaceId
+     * Column: workspace_id
      * Attributes: NotNull | Numeric | Unsigned
      * @return mixed
      */
-    public function getSiteId(): mixed;
+    public function getWorkspaceId(): mixed;
     
     /**
-     * Sets the value of field siteId
-     * Column: site_id 
+     * Sets the value of field workspaceId
+     * Column: workspace_id 
      * Attributes: NotNull | Numeric | Unsigned
-     * @param mixed $siteId
+     * @param mixed $workspaceId
      * @return void
      */
-    public function setSiteId(mixed $siteId): void;
+    public function setWorkspaceId(mixed $workspaceId): void;
     
     /**
      * Returns the value of field tableId
@@ -110,21 +114,55 @@ interface DataAbstractInterface extends ModelInterface
     public function setTableId(mixed $tableId): void;
     
     /**
-     * Returns the value of field fieldId
-     * Column: field_id
+     * Returns the value of field columnId
+     * Column: column_id
      * Attributes: NotNull | Numeric | Unsigned
      * @return mixed
      */
-    public function getFieldId(): mixed;
+    public function getColumnId(): mixed;
     
     /**
-     * Sets the value of field fieldId
-     * Column: field_id 
+     * Sets the value of field columnId
+     * Column: column_id 
      * Attributes: NotNull | Numeric | Unsigned
-     * @param mixed $fieldId
+     * @param mixed $columnId
      * @return void
      */
-    public function setFieldId(mixed $fieldId): void;
+    public function setColumnId(mixed $columnId): void;
+    
+    /**
+     * Returns the value of field recordId
+     * Column: record_id
+     * Attributes: NotNull | Numeric | Unsigned
+     * @return mixed
+     */
+    public function getRecordId(): mixed;
+    
+    /**
+     * Sets the value of field recordId
+     * Column: record_id 
+     * Attributes: NotNull | Numeric | Unsigned
+     * @param mixed $recordId
+     * @return void
+     */
+    public function setRecordId(mixed $recordId): void;
+    
+    /**
+     * Returns the value of field uuid
+     * Column: uuid
+     * Attributes: NotNull | Size(36) | Type(5)
+     * @return mixed
+     */
+    public function getUuid(): mixed;
+    
+    /**
+     * Sets the value of field uuid
+     * Column: uuid 
+     * Attributes: NotNull | Size(36) | Type(5)
+     * @param mixed $uuid
+     * @return void
+     */
+    public function setUuid(mixed $uuid): void;
     
     /**
      * Returns the value of field value

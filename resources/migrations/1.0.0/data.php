@@ -1,14 +1,5 @@
 <?php
 
-/**
- * This file is part of the Zemit Framework.
- *
- * (c) Zemit Team <contact@zemit.com>
- *
- * For the full copyright and license information, please view the LICENSE.txt
- * file that was distributed with this source code.
- */
-
 use Phalcon\Db\Column;
 use Phalcon\Db\Exception;
 use Phalcon\Db\Index;
@@ -42,7 +33,7 @@ class DataMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'site_id',
+                    'workspace_id',
                     [
                         'type' => Column::TYPE_INTEGER,
                         'unsigned' => true,
@@ -58,7 +49,7 @@ class DataMigration_100 extends Migration
                         'unsigned' => true,
                         'notNull' => true,
                         'size' => 1,
-                        'after' => 'site_id'
+                        'after' => 'workspace_id'
                     ]
                 ),
                 new Column(
@@ -72,11 +63,21 @@ class DataMigration_100 extends Migration
                     ]
                 ),
                 new Column(
+                    'record_id',
+                    [
+                        'type' => Column::TYPE_INTEGER,
+                        'unsigned' => true,
+                        'notNull' => true,
+                        'size' => 1,
+                        'after' => 'field_id'
+                    ]
+                ),
+                new Column(
                     'value',
                     [
                         'type' => Column::TYPE_MEDIUMTEXT,
                         'notNull' => false,
-                        'after' => 'field_id'
+                        'after' => 'record_id'
                     ]
                 ),
                 new Column(

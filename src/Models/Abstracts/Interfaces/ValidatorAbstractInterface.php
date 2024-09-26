@@ -16,10 +16,6 @@ use Phalcon\Db\RawValue;
 use Zemit\Mvc\ModelInterface;
 
 /**
- * @property FieldAbstractInterface $fieldentity
- * @property FieldAbstractInterface $FieldEntity
- * @method FieldAbstractInterface getFieldEntity(?array $params = null)
- *
  * @property UserAbstractInterface $createdbyentity
  * @property UserAbstractInterface $CreatedByEntity
  * @method UserAbstractInterface getCreatedByEntity(?array $params = null)

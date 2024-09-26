@@ -46,7 +46,7 @@ trait RestoreAction
         
         $this->view->setVars([
             'restore' => $restored,
-            'single' => $this->expose($entity),
+            'data' => $this->expose($entity),
             'messages' => $entity->getMessages(),
         ]);
         

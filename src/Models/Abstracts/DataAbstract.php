@@ -15,9 +15,10 @@ namespace Zemit\Models\Abstracts;
 use Phalcon\Db\RawValue;
 use Zemit\Filter\Validation;
 use Zemit\Models\AbstractModel;
-use Zemit\Models\Site;
+use Zemit\Models\Workspace;
 use Zemit\Models\Table;
-use Zemit\Models\Field;
+use Zemit\Models\Column;
+use Zemit\Models\Record;
 use Zemit\Models\User;
 use Zemit\Models\Abstracts\Interfaces\DataAbstractInterface;
 
@@ -27,17 +28,21 @@ use Zemit\Models\Abstracts\Interfaces\DataAbstractInterface;
  * This class defines a Data abstract model that extends the AbstractModel class and implements the DataAbstractInterface.
  * It provides properties and methods for managing Data data.
  * 
- * @property Site $siteentity
- * @property Site $SiteEntity
- * @method Site getSiteEntity(?array $params = null)
+ * @property Workspace $workspaceentity
+ * @property Workspace $WorkspaceEntity
+ * @method Workspace getWorkspaceEntity(?array $params = null)
  *
  * @property Table $tableentity
  * @property Table $TableEntity
  * @method Table getTableEntity(?array $params = null)
  *
- * @property Field $fieldentity
- * @property Field $FieldEntity
- * @method Field getFieldEntity(?array $params = null)
+ * @property Column $columnentity
+ * @property Column $ColumnEntity
+ * @method Column getColumnEntity(?array $params = null)
+ *
+ * @property Record $recordentity
+ * @property Record $RecordEntity
+ * @method Record getRecordEntity(?array $params = null)
  *
  * @property User $createdbyentity
  * @property User $CreatedByEntity
@@ -77,11 +82,11 @@ abstract class DataAbstract extends AbstractModel implements DataAbstractInterfa
     public mixed $id = null;
         
     /**
-     * Column: site_id
+     * Column: workspace_id
      * Attributes: NotNull | Numeric | Unsigned
      * @var mixed
      */
-    public mixed $siteId = null;
+    public mixed $workspaceId = null;
         
     /**
      * Column: table_id
@@ -91,11 +96,25 @@ abstract class DataAbstract extends AbstractModel implements DataAbstractInterfa
     public mixed $tableId = null;
         
     /**
-     * Column: field_id
+     * Column: column_id
      * Attributes: NotNull | Numeric | Unsigned
      * @var mixed
      */
-    public mixed $fieldId = null;
+    public mixed $columnId = null;
+        
+    /**
+     * Column: record_id
+     * Attributes: NotNull | Numeric | Unsigned
+     * @var mixed
+     */
+    public mixed $recordId = null;
+        
+    /**
+     * Column: uuid
+     * Attributes: NotNull | Size(36) | Type(5)
+     * @var mixed
+     */
+    public mixed $uuid = null;
         
     /**
      * Column: value
@@ -212,26 +231,26 @@ abstract class DataAbstract extends AbstractModel implements DataAbstractInterfa
     }
     
     /**
-     * Returns the value of field siteId
-     * Column: site_id
+     * Returns the value of field workspaceId
+     * Column: workspace_id
      * Attributes: NotNull | Numeric | Unsigned
      * @return mixed
      */
-    public function getSiteId(): mixed
+    public function getWorkspaceId(): mixed
     {
-        return $this->siteId;
+        return $this->workspaceId;
     }
     
     /**
-     * Sets the value of field siteId
-     * Column: site_id 
+     * Sets the value of field workspaceId
+     * Column: workspace_id 
      * Attributes: NotNull | Numeric | Unsigned
-     * @param mixed $siteId
+     * @param mixed $workspaceId
      * @return void
      */
-    public function setSiteId(mixed $siteId): void
+    public function setWorkspaceId(mixed $workspaceId): void
     {
-        $this->siteId = $siteId;
+        $this->workspaceId = $workspaceId;
     }
     
     /**
@@ -258,26 +277,72 @@ abstract class DataAbstract extends AbstractModel implements DataAbstractInterfa
     }
     
     /**
-     * Returns the value of field fieldId
-     * Column: field_id
+     * Returns the value of field columnId
+     * Column: column_id
      * Attributes: NotNull | Numeric | Unsigned
      * @return mixed
      */
-    public function getFieldId(): mixed
+    public function getColumnId(): mixed
     {
-        return $this->fieldId;
+        return $this->columnId;
     }
     
     /**
-     * Sets the value of field fieldId
-     * Column: field_id 
+     * Sets the value of field columnId
+     * Column: column_id 
      * Attributes: NotNull | Numeric | Unsigned
-     * @param mixed $fieldId
+     * @param mixed $columnId
      * @return void
      */
-    public function setFieldId(mixed $fieldId): void
+    public function setColumnId(mixed $columnId): void
     {
-        $this->fieldId = $fieldId;
+        $this->columnId = $columnId;
+    }
+    
+    /**
+     * Returns the value of field recordId
+     * Column: record_id
+     * Attributes: NotNull | Numeric | Unsigned
+     * @return mixed
+     */
+    public function getRecordId(): mixed
+    {
+        return $this->recordId;
+    }
+    
+    /**
+     * Sets the value of field recordId
+     * Column: record_id 
+     * Attributes: NotNull | Numeric | Unsigned
+     * @param mixed $recordId
+     * @return void
+     */
+    public function setRecordId(mixed $recordId): void
+    {
+        $this->recordId = $recordId;
+    }
+    
+    /**
+     * Returns the value of field uuid
+     * Column: uuid
+     * Attributes: NotNull | Size(36) | Type(5)
+     * @return mixed
+     */
+    public function getUuid(): mixed
+    {
+        return $this->uuid;
+    }
+    
+    /**
+     * Sets the value of field uuid
+     * Column: uuid 
+     * Attributes: NotNull | Size(36) | Type(5)
+     * @param mixed $uuid
+     * @return void
+     */
+    public function setUuid(mixed $uuid): void
+    {
+        $this->uuid = $uuid;
     }
     
     /**
@@ -585,11 +650,13 @@ abstract class DataAbstract extends AbstractModel implements DataAbstractInterfa
      */
     public function addDefaultRelationships(): void
     {
-        $this->belongsTo('siteId', Site::class, 'id', ['alias' => 'SiteEntity']);
+        $this->belongsTo('workspaceId', Workspace::class, 'id', ['alias' => 'WorkspaceEntity']);
 
         $this->belongsTo('tableId', Table::class, 'id', ['alias' => 'TableEntity']);
 
-        $this->belongsTo('fieldId', Field::class, 'id', ['alias' => 'FieldEntity']);
+        $this->belongsTo('columnId', Column::class, 'id', ['alias' => 'ColumnEntity']);
+
+        $this->belongsTo('recordId', Record::class, 'id', ['alias' => 'RecordEntity']);
 
         $this->belongsTo('createdBy', User::class, 'id', ['alias' => 'CreatedByEntity']);
 
@@ -616,9 +683,11 @@ abstract class DataAbstract extends AbstractModel implements DataAbstractInterfa
         $validator ??= new Validation();
     
         $this->addUnsignedIntValidation($validator, 'id', true);
-        $this->addUnsignedIntValidation($validator, 'siteId', false);
+        $this->addUnsignedIntValidation($validator, 'workspaceId', false);
         $this->addUnsignedIntValidation($validator, 'tableId', false);
-        $this->addUnsignedIntValidation($validator, 'fieldId', false);
+        $this->addUnsignedIntValidation($validator, 'columnId', false);
+        $this->addUnsignedIntValidation($validator, 'recordId', false);
+        $this->addStringLengthValidation($validator, 'uuid', 0, 36, false);
         $this->addUnsignedIntValidation($validator, 'deleted', false);
         $this->addDateTimeValidation($validator, 'createdAt', false);
         $this->addUnsignedIntValidation($validator, 'createdBy', true);
@@ -646,9 +715,11 @@ abstract class DataAbstract extends AbstractModel implements DataAbstractInterfa
     {
         return [
             'id' => 'id',
-            'site_id' => 'siteId',
+            'workspace_id' => 'workspaceId',
             'table_id' => 'tableId',
-            'field_id' => 'fieldId',
+            'column_id' => 'columnId',
+            'record_id' => 'recordId',
+            'uuid' => 'uuid',
             'value' => 'value',
             'deleted' => 'deleted',
             'created_at' => 'createdAt',

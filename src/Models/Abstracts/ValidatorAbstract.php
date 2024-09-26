@@ -15,7 +15,6 @@ namespace Zemit\Models\Abstracts;
 use Phalcon\Db\RawValue;
 use Zemit\Filter\Validation;
 use Zemit\Models\AbstractModel;
-use Zemit\Models\Field;
 use Zemit\Models\User;
 use Zemit\Models\Abstracts\Interfaces\ValidatorAbstractInterface;
 
@@ -25,10 +24,6 @@ use Zemit\Models\Abstracts\Interfaces\ValidatorAbstractInterface;
  * This class defines a Validator abstract model that extends the AbstractModel class and implements the ValidatorAbstractInterface.
  * It provides properties and methods for managing Validator data.
  * 
- * @property Field $fieldentity
- * @property Field $FieldEntity
- * @method Field getFieldEntity(?array $params = null)
- *
  * @property User $createdbyentity
  * @property User $CreatedByEntity
  * @method User getCreatedByEntity(?array $params = null)
@@ -605,8 +600,6 @@ abstract class ValidatorAbstract extends AbstractModel implements ValidatorAbstr
      */
     public function addDefaultRelationships(): void
     {
-        $this->belongsTo('fieldId', Field::class, 'id', ['alias' => 'FieldEntity']);
-
         $this->belongsTo('createdBy', User::class, 'id', ['alias' => 'CreatedByEntity']);
 
         $this->belongsTo('createdAs', User::class, 'id', ['alias' => 'CreatedAsEntity']);

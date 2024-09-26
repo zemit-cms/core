@@ -24,26 +24,6 @@ use Zemit\Mvc\ModelInterface;
  * @property LangAbstractInterface[] $CategoryLangList
  * @method LangAbstractInterface[] getCategoryLangList(?array $params = null)
  *
- * @property DataAbstractInterface[] $datalist
- * @property DataAbstractInterface[] $DataList
- * @method DataAbstractInterface[] getDataList(?array $params = null)
- *
- * @property TableAbstractInterface[] $datatablelist
- * @property TableAbstractInterface[] $DataTableList
- * @method TableAbstractInterface[] getDataTableList(?array $params = null)
- *
- * @property FieldAbstractInterface[] $datafieldlist
- * @property FieldAbstractInterface[] $DataFieldList
- * @method FieldAbstractInterface[] getDataFieldList(?array $params = null)
- *
- * @property FieldAbstractInterface[] $fieldlist
- * @property FieldAbstractInterface[] $FieldList
- * @method FieldAbstractInterface[] getFieldList(?array $params = null)
- *
- * @property TableAbstractInterface[] $fieldtablelist
- * @property TableAbstractInterface[] $FieldTableList
- * @method TableAbstractInterface[] getFieldTableList(?array $params = null)
- *
  * @property FlagAbstractInterface[] $flaglist
  * @property FlagAbstractInterface[] $FlagList
  * @method FlagAbstractInterface[] getFlagList(?array $params = null)

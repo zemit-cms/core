@@ -25,7 +25,7 @@ trait Offset
     
     use AbstractParams;
     
-    protected ?int $offset;
+    protected ?int $offset = 0;
     
     /**
      * Initializes the offset value.
@@ -52,8 +52,8 @@ trait Offset
      */
     public function setOffset(?int $offset): void
     {
-        if ($this->offset < 0) {
-            throw new \Exception("Query offset ({$this->offset}) must be higher than or equal to 0", 400);
+        if ($offset < 0) {
+            throw new \Exception("Query offset ({$offset}) must be higher than or equal to 0", 400);
         }
         
         $this->offset = $offset;

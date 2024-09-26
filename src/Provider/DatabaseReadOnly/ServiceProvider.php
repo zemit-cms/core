@@ -13,6 +13,6 @@ namespace Zemit\Provider\DatabaseReadOnly;
 
 class ServiceProvider extends \Zemit\Provider\Database\ServiceProvider
 {
-    protected bool $readonly = true;
+    protected ?string $driverName = 'readonly';
     protected string $serviceName = 'dbr';
 }

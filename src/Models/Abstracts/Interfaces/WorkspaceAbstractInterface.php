@@ -16,6 +16,38 @@ use Phalcon\Db\RawValue;
 use Zemit\Mvc\ModelInterface;
 
 /**
+ * @property ColumnAbstractInterface[] $columnlist
+ * @property ColumnAbstractInterface[] $ColumnList
+ * @method ColumnAbstractInterface[] getColumnList(?array $params = null)
+ *
+ * @property TableAbstractInterface[] $columntablelist
+ * @property TableAbstractInterface[] $ColumnTableList
+ * @method TableAbstractInterface[] getColumnTableList(?array $params = null)
+ *
+ * @property DataAbstractInterface[] $datalist
+ * @property DataAbstractInterface[] $DataList
+ * @method DataAbstractInterface[] getDataList(?array $params = null)
+ *
+ * @property TableAbstractInterface[] $datatablelist
+ * @property TableAbstractInterface[] $DataTableList
+ * @method TableAbstractInterface[] getDataTableList(?array $params = null)
+ *
+ * @property ColumnAbstractInterface[] $datacolumnlist
+ * @property ColumnAbstractInterface[] $DataColumnList
+ * @method ColumnAbstractInterface[] getDataColumnList(?array $params = null)
+ *
+ * @property RecordAbstractInterface[] $datarecordlist
+ * @property RecordAbstractInterface[] $DataRecordList
+ * @method RecordAbstractInterface[] getDataRecordList(?array $params = null)
+ *
+ * @property RecordAbstractInterface[] $recordlist
+ * @property RecordAbstractInterface[] $RecordList
+ * @method RecordAbstractInterface[] getRecordList(?array $params = null)
+ *
+ * @property TableAbstractInterface[] $recordtablelist
+ * @property TableAbstractInterface[] $RecordTableList
+ * @method TableAbstractInterface[] getRecordTableList(?array $params = null)
+ *
  * @property TableAbstractInterface[] $tablelist
  * @property TableAbstractInterface[] $TableList
  * @method TableAbstractInterface[] getTableList(?array $params = null)

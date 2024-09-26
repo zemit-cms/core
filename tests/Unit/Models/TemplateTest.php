@@ -74,28 +74,28 @@ class TemplateTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->template->getIndex());
     }
 
-    public function testGetLabel(): void
+    public function testGetName(): void
     {
-        $this->assertEquals(null, $this->template->getLabel());
+        $this->assertEquals(null, $this->template->getName());
     }
     
-    public function testSetLabel(): void
+    public function testSetName(): void
     {
         $value = uniqid();
-        $this->template->setLabel($value);
-        $this->assertEquals($value, $this->template->getLabel());
+        $this->template->setName($value);
+        $this->assertEquals($value, $this->template->getName());
     }
 
-    public function testGetSubject(): void
+    public function testGetTitle(): void
     {
-        $this->assertEquals(null, $this->template->getSubject());
+        $this->assertEquals(null, $this->template->getTitle());
     }
     
-    public function testSetSubject(): void
+    public function testSetTitle(): void
     {
         $value = uniqid();
-        $this->template->setSubject($value);
-        $this->assertEquals($value, $this->template->getSubject());
+        $this->template->setTitle($value);
+        $this->assertEquals($value, $this->template->getTitle());
     }
 
     public function testGetContent(): void

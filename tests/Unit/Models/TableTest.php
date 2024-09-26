@@ -110,6 +110,42 @@ class TableTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->table->getName());
     }
 
+    public function testGetDescription(): void
+    {
+        $this->assertEquals(null, $this->table->getDescription());
+    }
+    
+    public function testSetDescription(): void
+    {
+        $value = uniqid();
+        $this->table->setDescription($value);
+        $this->assertEquals($value, $this->table->getDescription());
+    }
+
+    public function testGetIcon(): void
+    {
+        $this->assertEquals(null, $this->table->getIcon());
+    }
+    
+    public function testSetIcon(): void
+    {
+        $value = uniqid();
+        $this->table->setIcon($value);
+        $this->assertEquals($value, $this->table->getIcon());
+    }
+
+    public function testGetColor(): void
+    {
+        $this->assertEquals(null, $this->table->getColor());
+    }
+    
+    public function testSetColor(): void
+    {
+        $value = uniqid();
+        $this->table->setColor($value);
+        $this->assertEquals($value, $this->table->getColor());
+    }
+
     public function testGetDeleted(): void
     {
         $this->assertEquals(null, $this->table->getDeleted());

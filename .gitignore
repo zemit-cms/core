@@ -39,4 +39,4 @@ phive.phar.asc
 phpDocumentor.phar
 .phpdoc/
 build/api-cache
-
+/docs

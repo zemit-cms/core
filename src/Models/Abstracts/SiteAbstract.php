@@ -17,9 +17,6 @@ use Zemit\Filter\Validation;
 use Zemit\Models\AbstractModel;
 use Zemit\Models\Category;
 use Zemit\Models\Lang;
-use Zemit\Models\Data;
-use Zemit\Models\Table;
-use Zemit\Models\Field;
 use Zemit\Models\Flag;
 use Zemit\Models\Page;
 use Zemit\Models\Meta;
@@ -27,6 +24,7 @@ use Zemit\Models\Post;
 use Zemit\Models\SiteLang;
 use Zemit\Models\Translate;
 use Zemit\Models\TranslateField;
+use Zemit\Models\Table;
 use Zemit\Models\User;
 use Zemit\Models\Abstracts\Interfaces\SiteAbstractInterface;
 
@@ -43,26 +41,6 @@ use Zemit\Models\Abstracts\Interfaces\SiteAbstractInterface;
  * @property Lang[] $categorylanglist
  * @property Lang[] $CategoryLangList
  * @method Lang[] getCategoryLangList(?array $params = null)
- *
- * @property Data[] $datalist
- * @property Data[] $DataList
- * @method Data[] getDataList(?array $params = null)
- *
- * @property Table[] $datatablelist
- * @property Table[] $DataTableList
- * @method Table[] getDataTableList(?array $params = null)
- *
- * @property Field[] $datafieldlist
- * @property Field[] $DataFieldList
- * @method Field[] getDataFieldList(?array $params = null)
- *
- * @property Field[] $fieldlist
- * @property Field[] $FieldList
- * @method Field[] getFieldList(?array $params = null)
- *
- * @property Table[] $fieldtablelist
- * @property Table[] $FieldTableList
- * @method Table[] getFieldTableList(?array $params = null)
  *
  * @property Flag[] $flaglist
  * @property Flag[] $FlagList
@@ -806,40 +784,6 @@ abstract class SiteAbstract extends AbstractModel implements SiteAbstractInterfa
             Lang::class,
             'id',
             ['alias' => 'CategoryLangList']
-        );
-
-        $this->hasMany('id', Data::class, 'siteId', ['alias' => 'DataList']);
-
-        $this->hasManyToMany(
-            'id',
-            Data::class,
-            'siteId',
-            'tableId',
-            Table::class,
-            'id',
-            ['alias' => 'DataTableList']
-        );
-
-        $this->hasManyToMany(
-            'id',
-            Data::class,
-            'siteId',
-            'fieldId',
-            Field::class,
-            'id',
-            ['alias' => 'DataFieldList']
-        );
-
-        $this->hasMany('id', Field::class, 'siteId', ['alias' => 'FieldList']);
-
-        $this->hasManyToMany(
-            'id',
-            Field::class,
-            'siteId',
-            'tableId',
-            Table::class,
-            'id',
-            ['alias' => 'FieldTableList']
         );
 
         $this->hasMany('id', Flag::class, 'siteId', ['alias' => 'FlagList']);

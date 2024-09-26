@@ -16,25 +16,37 @@ use Phalcon\Db\RawValue;
 use Zemit\Mvc\ModelInterface;
 
 /**
+ * @property ColumnAbstractInterface[] $columnlist
+ * @property ColumnAbstractInterface[] $ColumnList
+ * @method ColumnAbstractInterface[] getColumnList(?array $params = null)
+ *
+ * @property WorkspaceAbstractInterface[] $columnworkspacelist
+ * @property WorkspaceAbstractInterface[] $ColumnWorkspaceList
+ * @method WorkspaceAbstractInterface[] getColumnWorkspaceList(?array $params = null)
+ *
  * @property DataAbstractInterface[] $datalist
  * @property DataAbstractInterface[] $DataList
  * @method DataAbstractInterface[] getDataList(?array $params = null)
  *
- * @property SiteAbstractInterface[] $datasitelist
- * @property SiteAbstractInterface[] $DataSiteList
- * @method SiteAbstractInterface[] getDataSiteList(?array $params = null)
+ * @property WorkspaceAbstractInterface[] $dataworkspacelist
+ * @property WorkspaceAbstractInterface[] $DataWorkspaceList
+ * @method WorkspaceAbstractInterface[] getDataWorkspaceList(?array $params = null)
  *
- * @property FieldAbstractInterface[] $datafieldlist
- * @property FieldAbstractInterface[] $DataFieldList
- * @method FieldAbstractInterface[] getDataFieldList(?array $params = null)
+ * @property ColumnAbstractInterface[] $datacolumnlist
+ * @property ColumnAbstractInterface[] $DataColumnList
+ * @method ColumnAbstractInterface[] getDataColumnList(?array $params = null)
  *
- * @property FieldAbstractInterface[] $fieldlist
- * @property FieldAbstractInterface[] $FieldList
- * @method FieldAbstractInterface[] getFieldList(?array $params = null)
+ * @property RecordAbstractInterface[] $datarecordlist
+ * @property RecordAbstractInterface[] $DataRecordList
+ * @method RecordAbstractInterface[] getDataRecordList(?array $params = null)
  *
- * @property SiteAbstractInterface[] $fieldsitelist
- * @property SiteAbstractInterface[] $FieldSiteList
- * @method SiteAbstractInterface[] getFieldSiteList(?array $params = null)
+ * @property RecordAbstractInterface[] $recordlist
+ * @property RecordAbstractInterface[] $RecordList
+ * @method RecordAbstractInterface[] getRecordList(?array $params = null)
+ *
+ * @property WorkspaceAbstractInterface[] $recordworkspacelist
+ * @property WorkspaceAbstractInterface[] $RecordWorkspaceList
+ * @method WorkspaceAbstractInterface[] getRecordWorkspaceList(?array $params = null)
  *
  * @property TranslateFieldAbstractInterface[] $translatefieldlist
  * @property TranslateFieldAbstractInterface[] $TranslateFieldList
@@ -157,7 +169,7 @@ interface TableAbstractInterface extends ModelInterface
     /**
      * Returns the value of field name
      * Column: name
-     * Attributes: NotNull | Size(120) | Type(2)
+     * Attributes: NotNull | Size(60) | Type(2)
      * @return mixed
      */
     public function getName(): mixed;
@@ -165,11 +177,62 @@ interface TableAbstractInterface extends ModelInterface
     /**
      * Sets the value of field name
      * Column: name 
-     * Attributes: NotNull | Size(120) | Type(2)
+     * Attributes: NotNull | Size(60) | Type(2)
      * @param mixed $name
      * @return void
      */
     public function setName(mixed $name): void;
+    
+    /**
+     * Returns the value of field description
+     * Column: description
+     * Attributes: Size(240) | Type(2)
+     * @return mixed
+     */
+    public function getDescription(): mixed;
+    
+    /**
+     * Sets the value of field description
+     * Column: description 
+     * Attributes: Size(240) | Type(2)
+     * @param mixed $description
+     * @return void
+     */
+    public function setDescription(mixed $description): void;
+    
+    /**
+     * Returns the value of field icon
+     * Column: icon
+     * Attributes: Size(64) | Type(2)
+     * @return mixed
+     */
+    public function getIcon(): mixed;
+    
+    /**
+     * Sets the value of field icon
+     * Column: icon 
+     * Attributes: Size(64) | Type(2)
+     * @param mixed $icon
+     * @return void
+     */
+    public function setIcon(mixed $icon): void;
+    
+    /**
+     * Returns the value of field color
+     * Column: color
+     * Attributes: Size(9) | Type(5)
+     * @return mixed
+     */
+    public function getColor(): mixed;
+    
+    /**
+     * Sets the value of field color
+     * Column: color 
+     * Attributes: Size(9) | Type(5)
+     * @param mixed $color
+     * @return void
+     */
+    public function setColor(mixed $color): void;
     
     /**
      * Returns the value of field deleted

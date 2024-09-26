@@ -152,6 +152,13 @@ DOC;
             $definitions = $this->getDefinitionsAction($table);
             $relationships = $this->getRelationshipItems($table, $columns, $tables);
             
+            // Controller
+//            $savePath = $this->getAbstractsDirectory($definitions['controller']['file']);
+//            if (!file_exists($savePath) || $force) {
+//                $this->saveFile($savePath, $this->createControllerOutput($definitions, $columns, $relationships), $force);
+//                $ret [] = 'Controller API `' . $definitions['controller']['file'] . '` created';
+//            }
+            
             // Abstract
             $savePath = $this->getAbstractsDirectory($definitions['abstract']['file']);
             if (!file_exists($savePath) || $force) {
@@ -189,6 +196,28 @@ DOC;
         }
         
         return $ret;
+    }
+    
+    public function createControllerOutput(array $definitions, array $columns, array $relationships): string
+    {
+        return <<<PHP
+<?php
+{$this->getLicenseStamp()}
+{$this->getStrictTypes()}
+namespace {$this->getAbstractsInterfacesNamespace()};
+
+use Phalcon\Db\RawValue;
+use Zemit\Mvc\ModelInterface;
+
+/**
+{$relationships['interfaceInjectableItems']}
+ */
+interface {$definitions['controller']['name']} extends AbstractController
+{
+    {$getSetInterfaceItems}
+}
+
+PHP;
     }
     
     /**

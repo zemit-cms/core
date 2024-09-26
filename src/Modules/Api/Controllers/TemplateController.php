@@ -14,5 +14,9 @@ use Zemit\Modules\Api\Controller;
 
 class TemplateController extends Controller
 {
-
+    public function initialize(): void
+    {
+        parent::initialize();
+        $this->conditions->remove('softDelete');
+    }
 }

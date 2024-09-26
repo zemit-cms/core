@@ -22,29 +22,43 @@ use Zemit\Provider\AbstractServiceProvider;
 
 class ServiceProvider extends AbstractServiceProvider
 {
-    protected bool $readonly = false;
+    protected ?string $driverName = null;
     protected string $serviceName = 'db';
     
     public function register(DiInterface $di): void
     {
-        $readonly = $this->readonly;
-        $di->setShared($this->getName(), function () use ($di, $readonly) {
-
+        $driverName = $this->driverName;
+        $di->setShared($this->getName(), function () use ($di, $driverName) {
             $config = $di->get('config');
             assert($config instanceof ConfigInterface);
     
             // database config
             $databaseConfig = $config->pathToArray('database') ?? [];
-            $driverName = $databaseConfig['default'] ?? 'mysql';
-            $driverOptions = $databaseConfig['drivers'][$driverName] ?? [];
             
-            // readonly
-            if (!$readonly) {
-                $readonlyOptions = array_filter($driverOptions['readonly'] ?? []);
-                $driverOptions = array_merge($driverOptions, $readonlyOptions);
-                unset($driverOptions['readonly']);
-                unset($driverOptions['enable']);
+            // specified driver name
+            if (!empty($driverName)) {
+                $driverOptions = array_filter($databaseConfig['drivers'][$driverName] ?? [], function ($value) {
+                    return !is_null($value);
+                });
+                if (isset($driverOptions['extends'])) {
+                    if (!is_array($driverOptions['extends'])) {
+                        $driverOptions['extends'] = explode(',', $driverOptions['extends']);
+                    }
+                    foreach ($driverOptions['extends'] as $extend) {
+                        $driverOptions = array_merge($databaseConfig['drivers'][trim($extend)] ?? [], $driverOptions);
+                    }
+                }
             }
+            
+            // default driver name
+            else {
+                $defaultDriverName = $databaseConfig['default'] ?? 'mysql';
+                $driverOptions = $databaseConfig['drivers'][$defaultDriverName] ?? [];
+            }
+            
+            // unset unsupported parameters
+            unset($driverOptions['extends']);
+            unset($driverOptions['enable']);
             
             // dialect
             if (!empty($driverOptions['dialectClass'])) {
@@ -68,7 +82,7 @@ class ServiceProvider extends AbstractServiceProvider
             $eventsManager->attach('db', new Logger());
             $eventsManager->attach('db', new Profiler());
             $connection->setEventsManager($eventsManager);
-
+            
             return $connection;
         });
     }

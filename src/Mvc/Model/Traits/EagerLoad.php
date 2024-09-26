@@ -18,7 +18,7 @@ use Zemit\Mvc\Model\EagerLoading\Loader;
 
 trait EagerLoad
 {
-    abstract public static function find($parameters = null): ResultsetInterface;
+    abstract public static function find($parameters = null);
     
     abstract public static function findFirst($parameters = null);
     

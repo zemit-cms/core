@@ -15,12 +15,13 @@ namespace Zemit\Models\Abstracts;
 use Phalcon\Db\RawValue;
 use Zemit\Filter\Validation;
 use Zemit\Models\AbstractModel;
-use Zemit\Models\Data;
-use Zemit\Models\Site;
-use Zemit\Models\Field;
-use Zemit\Models\TranslateField;
-use Zemit\Models\Lang;
+use Zemit\Models\Column;
 use Zemit\Models\Workspace;
+use Zemit\Models\Data;
+use Zemit\Models\Record;
+use Zemit\Models\TranslateField;
+use Zemit\Models\Site;
+use Zemit\Models\Lang;
 use Zemit\Models\User;
 use Zemit\Models\Abstracts\Interfaces\TableAbstractInterface;
 
@@ -30,25 +31,37 @@ use Zemit\Models\Abstracts\Interfaces\TableAbstractInterface;
  * This class defines a Table abstract model that extends the AbstractModel class and implements the TableAbstractInterface.
  * It provides properties and methods for managing Table data.
  * 
+ * @property Column[] $columnlist
+ * @property Column[] $ColumnList
+ * @method Column[] getColumnList(?array $params = null)
+ *
+ * @property Workspace[] $columnworkspacelist
+ * @property Workspace[] $ColumnWorkspaceList
+ * @method Workspace[] getColumnWorkspaceList(?array $params = null)
+ *
  * @property Data[] $datalist
  * @property Data[] $DataList
  * @method Data[] getDataList(?array $params = null)
  *
- * @property Site[] $datasitelist
- * @property Site[] $DataSiteList
- * @method Site[] getDataSiteList(?array $params = null)
+ * @property Workspace[] $dataworkspacelist
+ * @property Workspace[] $DataWorkspaceList
+ * @method Workspace[] getDataWorkspaceList(?array $params = null)
  *
- * @property Field[] $datafieldlist
- * @property Field[] $DataFieldList
- * @method Field[] getDataFieldList(?array $params = null)
+ * @property Column[] $datacolumnlist
+ * @property Column[] $DataColumnList
+ * @method Column[] getDataColumnList(?array $params = null)
  *
- * @property Field[] $fieldlist
- * @property Field[] $FieldList
- * @method Field[] getFieldList(?array $params = null)
+ * @property Record[] $datarecordlist
+ * @property Record[] $DataRecordList
+ * @method Record[] getDataRecordList(?array $params = null)
  *
- * @property Site[] $fieldsitelist
- * @property Site[] $FieldSiteList
- * @method Site[] getFieldSiteList(?array $params = null)
+ * @property Record[] $recordlist
+ * @property Record[] $RecordList
+ * @method Record[] getRecordList(?array $params = null)
+ *
+ * @property Workspace[] $recordworkspacelist
+ * @property Workspace[] $RecordWorkspaceList
+ * @method Workspace[] getRecordWorkspaceList(?array $params = null)
  *
  * @property TranslateField[] $translatefieldlist
  * @property TranslateField[] $TranslateFieldList
@@ -130,10 +143,31 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
         
     /**
      * Column: name
-     * Attributes: NotNull | Size(120) | Type(2)
+     * Attributes: NotNull | Size(60) | Type(2)
      * @var mixed
      */
     public mixed $name = null;
+        
+    /**
+     * Column: description
+     * Attributes: Size(240) | Type(2)
+     * @var mixed
+     */
+    public mixed $description = null;
+        
+    /**
+     * Column: icon
+     * Attributes: Size(64) | Type(2)
+     * @var mixed
+     */
+    public mixed $icon = null;
+        
+    /**
+     * Column: color
+     * Attributes: Size(9) | Type(5)
+     * @var mixed
+     */
+    public mixed $color = null;
         
     /**
      * Column: deleted
@@ -314,7 +348,7 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
     /**
      * Returns the value of field name
      * Column: name
-     * Attributes: NotNull | Size(120) | Type(2)
+     * Attributes: NotNull | Size(60) | Type(2)
      * @return mixed
      */
     public function getName(): mixed
@@ -325,13 +359,82 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
     /**
      * Sets the value of field name
      * Column: name 
-     * Attributes: NotNull | Size(120) | Type(2)
+     * Attributes: NotNull | Size(60) | Type(2)
      * @param mixed $name
      * @return void
      */
     public function setName(mixed $name): void
     {
         $this->name = $name;
+    }
+    
+    /**
+     * Returns the value of field description
+     * Column: description
+     * Attributes: Size(240) | Type(2)
+     * @return mixed
+     */
+    public function getDescription(): mixed
+    {
+        return $this->description;
+    }
+    
+    /**
+     * Sets the value of field description
+     * Column: description 
+     * Attributes: Size(240) | Type(2)
+     * @param mixed $description
+     * @return void
+     */
+    public function setDescription(mixed $description): void
+    {
+        $this->description = $description;
+    }
+    
+    /**
+     * Returns the value of field icon
+     * Column: icon
+     * Attributes: Size(64) | Type(2)
+     * @return mixed
+     */
+    public function getIcon(): mixed
+    {
+        return $this->icon;
+    }
+    
+    /**
+     * Sets the value of field icon
+     * Column: icon 
+     * Attributes: Size(64) | Type(2)
+     * @param mixed $icon
+     * @return void
+     */
+    public function setIcon(mixed $icon): void
+    {
+        $this->icon = $icon;
+    }
+    
+    /**
+     * Returns the value of field color
+     * Column: color
+     * Attributes: Size(9) | Type(5)
+     * @return mixed
+     */
+    public function getColor(): mixed
+    {
+        return $this->color;
+    }
+    
+    /**
+     * Sets the value of field color
+     * Column: color 
+     * Attributes: Size(9) | Type(5)
+     * @param mixed $color
+     * @return void
+     */
+    public function setColor(mixed $color): void
+    {
+        $this->color = $color;
     }
     
     /**
@@ -616,38 +719,60 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
      */
     public function addDefaultRelationships(): void
     {
+        $this->hasMany('id', Column::class, 'tableId', ['alias' => 'ColumnList']);
+
+        $this->hasManyToMany(
+            'id',
+            Column::class,
+            'tableId',
+            'workspaceId',
+            Workspace::class,
+            'id',
+            ['alias' => 'ColumnWorkspaceList']
+        );
+
         $this->hasMany('id', Data::class, 'tableId', ['alias' => 'DataList']);
 
         $this->hasManyToMany(
             'id',
             Data::class,
             'tableId',
-            'siteId',
-            Site::class,
+            'workspaceId',
+            Workspace::class,
             'id',
-            ['alias' => 'DataSiteList']
+            ['alias' => 'DataWorkspaceList']
         );
 
         $this->hasManyToMany(
             'id',
             Data::class,
             'tableId',
-            'fieldId',
-            Field::class,
+            'columnId',
+            Column::class,
             'id',
-            ['alias' => 'DataFieldList']
+            ['alias' => 'DataColumnList']
         );
-
-        $this->hasMany('id', Field::class, 'tableId', ['alias' => 'FieldList']);
 
         $this->hasManyToMany(
             'id',
-            Field::class,
+            Data::class,
             'tableId',
-            'siteId',
-            Site::class,
+            'recordId',
+            Record::class,
             'id',
-            ['alias' => 'FieldSiteList']
+            ['alias' => 'DataRecordList']
+        );
+
+        $this->hasMany('id', Record::class, 'tableId', ['alias' => 'RecordList']);
+
+        $this->hasManyToMany(
+            'id',
+            Record::class,
+            'tableId',
+            'workspaceId',
+            Workspace::class,
+            'id',
+            ['alias' => 'RecordWorkspaceList']
         );
 
         $this->hasMany('id', TranslateField::class, 'tableId', ['alias' => 'TranslateFieldList']);
@@ -704,7 +829,10 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
         $this->addStringLengthValidation($validator, 'uuid', 0, 36, false);
         $this->addUnsignedIntValidation($validator, 'langId', true);
         $this->addUnsignedIntValidation($validator, 'workspaceId', false);
-        $this->addStringLengthValidation($validator, 'name', 0, 120, false);
+        $this->addStringLengthValidation($validator, 'name', 0, 60, false);
+        $this->addStringLengthValidation($validator, 'description', 0, 240, true);
+        $this->addStringLengthValidation($validator, 'icon', 0, 64, true);
+        $this->addStringLengthValidation($validator, 'color', 0, 9, true);
         $this->addUnsignedIntValidation($validator, 'deleted', false);
         $this->addDateTimeValidation($validator, 'createdAt', false);
         $this->addUnsignedIntValidation($validator, 'createdBy', true);
@@ -736,6 +864,9 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
             'lang_id' => 'langId',
             'workspace_id' => 'workspaceId',
             'name' => 'name',
+            'description' => 'description',
+            'icon' => 'icon',
+            'color' => 'color',
             'deleted' => 'deleted',
             'created_at' => 'createdAt',
             'created_by' => 'createdBy',

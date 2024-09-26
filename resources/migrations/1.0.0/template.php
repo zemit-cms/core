@@ -1,14 +1,5 @@
 <?php
 
-/**
- * This file is part of the Zemit Framework.
- *
- * (c) Zemit Team <contact@zemit.com>
- *
- * For the full copyright and license information, please view the LICENSE.txt
- * file that was distributed with this source code.
- */
-
 use Phalcon\Db\Column;
 use Phalcon\Db\Exception;
 use Phalcon\Db\Index;
@@ -51,7 +42,7 @@ class TemplateMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'label',
+                    'name',
                     [
                         'type' => Column::TYPE_VARCHAR,
                         'notNull' => true,
@@ -60,12 +51,12 @@ class TemplateMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'subject',
+                    'title',
                     [
                         'type' => Column::TYPE_VARCHAR,
                         'notNull' => true,
                         'size' => 100,
-                        'after' => 'label'
+                        'after' => 'name'
                     ]
                 ),
                 new Column(
@@ -73,7 +64,7 @@ class TemplateMigration_100 extends Migration
                     [
                         'type' => Column::TYPE_MEDIUMTEXT,
                         'notNull' => false,
-                        'after' => 'subject'
+                        'after' => 'title'
                     ]
                 ),
                 new Column(
@@ -214,7 +205,7 @@ class TemplateMigration_100 extends Migration
                 new Index('id_UNIQUE', ['id'], 'UNIQUE'),
                 new Index('index_UNIQUE', ['index'], 'UNIQUE'),
                 new Index('index', ['index'], ''),
-                new Index('label', ['label'], ''),
+                new Index('label', ['name'], ''),
                 new Index('created_by', ['created_by'], ''),
                 new Index('created_as', ['created_as'], ''),
                 new Index('updated_by', ['updated_by'], ''),

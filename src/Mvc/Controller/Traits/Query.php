@@ -70,11 +70,11 @@ trait Query
     public function initialize()
     {
         $this->initializeCacheConfig();
+        $this->initializeFields();
         $this->initializeBind();
         $this->initializeBindTypes();
         $this->initializeConditions();
         $this->initializeDistinct();
-        $this->initializeFields();
         $this->initializeGroup();
         $this->initializeHaving();
         $this->initializeJoins();
@@ -168,7 +168,7 @@ trait Query
      *
      * @return ResultsetInterface The result of the find operation.
      */
-    public function find(?array $find = null): ResultsetInterface
+    public function find(?array $find = null)
     {
         $find ??= $this->prepareFind();
         return $this->loadModel()::find($find);

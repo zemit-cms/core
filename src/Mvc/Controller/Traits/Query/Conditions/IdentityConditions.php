@@ -97,6 +97,6 @@ trait IdentityConditions
     public function getIdentityColumns(): array
     {
         // @todo get primary keys from the model
-        return ['id'];
+        return ['id', 'uuid'];
     }
 }

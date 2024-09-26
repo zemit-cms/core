@@ -16,7 +16,11 @@ use Phalcon\Config\Config as PhalconConfig;
 use Phalcon\Db\Column;
 use Phalcon\Encryption\Security;
 use Phalcon\Support\Version as PhalconVersion;
+use Zemit\Bootstrap\Permissions\ColumnConfig;
+use Zemit\Bootstrap\Permissions\DynamicConfig;
+use Zemit\Bootstrap\Permissions\RecordConfig;
 use Zemit\Bootstrap\Permissions\TableConfig;
+use Zemit\Bootstrap\Permissions\TemplateConfig;
 use Zemit\Bootstrap\Permissions\WorkspaceConfig;
 use Zemit\Locale;
 use Zemit\Models;
@@ -410,6 +414,7 @@ class Config extends \Zemit\Config\Config
                 
                 // Database & Models
                 Provider\Database\ServiceProvider::class => Env::get('PROVIDER_DATABASE', Provider\Database\ServiceProvider::class),
+                Provider\DatabaseDynamic\ServiceProvider::class => Env::get('PROVIDER_DATABASE_DYNAMIC', Provider\DatabaseDynamic\ServiceProvider::class),
                 Provider\DatabaseReadOnly\ServiceProvider::class => Env::get('PROVIDER_DATABASE_READ_ONLY', Provider\DatabaseReadOnly\ServiceProvider::class),
                 Provider\ModelsManager\ServiceProvider::class => Env::get('PROVIDER_MODELS_MANAGER', Provider\ModelsManager\ServiceProvider::class),
                 
@@ -1025,6 +1030,7 @@ class Config extends \Zemit\Config\Config
             'database' => [
                 'default' => Env::get('DATABASE_ADAPTER', 'mysql'),
                 'drivers' => [
+                    
                     'mysql' => [
                         'adapter' => Env::get('DATABASE_MYSQL_ADAPTER', \Zemit\Db\Adapter\Pdo\Mysql::class),
                         'dialectClass' => Env::get('DATABASE_MYSQL_DIALECT', \Zemit\Db\Dialect\Mysql::class),
@@ -1042,18 +1048,34 @@ class Config extends \Zemit\Config\Config
                             \PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => Env::get('DATABASE_SSL_VERIFY_SERVER_CERT', true),
                             \PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => Env::get('DATABASE_USE_BUFFERED_QUERY', true),
                         ],
-                        /**
-                         * Readonly Configuration
-                         */
-                        'readonly' => [
-                            'enable' => Env::get('DATABASE_READONLY_ENABLE', false),
-                            'host' => Env::get('DATABASE_READONLY_HOST'),
-                            'port' => Env::get('DATABASE_READONLY_PORT'),
-                            'dbname' => Env::get('DATABASE_READONLY_DBNAME'),
-                            'username' => Env::get('DATABASE_READONLY_USERNAME'),
-                            'password' => Env::get('DATABASE_READONLY_PASSWORD'),
-                            'charset' => Env::get('DATABASE_READONLY_CHARSET'),
-                        ],
+                    ],
+                    
+                    /**
+                     * Readonly Configuration
+                     */
+                    'readonly' => [
+                        'extends' => Env::get('DATABASE_READONLY_EXTENDS', 'mysql'),
+                        'enable' => Env::get('DATABASE_READONLY_ENABLE', false),
+                        'host' => Env::get('DATABASE_READONLY_HOST'),
+                        'port' => Env::get('DATABASE_READONLY_PORT'),
+                        'dbname' => Env::get('DATABASE_READONLY_DBNAME'),
+                        'username' => Env::get('DATABASE_READONLY_USERNAME'),
+                        'password' => Env::get('DATABASE_READONLY_PASSWORD'),
+                        'charset' => Env::get('DATABASE_READONLY_CHARSET'),
+                    ],
+                    
+                    /**
+                     * Dynamic Database Configuration
+                     */
+                    'dynamic' => [
+                        'extends' => Env::get('DATABASE_DYNAMIC_EXTENDS', 'mysql'),
+                        'enable' => Env::get('DATABASE_DYNAMIC_ENABLE', false),
+                        'host' => Env::get('DATABASE_DYNAMIC_HOST'),
+                        'port' => Env::get('DATABASE_DYNAMIC_PORT'),
+                        'dbname' => Env::get('DATABASE_DYNAMIC_DBNAME'),
+                        'username' => Env::get('DATABASE_DYNAMIC_USERNAME'),
+                        'password' => Env::get('DATABASE_DYNAMIC_PASSWORD'),
+                        'charset' => Env::get('DATABASE_DYNAMIC_CHARSET'),
                     ],
                 ],
             ],
@@ -1475,6 +1497,7 @@ class Config extends \Zemit\Config\Config
                             Cli\Tasks\CronTask::class => ['*'],
                             Cli\Tasks\ErrorTask::class => ['*'],
                             Cli\Tasks\DatabaseTask::class => ['*'],
+                            Cli\Tasks\FakerTask::class => ['*'],
                             Cli\Tasks\DataLifeCycleTask::class => ['*'],
                             Cli\Tasks\HelpTask::class => ['*'],
                             Cli\Tasks\ScaffoldTask::class => ['*'],
@@ -1547,7 +1570,11 @@ class Config extends \Zemit\Config\Config
         ], $data);
         
         $data = $this->internalMergeAppend($data, (new WorkspaceConfig())->toArray());
+        $data = $this->internalMergeAppend($data, (new TemplateConfig())->toArray());
         $data = $this->internalMergeAppend($data, (new TableConfig())->toArray());
+        $data = $this->internalMergeAppend($data, (new ColumnConfig())->toArray());
+        $data = $this->internalMergeAppend($data, (new RecordConfig())->toArray());
+        $data = $this->internalMergeAppend($data, (new DynamicConfig())->toArray());
         
         parent::__construct($data, $insensitive);
     }

@@ -39,24 +39,30 @@ trait Save
     
     /**
      * Saves the entity and returns the result as an array.
-     *
+     * @todo handle dynamic and/or composed primary keys
+     * @todo handle multiple entities
+     * @todo segregate create vs update vs save
+     * 
      * @return array The result of the save operation, including the saved status, messages,
      *               and optionally the saved entity data if the save was successful.
      */
     public function save(): array
     {
         $post = $this->getParams();
-        $model = $this->findFirst();
         $saveFields = $this->getSaveFields()?->toArray();
         $mapFields = $this->getMapFields()?->toArray();
         
-        if (isset($post['id']) && !isset($model)) {
-            return [
-                'saved' => false,
-                'messages' => [new Message('Entity id `' . $post['id'] . '` not found.', 'id', 'NotFound', 404)],
-            ];
+        // @todo find what we should do here to handle: 1. dynamic and/or composed primary keys
+        if (isset($post['id'])) {
+            $model = $this->findFirst();
+            if (!isset($model)) {
+                return [
+                    'saved' => false,
+                    'messages' => [new Message('Entity id `' . $post['id'] . '` not found.', 'id', 'NotFound', 404)],
+                ];
+            }
+            unset($post['id']);
         }
-        unset($post['id']);
         
         $model ??= $this->loadModel();
         assert($model instanceof ModelInterface);
@@ -70,7 +76,7 @@ trait Save
                 'saved' => false,
                 'messages' => $model->getMessages(),
             ];
-        }
+        } 
         $saved = $model->save();
         $this->eventsManager->fire('rest:afterSave', $this, [&$model], false);
         

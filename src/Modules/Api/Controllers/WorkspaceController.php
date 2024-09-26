@@ -15,11 +15,20 @@ use Zemit\Modules\Api\Controller;
 
 class WorkspaceController extends Controller
 {
+    protected ?int $limit = 100;
+    protected ?int $maxLimit = 100;
+    
     public function initializeWith(): void
     {
         $this->setWith(new Collection([
             'LangList',
+            'TableList.ColumnList'
         ]));
+    }
+    
+    public function listExpose(iterable $items, ?array $expose = null): array
+    {
+        return (array)$items;
     }
     
     public function initializeSearchFields(): void

@@ -1,14 +1,5 @@
 <?php
 
-/**
- * This file is part of the Zemit Framework.
- *
- * (c) Zemit Team <contact@zemit.com>
- *
- * For the full copyright and license information, please view the LICENSE.txt
- * file that was distributed with this source code.
- */
-
 use Phalcon\Db\Column;
 use Phalcon\Db\Exception;
 use Phalcon\Db\Index;
@@ -16,9 +7,9 @@ use Phalcon\Db\Reference;
 use Phalcon\Migrations\Mvc\Model\Migration;
 
 /**
- * Class FieldMigration_100
+ * Class SiteLangMigration_100
  */
-class FieldMigration_100 extends Migration
+class SiteLangMigration_100 extends Migration
 {
     /**
      * Define the table structure
@@ -28,7 +19,7 @@ class FieldMigration_100 extends Migration
      */
     public function morph(): void
     {
-        $this->morphTable('field', [
+        $this->morphTable('site_lang', [
             'columns' => [
                 new Column(
                     'id',
@@ -52,50 +43,13 @@ class FieldMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'table_id',
+                    'lang_id',
                     [
                         'type' => Column::TYPE_INTEGER,
                         'unsigned' => true,
                         'notNull' => true,
                         'size' => 1,
                         'after' => 'site_id'
-                    ]
-                ),
-                new Column(
-                    'name',
-                    [
-                        'type' => Column::TYPE_VARCHAR,
-                        'notNull' => true,
-                        'size' => 255,
-                        'after' => 'table_id'
-                    ]
-                ),
-                new Column(
-                    'index',
-                    [
-                        'type' => Column::TYPE_VARCHAR,
-                        'notNull' => true,
-                        'size' => 255,
-                        'after' => 'name'
-                    ]
-                ),
-                new Column(
-                    'type',
-                    [
-                        'type' => Column::TYPE_ENUM,
-                        'default' => "text",
-                        'notNull' => true,
-                        'size' => "'text','number'",
-                        'after' => 'index'
-                    ]
-                ),
-                new Column(
-                    'validation_regex',
-                    [
-                        'type' => Column::TYPE_VARCHAR,
-                        'notNull' => false,
-                        'size' => 1000,
-                        'after' => 'type'
                     ]
                 ),
                 new Column(
@@ -106,7 +60,7 @@ class FieldMigration_100 extends Migration
                         'unsigned' => true,
                         'notNull' => true,
                         'size' => 1,
-                        'after' => 'validation_regex'
+                        'after' => 'lang_id'
                     ]
                 ),
                 new Column(
@@ -210,6 +164,16 @@ class FieldMigration_100 extends Migration
                         'notNull' => false,
                         'size' => 1,
                         'after' => 'restored_at'
+                    ]
+                ),
+                new Column(
+                    'deleted_copy1',
+                    [
+                        'type' => Column::TYPE_INTEGER,
+                        'unsigned' => true,
+                        'notNull' => false,
+                        'size' => 1,
+                        'after' => 'restored_by'
                     ]
                 ),
             ],

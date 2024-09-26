@@ -72,7 +72,7 @@ trait FilterConditions
         foreach ($filters as $filter) {
             
             // nesting filtering, switch logical and append filter group
-            if (is_array($filter)) {
+            if (isset($filter[0]) && is_array($filter[0])) {
                 $defaultFilterCondition = $this->defaultFilterCondition($filter, $allowedFilters, !$or);
                 if (is_string($defaultFilterCondition)) {
                     $query []= $defaultFilterCondition;

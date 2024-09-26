@@ -89,38 +89,38 @@ interface TemplateAbstractInterface extends ModelInterface
     public function setIndex(mixed $index): void;
     
     /**
-     * Returns the value of field label
-     * Column: label
+     * Returns the value of field name
+     * Column: name
      * Attributes: NotNull | Size(100) | Type(2)
      * @return mixed
      */
-    public function getLabel(): mixed;
+    public function getName(): mixed;
     
     /**
-     * Sets the value of field label
-     * Column: label 
+     * Sets the value of field name
+     * Column: name 
      * Attributes: NotNull | Size(100) | Type(2)
-     * @param mixed $label
+     * @param mixed $name
      * @return void
      */
-    public function setLabel(mixed $label): void;
+    public function setName(mixed $name): void;
     
     /**
-     * Returns the value of field subject
-     * Column: subject
+     * Returns the value of field title
+     * Column: title
      * Attributes: NotNull | Size(100) | Type(2)
      * @return mixed
      */
-    public function getSubject(): mixed;
+    public function getTitle(): mixed;
     
     /**
-     * Sets the value of field subject
-     * Column: subject 
+     * Sets the value of field title
+     * Column: title 
      * Attributes: NotNull | Size(100) | Type(2)
-     * @param mixed $subject
+     * @param mixed $title
      * @return void
      */
-    public function setSubject(mixed $subject): void;
+    public function setTitle(mixed $title): void;
     
     /**
      * Returns the value of field content

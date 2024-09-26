@@ -15,7 +15,10 @@ namespace Zemit\Models\Abstracts;
 use Phalcon\Db\RawValue;
 use Zemit\Filter\Validation;
 use Zemit\Models\AbstractModel;
+use Zemit\Models\Column;
 use Zemit\Models\Table;
+use Zemit\Models\Data;
+use Zemit\Models\Record;
 use Zemit\Models\Lang;
 use Zemit\Models\WorkspaceLang;
 use Zemit\Models\User;
@@ -27,6 +30,38 @@ use Zemit\Models\Abstracts\Interfaces\WorkspaceAbstractInterface;
  * This class defines a Workspace abstract model that extends the AbstractModel class and implements the WorkspaceAbstractInterface.
  * It provides properties and methods for managing Workspace data.
  * 
+ * @property Column[] $columnlist
+ * @property Column[] $ColumnList
+ * @method Column[] getColumnList(?array $params = null)
+ *
+ * @property Table[] $columntablelist
+ * @property Table[] $ColumnTableList
+ * @method Table[] getColumnTableList(?array $params = null)
+ *
+ * @property Data[] $datalist
+ * @property Data[] $DataList
+ * @method Data[] getDataList(?array $params = null)
+ *
+ * @property Table[] $datatablelist
+ * @property Table[] $DataTableList
+ * @method Table[] getDataTableList(?array $params = null)
+ *
+ * @property Column[] $datacolumnlist
+ * @property Column[] $DataColumnList
+ * @method Column[] getDataColumnList(?array $params = null)
+ *
+ * @property Record[] $datarecordlist
+ * @property Record[] $DataRecordList
+ * @method Record[] getDataRecordList(?array $params = null)
+ *
+ * @property Record[] $recordlist
+ * @property Record[] $RecordList
+ * @method Record[] getRecordList(?array $params = null)
+ *
+ * @property Table[] $recordtablelist
+ * @property Table[] $RecordTableList
+ * @method Table[] getRecordTableList(?array $params = null)
+ *
  * @property Table[] $tablelist
  * @property Table[] $TableList
  * @method Table[] getTableList(?array $params = null)
@@ -683,6 +718,62 @@ abstract class WorkspaceAbstract extends AbstractModel implements WorkspaceAbstr
      */
     public function addDefaultRelationships(): void
     {
+        $this->hasMany('id', Column::class, 'workspaceId', ['alias' => 'ColumnList']);
+
+        $this->hasManyToMany(
+            'id',
+            Column::class,
+            'workspaceId',
+            'tableId',
+            Table::class,
+            'id',
+            ['alias' => 'ColumnTableList']
+        );
+
+        $this->hasMany('id', Data::class, 'workspaceId', ['alias' => 'DataList']);
+
+        $this->hasManyToMany(
+            'id',
+            Data::class,
+            'workspaceId',
+            'tableId',
+            Table::class,
+            'id',
+            ['alias' => 'DataTableList']
+        );
+
+        $this->hasManyToMany(
+            'id',
+            Data::class,
+            'workspaceId',
+            'columnId',
+            Column::class,
+            'id',
+            ['alias' => 'DataColumnList']
+        );
+
+        $this->hasManyToMany(
+            'id',
+            Data::class,
+            'workspaceId',
+            'recordId',
+            Record::class,
+            'id',
+            ['alias' => 'DataRecordList']
+        );
+
+        $this->hasMany('id', Record::class, 'workspaceId', ['alias' => 'RecordList']);
+
+        $this->hasManyToMany(
+            'id',
+            Record::class,
+            'workspaceId',
+            'tableId',
+            Table::class,
+            'id',
+            ['alias' => 'RecordTableList']
+        );
+
         $this->hasMany('id', Table::class, 'workspaceId', ['alias' => 'TableList']);
 
         $this->hasManyToMany(

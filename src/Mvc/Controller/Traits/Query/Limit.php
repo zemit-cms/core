@@ -57,13 +57,13 @@ trait Limit
      */
     public function setLimit(?int $limit): void
     {
-        if ($this->limit < -1) {
-            throw new \Exception("Requested limit ({$this->limit}) must be higher than -1", 400);
+        if ($limit < -1) {
+            throw new \Exception("Requested limit ({$limit}) must be higher than -1", 400);
         }
         
         if (isset($this->maxLimit) && $this->maxLimit !== -1) {
-            if ($this->limit > $this->maxLimit) {
-                throw new \Exception("Requested limit ({$this->limit}) must be lower than the maximum limit ({$this->maxLimit})", 400);
+            if ($limit > $this->maxLimit) {
+                throw new \Exception("Requested limit ({$limit}) must be lower than the maximum limit ({$this->maxLimit})", 400);
             }
         }
         

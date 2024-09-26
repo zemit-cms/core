@@ -62,16 +62,16 @@ class DataTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->data->getId());
     }
 
-    public function testGetSiteId(): void
+    public function testGetWorkspaceId(): void
     {
-        $this->assertEquals(null, $this->data->getSiteId());
+        $this->assertEquals(null, $this->data->getWorkspaceId());
     }
     
-    public function testSetSiteId(): void
+    public function testSetWorkspaceId(): void
     {
         $value = uniqid();
-        $this->data->setSiteId($value);
-        $this->assertEquals($value, $this->data->getSiteId());
+        $this->data->setWorkspaceId($value);
+        $this->assertEquals($value, $this->data->getWorkspaceId());
     }
 
     public function testGetTableId(): void
@@ -86,16 +86,40 @@ class DataTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->data->getTableId());
     }
 
-    public function testGetFieldId(): void
+    public function testGetColumnId(): void
     {
-        $this->assertEquals(null, $this->data->getFieldId());
+        $this->assertEquals(null, $this->data->getColumnId());
     }
     
-    public function testSetFieldId(): void
+    public function testSetColumnId(): void
     {
         $value = uniqid();
-        $this->data->setFieldId($value);
-        $this->assertEquals($value, $this->data->getFieldId());
+        $this->data->setColumnId($value);
+        $this->assertEquals($value, $this->data->getColumnId());
+    }
+
+    public function testGetRecordId(): void
+    {
+        $this->assertEquals(null, $this->data->getRecordId());
+    }
+    
+    public function testSetRecordId(): void
+    {
+        $value = uniqid();
+        $this->data->setRecordId($value);
+        $this->assertEquals($value, $this->data->getRecordId());
+    }
+
+    public function testGetUuid(): void
+    {
+        $this->assertEquals(null, $this->data->getUuid());
+    }
+    
+    public function testSetUuid(): void
+    {
+        $value = uniqid();
+        $this->data->setUuid($value);
+        $this->assertEquals($value, $this->data->getUuid());
     }
 
     public function testGetValue(): void

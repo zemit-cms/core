@@ -24,7 +24,7 @@ class TsScaffoldTask extends Task
     
     public string $cliDoc = <<<DOC
 Usage:
-  zemit cli scaffold <action> [<params>...] [--force] [--table=<table>] [--directory=<directory>]
+  zemit cli ts-scaffold <action> [<params>...] [--force] [--table=<table>] [--directory=<directory>]
 
 Options:
   --force                       Overwrite existing files

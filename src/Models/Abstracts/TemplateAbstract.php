@@ -78,18 +78,18 @@ abstract class TemplateAbstract extends AbstractModel implements TemplateAbstrac
     public mixed $index = null;
         
     /**
-     * Column: label
+     * Column: name
      * Attributes: NotNull | Size(100) | Type(2)
      * @var mixed
      */
-    public mixed $label = null;
+    public mixed $name = null;
         
     /**
-     * Column: subject
+     * Column: title
      * Attributes: NotNull | Size(100) | Type(2)
      * @var mixed
      */
-    public mixed $subject = null;
+    public mixed $title = null;
         
     /**
      * Column: content
@@ -243,49 +243,49 @@ abstract class TemplateAbstract extends AbstractModel implements TemplateAbstrac
     }
     
     /**
-     * Returns the value of field label
-     * Column: label
+     * Returns the value of field name
+     * Column: name
      * Attributes: NotNull | Size(100) | Type(2)
      * @return mixed
      */
-    public function getLabel(): mixed
+    public function getName(): mixed
     {
-        return $this->label;
+        return $this->name;
     }
     
     /**
-     * Sets the value of field label
-     * Column: label 
+     * Sets the value of field name
+     * Column: name 
      * Attributes: NotNull | Size(100) | Type(2)
-     * @param mixed $label
+     * @param mixed $name
      * @return void
      */
-    public function setLabel(mixed $label): void
+    public function setName(mixed $name): void
     {
-        $this->label = $label;
+        $this->name = $name;
     }
     
     /**
-     * Returns the value of field subject
-     * Column: subject
+     * Returns the value of field title
+     * Column: title
      * Attributes: NotNull | Size(100) | Type(2)
      * @return mixed
      */
-    public function getSubject(): mixed
+    public function getTitle(): mixed
     {
-        return $this->subject;
+        return $this->title;
     }
     
     /**
-     * Sets the value of field subject
-     * Column: subject 
+     * Sets the value of field title
+     * Column: title 
      * Attributes: NotNull | Size(100) | Type(2)
-     * @param mixed $subject
+     * @param mixed $title
      * @return void
      */
-    public function setSubject(mixed $subject): void
+    public function setTitle(mixed $title): void
     {
-        $this->subject = $subject;
+        $this->title = $title;
     }
     
     /**
@@ -669,8 +669,8 @@ abstract class TemplateAbstract extends AbstractModel implements TemplateAbstrac
     
         $this->addUnsignedIntValidation($validator, 'id', true);
         $this->addStringLengthValidation($validator, 'index', 0, 50, false);
-        $this->addStringLengthValidation($validator, 'label', 0, 100, false);
-        $this->addStringLengthValidation($validator, 'subject', 0, 100, false);
+        $this->addStringLengthValidation($validator, 'name', 0, 100, false);
+        $this->addStringLengthValidation($validator, 'title', 0, 100, false);
         $this->addUnsignedIntValidation($validator, 'deleted', false);
         $this->addDateTimeValidation($validator, 'createdAt', false);
         $this->addUnsignedIntValidation($validator, 'createdBy', true);
@@ -700,8 +700,8 @@ abstract class TemplateAbstract extends AbstractModel implements TemplateAbstrac
         return [
             'id' => 'id',
             'index' => 'index',
-            'label' => 'label',
-            'subject' => 'subject',
+            'name' => 'name',
+            'title' => 'title',
             'content' => 'content',
             'meta' => 'meta',
             'deleted' => 'deleted',
