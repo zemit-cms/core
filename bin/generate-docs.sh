@@ -32,6 +32,9 @@ find ./docs -type f -name "*.md" -exec sed -i 's|\(([^)]*/League/Csv/[^)]*\.md)\
 find ./docs -type f -name "*.md" -exec sed -i 's|\(([^)]*/League/OAuth2/Client/[^)]*\.md)\)|\(https://oauth2-client.thephpleague.com/\){:target="_blank"}|g' {} +
 find ./docs -type f -name "*.md" -exec sed -i 's|\(([^)]*/League/Fractal/[^)]*\.md)\)|\(https://fractal.thephpleague.com/\){:target="_blank"}|g' {} +
 
+# Remove the "> Automatically generated on xxxx-xx-xx" line from each file
+find ./docs -type f -name "*.md" -exec sed -i '/> Automatically generated on/d' {} +
+
 # Fix dotenv classes
 
 # Decode HTML
@@ -42,10 +45,10 @@ export -f decode_html_entities
 find ./docs/ -type f -name "*.md" -exec bash -c 'decode_html_entities "$0"' {} \;
 
 # Generate Menu for Mkdoc
-./generate-docs-menu.sh
+./bin/generate-docs-menu.sh
 
 # Remove 4th level titles from Home.md
 sed -i '/^#### /d' docs/Home.md
 
 # Deploy to docs
-rsync -av ./docs/* ../Docs/docs/api/
+rsync -av ./docs/* ../docs/docs/api/
