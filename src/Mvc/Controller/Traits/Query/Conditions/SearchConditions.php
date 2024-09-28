@@ -92,8 +92,8 @@ trait SearchConditions
                 $value = $this->generateBindKey('search');
                 
                 $query [] = "{$field} like :{$value}:";
-                $bind[$field] = '%' . $searchTerm . '%';
-                $bindTypes[$field] = Column::BIND_PARAM_STR;
+                $bind[$value] = '%' . $searchTerm . '%';
+                $bindTypes[$value] = Column::BIND_PARAM_STR;
             }
         }
         
