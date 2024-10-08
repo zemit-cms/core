@@ -31,7 +31,7 @@ trait FindIn
         $idList = array_unique(array_filter(array_map($castInt, $idList)));
         $idList = empty($idList) ? [null] : $idList;
         
-        $bindParam = '_id' . uniqid('_', true) . '_';
+        $bindParam = '_id' . uniqid('_') . '_';
         
         return self::find([
             '[id] in ({'.$bindParam.':array})',
