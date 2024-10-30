@@ -1,11 +1,11 @@
 # Argument for specifying PHP version
-ARG PHP_VERSION=8.2-fpm-alpine
+ARG PHP_VERSION=8.3-fpm-alpine
 
 # Use PHP base image with the specified version
 FROM php:${PHP_VERSION}
 
 # Argument for specifying Phalcon version
-ARG PHALCON_VERSION=5.6.2
+ARG PHALCON_VERSION=5.8.0
 
 # Install system dependencies including build tools
 RUN apk update && apk add --no-cache \
