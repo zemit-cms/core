@@ -1,5 +1,5 @@
 # Use the official PHP 8.2 Apache base image
-FROM php:8.2-apache
+FROM php:8.3-apache
 
 # Update and upgrade packages
 RUN apt-get update && apt-get upgrade -y
@@ -60,8 +60,8 @@ EXPOSE 80 443
 
 # Phalcon installation
 # Download and install Phalcon 5.6.2
-RUN curl -sSL https://github.com/phalcon/cphalcon/archive/refs/tags/v5.6.2.tar.gz | tar xz \
-    && cd cphalcon-5.6.2/build \
+RUN curl -sSL https://github.com/phalcon/cphalcon/archive/refs/tags/v5.8.0.tar.gz | tar xz \
+    && cd cphalcon-5.8.0/build \
     && ./install \
     && docker-php-ext-enable phalcon
 
