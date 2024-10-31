@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Mvc;
+namespace Zemit\Tests\Unit\Mvc;
 
 use Zemit\Mvc\Url;
 use Zemit\Tests\Unit\AbstractUnit;

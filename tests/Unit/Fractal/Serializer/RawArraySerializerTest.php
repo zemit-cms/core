@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Fractal\Serializer;
+namespace Zemit\Tests\Unit\Fractal\Serializer;
 
 use Zemit\Fractal\Serializer\RawArraySerializer;
 use Zemit\Tests\Unit\AbstractUnit;

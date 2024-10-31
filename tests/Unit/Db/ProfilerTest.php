@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Db;
+namespace Zemit\Tests\Unit\Db;
 
 use Phalcon\Db\Column;
 use Zemit\Bootstrap;

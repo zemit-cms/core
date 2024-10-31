@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Filter;
+namespace Zemit\Tests\Unit\Filter;
 
 use Zemit\Filter\Filter;
 use Zemit\Tests\Unit\AbstractUnit;

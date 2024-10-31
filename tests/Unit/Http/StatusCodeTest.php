@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Http;
+namespace Zemit\Tests\Unit\Http;
 
 use Zemit\Http\StatusCode;
 use Zemit\Tests\Unit\AbstractUnit;

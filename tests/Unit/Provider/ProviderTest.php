@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Provider;
+namespace Zemit\Tests\Unit\Provider;
 
 use League\Flysystem\Filesystem;
 use Zemit\Provider\ServiceProviderInterface;

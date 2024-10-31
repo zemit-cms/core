@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Cli;
+namespace Zemit\Tests\Unit\Cli;
 
 use Zemit\Bootstrap;
 use Zemit\Cli\ExceptionHandler;

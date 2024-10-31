@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Events;
+namespace Zemit\Tests\Unit\Events;
 
 use Phalcon\Events\Event;
 use Phalcon\Events\EventInterface;
@@ -54,8 +54,8 @@ class EventsAwareTraitTest extends AbstractUnit
     
     public function testSetEventsPrefix(): void
     {
-        $this->events::setEventsPrefix('test');
-        $this->assertEquals('test', $this->events->getEventsPrefix());
+        $this->events::setEventsPrefix('custom');
+        $this->assertEquals('custom', $this->events->getEventsPrefix());
     }
     
     public function testFire(): void

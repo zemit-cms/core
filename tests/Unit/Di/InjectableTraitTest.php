@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Di;
+namespace Zemit\Tests\Unit\Di;
 
 use Phalcon\Di\Di;
 use Phalcon\Di\DiInterface;

@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Support\Exposer;
+namespace Zemit\Tests\Unit\Support\Exposer;
 
 use Zemit\Support\Exposer\Builder;
 use Zemit\Support\Exposer\Exposer;

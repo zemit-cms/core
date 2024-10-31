@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Provider;
+namespace Zemit\Tests\Unit\Provider;
 
 use Zemit\Tests\Unit\AbstractUnit;
 use Xenolope\Quahog\Client;

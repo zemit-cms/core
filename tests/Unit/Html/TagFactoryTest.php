@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Html;
+namespace Zemit\Tests\Unit\Html;
 
 use Zemit\Tests\Unit\AbstractUnit;
 

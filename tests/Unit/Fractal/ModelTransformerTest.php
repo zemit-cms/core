@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Fractal;
+namespace Zemit\Tests\Unit\Fractal;
 
 use Zemit\Models\User;
 use Zemit\Fractal\ModelTransformer;

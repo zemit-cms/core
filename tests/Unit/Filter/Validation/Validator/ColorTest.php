@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Filter\Validation\Validator;
+namespace Zemit\Tests\Unit\Filter\Validation\Validator;
 
 use Phalcon\Filter\Validation\AbstractValidator;
 use Phalcon\Filter\Validation\ValidationInterface;

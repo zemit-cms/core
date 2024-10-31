@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Translate;
+namespace Zemit\Tests\Unit\Translate;
 
 use Phalcon\Translate\Adapter\AdapterInterface;
 use Phalcon\Translate\InterpolatorFactory;

@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Support;
+namespace Zemit\Tests\Unit\Support;
 
 use Zemit\Support\Debug;
 use Zemit\Support\Version as ZemitVersion;

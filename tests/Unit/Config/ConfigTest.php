@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Config;
+namespace Zemit\Tests\Unit\Config;
 
 use Zemit\Tests\Unit\AbstractUnit;
 use Zemit\Config\Config;

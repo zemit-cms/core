@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Mvc\Model;
+namespace Zemit\Tests\Unit\Mvc\Model;
 
 use Phalcon\Db\Column;
 use Zemit\Models\Role;

@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Support\Options;
+namespace Zemit\Tests\Unit\Support\Options;
 
 use Zemit\Support\Options\Options;
 use Zemit\Support\Options\OptionsInterface;

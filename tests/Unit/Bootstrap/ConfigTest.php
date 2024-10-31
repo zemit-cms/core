@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Bootstrap;
+namespace Zemit\Tests\Unit\Bootstrap;
 
 use Zemit\Tests\Unit\AbstractUnit;
 use Zemit\Bootstrap\Config;

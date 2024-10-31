@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Support;
+namespace Zemit\Tests\Unit\Support;
 
 use Zemit\Support\Helper;
 use Zemit\Support\HelperFactory;
@@ -202,7 +202,7 @@ class UtilsTest extends AbstractUnit
     {
         $name = Utils::getName($this);
         $this->assertIsString($name);
-        $this->assertEquals('Unit\Support\UtilsTest', $name);
+        $this->assertEquals('Zemit\Tests\Unit\Support\UtilsTest', $name);
         
         $name = Utils::getName(new Utils());
         $this->assertEquals('Zemit\Support\Utils', $name);

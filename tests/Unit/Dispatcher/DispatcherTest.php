@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Dispatcher;
+namespace Zemit\Tests\Unit\Dispatcher;
 
 use Zemit\Bootstrap;
 use Zemit\Dispatcher\AbstractDispatcher;

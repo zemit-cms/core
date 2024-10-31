@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Locales;
+namespace Zemit\Tests\Unit\Locales;
 
 use Phalcon\Translate\InterpolatorFactory;
 use Zemit\Locales\Fr;

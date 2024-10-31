@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Encryption;
+namespace Zemit\Tests\Unit\Encryption;
 
 use Phalcon\Encryption\Security;
 use Zemit\Tests\Unit\AbstractUnit;

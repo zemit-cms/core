@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Functions;
+namespace Zemit\Tests\Unit\Functions;
 
 use Zemit\Tests\Unit\AbstractUnit;
 
