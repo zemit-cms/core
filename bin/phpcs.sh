@@ -8,4 +8,4 @@
 # file that was distributed with this source code.
 #
 
-php -d xdebug.mode=off ./vendor/bin/phpcs --cache --colors -p -s -w "$@"
+php -d xdebug.mode=off ./vendor/bin/phpcs --parallel=4 --cache --colors -p -s -w "$@"
