@@ -25,7 +25,8 @@ class Restful extends Rest
     use Model;
     use Query;
     
-    public function initialize() {
+    public function initialize()
+    {
         $this->initializeQuery();
     }
 }

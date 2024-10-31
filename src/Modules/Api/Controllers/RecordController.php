@@ -57,7 +57,8 @@ class RecordController extends Controller
         ]));
     }
     
-    public function hasAdvanced(string $key) {
+    public function hasAdvanced(string $key)
+    {
         $advanced = $this->getParam('advanced') ?? [];
         return isset($advanced[$key]);
     }
