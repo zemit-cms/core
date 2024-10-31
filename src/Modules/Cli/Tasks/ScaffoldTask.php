@@ -28,12 +28,12 @@ class ScaffoldTask extends Task
 Usage:
   zemit cli scaffold <action> [--force] [--directory=<directory>] [--namespace=<namespace>]
                               [--table=<table>] [--exclude=<exclude>] [--license=<license>]
-                              [--controllers-dir=<controllers-dir>] [--controllers-dir=<controllers-dir>]
+                              [--src-dir=<controllers-dir>] [--controllers-dir=<controllers-dir>]
                               [--interfaces-dir=<interfaces-dir>] [--abstracts-dir=<abstracts-dir>]
                               [--models-dir=<models-dir>] [--enums-dir=<enums-dir>] [--tests-dir=<tests-dir>]
                               [--models-extend=<models-extend>] [--interfaces-extend=<interface-extend>]
                               [--controllers-extend=<controllers-extend>] [--tests-extend=<tests-extend>]
-                              [--no-controllers] [--no-interfaces] [--no-abstracts] [--no-models] [--no-enums]
+                              [--no-controllers] [--no-interfaces] [--no-abstracts] [--no-models] [--no-enums] [--no-tests]
                               [--no-strict-types] [--no-license] [--no-comments] [--no-get-set-methods]
                               [--no-validations] [--no-relationships] [--no-column-map] [--no-set-source]
                               [--no-typings] [--granular-typings] [--add-raw-value-type] [--protected-properties]
@@ -52,6 +52,7 @@ Options:
   --license=<license>                         Set your own license stamp (PHP Comment)
 
   --directory=<directory>                     Root directory path to generate new files (Default to "./")
+  --src-dir=<src-dir>                         Source directory path to generate new files (Default to "src/")
   --controllers-dir=<controllers-dir>         Set your own controllers directory (Default: "Controllers")
   --interfaces-dir=<interfaces-dir>           Set your own interfaces directory (Default: "Interfaces")
   --abstracts-dir=<abstracts-dir>             Set your own abstract directory (Default: "Abstracts")
@@ -163,35 +164,35 @@ DOC;
             $savePath = $this->getAbstractsDirectory($definitions['abstract']['file']);
             if (!file_exists($savePath) || $force) {
                 $this->saveFile($savePath, $this->createAbstractOutput($definitions, $columns, $relationships), $force);
-                $ret [] = 'Abstract Model `' . $definitions['abstract']['file'] . '` created';
+                $ret [] = 'Abstract Model `' . $definitions['abstract']['file'] . '` created at `' . $savePath . '`';
             }
             
             // Abstract Interfaces
             $savePath = $this->getAbstractsInterfacesDirectory($definitions['abstractInterface']['file']);
             if (!file_exists($savePath) || $force) {
                 $this->saveFile($savePath, $this->createAbstractInterfaceOutput($definitions, $columns, $relationships), $force);
-                $ret [] = 'Abstract Model Interface `' . $definitions['abstractInterface']['file'] . '` created';
+                $ret [] = 'Abstract Model Interface `' . $definitions['abstractInterface']['file'] . '` created at `' . $savePath . '`';
             }
             
             // Model
             $savePath = $this->getModelsDirectory($definitions['model']['file']);
             if (!file_exists($savePath) || $force) {
                 $this->saveFile($savePath, $this->createModelOutput($definitions), $force);
-                $ret [] = 'Model `' . $definitions['model']['file'] . '` created';
+                $ret [] = 'Model `' . $definitions['model']['file'] . '` created at `' . $savePath . '`';
             }
             
             // Model Interfaces
             $savePath = $this->getModelsInterfacesDirectory($definitions['modelInterface']['file']);
             if (!file_exists($savePath) || $force) {
                 $this->saveFile($savePath, $this->createModelInterfaceOutput($definitions), $force);
-                $ret [] = 'Model Interface `' . $definitions['modelInterface']['file'] . '` created';
+                $ret [] = 'Model Interface `' . $definitions['modelInterface']['file'] . '` created at `' . $savePath . '`';
             }
             
             // Model Test
             $savePath = $this->getModelsTestsDirectory($definitions['modelTest']['file']);
             if (!file_exists($savePath) || $force) {
                 $this->saveFile($savePath, $this->createModelTestOutput($definitions, $columns), $force);
-                $ret [] = 'Model Test `' . $definitions['modelTest']['file'] . '` created';
+                $ret [] = 'Model Test `' . $definitions['modelTest']['file'] . '` created at `' . $savePath . '`';
             }
         }
         
@@ -214,7 +215,6 @@ use Zemit\Mvc\ModelInterface;
  */
 interface {$definitions['controller']['name']} extends AbstractController
 {
-    {$getSetInterfaceItems}
 }
 
 PHP;
