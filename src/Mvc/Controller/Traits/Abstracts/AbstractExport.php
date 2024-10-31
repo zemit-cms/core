@@ -27,7 +27,7 @@ trait AbstractExport
     
     abstract public function exportJson(mixed $list, ?string $filename = null, int $flags = JSON_PRETTY_PRINT, int $depth = 2048): ResponseInterface;
     
-    abstract public function exportExcel(array $list, ?string $filename = null): ResponseInterface;
+    abstract public function exportExcel(array $list, ?string $filename = null, bool $forceRawValue = true): ResponseInterface;
     
     abstract public function exportCsv(array $list, ?string $filename = null, ?array $params = null): ResponseInterface;
 }

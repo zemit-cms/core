@@ -113,14 +113,19 @@ class Position extends Behavior
     public function afterSave(ModelInterface $model, string $field, bool $rawSql): void
     {
         assert($model instanceof Model);
-        if (!$this->getProgress() && $model->hasSnapshotData() && $model->hasUpdated($field)) {
+        if (!$this->inProgress() && $model->hasSnapshotData() && $model->hasUpdated($field)) {
             self::staticStart();
             
             $snapshot = $model->getOldSnapshotData() ?: $model->getSnapshotData();
             $modelPosition = $model->readAttribute($field);
             $modelPrimaryKeys = $model->getPrimaryKeysValues();
             
-            if (!($modelPosition instanceof RawValue)) {
+            if ($modelPosition instanceof RawValue) {
+                $modelPosition = $modelPosition->getValue();
+            }
+            
+            if (!empty($modelPosition) || $modelPosition === '0') {
+                $modelPosition = (int)$modelPosition;
                 
                 $positionField = $field;
                 if (ini_get('phalcon.orm.column_renaming')) {
@@ -130,33 +135,48 @@ class Position extends Behavior
                     $positionFieldRaw = $field;
                 }
                 
-                $primaryKeyConditionRaw = implode_mb_sprintf($modelPrimaryKeys, ' and ', '`' . $model->getSource() . '`.`%s` <> ?%s');
-                $primaryKeyCondition = implode_mb_sprintf($modelPrimaryKeys, ' and ', '[' . get_class($model) . '].[%s] <> ?%s');
+                $primaryKeyCondition = $rawSql
+                    ? implode_sprintf($modelPrimaryKeys, ' and ', '`' . $model->getSource() . '`.`%2$s` <> ?')
+                    : implode_sprintf($modelPrimaryKeys, ' and ', '[' . get_class($model) . '].[%2$s] <> :%2$s:');
+                
+                $positionKey = uniqid('_position_') . '_';
+                $oldPositionKey = uniqid('_oldPosition_') . '_';
                 
                 $updatePositionQuery = null;
+                $updatePositionParams = [$positionKey => $modelPosition, $oldPositionKey => (int)$snapshot[$field]];
                 if ($snapshot[$field] > $modelPosition) {
                     $updatePositionQuery = $rawSql
-                        ? 'UPDATE `' . $model->getSource() . '` SET `' . $positionFieldRaw . '` = `' . $positionFieldRaw . '`+1 WHERE `' . $positionFieldRaw . '` >= :position and `' . $positionFieldRaw . '` < :oldPosition and ' . $primaryKeyConditionRaw
-                        : 'UPDATE [' . get_class($model) . '] SET [' . $positionField . '] = [' . $positionField . ']+1 WHERE [' . $positionField . '] >= ?1 and [' . $positionField . '] < ?2 and ' . $primaryKeyCondition;
+                        ? 'UPDATE `' . $model->getSource() . '` SET `' . $positionFieldRaw . '` = `' . $positionFieldRaw . '`+1 WHERE `' . $positionFieldRaw . '` >= ? and `' . $positionFieldRaw . '` < ? and ' . $primaryKeyCondition
+                        : 'UPDATE [' . get_class($model) . '] SET [' . $positionField . '] = [' . $positionField . ']+1 WHERE [' . $positionField . '] >= :' . $positionKey . ': and [' . $positionField . '] < :' . $oldPositionKey . ': and ' . $primaryKeyCondition;
+                    $updatePositionParams = $rawSql
+                        ? [$modelPosition, $snapshot[$field]]
+                        : $updatePositionParams;
                 }
                 elseif ($snapshot[$field] < $modelPosition) {
                     $updatePositionQuery = $rawSql
-                        ? 'UPDATE `' . $model->getSource() . '` SET `' . $positionFieldRaw . '` = `' . $positionFieldRaw . '`-1 WHERE `' . $positionFieldRaw . '` > :oldPosition and `' . $positionFieldRaw . '` <= :position and ' . $primaryKeyConditionRaw
-                        : 'UPDATE [' . get_class($model) . '] SET [' . $positionField . '] = [' . $positionField . ']-1 WHERE [' . $positionField . '] > ?2 and [' . $positionField . '] <= ?1 and ' . $primaryKeyCondition;
+                        ? 'UPDATE `' . $model->getSource() . '` SET `' . $positionFieldRaw . '` = `' . $positionFieldRaw . '`-1 WHERE `' . $positionFieldRaw . '` > ? and `' . $positionFieldRaw . '` <= ? and ' . $primaryKeyCondition
+                        : 'UPDATE [' . get_class($model) . '] SET [' . $positionField . '] = [' . $positionField . ']-1 WHERE [' . $positionField . '] > :' . $oldPositionKey . ': and [' . $positionField . '] <= :' . $positionKey . ': and ' . $primaryKeyCondition;
+                    $updatePositionParams = $rawSql
+                        ? [$snapshot[$field], $modelPosition]
+                        : $updatePositionParams;
                 }
                 
                 if (!empty($updatePositionQuery)) {
                     if ($rawSql) {
                         $model->getWriteConnection()->query($updatePositionQuery, [
-                            'position' => $modelPosition,
-                            'oldPosition' => $snapshot[$field],
+                            ...$updatePositionParams,
+                            ...array_values($modelPrimaryKeys),
                         ]);
                     }
                     else {
-                        $model->getModelsManager()->executeQuery($updatePositionQuery, [
-                            $modelPosition,
-                            $snapshot[$field]
-                        ]);
+                        $save = $model->getModelsManager()->executeQuery($updatePositionQuery, array_merge(
+                            $updatePositionParams,
+                            $modelPrimaryKeys,
+                        ));
+                        $messages = $save->getMessages();
+                        if (!empty($messages)) {
+                            $model->appendMessages($messages, 'afterSave');
+                        }
                     }
                 }
             }

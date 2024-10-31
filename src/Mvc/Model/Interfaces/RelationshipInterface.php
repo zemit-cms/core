@@ -15,6 +15,7 @@ namespace Zemit\Mvc\Model\Interfaces;
 use Phalcon\Messages\Message;
 use Phalcon\Mvc\Model\RelationInterface;
 use Phalcon\Mvc\Model\ResultsetInterface;
+use Phalcon\Mvc\Model\Row;
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Support\Collection\CollectionInterface;
 
@@ -53,7 +54,9 @@ interface RelationshipInterface
     
     public function postSaveRelatedThroughAfter(RelationInterface $relation, $relatedRecords, CollectionInterface $visited): ?bool;
     
-    public function getEntityFromData(array $data, array $configuration = []): ModelInterface;
+    public function findFirstByPrimaryKeys(array $data, ?string $modelClass): ModelInterface|Row|null;
+    
+    public function getEntityFromData(array $data, array $configuration = []): ModelInterface|Row|null;
     
     public function appendMessages(array $messages = [], ?string $context = null, ?int $index = 0): void;
     

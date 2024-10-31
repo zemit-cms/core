@@ -74,7 +74,104 @@ class ModelTest extends AbstractUnit
         $this->assertTrue($save);
     }
     
-    public function testModelRelationship(): void
+    public function testManyRelationship(): void
+    {
+        $this->prepareTests();
+        
+        $user = new User();
+        $user->assign([
+            'email' => 'test@test.tld',
+            'userrolelist' => [
+                false,
+                [
+                    'roleId' => 1,
+                ],
+                [
+                    'roleId' => 2,
+                ]
+            ],
+        ]);
+        
+        // Create
+        $save = $user->save();
+        $messages = $user->getMessages();
+        
+        $this->assertEmpty($messages, json_encode($messages));
+        $this->assertTrue($save);
+        
+        $this->userRoleFindAssert(1, 1);
+        $this->userRoleFindAssert(1, 2);
+        
+        // change an existing relationship and soft-delete other relationships
+        $user->assign([
+            'userrolelist' => [
+                false,
+                [
+                    'id' => 1,
+                    'roleId' => 3,
+                ],
+            ],
+        ]);
+        
+        $save = $user->save();
+        $messages = $user->getMessages();
+        
+        $this->assertEmpty($messages, json_encode($messages));
+        $this->assertTrue($save);
+        
+        $this->userRoleFindAssert(1, 3);
+        $this->userRoleFindAssert(1, 2, 1);
+        
+        // reactivate a previously deleted relationship using id without altering other relationships
+        $user->assign([
+            'userrolelist' => [
+                true,
+                [
+                    'id' => 2,
+                    'deleted' => 0, // @todo shouldn't have to pass deleted
+                ],
+                [
+                    'roleId' => 5,
+                    'deleted' => 1,
+                ],
+            ],
+        ]);
+        
+        $user->save();
+        $messages = $user->getMessages();
+        
+        $this->assertEmpty($messages, json_encode($messages));
+        $this->assertTrue($save);
+        
+        $this->userRoleFindAssert(1, 3);
+        $this->userRoleFindAssert(1, 2);
+        $this->userRoleFindAssert(1, 5, 1);
+        
+        // reactivate a previously deleted relationship using roleId only without altering other relationships
+        $user->assign([
+            'userrolelist' => [
+                true,
+                [
+                    'roleId' => 5,
+                ],
+            ],
+        ]);
+        
+        $user->save();
+        $messages = $user->getMessages();
+        
+        $this->assertEmpty($messages, json_encode($messages));
+        $this->assertTrue($save);
+        
+        $this->userRoleFindAssert(1, 3);
+        $this->userRoleFindAssert(1, 2);
+        $this->userRoleFindAssert(1, 5);
+        
+//        $this->roleFindAssert('test2');
+//        $this->roleFindAssert('test3');
+    }
+    
+    public function testManyToManyRelationship(): void
     {
         $this->prepareTests();
         
@@ -260,6 +357,17 @@ class ModelTest extends AbstractUnit
         $this->assertEquals(0, $role->readAttribute('deleted'));
         $this->assertNotEmpty($role->readAttribute('createdAt'));
         return $role;
+    }
+    
+    public function userRoleFindAssert(int $userId, int $roleId, int $deleted = 0)
+    {
+        $userRole = UserRole::findFirst(['userId = :userId: and roleId = :roleId:', 'bind' => ['userId' => $userId, 'roleId' => $roleId]]);
+        $this->assertInstanceOf(UserRole::class, $userRole);
+        $this->assertEquals($userId, $userRole->readAttribute('userId'));
+        $this->assertEquals($roleId, $userRole->readAttribute('roleId'));
+        $this->assertEquals($deleted, $userRole->readAttribute('deleted'));
+        $this->assertNotEmpty($userRole->readAttribute('createdAt'));
+        return $userRole;
     }
     
     public function addModelsPermissions(array $models = []): void

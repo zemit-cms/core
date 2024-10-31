@@ -17,6 +17,7 @@ use Phalcon\Db\Column;
 use Phalcon\Messages\Message;
 use Phalcon\Mvc\EntityInterface;
 use Phalcon\Mvc\Model;
+use Phalcon\Mvc\Model\Row;
 use Phalcon\Mvc\Model\Relation;
 use Phalcon\Mvc\Model\RelationInterface;
 use Phalcon\Mvc\Model\ResultsetInterface;
@@ -293,6 +294,8 @@ trait Relationship
                 // we got something to assign
                 $keepMissingRelationship = $this->keepMissingRelated[$alias] ?? null;
                 if (!empty($assign) || $keepMissingRelationship === false) {
+                    
+                    $assign = is_array($assign) ? array_values(array_filter($assign)) : $assign;
                     $this->{$alias} = $assign;
                     
                     // fix to force recursive parent save from children entities within _preSaveRelatedRecords method
@@ -624,16 +627,26 @@ trait Relationship
         $referencedFields = is_array($referencedFields) ? $referencedFields : [$referencedFields];
         
         foreach ($relatedRecords as $recordAfter) {
+//            $test = $recordAfter->toArray();
 //            $recordAfter->assign($relationFields);
             foreach ($relationFields as $key => $relationField) {
                 $recordAfter->writeAttribute($referencedFields[$key], $this->readAttribute($relationField));
             }
             
-            // Save the record and get messages
-            if (!$recordAfter->doSave($visited)) {
-                $this->appendMessagesFromRecord($recordAfter, $lowerCaseAlias);
+            try {
+                // Save the record and get messages
+                if (!$recordAfter->doSave($visited)) {
+                    $this->appendMessagesFromRecord($recordAfter, $lowerCaseAlias);
+                    return false;
+                }
+            } catch (\Exception $e) {
+//                dd($test, $recordAfter->toArray());
+                $this->appendMessages([
+                    new Message($e->getMessage() . ' - ' . $e->getCode(), $lowerCaseAlias, 'Exception', (int)$e->getCode()),
+                ]);
                 return false;
             }
+            
         }
         
         return true;
@@ -718,9 +731,56 @@ trait Relationship
     }
     
     /**
-     * Get an entity from data
+     * Find the first record by its primary key attributes.
+     *
+     * @param array $data The data containing the primary key values.
+     * @param string|null $modelClass The class name of the model to search for. If not provided, the current model class will be used.
+     * 
+     * @return ModelInterface|Model\Row|null The found record entity.
      */
-    public function getEntityFromData(array $data, array $configuration = []): ModelInterface
+    public function findFirstByPrimaryKeys(array $data, ?string $modelClass): ModelInterface|Row|null
+    {
+        assert($this instanceof ModelInterface);
+        
+        $modelClass ??= self::class;
+        
+        $modelsManager = $this->getModelsManager();
+        $modelsMetaData = $this->getModelsMetaData();
+        
+        $relatedModel = $modelsManager->load($modelClass);
+        $relatedPrimaryKeys = $modelsMetaData->getPrimaryKeyAttributes($relatedModel);
+        $relatedPrimaryValues = array_intersect_key($data, array_flip($relatedPrimaryKeys));
+        
+        if (count($relatedPrimaryKeys) === count($relatedPrimaryValues)) {
+            return $relatedModel::findFirst([
+                'conditions' => implode_sprintf($relatedPrimaryKeys, ' and ', '[' . $relatedModel::class . '].[%s] = ?%s'),
+                'bind' => array_values($relatedPrimaryValues),
+                'bindTypes' => array_fill(0, count($relatedPrimaryValues), Column::BIND_PARAM_STR),
+            ]);
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Get the entity object from the given data.
+     * It will try to find the existing record and then assign the new data.
+     * - Will first try using the primary key of the related record
+     * - Then will try using the defined relationship fields using the relationship alias
+     *
+     * @param array $data The data array.
+     * @param array $configuration The configuration options.
+     *                                - alias: The alias name.
+     *                                - fields: The fields array.
+     *                                - modelClass: The model class.
+     *                                - readFields: The read fields array.
+     *                                - type: The relationship type.
+     *                                - whiteList: The whitelist array.
+     *                                - dataColumnMap: The data column map array.
+     *
+     * @return ModelInterface|Model\Row|null The entity object or null if not found.
+     */
+    public function getEntityFromData(array $data, array $configuration = []): ModelInterface|Row|null
     {
         assert($this instanceof ModelInterface);
         assert($this instanceof EntityInterface);
@@ -741,58 +801,65 @@ trait Relationship
             throw new \Exception('Parameter `modelClass` is mandatory');
         }
         
-        $entity = false;
+        // using primary key first
+        $entity = $this->findFirstByPrimaryKeys($data, $modelClass);
         
-        if ($type === Relation::HAS_ONE || $type === Relation::BELONGS_TO) {
-            
-            // Set value to compare
-            if (!empty($readFields)) {
+        // not found, using the relationship fields instead
+        if (!$entity) {
+            if ($type === Relation::HAS_ONE || $type === Relation::BELONGS_TO) {
                 
-                foreach ($readFields as $key => $field) {
+                // Set value to compare
+                if (!empty($readFields)) {
                     
-                    if (empty($data[$fields[$key]])) {
+                    foreach ($readFields as $key => $field) {
                         
-                        // @todo maybe remove this if
-                        $value = $this->readAttribute($field);
-                        if (!empty($value)) {
+                        if (empty($data[$fields[$key]])) {
                             
                             // @todo maybe remove this if
-                            $data [$fields[$key]] = $value;
+                            $value = $this->readAttribute($field);
+                            if (!empty($value)) {
+                                
+                                // @todo maybe remove this if
+                                $data [$fields[$key]] = $value;
+                            }
                         }
                     }
                 }
             }
-        }
-        
-        // array_keys_exists (if $referencedFields keys exists)
-        $dataKeys = array_intersect_key($data, array_flip($fields));
-        
-        // all keys were found
-        if (count($dataKeys) === count($fields)) {
             
-            if ($type === Relation::HAS_MANY) {
+            // array_keys_exists (if $referencedFields keys exists)
+            $dataKeys = array_intersect_key($data, array_flip($fields));
+            
+            // all keys were found
+            if (count($dataKeys) === count($fields)) {
                 
-                $modelsMetaData = $this->getModelsMetaData();
-                $primaryKeys = $modelsMetaData->getPrimaryKeyAttributes($this);
-                
-                // Force primary keys for single to many
-                foreach ($primaryKeys as $primaryKey) {
+                if ($type === Relation::HAS_MANY) {
                     
-                    if (!in_array($primaryKey, $fields, true)) {
-                        $dataKeys [$primaryKey] = $data[$primaryKey] ?? null;
-                        $fields [] = $primaryKey;
+                    $modelsMetaData = $this->getModelsMetaData();
+                    $primaryKeys = $modelsMetaData->getPrimaryKeyAttributes($this);
+                    
+                    // Force primary keys for single to many
+                    foreach ($primaryKeys as $primaryKey) {
+                        
+                        if (!in_array($primaryKey, $fields, true)) {
+                            $dataKeys [$primaryKey] = $data[$primaryKey] ?? null;
+                            $fields [] = $primaryKey;
+                        }
                     }
                 }
+                
+                $modelsManager = $this->getModelsManager();
+                $relatedModel = $modelsManager->load($modelClass);
+                
+                $entity = $relatedModel::findFirst([
+                    'conditions' => implode_sprintf($fields, ' and ', '[' . $relatedModel::class . '].[%s] = ?%s'),
+                    'bind' => array_values($dataKeys),
+                    'bindTypes' => array_fill(0, count($dataKeys), Column::BIND_PARAM_STR),
+                ]);
             }
-            
-            /** @var ModelInterface|null $entity */
-            $entity = call_user_func($modelClass . '::findFirst', [
-                'conditions' => implode_sprintf($fields, ' and ', '[' . $modelClass . '].[%s] = ?%s'),
-                'bind' => array_values($dataKeys),
-                'bindTypes' => array_fill(0, count($dataKeys), Column::BIND_PARAM_STR),
-            ]);
         }
         
+        // not found, we will create a new related entity
         if (!$entity) {
             $entity = new $modelClass();
         }

@@ -13,8 +13,10 @@ namespace Zemit\Mvc\Model\EagerLoading;
 
 use Phalcon\Di\Di;
 use Phalcon\Mvc\Model\Relation;
+use Phalcon\Mvc\Model\Resultset\Complex;
 use Phalcon\Mvc\Model\Resultset\Simple;
 use Phalcon\Mvc\Model\ResultsetInterface;
+use Phalcon\Mvc\Model\Row;
 use Phalcon\Mvc\ModelInterface;
 
 final class Loader
@@ -60,6 +62,25 @@ final class Loader
             $from = iterator_to_array($from);
             if (isset($from[0])) {
                 $className = get_class($from[0]);
+            }
+            else {
+                $from = null;
+            }
+        }
+        
+        // Handle Complex Resultset
+        elseif ($from instanceof Complex) {
+            // we will consider the first model to be the main model
+            $tmp = [];
+            foreach ($from as $row) {
+                assert($row instanceof Row);
+                $array = $row->toArray();
+                $firstModel = reset($array);
+                $tmp []= $firstModel;
+            }
+            $from = $tmp;
+            if (isset($from[0])) {
+                $className ??= get_class($from[0]);
             }
             else {
                 $from = null;

@@ -12,11 +12,48 @@
 namespace Zemit\Cli;
 
 use Zemit\Di\InjectableProperties;
+use joshtronic\LoremIpsum;
+use Orhanerday\OpenAi\OpenAi;
+use Phalcon\Logger\Logger;
+use Zemit\Bootstrap\Config;
+use Zemit\Bootstrap;
+use Zemit\Cache\Cache;
+use Zemit\Db\Profiler;
+use Zemit\Html\Escaper;
+use Zemit\Support\Debug;
+use Zemit\Encryption\Security;
+use Zemit\Filter\Filter;
+use Zemit\Identity;
+use Zemit\Locale;
+use Zemit\Mvc\View;
+use Zemit\Provider\Jwt\Jwt;
+use Zemit\Support\Models;
+use Zemit\Support\Utils;
 
 /**
  * @property \Zemit\Cli\Console $console
  * @property \Zemit\Cli\Router $router
  * @property \Zemit\Cli\Dispatcher $dispatcher
+ * @property Console $console
+ * @property Config $config
+ * @property Bootstrap $bootstrap
+ * @property Debug $debug
+ * @property Router $router
+ * @property Dispatcher $dispatcher
+ * @property View $view
+ * @property Security $security
+ * @property Profiler $profiler
+ * @property Jwt $jwt
+ * @property Escaper $escaper
+ * @property Filter $filter
+ * @property Identity $identity
+ * @property Locale $locale
+ * @property Logger $logger
+ * @property Utils $utils
+ * @property LoremIpsum $loremIpsum
+ * @property OpenAi $openAi
+ * @property Cache $cache
+ * @property Models $models
  */
 class Task extends \Phalcon\Cli\Task implements TaskInterface
 {

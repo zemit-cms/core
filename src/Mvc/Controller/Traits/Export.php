@@ -101,7 +101,7 @@ trait Export
     {
         $columns = [];
         foreach ($list as $row) {
-            foreach ($row as $key => $value) {
+            foreach (array_keys($row) as $key) {
                 $columns[$key] = true;
             }
         }
@@ -206,7 +206,7 @@ trait Export
      *
      * @return ResponseInterface
      */
-    public function exportExcel(array $list, ?string $filename = null): ResponseInterface
+    public function exportExcel(array $list, ?string $filename = null, bool $forceRawValue = true): ResponseInterface
     {
         $filename ??= $this->getFilename();
         $columns = $this->getExportColumns($list);
@@ -217,7 +217,8 @@ trait Export
         foreach ($list as $record) {
             $row = [];
             foreach ($columns as $column) {
-                $row[$column] = $record[$column] ?? '';
+                // Prefix #0 cell value to force raw value
+                $row[$column] = ($forceRawValue? "\0" : '')  . $record[$column] ?? '';
             }
             $export [] = array_values($row);
         }
@@ -249,7 +250,7 @@ trait Export
         $delimiter = $params['delimiter'] ?? null;
         $enclosure = $params['enclosure'] ?? null;
         $endOfLine = $params['endOfLine'] ?? null;
-        $escape = $params['escape'] ?? null;
+        $escape = $params['escape'] ?? '\\';
         $outputBOM = $params['outputBOM'] ?? null;
         $skipIncludeBOM = $params['skipIncludeBOM'] ?? false;
         $relaxEnclosure = $params['relaxEnclosure'] ?? false;
