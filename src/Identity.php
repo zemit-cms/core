@@ -859,7 +859,12 @@ class Identity extends Injectable implements OptionsInterface
      */
     public function getKeyToken(string $jwt = null, string $key = null, string $token = null): array
     {
-        $json = $this->request->getJsonRawBody();
+        try {
+            $json = $this->request->getJsonRawBody();
+        } catch (\InvalidArgumentException $e) {
+            $json = new \stdClass();
+        }
+        
         $refreshToken = $this->request->get('refreshToken', 'string', $json->refreshToken ?? null);
         $jwt ??= $this->request->get('jwt', 'string', $json->jwt ?? null);
         $key ??= $this->request->get('key', 'string', $this->store['key'] ?? $json->key ?? null);

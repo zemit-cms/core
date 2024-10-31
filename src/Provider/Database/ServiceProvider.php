@@ -39,14 +39,14 @@ class ServiceProvider extends AbstractServiceProvider
             $driverOptions = $databaseConfig['drivers'][$driverName] ?? [];
             
             // readonly
-            if (!$readonly) {
+            if ($readonly) {
                 $readonlyOptions = array_filter($driverOptions['readonly'] ?? [], function ($value) {
                     return !is_null($value);
                 });
                 $driverOptions = array_merge($driverOptions, $readonlyOptions);
-                unset($driverOptions['readonly']);
                 unset($driverOptions['enable']);
             }
+            unset($driverOptions['readonly']);
             
             // dialect
             if (!empty($driverOptions['dialectClass'])) {

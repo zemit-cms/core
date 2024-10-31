@@ -32,7 +32,7 @@ trait ExportAction
         $list = $this->exportExpose($with);
         if ($this->export($list)) {
             // @todo avoid sending response instead of die
-            die;
+            exit();
         }
     }
     

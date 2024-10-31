@@ -51,6 +51,7 @@ use Phalcon\Di\DiInterface;
  * @property \Zemit\Jwt $jwt
  * @property \Zemit\OpenAi $openAi
  * @property \Zemit\LoremIpsum $loremIpsum
+ * @property \Zemit\Support\Models $models
  */
 trait InjectableTrait
 {

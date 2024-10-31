@@ -437,7 +437,7 @@ trait Query
      * @todo escape fields properly
      *
      */
-    protected function getFilterCondition(array $filters = null, array $whiteList = null, bool $or = false)
+    protected function getFilterCondition(array $filters = null, array $whiteList = null, bool $or = false, int $level = 0)
     {
         $filters ??= $this->getParam('filters');
         $whiteList ??= $this->getFilterWhiteList();
@@ -450,13 +450,15 @@ trait Query
         }
         
         $query = [];
-        foreach ($filters as $filter) {
+        foreach ($filters as $filterIndex => $filter) {
             $field = $this->filter->sanitize($filter['field'] ?? null, ['string', 'trim']);
             
-            // @todo logic bitwise operator
-//            $logic = $this->filter->sanitize($filter['logic'] ?? null, ['string', 'trim', 'lower']);
-//            $logic = $logic ?: ($or ? 'or' : 'and');
-//            $logic = ' ' . $logic . ' ';
+            // get logical operator
+            $logic = $this->filter->sanitize($filter['logic'] ?? null, ['string', 'trim', 'lower']);
+            $queryLogic = $logic ?: ($or ? ($filterIndex === 0? 'and' : 'or') : ($filterIndex === 0? 'or' : 'and')); // fallback for old way
+            if (!in_array($queryLogic, ['or', 'and', 'xor'])) {
+                throw new \Exception('Unsupported logical operator: `' . $queryLogic . '`', 400);
+            }
             
             if (!empty($field)) {
                 $lowercaseField = mb_strtolower($field);
@@ -546,11 +548,22 @@ trait Query
                 
                 // Add the current model name by default
                 $field = $this->appendModelName($field);
-                
                 $queryFieldBinder = $field;
-                $queryValueBinder = ':' . $queryValue . ':';
-                if (isset($filter['value'])) {
-                    
+                
+                // is or not empty
+                if (in_array($queryOperator, ['is empty', 'is not empty'])) {
+                    $queryOperator = ($queryOperator === 'is not empty' ? '!' : '');
+                    $query [] = "$queryLogic $queryOperator(TRIM($queryFieldBinder) = '' or $queryFieldBinder is null)";
+                }
+                
+                // raw queries without values
+                elseif (!isset($filter['value'])) {
+                    $query [] = "$queryLogic $queryFieldBinder $queryOperator";
+                }
+                
+                // queries with values
+                else{
+                    $queryValueBinder = ':' . $queryValue . ':';
                     
                     // special for between and not between
                     if (in_array($queryOperator, ['between', 'not between'])) {
@@ -564,7 +577,7 @@ trait Query
                         $bindType[$queryValue0] = Column::BIND_PARAM_STR;
                         $bindType[$queryValue1] = Column::BIND_PARAM_STR;
                         
-                        $query [] = (($queryOperator === 'not between') ? 'not ' : null) . "$queryFieldBinder between :$queryValue0: and :$queryValue1:";
+                        $query [] = $queryLogic . ' ' . (($queryOperator === 'not between') ? 'not ' : null) . "$queryFieldBinder between :$queryValue0: and :$queryValue1:";
                     }
                     
                     elseif (in_array($queryOperator, [
@@ -593,12 +606,12 @@ trait Query
                         $queryPointLatBinder1 = ':' . $queryBindValue2 . ':';
                         $queryPointLonBinder1 = ':' . $queryBindValue3 . ':';
                         $queryLogicalOperator =
-                            (strpos($queryOperator, 'greater') !== false ? '>' : null) .
-                            (strpos($queryOperator, 'less') !== false ? '<' : null) .
-                            (strpos($queryOperator, 'equal') !== false ? '=' : null);
+                            (str_contains($queryOperator, 'greater') ? '>' : null) .
+                            (str_contains($queryOperator, 'less') ? '<' : null) .
+                            (str_contains($queryOperator, 'equal') ? '=' : null);
                         
                         $bind[$queryValue] = $filter['value'];
-                        $query [] = "ST_Distance_Sphere(point($queryPointLatBinder0, $queryPointLonBinder0), point($queryPointLatBinder1, $queryPointLonBinder1)) $queryLogicalOperator $queryValueBinder";
+                        $query [] = "$queryLogic ST_Distance_Sphere(point($queryPointLatBinder0, $queryPointLonBinder0), point($queryPointLatBinder1, $queryPointLonBinder1)) $queryLogicalOperator $queryValueBinder";
                     }
                     
                     elseif (in_array($queryOperator, [
@@ -609,7 +622,7 @@ trait Query
                         $queryValueBinder = '({' . $queryValue . ':array})';
                         $bind[$queryValue] = $filter['value'];
                         $bindType[$queryValue] = Column::BIND_PARAM_STR;
-                        $query [] = "$queryFieldBinder $queryOperator $queryValueBinder";
+                        $query [] = "$queryLogic $queryFieldBinder $queryOperator $queryValueBinder";
                     }
                     
                     else {
@@ -644,10 +657,6 @@ trait Query
                                 $bind[$queryValue] = '%' . $value;
                                 $bindType[$queryValue] = Column::BIND_PARAM_STR;
                                 $queryAndOr [] = ($queryOperator === 'does not end with' ? '!' : '') . "($queryFieldBinder like :$queryValue:)";
-                            }
-                            
-                            elseif (in_array($queryOperator, ['is empty', 'is not empty'])) {
-                                $queryAndOr [] = ($queryOperator === 'is not empty' ? '!' : '') . "(TRIM($queryFieldBinder) = '' or $queryFieldBinder is null)";
                             }
                             
                             elseif (in_array($queryOperator, ['regexp', 'not regexp'])) {
@@ -698,26 +707,23 @@ trait Query
                         }
                         if (!empty($queryAndOr)) {
                             $andOr = str_contains($queryOperator, ' not ')? 'and' : 'or';
-                            $query [] = '((' . implode(') ' . $andOr . ' (', $queryAndOr) . '))';
+                            $query [] = $queryLogic . ' ((' . implode(') ' . $andOr . ' (', $queryAndOr) . '))';
                         }
                     }
-                }
-                else {
-                    $query [] = "$queryFieldBinder $queryOperator";
                 }
                 
                 $this->setBind($bind);
                 $this->setBindTypes($bindType);
             }
             elseif (is_array($filter)) {
-                $query [] = $this->getFilterCondition($filter, $whiteList, !$or);
+                $query [] = $this->getFilterCondition($filter, $whiteList, !$or, $level + 1);
             }
             else {
                 throw new \Exception('A valid field property is required.', 400);
             }
         }
         
-        return empty($query) ? null : '(' . implode($or ? ' or ' : ' and ', $query) . ')';
+        return empty($query) ? null : preg_replace('/^(xor |and |or )(.*)/', $level? '${1}(${2})' : '(${2})', implode(' ', $query));
     }
     
     /**
@@ -729,6 +735,11 @@ trait Query
         $modelName ??= $this->getModelName();
         
         if (empty($field)) {
+            return $field;
+        }
+        
+        // fields with brackets are ignored
+        if (str_starts_with($field, '[') && str_ends_with($field, ']')) {
             return $field;
         }
         
@@ -898,6 +909,22 @@ trait Query
         $find['conditions'] .= (empty($find['conditions']) ? null : ' AND (') . implode(') AND (', $conditions) . ')';
         
         return $modelName::findFirstWith($with ?? [], $find ?? []);
+    }
+    
+    /**
+     * Get a count result from the find query
+     * @param string|null $model
+     * @param array|null $find
+     * @return int
+     * @throws \Exception
+     */
+    protected function count(?string $model = null, ?array $find = null): int
+    {
+        $model ??= $this->getModelName();
+        $find ??= $this->getFind();
+        
+        $countResult = $model::count($this->getFindCount($find));
+        return is_countable($countResult) ? count($countResult) : (int)$countResult;
     }
     
     /**

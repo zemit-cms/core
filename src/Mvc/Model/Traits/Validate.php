@@ -11,6 +11,7 @@
 
 namespace Zemit\Mvc\Model\Traits;
 
+use Phalcon\Db\RawValue;
 use Zemit\Db\Column;
 use Zemit\Filter\Validation;
 use Zemit\Filter\Validation\Validator\Color as ColorValidator;
@@ -455,14 +456,22 @@ trait Validate
      * @param Validation $validator The validator object to add the validation rules to.
      * @param string $field The field name to apply the validation rules to. Default is 'position'.
      * @param bool $allowEmpty Whether empty values are allowed. Default is true.
+     * @param bool $allowRawValue Whether raw values are allowed. Default is true.
      *
      * @return Validation The updated validator object with the position validation added.
      */
-    public function addPositionValidation(Validation $validator, string $field = 'position', bool $allowEmpty = true): Validation
+    public function addPositionValidation(Validation $validator, string $field = 'position', bool $allowEmpty = true, bool $allowRawValue = true): Validation
     {
         if (property_exists($this, $field)) {
             
             $this->addNotEmptyValidation($validator, $field, $allowEmpty);
+            
+            if ($allowRawValue) {
+                $fieldValue = $this->readAttribute($field);
+                if ($fieldValue instanceof RawValue) {
+                    return $validator;
+                }
+            }
             
             // Must be numeric
             $validator->add($field, new Numericality([

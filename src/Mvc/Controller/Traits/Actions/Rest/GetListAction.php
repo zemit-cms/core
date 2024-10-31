@@ -43,11 +43,9 @@ trait GetListAction
         $with = $this->getListWith() ?: [];
         $find = $this->getFind() ?: [];
         
-        $totalCount = $model::count($this->getFindCount($find));
-        $totalCount = is_countable($totalCount) ? count($totalCount) : (int)$totalCount;
         $this->view->setVars([
             'list' => $this->listExpose($model::findWith($with, $find)),
-            'totalCount' => $totalCount,
+            'totalCount' => $this->count($model, $find) ?? null,
             'limit' => $find['limit'] ?? null,
             'offset' => $find['offset'] ?? null,
         ]);

@@ -34,10 +34,10 @@ trait UserTrait
         return [
             $userClass => [
                 'password' => function ($row) {
-                    return $row->getUsername();
+                    return $row->getEmail();
                 },
                 'passwordConfirm' => function ($row) {
-                    return $row->getUsername();
+                    return $row->getEmail();
                 },
             ],
             $userRoleClass => [],
@@ -51,14 +51,13 @@ trait UserTrait
             'save' => 0
         ];
         
-        $username = explode('@', $email)[0];
-        $firstName = ucfirst($username);
-        $lastName = ucfirst($username);
-        $password ??= $username;
+        $role = explode('@', $email)[0];
+        $firstName = ucfirst($role);
+        $lastName = ucfirst($role);
+        $password ??= $role;
         
         $assign = [
             'email' => $email,
-            'username' => $username,
             'firstName' => $firstName,
             'lastName' => $lastName,
             'password' => $password,
@@ -66,21 +65,21 @@ trait UserTrait
         ];
         
         $roleClass = $this->config->getModelClass(Role::class);
-        $role = $roleClass::findFirst([
+        $roleEntity = $roleClass::findFirst([
             'index = :role:',
-            'bind' => ['role' => $username],
+            'bind' => ['role' => $role],
             'bindTypes' => ['role' => Column::BIND_PARAM_STR],
         ]);
         
-        if ($role) {
-            $assign['rolenode'] = [['roleId' => $role->getId()]];
+        if ($roleEntity) {
+            $assign['rolenode'] = [['roleId' => $roleEntity->getId()]];
         }
         
-        $user = new User();
-        $user->assign($assign);
+        $userEntity = new User();
+        $userEntity->assign($assign);
         
-        if (!$user->save()) {
-            $response['errors'] = $user->getMessages();
+        if (!$userEntity->save()) {
+            $response['errors'] = $userEntity->getMessages();
         } else {
             $response['save']++;
         }
@@ -88,7 +87,7 @@ trait UserTrait
         return $response;
     }
     
-    final public function roleAction(string $username, string $role)
+    final public function roleAction(string $email, string $role)
     {
         $response = [
             'errors' => [],
@@ -96,25 +95,25 @@ trait UserTrait
         ];
         
         $userClass = $this->config->getModelClass(User::class);
-        $user = $userClass::findFirst([
-            'username = :username: or email = :email:',
-            'bind' => ['username' => $username, 'email' => $username],
-            'bindTypes' => ['username' => Column::BIND_PARAM_STR, 'email' => Column::BIND_PARAM_STR],
+        $userEntity = $userClass::findFirst([
+            'email = :email:',
+            'bind' => ['email' => $email],
+            'bindTypes' => ['email' => Column::BIND_PARAM_STR],
         ]);
         
         $roleClass = $this->config->getModelClass(Role::class);
-        $role = $roleClass::findFirst([
+        $roleEntity = $roleClass::findFirst([
             'index = :role:',
             'bind' => ['role' => $role],
             'bindTypes' => ['role' => Column::BIND_PARAM_STR],
         ]);
         
-        if ($user && $role) {
-            $user->assign([
-                'rolenode' => [['roleId' => $role->getId()]],
+        if ($userEntity && $roleEntity) {
+            $userEntity->assign([
+                'rolenode' => [['roleId' => $roleEntity->getId()]],
             ]);
-            if (!$user->save()) {
-                $response['errors'] = $user->getMessages();
+            if (!$userEntity->save()) {
+                $response['errors'] = $userEntity->getMessages();
             } else {
                 $response['save']++;
             }
@@ -128,7 +127,7 @@ trait UserTrait
         $response = [];
         
         foreach ($this->getDefinitions() as $table => $fields) {
-            if ($table !== User::class) {
+            if ($table !== $this->config->getModelClass(User::class)) {
                 continue;
             }
             
@@ -140,9 +139,9 @@ trait UserTrait
                 ];
                 
                 $list = empty($username) ? $table::find() : $table::find([
-                    'username = :username: or email = :email:',
-                    'bind' => ['username' => $username, 'email' => $username],
-                    'bindTypes' => ['username' => Column::BIND_PARAM_STR, 'email' => Column::BIND_PARAM_STR],
+                    'email = :email:',
+                    'bind' => ['email' => $username],
+                    'bindTypes' => ['email' => Column::BIND_PARAM_STR],
                 ]);
                 foreach ($list as $entity) {
                     $assign = [];
@@ -188,5 +187,7 @@ trait UserTrait
                 ],
             ],
         ]);
+        
+        $this->acl->setOption('permissions', $this->config->pathToArray('permissions') ?? []);
     }
 }

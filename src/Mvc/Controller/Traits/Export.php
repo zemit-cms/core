@@ -125,19 +125,19 @@ trait Export
         $filename ??= $this->getFilename();
         
         if ($contentType === 'json') {
-            $this->exportJson($list, $filename);
+            return $this->exportJson($list, $filename);
         }
         
         if ($contentType === 'xml') {
-            $this->exportXml($list, $filename);
+            return $this->exportXml($list, $filename);
         }
         
         if ($contentType === 'csv') {
-            $this->exportCsv($list, $filename, $params);
+            return $this->exportCsv($list, $filename, $params);
         }
         
         if ($contentType === 'xlsx') {
-            $this->exportExcel($list, $filename);
+            return $this->exportExcel($list, $filename);
         }
         
         // Unsupported content-type
@@ -217,7 +217,7 @@ trait Export
      *
      * @return bool True if the export was successful, false otherwise
      */
-    public function exportExcel(array $list, ?string $filename = null): bool
+    public function exportExcel(array $list, ?string $filename = null, bool $forceRawValue = true): bool
     {
         $filename ??= $this->getFilename();
         $columns = $this->getExportColumns($list);
@@ -228,7 +228,8 @@ trait Export
         foreach ($list as $record) {
             $row = [];
             foreach ($columns as $column) {
-                $row[$column] = $record[$column] ?? '';
+                // Prefix #0 cell value to force raw value
+                $row[$column] = ($forceRawValue? "\0" : '')  . $record[$column] ?? '';
             }
             $export [] = array_values($row);
         }
@@ -253,7 +254,7 @@ trait Export
         $delimiter = $params['delimiter'] ?? null;
         $enclosure = $params['enclosure'] ?? null;
         $endOfLine = $params['endOfLine'] ?? null;
-        $escape = $params['escape'] ?? '';
+        $escape = $params['escape'] ?? '\\';
         $outputBOM = $params['outputBOM'] ?? null;
         $skipIncludeBOM = $params['skipIncludeBOM'] ?? false;
         $relaxEnclosure = $params['relaxEnclosure'] ?? false;

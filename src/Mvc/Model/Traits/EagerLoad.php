@@ -17,7 +17,7 @@ use Zemit\Mvc\Model\EagerLoading\Loader;
 
 trait EagerLoad
 {
-    abstract public static function find($parameters = null): ResultsetInterface;
+    abstract public static function find($parameters = null);
     
     abstract public static function findFirst($parameters = null);
     
@@ -182,7 +182,11 @@ trait EagerLoad
                 unset($arguments[$lastArg]);
                 
                 if (isset($parameters['columns'])) {
-                    throw new \LogicException('Results from database must be full models, do not use `columns` key');
+//                    throw new \LogicException('Results from database must be full models, do not use `columns` key'); // removed to allow where or having conditions on dynamic columns
+                    // the first columns should be * so we can have the main model and all the necessary fields for eager loading
+                    if ($parameters['columns'][0] !== '*') {
+                        array_unshift($parameters['columns'], '*');
+                    }
                 }
             }
         }
