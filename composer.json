@@ -185,9 +185,13 @@
     "zemit"
   ],
   "scripts": {
-    "skeleton": "vendor/bin/pds-skeleton validate ./",
-    "phpunit": "vendor/bin/phpunit --config=phpunit.xml",
-    "psalm": "vendor/bin/psalm --config=psalm.xml",
+    "docker": "docker-compose up",
+    "skeleton": "./bin/skeleton.sh validate ./",
+    "phpunit": "./bin/phpunit.sh",
+    "psalm": "./bin/psalm.sh",
+    "php-cs-fixer": "./bin/php-cs-fixer.sh",
+    "phpcs": "./bin/phpcs.sh",
+    "phpcbf": "./bin/phpcbf.sh",
     "docs": "phpDocumentor -c phpdoc.xml"
   }
 }
