@@ -18,8 +18,36 @@ use Zemit\Mvc\Model\Dynamic;
 
 class RecordController extends Controller
 {
-    protected ?int $limit = 100;
-    protected ?int $maxLimit = 100;
+    protected ?int $limit = 10000;
+    protected ?int $maxLimit = 10000;
+    
+    public function listExpose(iterable $items, ?array $expose = null): array
+    {
+        return iterator_to_array($items);
+    }
+    
+    public function initializeSearchFields(): void
+    {
+        // uuid is always searchable
+        $collection = new Collection([
+            'uuid',
+        ]);
+        
+        // appends searchable fields from table columns
+        $advanced = $this->getParam('advanced') ?? [];
+        if (isset($advanced['tableUuid'])) {
+            $table = Table::findFirst([
+                'uuid = :uuid:',
+                'bind' => ['uuid' => $advanced['tableUuid']]
+            ]);
+            $columns = $table->getColumnList();
+            foreach ($columns as $column) {
+                $collection->set($column->getUuid(), $column->getUuid());
+            }
+        }
+        
+        $this->setSearchFields($collection);
+    }
     
     public function initializeFilterFields(): void
     {
