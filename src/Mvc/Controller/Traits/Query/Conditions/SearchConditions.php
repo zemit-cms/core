@@ -75,6 +75,7 @@ trait SearchConditions
      */
     public function defaultSearchCondition(): array|string|null
     {
+        $searchFields = $this->getSearchFields()?->toArray() ?? [];
         $searchList = array_values(array_filter(array_unique(
             explode(' ', $this->getParam('search', [
                 Filter::FILTER_STRING,
@@ -86,19 +87,22 @@ trait SearchConditions
         $bindTypes = [];
         
         foreach ($searchList as $searchTerm) {
-            $searchFields = $this->getSearchFields()?->toArray() ?? [];
+            $subQuery = [];
             foreach ($searchFields as $searchField) {
                 $field = $this->appendModelName($searchField);
                 $value = $this->generateBindKey('search');
                 
-                $query [] = "{$field} like :{$value}:";
+                $subQuery [] = "{$field} like :{$value}:";
                 $bind[$value] = '%' . $searchTerm . '%';
                 $bindTypes[$value] = Column::BIND_PARAM_STR;
+            }
+            if (!empty($subQuery)) {
+                $query []= '(' . implode(') or (', $subQuery) . ')';
             }
         }
         
         return empty($query)? null : [
-            implode(' or ', $query),
+            '(' . implode(') and (', $query) . ')',
             $bind,
             $bindTypes,
         ];
