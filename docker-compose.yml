@@ -6,8 +6,8 @@ services:
       context: .
       dockerfile: docker/php-fpm-alpine-phalcon/Dockerfile
       args:
-        PHP_VERSION: "8.2-fpm-alpine"
-        PHALCON_VERSION: "5.6.2"
+        PHP_VERSION: "8.3-fpm-alpine"
+        PHALCON_VERSION: "5.8.0"
     entrypoint: ["sh", "/usr/local/bin/entrypoint.sh", "php-fpm"]
     volumes:
       - ./docker/entrypoint.sh:/usr/local/bin/entrypoint.sh
@@ -22,7 +22,7 @@ services:
     image: httpd:alpine
     volumes:
       - ./:/var/www/html
-      - ../AdminV3/dist/:/var/www/html/public/admin/
+      - ../admin/dist/:/var/www/html/public/admin/
       - ./docker/apache/conf/zemit-httpd.conf:/usr/local/apache2/conf/zemit-httpd.conf
     command: >
       /bin/sh -c "
