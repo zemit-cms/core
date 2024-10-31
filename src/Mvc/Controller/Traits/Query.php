@@ -67,7 +67,7 @@ trait Query
      * @throws Exception
      * @throws \Exception
      */
-    public function initialize()
+    public function initializeQuery()
     {
         $this->initializeCacheConfig();
         $this->initializeFields();
