@@ -895,6 +895,14 @@ class Identity extends Injectable implements OptionsInterface
             return $this->getKeyTokenFromClaimToken($jwt, $this->sessionKey);
         }
         
+        // Using X-Authorization Header
+        $authorizationHeaderKey = $this->config->path('identity.authorizationHeader', 'Authorization');
+        $authorizationHeaderValue = $this->request->getHeader($authorizationHeaderKey);
+        $authorization = array_filter(explode(' ', $authorizationHeaderValue));
+        if (!empty($authorization)) {
+            return $this->getKeyTokenFromAuthorization($authorization);
+        }
+        
         // Using Basic Auth from HTTP request
         $basicAuth = $this->request->getBasicAuth();
         if (!empty($basicAuth)) {
@@ -902,14 +910,6 @@ class Identity extends Injectable implements OptionsInterface
                 $basicAuth['username'] ?? null,
                 $basicAuth['password'] ?? null,
             ];
-        }
-        
-        // Using X-Authorization Header
-        $authorizationHeaderKey = $this->config->path('identity.authorizationHeader', 'Authorization');
-        $authorizationHeaderValue = $this->request->getHeader($authorizationHeaderKey);
-        $authorization = array_filter(explode(' ', $authorizationHeaderValue));
-        if (!empty($authorization)) {
-            return $this->getKeyTokenFromAuthorization($authorization);
         }
         
         // Using Session Fallback
