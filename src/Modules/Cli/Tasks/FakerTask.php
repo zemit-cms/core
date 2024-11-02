@@ -79,7 +79,7 @@ DOC;
             assert($table instanceof Table);
             $tableList[$table->getUuid()] = [];
             
-            $columnList = Column::findByTableId((int)$table->getId());
+            $columnList = Column::find('tableId = ' . (int)$table->getId());
             for ($i = 0; $i < 1000; $i++) {
                 $assign = [
                     'uuid' => new RawValue('UUID()')
@@ -116,8 +116,8 @@ DOC;
         $tableList = Table::find();
         foreach ($tableList as $table) {
             assert($table instanceof Table);
-            $columnList = Column::findByTableId((int)$table->getId());
-            $recordList = Record::findByTableId((int)$table->getId());
+            $columnList = Column::find('tableId = ' . (int)$table->getId());
+            $recordList = Record::find('tableId = ' . (int)$table->getId());
             foreach ($recordList as $record) {
                 foreach ($columnList as $column) {
                     $data = new Data();
