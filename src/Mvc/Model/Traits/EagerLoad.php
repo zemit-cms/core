@@ -48,7 +48,7 @@ trait EagerLoad
         $parameters = self::getParametersFromArguments($arguments);
         $list = static::find($parameters);
         
-        if (is_countable($list) && $list->count()) {
+        if ($list instanceof ResultsetInterface && is_countable($list) && $list->count()) {
             return Loader::fromResultset($list, ...$arguments);
         }
         
