@@ -23,7 +23,7 @@ class RecordController extends Controller
     
     public function listExpose(iterable $items, ?array $expose = null): array
     {
-        return iterator_to_array($items);
+        return (array)$items;
     }
     
     public function initializeSearchFields(): void
