@@ -140,8 +140,8 @@ jobs:
           - "highest"
     
     permissions:
-      contents: read
       security-events: write
+      contents: read
       actions: read
 
     steps:
@@ -161,6 +161,9 @@ jobs:
           composer-options: ${{ matrix.composer-options }}
           custom-cache-suffix: zemit-composer
 
+      - name: Clear Psalm Cache
+        run: rm -rf ~/.cache/psalm
+
       - name: Run Psalm Security Scan
         run: ./vendor/bin/psalm --config=psalm.xml --output-format=sarif > results.sarif
 
@@ -169,7 +172,7 @@ jobs:
 
       - name: Import Security Analysis results into GitHub Security Code Scanning
         if: always()
-        uses: github/codeql-action/upload-sarif@latest
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: results.sarif
   
