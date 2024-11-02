@@ -12,7 +12,6 @@
 namespace Zemit\Modules\Cli\Tasks\Traits;
 
 use Phalcon\Db\Column;
-use Phalcon\Mvc\Model\Resultset;
 use Zemit\Models\Role;
 use Zemit\Models\User;
 use Zemit\Models\UserRole;
@@ -188,6 +187,6 @@ trait UserTrait
             ],
         ]);
         
-        $this->acl->setOption('permissions', $this->config->pathToArray('permissions') ?? []);
+        $this->acl?->setOption('permissions', $this->config->pathToArray('permissions') ?? []);
     }
 }
