@@ -137,7 +137,7 @@ class ModelTest extends AbstractUnit
             ],
         ]);
         
-        $user->save();
+        $save = $user->save();
         $messages = $user->getMessages();
         
         $this->assertEmpty($messages, json_encode($messages));
@@ -152,23 +152,27 @@ class ModelTest extends AbstractUnit
             'userrolelist' => [
                 true,
                 [
-                    'roleId' => 5,
+                    'roleId' => 5, // this will create a new one and not update the existing one because its single to many
                 ],
             ],
         ]);
         
-        $user->save();
+        $save = $user->save();
         $messages = $user->getMessages();
         
         $this->assertEmpty($messages, json_encode($messages));
         $this->assertTrue($save);
         
-        $this->userRoleFindAssert(1, 3);
-        $this->userRoleFindAssert(1, 2);
-        $this->userRoleFindAssert(1, 5);
+        $this->userRoleFindAssert($user->getId(), 3);
+        $this->userRoleFindAssert($user->getId(), 2);
+        $this->userRoleFindAssert($user->getId(), 5, 1); // the first one should still be deleted
         
-//        $this->roleFindAssert('test2');
-//        $this->roleFindAssert('test3');
+        $roles = UserRole::find([
+            'userId = :userId: and roleId = :roleId:',
+            'bind' => ['userId' => $user->getId(), 'roleId' => 5],
+        ]);
+        $this->assertEquals(2, $roles->count());
+        $this->assertCount(2, $roles);
     }
     
     public function testManyToManyRelationship(): void
