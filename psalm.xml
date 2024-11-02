@@ -31,6 +31,8 @@
     </projectFiles>
 
     <issueHandlers>
+        <MissingDependency errorLevel="suppress" />
+        
         <!-- Used for EagerLoaded properties -->
         <NoInterfaceProperties errorLevel="info" />
 
