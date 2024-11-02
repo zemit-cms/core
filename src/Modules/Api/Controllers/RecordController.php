@@ -81,8 +81,9 @@ class RecordController extends Controller
         $modelInstance = new $modelName();
         if ($modelInstance instanceof Dynamic) {
             $advanced = $this->getParam('advanced') ?? [];
-            $modelInstance->setDynamicSource($advanced['tableUuid'] ?? null);
+            $modelInstance->setDynamicSource($advanced['tableUuid'] ?? 'dynamic');
         }
+        assert($modelInstance instanceof ModelInterface);
         return $modelInstance;
     }
 }
