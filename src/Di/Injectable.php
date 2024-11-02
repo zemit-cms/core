@@ -42,7 +42,7 @@ namespace Zemit\Di;
  * @property \Zemit\Encryption\Security $security
  * @property \Zemit\Tag $tag
  * 
- * @property \Zemit\Acl\Acl $acl
+ * @property \Zemit\Acl\Acl|\Zemit\Acl\AclInterface $acl
  * @property \Zemit\Support\HelperFactory $helper
  * @property \Zemit\Bootstrap\Config $config
  * @property \Phalcon\Logger\Logger $logger
@@ -57,4 +57,5 @@ namespace Zemit\Di;
  */
 class Injectable extends \Phalcon\Di\Injectable implements \Phalcon\Di\InjectionAwareInterface
 {
+    use InjectableProperties;
 }
