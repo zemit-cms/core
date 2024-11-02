@@ -162,7 +162,7 @@ jobs:
           custom-cache-suffix: zemit-composer
 
       - name: Run Psalm Security Scan
-        run: ./vendor/bin/psalm --output-format=sarif > results.sarif 2>&1
+        run: ./vendor/bin/psalm --output-format=sarif -v > results.sarif
 
       - name: Import Security Analysis results into GitHub Security Code Scanning
         if: always()
