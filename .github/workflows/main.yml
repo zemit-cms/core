@@ -169,7 +169,7 @@ jobs:
 
       - name: Import Security Analysis results into GitHub Security Code Scanning
         if: always()
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@latest
         with:
           sarif_file: results.sarif
   
