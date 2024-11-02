@@ -101,9 +101,7 @@ trait Export
     {
         $columns = [];
         foreach ($list as $row) {
-            foreach (array_keys($row) as $key) {
-                $columns[$key] = true;
-            }
+            $columns += array_flip($row);
         }
         return array_keys($columns);
     }
