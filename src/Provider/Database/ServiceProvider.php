@@ -34,18 +34,24 @@ class ServiceProvider extends AbstractServiceProvider
     
             // database config
             $databaseConfig = $config->pathToArray('database') ?? [];
+            $driverName ??= $databaseConfig['default'] ?? 'mysql';
             
             // specified driver name
-            if (!empty($driverName)) {
-                $driverOptions = array_filter($databaseConfig['drivers'][$driverName] ?? [], function ($value) {
-                    return !is_null($value);
-                });
+            if (isset($databaseConfig['drivers'][$driverName])) {
+                if (!is_array($databaseConfig['drivers'][$driverName])) {
+                    throw new \InvalidArgumentException('Database driver option `' . $driverName . '` must be an array');
+                }
+                
+                $driverOptions = array_filter($databaseConfig['drivers'][$driverName], fn($value) => $value !== null);
+                
                 if (isset($driverOptions['extends'])) {
-                    if (!is_array($driverOptions['extends'])) {
+                    if (is_string($driverOptions['extends'])) {
                         $driverOptions['extends'] = explode(',', $driverOptions['extends']);
                     }
-                    foreach ($driverOptions['extends'] as $extend) {
-                        $driverOptions = array_merge($databaseConfig['drivers'][trim($extend)] ?? [], $driverOptions);
+                    if (is_array($driverOptions['extends'])) {
+                        foreach ($driverOptions['extends'] as $extend) {
+                            $driverOptions = array_merge($databaseConfig['drivers'][trim($extend)] ?? [], $driverOptions);
+                        }
                     }
                 }
             }
