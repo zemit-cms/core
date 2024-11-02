@@ -13,7 +13,6 @@ namespace Zemit\Mvc\Model\Interfaces;
 
 use Zemit\Mvc\Model\Behavior\Snapshot as SnapshotBehavior;
 
-// @todo maybe add phalcon native snapshot features and use this interface instead of having to use Model
 interface SnapshotInterface
 {
     public function initializeSnapshot(?array $options = null): void;
