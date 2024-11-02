@@ -14,10 +14,4 @@ namespace Zemit\Config;
 interface ConfigInterface extends \Phalcon\Config\ConfigInterface
 {
     public function pathToArray(string $path, ?array $defaultValue = null, ?string $delimiter = null): ?array;
-    
-    public function getModelClass(string $class): string;
-    
-    public function setModelClass(string $class, string $expected): void;
-
-    public function resetModelClass(string $class): void;
 }

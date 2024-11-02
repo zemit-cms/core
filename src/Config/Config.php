@@ -93,43 +93,4 @@ class Config extends \Phalcon\Config\Config implements ConfigInterface
         }
         return $modified;
     }
-    
-    /**
-     * Return a new model instance from class name
-     * @todo use DI instead
-     */
-    public function getModelInstance(string $class): ModelInterface
-    {
-        $modelClass = $this->getModelClass($class);
-        $modelInstance = new $modelClass();
-        assert($modelInstance instanceof ModelInterface);
-        return $modelInstance;
-    }
-    
-    /**
-     * Return the mapped model class name from $this->models->$class
-     * @todo use DI instead
-     */
-    public function getModelClass(string $class): string
-    {
-        return $this->get('models')->get($class) ?: $class;
-    }
-    
-    /**
-     * Map a new model class
-     * @todo use DI instead
-     */
-    public function setModelClass(string $class, string $expected): void
-    {
-        $this->get('models')->set($class, $expected);
-    }
-    
-    /**
-     * Map a new model class
-     * @todo use DI instead
-     */
-    public function resetModelClass(string $class): void
-    {
-        $this->get('models')->set($class, $class);
-    }
 }
