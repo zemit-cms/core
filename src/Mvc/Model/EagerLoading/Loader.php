@@ -80,7 +80,7 @@ final class Loader
             }
             $from = $tmp;
             if (isset($from[0])) {
-                $className ??= get_class($from[0]);
+                $className = get_class($from[0]);
             }
             else {
                 $from = null;
