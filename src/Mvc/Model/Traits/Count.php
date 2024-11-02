@@ -46,6 +46,6 @@ trait Count
         $row = $result->fetch();
         
         // Return the total count
-        return (int) $row['total_count'];
+        return (int)$row['total_count'];
     }
 }
