@@ -218,7 +218,7 @@ trait Export
             $row = [];
             foreach ($columns as $column) {
                 // Prefix #0 cell value to force raw value
-                $row[$column] = ($forceRawValue? "\0" : '')  . $record[$column] ?? '';
+                $row[$column] = ($forceRawValue? "\0" : '')  . ($record[$column] ?? '');
             }
             $export [] = array_values($row);
         }
@@ -250,7 +250,7 @@ trait Export
         $delimiter = $params['delimiter'] ?? null;
         $enclosure = $params['enclosure'] ?? null;
         $endOfLine = $params['endOfLine'] ?? null;
-        $escape = $params['escape'] ?? '\\';
+        $escape = $params['escape'] ?? null;
         $outputBOM = $params['outputBOM'] ?? null;
         $skipIncludeBOM = $params['skipIncludeBOM'] ?? false;
         $relaxEnclosure = $params['relaxEnclosure'] ?? false;
@@ -302,6 +302,10 @@ trait Export
         // set escape
         if (isset($escape)) {
             $csv->setEscape($escape);
+        }
+        // force '\\'
+        else {
+            $csv->setEscape('\\');
         }
         // skip include bom
         if ($skipIncludeBOM) {
