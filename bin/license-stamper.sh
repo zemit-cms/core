@@ -35,16 +35,16 @@ process_path() {
     done
 }
 
-# Loop over each argument
-for path in "$@"; do
-    if [ -d "$path" ]; then
-        process_path "$path"
-    else
-        echo "Warning: '$path' is not a directory. Skipping."
-    fi
-done
-
-# Check if any path is provided, otherwise use current directory
+# Check if any path is provided, otherwise use ./src/
 if [ $# -eq 0 ]; then
-    process_path "."
+    process_path "./src"
+else
+    # Loop over each argument
+    for path in "$@"; do
+        if [ -d "$path" ]; then
+            process_path "$path"
+        else
+            echo "Warning: '$path' is not a directory. Skipping."
+        fi
+    done
 fi
