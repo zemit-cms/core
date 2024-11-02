@@ -187,6 +187,6 @@ trait UserTrait
             ],
         ]);
         
-        $this->acl?->setOption('permissions', $this->config->pathToArray('permissions') ?? []);
+        $this->acl->setOption('permissions', $this->config->pathToArray('permissions') ?? []);
     }
 }
