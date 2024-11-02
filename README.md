@@ -161,8 +161,8 @@ By meeting these requirements, you can ensure a smooth and efficient experience 
 Zemit is built to be flexible and powerful, supporting a wide range of technologies and components. While we have certain core requirements, you have the freedom to integrate additional tools as per your project's needs.
 
 - **[Composer](https://getcomposer.org/)**: Required for managing dependencies in Zemit. Composer simplifies the installation and update process of PHP packages, making it a vital tool for managing Zemit’s components.
-- **[PHP](https://secure.php.net/) >= 8.2**: Essential for Zemit, PHP 8.2+ brings modern features and improved performance.
-- **[PhalconPHP](https://phalconphp.com/) >= 5.6.2**: Our core framework. Phalcon's efficiency and rich feature set are crucial for Zemit's performance.
+- **[PHP](https://secure.php.net/) >= 8.3**: Essential for Zemit, PHP 8.3+ brings modern features and improved performance.
+- **[PhalconPHP](https://phalconphp.com/) >= 5.8.0**: Our core framework. Phalcon's efficiency and rich feature set are crucial for Zemit's performance.
 - **Database Flexibility**: While we recommend [MySQL](https://www.mysql.com/) >= 8.0 for its robustness, Zemit is compatible with other databases supported by Phalcon. This flexibility allows you to choose the database that best fits your project's requirements.
 - **PSR Standards**: Compliance with PSR standards is mandatory, ensuring interoperability and standard coding practices.
 

@@ -31,8 +31,8 @@ use Zemit\Support\Utils;
 class CheckController extends AbstractController
 {
     public array $versionList = [
-        'php' => '8.2',
-        'phalcon' => '5.6',
+        'php' => '8.3',
+        'phalcon' => '5.8',
         'zemit' => '1.0',
     ];
     
