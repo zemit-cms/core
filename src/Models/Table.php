@@ -53,8 +53,7 @@ class Table extends TableAbstract implements TableInterface
         $db = $this->getDI()->get('dbd');
         assert($db instanceof AbstractPdo);
         
-        $tableUuid = self::findFirstById($this->getId())->getUuid();
-        
+        $tableUuid = self::findFirst('id = ' . (int)$this->getId())->getUuid();
         
         // Check if the table already exists
         $existingTable = $db->tableExists($tableUuid);
@@ -105,10 +104,10 @@ class Table extends TableAbstract implements TableInterface
     public function syncColumnsAndIndexesWithRealTable()
     {
         $db = $this->getDI()->get('dbd');
-        $tableUuid = self::findFirstById($this->getId())->getUuid();
+        $tableUuid = self::findFirst('id = ' . (int)$this->getId())->getUuid();
         
         // Retrieve all columns associated with this table
-        $columns = Column::findByTableId((int)$this->getId());
+        $columns = Column::find('tableId = ' . (int)$this->getId());
         
         // Fetch existing columns and indexes in one query
         $existingColumns = $db->describeColumns($tableUuid);
@@ -156,7 +155,7 @@ class Table extends TableAbstract implements TableInterface
     public function syncIndexes(string $tableUuid, array $existingIndexes)
     {
         $db = $this->getDI()->get('dbd');
-        $columns = Column::findByTableId((int)$this->getId());
+        $columns = Column::find('tableId = ' . (int)$this->getId());
         
         $indexDefinitions = [];
         
