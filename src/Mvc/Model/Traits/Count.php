@@ -20,7 +20,8 @@ use Zemit\Mvc\Model\ManagerInterface;
  */
 trait Count
 {
-    public static function subCount(mixed $find) {
+    public static function subCount(mixed $find)
+    {
         $find ??= [];
         $find = is_array($find) ? $find : [$find];
         
