@@ -162,7 +162,7 @@ jobs:
           custom-cache-suffix: zemit-composer
 
       - name: Run Psalm Security Scan
-        run: ./vendor/bin/psalm --output-format=sarif > results.sarif
+        run: ./vendor/bin/psalm --config=psalm.xml --output-format=sarif > results.sarif
 
       - name: Display SARIF results
         run: cat results.sarif
