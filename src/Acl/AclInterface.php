@@ -12,8 +12,9 @@
 namespace Zemit\Acl;
 
 use Phalcon\Acl\Adapter\Memory;
+use Zemit\Support\Options\OptionsInterface;
 
-interface AclInterface
+interface AclInterface extends OptionsInterface
 {
     public function get(array $componentsName = ['components'], ?array $permissions = null, string $inherit = 'inherit'): Memory;
 }

@@ -23,7 +23,7 @@ use Zemit\Support\Options\Options;
  * This class represents an Access Control List (ACL) and is used
  * to configure and manage access permissions for different components.
  */
-class Acl extends AbstractInjectionAware
+class Acl extends AbstractInjectionAware implements AclInterface
 {
     use Options;
     
