@@ -17,6 +17,6 @@ class TemplateController extends Controller
     public function initialize(): void
     {
         parent::initialize();
-        $this->conditions->remove('softDelete');
+        $this->getConditions()?->remove('softDelete');
     }
 }
