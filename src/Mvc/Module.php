@@ -23,10 +23,10 @@ use Zemit\Support\Utils;
  */
 class Module extends Injectable implements ModuleDefinitionInterface
 {
-    public const NAME_FRONTEND = 'frontend';
-    public const NAME_ADMIN = 'admin';
-    public const NAME_API = 'api';
-    public const NAME_OAUTH2 = 'oauth2';
+    public const string NAME_FRONTEND = 'frontend';
+    public const string NAME_ADMIN = 'admin';
+    public const string NAME_API = 'api';
+    public const string NAME_OAUTH2 = 'oauth2';
     
     public string $name;
     

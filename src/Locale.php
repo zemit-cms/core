@@ -26,22 +26,22 @@ class Locale extends Injectable implements OptionsInterface
     /**
      * Default (router only)
      */
-    public const MODE_DEFAULT = 'default';
+    public const string MODE_DEFAULT = 'default';
     
     /**
      * Router
      */
-    public const MODE_ROUTE = 'route';
+    public const string MODE_ROUTE = 'route';
     
     /**
      * Router -> http
      */
-    public const MODE_HTTP = 'http';
+    public const string MODE_HTTP = 'http';
     
     /**
      * Router -> session -> http
      */
-    public const MODE_SESSION = 'session';
+    public const string MODE_SESSION = 'session';
     
     /**
      * Locale mode

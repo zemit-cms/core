@@ -31,8 +31,8 @@ final class Loader
     
     public array $options = [];
     
-    private const E_INVALID_SUBJECT = 'Expected value of `subject` to be either a ModelInterface object, a Simple object or an array of ModelInterface objects.';
-    private const E_INVALID_CLASSNAME = 'Expected value of `className` to be either an existing class name.';
+    private const string E_INVALID_SUBJECT = 'Expected value of `subject` to be either a ModelInterface object, a Simple object or an array of ModelInterface objects.';
+    private const string E_INVALID_CLASSNAME = 'Expected value of `className` to be either an existing class name.';
     
     /**
      * Constructs a new instance of the class.

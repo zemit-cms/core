@@ -25,12 +25,12 @@ use Zemit\Modules\Oauth2\Controller;
  */
 abstract class AbstractController extends Controller
 {
-    public const PROVIDER_CLIENT = 'client';
-    public const PROVIDER_FACEBOOK = 'facebook';
-    public const PROVIDER_GITHUB = 'github';
-    public const PROVIDER_GOOGLE = 'google';
-    public const PROVIDER_INSTAGRAM = 'instagram';
-    public const PROVIDER_LINKEDIN = 'linkedin';
+    public const string PROVIDER_CLIENT = 'client';
+    public const string PROVIDER_FACEBOOK = 'facebook';
+    public const string PROVIDER_GITHUB = 'github';
+    public const string PROVIDER_GOOGLE = 'google';
+    public const string PROVIDER_INSTAGRAM = 'instagram';
+    public const string PROVIDER_LINKEDIN = 'linkedin';
     
     public string $defaultScope = 'email';
     

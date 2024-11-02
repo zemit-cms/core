@@ -16,7 +16,7 @@ use Phalcon\Mvc\Model\Query\BuilderInterface;
 
 final class QueryBuilder extends Builder
 {
-    public const E_NOT_ALLOWED_METHOD_CALL = 'When eager loading relations queries must return full entities';
+    public const string E_NOT_ALLOWED_METHOD_CALL = 'When eager loading relations queries must return full entities';
     
     /**
      * @param mixed $distinct

@@ -24,9 +24,9 @@ use Zemit\Mvc\Dispatcher;
  */
 class Maintenance extends Injectable
 {
-    public const DEFAULT_MAINTENANCE_MODULE = null;
-    public const DEFAULT_MAINTENANCE_CONTROLLER = 'error';
-    public const DEFAULT_MAINTENANCE_ACTION = 'maintenance';
+    public const ?string DEFAULT_MAINTENANCE_MODULE = null;
+    public const ?string DEFAULT_MAINTENANCE_CONTROLLER = 'error';
+    public const ?string DEFAULT_MAINTENANCE_ACTION = 'maintenance';
     
     /**
      * Executed before dispatching a request.

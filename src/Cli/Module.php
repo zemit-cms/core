@@ -20,7 +20,7 @@ use Zemit\Support\Utils;
 
 class Module implements ModuleDefinitionInterface
 {
-    public const NAME_CLI = 'cli';
+    public const string NAME_CLI = 'cli';
     
     public string $name = self::NAME_CLI;
     

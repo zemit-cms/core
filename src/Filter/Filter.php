@@ -27,13 +27,13 @@ use Zemit\Filter\Sanitize\Md5;
  */
 class Filter extends \Phalcon\Filter\Filter
 {
-    public const FILTER_MD5 = 'md5';
+    public const string FILTER_MD5 = 'md5';
     
-    public const FILTER_JSON = 'json';
+    public const string FILTER_JSON = 'json';
     
-    public const FILTER_IPV4 = 'ipv4';
+    public const string FILTER_IPV4 = 'ipv4';
     
-    public const FILTER_IPV6 = 'ipv6';
+    public const string FILTER_IPV6 = 'ipv6';
     
     protected function init(array $mapper): void
     {

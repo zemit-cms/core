@@ -35,11 +35,11 @@ class Bootstrap
 {
     use EventsAwareTrait;
     
-    public const MODE_CLI = 'cli';
-    public const MODE_MVC = 'mvc';
+    public const string MODE_CLI = 'cli';
+    public const string MODE_MVC = 'mvc';
     
-    public const MODE_DEFAULT = self::MODE_MVC;
-    public const MODE_CONSOLE = self::MODE_CLI;
+    public const string MODE_DEFAULT = self::MODE_MVC;
+    public const string MODE_CONSOLE = self::MODE_CLI;
     
     public string $mode;
     
