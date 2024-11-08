@@ -29,7 +29,10 @@ trait Group
     // @todo add model name to group attributes
     public function initializeGroup(): void
     {
-        $group = $this->getParam('group', [Filter::FILTER_STRING, Filter::FILTER_TRIM], $this->defaultGroup());
+        $group = $this->getParam('group', [
+            Filter::FILTER_STRING,
+            Filter::FILTER_TRIM
+        ], $this->defaultGroup());
         
         if (!isset($group)) {
             $this->setGroup(null);

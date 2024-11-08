@@ -77,6 +77,7 @@ class Security extends Injectable
         
         $allowed = false;
         $roles = $this->identity->getAclRoles();
+        
         foreach ($roles as $role) {
             $allowed = $acl->isAllowed($role, $handlerClass, $action);
             if ($allowed) {
