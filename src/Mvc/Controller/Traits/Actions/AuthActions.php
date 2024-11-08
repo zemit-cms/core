@@ -63,7 +63,9 @@ trait AuthActions
      */
     public function loginAsAction(): bool
     {
+        $this->view->setVars($this->identity->getJwt());
         $this->view->setVars($this->identity->loginAs($this->getParams()));
+        $this->view->setVars($this->identity->getIdentity());
         return $this->view->getVar('loggedInAs') ?? false;
     }
 
@@ -82,8 +84,10 @@ trait AuthActions
      */
     public function logoutAsAction(): bool
     {
+        $this->view->setVars($this->identity->getJwt());
         $this->view->setVars($this->identity->logoutAs());
-        return $this->view->getVar('loggedInAs') ?? false;
+        $this->view->setVars($this->identity->getIdentity());
+        return !$this->view->getVar('loggedInAs') ?? false;
     }
 
     /**

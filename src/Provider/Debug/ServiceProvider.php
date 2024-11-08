@@ -43,7 +43,7 @@ class ServiceProvider extends AbstractServiceProvider
             if ($isEnabled && !$causeCyclicError && !$bootstrap->isCli()) {
                 $debugConfig = $config->pathToArray('debug') ?? [];
                 
-                $debug->listen($debugConfig['exception'] ?? true, $debugConfig['lowSeverity'] ?? false);
+                $debug->listen($debugConfig['exceptions'] ?? true, $debugConfig['lowSeverity'] ?? false);
                 $debug->setBlacklist($debugConfig['blacklist'] ?? []);
                 $debug->setShowFiles($debugConfig['showFiles'] ?? true);
                 $debug->setShowBackTrace($debugConfig['showBackTrace'] ?? true);
