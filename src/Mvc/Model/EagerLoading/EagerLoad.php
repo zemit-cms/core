@@ -102,7 +102,10 @@ final class EagerLoad
         $bindValues = [];
         foreach ($parentSubject as $record) {
             assert($record instanceof EntityInterface);
-            $bindValues[$record->readAttribute($relField)] = true;
+            $relFieldAr = is_array($relField)? $relField : [$relField];
+            foreach ($relFieldAr as $relField) {
+                $bindValues[$record->readAttribute($relField)] = true;
+            }
         }
         unset($record);
         

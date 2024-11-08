@@ -388,12 +388,12 @@ final class Loader
                     throw new \RuntimeException(sprintf('Unknown relation type `%s`', $relType));
                 }
                 
-                if (is_array($relation->getFields()) ||
-                    is_array($relation->getReferencedFields())
-                ) {
-                    
-                    throw new \RuntimeException('Relations with composite keys are not supported');
-                }
+                // @todo allow composite keys
+//                if (is_array($relation->getFields()) ||
+//                    is_array($relation->getReferencedFields())
+//                ) {
+//                    throw new \RuntimeException('Relations with composite keys are not supported');
+//                }
                 
                 $parent = $nestingLevel > 0 && isset($parentName)? $eagerLoads[$parentName] : $this;
                 $constraints = $nestingLevel + 1 === $nestingLevels ? $queryConstraints : null;
