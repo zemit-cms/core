@@ -13,13 +13,10 @@ namespace Zemit\Mvc\Model\Traits;
 
 use Phalcon\Mvc\Model;
 use Phalcon\Mvc\ModelInterface;
-use Zemit\Config\ConfigInterface;
-use Zemit\Models\Audit;
-use Zemit\Models\AuditDetail;
-use Zemit\Models\Session;
 use Zemit\Mvc\Model\Behavior\Action;
 use Zemit\Mvc\Model\Traits\Abstracts\AbstractBehavior;
 use Zemit\Mvc\Model\Traits\Abstracts\AbstractModelsCache;
+use Zemit\Support\Models;
 
 /**
  * Flush Cache on changes
@@ -49,12 +46,12 @@ trait Cache
      */
     public function initializeCache(): void
     {
-        $config = $this->getDI()->get('config');
-        assert($config instanceof ConfigInterface);
+        $models = $this->getDI()->get('models');
+        assert($models instanceof Models);
         
-        $this->flushModelsCacheBlackList [] = $config->getModelClass(Session::class);
-        $this->flushModelsCacheBlackList [] = $config->getModelClass(Audit::class);
-        $this->flushModelsCacheBlackList [] = $config->getModelClass(AuditDetail::class);
+        $this->flushModelsCacheBlackList [] = $models->getSessionClass();
+        $this->flushModelsCacheBlackList [] = $models->getAuditClass();
+        $this->flushModelsCacheBlackList [] = $models->getAuditDetailClass();
         
         $this->addFlushCacheBehavior($this->flushModelsCacheBlackList);
     }

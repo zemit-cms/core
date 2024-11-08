@@ -29,10 +29,8 @@ trait UserTrait
     
     public function getDefinitions()
     {
-        $userClass = $this->config->getModelClass(User::class);
-        $userRoleClass = $this->config->getModelClass(UserRole::class);
         return [
-            $userClass => [
+            $this->models->getUserClass() => [
                 'password' => function ($row) {
                     return $row->getEmail();
                 },
@@ -40,7 +38,7 @@ trait UserTrait
                     return $row->getEmail();
                 },
             ],
-            $userRoleClass => [],
+            $this->models->getUserRoleClass() => [],
         ];
     }
     
@@ -64,8 +62,7 @@ trait UserTrait
             'passwordConfirm' => $password,
         ];
         
-        $roleClass = $this->config->getModelClass(Role::class);
-        $roleEntity = $roleClass::findFirst([
+        $roleEntity = $this->models->getRole()::findFirst([
             'index = :role:',
             'bind' => ['role' => $role],
             'bindTypes' => ['role' => Column::BIND_PARAM_STR],
@@ -94,15 +91,13 @@ trait UserTrait
             'save' => 0
         ];
         
-        $userClass = $this->config->getModelClass(User::class);
-        $userEntity = $userClass::findFirst([
+        $userEntity = $this->models->getUser()::findFirst([
             'email = :email:',
             'bind' => ['email' => $email],
             'bindTypes' => ['email' => Column::BIND_PARAM_STR],
         ]);
         
-        $roleClass = $this->config->getModelClass(Role::class);
-        $roleEntity = $roleClass::findFirst([
+        $roleEntity = $this->models->getRole()::findFirst([
             'index = :role:',
             'bind' => ['role' => $role],
             'bindTypes' => ['role' => Column::BIND_PARAM_STR],
@@ -126,44 +121,38 @@ trait UserTrait
     {
         $response = [];
         
-        $class = $this->models->getClassMap(User::class);
-        $instance = $this->models->getInstance(User::class);
+        $class = $this->models->getUserClass();
         $fields = $this->getDefinitions()[$class] ?? [];
         
-        foreach ($this->getDefinitions() as $table => $fields) {
-            if ($table !== $this->config->getModelClass(User::class)) {
-                continue;
+        // Using a model (run validations, events, etc.)
+        $response[$class] = [
+            'errors' => [],
+            'save' => 0,
+        ];
+        
+        $userInstance = $this->models->getUser();
+        $list = empty($username) ? $userInstance::find() : $userInstance::find([
+            'email = :email:',
+            'bind' => ['email' => $username],
+            'bindTypes' => ['email' => Column::BIND_PARAM_STR],
+        ]);
+        
+        assert($list instanceof \Iterator);
+        foreach ($list as $entity) {
+            $assign = [];
+            foreach ($fields as $field => $value) {
+                $assign[$field] = is_callable($value) ? $value($entity) : $value;
             }
-                
-            // Using a model (run validations, events, etc.)
-            $response[$class] = [
-                'errors' => [],
-                'save' => 0,
-            ];
-            
-            $list = empty($username) ? $instance::find() : $instance::find([
-                'email = :email:',
-                'bind' => ['email' => $username],
-                'bindTypes' => ['email' => Column::BIND_PARAM_STR],
-            ]);
-            
-            assert($list instanceof \Iterator);
-            foreach ($list as $entity) {
-                $assign = [];
-                foreach ($fields as $field => $value) {
-                    $assign[$field] = is_callable($value) ? $value($entity) : $value;
-                }
-                if (!empty($password)) {
-                    $assign['password'] = $password;
-                    $assign['passwordConfirm'] = $password;
-                }
-                $entity->assign($assign);
-                if (!$entity->save()) {
-                    $response[$class]['errors'] = $entity->getMessages();
-                }
-                else {
-                    $response[$class]['save']++;
-                }
+            if (!empty($password)) {
+                $assign['password'] = $password;
+                $assign['passwordConfirm'] = $password;
+            }
+            $entity->assign($assign);
+            if (!$entity->save()) {
+                $response[$class]['errors'] = $entity->getMessages();
+            }
+            else {
+                $response[$class]['save']++;
             }
         }
         

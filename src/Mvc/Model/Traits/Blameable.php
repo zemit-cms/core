@@ -12,15 +12,12 @@
 namespace Zemit\Mvc\Model\Traits;
 
 use Phalcon\Mvc\Model\Relation;
-use Zemit\Config\ConfigInterface;
-use Zemit\Models\Audit;
-use Zemit\Models\AuditDetail;
-use Zemit\Models\User;
 use Zemit\Mvc\Model\Behavior\Blameable as BlameableBehavior;
 use Zemit\Mvc\Model\Traits\Abstracts\AbstractBehavior;
 use Zemit\Mvc\Model\Traits\Abstracts\AbstractIdentity;
 use Zemit\Mvc\Model\Traits\Abstracts\AbstractInjectable;
 use Zemit\Mvc\Model\Traits\Abstracts\AbstractOptions;
+use Zemit\Support\Models;
 
 trait Blameable
 {
@@ -45,12 +42,12 @@ trait Blameable
     {
         $options ??= $this->getOptionsManager()->get('blameable') ?? [];
         
-        $config = $this->getDI()->get('config');
-        assert($config instanceof ConfigInterface);
+        $models = $this->getDI()->get('models');
+        assert($models instanceof Models);
         
-        $options['auditClass'] ??= $config->getModelClass(Audit::class);
-        $options['auditDetailClass'] ??= $config->getModelClass(AuditDetail::class);
-        $options['userClass'] ??= $config->getModelClass(User::class);
+        $options['auditClass'] ??= $models->getAuditClass();
+        $options['auditDetailClass'] ??= $models->getAuditDetailClass();
+        $options['userClass'] ??= $models->getUserClass();
         
         $this->setBlameableBehavior(new BlameableBehavior($options));
         
