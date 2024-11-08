@@ -203,7 +203,7 @@ class Config extends \Zemit\Config\Config
                 'exceptions' => Env::get('DEBUG_EXCEPTIONS', true),
                 'lowSeverity' => Env::get('DEBUG_LOW_SEVERITY', false),
                 'showFiles' => Env::get('DEBUG_SHOW_FILES', false),
-                'showBackTrace' => Env::get('DEBUG_SHOW_BACKTRACE', true),
+                'showBackTrace' => Env::get('DEBUG_SHOW_BACKTRACE', false),
                 'showFileFragment' => Env::get('DEBUG_SHOW_FILE_FRAGMENT', false),
                 'uri' => Env::get('DEBUG_URI'),
                 'blacklist' => [
