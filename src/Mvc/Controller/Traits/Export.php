@@ -19,6 +19,7 @@ use League\Csv\InvalidArgument;
 use League\Csv\Writer;
 use Shuchkin\SimpleXLSXGen;
 use Spatie\ArrayToXml\ArrayToXml;
+use Zemit\Support\Helper;
 use Zemit\Support\Slug;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
@@ -228,15 +229,18 @@ trait Export
         foreach ($list as $record) {
             $row = [];
             foreach ($columns as $column) {
-                
-                // Initial value processing
                 $value = $record[$column] ?? '';
                 
-                // Remove non-printable or invalid UTF-8 characters
-                $value = preg_replace('/[^\x20-\x7E\xA0-\xFF]/', '', $value);
+                if ($value === '') {
+                    $row[$column] = '';
+                    continue;
+                }
+                
+                // Remove non-printable
+                $value = Helper::removeNonPrintable($value);
                 
                 // Normalize line breaks to "\n" for consistency
-                $value = str_replace(["\r\n", "\r"], "\n", $value);
+                $value = Helper::normalizeLineBreaks($value);
                 
                 // Remove leading and trailing whitespace
                 $value = trim($value);
@@ -244,9 +248,8 @@ trait Export
                 // Decode HTML entities to characters
                 $value = html_entity_decode($value, ENT_QUOTES, 'UTF-8');
                 
-                // Enforce UTF-8 encoding
-                $encoding = mb_detect_encoding($value, ['UTF-8', 'ISO-8859-1', 'Windows-1252'], true) ?: 'UTF-8';
-                $value = mb_convert_encoding($value, 'UTF-8', $encoding);
+                // Enforce and sanitize UTF-8 encoding
+                $value = Helper::sanitizeUTF8($value);
                 
                 // Escape special characters if forcing raw value
                 if ($forceRawValue && isset($value[0]) && in_array($value[0], ['=', '+', '-', '@'])) {
