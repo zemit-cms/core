@@ -181,7 +181,7 @@ class Identity extends Injectable implements OptionsInterface
      * Get basic Identity information
      * @throws \Exception
      */
-    public function getIdentity(bool $inherit = true): array
+    public function getIdentity(bool $inherit = true, ?array $userExpose = null): array
     {
         $user = $this->getUser();
         $userAs = $this->getUserAs();
@@ -276,11 +276,12 @@ class Identity extends Injectable implements OptionsInterface
         }
         
         // We don't need userAs group / type / role list
+//        dd($userExpose);
         return [
             'loggedIn' => $this->isLoggedIn(),
             'loggedInAs' => $this->isLoggedInAs(),
-            'user' => $user,
-            'userAs' => $userAs,
+            'user' => isset($userExpose, $user)? $user->expose($userExpose) : $user,
+            'userAs' => isset($userExpose, $userAs)? $userAs->expose($userExpose) : $userAs,
             'roleList' => $roleList,
             'typeList' => $typeList,
             'groupList' => $groupList,
@@ -491,6 +492,7 @@ class Identity extends Injectable implements OptionsInterface
     
         $saved = false;
         
+        // @todo change this to be a setting with a list of roles that the current role can impersonate
         // must be an admin
         if (!count($messages) && $this->hasRole(['admin', 'dev']) && $session) {
             $userId = $session->getUserId();

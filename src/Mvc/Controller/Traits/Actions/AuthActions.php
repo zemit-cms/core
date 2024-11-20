@@ -21,13 +21,22 @@ trait AuthActions
     use AbstractParams;
     use StatusCode;
     
+    public array $userExpose = [
+        true,
+        'password' => false,
+        'passwordConfirm' => false,
+        'token' => false,
+        'tokenHash' => false,
+        'roleList' => false,
+    ];
+    
     /**
      * Create a refresh a session
      */
     public function getAction(bool $refresh = false): bool
     {
         $this->view->setVars($this->identity->getJwt($refresh));
-        $this->view->setVars($this->identity->getIdentity());
+        $this->view->setVars($this->identity->getIdentity(true, $this->userExpose));
         return $this->view->getVar('validated') ?? false;
     }
     
@@ -47,7 +56,7 @@ trait AuthActions
     {
         $this->view->setVars($this->identity->getJwt());
         $this->view->setVars($this->identity->login($this->getParams()));
-        $this->view->setVars($this->identity->getIdentity());
+        $this->view->setVars($this->identity->getIdentity(true, $this->userExpose));
         $loggedIn = $this->view->getVar('loggedIn') ?? false;
         
         if (!$loggedIn) {
@@ -65,7 +74,7 @@ trait AuthActions
     {
         $this->view->setVars($this->identity->getJwt());
         $this->view->setVars($this->identity->loginAs($this->getParams()));
-        $this->view->setVars($this->identity->getIdentity());
+        $this->view->setVars($this->identity->getIdentity(true, $this->userExpose));
         return $this->view->getVar('loggedInAs') ?? false;
     }
 
@@ -86,7 +95,7 @@ trait AuthActions
     {
         $this->view->setVars($this->identity->getJwt());
         $this->view->setVars($this->identity->logoutAs());
-        $this->view->setVars($this->identity->getIdentity());
+        $this->view->setVars($this->identity->getIdentity(true, $this->userExpose));
         return !$this->view->getVar('loggedInAs') ?? false;
     }
 
