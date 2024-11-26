@@ -66,7 +66,7 @@ trait Relationship
      */
     public function getKeepMissingRelatedAlias(string $alias): bool
     {
-        return (bool)$this->keepMissingRelated[$alias];
+        return (bool)$this->keepMissingRelated[mb_strtolower($alias)] ?? true;
     }
     
     /**
@@ -74,7 +74,7 @@ trait Relationship
      */
     public function setKeepMissingRelatedAlias(string $alias, bool $keepMissing): void
     {
-        $this->keepMissingRelated[$alias] = $keepMissing;
+        $this->keepMissingRelated[mb_strtolower($alias)] = $keepMissing;
     }
     
     /**
@@ -291,8 +291,7 @@ trait Relationship
                 }
                 
                 // we got something to assign
-                $keepMissingRelationship = $this->keepMissingRelated[$alias] ?? null;
-                if (!empty($assign) || $keepMissingRelationship === false) {
+                if (!empty($assign) || !$this->getKeepMissingRelatedAlias($alias)) {
                     
                     $assign = is_array($assign) ? array_values(array_filter($assign)) : $assign;
                     $this->{$alias} = $assign;
@@ -428,7 +427,7 @@ trait Relationship
                 if ($relation->getType() === Relation::HAS_MANY) {
                     
                     // auto-delete missing related if keepMissingRelated is false
-                    if (!($this->keepMissingRelated[$lowerCaseAlias] ?? true)) {
+                    if (!$this->getKeepMissingRelatedAlias($lowerCaseAlias)) {
                         $originFields = $relation->getFields();
                         $originFields = is_array($originFields) ? $originFields : [$originFields];
                         
@@ -554,7 +553,7 @@ trait Relationship
                         }
                     }
                     
-                    if (!($this->keepMissingRelated[$lowerCaseAlias] ?? true)) {
+                    if (!$this->getKeepMissingRelatedAlias($lowerCaseAlias)) {
                         $idBindType = count($intermediatePrimaryKeyAttributes) === 1 ? $intermediateBindTypes[$intermediatePrimaryKeyAttributes[0]] : Column::BIND_PARAM_STR;
                         $nodeIdListToKeep = empty($nodeIdListToKeep)? [0] : array_keys(array_flip($nodeIdListToKeep));
                         $nodeEntityToDeleteResultset = $intermediateModel::find([
