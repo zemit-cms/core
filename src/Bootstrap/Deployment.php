@@ -146,7 +146,7 @@ class Deployment extends \Zemit\Config\Config
                     ['label' => 'Spanish', 'code' => 'sp'],
                 ],
                 Workspace::class => [
-                    ['name' => 'Zemit CMS', 'title' => 'Zemit CMS', 'description' => ''],
+//                    ['name' => 'Zemit CMS', 'title' => 'Zemit CMS', 'description' => ''],
                 ],
                 Template::class => [
                 ],
