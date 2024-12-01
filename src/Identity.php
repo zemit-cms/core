@@ -134,16 +134,23 @@ class Identity extends Injectable implements OptionsInterface
         $token ??= $this->helper->random(Random::RANDOM_ALNUM, rand(111, 222));
         $newToken = $refresh ? $this->helper->random(Random::RANDOM_ALNUM, rand(111, 222)) : $token;
         
-        // retrieve or create a new session
-        $sessionClass = $this->getSessionClass();
-        $session = $this->getSession($key, $token) ?? new $sessionClass();
-        assert($session instanceof SessionInterface);
-        
-        // save the key token into the store (database or session)
-        $session->setKey($key);
-        $session->setToken($session->hash($key . $newToken));
-        $session->setDate(date('Y-m-d H:i:s'));
-        $saved = $session->save();
+        $adapter = $this->config->path('identity.adapter') ?: 'database';
+//        if ($adapter === 'database') {
+            // retrieve or create a new session
+            $sessionClass = $this->getSessionClass();
+            $session = $this->getSession($key, $token) ?? new $sessionClass();
+            assert($session instanceof SessionInterface);
+            
+            // save the key token into the store (database or session)
+            $session->setKey($key);
+            $session->setToken($session->hash($key . $newToken));
+            $session->setDate(date('Y-m-d H:i:s'));
+            $saved = $session->save();
+//        }
+//        else if ($adapter === 'session') {
+//            $this->session->get($key);
+//            $this->session->set($key, $newToken);
+//        }
         
         // temporary store the new key token pair
         $this->store = ['key' => $session->getKey(), 'token' => $newToken];
@@ -235,7 +242,6 @@ class Identity extends Injectable implements OptionsInterface
             if (!empty($inheritedRoleIndexList)) {
                 
                 SecurityBehavior::staticStart();
-                $roleClass = $this->getRoleClass();
                 $inheritedRoleList = $this->models->getRole()::find([
                     'index in ({role:array})',
                     'bind' => ['role' => $inheritedRoleIndexList],
@@ -259,6 +265,7 @@ class Identity extends Injectable implements OptionsInterface
                     
                     // To avoid breaking stuff in production, create a new role if it doesn't exist
                     if (!$this->config->path('app.debug', false)) {
+                        $roleClass = $this->getRoleClass();
                         foreach ($inheritedRoleIndexList as $inheritedRoleIndex) {
                             $roleList[$inheritedRoleIndex] = new $roleClass();
                             $roleList[$inheritedRoleIndex]->setIndex($inheritedRoleIndex);

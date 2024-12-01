@@ -40,9 +40,11 @@ class RecordController extends Controller
                 'uuid = :uuid:',
                 'bind' => ['uuid' => $advanced['tableUuid']]
             ]);
-            $columns = $table->getColumnList();
-            foreach ($columns as $column) {
-                $collection->set($column->getUuid(), $column->getUuid());
+            if ($table) {
+                $columns = $table->getColumnList();
+                foreach ($columns as $column) {
+                    $collection->set($column->getUuid(), $column->getUuid());
+                }
             }
         }
         
