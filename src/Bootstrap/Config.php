@@ -294,7 +294,7 @@ class Config extends \Zemit\Config\Config
              */
             'identity' => [
                 'authorizationHeader' => Env::get('IDENTITY_AUTHORIZATION_HEADER', 'Authorization'),
-                'adapter' => Env::get('IDENTITY_ADAPTER', 'session'), // session | database
+                'adapter' => Env::get('IDENTITY_ADAPTER', 'session'), // session | database | redis
                 'mode' => Env::get('IDENTITY_SESSION_MODE', 'jwt'), // jwt | string
                 'sessionKey' => Env::get('IDENTITY_SESSION_KEY', 'zemit-identity'),
                 'sessionFallback' => Env::get('IDENTITY_SESSION_FALLBACK', false),
