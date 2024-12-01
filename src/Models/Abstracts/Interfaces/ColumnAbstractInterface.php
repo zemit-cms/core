@@ -175,7 +175,7 @@ interface ColumnAbstractInterface extends ModelInterface
     /**
      * Returns the value of field type
      * Column: type
-     * Attributes: NotNull | Size('text','number') | Type(18)
+     * Attributes: NotNull | Size('linkToAnotherRecord','singleLineText','longText','attachment','checkbox','multipleSelect','singleSelect','user','date','phoneNumber','email','url','number','currency','percent','duration','rating','formula','rollup','count','lookup','createdTime','lastModifiedTime','createdBy','lastModifiedBy','autonumber','barcode','button') | Type(18)
      * @return mixed
      */
     public function getType(): mixed;
@@ -183,7 +183,7 @@ interface ColumnAbstractInterface extends ModelInterface
     /**
      * Sets the value of field type
      * Column: type 
-     * Attributes: NotNull | Size('text','number') | Type(18)
+     * Attributes: NotNull | Size('linkToAnotherRecord','singleLineText','longText','attachment','checkbox','multipleSelect','singleSelect','user','date','phoneNumber','email','url','number','currency','percent','duration','rating','formula','rollup','count','lookup','createdTime','lastModifiedTime','createdBy','lastModifiedBy','autonumber','barcode','button') | Type(18)
      * @param mixed $type
      * @return void
      */

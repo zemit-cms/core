@@ -121,14 +121,14 @@ class Table extends TableAbstract implements TableInterface
             assert($column instanceof Column);
             
             $columnUuid = $column->getUuid();
-            $columnType = $this->mapColumnType($column->getType());
             
             // Define the column structure based on its type
+            $defaultDefinitions = $column->getColumnDefinitions();
             $columnDefinition = new DbColumn(
                 $columnUuid,
                 [
-                    'type' => $columnType['type'],
-                    'size' => $columnType['size'] ?? null,
+                    'type' => $defaultDefinitions['type'],
+                    'size' => $defaultDefinitions['size'],
                     'notNull' => true,
                     'comment' => $column->getName()
                 ]
@@ -184,22 +184,5 @@ class Table extends TableAbstract implements TableInterface
                 $db->addIndex($tableUuid, $tableUuid, $indexDefinition);
             }
         }
-    }
-    
-    /**
-     * Map column type from model to Phalcon\Db\Column types.
-     */
-    public function mapColumnType(string $type): array
-    {
-        return match ($type) {
-            'text' => ['type' => DbColumn::TYPE_VARCHAR, 'size' => 255],
-            'number' => ['type' => DbColumn::TYPE_INTEGER],
-            'boolean' => ['type' => DbColumn::TYPE_BOOLEAN],
-            'date' => ['type' => DbColumn::TYPE_DATE],
-            'float' => ['type' => DbColumn::TYPE_FLOAT],
-            'double' => ['type' => DbColumn::TYPE_DOUBLE],
-            'timestamp' => ['type' => DbColumn::TYPE_TIMESTAMP],
-            default => ['type' => DbColumn::TYPE_VARCHAR, 'size' => 255],
-        };
     }
 }

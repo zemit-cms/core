@@ -16,6 +16,7 @@ use Phalcon\Db\RawValue;
 use Zemit\Bootstrap\Deployment;
 use Zemit\Models\Column;
 use Zemit\Models\Data;
+use Zemit\Models\Enums\ColumnType;
 use Zemit\Models\Record;
 use Zemit\Models\Table;
 use Zemit\Models\Workspace;
@@ -65,8 +66,15 @@ DOC;
         return $ret;
     }
     
+    public function insertDataAction(): array
+    {
+        
+    }
+    
     public function generateRealData(): array
     {
+        $total = 100000;
+        
         $this->addModelsPermissions([
             Table::class => [],
             Column::class => [],
@@ -75,12 +83,13 @@ DOC;
         $faker = \Faker\Factory::create();
         
         $tableList = [];
-        foreach (Table::find() as $table) {
+        $table = Table::findFirst('deleted = 0');
+//        foreach (Table::find() as $table) {
             assert($table instanceof Table);
             $tableList[$table->getUuid()] = [];
             
             $columnList = Column::find('tableId = ' . (int)$table->getId());
-            for ($i = 0; $i < 1000; $i++) {
+            for ($i = 0; $i < $total; $i++) {
                 $assign = [
                     'uuid' => new RawValue('UUID()')
                 ];
@@ -103,7 +112,7 @@ DOC;
                     'messages' => $data->getMessages(),
                 ];
             }
-        }
+//        }
         
         return $tableList;
     }
@@ -140,7 +149,9 @@ DOC;
     
     public function generateFakeStructure(): array
     {
-        $total = 2;
+        $nbWorkspace = 100; 
+        $nbTable = 1000; // 100 per workspace
+        $nbColumns = 5000; // 5 per table
         $data = [];
         
         $faker = \Faker\Factory::create();
@@ -151,16 +162,16 @@ DOC;
         $data[Column::class] = [];
         $data[Data::class] = [];
         $data[Model\Dynamic::class] = [];
-        for ($i = 0; $i < $total; $i++) {
+        for ($i = 0; $i < $nbWorkspace; $i++) {
             
             // tables
             $tableList = [];
-            for ($x = 0; $x < $total; $x++) {
+            for ($x = 0; $x < $nbTable / $nbWorkspace; $x++) {
                 
                 // records
                 $recordList = [];
                 $columnList = [];
-                for ($r = 0; $r < $total; $r++) {
+                for ($r = 0; $r < $nbColumns / $nbTable; $r++) {
                     
 //                    $recordList []= [
 //                        'uuid' => $faker->uuid(),
@@ -172,7 +183,7 @@ DOC;
                         'uuid' => $faker->uuid(),
                         'name' => $faker->realTextBetween(5, 60),
                         'description' => $faker->realTextBetween(5, 120),
-                        'type' => 'text', // @todo
+                        'type' => $faker->randomElement(ColumnType::cases())->value,
                         'deleted' => (int)$faker->boolean(10),
                     ];
                 }
