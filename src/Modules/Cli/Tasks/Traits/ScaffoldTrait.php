@@ -88,7 +88,7 @@ PHP;
         if (!isset($this->whitelistedTables)) {
             $this->whitelistedTables = array_filter(explode(',', $this->dispatcher->getParam('table') ?? ''));
         }
-        return empty($this->whitelistedTables) || !in_array($table, $this->whitelistedTables);
+        return empty($this->whitelistedTables) || in_array($table, $this->whitelistedTables);
     }
     
     /**
@@ -277,6 +277,13 @@ PHP;
         return $this->absolutePathOr($path, $fullPath);
     }
     
+    // Models Enum Directory
+    public function getEnumsDirectory(string $path = ''): string
+    {
+        $fullPath = $this->getModelsDirectory($this->dispatcher->getParam('enumsDir') ?? $this->enumsDirectory) . $path;
+        return $this->absolutePathOr($path, $fullPath);
+    }
+    
     // Models Abstracts Directory
     public function getAbstractsDirectory(string $path = ''): string
     {
@@ -329,6 +336,11 @@ PHP;
     public function getControllersNamespace(): string
     {
         return $this->getNamespaceFromPath($this->getControllersDirectory());
+    }
+    
+    public function getEnumsNamespace(): string
+    {
+        return $this->getNamespaceFromPath($this->getEnumsDirectory());
     }
     
     // Models Namespace

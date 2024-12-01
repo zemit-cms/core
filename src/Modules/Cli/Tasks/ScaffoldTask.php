@@ -96,7 +96,7 @@ DOC;
         $definitions['slug'] = Slug::generate(Helper::uncamelize($name));
         
         // enums
-        $definitions['enums']['name'] = $tableName . 'Enum';
+        $definitions['enums']['name'] = $tableName;
         $definitions['enums']['file'] = $definitions['enums']['name'] . '.php';
         
         // controllers
@@ -172,6 +172,22 @@ DOC;
             if (!file_exists($savePath) || $force) {
                 $this->saveFile($savePath, $this->createAbstractInterfaceOutput($definitions, $columns, $relationships), $force);
                 $ret [] = 'Abstract Model Interface `' . $definitions['abstractInterface']['file'] . '` created at `' . $savePath . '`';
+            }
+            
+            // Model Enums
+            foreach ($columns as $column) {
+                assert($column instanceof Column);
+                if ($column->getType() === Column::TYPE_ENUM) {
+                    $enumValues = $column->getSize();
+                    
+                    $enumName = $definitions['enums']['name'] . Helper::camelize($column->getName());
+                    $definitionsEnumFile = $enumName . '.php';
+                    $savePath = $this->getEnumsDirectory($definitionsEnumFile);
+                    if (!file_exists($savePath) || $force) {
+                        $this->saveFile($savePath, $this->createEnumOutput($enumName, $column), $force);
+                        $ret [] = 'Enum `' . $definitionsEnumFile . '` created at `' . $savePath . '`';
+                    }
+                }
             }
             
             // Model
@@ -345,6 +361,28 @@ abstract class {$definitions['abstract']['name']} extends AbstractModel implemen
 }
 
 PHP;
+    }
+    
+    public function createEnumOutput(string $enumName, Column $column): string
+    {
+        $size = $column->getSize();
+        $list = explode(',',str_replace('\'', '', $size));
+        $enumValues = [];
+        foreach ($list as $item) {
+            $enumValues[] = '    case ' . Helper::upper(Helper::uncamelize($item)) . ' = \'' . $item . '\';';
+        }
+        $enumValues = implode(PHP_EOL, $enumValues);
+        return <<<PHP
+<?php
+{$this->getLicenseStamp()}
+{$this->getStrictTypes()}
+namespace {$this->getEnumsNamespace()};
+
+enum {$enumName}: string {
+{$enumValues}
+}
+PHP;
+
     }
     
     /**
