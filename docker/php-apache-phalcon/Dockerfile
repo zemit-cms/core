@@ -59,7 +59,7 @@ WORKDIR /var/www/html/public
 EXPOSE 80 443
 
 # Phalcon installation
-# Download and install Phalcon 5.6.2
+# Download and install Phalcon 5.8.0
 RUN curl -sSL https://github.com/phalcon/cphalcon/archive/refs/tags/v5.8.0.tar.gz | tar xz \
     && cd cphalcon-5.8.0/build \
     && ./install \
