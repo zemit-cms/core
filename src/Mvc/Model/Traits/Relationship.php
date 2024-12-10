@@ -66,7 +66,7 @@ trait Relationship
      */
     public function getKeepMissingRelatedAlias(string $alias): bool
     {
-        return (bool)$this->keepMissingRelated[mb_strtolower($alias)] ?? true;
+        return (bool)($this->keepMissingRelated[mb_strtolower($alias)] ?? true);
     }
     
     /**
