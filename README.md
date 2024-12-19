@@ -47,7 +47,7 @@ composer require zemit-cms/core
 
 There you go, you can already start using Zemit classes simply by loading the composer autoloader within your application.
 
-If you want to benefit the full potential of Zemit, you can bootstrap your application using `\Zemit\Bootstrap`. Here is a minimalstic example of how to achieve this using [`\Phalcon\Autoload\Loader`](https://docs.phalcon.io/5.6/autoload/).
+If you want to benefit the full potential of Zemit, you can bootstrap your application using `\Zemit\Bootstrap`. Here is a minimalstic example of how to achieve this using [`\Phalcon\Autoload\Loader`](https://docs.phalcon.io/5.8/autoload/).
 
 ```php
 // index.php
