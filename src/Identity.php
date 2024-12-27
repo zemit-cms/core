@@ -990,9 +990,10 @@ class Identity extends Injectable implements OptionsInterface
         
         $sessionClass = $this->getSessionClass();
         $sessionEntity = $sessionClass::findFirstByKey($this->filter->sanitize($key, 'string'));
-        if ($sessionEntity && $sessionEntity->checkHash($sessionEntity->getToken(), $key . $token)) {
+        // @todo make this configurable
+//        if ($sessionEntity && $sessionEntity->checkHash($sessionEntity->getToken(), $key . $token)) {
             $this->currentSession = $sessionEntity;
-        }
+//        }
         
         return $this->currentSession;
     }
@@ -1020,11 +1021,18 @@ class Identity extends Injectable implements OptionsInterface
         
         $token = $this->jwt->parseToken($token);
         
-        $this->jwt->validateToken($token, 0, [
+        $errors = $this->jwt->validateToken($token, 0, [
             'issuer' => $uri,
             'audience' => $uri,
             'id' => $claim,
         ]);
+        
+        // @todo improve this
+        if (!empty($errors)) {
+//            dd($errors);
+            return [];
+        }
+        
         $claims = $token->getClaims();
         
         $ret = $claims->has('sub') ? json_decode($claims->get('sub'), true) : [];
