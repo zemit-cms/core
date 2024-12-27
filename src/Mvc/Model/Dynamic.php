@@ -11,15 +11,17 @@
 
 namespace Zemit\Mvc\Model;
 
-use Phalcon\Db\Adapter\AdapterInterface;
-use Phalcon\Mvc\Model\MetaData\Memory;
+use Phalcon\Cache\Adapter\Apcu;
+use Phalcon\Mvc\Model\MetaData;
 use Zemit\Mvc\Model;
+use Zemit\Support\Utils;
 
 /**
  * @todo, fix phalcon models meta data instead of just resetting it
  */
 class Dynamic extends Model
 {
+    protected $_metaData = [];
     protected $_columnMap = [];
     
     public function initialize(): void
@@ -27,6 +29,20 @@ class Dynamic extends Model
         $this->setConnectionService('dbd');
         $this->setReadConnectionService('dbd');
         $this->setWriteConnectionService('dbd');
+        
+        // force delete cache for dynamic models
+        // @todo find a better way to handle dynamic models using
+        // meta data strategy or by overriding models meta data caching adapter etc.
+        // ->reset didn't work for unknown reason
+        $modelsMetaData = $this->getModelsMetaData();
+        assert($modelsMetaData instanceof MetaData);
+        $adapter = $modelsMetaData->getAdapter();
+        if ($adapter instanceof Apcu) {
+            $lowerClassName = strtolower(Utils::getName($this));
+            $adapter->delete('meta-' . $lowerClassName);
+            $adapter->delete('map-' . $lowerClassName);
+        }
+        
         parent::initialize();
     }
     
@@ -36,7 +52,14 @@ class Dynamic extends Model
     public function setDynamicSource(string $table): void
     {
         $this->setSource($table);
-        $this->getModelsMetaData()->reset();
+    }
+    
+    /**
+     * Sets dynamic metadata for the object.
+     */
+    public function setDynamicMetaData(array $metaData): void
+    {
+        $this->_metaData = $metaData;
     }
     
     /**
@@ -45,8 +68,17 @@ class Dynamic extends Model
     public function setDynamicColumnMap(array $map): void
     {
         $this->_columnMap = $map;
-        $this->getModelsMetaData()->reset();
     }
+    
+    /**
+     * Retrieves the metadata associated with the object.
+     *
+     * @return array The metadata as an associative array. Returns an empty array if no metadata is set.
+     */
+//    public function metaData(): array
+//    {
+//        return $this->_metaData ??= $this->getModelsMetaData()->readMetaData($this);
+//    }
     
     /**
      * Dynamically set the column mapping.

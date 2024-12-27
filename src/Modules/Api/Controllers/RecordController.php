@@ -10,6 +10,7 @@
 
 namespace Zemit\Modules\Api\Controllers;
 
+use Phalcon\Mvc\Model\MetaData;
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Support\Collection;
 use Zemit\Models\Table;
@@ -20,6 +21,42 @@ class RecordController extends Controller
 {
     protected ?int $limit = 10000;
     protected ?int $maxLimit = 10000;
+    protected Collection $columnMap;
+    protected array $metaData = [];
+    protected string $source = 'dynamic';
+    
+    public function initialize()
+    {
+        $this->initializeSource();
+        $this->initializeTableColumns();
+        
+        parent::initialize();
+    }
+    
+    public function initializeSource()
+    {
+        $this->source = $this->getParam('advanced')['tableUuid'] ?? 'dynamic';
+    }
+    
+    public function initializeTableColumns()
+    {
+        $this->columnMap = new Collection([
+            'id' => 'id',
+            'uuid' => 'uuid',
+            'deleted' => 'deleted',
+        ]);
+        
+        $table = Table::findFirst([
+            'uuid = :uuid:',
+            'bind' => ['uuid' => $this->getSource()],
+        ]);
+        if ($table) {
+            $columns = $table->getColumnList();
+            foreach ($columns as $column) {
+                $this->columnMap->set($column->getUuid(), $column->getUuid());
+            }
+        }
+    }
     
     public function listExpose(iterable $items, ?array $expose = null): array
     {
@@ -28,27 +65,7 @@ class RecordController extends Controller
     
     public function initializeSearchFields(): void
     {
-        // uuid is always searchable
-        $collection = new Collection([
-            'uuid',
-        ]);
-        
-        // appends searchable fields from table columns
-        $advanced = $this->getParam('advanced') ?? [];
-        if (isset($advanced['tableUuid'])) {
-            $table = Table::findFirst([
-                'uuid = :uuid:',
-                'bind' => ['uuid' => $advanced['tableUuid']]
-            ]);
-            if ($table) {
-                $columns = $table->getColumnList();
-                foreach ($columns as $column) {
-                    $collection->set($column->getUuid(), $column->getUuid());
-                }
-            }
-        }
-        
-        $this->setSearchFields($collection);
+        $this->setSearchFields($this->columnMap);
     }
     
     public function initializeFilterFields(): void
@@ -67,10 +84,13 @@ class RecordController extends Controller
     
     public function getModelName(): ?string
     {
-        if ($this->hasAdvanced('tableUuid')) {
+        if (!isset($this->modelName)) {
+//            $source = $this->getSource();
+//            $sourceClass = '_' . md5($source);
+//            $sourceFullClass = '\\Zemit\\Models\\' . $sourceClass;
+//            eval('namespace Zemit\Models; class ' . $sourceClass . ' extends \\' . Dynamic::class . ' {}');
+//            $this->modelName = $sourceFullClass;
             $this->modelName = Dynamic::class;
-        } else {
-            parent::getModelName();
         }
         
         return $this->modelName;
@@ -79,13 +99,119 @@ class RecordController extends Controller
     public function loadModel(?string $modelName = null): ModelInterface
     {
         $modelName ??= $this->getModelName() ?? '';
+        $modelInstance = Dynamic::createInstance($this->getSource(), $this->getColumnMap());
+//        $modelInstance = new $modelName();
 //        $modelInstance = $this->modelsManager->load($modelName);
-        $modelInstance = new $modelName();
         if ($modelInstance instanceof Dynamic) {
-            $advanced = $this->getParam('advanced') ?? [];
-            $modelInstance->setDynamicSource($advanced['tableUuid'] ?? 'dynamic');
+            $modelInstance->setDynamicSource($this->getSource());
+            $modelInstance->setDynamicMetaData($this->getMetaData());
+            $modelInstance->setDynamicColumnMap($this->getColumnMap());
         }
         assert($modelInstance instanceof ModelInterface);
         return $modelInstance;
+    }
+    
+    public function getColumnMap(): array
+    {
+        return $this->columnMap->toArray();
+    }
+    
+    public function getSource(): string
+    {
+        return $this->source;
+    }
+    
+    public function getMetaData(): array
+    {
+        /**
+         * Initialize meta-data
+         */
+        $attributes = [];
+        $primaryKeys = [];
+        $nonPrimaryKeys = [];
+        $numericTyped = [];
+        $notNull = [];
+        $fieldTypes = [];
+        $fieldBindTypes = [];
+        $automaticDefault = [];
+        $identityField = false;
+        $defaultValues = [];
+        $emptyStringValues = [];
+        
+        $columns = $this->dbd->describeColumns($this->getSource());
+        foreach ($columns as $column) {
+            $fieldName = $column->getName();
+            $attributes[] = $fieldName;
+            
+            /**
+             * To mark fields as primary keys
+             */
+            if ($column->isPrimary()) {
+                $primaryKeys[] = $fieldName;
+            }
+            else {
+                $nonPrimaryKeys[] = $fieldName;
+            }
+            
+            /**
+             * To mark fields as numeric
+             */
+            if ($column->isNumeric()) {
+                $numericTyped[$fieldName] = true;
+            }
+            
+            /**
+             * To mark fields as not null
+             */
+            if ($column->isNotNull()) {
+                $notNull[] = $fieldName;
+            }
+            
+            /**
+             * To mark fields as identity $columns
+             */
+            if ($column->isAutoIncrement()) {
+                $identityField = $fieldName;
+            }
+            
+            /**
+             * To get the internal types
+             */
+            $fieldTypes[$fieldName] = $column->getType();
+            
+            /**
+             * To mark how the fields must be escaped
+             */
+            $fieldBindTypes[$fieldName] = $column->getBindType();
+            
+            /**
+             * If $column has default value or $column is nullable and default value is null
+             */
+            $defaultValue = $column->getDefault();
+            
+            if ($defaultValue !== null || !$column->isNotNull()) {
+                if (!$column->isAutoIncrement()) {
+                    $defaultValues[$fieldName] = $defaultValue;
+                }
+            }
+        }
+        
+        /**
+         * Create an array using the MODELS_* constants as indexes
+         */
+        return [
+            MetaData::MODELS_ATTRIBUTES => $attributes,
+            MetaData::MODELS_PRIMARY_KEY => $primaryKeys,
+            MetaData::MODELS_NON_PRIMARY_KEY => $nonPrimaryKeys,
+            MetaData::MODELS_NOT_NULL => $notNull,
+            MetaData::MODELS_DATA_TYPES => $fieldTypes,
+            MetaData::MODELS_DATA_TYPES_NUMERIC => $numericTyped,
+            MetaData::MODELS_IDENTITY_COLUMN => $identityField,
+            MetaData::MODELS_DATA_TYPES_BIND => $fieldBindTypes,
+            MetaData::MODELS_AUTOMATIC_DEFAULT_INSERT => $automaticDefault,
+            MetaData::MODELS_AUTOMATIC_DEFAULT_UPDATE => $automaticDefault,
+            MetaData::MODELS_DEFAULT_VALUES => $defaultValues,
+            MetaData::MODELS_EMPTY_STRING_VALUES => $emptyStringValues,
+        ];
     }
 }
