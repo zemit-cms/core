@@ -24,6 +24,7 @@ class ServiceProvider extends AbstractServiceProvider
 {
     protected ?string $driverName = null;
     protected string $serviceName = 'db';
+    protected static bool $attachedEvents = false;
     
     public function register(DiInterface $di): void
     {
@@ -85,8 +86,13 @@ class ServiceProvider extends AbstractServiceProvider
             // attach events
             $eventsManager = $di->get('eventsManager');
             assert($eventsManager instanceof ManagerInterface);
-            $eventsManager->attach('db', new Logger());
-            $eventsManager->attach('db', new Profiler());
+            
+            if (!self::$attachedEvents) {
+                $eventsManager->attach('db', new Logger());
+                $eventsManager->attach('db', new Profiler());
+                self::$attachedEvents = true;
+            }
+            
             $connection->setEventsManager($eventsManager);
             
             return $connection;
