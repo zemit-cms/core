@@ -293,7 +293,7 @@ class Config extends \Zemit\Config\Config
              * Identity Provider Configuration
              */
             'identity' => [
-                'authorizationHeader' => Env::get('IDENTITY_AUTHORIZATION_HEADER', 'Authorization'),
+                'authorizationHeader' => Env::get('IDENTITY_AUTHORIZATION_HEADER', 'X-Authorization'),
                 'adapter' => Env::get('IDENTITY_ADAPTER', 'session'), // session | database | redis
                 'mode' => Env::get('IDENTITY_SESSION_MODE', 'jwt'), // jwt | string
                 'sessionKey' => Env::get('IDENTITY_SESSION_KEY', 'zemit-identity'),
@@ -1329,7 +1329,7 @@ class Config extends \Zemit\Config\Config
                     
                     'base' => [
                         'components' => [
-                            Api\Controllers\AuthController::class => ['get'],
+                            Api\Controllers\AuthController::class => ['get', 'refresh'],
                             Models\Audit::class => ['create'],
                             Models\AuditDetail::class => ['create'],
                             Models\Session::class => ['*'],
@@ -1454,7 +1454,7 @@ class Config extends \Zemit\Config\Config
                         ],
                     ],
                     
-                    'manageSiteList' => [
+                    'manageWorkspaceList' => [
                         'components' => [
                             Api\Controllers\WorkspaceController::class => ['*'],
                             Models\Workspace::class => ['*'],
@@ -1562,7 +1562,7 @@ class Config extends \Zemit\Config\Config
                         'features' => [
                             'manageUserList',
                             'manageLangList',
-                            'manageSiteList',
+                            'manageWorkspaceList',
                             'managePageList',
                             'managePostList',
                             'manageTemplateList',
