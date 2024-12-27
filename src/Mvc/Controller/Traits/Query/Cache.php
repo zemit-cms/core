@@ -56,13 +56,16 @@ trait Cache
      */
     public function initializeCacheConfig(): void
     {
-        $this->initializeCacheKey();
         $this->initializeCacheLifetime();
+        $this->initializeCacheKey();
         
-        $this->setCacheConfig(new Collection([
+        $lifetime = $this->getCacheLifetime();
+        $key = $this->getCacheKey();
+        
+        $this->setCacheConfig(new Collection(isset($lifetime, $key)? [
             'lifetime' => $this->getCacheLifetime(),
             'key' => $this->getCacheKey()
-        ]));
+        ] : []));
     }
     
     /**
@@ -82,18 +85,23 @@ trait Cache
     }
     
     /**
-     * Initializes the cache key based on the current parameters and user identity.
+     * Initializes the cache key.
      *
-     * This method generates a cache key by concatenating the user identity and a hash of the current parameters.
-     * The generated cache key is then set as the value of the cache key for the current instance of the object.
+     * This method constructs and sets a unique cache key by combining the model name,
+     * user identity, cache lifetime, and parameters.
      *
      * @return void
      */
     public function initializeCacheKey(): void
     {
-        $paramsKey = hash('sha512', json_encode($this->getParams()));
-        $identityKey = $this->identity->getUserId();
-        $this->setCacheKey('_' . $identityKey . '-' . $paramsKey . '_');
+        $cacheKeys = [
+            md5($this->getModelName()),
+            $this->identity->getUserId(),
+            $this->getCacheLifetime(),
+            md5(json_encode($this->getParams())),
+        ];
+        $cacheKey = '_' . implode('-', $cacheKeys) . '_';
+        $this->setCacheKey($cacheKey);
     }
     
     /**
