@@ -73,7 +73,7 @@ DOC;
     
     public function generateRealData(): array
     {
-        $total = 100000;
+        $total = 1000;
         
         $this->addModelsPermissions([
             Table::class => [],
@@ -85,6 +85,7 @@ DOC;
         $tableList = [];
         $table = Table::findFirst('deleted = 0');
 //        foreach (Table::find() as $table) {
+        if ($table) {
             assert($table instanceof Table);
             $tableList[$table->getUuid()] = [];
             
@@ -112,7 +113,7 @@ DOC;
                     'messages' => $data->getMessages(),
                 ];
             }
-//        }
+        }
         
         return $tableList;
     }
@@ -149,9 +150,9 @@ DOC;
     
     public function generateFakeStructure(): array
     {
-        $nbWorkspace = 100; 
-        $nbTable = 1000; // 100 per workspace
-        $nbColumns = 5000; // 5 per table
+        $nbWorkspace = 10; 
+        $nbTable = 10;
+        $nbColumns = 5;
         $data = [];
         
         $faker = \Faker\Factory::create();
@@ -166,12 +167,12 @@ DOC;
             
             // tables
             $tableList = [];
-            for ($x = 0; $x < $nbTable / $nbWorkspace; $x++) {
+            for ($x = 0; $x < $nbTable; $x++) {
                 
                 // records
                 $recordList = [];
                 $columnList = [];
-                for ($r = 0; $r < $nbColumns / $nbTable; $r++) {
+                for ($r = 0; $r < $nbColumns; $r++) {
                     
 //                    $recordList []= [
 //                        'uuid' => $faker->uuid(),
