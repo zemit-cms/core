@@ -364,6 +364,20 @@ class Config extends \Zemit\Config\Config
                     Models\AuditDetail::class => Env::get('DATA_LIFE_CYCLE_AUDIT_DETAIL', 'quarterly'),
                 ],
                 'policies' => [
+                    'daily' => [
+                        'query' => [
+                            'conditions' => 'createdAt < :createdAt:',
+                            'bind' => ['createdAt' => $now->modify('-1 day')->format('Y-m-d 00:00:00')],
+                            'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
+                        ],
+                    ],
+                    'weekly' => [
+                        'query' => [
+                            'conditions' => 'createdAt < :createdAt:',
+                            'bind' => ['createdAt' => $now->modify('-1 week')->format('Y-m-d 00:00:00')],
+                            'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
+                        ],
+                    ],
                     'monthly' => [
                         'query' => [
                             'conditions' => 'createdAt < :createdAt:',
