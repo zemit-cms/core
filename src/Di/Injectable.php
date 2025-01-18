@@ -26,6 +26,8 @@ namespace Zemit\Di;
  * @property \Phalcon\Session\ManagerInterface $session
  * @property \Phalcon\Events\Manager|\Phalcon\Events\ManagerInterface $eventsManager
  * @property \Phalcon\Db\Adapter\AdapterInterface $db
+ * @property \Phalcon\Db\Adapter\AdapterInterface $dbr
+ * @property \Phalcon\Db\Adapter\AdapterInterface $dbd
  * @property \Phalcon\Encryption\Crypt|\Phalcon\Encryption\Crypt\CryptInterface $crypt
  * @property \Phalcon\Html\Escaper|\Phalcon\Html\Escaper\EscaperInterface $escaper
  * @property \Phalcon\Annotations\Adapter\Memory|\Phalcon\Annotations\Adapter\AbstractAdapter $annotations

@@ -32,6 +32,7 @@ namespace Zemit\Di;
  * @property \Phalcon\Encryption\Crypt $crypt
  * @property \Phalcon\Db\Adapter\AbstractAdapter $db
  * @property \Phalcon\Db\Adapter\AbstractAdapter $dbr
+ * @property \Phalcon\Db\Adapter\AbstractAdapter $dbd
  * @property \Zemit\Support\Debug $debug
  * @property \Zemit\Dispatcher\AbstractDispatcher $dispatcher
  * @property \Zemit\Support\Env $env
