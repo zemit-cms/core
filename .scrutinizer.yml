@@ -27,8 +27,8 @@ build:
                 - 'RewriteCond %{REQUEST_FILENAME} !-f'
                 - 'RewriteRule ^(.*)$ index.php?_url=/$1 [QSA,L]'
         php:
-          version: 8.3.13
-          compile_options: '--with-config-file-path=/home/scrutinizer/.phpenv/versions/8.3.13/etc --with-config-file-scan-dir=/home/scrutinizer/.phpenv/versions/8.3.13/etc/conf.d --prefix=/home/scrutinizer/.phpenv/versions/8.3.13 --libexecdir=/home/scrutinizer/.phpenv/versions/8.3.13/libexec --enable-intl --with-openssl --with-gd --enable-gd --with-jpeg-dir=/usr --with-png-dir=/usr --with-freetype-dir=/usr --enable-exif --with-libzip --with-zlib --with-zlib-dir=/usr --with-sodium --with-pdo-sqlite --enable-soap --enable-xmlreader --with-xsl --enable-ftp --with-tidy --with-xmlrpc --enable-sysvsem --enable-sysvshm --enable-sysvmsg --enable-shmop --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --enable-pcntl --with-readline --enable-mbstring --with-curl --with-pgsql --with-pdo-pgsql --with-gettext --enable-sockets --with-bz2 --enable-bcmath --enable-calendar --with-libdir=lib --enable-fpm --enable-zts --with-gmp --with-kerberos --with-imap --with-imap-ssl --with-apxs2=/usr/bin/apxs --with-ldap --with-pear=/home/scrutinizer/.phpenv/versions/8.3.13/pear'
+          version: 8.3.16
+          compile_options: '--with-config-file-path=/home/scrutinizer/.phpenv/versions/8.3.16/etc --with-config-file-scan-dir=/home/scrutinizer/.phpenv/versions/8.3.16/etc/conf.d --prefix=/home/scrutinizer/.phpenv/versions/8.3.16 --libexecdir=/home/scrutinizer/.phpenv/versions/8.3.16/libexec --enable-intl --with-openssl --with-gd --enable-gd --with-jpeg-dir=/usr --with-png-dir=/usr --with-freetype-dir=/usr --enable-exif --with-libzip --with-zlib --with-zlib-dir=/usr --with-sodium --with-pdo-sqlite --enable-soap --enable-xmlreader --with-xsl --enable-ftp --with-tidy --with-xmlrpc --enable-sysvsem --enable-sysvshm --enable-sysvmsg --enable-shmop --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --enable-pcntl --with-readline --enable-mbstring --with-curl --with-pgsql --with-pdo-pgsql --with-gettext --enable-sockets --with-bz2 --enable-bcmath --enable-calendar --with-libdir=lib --enable-fpm --enable-zts --with-gmp --with-kerberos --with-imap --with-imap-ssl --with-apxs2=/usr/bin/apxs --with-ldap --with-pear=/home/scrutinizer/.phpenv/versions/8.3.16/pear'
 #          compile_options: '--with-config-file-path=/home/scrutinizer/.phpenv/versions/8.2.17/etc --with-config-file-scan-dir=/home/scrutinizer/.phpenv/versions/8.2.17/etc/conf.d --prefix=/home/scrutinizer/.phpenv/versions/8.2.17 --libexecdir=/home/scrutinizer/.phpenv/versions/8.2.17/libexec --enable-intl --with-openssl --with-gd --enable-gd --with-jpeg-dir=/usr --with-png-dir=/usr --with-freetype-dir=/usr --enable-exif --with-libzip --with-zlib --with-zlib-dir=/usr --with-sodium --with-pdo-sqlite --enable-soap --enable-xmlreader --with-xsl --enable-ftp --with-tidy --with-xmlrpc --enable-sysvsem --enable-sysvshm --enable-sysvmsg --enable-shmop --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --enable-pcntl --with-readline --enable-mbstring --with-curl --with-pgsql --with-pdo-pgsql --with-gettext --enable-sockets --with-bz2 --enable-bcmath --enable-calendar --with-libdir=lib --enable-fpm --enable-zts --with-gmp --with-kerberos --with-imap --with-imap-ssl --with-apxs2=/usr/bin/apxs --with-ldap --with-pear=/home/scrutinizer/.phpenv/versions/8.2.17/pear'
 #          compile_options: '--with-config-file-path=/home/scrutinizer/.phpenv/versions/7.4.14/etc --with-config-file-scan-dir=/home/scrutinizer/.phpenv/versions/7.4.14/etc/conf.d --prefix=/home/scrutinizer/.phpenv/versions/7.4.14 --libexecdir=/home/scrutinizer/.phpenv/versions/7.4.14/libexec --enable-intl --with-openssl --with-gd --enable-gd --with-jpeg-dir=/usr --with-png-dir=/usr --with-freetype-dir=/usr --enable-exif --with-libzip --with-zlib --with-zlib-dir=/usr --with-sodium --with-pdo-sqlite --enable-soap --enable-xmlreader --with-xsl --enable-ftp --with-tidy --with-xmlrpc --enable-sysvsem --enable-sysvshm --enable-sysvmsg --enable-shmop --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --enable-pcntl --with-readline --enable-mbstring --with-curl --with-pgsql --with-pdo-pgsql --with-gettext --enable-sockets --with-bz2 --enable-bcmath --enable-calendar --with-libdir=lib --enable-fpm --enable-maintainer-zts --with-gmp --with-kerberos --with-imap --with-imap-ssl --with-apxs2=/usr/bin/apxs --with-ldap --with-pear=/home/scrutinizer/.phpenv/versions/7.4.14/pear'
           # @link https://pecl.php.net/
@@ -42,6 +42,8 @@ build:
       dependencies:
         before:
           - composer self-update
+          - find ./src/ -name '*.php' -exec sed -i 's/\(public\|protected\|private\)\s\+const\s\+\w\+\s\+\(\w\+\)\s*=/\1 const \2 =/g' {} +
+
         after:
 #          - composer require --dev phalcon/ide-stubs:5.8.0
 #          - composer require --dev phpunit/phpunit
@@ -54,7 +56,7 @@ build:
           - cp .env.scrutinizer .env
           - ./bin/migration-list.sh
           - ./bin/migration-run.sh
-          - echo "xdebug.mode=coverage" > /home/scrutinizer/.phpenv/versions/8.3.13/etc/conf.d/xdebug.ini
+          - echo "xdebug.mode=coverage" > /home/scrutinizer/.phpenv/versions/8.3.16/etc/conf.d/xdebug.ini
       tests:
         stop_on_failure: false
         override:
