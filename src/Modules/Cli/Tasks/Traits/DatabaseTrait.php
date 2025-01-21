@@ -60,7 +60,7 @@ trait DatabaseTrait
         $response = [];
         
         foreach ($this->truncate as $table) {
-            $response [] = $this->db->execute('TRUNCATE TABLE ' . $this->db->escapeIdentifier($table));
+            $response [$table] = $this->db->execute('TRUNCATE TABLE ' . $this->db->escapeIdentifier($table));
         }
         
         return $response;
@@ -82,7 +82,7 @@ trait DatabaseTrait
         $response = [];
         
         foreach ($this->drop as $table) {
-            $response [] = $this->db->execute('DROP TABLE IF EXISTS ' . $this->db->escapeIdentifier($table));
+            $response [$table] = $this->db->execute('DROP TABLE IF EXISTS ' . $this->db->escapeIdentifier($table));
         }
         
         return $response;
@@ -104,7 +104,7 @@ trait DatabaseTrait
         $response = [];
         
         foreach ($this->engine as $table => $engine) {
-            $response [] = $this->db->execute('ALTER TABLE ' . $this->db->escapeIdentifier($table) . ' ENGINE = ' . $engine);
+            $response [$table] = $this->db->execute('ALTER TABLE ' . $this->db->escapeIdentifier($table) . ' ENGINE = ' . $engine) ? $engine : false;
         }
         
         return $response;
@@ -188,7 +188,7 @@ trait DatabaseTrait
         $response = [];
         
         foreach ($this->optimize as $table) {
-            $response [] = $this->db->query('OPTIMIZE TABLE ' . $this->db->escapeIdentifier($table))->fetchAll();
+            $response [$table] = $this->db->query('OPTIMIZE TABLE ' . $this->db->escapeIdentifier($table))->fetchAll();
         }
         
         return $response;
@@ -210,7 +210,7 @@ trait DatabaseTrait
         $response = [];
         
         foreach ($this->analyze as $table) {
-            $response [] = $this->db->query('ANALYZE TABLE ' . $this->db->escapeIdentifier($table))->fetchAll();
+            $response [$table] = $this->db->query('ANALYZE TABLE ' . $this->db->escapeIdentifier($table))->fetchAll();
         }
         
         return $response;
