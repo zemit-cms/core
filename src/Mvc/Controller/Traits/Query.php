@@ -635,28 +635,24 @@ trait Query
                             $queryValueBinder = ':' . $queryValue . ':';
                             
                             if (in_array($queryOperator, ['contains', 'does not contain'])) {
-                                $queryValue0 = '_' . uniqid($uniqid . '_value_') . '_';
-                                $queryValue1 = '_' . uniqid($uniqid . '_value_') . '_';
-                                $queryValue2 = '_' . uniqid($uniqid . '_value_') . '_';
-                                $bind[$queryValue0] = '%' . $value . '%';
-                                $bind[$queryValue1] = '%' . $value;
-                                $bind[$queryValue2] = $value . '%';
-                                $bindType[$queryValue0] = Column::BIND_PARAM_STR;
-                                $bindType[$queryValue1] = Column::BIND_PARAM_STR;
-                                $bindType[$queryValue2] = Column::BIND_PARAM_STR;
-                                $queryAndOr [] = ($queryOperator === 'does not contain' ? '!' : '') . "($queryFieldBinder like :$queryValue0: or $queryFieldBinder like :$queryValue1: or $queryFieldBinder like :$queryValue2:)";
+                                $bind[$queryValue] = '%' . $value . '%';
+                                $bindType[$queryValue] = Column::BIND_PARAM_STR;
+                                $likeOperator = str_contains($queryOperator, 'does not contain')? 'not like' : 'like';
+                                $queryAndOr [] = "($queryFieldBinder $likeOperator :$queryValue:)";
                             }
                             
                             elseif (in_array($queryOperator, ['starts with', 'does not start with'])) {
                                 $bind[$queryValue] = $value . '%';
                                 $bindType[$queryValue] = Column::BIND_PARAM_STR;
-                                $queryAndOr [] = ($queryOperator === 'does not start with' ? '!' : '') . "($queryFieldBinder like :$queryValue:)";
+                                $likeOperator = str_contains($queryOperator, 'does not start with')? 'not like' : 'like';
+                                $queryAndOr [] = "($queryFieldBinder $likeOperator :$queryValue:)";
                             }
                             
                             elseif (in_array($queryOperator, ['ends with', 'does not end with'])) {
                                 $bind[$queryValue] = '%' . $value;
                                 $bindType[$queryValue] = Column::BIND_PARAM_STR;
-                                $queryAndOr [] = ($queryOperator === 'does not end with' ? '!' : '') . "($queryFieldBinder like :$queryValue:)";
+                                $likeOperator = str_contains($queryOperator, 'does not end with')? 'not like' : 'like';
+                                $queryAndOr [] = "($queryFieldBinder $likeOperator :$queryValue:)";
                             }
                             
                             elseif (in_array($queryOperator, ['regexp', 'not regexp'])) {
@@ -831,6 +827,8 @@ trait Query
         $find['group'] = $this->fireGet('getGroup');
         $find['having'] = $this->fireGet('getHaving');
         $find['cache'] = $this->fireGet('getCache');
+        
+//        dd($find);
         
         // fix for grouping by multiple fields, phalcon only allow string here
         foreach (['distinct', 'group', 'order'] as $findKey) {
