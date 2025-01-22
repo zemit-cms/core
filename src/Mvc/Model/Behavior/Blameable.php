@@ -57,7 +57,7 @@ class Blameable extends Behavior
      */
     public function notify(string $type, ModelInterface $model): ?bool
     {
-        if ($this->isEnabled()) {
+        if (!$this->isEnabled()) {
             return null;
         }
         
