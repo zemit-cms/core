@@ -121,6 +121,7 @@ class Blameable extends Behavior
             $auditDetail = new $auditDetailClass();
             assert($auditDetail instanceof AuditDetailInterface);
             
+            $auditDetail->setModel(get_class($model));
             $auditDetail->setTable($model->getSource());
             $auditDetail->setPrimary($model->readAttribute('id'));
             $auditDetail->setEvent($event);
