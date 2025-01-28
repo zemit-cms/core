@@ -18,6 +18,7 @@ use Phalcon\Mvc\ModelInterface;
 use Phalcon\Acl\Adapter\AdapterInterface;
 use Zemit\Mvc\Model\Behavior\Traits\ProgressTrait;
 use Zemit\Mvc\Model\Behavior\Traits\SkippableTrait;
+use Zemit\Identity\Manager as Identity;
 
 /**
  * Allows to check if the current identity is allowed to run some model actions
@@ -69,7 +70,7 @@ class Security extends Behavior
     {
         if (!isset(self::$roles)) {
             $identity = Di::getDefault()->get('identity');
-            assert($identity instanceof \Zemit\Identity);
+            assert($identity instanceof Identity);
             self::$roles = $identity->getAclRoles();
         }
         return self::$roles ?? [];

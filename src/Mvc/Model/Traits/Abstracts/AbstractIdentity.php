@@ -13,5 +13,5 @@ namespace Zemit\Mvc\Model\Traits\Abstracts;
 
 trait AbstractIdentity
 {
-    abstract public function getIdentityService(): \Zemit\Identity;
+    abstract public function getIdentityService(): \Zemit\Identity\Manager;
 }
