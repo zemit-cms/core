@@ -22,7 +22,7 @@ use Zemit\Html\Escaper;
 use Zemit\Support\Debug;
 use Zemit\Encryption\Security;
 use Zemit\Filter\Filter;
-use Zemit\Identity;
+use Zemit\Identity\Manager as Identity;
 use Zemit\Locale;
 use Zemit\Mvc\View;
 use Zemit\Provider\Jwt\Jwt;

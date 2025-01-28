@@ -16,7 +16,7 @@ use Phalcon\Filter\Exception;
 use Phalcon\Filter\Filter;
 use Phalcon\Messages\Message;
 use Phalcon\Mvc\ModelInterface;
-use Zemit\Identity;
+use Zemit\Identity\Manager as Identity;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
 use Zemit\Support\Exposer\Exposer;
@@ -377,7 +377,7 @@ trait Query
      * Get the identity condition for querying the database: Default created by
      *
      * @param array|null $columns The columns to check for identity condition
-     * @param \Zemit\Mvc\Controller\Traits\Actions\Identity|null $identity The identity object
+     * @param Identity|null $identity The identity object
      * @param array|null $roleList The list of roles
      *
      * @return string|null The generated identity condition or null if no condition is generated
