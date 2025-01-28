@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Zemit\Identity\Traits;
 
-use Phalcon\Encryption\Security\JWT\Exceptions\ValidatorException;
-use Phalcon\Filter\Filter;
 use Zemit\Di\AbstractInjectable;
+use Phalcon\Filter\Filter;
+use stdClass;
 
 trait Jwt
 {
@@ -23,8 +23,11 @@ trait Jwt
     public array $claim = [];
     
     /**
-     * Create or refresh a session
-     * @throws ValidatorException|\Phalcon\Encryption\Security\Exception
+     * Generates a new JWT and refresh token based on the specified claim and configuration.
+     * If the claim does not have a key or is refreshed, it creates a new key and updates the session if enabled.
+     *
+     * @param bool $refresh Indicates whether to refresh the claim by generating a new key and invalidating previous tokens.
+     * @return array Contains the generated JWT, refresh token, and a flag indicating if the claim was refreshed.
      */
     public function getJwt(bool $refresh = false): array
     {
@@ -79,15 +82,12 @@ trait Jwt
     }
     
     /**
-     * Retrieve the store information based on various authentication methods:
-     * - Cached store
-     * - Refresh token
-     * - JWT
-     * - Authorization header
-     * - Session fallback
+     * Retrieves the claim using different authentication methods such as JWT, Authorization Header, or Session.
+     * If the claim is cached and not forced to refresh, it returns the cached claim.
      *
-     * @param bool $force If true, forces fetching the store regardless of cache.
-     * @return array The store information based on the available authentication method or an empty array if unsupported.
+     * @param bool $refresh Determines whether to attempt refreshing the claim if available.
+     * @param bool $force Forces bypassing the cached claim and retrieving a new one.
+     * @return array The claim data or an empty array if no claim is found.
      */
     public function getClaim(bool $refresh = false, bool $force = false): array
     {
@@ -132,9 +132,9 @@ trait Jwt
     }
     
     /**
-     * Set the store data.
+     * Sets the claim information for the current instance.
      *
-     * @param array $claim The data to be stored.
+     * @param array $claim The claim data to set.
      * @return void
      */
     public function setClaim(array $claim): void
@@ -143,8 +143,12 @@ trait Jwt
     }
     
     /**
-     * Generate a new JWT Token (string)
-     * @throws ValidatorException
+     * Generates a JWT (JSON Web Token) using the provided identifier, payload data, and additional options.
+     *
+     * @param string $id The unique identifier for the JWT, typically representing a specific user or session.
+     * @param array $data An associative array containing the payload data to be encoded in the JWT.
+     * @param array $options An associative array of options for the token such as issuer, audience, subject, etc. Defaults will be applied if not provided.
+     * @return string The generated JWT token as a string.
      */
     public function getJwtToken(string $id, array $data = [], array $options = []): string
     {
@@ -160,10 +164,11 @@ trait Jwt
     }
     
     /**
-     * @param string $token
-     * @param string|null $claim
-     * @return array
-     * @throws ValidatorException
+     * Extracts claims from a provided JWT token after validating it.
+     *
+     * @param string $token The JWT token to parse and validate.
+     * @param string|null $claim An optional identifier to validate the token against.
+     * @return array The claims extracted from the token, or an empty array if no valid claims are found.
      */
     public function getClaimFromToken(string $token, string $claim = null): array
     {
@@ -183,10 +188,10 @@ trait Jwt
     }
     
     /**
-     * Get key and token from authorization
-     * @param array $authorization The authorization array, where the first element is the authorization type and the second element is the authorization token
-     * @return array The key and token extracted from the authorization session claim. If the key or token is not found, null will be returned for that value.
-     * @throws ValidatorException
+     * Extracts claim information from the authorization header if it follows the Bearer token format.
+     *
+     * @param array $authorization The authorization header split into an array with the type and token.
+     * @return array The claim information extracted from the token or an empty array if extraction fails.
      */
     public function getClaimFromAuthorization(array $authorization): array
     {
@@ -200,13 +205,19 @@ trait Jwt
         return [];
     }
     
+    /**
+     * Retrieves the raw JSON body from the request.
+     * If the body is not valid JSON, an empty stdClass object is returned.
+     *
+     * @return stdClass The raw JSON body as an object or an empty stdClass object if the input is invalid.
+     */
     private function getJsonRawBody()
     {
         try {
             return $this->request->getJsonRawBody();
         }
         catch (\InvalidArgumentException $e) {
-            return new \stdClass();
+            return new stdClass();
         }
     }
 }

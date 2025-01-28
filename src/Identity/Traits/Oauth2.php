@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Zemit\Identity\Traits;
 
 use Phalcon\Db\Column;
+use Phalcon\Filter\Exception;
 use Phalcon\Filter\Validation\Validator\PresenceOf;
 use Phalcon\Messages\Message;
 use Zemit\Filter\Validation;
@@ -37,7 +38,7 @@ trait Oauth2
      *   - 'loggedInAs': Indicates the user that is currently logged in
      *   - 'messages': An array of validation messages
      *
-     * @throws \Phalcon\Filter\Exception
+     * @throws Exception
      */
     public function oauth2(string $provider, int $providerUuid, string $accessToken, ?string $refreshToken = null, ?array $meta = []): array
     {
@@ -68,12 +69,9 @@ trait Oauth2
         $oauth2->setLastName($meta['last_name'] ?? null);
         $oauth2->setEmail($meta['email'] ?? null);
         
-        // get the current session
-        $session = $this->getSession();
-        
         // link the current user to the oauth2 entity
         $oauth2UserId = $oauth2->getUserId();
-        $sessionUserId = $session->getUserId();
+        $sessionUserId = $this->getUserId();
         if (empty($oauth2UserId) && !empty($sessionUserId)) {
             $oauth2->setUserId($sessionUserId);
         }
@@ -114,16 +112,7 @@ trait Oauth2
             
             // login success
             else {
-                $loggedInUser = $user;
-            }
-            
-            // Set the oauth user id into the session
-            $session->setUserId($loggedInUser?->getId());
-            $saved = $session->save();
-            
-            // append session error messages
-            foreach ($session->getMessages() as $message) {
-                $validation->appendMessage($message);
+                $this->setSessionIdentity(['userId' => $user->getId()]);
             }
         }
         

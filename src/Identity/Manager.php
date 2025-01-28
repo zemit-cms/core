@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Zemit\Identity;
 
+use Phalcon\Encryption\Security\Exception;
 use Zemit\Di\Injectable;
 use Zemit\Filter\Validation;
 use Zemit\Identity\Traits\Acl;
@@ -41,13 +42,22 @@ class Manager extends Injectable implements ManagerInterface, OptionsInterface
     use Session;
     use User;
     
-    public function get(?array $userExpose = null): array {
+    /**
+     * Retrieves the identity based on the provided user expose parameter.
+     *
+     * @param array|null $userExpose Optional parameter to specify user-related data exposure.
+     * @return array The resulting identity data array.
+     */
+    public function get(?array $userExpose = null): array
+    {
         return $this->getIdentity($userExpose);
     }
     
     /**
-     * Get basic Identity information
-     * @throws \Exception
+     * Retrieves the identity information based on the provided user expose parameter.
+     *
+     * @param array|null $userExpose Optional parameter specifying details for user data exposure.
+     * @return array An associative array containing identity details such as logged-in status, user data, impersonation, roles, and groups.
      */
     public function getIdentity(?array $userExpose = null): array
     {
@@ -68,8 +78,11 @@ class Manager extends Injectable implements ManagerInterface, OptionsInterface
     }
     
     /**
-     * Login request
-     * Requires an active session to bind the logged in userId
+     * Handles the login process by validating the provided parameters, checking user credentials,
+     * and managing session state. Returns the login status along with any validation messages.
+     *
+     * @param array|null $params Parameters for login, typically including 'email' and 'password'.
+     * @return array Contains login status, logged-in user information, and validation messages.
      */
     public function login(array $params = null): array
     {
@@ -118,11 +131,11 @@ class Manager extends Injectable implements ManagerInterface, OptionsInterface
     }
     
     /**
-     * Log the user out from the database session
+     * Logs out the current user by removing the session identity and returns the login status.
      *
-     * @return bool|mixed|null
+     * @return array An associative array containing the user's login status and identity status after logout.
      */
-    public function logout()
+    public function logout(): array
     {
         $this->removeSessionIdentity();
         
@@ -133,11 +146,20 @@ class Manager extends Injectable implements ManagerInterface, OptionsInterface
     }
     
     /**
-     * @param array|null $params
+     * Resets a user's password or generates a reset token for the user, depending on the input parameters.
      *
-     * @return array
+     * @param array|null $params Parameters including email, token,
+     *                           password, and password confirmation for the reset operation.
+     *                           - 'email': The user's email address.
+     *                           - 'token': An optional reset token for password update.
+     *                           - 'password': The new password to set (relevant with token).
+     *                           - 'passwordConfirm': The confirmation of the new password.
+     * @return array An array containing the following keys:
+     *               - 'saved': A boolean indicating whether the save operation was successful.
+     *               - 'sent': A boolean indicating whether the reset token email was sent successfully.
+     *               - 'messages': A collection of validation or processing messages.
      */
-    public function reset(array $params = null)
+    public function reset(array $params = null): array
     {
         $saved = false;
         $sent = false;
@@ -216,7 +238,13 @@ class Manager extends Injectable implements ManagerInterface, OptionsInterface
         ];
     }
     
-    private function collectList(array $list)
+    /**
+     * Processes the given list of entities and organizes them into an associative array indexed by each entity's index.
+     *
+     * @param array $list A list of entities, each of which must have a method `getIndex`.
+     * @return array An associative array where keys are derived from each entity's `getIndex` method and values are the entities.
+     */
+    private function collectList(array $list): array
     {
         $ret = [];
         foreach ($list as $entity) {

@@ -19,12 +19,17 @@ trait Role
     use AbstractInjectable;
     
     /**
-     * Check whether the current identity has roles
+     * Determines if the current user has the specified roles.
+     *
+     * @param array|null $roles List of roles to check against.
+     * @param bool $or If true, checks if the user has at least one of the roles. If false, checks if the user has all roles.
+     * @param bool $inherit If true, includes inherited roles in the check.
+     * @return bool True if the user satisfies the role conditions, false otherwise.
      */
     public function hasRole(?array $roles = null, bool $or = false, bool $inherit = true): bool
     {
         $roleList = array_keys($this->getRoleList());
-        return $this->has($roles, $inherit? $this->getInheritedRoleList($roleList) : $roleList, $or);
+        return $this->has($roles, $inherit ? $this->getInheritedRoleList($roleList) : $roleList, $or);
     }
     
     /**
@@ -50,6 +55,10 @@ trait Role
             $needles = isset($needles) ? [$needles] : [];
         }
         
+        if (empty($needles)) {
+            return false;
+        }
+        
         $result = [];
         foreach ($needles as $needle) {
             if (is_array($needle)) {
@@ -66,7 +75,12 @@ trait Role
     }
     
     /**
-     * Return the list of inherited role list (recursively)
+     * Retrieves a list of inherited roles based on the provided role indices.
+     * The method processes the given role indices, determines their inherited roles
+     * recursively, and returns a unique and flattened list of all inherited roles.
+     *
+     * @param array $roleIndexList The list of role indices to process for inheritance. Defaults to an empty array.
+     * @return array An array containing the unique list of all inherited roles.
      */
     public function getInheritedRoleList(array $roleIndexList = []): array
     {

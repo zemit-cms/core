@@ -18,11 +18,18 @@ use Zemit\Mvc\Model\Behavior\Security as SecurityBehavior;
 
 trait User
 {
+    /**
+     * Current/impersonated user instance
+     */
     protected ?UserInterface $user;
+    
+    /**
+     * Original user instance when impersonating
+     */
     protected ?UserInterface $userAs;
     
     /**
-     * Return the user object based on the session
+     * Return the current user or impersonated user object based on the session
      *
      * @param bool $as Flag to indicate whether to get the user as another user
      * @param bool|null $force Flag to indicate whether to force the retrieval of the user object
@@ -35,7 +42,7 @@ trait User
             if ($as && !empty($this->userAs)) {
                 return $this->userAs;
             }
-            elseif (!$as && !empty($this->user)) {
+            else if (!$as && !empty($this->user)) {
                 return $this->user;
             }
         }
@@ -75,7 +82,10 @@ trait User
     }
     
     /**
-     * Set Identity User
+     * Set the current user or impersonated user instance.
+     *
+     * @param UserInterface|null $user The user instance to set or null to unset the current user.
+     * @return void
      */
     public function setUser(?UserInterface $user): void
     {
@@ -83,7 +93,9 @@ trait User
     }
     
     /**
-     * Get Identity User (As)
+     * Retrieve the original user when impersonating
+     *
+     * @return UserInterface|null The user instance or null if not available.
      */
     public function getUserAs(): ?UserInterface
     {
@@ -91,7 +103,10 @@ trait User
     }
     
     /**
-     * Set Identity User (As)
+     * Set the original user instance when impersonating
+     *
+     * @param UserInterface|null $user The user instance to set, or null to unset.
+     * @return void
      */
     public function setUserAs(?UserInterface $user): void
     {
@@ -99,7 +114,10 @@ trait User
     }
     
     /**
-     * Get the User ID
+     * Retrieves the current/impersonated user or the original user ID.
+     *
+     * @param bool $as Determines whether to retrieve the original user (true) or the current/impersonated one (false).
+     * @return int|null Returns the user ID as an integer if available, or null if the user is not set.
      */
     public function getUserId(bool $as = false): ?int
     {
@@ -108,7 +126,9 @@ trait User
     }
     
     /**
-     * Get the User (As) ID
+     * Retrieves the original user ID when impersonating.
+     *
+     * @return int|null Returns the user ID as an integer if available, or null otherwise.
      */
     public function getUserAsId(): ?int
     {
@@ -116,7 +136,9 @@ trait User
     }
     
     /**
-     * Get the "Roles" related to the current session
+     * Retrieves the list of roles associated with the current identity.
+     *
+     * @return array Returns an array of roles. If no roles are set, returns an empty array.
      */
     public function getRoleList(): array
     {
@@ -124,7 +146,9 @@ trait User
     }
     
     /**
-     * Get the "Groups" related to the current session
+     * Retrieves the list of groups associated with the current identity.
+     *
+     * @return array Returns an array of group identifiers or an empty array if no groups are found.
      */
     public function getGroupList(): array
     {
@@ -132,7 +156,9 @@ trait User
     }
     
     /**
-     * Get the "Types" related to the current session
+     * Retrieves the list of types associated with the current identity.
+     *
+     * @return array Returns an array of types. If no types are found, returns an empty array.
      */
     public function getTypeList(): array
     {
@@ -140,7 +166,11 @@ trait User
     }
     
     /**
-     * Return true if the user is currently logged in
+     * Checks if the user is currently logged in.
+     *
+     * @param bool $as Determines whether to check the original user (true) or the current/impersonated one (false).
+     * @param bool $force Forces a fresh check ignoring cached user session data when set to true.
+     * @return bool Returns true if the user is logged in, false otherwise.
      */
     public function isLoggedIn(bool $as = false, bool $force = false): bool
     {
@@ -148,7 +178,10 @@ trait User
     }
     
     /**
-     * Return true if the user is currently logged in
+     * Checks if the user is logged in and impersonating another user.
+     *
+     * @param bool $force Determines whether to enforce a specific login check.
+     * @return bool Returns true if the user is logged in based on the condition, otherwise false.
      */
     public function isLoggedInAs(bool $force = false): bool
     {
@@ -156,7 +189,10 @@ trait User
     }
     
     /**
-     * Get the User from the database using the ID
+     * Finds and retrieves a user by their unique identifier.
+     *
+     * @param int $id The unique identifier of the user to be retrieved.
+     * @return UserInterface|null Returns the user instance if found, or null if no user exists with the specified identifier.
      */
     public function findUserById(int $id): ?UserInterface
     {
@@ -168,7 +204,10 @@ trait User
     }
     
     /**
-     * Get the user from the database using the username or email
+     * Finds and retrieves a user by their email address.
+     *
+     * @param string $string The email address of the user to search for.
+     * @return UserInterface|null Returns a UserInterface instance if a user with the specified email is found, or null if no user matches the email.
      */
     public function findUserByEmail(string $string): ?UserInterface
     {
