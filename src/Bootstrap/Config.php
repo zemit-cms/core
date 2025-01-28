@@ -458,6 +458,7 @@ class Config extends \Zemit\Config\Config
                 Provider\Database\ServiceProvider::class => Env::get('PROVIDER_DATABASE', Provider\Database\ServiceProvider::class),
                 Provider\DatabaseReadOnly\ServiceProvider::class => Env::get('PROVIDER_DATABASE_READ_ONLY', Provider\DatabaseReadOnly\ServiceProvider::class),
                 Provider\ModelsManager\ServiceProvider::class => Env::get('PROVIDER_MODELS_MANAGER', Provider\ModelsManager\ServiceProvider::class),
+                Provider\Models\ServiceProvider::class => Env::get('PROVIDER_MODELS', Provider\Models\ServiceProvider::class),
                 
                 // Profiling & Logging
                 Provider\Profiler\ServiceProvider::class => Env::get('PROVIDER_PROFILER', Provider\Profiler\ServiceProvider::class),
