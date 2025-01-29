@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   php-fpm:
     build:
@@ -29,7 +27,8 @@ services:
       apk update &&
       apk add --no-cache openssl &&
       openssl req -x509 -nodes -days 365 -newkey rsa:2048 
-      -keyout /usr/local/apache2/conf/server.key -out /usr/local/apache2/conf/server.crt 
+      -keyout /usr/local/apache2/conf/server.key
+      -out /usr/local/apache2/conf/server.crt 
       -subj '/C=US/ST=State/L=City/O=Organization/CN=localhost' &&
       echo 'Include /usr/local/apache2/conf/zemit-httpd.conf' >> /usr/local/apache2/conf/httpd.conf &&
       httpd-foreground"
