@@ -83,9 +83,9 @@ class ColumnMigration_100 extends Migration
                     'type',
                     [
                         'type' => Column::TYPE_ENUM,
-                        'default' => "text",
+                        'default' => "singleLineText",
                         'notNull' => true,
-                        'size' => "'text','number'",
+                        'size' => "'linkToAnotherRecord', 'singleLineText', 'longText', 'attachment', 'checkbox', 'multipleSelect', 'singleSelect', 'user', 'date', 'phoneNumber', 'email', 'url', 'number', 'currency', 'percent', 'duration', 'rating', 'formula', 'rollup', 'count', 'lookup', 'createdTime', 'lastModifiedTime', 'createdBy', 'lastModifiedBy', 'autonumber', 'barcode', 'button'",
                         'after' => 'description'
                     ]
                 ),
