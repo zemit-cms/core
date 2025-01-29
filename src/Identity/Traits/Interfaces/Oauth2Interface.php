@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of the Zemit Framework.
@@ -9,9 +10,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Model\Traits\Abstracts;
+namespace Zemit\Identity\Traits\Interfaces;
 
-trait AbstractIdentity
+interface Oauth2Interface
 {
-    abstract public function getIdentityService(): \Zemit\Identity\Manager;
+    public function oauth2(string $provider, int $providerUuid, string $accessToken, ?string $refreshToken = null, ?array $meta = []): array;
 }

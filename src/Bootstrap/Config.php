@@ -270,7 +270,7 @@ class Config extends \Zemit\Config\Config
                 'corsHeaders' => [
                     'Access-Control-Allow-Origin' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_ALLOW_ORIGIN', '*'),
                     'Access-Control-Allow-Methods' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_ALLOW_METHODS', 'GET, POST, OPTIONS, PUT, PATCH, DELETE'),
-                    'Access-Control-Allow-Headers' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_ALLOW_HEADERS', 'Origin, X-Requested-With, Content-Range, Content-Disposition, Content-Type, Authorization'),
+                    'Access-Control-Allow-Headers' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_ALLOW_HEADERS', 'Origin, X-Requested-With, Content-Range, Content-Disposition, Content-Type, Authorization, X-Authorization'),
                     'Access-Control-Allow-Credentials' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_ALLOW_CREDENTIALS', 'true'),
                     'Access-Control-Max-Age' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_MAX_AGE', '600'),
 //                    'Access-Control-Expose-Headers' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_EXPOSE_HEADERS', '*'),
@@ -364,6 +364,20 @@ class Config extends \Zemit\Config\Config
                     Models\AuditDetail::class => Env::get('DATA_LIFE_CYCLE_AUDIT_DETAIL', 'quarterly'),
                 ],
                 'policies' => [
+                    'daily' => [
+                        'query' => [
+                            'conditions' => 'createdAt < :createdAt:',
+                            'bind' => ['createdAt' => $now->modify('-1 day')->format('Y-m-d 00:00:00')],
+                            'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
+                        ],
+                    ],
+                    'weekly' => [
+                        'query' => [
+                            'conditions' => 'createdAt < :createdAt:',
+                            'bind' => ['createdAt' => $now->modify('-1 week')->format('Y-m-d 00:00:00')],
+                            'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
+                        ],
+                    ],
                     'monthly' => [
                         'query' => [
                             'conditions' => 'createdAt < :createdAt:',
@@ -444,6 +458,7 @@ class Config extends \Zemit\Config\Config
                 Provider\Database\ServiceProvider::class => Env::get('PROVIDER_DATABASE', Provider\Database\ServiceProvider::class),
                 Provider\DatabaseReadOnly\ServiceProvider::class => Env::get('PROVIDER_DATABASE_READ_ONLY', Provider\DatabaseReadOnly\ServiceProvider::class),
                 Provider\ModelsManager\ServiceProvider::class => Env::get('PROVIDER_MODELS_MANAGER', Provider\ModelsManager\ServiceProvider::class),
+                Provider\Models\ServiceProvider::class => Env::get('PROVIDER_MODELS', Provider\Models\ServiceProvider::class),
                 
                 // Profiling & Logging
                 Provider\Profiler\ServiceProvider::class => Env::get('PROVIDER_PROFILER', Provider\Profiler\ServiceProvider::class),

@@ -19,6 +19,7 @@ use League\Csv\InvalidArgument;
 use League\Csv\Writer;
 use Shuchkin\SimpleXLSXGen;
 use Spatie\ArrayToXml\ArrayToXml;
+use Zemit\Support\Helper;
 use Zemit\Support\Slug;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
@@ -228,8 +229,35 @@ trait Export
         foreach ($list as $record) {
             $row = [];
             foreach ($columns as $column) {
-                // Prefix #0 cell value to force raw value
-                $row[$column] = ($forceRawValue? "\0" : '')  . $record[$column] ?? '';
+                $value = $record[$column] ?? '';
+                
+                if ($value === '') {
+                    $row[$column] = '';
+                    continue;
+                }
+                
+                // Remove non-printable
+                $value = Helper::removeNonPrintable($value);
+                
+                // Normalize line breaks to "\n" for consistency
+                $value = Helper::normalizeLineBreaks($value);
+                
+                // Remove leading and trailing whitespace
+                $value = trim($value);
+                
+                // Decode HTML entities to characters
+                $value = html_entity_decode($value, ENT_QUOTES, 'UTF-8');
+                
+                // Enforce and sanitize UTF-8 encoding
+                $value = Helper::sanitizeUTF8($value);
+                
+                // Escape special characters if forcing raw value
+                if ($forceRawValue && isset($value[0]) && in_array($value[0], ['=', '+', '-', '@'])) {
+                    $value = "\t" . $value;
+                }
+                
+                // Assign value to row with forced raw value prefix if necessary
+                $row[$column] = ($forceRawValue ? "\0" : '') . $value;
             }
             $export [] = array_values($row);
         }

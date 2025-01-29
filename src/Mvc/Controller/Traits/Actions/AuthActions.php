@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of the Zemit Framework.
@@ -21,33 +22,49 @@ trait AuthActions
     use AbstractParams;
     use StatusCode;
     
+    public array $userExpose = [
+        true,
+        'password' => false,
+        'passwordConfirm' => false,
+        'token' => false,
+        'tokenHash' => false,
+        'roleList' => false,
+    ];
+    
     /**
-     * Create a refresh a session
+     * Retrieve the current identity information
      */
-    public function getAction(bool $refresh = false): bool
+    public function getIdentityAction(): bool
     {
-        $this->view->setVars($this->identity->getJwt($refresh));
-        $this->view->setVars($this->identity->getIdentity());
-        return $this->view->getVar('validated') ?? false;
+        $this->view->setVars($this->identity->getIdentity($this->userExpose));
+        return $this->view->getVar('loggedIn') ?? false;
     }
     
     /**
-     * Refresh or create a session
+     * Create or refresh a JWT
+     */
+    public function getJwtAction(bool $refresh = false): bool
+    {
+        $this->view->setVars($this->identity->getJwt($refresh));
+        return (bool)$this->view->getVar('jwt');
+    }
+    
+    /**
+     * Refresh an existing JWT
      */
     public function refreshAction(): bool
     {
-        return $this->getAction(true);
+        return $this->getJwtAction(true);
     }
 
     /**
-     * Login Action
-     * - Require an active session to bind the logged in userId
+     * Login
      */
     public function loginAction(): bool
     {
         $this->view->setVars($this->identity->getJwt());
         $this->view->setVars($this->identity->login($this->getParams()));
-        $this->view->setVars($this->identity->getIdentity());
+        $this->view->setVars($this->identity->getIdentity($this->userExpose));
         $loggedIn = $this->view->getVar('loggedIn') ?? false;
         
         if (!$loggedIn) {
@@ -58,19 +75,18 @@ trait AuthActions
     }
 
     /**
-     * Login As Action
-     * - Requires an active session to bind the logged in userId
+     * Login As (impersonation)
      */
     public function loginAsAction(): bool
     {
         $this->view->setVars($this->identity->getJwt());
         $this->view->setVars($this->identity->loginAs($this->getParams()));
-        $this->view->setVars($this->identity->getIdentity());
+        $this->view->setVars($this->identity->getIdentity($this->userExpose));
         return $this->view->getVar('loggedInAs') ?? false;
     }
 
     /**
-     * Log the user out from the database session
+     * Logout from current session
      */
     public function logoutAction(): bool
     {
@@ -79,22 +95,19 @@ trait AuthActions
     }
 
     /**
-     * Login Action
-     * - Requires an active session to bind the logged in userId
+     * Logout from impersonation
      */
     public function logoutAsAction(): bool
     {
-        $this->view->setVars($this->identity->getJwt());
         $this->view->setVars($this->identity->logoutAs());
-        $this->view->setVars($this->identity->getIdentity());
+        $this->view->setVars($this->identity->getIdentity($this->userExpose));
         return !$this->view->getVar('loggedInAs') ?? false;
     }
 
     /**
-     * Reset Action
-     * - Requires an active session to bind the logged in userId
+     * Reset Password Action
      */
-    public function resetAction(): bool
+    public function resetPasswordAction(): bool
     {
         $this->view->setVars($this->identity->reset($this->getParams()));
         return $this->view->getVar('reset') ?? false;

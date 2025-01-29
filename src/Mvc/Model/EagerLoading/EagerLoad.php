@@ -120,6 +120,9 @@ final class EagerLoad
                     ->where('[' . $relIrModel . '].[deleted] <> 1') // @todo do this correctly
                     ->inWhere("[{$relIrModel}].[{$relIrField}]", $bindValues)
                 ;
+                
+                // @todo see if we should enable this grouping by default or even add a configuration for this
+//                $builder->groupBy("[{$relIrModel}].[{$relIrReferencedField}]");
             }
             else {
                 // The query is for many models, so it's needed to execute an

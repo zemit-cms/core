@@ -18,7 +18,7 @@ use Zemit\Db\Profiler;
 use Zemit\Filter\Filter;
 use Zemit\Html\Escaper;
 use Zemit\Http\Request;
-use Zemit\Identity;
+use Zemit\Identity\Manager as Identity;
 use Zemit\Support\Utils;
 use Zemit\Tag;
 

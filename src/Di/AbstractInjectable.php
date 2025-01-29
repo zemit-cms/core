@@ -11,10 +11,14 @@
 
 namespace Zemit\Di;
 
-use Phalcon\Di\Di;
 use Phalcon\Di\DiInterface;
 
 /**
+ * Trait AbstractInjectable
+ *
+ * This trait provides a common trait for traits that are injectable
+ * and depend on a dependency injection container.
+ *
  * @property \Zemit\Cli\Dispatcher|\Zemit\Mvc\Dispatcher|\Zemit\Dispatcher\DispatcherInterface|\Phalcon\Mvc\Dispatcher|\Phalcon\Mvc\DispatcherInterface $dispatcher
  * @property \Zemit\Cli\Router|\Zemit\Mvc\Router|\Zemit\Router\RouterInterface|\Phalcon\Mvc\Router|\Phalcon\Mvc\RouterInterface $router
  * @property \Phalcon\Url|\Phalcon\Url\UrlInterface $url
@@ -53,50 +57,9 @@ use Phalcon\Di\DiInterface;
  * @property \Zemit\LoremIpsum $loremIpsum
  * @property \Zemit\Support\Models $models
  */
-trait InjectableTrait
+trait AbstractInjectable
 {
-    public ?DiInterface $container;
+    abstract public function setDI(DiInterface $di): void;
     
-    public function __get(string $name)
-    {
-        $container = $this->getDI();
-        
-        if ($name === 'di') {
-            $this->{'di'} = $container;
-            return $container;
-        }
-        
-        if ($name === 'persistent') {
-            $persistent = $container->get('sessionBag', [get_class($this)]);
-            $this->{'persistent'} = $persistent;
-            return $persistent;
-        }
-        
-        if ($container->has($name)) {
-            $service = $container->getShared($name);
-            $this->{$name} = $service;
-            return $service;
-        }
-        
-        trigger_error('Access to undefined property `' . $name . '`');
-    }
-    
-    public function __isset(string $name): bool
-    {
-        return $this->getDI()->has($name);
-    }
-    
-    public function getDI(): DiInterface
-    {
-        if (!isset($this->container)) {
-            $this->container = Di::getDefault();
-        }
-        
-        return $this->container ?? new DI();
-    }
-    
-    public function setDI(DiInterface $container): void
-    {
-        $this->container = $container;
-    }
+    abstract public function getDI(): DiInterface;
 }

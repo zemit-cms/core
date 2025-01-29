@@ -37,7 +37,7 @@ namespace Zemit\Di;
  * @property \Phalcon\Session\Bag|\Phalcon\Session\BagInterface $persistent
  * @property \Phalcon\Mvc\View|\Phalcon\Mvc\ViewInterface $view
  * 
- * @property \Zemit\Identity $identity
+ * @property \Zemit\Identity\Manager $identity
  * @property \Zemit\Locale $locale
  * @property \Zemit\Encryption\Security $security
  * @property \Zemit\Tag $tag

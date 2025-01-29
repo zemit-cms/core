@@ -83,27 +83,31 @@ DOC;
             }
             
             if (!isset($response[$source])) {
-                $response[$source] = [];
+                $response[$source] = [
+                    'deleted' => 0,
+                    'messages' => [],
+                ];
             }
+            
+            // temporarily disable soft-delete
+            $model->disableSoftDelete();
             
             // find all record matching the defined retention policy
             $records = $model::findLifeCycle($policy['query'] ?? null);
             assert($records instanceof ResultsetInterface);
             
-            // temporarily disable soft-delete
-            $model->disableSoftDelete();
+            $callable = $policy['callable'] ?? function (Model $record, string $source, array &$response) {
+                $deleted =  $record->delete();
+                $response[$source]['deleted'] += $deleted? 1 : 0;
+                
+                $messages = $record->getMessages();
+                if (!empty($messages)) {
+                    $response[$source]['messages']= array_merge($response[$source]['messages'], $messages);
+                }
+            };
             
             foreach ($records as $record) {
-                assert($record instanceof Model);
-                
-                // disable soft delete
-                $record->disableSoftDelete();
-                
-                // delete record
-                $response[$source] []= [
-                    'primaryKeys' => $record->getPrimaryKeysValues(),
-                    'deleted' => $record->delete(),
-                ];
+                $callable($record, $source, $response);
             }
             
             // re-enable soft-delete

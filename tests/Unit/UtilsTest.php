@@ -175,7 +175,7 @@ class UtilsTest extends AbstractUnit
         $this->assertEquals(__DIR__, $dirname);
         
         $dirname = Utils::getDirname(new Utils());
-        $this->assertEquals(dirname(__DIR__, 2) . '/src/Support', $dirname);
+        $this->assertEquals(dirname(__DIR__, 2) . str_replace( '/', DIRECTORY_SEPARATOR, '/src/Support'), $dirname);
     }
     
     public function testGetMemoryUsage(): void

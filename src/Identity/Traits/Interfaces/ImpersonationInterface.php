@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of the Zemit Framework.
@@ -9,9 +10,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Model\Traits\Abstracts;
+namespace Zemit\Identity\Traits\Interfaces;
 
-trait AbstractIdentity
+interface ImpersonationInterface
 {
-    abstract public function getIdentityService(): \Zemit\Identity\Manager;
+    public function loginAs(?array $params = []): array;
+
+    public function logoutAs(): array;
 }

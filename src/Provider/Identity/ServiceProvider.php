@@ -13,7 +13,7 @@ namespace Zemit\Provider\Identity;
 
 use Phalcon\Di\DiInterface;
 use Zemit\Config\ConfigInterface;
-use Zemit\Identity;
+use Zemit\Identity\Manager as Identity;
 use Zemit\Provider\AbstractServiceProvider;
 
 class ServiceProvider extends AbstractServiceProvider
@@ -29,7 +29,10 @@ class ServiceProvider extends AbstractServiceProvider
             
             $options ??= $config->pathToArray('identity');
             
-            return new Identity($options);
+            $identity = new Identity($options);
+            $identity->setDI($di);
+            
+            return $identity;
         });
     }
 }
