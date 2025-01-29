@@ -18,6 +18,7 @@ use Phalcon\Mvc\ModelInterface;
 use Phalcon\Acl\Adapter\AdapterInterface;
 use Zemit\Mvc\Model\Behavior\Traits\ProgressTrait;
 use Zemit\Mvc\Model\Behavior\Traits\SkippableTrait;
+use Zemit\Identity\Manager as Identity;
 
 /**
  * The Security class provides methods for access control and permission checking.
@@ -84,7 +85,7 @@ class Security extends Behavior
     {
         if (!isset(self::$roles)) {
             $identity = Di::getDefault()->get('identity');
-            assert($identity instanceof \Zemit\Identity);
+            assert($identity instanceof Identity);
             self::setRoles($identity->getAclRoles());
         }
         return self::$roles ?? [];

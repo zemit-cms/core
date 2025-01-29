@@ -26,7 +26,7 @@ trait Identity
     /**
      * Get the current identity service from the DI
      */
-    public function getIdentityService(): \Zemit\Identity
+    public function getIdentityService(): \Zemit\Identity\Manager
     {
         return $this->getDI()->get('identity');
     }

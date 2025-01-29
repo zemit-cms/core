@@ -18,7 +18,7 @@ use Phalcon\Http\Response;
 use Zemit\Acl\Acl;
 use Zemit\Filter\Filter;
 use Zemit\Http\Request;
-use Zemit\Identity;
+use Zemit\Identity\Manager as Identity;
 use Zemit\Mvc\Dispatcher;
 use Zemit\Mvc\Model\Manager as ModelsManager;
 use Zemit\Mvc\Router;

@@ -100,7 +100,13 @@ trait Blameable
         ?string $class = null
     ): ?Relation {
         if (property_exists($this, $field)) {
-            $class ??= $this->getIdentityService()->getUserClass() ?: $this->getDI()->get('config')->getModelClass(\Zemit\Models\User::class);
+            
+            if (empty($class)) {
+                $models = $this->getDI()->get('models');
+                assert($models instanceof Models);
+                $class = $models->getUserClass();
+            }
+            
             return $this->$type($field, $class, $ref, ['alias' => $alias, 'params ' => $params]);
         }
         

@@ -358,6 +358,20 @@ class Config extends \Zemit\Config\Config
                     Models\AuditDetail::class => Env::get('DATA_LIFE_CYCLE_AUDIT_DETAIL', 'quarterly'),
                 ],
                 'policies' => [
+                    'daily' => [
+                        'query' => [
+                            'conditions' => 'createdAt < :createdAt:',
+                            'bind' => ['createdAt' => $now->modify('-1 day')->format('Y-m-d 00:00:00')],
+                            'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
+                        ],
+                    ],
+                    'weekly' => [
+                        'query' => [
+                            'conditions' => 'createdAt < :createdAt:',
+                            'bind' => ['createdAt' => $now->modify('-1 week')->format('Y-m-d 00:00:00')],
+                            'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
+                        ],
+                    ],
                     'monthly' => [
                         'query' => [
                             'conditions' => 'createdAt < :createdAt:',
@@ -440,6 +454,7 @@ class Config extends \Zemit\Config\Config
                 Provider\DatabaseDynamic\ServiceProvider::class => Env::get('PROVIDER_DATABASE_DYNAMIC', Provider\DatabaseDynamic\ServiceProvider::class),
                 Provider\DatabaseReadOnly\ServiceProvider::class => Env::get('PROVIDER_DATABASE_READ_ONLY', Provider\DatabaseReadOnly\ServiceProvider::class),
                 Provider\ModelsManager\ServiceProvider::class => Env::get('PROVIDER_MODELS_MANAGER', Provider\ModelsManager\ServiceProvider::class),
+                Provider\Models\ServiceProvider::class => Env::get('PROVIDER_MODELS', Provider\Models\ServiceProvider::class),
                 
                 // Profiling & Logging
                 Provider\Profiler\ServiceProvider::class => Env::get('PROVIDER_PROFILER', Provider\Profiler\ServiceProvider::class),

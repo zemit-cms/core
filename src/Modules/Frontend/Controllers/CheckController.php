@@ -20,7 +20,7 @@ use Zemit\Bootstrap;
 use Zemit\Bootstrap\Config;
 use Zemit\Html\Escaper;
 use Zemit\Http\Request;
-use Zemit\Identity;
+use Zemit\Identity\Manager as Identity;
 use Zemit\Locale;
 use Zemit\Mvc\Application;
 use Zemit\Mvc\Dispatcher;

@@ -128,7 +128,7 @@ class ModelTest extends AbstractUnit
                 true,
                 [
                     'id' => 2,
-                    'deleted' => 0, // @todo shouldn't have to pass deleted
+                    'deleted' => 0, // it's normal to pass 0 here because it's 1-n relationship
                 ],
                 [
                     'roleId' => 5,

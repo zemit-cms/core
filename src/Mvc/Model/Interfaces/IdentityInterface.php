@@ -16,7 +16,7 @@ use Zemit\Models\Interfaces\UserInterface;
 
 interface IdentityInterface
 {
-    public function getIdentityService(): \Zemit\Identity;
+    public function getIdentityService(): \Zemit\Identity\Manager;
 
     public function isLoggedIn(bool $as = false): bool;
 
