@@ -1,4 +1,4 @@
-# Use the official PHP 8.2 Apache base image
+# Use the official PHP 8.3 Apache base image
 FROM php:8.3-apache
 
 # Update and upgrade packages

@@ -8,15 +8,16 @@ FROM php:${PHP_VERSION}
 ARG PHALCON_VERSION=5.8.0
 
 # Install system dependencies including build tools
-RUN apk update && apk add --no-cache \
+RUN apk add --no-cache --virtual .build-deps \
         gettext-dev \
-        gettext \
         oniguruma-dev \
         libpng-dev \
         icu-dev \
         libzip-dev \
         imap-dev \
         libxml2-dev \
+        libxslt-dev \
+        openldap-dev \
         g++ \
         make \
         autoconf \
@@ -24,30 +25,53 @@ RUN apk update && apk add --no-cache \
         curl \
         build-base \
         linux-headers \
-    && docker-php-ext-install \
+    && apk add --no-cache \
+        gettext \
+        icu \
+        imap \
+        libpng \
+        libxml2 \
+        libxslt  \
+        libzip \
+        oniguruma \
+    && docker-php-ext-install -j$(nproc) \
         gettext \
         intl \
         bcmath \
         opcache \
-        gd \
         imap \
         sockets \
+        bz2 \
+        calendar \
+        gd \
+        ldap \
+        mbstring \
+        pcntl \
+        xsl \
+        zip \
     # Mysql
     && docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd \
     && docker-php-ext-configure mysqli --with-mysqli=mysqlnd \
     && docker-php-ext-install pdo_mysql \
-    && pecl install redis apcu \
-    && docker-php-ext-enable redis apcu \
+    # Pecl Extensions
+    && pecl install redis && docker-php-ext-enable redis \
+    && pecl install apcu docker-php-ext-enable apcu \
+#    && pecl install imagick docker-php-ext-enable imagick \
     # Clean up
+    && pecl clear-cache \
+    && apk del .build-deps \
     && rm -rf /tmp/* /var/cache/apk/*
 
-# Install Phalcon
-RUN curl -sSL https://codeload.github.com/phalcon/cphalcon/tar.gz/v$PHALCON_VERSION | tar xz \
-    && cd cphalcon-$PHALCON_VERSION/build \
-    && sh install \
-    && docker-php-ext-enable phalcon \
-    && cd ../../ \
-    && rm -rf cphalcon-$PHALCON_VERSION 
+# Install Phalcon Extension
+RUN set -xe \
+        && export CFLAGS="$CFLAGS -fpermissive" \
+        && cd / && docker-php-source extract \
+        && curl -sSLO "https://github.com/phalcon/cphalcon/archive/v${PHALCON_VERSION}.tar.gz" \
+        && tar xzf "/v${PHALCON_VERSION}.tar.gz" \
+        && docker-php-ext-install -j$(nproc) "/cphalcon-${PHALCON_VERSION}/build/phalcon" \
+        && rm -r "/v${PHALCON_VERSION}.tar.gz" "/cphalcon-${PHALCON_VERSION}" \
+        && docker-php-source delete \
+        && php -m | grep phalcon
 
 # Install Composer globally
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer

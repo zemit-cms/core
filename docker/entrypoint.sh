@@ -22,7 +22,7 @@ wait_for_db() {
 }
 
 # Change to the working directory
-cd $WORKDIR_PATH
+cd "$WORKDIR_PATH" || exit 1
 
 # creating .zemit directory
 mkdir -p .zemit
