@@ -9,6 +9,7 @@
 composer.phar
 composer.lock
 vendor/*
+tmp/*
 
 # Node
 package-lock.json
