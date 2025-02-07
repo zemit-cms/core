@@ -121,10 +121,10 @@ trait PermissionConditions
         
         foreach ($columns as $column) {
             $field = $this->appendModelName($column);
-            $value = $this->generateBindKey('deleted');
+            $value = $this->generateBindKey('permission');
             
-            $bind[$field] = $userId;
-            $bindTypes[$field] = Column::BIND_PARAM_INT;
+            $bind[$value] = $userId;
+            $bindTypes[$value] = Column::BIND_PARAM_INT;
             
             $query [] = "{$field} = :{$value}:";
         }
