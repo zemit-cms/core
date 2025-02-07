@@ -1184,7 +1184,7 @@ class Config extends \Zemit\Config\Config
                         'host' => Env::get('FILE_SYSTEM_SFTP_HOST'), // required
                         'username' => Env::get('FILE_SYSTEM_SFTP_USERNAME'), // required
                         'password' => Env::get('FILE_SYSTEM_SFTP_PASSWORD'), // set to null if privateKey is used
-                        'privateKey' => Env::get('FILE_SYSTEM_SFTP_STORAGE_KEY'), // can be used instead of password, set to null if password is set
+                        'privateKey' => Env::get('FILE_SYSTEM_SFTP_PRIVATE_KEY'), // can be used instead of password, set to null if password is set
                         'passphrase' => Env::get('FILE_SYSTEM_SFTP_PASSPHRASE'), //  set to null if privateKey is not used or has no passphrase
                         'port' => Env::get('FILE_SYSTEM_SFTP_PORT', 22),
                         'useAgent' => Env::get('FILE_SYSTEM_SFTP_USE_AGENT', false),
