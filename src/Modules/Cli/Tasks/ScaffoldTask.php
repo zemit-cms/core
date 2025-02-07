@@ -28,7 +28,7 @@ class ScaffoldTask extends Task
 Usage:
   zemit cli scaffold <action> [--force] [--directory=<directory>] [--namespace=<namespace>]
                               [--table=<table>] [--exclude=<exclude>] [--license=<license>]
-                              [--src-dir=<controllers-dir>] [--controllers-dir=<controllers-dir>]
+                              [--src-dir=<src-dir>] [--controllers-dir=<controllers-dir>]
                               [--interfaces-dir=<interfaces-dir>] [--abstracts-dir=<abstracts-dir>]
                               [--models-dir=<models-dir>] [--enums-dir=<enums-dir>] [--tests-dir=<tests-dir>]
                               [--models-extend=<models-extend>] [--interfaces-extend=<interface-extend>]
@@ -224,12 +224,12 @@ DOC;
 namespace {$this->getAbstractsInterfacesNamespace()};
 
 use Phalcon\Db\RawValue;
-use Zemit\Mvc\ModelInterface;
+use Zemit\Modules\Api\Controller\ControllerAbstract;
 
 /**
 {$relationships['interfaceInjectableItems']}
  */
-interface {$definitions['controller']['name']} extends AbstractController
+interface {$definitions['controller']['name']} extends ControllerAbstract
 {
 }
 
@@ -307,6 +307,8 @@ PHP;
         $getSetMethods = $this->getGetSetMethods($columns);
         $columnMapMethod = $this->getColumnMapMethod($columns);
         $validationItems = $this->getValidationItems($columns);
+        $modelsExtend = $this->getModelsExtend();
+        $modelsExtendBaseName = basename($modelsExtend);
         
         return <<<PHP
 <?php
@@ -316,7 +318,7 @@ namespace {$this->getAbstractsNamespace()};
 
 use Phalcon\Db\RawValue;
 use Zemit\Filter\Validation;
-use Zemit\Models\AbstractModel;
+use {$modelsExtend};
 {$relationships['useItems']}
 use {$this->getAbstractsInterfacesNamespace()}\\{$definitions['abstractInterface']['name']};
 
@@ -328,7 +330,7 @@ use {$this->getAbstractsInterfacesNamespace()}\\{$definitions['abstractInterface
  * 
 {$relationships['injectableItems']}
  */
-abstract class {$definitions['abstract']['name']} extends AbstractModel implements {$definitions['abstractInterface']['name']}
+abstract class {$definitions['abstract']['name']} extends {$modelsExtendBaseName} implements {$definitions['abstractInterface']['name']}
 {
     {$propertyItems}
     
@@ -585,7 +587,7 @@ PHP;
             ];
         }
         
-        $modelNamespace = 'Zemit\\Models\\';
+        $modelNamespace = $this->getNamespace() . '\\Models\\';
         
         $useModels = [];
         $relationshipUseItems = [];

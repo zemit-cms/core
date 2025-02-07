@@ -11,9 +11,6 @@
 
 namespace Zemit\Modules\Cli\Tasks\Traits;
 
-use Phalcon\Db\Adapter\AdapterInterface;
-use Phalcon\Db\Column;
-use Phalcon\Db\ColumnInterface;
 use Zemit\Cli\Dispatcher;
 use Zemit\Support\Helper;
 
@@ -38,6 +35,11 @@ trait ScaffoldTrait
     protected string $abstractsDirectory = 'Abstracts/';
     protected string $interfacesDirectory = 'Interfaces/';
     protected string $controllersDirectory = 'Controllers/';
+    
+    protected string $modelsExtend = '\\Zemit\\Models\\ModelAbstract';
+    protected string $interfacesExtend = '\\Zemit\\Mvc\\ModelInterface';
+    protected string $testsExtend = '\\Zemit\\Tests\\Unit\\AbstractUnit';
+    protected string $controllersExtend = '\\Zemit\\Modules\\Api\\Controllers\\ControllerAbstract';
     
     protected ?array $whitelistedTables = null;
     protected ?array $excludedTables = null;
@@ -304,6 +306,27 @@ PHP;
         $fullPath = $this->getTestsDirectory($this->dispatcher->getParam('modelsDir') ?? $this->modelsDirectory) . $path;
         return $this->absolutePathOr($path, $fullPath);
     }
+    
+    // Models Extend Class
+    public function getModelsExtend() {
+        return $this->dispatcher->getParam('modelsExtend') ?? $this->modelsExtend;
+    }
+    
+    // Models Interface Extend Class
+    public function getInterfacesExtend() {
+        return $this->dispatcher->getParam('interfacesExtend') ?? $this->interfacesExtend;
+    }
+    
+    // Tests Extend Class
+    public function getTestsExtend() {
+        return $this->dispatcher->getParam('testsExtend') ?? $this->testsExtend;
+    }
+    
+    // Controllers Extend Class
+    public function getControllersExtend() {
+        return $this->dispatcher->getParam('controllersExtend') ?? $this->controllersExtend;
+    }
+    
     
     /**
      * Converts a file system path to a PHP namespace.
