@@ -76,6 +76,7 @@ namespace Zemit\Support;
  * 
  * New methods
  * @method static string flattenKeys(array $collection = [], string $delimiter = '.', bool $lowerKey = true)
+ * @method static string recursiveStrReplace(array $collection, array $replaces)
  * @method static string slugify(string $string, array $replace = [], string $delimiter = '-')
  * @method static string sanitizeUTF8(string $string)
  * @method static string removeNonPrintable(string $string, string $nonPrintableRegex = '[[:cntrl:]' . PHP_EOL . ']', string $replacement = '')
