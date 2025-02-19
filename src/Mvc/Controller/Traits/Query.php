@@ -31,6 +31,8 @@ trait Query
     use AbstractParams;
     use AbstractModel;
     
+    use DynamicJoins;
+    
     protected $_bind = [];
     protected $_bindTypes = [];
     
@@ -176,10 +178,10 @@ trait Query
      *
      * @return null|array
      */
-    protected function getJoins()
-    {
-        return null;
-    }
+//    protected function getJoins()
+//    {
+//        return null;
+//    }
     
     /**
      * Get the order definition
@@ -461,16 +463,17 @@ trait Query
             }
             
             if (!empty($field)) {
-                $lowercaseField = mb_strtolower($field);
+                $filteredField = mb_strtolower(preg_replace('/\[[^\]]*\](?=\.)/', '', $field));
                 
                 // whiteList on filter condition
-                if (is_null($whiteList) || !in_array($lowercaseField, $lowercaseWhiteList ?? [], true)) {
-                    // @todo if config is set to throw exception on usage of not allowed filters otherwise continue looping through
-                    throw new \Exception('Not allowed to filter using the following field: `' . $field . '`', 403);
+                if (is_null($whiteList) || !in_array($filteredField, $lowercaseWhiteList ?? [], true)) {
+                    throw new \Exception('Filter field not allowed: `' . $field . '`', 403);
                 }
                 
+                // replace fields related to dynamic joins
+                $fieldAlias = str_replace(array_keys($this->dynamicJoinsMapping), array_values($this->dynamicJoinsMapping), $field);
+                
                 $uniqid = substr(md5(json_encode($filter)), 0, 10);
-//                $queryField = '_' . uniqid($uniqid . '_field_') . '_';
                 $queryValue = '_' . uniqid($uniqid . '_value_') . '_';
                 $queryOperator = strtolower($filter['operator']);
                 
@@ -541,28 +544,23 @@ trait Query
                 $bind = [];
                 $bindType = [];
 
-//                $bind[$queryField] = $filter['field'];
-//                $bindType[$queryField] = Column::BIND_PARAM_STR;
-//                $queryFieldBinder = ':' . $queryField . ':';
-//                $queryFieldBinder = '{' . $queryField . '}';
-                
                 // Add the current model name by default
-                $field = $this->appendModelName($field);
-                $queryFieldBinder = $field;
+                $fieldAlias = $this->appendModelName($fieldAlias);
+                $queryFieldBinder = $fieldAlias;
                 
                 // is or not empty
                 if (in_array($queryOperator, ['is empty', 'is not empty'])) {
                     $queryOperator = ($queryOperator === 'is not empty' ? '!' : '');
-                    $query [] = "$queryLogic $queryOperator(TRIM($queryFieldBinder) = '' or $queryFieldBinder is null)";
+                    $subQuery = "$queryLogic $queryOperator(TRIM($queryFieldBinder) = '' or $queryFieldBinder is null)";
                 }
                 
                 // raw queries without values
                 elseif (!isset($filter['value'])) {
-                    $query [] = "$queryLogic $queryFieldBinder $queryOperator";
+                    $subQuery = "$queryLogic $queryFieldBinder $queryOperator";
                 }
                 
                 // queries with values
-                else{
+                else {
                     $queryValueBinder = ':' . $queryValue . ':';
                     
                     // special for between and not between
@@ -577,7 +575,7 @@ trait Query
                         $bindType[$queryValue0] = Column::BIND_PARAM_STR;
                         $bindType[$queryValue1] = Column::BIND_PARAM_STR;
                         
-                        $query [] = $queryLogic . ' ' . (($queryOperator === 'not between') ? 'not ' : null) . "$queryFieldBinder between :$queryValue0: and :$queryValue1:";
+                        $subQuery = $queryLogic . ' ' . (($queryOperator === 'not between') ? 'not ' : null) . "$queryFieldBinder between :$queryValue0: and :$queryValue1:";
                     }
                     
                     elseif (in_array($queryOperator, [
@@ -611,7 +609,7 @@ trait Query
                             (str_contains($queryOperator, 'equal') ? '=' : null);
                         
                         $bind[$queryValue] = $filter['value'];
-                        $query [] = "$queryLogic ST_Distance_Sphere(point($queryPointLatBinder0, $queryPointLonBinder0), point($queryPointLatBinder1, $queryPointLonBinder1)) $queryLogicalOperator $queryValueBinder";
+                        $subQuery = "$queryLogic ST_Distance_Sphere(point($queryPointLatBinder0, $queryPointLonBinder0), point($queryPointLatBinder1, $queryPointLonBinder1)) $queryLogicalOperator $queryValueBinder";
                     }
                     
                     elseif (in_array($queryOperator, [
@@ -622,7 +620,7 @@ trait Query
                         $queryValueBinder = '({' . $queryValue . ':array})';
                         $bind[$queryValue] = $filter['value'];
                         $bindType[$queryValue] = Column::BIND_PARAM_STR;
-                        $query [] = "$queryLogic $queryFieldBinder $queryOperator $queryValueBinder";
+                        $subQuery = "$queryLogic $queryFieldBinder $queryOperator $queryValueBinder";
                     }
                     
                     else {
@@ -703,8 +701,40 @@ trait Query
                         }
                         if (!empty($queryAndOr)) {
                             $andOr = str_contains($queryOperator, ' not ')? 'and' : 'or';
-                            $query [] = $queryLogic . ' ((' . implode(') ' . $andOr . ' (', $queryAndOr) . '))';
+                            $subQuery = $queryLogic . ' ((' . implode(') ' . $andOr . ' (', $queryAndOr) . '))';
                         }
+                    }
+                }
+                
+                if (!empty($subQuery)) {
+                    $isNegative = str_contains($queryOperator, 'not') || in_array($queryOperator, ['!=', '<>']);
+                    $isForeignField = str_contains($field, '.');
+                    $isSubquery = isset($filter['subquery']) && $filter['subquery'];
+                    
+                    if ($isNegative && $isForeignField && $isSubquery) {
+                        $joins = $this->getJoinsDefinitionFromField($field);
+                        
+                        if (empty($joins)) {
+                            throw new \Exception('Unable to prepare negative subquery for the field `' . $field . '`', 400);
+                        }
+                        
+                        $firstJoin = array_shift($joins);
+                        
+                        // build joins chain
+                        $joinsQuery = [];
+                        foreach ($joins as $join) {
+                            $joinsQuery []= $join[3] . ' join [' . $join[0] . '] as [' . $join[2] . '] on ' . $join[1];
+                        }
+                        
+                        // swap negative condition to positive
+                        $replaces = [' not ' => ' ', ' != ' => ' = ', ' <> ' => ' = '];
+                        $subQuery = str_replace(array_keys($replaces), array_values($replaces), $subQuery);
+                        
+                        // prepare "not exists" sub query
+                        $notExistQuery = 'not exists (select 1 from [' . $firstJoin[0] . '] as [' . $firstJoin[2] . '] ' . implode(' ', $joinsQuery) . ' where ' . $firstJoin[1] . ' and ${2})';
+                        $query []= preg_replace('/^(xor |and |or )(.*)/', $level || !empty($query)? '${1}' . $notExistQuery : $notExistQuery, $subQuery);
+                    } else {
+                        $query []= $subQuery;
                     }
                 }
                 
@@ -815,6 +845,7 @@ trait Query
     protected function getFind()
     {
         $find = [];
+        $find['joins'] = $this->fireGet('getJoins');
         $find['conditions'] = $this->fireGet('getConditions');
         $find['bind'] = $this->fireGet('getBind');
         $find['bindTypes'] = $this->fireGet('getBindTypes');
@@ -823,18 +854,21 @@ trait Query
         $find['order'] = $this->fireGet('getOrder');
         $find['columns'] = $this->fireGet('getColumns');
         $find['distinct'] = $this->fireGet('getDistinct');
-        $find['joins'] = $this->fireGet('getJoins');
         $find['group'] = $this->fireGet('getGroup');
         $find['having'] = $this->fireGet('getHaving');
         $find['cache'] = $this->fireGet('getCache');
-        
-//        dd($find);
         
         // fix for grouping by multiple fields, phalcon only allow string here
         foreach (['distinct', 'group', 'order'] as $findKey) {
             if (isset($find[$findKey]) && is_array($find[$findKey])) {
                 $find[$findKey] = implode(', ', $find[$findKey]);
             }
+        }
+        
+        // move condition to having if the condition is aggregated
+        if ($this->conditionsShouldBeHaving($find['conditions'])) {
+            $find['having'] = (!empty($find['having'])? $find['having'] . ' and ' : '') . $find['conditions'];
+            $find['conditions'] = '(1)';
         }
         
         return array_filter($find);
@@ -920,8 +954,13 @@ trait Query
     {
         $model ??= $this->getModelName();
         $find ??= $this->getFind();
+        $find = $this->getFindCount($find);
         
-        $countResult = $model::count($this->getFindCount($find));
+        // use subCount instead of the query is aggregated
+        $countResult = !empty($find['having'])
+            ? $model::subCount($find)
+            : $model::count($find);
+        
         return is_countable($countResult) ? count($countResult) : (int)$countResult;
     }
     
@@ -1026,5 +1065,11 @@ trait Query
         $ret['single'] = $this->expose($entity, $this->getExpose());
         
         return $ret;
+    }
+    
+    public function conditionsShouldBeHaving(?string $conditions)
+    {
+        return false;
+        return preg_match('/GROUP_CONCAT\(.+?\)|COUNT\(.+?\)|SUM\(.+?\)|AVG\(.+?\)|MIN\(.+?\)|MAX\(.+?\)/i', $conditions);
     }
 }
