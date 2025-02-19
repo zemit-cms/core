@@ -715,7 +715,7 @@ trait Query
                         $joins = $this->getJoinsDefinitionFromField($field);
                         
                         if (empty($joins)) {
-                            throw new \Exception('Unable to prepare negative subquery for the field `' . $field . '`', 400);
+                            throw new \Exception('Unable to prepare negative subquery for the foreign field `' . $field . '`', 400);
                         }
                         
                         $firstJoin = array_shift($joins);

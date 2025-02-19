@@ -118,15 +118,6 @@ trait DynamicJoins
                         
                         // generate the join filter conditions
                         $joinFilters = $this->getParam('joins');
-                        
-                        // @todo remove this when fronteend is fixed
-                        foreach ($joinFilters as $joinFiltersKey => $joinFiltersValue) {
-                            if (str_ends_with($joinFiltersKey, '.Tag')) {
-                                $joinFilters[str_replace('.Tag', '', $joinFiltersKey)] = $joinFiltersValue;
-                                unset($joinFilters[$joinFiltersKey]);
-                            }
-                        }
-                        
                         $condition = !empty($joinFilters[$fieldAlias])? $this->getFilterCondition($joinFilters[$fieldAlias]) : '';
                         
                         // prepare the dynamic join
