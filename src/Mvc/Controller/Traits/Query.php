@@ -72,7 +72,7 @@ trait Query
     }
     
     /**
-     * Get the WhiteList parameters for filtering
+     * Get the list of fields to use during with the search value
      *
      * @return null|array
      */
@@ -92,13 +92,60 @@ trait Query
     }
     
     /**
+     * Get the Relationship WhiteList 
+     * 
+     * @return void
+     */
+    public function getWithWhiteList()
+    {
+        return null;
+    }
+    
+    /**
      * Get relationship eager loading definition
      *
      * @return null|array
      */
     protected function getWith()
     {
-        return null;
+        $requestedWith = $this->normalizeWith($this->getParam('with'));
+        $allowedWith = $this->normalizeWith($this->getWithWhiteList());
+        
+        // Verify if requestedWith are in the allowedWith
+        $with = [];
+        foreach ($requestedWith as $value) {
+            if (in_array($value, $allowedWith, true)) {
+                $with[] = $value;
+            }
+            else {
+                throw new Exception(sprintf('Requested "with" value "%s" is not allowed.', $value));
+            }
+        }
+        
+        return $with;
+    }
+    
+    protected function normalizeWith(array|string|null $with)
+    {
+        if (empty($with)) {
+            return [];
+        }
+        
+        if (is_string($with)) {
+            $with = explode(',', $with);
+        }
+        
+        $normalizedWith = [];
+        foreach ($with as $key => $value) {
+            if (is_int($key) && is_string($value)) {
+                $normalizedWith[] = $value;
+            }
+            else if (is_string($key) && is_bool($value) && $value) {
+                $normalizedWith[] = $key;
+            }
+        }
+        
+        return $normalizedWith;
     }
     
     /**
