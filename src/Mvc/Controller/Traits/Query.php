@@ -566,9 +566,9 @@ trait Query
                         break;
                     
                     // advanced filters
-                    case 'start with':
+                    case 'starts with':
                     case 'does not start with':
-                    case 'end with':
+                    case 'ends with':
                     case 'does not end with':
                     case 'regexp':
                     case 'not regexp':
@@ -590,10 +590,14 @@ trait Query
                 
                 $bind = [];
                 $bindType = [];
-
+                
                 // Add the current model name by default
                 $fieldAlias = $this->appendModelName($fieldAlias);
                 $queryFieldBinder = $fieldAlias;
+                
+                // Prepare negative situations
+                $isNegative = str_contains($queryOperator, 'not') || in_array($queryOperator, ['!=', '<>']);
+                $orNullOrEmpty = $isNegative? " or $queryFieldBinder is null or $queryFieldBinder = ''" : '';
                 
                 // is or not empty
                 if (in_array($queryOperator, ['is empty', 'is not empty'])) {
@@ -682,33 +686,34 @@ trait Query
                             if (in_array($queryOperator, ['contains', 'does not contain'])) {
                                 $bind[$queryValue] = '%' . $value . '%';
                                 $bindType[$queryValue] = Column::BIND_PARAM_STR;
-                                $likeOperator = str_contains($queryOperator, 'does not contain')? 'not like' : 'like';
-                                $queryAndOr [] = "($queryFieldBinder $likeOperator :$queryValue:)";
+                                $likeOperator = $isNegative? 'not like' : 'like';
+                                $queryAndOr [] = "($queryFieldBinder $likeOperator :$queryValue:$orNullOrEmpty)";
                             }
                             
                             elseif (in_array($queryOperator, ['starts with', 'does not start with'])) {
                                 $bind[$queryValue] = $value . '%';
                                 $bindType[$queryValue] = Column::BIND_PARAM_STR;
-                                $likeOperator = str_contains($queryOperator, 'does not start with')? 'not like' : 'like';
-                                $queryAndOr [] = "($queryFieldBinder $likeOperator :$queryValue:)";
+                                $isNegative = str_contains($queryOperator, 'does not start with');
+                                $likeOperator = $isNegative? 'not like' : 'like';
+                                $queryAndOr [] = "($queryFieldBinder $likeOperator :$queryValue:$orNullOrEmpty)";
                             }
                             
                             elseif (in_array($queryOperator, ['ends with', 'does not end with'])) {
                                 $bind[$queryValue] = '%' . $value;
                                 $bindType[$queryValue] = Column::BIND_PARAM_STR;
                                 $likeOperator = str_contains($queryOperator, 'does not end with')? 'not like' : 'like';
-                                $queryAndOr [] = "($queryFieldBinder $likeOperator :$queryValue:)";
-                            }
-                            
-                            elseif (in_array($queryOperator, ['regexp', 'not regexp'])) {
-                                $bind[$queryValue] = $value;
-                                $queryAndOr [] = $queryOperator . "($queryFieldBinder, :$queryValue:)";
+                                $queryAndOr [] = "($queryFieldBinder $likeOperator :$queryValue:$orNullOrEmpty)";
                             }
                             
                             elseif (in_array($queryOperator, ['contains word', 'does not contain word'])) {
                                 $bind[$queryValue] = '\\b' . $value . '\\b';
                                 $regexQueryOperator = str_replace(['contains word', 'does not contain word'], ['regexp', 'not regexp'], $queryOperator);
-                                $queryAndOr [] = $regexQueryOperator . "($queryFieldBinder, :$queryValue:)";
+                                $queryAndOr [] = $regexQueryOperator . "($queryFieldBinder, :$queryValue:)$orNullOrEmpty";
+                            }
+                            
+                            elseif (in_array($queryOperator, ['regexp', 'not regexp'])) {
+                                $bind[$queryValue] = $value;
+                                $queryAndOr [] = $queryOperator . "($queryFieldBinder, :$queryValue:)";
                             }
                             
                             else {
@@ -743,7 +748,7 @@ trait Query
                                     $bindType[$queryValue] = Column::BIND_PARAM_NULL;
                                 }
                                 
-                                $queryAndOr [] = "$queryFieldBinder $queryOperator $queryValueBinder";
+                                $queryAndOr [] = "$queryFieldBinder $queryOperator $queryValueBinder" . $orNullOrEmpty;
                             }
                         }
                         if (!empty($queryAndOr)) {
@@ -754,7 +759,7 @@ trait Query
                 }
                 
                 if (!empty($subQuery)) {
-                    $isNegative = str_contains($queryOperator, 'not') || in_array($queryOperator, ['!=', '<>']);
+                    
                     $isForeignField = str_contains($field, '.');
                     $isSubquery = isset($filter['subquery']) && $filter['subquery'];
                     
@@ -918,6 +923,7 @@ trait Query
             $find['conditions'] = '(1)';
         }
         
+//        dd($find);
         return array_filter($find);
     }
     
