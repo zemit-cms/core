@@ -20,8 +20,6 @@ use Zemit\Identity\Manager as Identity;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
 use Zemit\Support\Exposer\Exposer;
-use Zemit\Support\Helper;
-use Zemit\Support\Slug;
 
 /**
  * Trait Model
@@ -69,6 +67,14 @@ trait Query
     protected function getFilterWhiteList()
     {
         return $this->getWhiteList();
+    }
+    
+    /**
+     * @return array
+     */
+    public function getFilterAliasList(): array
+    {
+        return [];
     }
     
     /**
@@ -336,8 +342,13 @@ trait Query
                         continue;
                     }
                     
+                    $filterAliasList = $this->getFilterAliasList();
+                    $fieldAlias = $filterAliasList[$whiteList] ?? $whiteList;
+                    
+                    // @todo do dynamic joins?
+                    
                     $searchTermBinding = '_' . uniqid() . '_';
-                    $orConditions [] = $this->appendModelName($whiteList) . " like :$searchTermBinding:";
+                    $orConditions [] = $this->appendModelName($fieldAlias) . " like :$searchTermBinding:";
                     $this->setBind([$searchTermBinding => '%' . $searchTerm . '%']);
                     $this->setBindTypes([$searchTermBinding => Column::BIND_PARAM_STR]);
                 }
@@ -517,8 +528,12 @@ trait Query
                     throw new \Exception('Filter field not allowed: `' . $field . '`', 403);
                 }
                 
+                // replace field with alias
+                $filterAliasList = $this->getFilterAliasList();
+                $fieldAlias = $filterAliasList[$field] ?? $field;
+                
                 // replace fields related to dynamic joins
-                $fieldAlias = str_replace(array_keys($this->dynamicJoinsMapping), array_values($this->dynamicJoinsMapping), $field);
+                $fieldAlias = str_replace(array_keys($this->dynamicJoinsMapping), array_values($this->dynamicJoinsMapping), $fieldAlias);
                 
                 $uniqid = substr(md5(json_encode($filter)), 0, 10);
                 $queryValue = '_' . uniqid($uniqid . '_value_') . '_';
@@ -1114,7 +1129,7 @@ trait Query
         $ret['messages'] = $entity->getMessages();
         $ret['model'] = get_class($entity);
         $ret['source'] = $entity->getSource();
-        $ret['entity'] = $entity; // @todo this is to fix a phalcon internal bug (503 segfault during eagerload)
+//        $ret['entity'] = $entity; // @todo this is to fix a phalcon internal bug (503 segfault during eagerload)
         $ret['single'] = $this->expose($entity, $this->getExpose());
         
         return $ret;
