@@ -36,10 +36,9 @@ trait Params
     public function getParam(string $key, array|string|null $filters = null, string $default = null, array $params = null): mixed
     {
         $params ??= $this->getParams();
-        
         return isset($params[$key])
-            ? ($filters ? $this->filter->sanitize($params[$key], $filters) : $params[$key])
-            : $this->dispatcher->getParam($key, $filters, $default);
+            ? $this->filter->sanitize($params[$key], $filters ?? [])
+            : $this->dispatcher->getParam($key, $filters ?? [], $default);
     }
     
     /**

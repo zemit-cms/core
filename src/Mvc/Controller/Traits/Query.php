@@ -328,7 +328,7 @@ trait Query
     {
         $conditions = [];
         
-        $searchList = array_values(array_filter(array_unique(explode(' ', $this->getParam('search', 'string') ?? ''))));
+        $searchList = array_values(array_filter(array_unique(explode(' ', $this->getParam('search') ?? ''))));
         
         foreach ($searchList as $searchTerm) {
             $orConditions = [];
