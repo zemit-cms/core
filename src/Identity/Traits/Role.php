@@ -29,7 +29,7 @@ trait Role
     public function hasRole(?array $roles = null, bool $or = false, bool $inherit = true): bool
     {
         $roleList = array_keys($this->getRoleList());
-        return $this->has($roles, $inherit ? $this->getInheritedRoleList($roleList) : $roleList, $or);
+        return $this->has($roles, $inherit ? array_merge($roleList, $this->getInheritedRoleList($roleList)) : $roleList, $or);
     }
     
     /**

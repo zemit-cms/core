@@ -26,7 +26,7 @@ class Url extends \Phalcon\Mvc\Url
      *
      * @return string
      */
-    public function get($uri = null, $args = null, bool $local = null, $baseUri = null): string
+    public function get($uri = null, $args = null, ?bool $local = null, $baseUri = null): string
     {
         return self::getAbsolutePath(parent::get($uri, $args, $local, $baseUri));
     }

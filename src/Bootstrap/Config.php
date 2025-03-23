@@ -1080,7 +1080,8 @@ class Config extends \Zemit\Config\Config
                         'charset' => Env::get('DATABASE_CHARSET', 'utf8'),
                         'options' => [
                             \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . Env::get('DATABASE_CHARSET', 'utf8') .
-                            ', sql_mode = \'' . Env::get('DATABASE_SQL_MODE', 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION') . '\'',
+                            ', sql_mode = \'' . Env::get('DATABASE_SQL_MODE', 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION') . '\'' .
+                                ', block_encryption_mode = \''.Env::get('DATABASE_BLOCK_ENCRYPTION_MODE', 'aes-256-cbc').'\'',
                             \PDO::ATTR_EMULATE_PREPARES => Env::get('DATABASE_EMULATE_PREPARES', false), // https://stackoverflow.com/questions/10113562/pdo-mysql-use-pdoattr-emulate-prepares-or-not
                             \PDO::ATTR_STRINGIFY_FETCHES => Env::get('DATABASE_STRINGIFY_FETCHES', false),
                             \PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => Env::get('DATABASE_SSL_VERIFY_SERVER_CERT', true),

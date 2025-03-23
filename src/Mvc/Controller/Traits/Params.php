@@ -21,6 +21,8 @@ trait Params
     
     use AbstractInjectable;
     
+    protected ?array $params = null;
+    
     /**
      * Get a specific parameter value by key.
      *
@@ -34,23 +36,28 @@ trait Params
      *               then the value from the dispatcher's parameter is returned.
      * @throws Exception
      */
-    public function getParam(string $key, array|string|null $filters = null, mixed $default = null, array $params = null): mixed
+    public function getParam(string $key, array|string|null $filters = null, mixed $default = null, ?array $params = null): mixed
     {
         $params ??= $this->getParams();
-        
         return isset($params[$key])
-            ? ($filters ? $this->filter->sanitize($params[$key], $filters) : $params[$key])
-            : $this->dispatcher->getParam($key, $filters, $default);
+            ? $this->filter->sanitize($params[$key], $filters ?? [])
+            : $this->dispatcher->getParam($key, $filters ?? [], $default);
     }
     
     /**
-     * Retrieves the request parameters.
+     * Retrieves parameters from the request, optionally applying filters and caching results.
      *
-     * @param array|null $filters An optional array of filters to apply to the parameters.
-     * @return array The request parameters.
+     * @param array|null $filters An array of filters to apply to the request parameters.
+     *                             Each filter should include 'name', 'filters', and 'scope'.
+     * @param bool $cached Whether to use cached parameters if they're available. Defaults to true.
+     * @return array The combined and filtered request parameters, excluding the _url parameter.
      */
-    public function getParams(array $filters = null): array
+    public function getParams(array $filters = null, bool $cached = true): array
     {
+        if (isset($this->params) && $cached) {
+            return $this->params;
+        }
+        
         if (!empty($filters)) {
             foreach ($filters as $filter) {
                 $this->request->setParameterFilters($filter['name'], $filter['filters'], $filter['scope']);
@@ -88,6 +95,7 @@ trait Params
             unset($params['_url']);
         }
         
+        $this->params = $params;
         return $params;
     }
     

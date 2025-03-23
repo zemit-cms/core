@@ -35,7 +35,7 @@ class Module implements ModuleDefinitionInterface
     /**
      * Registers an autoloader related to the frontend module
      */
-    public function registerAutoloaders(DiInterface $container = null): void
+    public function registerAutoloaders(?DiInterface $container = null): void
     {
         $this->loader = $container['loader'] ?? new Loader();
         assert($this->loader instanceof Loader);
@@ -90,7 +90,7 @@ class Module implements ModuleDefinitionInterface
         return $namespaces;
     }
     
-    public function getServices(DiInterface $container = null): void
+    public function getServices(?DiInterface $container = null): void
     {
         $this->loader = $container['loader'] ?? new Loader();
         $this->config ??= $container['config'] ?? new Config();

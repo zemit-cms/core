@@ -64,6 +64,8 @@ trait RestResponse
         $status ??= $reasonPhrase ?: HttpStatusCode::getMessage($code);
         
         $view = $this->view->getParamsToView();
+        unset($view['_']);
+        
         $hash = hash('sha512', json_encode($view)); // @todo store hash in cache layer with response content
         
         // set response status code

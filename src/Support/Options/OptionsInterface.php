@@ -13,9 +13,9 @@ namespace Zemit\Support\Options;
 
 interface OptionsInterface
 {
-    public function __construct(array $options = null);
+    public function __construct(?array $options = null);
     
-    public function initializeOptions(array $options = null): void;
+    public function initializeOptions(?array $options = null): void;
     
     public function initialize(): void;
     

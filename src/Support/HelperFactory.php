@@ -13,6 +13,7 @@ namespace Zemit\Support;
 
 use Zemit\Support\Helper\Arr\FlattenKeys;
 use Zemit\Support\Helper\Arr\RecursiveMap;
+use Zemit\Support\Helper\Arr\RecursiveStrReplace;
 use Zemit\Support\Helper\Str\NormalizeLineBreaks;
 use Zemit\Support\Helper\Str\RemoveNonPrintable;
 use Zemit\Support\Helper\Str\SanitizeUTF8;
@@ -82,6 +83,7 @@ use Zemit\Support\Helper\Str\Slugify;
  * # New methods
  * @method string recursiveMap(array $collection = [], callable $callback = null)
  * @method string flattenKeys(array $collection = [], string $delimiter = '.', bool $lowerKey = true)
+ * @method string recursiveStrReplace(array $collection, array $replaces)
  * @method string slugify(string $string, array $replace = [], string $delimiter = '-')
  * @method string sanitizeUTF8(string $string)
  * @method string removeNonPrintable(string $string, string $nonPrintableRegex = '[[:cntrl:]' . PHP_EOL . ']', string $replacement = '')
@@ -99,6 +101,7 @@ class HelperFactory extends \Phalcon\Support\HelperFactory
         return array_merge(parent::getServices(), [
             'recursiveMap' => RecursiveMap::class,
             'flattenKeys' => FlattenKeys::class,
+            'recursiveStrReplace' => RecursiveStrReplace::class,
             'slugify' => Slugify::class,
             'sanitizeUTF8' => SanitizeUTF8::class,
             'removeNonPrintable' => RemoveNonPrintable::class,
