@@ -20,8 +20,6 @@ use Zemit\Identity\Manager as Identity;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
 use Zemit\Support\Exposer\Exposer;
-use Zemit\Support\Helper;
-use Zemit\Support\Slug;
 
 /**
  * Trait Model
@@ -30,6 +28,8 @@ trait Query
 {
     use AbstractParams;
     use AbstractModel;
+    
+    use DynamicJoins;
     
     protected $_bind = [];
     protected $_bindTypes = [];
@@ -70,7 +70,15 @@ trait Query
     }
     
     /**
-     * Get the WhiteList parameters for filtering
+     * @return array
+     */
+    public function getFilterAliasList(): array
+    {
+        return [];
+    }
+    
+    /**
+     * Get the list of fields to use during with the search value
      *
      * @return null|array
      */
@@ -90,13 +98,60 @@ trait Query
     }
     
     /**
+     * Get the Relationship WhiteList 
+     * 
+     * @return void
+     */
+    public function getWithWhiteList()
+    {
+        return null;
+    }
+    
+    /**
      * Get relationship eager loading definition
      *
      * @return null|array
      */
     protected function getWith()
     {
-        return null;
+        $requestedWith = $this->normalizeWith($this->getParam('with'));
+        $allowedWith = $this->normalizeWith($this->getWithWhiteList());
+        
+        // Verify if requestedWith are in the allowedWith
+        $with = [];
+        foreach ($requestedWith as $value) {
+            if (in_array($value, $allowedWith, true)) {
+                $with[] = $value;
+            }
+            else {
+                throw new Exception(sprintf('Requested "with" value "%s" is not allowed.', $value));
+            }
+        }
+        
+        return $with;
+    }
+    
+    protected function normalizeWith(array|string|null $with)
+    {
+        if (empty($with)) {
+            return [];
+        }
+        
+        if (is_string($with)) {
+            $with = explode(',', $with);
+        }
+        
+        $normalizedWith = [];
+        foreach ($with as $key => $value) {
+            if (is_int($key) && is_string($value)) {
+                $normalizedWith[] = $value;
+            }
+            else if (is_string($key) && is_bool($value) && $value) {
+                $normalizedWith[] = $key;
+            }
+        }
+        
+        return $normalizedWith;
     }
     
     /**
@@ -176,10 +231,10 @@ trait Query
      *
      * @return null|array
      */
-    protected function getJoins()
-    {
-        return null;
-    }
+//    protected function getJoins()
+//    {
+//        return null;
+//    }
     
     /**
      * Get the order definition
@@ -273,7 +328,7 @@ trait Query
     {
         $conditions = [];
         
-        $searchList = array_values(array_filter(array_unique(explode(' ', $this->getParam('search', 'string') ?? ''))));
+        $searchList = array_values(array_filter(array_unique(explode(' ', $this->getParam('search') ?? ''))));
         
         foreach ($searchList as $searchTerm) {
             $orConditions = [];
@@ -287,8 +342,13 @@ trait Query
                         continue;
                     }
                     
+                    $filterAliasList = $this->getFilterAliasList();
+                    $fieldAlias = $filterAliasList[$whiteList] ?? $whiteList;
+                    
+                    // @todo do dynamic joins?
+                    
                     $searchTermBinding = '_' . uniqid() . '_';
-                    $orConditions [] = $this->appendModelName($whiteList) . " like :$searchTermBinding:";
+                    $orConditions [] = $this->appendModelName($fieldAlias) . " like :$searchTermBinding:";
                     $this->setBind([$searchTermBinding => '%' . $searchTerm . '%']);
                     $this->setBindTypes([$searchTermBinding => Column::BIND_PARAM_STR]);
                 }
@@ -461,16 +521,21 @@ trait Query
             }
             
             if (!empty($field)) {
-                $lowercaseField = mb_strtolower($field);
+                $filteredField = mb_strtolower(preg_replace('/\[[^\]]*\](?=\.)/', '', $field));
                 
                 // whiteList on filter condition
-                if (is_null($whiteList) || !in_array($lowercaseField, $lowercaseWhiteList ?? [], true)) {
-                    // @todo if config is set to throw exception on usage of not allowed filters otherwise continue looping through
-                    throw new \Exception('Not allowed to filter using the following field: `' . $field . '`', 403);
+                if (is_null($whiteList) || !in_array($filteredField, $lowercaseWhiteList ?? [], true)) {
+                    throw new \Exception('Filter field not allowed: `' . $field . '`', 403);
                 }
                 
+                // replace field with alias
+                $filterAliasList = $this->getFilterAliasList();
+                $fieldAlias = $filterAliasList[$field] ?? $field;
+                
+                // replace fields related to dynamic joins
+                $fieldAlias = str_replace(array_keys($this->dynamicJoinsMapping), array_values($this->dynamicJoinsMapping), $fieldAlias);
+                
                 $uniqid = substr(md5(json_encode($filter)), 0, 10);
-//                $queryField = '_' . uniqid($uniqid . '_field_') . '_';
                 $queryValue = '_' . uniqid($uniqid . '_value_') . '_';
                 $queryOperator = strtolower($filter['operator']);
                 
@@ -516,9 +581,9 @@ trait Query
                         break;
                     
                     // advanced filters
-                    case 'start with':
+                    case 'starts with':
                     case 'does not start with':
-                    case 'end with':
+                    case 'ends with':
                     case 'does not end with':
                     case 'regexp':
                     case 'not regexp':
@@ -540,29 +605,28 @@ trait Query
                 
                 $bind = [];
                 $bindType = [];
-
-//                $bind[$queryField] = $filter['field'];
-//                $bindType[$queryField] = Column::BIND_PARAM_STR;
-//                $queryFieldBinder = ':' . $queryField . ':';
-//                $queryFieldBinder = '{' . $queryField . '}';
                 
                 // Add the current model name by default
-                $field = $this->appendModelName($field);
-                $queryFieldBinder = $field;
+                $fieldAlias = $this->appendModelName($fieldAlias);
+                $queryFieldBinder = $fieldAlias;
+                
+                // Prepare negative situations
+                $isNegative = str_contains($queryOperator, 'not') || in_array($queryOperator, ['!=', '<>']);
+                $orNullOrEmpty = $isNegative? " or $queryFieldBinder is null or $queryFieldBinder = ''" : '';
                 
                 // is or not empty
                 if (in_array($queryOperator, ['is empty', 'is not empty'])) {
                     $queryOperator = ($queryOperator === 'is not empty' ? '!' : '');
-                    $query [] = "$queryLogic $queryOperator(TRIM($queryFieldBinder) = '' or $queryFieldBinder is null)";
+                    $subQuery = "$queryLogic $queryOperator(TRIM($queryFieldBinder) = '' or $queryFieldBinder is null)";
                 }
                 
                 // raw queries without values
                 elseif (!isset($filter['value'])) {
-                    $query [] = "$queryLogic $queryFieldBinder $queryOperator";
+                    $subQuery = "$queryLogic $queryFieldBinder $queryOperator";
                 }
                 
                 // queries with values
-                else{
+                else {
                     $queryValueBinder = ':' . $queryValue . ':';
                     
                     // special for between and not between
@@ -577,7 +641,7 @@ trait Query
                         $bindType[$queryValue0] = Column::BIND_PARAM_STR;
                         $bindType[$queryValue1] = Column::BIND_PARAM_STR;
                         
-                        $query [] = $queryLogic . ' ' . (($queryOperator === 'not between') ? 'not ' : null) . "$queryFieldBinder between :$queryValue0: and :$queryValue1:";
+                        $subQuery = $queryLogic . ' ' . (($queryOperator === 'not between') ? 'not ' : null) . "$queryFieldBinder between :$queryValue0: and :$queryValue1:";
                     }
                     
                     elseif (in_array($queryOperator, [
@@ -611,7 +675,7 @@ trait Query
                             (str_contains($queryOperator, 'equal') ? '=' : null);
                         
                         $bind[$queryValue] = $filter['value'];
-                        $query [] = "$queryLogic ST_Distance_Sphere(point($queryPointLatBinder0, $queryPointLonBinder0), point($queryPointLatBinder1, $queryPointLonBinder1)) $queryLogicalOperator $queryValueBinder";
+                        $subQuery = "$queryLogic ST_Distance_Sphere(point($queryPointLatBinder0, $queryPointLonBinder0), point($queryPointLatBinder1, $queryPointLonBinder1)) $queryLogicalOperator $queryValueBinder";
                     }
                     
                     elseif (in_array($queryOperator, [
@@ -622,7 +686,7 @@ trait Query
                         $queryValueBinder = '({' . $queryValue . ':array})';
                         $bind[$queryValue] = $filter['value'];
                         $bindType[$queryValue] = Column::BIND_PARAM_STR;
-                        $query [] = "$queryLogic $queryFieldBinder $queryOperator $queryValueBinder";
+                        $subQuery = "$queryLogic $queryFieldBinder $queryOperator $queryValueBinder";
                     }
                     
                     else {
@@ -637,33 +701,34 @@ trait Query
                             if (in_array($queryOperator, ['contains', 'does not contain'])) {
                                 $bind[$queryValue] = '%' . $value . '%';
                                 $bindType[$queryValue] = Column::BIND_PARAM_STR;
-                                $likeOperator = str_contains($queryOperator, 'does not contain')? 'not like' : 'like';
-                                $queryAndOr [] = "($queryFieldBinder $likeOperator :$queryValue:)";
+                                $likeOperator = $isNegative? 'not like' : 'like';
+                                $queryAndOr [] = "($queryFieldBinder $likeOperator :$queryValue:$orNullOrEmpty)";
                             }
                             
                             elseif (in_array($queryOperator, ['starts with', 'does not start with'])) {
                                 $bind[$queryValue] = $value . '%';
                                 $bindType[$queryValue] = Column::BIND_PARAM_STR;
-                                $likeOperator = str_contains($queryOperator, 'does not start with')? 'not like' : 'like';
-                                $queryAndOr [] = "($queryFieldBinder $likeOperator :$queryValue:)";
+                                $isNegative = str_contains($queryOperator, 'does not start with');
+                                $likeOperator = $isNegative? 'not like' : 'like';
+                                $queryAndOr [] = "($queryFieldBinder $likeOperator :$queryValue:$orNullOrEmpty)";
                             }
                             
                             elseif (in_array($queryOperator, ['ends with', 'does not end with'])) {
                                 $bind[$queryValue] = '%' . $value;
                                 $bindType[$queryValue] = Column::BIND_PARAM_STR;
                                 $likeOperator = str_contains($queryOperator, 'does not end with')? 'not like' : 'like';
-                                $queryAndOr [] = "($queryFieldBinder $likeOperator :$queryValue:)";
-                            }
-                            
-                            elseif (in_array($queryOperator, ['regexp', 'not regexp'])) {
-                                $bind[$queryValue] = $value;
-                                $queryAndOr [] = $queryOperator . "($queryFieldBinder, :$queryValue:)";
+                                $queryAndOr [] = "($queryFieldBinder $likeOperator :$queryValue:$orNullOrEmpty)";
                             }
                             
                             elseif (in_array($queryOperator, ['contains word', 'does not contain word'])) {
                                 $bind[$queryValue] = '\\b' . $value . '\\b';
                                 $regexQueryOperator = str_replace(['contains word', 'does not contain word'], ['regexp', 'not regexp'], $queryOperator);
-                                $queryAndOr [] = $regexQueryOperator . "($queryFieldBinder, :$queryValue:)";
+                                $queryAndOr [] = $regexQueryOperator . "($queryFieldBinder, :$queryValue:)$orNullOrEmpty";
+                            }
+                            
+                            elseif (in_array($queryOperator, ['regexp', 'not regexp'])) {
+                                $bind[$queryValue] = $value;
+                                $queryAndOr [] = $queryOperator . "($queryFieldBinder, :$queryValue:)";
                             }
                             
                             else {
@@ -698,13 +763,45 @@ trait Query
                                     $bindType[$queryValue] = Column::BIND_PARAM_NULL;
                                 }
                                 
-                                $queryAndOr [] = "$queryFieldBinder $queryOperator $queryValueBinder";
+                                $queryAndOr [] = "$queryFieldBinder $queryOperator $queryValueBinder" . $orNullOrEmpty;
                             }
                         }
                         if (!empty($queryAndOr)) {
                             $andOr = str_contains($queryOperator, ' not ')? 'and' : 'or';
-                            $query [] = $queryLogic . ' ((' . implode(') ' . $andOr . ' (', $queryAndOr) . '))';
+                            $subQuery = $queryLogic . ' ((' . implode(') ' . $andOr . ' (', $queryAndOr) . '))';
                         }
+                    }
+                }
+                
+                if (!empty($subQuery)) {
+                    
+                    $isForeignField = str_contains($field, '.');
+                    $isSubquery = isset($filter['subquery']) && $filter['subquery'];
+                    
+                    if ($isNegative && $isForeignField && $isSubquery) {
+                        $joins = $this->getJoinsDefinitionFromField($field);
+                        
+                        if (empty($joins)) {
+                            throw new \Exception('Unable to prepare negative subquery for the foreign field `' . $field . '`', 400);
+                        }
+                        
+                        $firstJoin = array_shift($joins);
+                        
+                        // build joins chain
+                        $joinsQuery = [];
+                        foreach ($joins as $join) {
+                            $joinsQuery []= $join[3] . ' join [' . $join[0] . '] as [' . $join[2] . '] on ' . $join[1];
+                        }
+                        
+                        // swap negative condition to positive
+                        $replaces = [' not ' => ' ', ' != ' => ' = ', ' <> ' => ' = '];
+                        $subQuery = str_replace(array_keys($replaces), array_values($replaces), $subQuery);
+                        
+                        // prepare "not exists" sub query
+                        $notExistQuery = 'not exists (select 1 from [' . $firstJoin[0] . '] as [' . $firstJoin[2] . '] ' . implode(' ', $joinsQuery) . ' where ' . $firstJoin[1] . ' and ${2})';
+                        $query []= preg_replace('/^(xor |and |or )(.*)/', $level || !empty($query)? '${1}' . $notExistQuery : $notExistQuery, $subQuery);
+                    } else {
+                        $query []= $subQuery;
                     }
                 }
                 
@@ -815,6 +912,7 @@ trait Query
     protected function getFind()
     {
         $find = [];
+        $find['joins'] = $this->fireGet('getJoins');
         $find['conditions'] = $this->fireGet('getConditions');
         $find['bind'] = $this->fireGet('getBind');
         $find['bindTypes'] = $this->fireGet('getBindTypes');
@@ -823,12 +921,9 @@ trait Query
         $find['order'] = $this->fireGet('getOrder');
         $find['columns'] = $this->fireGet('getColumns');
         $find['distinct'] = $this->fireGet('getDistinct');
-        $find['joins'] = $this->fireGet('getJoins');
         $find['group'] = $this->fireGet('getGroup');
         $find['having'] = $this->fireGet('getHaving');
         $find['cache'] = $this->fireGet('getCache');
-        
-//        dd($find);
         
         // fix for grouping by multiple fields, phalcon only allow string here
         foreach (['distinct', 'group', 'order'] as $findKey) {
@@ -837,6 +932,13 @@ trait Query
             }
         }
         
+        // move condition to having if the condition is aggregated
+        if ($this->conditionsShouldBeHaving($find['conditions'])) {
+            $find['having'] = (!empty($find['having'])? $find['having'] . ' and ' : '') . $find['conditions'];
+            $find['conditions'] = '(1)';
+        }
+        
+//        dd($find);
         return array_filter($find);
     }
     
@@ -920,8 +1022,13 @@ trait Query
     {
         $model ??= $this->getModelName();
         $find ??= $this->getFind();
+        $find = $this->getFindCount($find);
         
-        $countResult = $model::count($this->getFindCount($find));
+        // use subCount instead of the query is aggregated
+        $countResult = !empty($find['having'])
+            ? $model::subCount($find)
+            : $model::count($find);
+        
         return is_countable($countResult) ? count($countResult) : (int)$countResult;
     }
     
@@ -1022,9 +1129,15 @@ trait Query
         $ret['messages'] = $entity->getMessages();
         $ret['model'] = get_class($entity);
         $ret['source'] = $entity->getSource();
-        $ret['entity'] = $entity; // @todo this is to fix a phalcon internal bug (503 segfault during eagerload)
+//        $ret['entity'] = $entity; // @todo this is to fix a phalcon internal bug (503 segfault during eagerload)
         $ret['single'] = $this->expose($entity, $this->getExpose());
         
         return $ret;
+    }
+    
+    public function conditionsShouldBeHaving(?string $conditions)
+    {
+        return false;
+        return preg_match('/GROUP_CONCAT\(.+?\)|COUNT\(.+?\)|SUM\(.+?\)|AVG\(.+?\)|MIN\(.+?\)|MAX\(.+?\)/i', $conditions);
     }
 }

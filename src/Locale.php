@@ -221,7 +221,7 @@ class Locale extends Injectable implements OptionsInterface
     /**
      * Save locale into session if mode contain session handling
      */
-    public function saveIntoSession(?string $locale = null, bool $force = null): void
+    public function saveIntoSession(?string $locale = null, ?bool $force = null): void
     {
         $locale ??= $this->getLocale();
         

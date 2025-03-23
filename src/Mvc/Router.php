@@ -73,7 +73,7 @@ class Router extends \Phalcon\Mvc\Router implements RouterInterface
      * @param array|null $defaults
      * @return void
      */
-    public function hostnamesRoutes(array $hostnames = null, array $defaults = null): void
+    public function hostnamesRoutes(?array $hostnames = null, ?array $defaults = null): void
     {
         $routerConfig = $this->getConfig()->get('router')->toArray();
         $hostnames ??= $routerConfig['hostnames'] ?? [];
@@ -92,7 +92,7 @@ class Router extends \Phalcon\Mvc\Router implements RouterInterface
      * Defines our frontend routes
      * /controller/action/params
      */
-    public function modulesRoutes(\Phalcon\Mvc\Application $application, array $defaults = null): void
+    public function modulesRoutes(\Phalcon\Mvc\Application $application, ?array $defaults = null): void
     {
         $defaults ??= $this->getDefaults();
         foreach ($application->getModules() as $key => $module) {

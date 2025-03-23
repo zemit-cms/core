@@ -45,16 +45,20 @@ class Env
     }
     
     /**
-     *
-     * @param $paths
-     * @param $names
-     * @param bool $shortCircuit
+     * @param array|null $paths
+     * @param array|null $names
+     * @param bool|null $shortCircuit
      * @param string|null $fileEncoding
-     * @param $type
+     * @param string|null $type
      * @return Dotenv
      */
-    public static function initialize($paths = null, $names = null, bool $shortCircuit = null, string $fileEncoding = null, $type = null): Dotenv
-    {
+    public static function initialize(
+        ?array $paths = null,
+        ?array $names = null,
+        ?bool $shortCircuit = null,
+        ?string $fileEncoding = null,
+        ?string $type = null
+    ): Dotenv {
         if (!self::$initialized) {
             $type ??= self::getType();
             $paths ??= self::getPaths();
@@ -98,7 +102,7 @@ class Env
      * @param $paths
      * @return void
      */
-    public static function setPaths(array $paths = null): void
+    public static function setPaths(?array $paths = null): void
     {
         self::$paths = $paths;
     }
@@ -117,7 +121,7 @@ class Env
      * @param $names
      * @return void
      */
-    public static function setNames($names = null): void
+    public static function setNames(array $names): void
     {
         self::$names = $names;
     }

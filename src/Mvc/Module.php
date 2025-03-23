@@ -45,7 +45,7 @@ class Module extends Injectable implements ModuleDefinitionInterface
     /**
      * Registers an autoloader related to the frontend module
      */
-    public function registerAutoloaders(DiInterface $container = null): void
+    public function registerAutoloaders(?DiInterface $container = null): void
     {
         $this->getServices($container);
         $this->loader->setNamespaces($this->getNamespaces(), true);
@@ -84,7 +84,7 @@ class Module extends Injectable implements ModuleDefinitionInterface
         $this->setServices($container);
     }
     
-    public function getServices(DiInterface $container = null): void
+    public function getServices(?DiInterface $container = null): void
     {
         $this->config ??= $container['config'] ??= new Config();
         $this->loader ??= $container['loader'] ??= new Loader();

@@ -15,7 +15,7 @@ use Phalcon\Di\DiInterface;
 
 class Console extends \Phalcon\Cli\Console
 {
-    public function __construct(DiInterface $container = null)
+    public function __construct(?DiInterface $container = null)
     {
         parent::__construct($container);
     }
