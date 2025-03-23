@@ -37,13 +37,12 @@ class Logger extends Injectable
             if ($this->config->path('loggers.database.enable')) {
                 if (!$this->inProgress) {
                     $this->inProgress = true;
-                    $sessionId = $this->identity->getSession()?->getId();
+//                    $sessionId = $this->identity->getSession()?->getId();
                     $userId = $this->identity->getUserId() ?: null;
                     $userAsId = $this->identity->getUserAsId() ?: null;
                     
                     $log = json_encode([
                         'type' => 'query',
-                        'sessionId' => $sessionId,
                         'userId' => $userId,
                         'userAsId' => $userAsId,
                         'event' => [
