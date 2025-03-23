@@ -15,7 +15,7 @@ use Phalcon\Db\Column;
 
 class Mysql extends \Phalcon\Db\Adapter\Pdo\Mysql
 {
-    public function describeColumns(string $table, string $schema = null): array
+    public function describeColumns(string $table, ?string $schema = null): array
     {
         $definitions = parent::describeColumns($table, $schema);
         

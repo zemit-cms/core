@@ -16,7 +16,7 @@ trait Options
     protected array $defaultOptions = [];
     protected array $options = [];
     
-    public function __construct(array $options = null)
+    public function __construct(?array $options = null)
     {
         $this->initializeOptions($options);
     }

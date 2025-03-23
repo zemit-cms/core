@@ -61,7 +61,7 @@ class Conditional extends Behavior
      *
      * @return mixed|null
      */
-    public function getOption(string $key, array $options, array $params = null)
+    public function getOption(string $key, array $options, ?array $params = null)
     {
         $ret = $options[$key] ?? null;
         if (is_callable($ret)) {

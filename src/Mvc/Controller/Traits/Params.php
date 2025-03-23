@@ -33,7 +33,7 @@ trait Params
      *               then the value from the dispatcher's parameter is returned.
      * @throws Exception
      */
-    public function getParam(string $key, array|string|null $filters = null, string $default = null, array $params = null): mixed
+    public function getParam(string $key, array|string|null $filters = null, ?string $default = null, ?array $params = null): mixed
     {
         $params ??= $this->getParams();
         return isset($params[$key])

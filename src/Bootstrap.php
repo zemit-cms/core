@@ -85,7 +85,7 @@ DOC;
     /**
      * @throws Exception
      */
-    public function __construct(string $mode = null)
+    public function __construct(?string $mode = null)
     {
         $this->setMode($mode);
         $this->setEventsManager(new Events\Manager());
@@ -225,7 +225,7 @@ DOC;
     /**
      * Register modules
      */
-    public function registerModules(AbstractApplication $application = null, ?array $modules = null, ?string $defaultModule = null): void
+    public function registerModules(?AbstractApplication $application = null, ?array $modules = null, ?string $defaultModule = null): void
     {
         $application ??= $this->isMvc()
             ? $this->di->get('application')
