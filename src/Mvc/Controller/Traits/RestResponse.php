@@ -51,7 +51,7 @@ trait RestResponse
      * @return ResponseInterface
      * @throws \Exception
      */
-    public function setRestResponse(mixed $response = null, int $code = null, string $status = null, int $jsonOptions = 0, int $depth = 512): ResponseInterface
+    public function setRestResponse(mixed $response = null, ?int $code = null, ?string $status = null, int $jsonOptions = 0, int $depth = 512): ResponseInterface
     {
         // keep forced status code or set our own
         $statusCode = $this->response->getStatusCode();

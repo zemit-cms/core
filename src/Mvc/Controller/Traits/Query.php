@@ -497,7 +497,7 @@ trait Query
      * @todo escape fields properly
      *
      */
-    protected function getFilterCondition(array $filters = null, array $whiteList = null, bool $or = false, int $level = 0)
+    protected function getFilterCondition(?array $filters = null, ?array $whiteList = null, bool $or = false, int $level = 0)
     {
         $filters ??= $this->getParam('filters');
         $whiteList ??= $this->getFilterWhiteList();

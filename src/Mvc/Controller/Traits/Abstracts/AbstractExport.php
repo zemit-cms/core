@@ -19,7 +19,7 @@ trait AbstractExport
     
     abstract public function getExportColumns(array $list): array;
     
-    abstract public function export(array $list, ?string $filename = null, string $contentType = null, array $params = null): bool;
+    abstract public function export(array $list, ?string $filename = null, ?string $contentType = null, ?array $params = null): bool;
     
     abstract public function exportXml(array $list, ?string $filename = null, ?array $params = null): bool;
     

@@ -22,7 +22,7 @@ interface JwtInterface
     
     public function getJwtToken(string $id, array $data = [], array $options = []): string;
     
-    public function getClaimFromToken(string $token, string $claim = null): array;
+    public function getClaimFromToken(string $token, ?string $claim = null): array;
     
     public function getClaimFromAuthorization(array $authorization): array;
 }
