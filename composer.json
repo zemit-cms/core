@@ -134,7 +134,7 @@
     "phalcon/ide-stubs": "^5.8",
     "php-imap/php-imap": "^5.0",
     "phpspec/phpspec": "^7.5",
-    "phpstan/phpstan": "^1.12",
+    "phpstan/phpstan": "^1.12 || ^2.0",
     "phpunit/phpunit": "^10.5",
     "saggre/phpdocumentor-markdown": "^0.1.4",
     "shuchkin/simplexlsxgen": "^1.4",
