@@ -72,8 +72,7 @@ class Module extends Injectable implements ModuleDefinitionInterface
         $this->view->setViewsDir($this->getViewsDir());
         
         // url settings
-        $this->url->setBasePath('/' . $this->name . '/');
-        $this->url->setStaticBaseUri('/' . $this->name . '/');
+        $this->url->setBasePath($this->url->getBasePath() . '/' . $this->name . '/');
         $this->router->setDefaults([
             'namespace' => $defaultNamespace,
             'module' => $this->name,

@@ -92,7 +92,7 @@ trait Behavior
      * 
      * @return void
      */
-    public function attachBehaviors(array $behaviors = [], string $eventType = null, ?int $priority = null): void
+    public function attachBehaviors(array $behaviors = [], ?string $eventType = null, ?int $priority = null): void
     {
         foreach ($behaviors as $behavior) {
             $this->attachBehavior($behavior, $eventType, $priority);

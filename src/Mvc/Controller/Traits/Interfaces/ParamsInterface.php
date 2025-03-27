@@ -13,7 +13,7 @@ namespace Zemit\Mvc\Controller\Traits\Interfaces;
 
 interface ParamsInterface
 {
-    public function getParam(string $key, array|string|null $filters = null, string $default = null, array $params = null): mixed;
+    public function getParam(string $key, array|string|null $filters = null, ?string $default = null, ?array $params = null): mixed;
     
-    public function getParams(array $filters = null): array;
+    public function getParams(?array $filters = null): array;
 }

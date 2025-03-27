@@ -52,7 +52,7 @@ trait Params
      * @param bool $cached Whether to use cached parameters if they're available. Defaults to true.
      * @return array The combined and filtered request parameters, excluding the _url parameter.
      */
-    public function getParams(array $filters = null, bool $cached = true): array
+    public function getParams(?array $filters = null, bool $cached = true): array
     {
         if (isset($this->params) && $cached) {
             return $this->params;

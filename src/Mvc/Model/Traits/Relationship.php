@@ -898,7 +898,7 @@ trait Relationship
      * 
      * @return void
      */
-    public function appendMessagesFromRecord(?ModelInterface $record = null, string $context = null, ?int $index = null): void
+    public function appendMessagesFromRecord(?ModelInterface $record = null, ?string $context = null, ?int $index = null): void
     {
         if (isset($record)) {
             $this->appendMessages($record->getMessages(), $context, $index);

@@ -121,7 +121,7 @@ trait Export
      *
      * @throws Exception Thrown if the specified content type is not supported.
      */
-    public function export(array $list = [], string $filename = null, string $contentType = null, array $params = null): ResponseInterface
+    public function export(array $list = [], ?string $filename = null, ?string $contentType = null, ?array $params = null): ResponseInterface
     {
         $params ??= $this->getParams();
         $contentType ??= $this->getContentType();

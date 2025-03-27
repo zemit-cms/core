@@ -49,7 +49,7 @@ class Jwt
     /**
      * Initialize JWT Signer
      */
-    public function signer(string $signer = null, string $algo = null): AbstractSigner
+    public function signer(?string $signer = null, ?string $algo = null): AbstractSigner
     {
         $signer ??= $this->options['signer'] ?? Hmac::class;
         $algo ??= $this->options['algo'] ?? 'sha512';
@@ -93,7 +93,7 @@ class Jwt
     /**
      * Initialize JWT Validator
      */
-    public function validator(Token $token = null, int $timeShift = 0): Validator
+    public function validator(?Token $token = null, int $timeShift = 0): Validator
     {
         $token ??= $this->token;
         $this->validator = new Validator($token, $timeShift);
@@ -104,7 +104,7 @@ class Jwt
      * Build a token and validate it
      * @throws ValidatorException
      */
-    public function buildToken(Builder $builder = null): Token
+    public function buildToken(?Builder $builder = null): Token
     {
         $builder ??= $this->builder;
         $this->token = $builder->getToken();
@@ -128,7 +128,7 @@ class Jwt
      * Validate the token
      * @throws ValidatorException|\DateMalformedStringException
      */
-    public function validateToken(Token $token = null, int $timeShift = 0, array $options = [], AbstractSigner $signer = null): array
+    public function validateToken(?Token $token = null, int $timeShift = 0, array $options = [], ?AbstractSigner $signer = null): array
     {
         $token ??= $this->token;
         $signer ??= $this->signer;
