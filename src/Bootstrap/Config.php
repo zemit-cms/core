@@ -762,7 +762,7 @@ class Config extends \Zemit\Config\Config
                     'session.cache_expire' => Env::get('SESSION_CACHE_EXPIRE', '180'),
                     'session.use_trans_sid' => Env::get('SESSION_USE_TRANS_SID', '0'),
                     'session.trans_sid_tags' => Env::get('SESSION_TRANS_SID_TAGS', 'a=href,area=href,frame=src,form='),
-                    'session.trans_sid_hosts' => Env::get('SESSION_TRANS_SID_HOSTS', $_SERVER['HTTP_HOST'] ?? ''),
+//                    'session.trans_sid_hosts' => Env::get('SESSION_TRANS_SID_HOSTS', $_SERVER['HTTP_HOST'] ?? ''), // @deprecated
                     'session.sid_length' => Env::get('SESSION_SID_LENGTH', '32'),
                     'session.sid_bits_per_character' => Env::get('SESSION_SID_BITS_PER_CHARACTER', '4'),
                     'session.upload_progress.enabled' => Env::get('SESSION_UPLOAD_PROGRESS_ENABLED', '1'),

@@ -15,5 +15,5 @@ interface BehaviorInterface
 {
     public function attachBehavior(string $eventClass, ?string $eventType = null, ?int $priority = null): void;
     
-    public function attachBehaviors(array $behaviors = [], string $eventType = null, ?int $priority = null): void;
+    public function attachBehaviors(array $behaviors = [], ?string $eventType = null, ?int $priority = null): void;
 }

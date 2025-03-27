@@ -170,7 +170,7 @@ trait Jwt
      * @param string|null $claim An optional identifier to validate the token against.
      * @return array The claims extracted from the token, or an empty array if no valid claims are found.
      */
-    public function getClaimFromToken(string $token, string $claim = null): array
+    public function getClaimFromToken(string $token, ?string $claim = null): array
     {
         $uri = $this->request->getScheme() . '://' . $this->request->getHttpHost();
         

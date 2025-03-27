@@ -84,7 +84,7 @@ class Manager extends Injectable implements ManagerInterface, OptionsInterface
      * @param array|null $params Parameters for login, typically including 'email' and 'password'.
      * @return array Contains login status, logged-in user information, and validation messages.
      */
-    public function login(array $params = null): array
+    public function login(?array $params = null): array
     {
         $validation = new Validation();
         $validation->add('email', new PresenceOf(['message' => 'required']));
@@ -159,7 +159,7 @@ class Manager extends Injectable implements ManagerInterface, OptionsInterface
      *               - 'sent': A boolean indicating whether the reset token email was sent successfully.
      *               - 'messages': A collection of validation or processing messages.
      */
-    public function reset(array $params = null): array
+    public function reset(?array $params = null): array
     {
         $saved = false;
         $sent = false;

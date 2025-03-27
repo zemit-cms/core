@@ -17,5 +17,5 @@ trait AbstractRestResponse
 {
     abstract public function setRestErrorResponse(int $code = 400, string $status = 'Bad Request', mixed $response = null): ResponseInterface;
     
-    abstract public function setRestResponse(mixed $response = null, int $code = null, string $status = null, int $jsonOptions = 0, int $depth = 512): ResponseInterface;
+    abstract public function setRestResponse(mixed $response = null, ?int $code = null, ?string $status = null, int $jsonOptions = 0, int $depth = 512): ResponseInterface;
 }
