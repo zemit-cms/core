@@ -361,14 +361,14 @@ class Config extends \Zemit\Config\Config
                     'daily' => [
                         'query' => [
                             'conditions' => 'createdAt < :createdAt:',
-                            'bind' => ['createdAt' => $now->modify('-1 day')->format('Y-m-d 00:00:00')],
+                            'bind' => ['createdAt' => $this->getDateTime('-1 day', $now)->format('Y-m-d 00:00:00')],
                             'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
                         ],
                     ],
                     'weekly' => [
                         'query' => [
                             'conditions' => 'createdAt < :createdAt:',
-                            'bind' => ['createdAt' => $now->modify('-1 week')->format('Y-m-d 00:00:00')],
+                            'bind' => ['createdAt' => $this->getDateTime('-1 week', $now)->format('Y-m-d 00:00:00')],
                             'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
                         ],
                     ],
