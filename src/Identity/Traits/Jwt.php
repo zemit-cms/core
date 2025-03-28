@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Zemit\Identity\Traits;
 
+use Phalcon\Encryption\Security\JWT\Exceptions\ValidatorException;
 use Zemit\Di\AbstractInjectable;
 use Phalcon\Filter\Filter;
 use stdClass;
@@ -185,7 +186,7 @@ trait Jwt
         // Phalcon is now returning an error and was previously throwing an exception
         // @todo improve the validation process to handle the error reporting correctly instead of throwing an exception
         if (!empty($error)) {
-            throw new \Exception(implode('. ', $error));
+            throw new ValidatorException(implode('. ', $error), 401);
         }
         
         $claims = $token->getClaims();
