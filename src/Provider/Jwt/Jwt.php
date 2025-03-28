@@ -117,7 +117,7 @@ class Jwt
      * Validate the token
      * @throws ValidatorException
      */
-    public function validateToken(?Token $token = null, int $timeShift = 0, array $options = [], ?AbstractSigner $signer = null): void
+    public function validateToken(?Token $token = null, int $timeShift = 0, array $options = [], ?AbstractSigner $signer = null): array
     {
         $token ??= $this->token;
         $signer ??= $this->signer;
@@ -136,6 +136,8 @@ class Jwt
         $this->validator->validateExpiration($options['expiration']);
         $this->validator->validateIssuedAt($options['issuedAt']);
         $this->validator->validateSignature($signer, $options['passphrase']);
+        
+        return $this->validator->getErrors();
     }
     
     /**

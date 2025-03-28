@@ -176,11 +176,18 @@ trait Jwt
         
         $token = $this->jwt->parseToken($token);
         
-        $this->jwt->validateToken($token, 0, [
+        $error = $this->jwt->validateToken($token, 0, [
             'issuer' => $uri,
             'audience' => $uri,
             'id' => $claim,
         ]);
+        
+        // Phalcon is now returning an error and was previously throwing an exception
+        // @todo improve the validation process to handle the error reporting correctly instead of throwing an exception
+        if (!empty($error)) {
+            throw new \Exception(implode('. ', $error));
+        }
+        
         $claims = $token->getClaims();
         
         $ret = $claims->has('sub') ? json_decode($claims->get('sub'), true) : [];
