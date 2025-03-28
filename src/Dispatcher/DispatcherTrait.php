@@ -81,56 +81,34 @@ trait DispatcherTrait
             'action' => $this->getActionName(),
             'params' => $this->getParams(),
         ];
+        if ($this instanceof MvcDispatcher) {
+            $parts['controller'] = $this->getControllerName();
+        }
+        if ($this instanceof CliDispatcher) {
+            $parts['task'] = $this->getTaskName();
+        }
+        
         foreach ($parts as $part => $current) {
-            if (isset($forward[$part]) && $current !== $forward[$part]) {
+            if (!isset($forward[$part])) {
+                continue;
+            }
+            
+            $new = $forward[$part];
+            
+            if (is_array($new)) {
+                $new = json_encode($new);
+            }
+            
+            if (is_array($current)) {
+                $current = json_encode($current);
+            }
+            
+            if ($current !== $new) {
                 return true;
             }
         }
         
-        return $this->canForwardHandler($forward);
-    }
-    
-    /**
-     * Check whether the handler is changed or not
-     * depending on the dispatcher
-     * MVC: controller
-     * CLI: task
-     */
-    private function canForwardHandler(array $forward): bool
-    {
-        if ($this->canForwardController($forward['controller'] ?? null)) {
-            return true;
-        }
-        
-        if ($this->canForwardTask($forward['task'] ?? null)) {
-            return true;
-        }
-        
         return false;
-    }
-    
-    /**
-     * Check whether the controller is changed
-     */
-    private function canForwardController(?string $controller = null): bool
-    {
-        if ($this instanceof MvcDispatcher && isset($controller) && $this->getControllerName() !== $controller) {
-            return false;
-        }
-        
-        return true;
-    }
-    
-    /**
-     * Check whether the task is changed
-     */
-    private function canForwardTask(?string $task = null): bool
-    {
-        if ($this instanceof CliDispatcher && isset($task) && $this->getTaskName() !== $task) {
-            return false;
-        }
-        
-        return true;
     }
     
     public function unsetForwardNullParts(array $forward, ?array $parts = null): array
