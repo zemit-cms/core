@@ -289,10 +289,10 @@ class Config extends \Zemit\Config\Config
                 'sessionKey' => Env::get('IDENTITY_SESSION_KEY', 'zemit-identity'),
                 'sessionFallback' => Env::get('IDENTITY_SESSION_FALLBACK', false),
                 'token' => [
-                    'expiration' => $now->modify(Env::get('IDENTITY_TOKEN_EXPIRATION', '+1 day'))->getTimestamp(),
+                    'expiration' => $this->getDateTime(Env::get('IDENTITY_TOKEN_EXPIRATION', '+1 day'), $now)->getTimestamp(),
                 ],
                 'refreshToken' => [
-                    'expiration' => $now->modify(Env::get('IDENTITY_REFRESH_TOKEN_EXPIRATION', '+7 day'))->getTimestamp(),
+                    'expiration' => $this->getDateTime(Env::get('IDENTITY_REFRESH_TOKEN_EXPIRATION', '+7 day'), $now)->getTimestamp(),
                 ],
             ],
             
@@ -367,49 +367,49 @@ class Config extends \Zemit\Config\Config
                     'daily' => [
                         'query' => [
                             'conditions' => 'createdAt < :createdAt:',
-                            'bind' => ['createdAt' => $now->modify('-1 day')->format('Y-m-d 00:00:00')],
+                            'bind' => ['createdAt' => $this->getDateTime('-1 day', $now)->format('Y-m-d 00:00:00')],
                             'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
                         ],
                     ],
                     'weekly' => [
                         'query' => [
                             'conditions' => 'createdAt < :createdAt:',
-                            'bind' => ['createdAt' => $now->modify('-1 week')->format('Y-m-d 00:00:00')],
+                            'bind' => ['createdAt' => $this->getDateTime('-1 week', $now)->format('Y-m-d 00:00:00')],
                             'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
                         ],
                     ],
                     'monthly' => [
                         'query' => [
                             'conditions' => 'createdAt < :createdAt:',
-                            'bind' => ['createdAt' => $now->modify('-1 month')->format('Y-m-01 00:00:00')],
+                            'bind' => ['createdAt' => $this->getDateTime('-1 month', $now)->format('Y-m-01 00:00:00')],
                             'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
                         ],
                     ],
                     'quarterly' => [
                         'query' => [
                             'conditions' => 'createdAt < :createdAt:',
-                            'bind' => ['createdAt' => $now->modify('-3 months')->format('Y-m-01 00:00:00')],
+                            'bind' => ['createdAt' => $this->getDateTime('-3 months', $now)->format('Y-m-01 00:00:00')],
                             'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
                         ],
                     ],
                     'yearly' => [
                         'query' => [
                             'conditions' => 'createdAt < :createdAt:',
-                            'bind' => ['createdAt' => $now->modify('-1 year')->format('Y-01-01 00:00:00')],
+                            'bind' => ['createdAt' => $this->getDateTime('-1 year', $now)->format('Y-01-01 00:00:00')],
                             'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
                         ],
                     ],
                     'biennially' => [
                         'query' => [
                             'conditions' => 'createdAt < :createdAt:',
-                            'bind' => ['createdAt' => $now->modify('-2 year')->format('Y-01-01 00:00:00')],
+                            'bind' => ['createdAt' => $this->getDateTime('-2 year', $now)->format('Y-01-01 00:00:00')],
                             'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
                         ],
                     ],
                     'triennially' => [
                         'query' => [
                             'conditions' => 'createdAt < :createdAt:',
-                            'bind' => ['createdAt' => $now->modify('-3 year')->format('Y-01-01 00:00:00')],
+                            'bind' => ['createdAt' => $this->getDateTime('-3 year', $now)->format('Y-01-01 00:00:00')],
                             'bindTypes' => ['createdAt' => Column::BIND_PARAM_STR],
                         ],
                     ],
@@ -820,9 +820,9 @@ class Config extends \Zemit\Config\Config
                     'signer' => Env::get('SECURITY_JWT_SIGNER', \Phalcon\Encryption\Security\JWT\Signer\Hmac::class),
                     'algo' => Env::get('SECURITY_JWT_ALGO', 'sha512'),
                     'contentType' => Env::get('SECURITY_JWT_CONTENT_TYPE', 'application/json'),
-                    'expiration' => $now->modify(Env::get('SECURITY_JWT_EXPIRATION', '+1 day'))->getTimestamp(),
-                    'notBefore' => $now->modify(Env::get('SECURITY_JWT_NOT_BEFORE', '-1 minute'))->getTimestamp(),
-                    'issuedAt' => $now->modify(Env::get('SECURITY_JWT_ISSUED_AT', 'now'))->getTimestamp(),
+                    'expiration' => $this->getDateTime(Env::get('SECURITY_JWT_EXPIRATION', '+1 day'), $now)->getTimestamp(),
+                    'notBefore' => $this->getDateTime(Env::get('SECURITY_JWT_NOT_BEFORE', '-1 minute'), $now)->getTimestamp(),
+                    'issuedAt' => $this->getDateTime(Env::get('SECURITY_JWT_ISSUED_AT', 'now'), $now)->getTimestamp(),
                     'issuer' => Env::get('SECURITY_JWT_ISSUER', 'ZEMIT_CORE_DEFAULT_ISSUER'),
                     'audience' => Env::get('SECURITY_JWT_AUDIENCE', 'ZEMIT_CORE_DEFAULT_AUDIENCE'),
                     'id' => Env::get('SECURITY_JWT_ID', 'ZEMIT_CORE_DEFAULT_ID'),

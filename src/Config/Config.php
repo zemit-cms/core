@@ -13,6 +13,8 @@ namespace Zemit\Config;
 
 use Phalcon\Config\ConfigInterface as PhalconConfigInterface;
 use Zemit\Mvc\Model;
+use DateTimeImmutable;
+use Exception;
 
 class Config extends \Phalcon\Config\Config implements ConfigInterface
 {
@@ -45,7 +47,7 @@ class Config extends \Phalcon\Config\Config implements ConfigInterface
         $toMerge = $toMerge instanceof PhalconConfigInterface ? $toMerge->toArray() : $toMerge;
         
         if (!is_array($toMerge)) {
-            throw new \Exception('Invalid data type for merge.');
+            throw new Exception('Invalid data type for merge.');
         }
         
         $result = $this->internalMergeAppend($source, $toMerge);
@@ -68,6 +70,26 @@ class Config extends \Phalcon\Config\Config implements ConfigInterface
         }
         
         return $source;
+    }
+    
+    /**
+     * Get a modified DateTime.
+     * Note: This is a helper to enhance strict typings and safely use DateTime within config
+     *
+     * @param string $modifier The modifier string to modify the DateTime.
+     * @param DateTimeImmutable|null $dateTime Optional. The DateTime to modify. Defaults to current DateTime if not provided.
+     *
+     * @return DateTimeImmutable The modified DateTime object.
+     * @throws Exception If the modification of the DateTime fails.
+     */
+    public function getDateTime(string $modifier, ?DateTimeImmutable $dateTime = null): DateTimeImmutable
+    {
+        $dateTime ??= new DateTimeImmutable();
+        $modified = $dateTime->modify($modifier);
+        if ($modified === false) {
+            throw new Exception("Failed to modify the date with the period '{$modifier}'.");
+        }
+        return $modified;
     }
     
     /**
