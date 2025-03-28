@@ -22,6 +22,7 @@ trait Jwt
     use AbstractInjectable;
     
     public array $claim = [];
+    public array $error = [];
     
     /**
      * Generates a new JWT and refresh token based on the specified claim and configuration.
@@ -29,6 +30,7 @@ trait Jwt
      *
      * @param bool $refresh Indicates whether to refresh the claim by generating a new key and invalidating previous tokens.
      * @return array Contains the generated JWT, refresh token, and a flag indicating if the claim was refreshed.
+     * @throws ValidatorException|\Phalcon\Encryption\Security\Exception
      */
     public function getJwt(bool $refresh = false): array
     {
@@ -89,6 +91,7 @@ trait Jwt
      * @param bool $refresh Determines whether to attempt refreshing the claim if available.
      * @param bool $force Forces bypassing the cached claim and retrieving a new one.
      * @return array The claim data or an empty array if no claim is found.
+     * @throws ValidatorException
      */
     public function getClaim(bool $refresh = false, bool $force = false): array
     {
@@ -170,27 +173,32 @@ trait Jwt
      * @param string $token The JWT token to parse and validate.
      * @param string|null $claim An optional identifier to validate the token against.
      * @return array The claims extracted from the token, or an empty array if no valid claims are found.
+     * @throws ValidatorException
      */
     public function getClaimFromToken(string $token, ?string $claim = null): array
     {
+        // already an error return an empty array
+        // long-story-short, this is to allow the dispatcher error event to redirect to the error controller
+        // and avoiding a cycling loop because of recursive throwing of validator exception
+        if (!empty($this->error)) {
+            return [];
+        }
+        
         $uri = $this->request->getScheme() . '://' . $this->request->getHttpHost();
-        
         $token = $this->jwt->parseToken($token);
-        
-        $error = $this->jwt->validateToken($token, 0, [
+        $this->error = $this->jwt->validateToken($token, 0, [
             'issuer' => $uri,
             'audience' => $uri,
             'id' => $claim,
         ]);
         
         // Phalcon is now returning an error and was previously throwing an exception
-        // @todo improve the validation process to handle the error reporting correctly instead of throwing an exception
-        if (!empty($error)) {
-            throw new ValidatorException(implode('. ', $error), 401);
+        if (!empty($this->error)) {
+            // @todo this is the old way phalcon was doing, we need to update this to avoid throwing an exception
+            throw new ValidatorException(implode('. ', $this->error), 401);
         }
         
         $claims = $token->getClaims();
-        
         $ret = $claims->has('sub') ? json_decode($claims->get('sub'), true) : [];
         return is_array($ret) ? $ret : [];
     }
