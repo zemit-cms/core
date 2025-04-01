@@ -27,14 +27,17 @@ class ServiceProvider extends AbstractServiceProvider
             $config = $di->get('config');
             assert($config instanceof ConfigInterface);
             
-            $trustForwardedHeaders = $config->path('request.trustForwardedHeaders') ?? false;
-            if ($trustForwardedHeaders && str_contains($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '', 'https')) {
+            $requestConfig = $config->pathToArray('request') ?? [];
+            
+            $forceServerHttps = $requestConfig['forceServerHttps'] ?? false;
+            $trustForwardedHeaders = $requestConfig['trustForwardedHeaders'] ?? false;
+            
+            if ($forceServerHttps || ($trustForwardedHeaders && str_contains($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '', 'https'))) {
                 $_SERVER['HTTPS'] = 'on';
             }
             
             $request = new Request();
             $request->setDI($di);
-//            $request->trustForwardedHeaders($trustForwardedHeaders); // @todo
             
             return $request;
         });
