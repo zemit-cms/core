@@ -256,6 +256,13 @@ class Config extends \Zemit\Config\Config
             ],
             
             /**
+             * Request Provider Configuration
+             */
+            'request' => [
+                'trustForwardedHeaders' => Env::get('REQUEST_TRUST_FORWARDED_HEADERS', false),
+            ],
+            
+            /**
              * Response Provider Configuration
              * - Set default security headers
              */
