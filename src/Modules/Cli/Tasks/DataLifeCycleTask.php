@@ -72,7 +72,7 @@ DOC;
             $source = $model->getSource();
             
             // whitelisted tables
-            if (!empty($parsedTables) && !isset($tables[$source])) {
+            if (!empty($tables) && !isset($tables[$source])) {
                 continue;
             }
             
@@ -100,7 +100,7 @@ DOC;
             }
             
             // find all record matching the defined retention policy
-            $records = $model::findLifeCycle($query);
+            $records = $model::findLifeCycle(...$query);
             assert($records instanceof ResultsetInterface);
             
             $callable = $policy['callable'] ?? function (Model $record, string $source, array &$response) {
