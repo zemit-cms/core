@@ -20,12 +20,15 @@ class DataLifeCycleTask extends Task
 {
     public string $cliDoc = <<<DOC
 Usage:
-  zemit cli data-life-cycle <action> [<params> ...]
+  zemit cli data-life-cycle <action> [--tables=<tables>] [--hard-delete=<hardDelete>]
+
+Actions:
+  main
+  models
 
 Options:
-  task: cache
-  action: clear
-
+  --tables=<tables>               Comma seperated list of table to execute the data-life-cycle query on
+  --hard-delete=<hardDelete>      Set 'true' to hard delete records if the soft-delete is enabled
 
 DOC;
     
@@ -44,28 +47,19 @@ DOC;
         $this->addModelsPermissions();
     }
     
-    /**
-     * Default action
-     */
-    public function mainAction(string ...$tables): ?array
+    public function mainAction(): ?array
     {
         $response = [];
-
-//        $response ['backup'] = $this->backupAction();
-        $response ['models'] = $this->modelsAction(...$tables);
-        
+        $response ['models'] = $this->modelsAction();
         return $response;
     }
     
-    public function modelsAction(string ...$tables): array
+    public function modelsAction(): array
     {
         $response = [];
         
-        $parsedTables = [];
-        foreach ($tables as $key => $table) {
-            $parsedTables[$key] = array_map('trim', explode(',', $table));
-        }
-        $parsedTables = array_flip(array_merge_recursive(...$parsedTables));
+        $tables = array_flip(array_filter(array_map('trim', explode(',', $this->dispatcher->getParam('tables') ?? ''))));
+        $hardDelete = $this->dispatcher->getParam('hardDelete') === 'true';
         
         foreach ($this->models as $modelClass => $policyName) {
             
@@ -78,7 +72,7 @@ DOC;
             $source = $model->getSource();
             
             // whitelisted tables
-            if (!empty($parsedTables) && !isset($parsedTables[$source])) {
+            if (!empty($parsedTables) && !isset($tables[$source])) {
                 continue;
             }
             
@@ -89,11 +83,24 @@ DOC;
                 ];
             }
             
-            // temporarily disable soft-delete
-            $model->disableSoftDelete();
+            // skip empty query
+            if (empty($policy['query'])) {
+                continue;
+            }
+            
+            $query = [$policy['query']];
+            if (isset($policy['hardDelete']) && $hardDelete) {
+                $query []= $policy['hardDelete'];
+            }
+            
+            // temporarily disable soft-delete if it is enabled and the hardDelete param is requested
+            $modelSoftDeleteIsEnabled = $model->getSoftDeleteBehavior()->isEnabled();
+            if ($hardDelete && $modelSoftDeleteIsEnabled) {
+                $model->disableSoftDelete();
+            }
             
             // find all record matching the defined retention policy
-            $records = $model::findLifeCycle($policy['query'] ?? null);
+            $records = $model::findLifeCycle($query);
             assert($records instanceof ResultsetInterface);
             
             $callable = $policy['callable'] ?? function (Model $record, string $source, array &$response) {
@@ -110,8 +117,10 @@ DOC;
                 $callable($record, $source, $response);
             }
             
-            // re-enable soft-delete
-            $model->enableSoftDelete();
+            // re-enable soft-delete if it was previously enabled
+            if ($hardDelete && $modelSoftDeleteIsEnabled) {
+                $model->enableSoftDelete();
+            }
         }
         
         return $response;
