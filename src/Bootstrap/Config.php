@@ -260,6 +260,7 @@ class Config extends \Zemit\Config\Config
              */
             'request' => [
                 'trustForwardedHeaders' => Env::get('REQUEST_TRUST_FORWARDED_HEADERS', false),
+                'forceServerHttps' => Env::get('REQUEST_FORCE_SERVER_HTTPS', false),
             ],
             
             /**
