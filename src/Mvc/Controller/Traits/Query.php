@@ -1025,9 +1025,15 @@ trait Query
         $find = $this->getFindCount($find);
         
         // use subCount instead of the query is aggregated
-        $countResult = !empty($find['having'])
+        $useSubCount = !empty($find['having']) || !empty($find['group']);
+        $countResult = $useSubCount
             ? $model::subCount($find)
             : $model::count($find);
+        
+        // in case we didn't use subCount and received false, try using subCount anyway
+        if (!$useSubCount && $countResult === false) {
+            $countResult = $model::subCount($find);
+        }
         
         return is_countable($countResult) ? count($countResult) : (int)$countResult;
     }
