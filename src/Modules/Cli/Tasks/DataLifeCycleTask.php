@@ -90,7 +90,7 @@ DOC;
             
             $query = [$policy['query']];
             if (isset($policy['hardDelete']) && $hardDelete) {
-                $query []= $policy['hardDelete'];
+                $query [] = $policy['hardDelete'];
             }
             
             // temporarily disable soft-delete if it is enabled and the hardDelete param is requested
@@ -104,12 +104,12 @@ DOC;
             assert($records instanceof ResultsetInterface);
             
             $callable = $policy['callable'] ?? function (Model $record, string $source, array &$response) {
-                $deleted =  $record->delete();
-                $response[$source]['deleted'] += $deleted? 1 : 0;
+                $deleted = $record->delete();
+                $response[$source]['deleted'] += $deleted ? 1 : 0;
                 
                 $messages = $record->getMessages();
                 if (!empty($messages)) {
-                    $response[$source]['messages']= array_merge($response[$source]['messages'], $messages);
+                    $response[$source]['messages'] = array_merge($response[$source]['messages'], $messages);
                 }
             };
             
