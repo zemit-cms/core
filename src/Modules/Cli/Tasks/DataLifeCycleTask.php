@@ -88,9 +88,12 @@ DOC;
                 continue;
             }
             
-            $query = [$policy['query']];
+            $query = $policy['query'];
             if (isset($policy['hardDelete']) && $hardDelete) {
-                $query [] = $policy['hardDelete'];
+                $query = array_merge_recursive($query, $policy['hardDelete']);
+            }
+            if (is_array($query['conditions'])) {
+                $query['conditions'] = '(' . implode(') AND (', $query['conditions']) . ')';
             }
             
             // temporarily disable soft-delete if it is enabled and the hardDelete param is requested
@@ -100,7 +103,7 @@ DOC;
             }
             
             // find all record matching the defined retention policy
-            $records = $model::findLifeCycle(...$query);
+            $records = $model::findLifeCycle($query);
             assert($records instanceof ResultsetInterface);
             
             $callable = $policy['callable'] ?? function (Model $record, string $source, array &$response) {
