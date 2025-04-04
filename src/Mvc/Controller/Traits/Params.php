@@ -65,6 +65,7 @@ trait Params
             $this->request->getFilteredQuery(), // $_GET
             $this->request->getFilteredPut(), // $_PUT
             $this->request->getFilteredPost(), // $_POST
+            $this->dispatcher->getParams(),
         );
         
         // remove default phalcon _url param
