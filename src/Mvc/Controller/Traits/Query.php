@@ -625,7 +625,9 @@ trait Query
                     if (!empty($filter['value'])) {
                         throw new \Exception('Not allowed to pass a value when using the following operator: `' . $queryOperator . '`', 403);
                     }
-                    $subQuery = "$queryLogic $queryFieldBinder";
+                    // fix for phql, it does not support "is" and "is not" and instead require equals or not equals
+                    $queryOperator = str_replace(['is not', 'is'], ['!=', '='], $queryOperator);
+                    $subQuery = "$queryLogic $queryFieldBinder $queryOperator";
                 }
                 
                 // raw queries without values
