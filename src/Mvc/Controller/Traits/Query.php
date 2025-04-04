@@ -614,18 +614,25 @@ trait Query
                 $isNegative = str_contains($queryOperator, 'not') || in_array($queryOperator, ['!=', '<>']);
                 $orNullOrEmpty = $isNegative? " or $queryFieldBinder is null or $queryFieldBinder = ''" : '';
                 
-                // is or not empty
+                // operator using is and value is defined, is not allowed
+                if (!empty($filter['value']) && str_contains($queryOperator, 'is')) {
+                    throw new \Exception('Not allowed to pass a value when using the following operator: `' . $queryOperator . '`', 403);
+                }
+                
+                // is or not - empty
                 if (in_array($queryOperator, ['is empty', 'is not empty'])) {
                     $queryOperator = ($queryOperator === 'is not empty' ? '!' : '');
                     $subQuery = "$queryLogic $queryOperator(TRIM($queryFieldBinder) = '' or $queryFieldBinder is null)";
                 }
                 
-                // is (not) boolean (or null)
-                elseif (in_array($queryOperator, ['is true', 'is not true', 'is false', 'is not false', 'is null', 'is not null'])) {
-                    if (!empty($filter['value'])) {
-                        throw new \Exception('Not allowed to pass a value when using the following operator: `' . $queryOperator . '`', 403);
-                    }
-                    // fix for phql, it does not support "is" and "is not" and instead require equals or not equals
+                // is or not - null
+                if (in_array($queryOperator, ['is null', 'is not null'])) {
+                    $subQuery = "$queryLogic $queryFieldBinder $queryOperator";
+                }
+                
+                // is or not - booleans
+                elseif (in_array($queryOperator, ['is true', 'is not true', 'is false', 'is not false'])) {
+                    // fix for phql, it does not support "is" and "is not" for booleans and instead require equals or not equals
                     $queryOperator = str_replace(['is not', 'is'], ['!=', '='], $queryOperator);
                     $subQuery = "$queryLogic $queryFieldBinder $queryOperator";
                 }
