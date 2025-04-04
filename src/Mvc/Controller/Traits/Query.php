@@ -620,6 +620,14 @@ trait Query
                     $subQuery = "$queryLogic $queryOperator(TRIM($queryFieldBinder) = '' or $queryFieldBinder is null)";
                 }
                 
+                // is (not) boolean (or null)
+                elseif (in_array($queryOperator, ['is true', 'is not true', 'is false', 'is not false', 'is null', 'is not null'])) {
+                    if (!empty($filter['value'])) {
+                        throw new \Exception('Not allowed to pass a value when using the following operator: `' . $queryOperator . '`', 403);
+                    }
+                    $subQuery = "$queryLogic $queryFieldBinder";
+                }
+                
                 // raw queries without values
                 elseif (!isset($filter['value'])) {
                     $subQuery = "$queryLogic $queryFieldBinder $queryOperator";
