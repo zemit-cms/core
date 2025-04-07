@@ -278,7 +278,7 @@ class Config extends \Zemit\Config\Config
                     'X-XSS-Protection' => Env::get('RESPONSE_HEADER_XSS_PROTECTION', 0),
                 ],
                 'corsHeaders' => [
-                    'Access-Control-Allow-Origin' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_ALLOW_ORIGIN', '*'),
+                    'Access-Control-Allow-Origin' => array_map('trim', explode(',', Env::get('RESPONSE_HEADER_ACCESS_CONTROL_ALLOW_ORIGIN', '*'))),
                     'Access-Control-Allow-Methods' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_ALLOW_METHODS', 'GET, POST, OPTIONS, PUT, PATCH, DELETE'),
                     'Access-Control-Allow-Headers' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_ALLOW_HEADERS', 'Origin, X-Requested-With, Content-Range, Content-Disposition, Content-Type, Authorization, X-Authorization'),
                     'Access-Control-Allow-Credentials' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_ALLOW_CREDENTIALS', 'true'),
