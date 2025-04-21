@@ -16,7 +16,7 @@ namespace Zemit\Support\Helper\Str;
  */
 class RemoveNonPrintable
 {
-    public function __invoke(string $string, string $nonPrintableRegex = '[[:cntrl:]' . PHP_EOL . ']', string $replacement = ''): string
+    public function __invoke(string $string, string $nonPrintableRegex = '[:cntrl:]', string $replacement = ''): string
     {
         return mb_ereg_replace($nonPrintableRegex, $replacement, $string) ?: '';
     }
