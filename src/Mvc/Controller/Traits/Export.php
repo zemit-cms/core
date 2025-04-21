@@ -12,7 +12,7 @@
 namespace Zemit\Mvc\Controller\Traits;
 
 use Exception;
-use League\Csv\ByteSequence;
+use League\Csv\Bom;
 use League\Csv\CannotInsertRecord;
 use League\Csv\CharsetConverter;
 use League\Csv\InvalidArgument;
@@ -236,8 +236,8 @@ trait Export
                     continue;
                 }
                 
-                // Remove non-printable
-                $value = Helper::removeNonPrintable($value);
+                // Remove non-printable (except new lines)
+                $value = Helper::removeNonPrintable($value, '[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]');
                 
                 // Normalize line breaks to "\n" for consistency
                 $value = Helper::normalizeLineBreaks($value);
@@ -248,8 +248,8 @@ trait Export
                 // Decode HTML entities to characters
                 $value = html_entity_decode($value, ENT_QUOTES, 'UTF-8');
                 
-                // Enforce and sanitize UTF-8 encoding
-                $value = Helper::sanitizeUTF8($value);
+                // Enforce and sanitize UTF-8 encoding (except new lines)
+                $value = Helper::sanitizeUTF8($value, '[^\x09\x0A\x0D\x20-\x7E\xA0-\xFF]');
                 
                 // Escape special characters if forcing raw value
                 if ($forceRawValue && isset($value[0]) && in_array($value[0], ['=', '+', '-', '@'])) {
@@ -285,7 +285,7 @@ trait Export
         $escape = $params['escape'] ?? '\\';
         $outputBOM = $params['outputBOM'] ?? null;
         $skipIncludeBOM = $params['skipIncludeBOM'] ?? false;
-        $relaxEnclosure = $params['relaxEnclosure'] ?? false;
+        $necessaryEnclosure = $params['necessaryEnclosure'] ?? false;
         $keepEndOfLines = $params['keepEndOfLines'] ?? false;
 
 //            $csv = Writer::createFromFileObject(new \SplTempFileObject());
@@ -293,7 +293,7 @@ trait Export
         
         // CSV - MS Excel on MacOS
         if ($mode === 'mac') {
-            $csv->setOutputBOM(ByteSequence::BOM_UTF16_LE); // utf-16
+            $csv->setOutputBOM(Bom::Utf16Le); // utf-16
             $csv->setDelimiter("\t"); // tabs separated
             $csv->setEndOfLine("\r\n"); // end of lines
             CharsetConverter::addTo($csv, 'UTF-8', 'UTF-16');
@@ -301,15 +301,15 @@ trait Export
         
         // CSV - MS Excel on Windows
         else {
-            $csv->setOutputBOM(ByteSequence::BOM_UTF8); // utf-8
+            $csv->setOutputBOM(Bom::Utf8); // utf-8
             $csv->setDelimiter(','); // comma separated
             $csv->setEndOfLine("\r\n"); // end of lines
             CharsetConverter::addTo($csv, 'UTF-8', 'UTF-8');
         }
         
         // relax enclosure
-        if ($relaxEnclosure) {
-            $csv->relaxEnclosure();
+        if ($necessaryEnclosure) {
+            $csv->necessaryEnclosure();
         }
         // force enclosure
         else {
@@ -362,7 +362,7 @@ trait Export
         }
         
         // CSV
-        $csv->output($filename . '.csv');
+        $csv->download($filename . '.csv');
         return true;
     }
 }
