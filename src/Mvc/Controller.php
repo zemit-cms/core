@@ -19,6 +19,7 @@ use Zemit\Filter\Filter;
 use Zemit\Html\Escaper;
 use Zemit\Http\Request;
 use Zemit\Identity\Manager as Identity;
+use Zemit\Provider\Jwt\Jwt;
 use Zemit\Support\Utils;
 use Zemit\Tag;
 
@@ -38,6 +39,7 @@ use Zemit\Tag;
  * @property Router $router
  * @property Cache $cache
  * @property Request $request
+ * @property Jwt $jwt
  */
 class Controller extends \Phalcon\Mvc\Controller
 {
