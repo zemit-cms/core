@@ -4,8 +4,8 @@ services:
       context: .
       dockerfile: docker/php-fpm-alpine-phalcon/Dockerfile
       args:
-        PHP_VERSION: "8.3-fpm-alpine"
-        PHALCON_VERSION: "5.8.0"
+        PHP_VERSION: "8.4-fpm-alpine"
+        PHALCON_VERSION: "5.9.3"
     entrypoint: ["sh", "/usr/local/bin/entrypoint.sh", "php-fpm"]
     volumes:
       - ./docker/entrypoint.sh:/usr/local/bin/entrypoint.sh
