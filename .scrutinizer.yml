@@ -45,7 +45,7 @@ build:
           - composer self-update
           - find ./src/ -name '*.php' -exec sed -i 's/\(public\|protected\|private\)\s\+const\s\+\w\+\s\+\(\w\+\)\s*=/\1 const \2 =/g' {} +
         after:
-#          - composer require --dev phalcon/ide-stubs:5.8.0
+#          - composer require --dev phalcon/ide-stubs:5.9.3
 #          - composer require --dev phpunit/phpunit
 #          - composer require --dev squizlabs/php_codesniffer
 #          - composer require --dev phpstan/phpstan
