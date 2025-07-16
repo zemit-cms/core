@@ -89,25 +89,26 @@ class ClamavTest extends AbstractUnit
         $clamav->endSession();
     }
     
-    public function testPositive(): void
-    {
-        $clamav = $this->getClamav();
-        $clamav->startSession();
-        
-        $positiveFile = __DIR__ . '/../../Files/clamav-positive.txt';
-        $result = $clamav->scanFile($positiveFile);
-        
-        $this->assertInstanceOf(Result::class, $result);
-        $this->assertFalse($result->isOk(), 'ok');
-        $this->assertFalse($result->isError(), 'error');
-        $this->assertTrue($result->isFound(), 'found');
-        $this->assertIsString($result->getId(), 'isString id');
-        $this->assertNotEmpty($result->getId(), 'notEmpty id');
-        $this->assertEquals(realpath($positiveFile), $result->getFilename(), 'filename');
-        $this->assertEquals('Eicar-Signature', $result->getReason(), 'reason');
-        
-        $clamav->endSession();
-    }
+    // @todo dynamically download EICAR test file and delete after
+//    public function testPositive(): void
+//    {
+//        $clamav = $this->getClamav();
+//        $clamav->startSession();
+//        
+//        $positiveFile = __DIR__ . '/../../Files/clamav-positive.txt';
+//        $result = $clamav->scanFile($positiveFile);
+//        
+//        $this->assertInstanceOf(Result::class, $result);
+//        $this->assertFalse($result->isOk(), 'ok');
+//        $this->assertFalse($result->isError(), 'error');
+//        $this->assertTrue($result->isFound(), 'found');
+//        $this->assertIsString($result->getId(), 'isString id');
+//        $this->assertNotEmpty($result->getId(), 'notEmpty id');
+//        $this->assertEquals(realpath($positiveFile), $result->getFilename(), 'filename');
+//        $this->assertEquals('Eicar-Signature', $result->getReason(), 'reason');
+//        
+//        $clamav->endSession();
+//    }
     
     public function testNotFound(): void
     {
