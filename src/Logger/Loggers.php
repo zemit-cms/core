@@ -81,7 +81,7 @@ class Loggers
      * @return array The array of logger adapters.
      * @throws \Exception If a logger driver adapter is not defined.
      */
-    public function getAdapters(string|array|null $loggerDrivers = null, array $options = [], FormatterInterface $formatter = null): array
+    public function getAdapters(string|array|null $loggerDrivers = null, array $options = [], FormatterInterface|null $formatter = null): array
     {
         $drivers = $this->getOption('drivers') ?? [];
         
