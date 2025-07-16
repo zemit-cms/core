@@ -11,12 +11,9 @@
 
 namespace Zemit\Config;
 
-use DateTimeImmutable;
 use Phalcon\Config\ConfigInterface as PhalconConfigInterface;
-use Zemit\Mvc\Model;
-use DateTimeInterface;
+use DateTimeImmutable;
 use Exception;
-use Zemit\Mvc\ModelInterface;
 
 class Config extends \Phalcon\Config\Config implements ConfigInterface
 {
