@@ -124,7 +124,7 @@ class ColumnTest extends \Zemit\Tests\Unit\AbstractUnit
 
     public function testGetType(): void
     {
-        $this->assertEquals('text', $this->column->getType());
+        $this->assertEquals('singleLineText', $this->column->getType());
     }
     
     public function testSetType(): void
