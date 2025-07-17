@@ -76,7 +76,7 @@ class ModuleTest extends AbstractUnit
     {
         $dirname = $this->module->getDirname();
         $this->assertIsString($dirname);
-        $this->assertStringEndsWith('/Cli', $dirname);
+        $this->assertStringEndsWith(DIRECTORY_SEPARATOR . 'Cli', $dirname);
         $this->assertFileExists($dirname);
     }
     
