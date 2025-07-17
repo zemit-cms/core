@@ -18,14 +18,20 @@ class Fr extends NativeArray
 {
     public function __construct(InterpolatorFactory $interpolator, array $options = [])
     {
-        parent::__construct($interpolator, array_merge_recursive([
+        $config = [
             'locale' => 'fr_CA.UTF-8',
             'defaultDomain' => 'zemit',
-            'category' => LC_MESSAGES,
             'content' => [
                 'powered-by' => 'Propulsé par %zemit%.',
                 'copyright' => '%zemit% &copy; 2017 Zemit.',
             ],
-        ], $options));
+        ];
+        
+        // Only set category if LC_MESSAGES is actually defined (Unix/Linux systems with gettext)
+        if (defined('LC_MESSAGES')) {
+            $config['category'] = LC_MESSAGES;
+        }
+        
+        parent::__construct($interpolator, array_merge_recursive($config, $options));
     }
 }
