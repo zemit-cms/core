@@ -207,7 +207,7 @@ trait Validate
         ]));
         
         $validator->add($field, new Max([
-            'max' => $maxChar,
+            'max' => $maxChar + 1,
             'message' => $this->_('max-length'),
             'allowEmpty' => true,
         ]));
