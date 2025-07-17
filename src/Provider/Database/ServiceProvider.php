@@ -88,10 +88,13 @@ class ServiceProvider extends AbstractServiceProvider
             assert($eventsManager instanceof ManagerInterface);
             
             if (!self::$attachedEvents) {
-                $eventsManager->attach('db', new Logger());
-                $eventsManager->attach('db', new Profiler());
-                self::$attachedEvents = true;
+                $eventsManager->detach('db', new Logger());
+                $eventsManager->detach('db', new Profiler());
             }
+            
+            $eventsManager->attach('db', new Logger());
+            $eventsManager->attach('db', new Profiler());
+            self::$attachedEvents = true;
             
             $connection->setEventsManager($eventsManager);
             
