@@ -100,27 +100,30 @@ class ConfigTest extends AbstractUnit
     public function testGetModelClass(): void
     {
         $config = new \Zemit\Bootstrap\Config();
-        $models = $config->get('models')->toArray();
+        $modelsMap = $config->get('models')->toArray();
         
-        foreach ($models as $from => $to) {
+        $models = $this->di->get('models');
+        assert($models instanceof \Zemit\Support\Models);
+        
+        foreach ($modelsMap as $from => $to) {
             // Should be itself by default
-            $this->assertEquals($to, $config->getModelClass($from));
+            $this->assertEquals($to, $models->getClassMap($from));
             $this->assertEquals($to, $from);
             
             // Should be mutable
-            $config->setModelClass($from, self::class);
-            $this->assertEquals(self::class, $config->getModelClass($from));
+            $models->setClassMap($from, self::class);
+            $this->assertEquals(self::class, $models->getClassMap($from));
     
             // Should be reset
-            $config->resetModelClass($from);
-            $this->assertEquals($from, $config->getModelClass($from));
+            $models->removeClassMap($from);
+            $this->assertEquals($from, $models->getClassMap($from));
         }
     
         // Should fall back to itself
-        $this->assertEquals(self::class, $config->getModelClass(self::class));
+        $this->assertEquals(self::class, $models->getClassMap(self::class));
     
         // Should be mutable
-        $config->setModelClass(self::class, Config::class);
-        $this->assertEquals(Config::class, $config->getModelClass(self::class));
+        $models->setClassMap(self::class, Config::class);
+        $this->assertEquals(Config::class, $models->getClassMap(self::class));
     }
 }
