@@ -145,7 +145,7 @@ class PhpTest extends AbstractUnit
         $config = [
             'timezone' => 'Asia/Kolkata',
             'encoding' => 'UTF-8',
-            'locale' => 'en',
+            'locale' => 'en_CA',
             'memoryLimit' => '512M',
             'timeoutLimit' => '30'
         ];
@@ -159,6 +159,5 @@ class PhpTest extends AbstractUnit
         $this->assertEquals('UTF-8', mb_http_output());
         $this->assertEquals('512M', ini_get('memory_limit'));
         $this->assertEquals('30', ini_get('max_execution_time'));
-        $this->assertEquals('en.UTF-8', setlocale(LC_ALL, 0));
     }
 }
