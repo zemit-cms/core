@@ -68,7 +68,7 @@ trait DescribesTrait
      * @param string|null $defaultValue The value to check.
      * @return bool Returns true if the value is a raw value, false otherwise.
      */
-    public function isRawValue(string $defaultValue = null): bool
+    public function isRawValue(?string $defaultValue = null): bool
     {
         return match ($defaultValue) {
             'CURRENT_TIMESTAMP',
