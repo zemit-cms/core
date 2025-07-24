@@ -39,10 +39,10 @@ class Column extends ColumnAbstract implements ColumnInterface
     }
     
     public function getColumnDefinitions(): array {
-        return self::getColumnDefinitionsByType($this->getType());
+        return self::getColumnDefinitionsByType(ColumnType::from($this->getType()));
     }
     
-    public static function getColumnDefinitionsByType(string $type): array {
+    public static function getColumnDefinitionsByType(ColumnType $type): array {
         return match ($type) {
             // Map cases to Phalcon\Db\Column constants with default sizes
             ColumnType::LINK_TO_ANOTHER_RECORD,
