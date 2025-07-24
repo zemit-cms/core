@@ -26,7 +26,7 @@ class FlattenKeys
      * the key path separated by dot "my.path" and the value true, false or a callback function
      * including the ExposeBuilder object
      */
-    public static function process(array $collection = [], string $delimiter = '.', bool $lowerKey = true, ?string $context = null): ?array
+    public static function process(array $collection = [], string $delimiter = '.', bool $lowerKey = false, ?string $context = null): ?array
     {
         $ret = [];
         
