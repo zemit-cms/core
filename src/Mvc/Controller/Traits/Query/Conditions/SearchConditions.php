@@ -87,24 +87,50 @@ trait SearchConditions
         $bindTypes = [];
         
         foreach ($searchList as $searchTerm) {
-            $subQuery = [];
-            foreach ($searchFields as $searchField) {
-                $field = $this->appendModelName($searchField);
-                $value = $this->generateBindKey('search');
-                
-                $subQuery [] = "{$field} like :{$value}:";
-                $bind[$value] = '%' . $searchTerm . '%';
-                $bindTypes[$value] = Column::BIND_PARAM_STR;
-            }
+            $subQuery = $this->generateSearchSubQuery($searchTerm, $searchFields, $bind, $bindTypes);
             if (!empty($subQuery)) {
-                $query []= '(' . implode(') or (', $subQuery) . ')';
+                $query [] = '(' . implode(') or (', $subQuery) . ')';
             }
         }
         
-        return empty($query)? null : [
+        return empty($query) ? null : [
             '(' . implode(') and (', $query) . ')',
             $bind,
             $bindTypes,
         ];
+    }
+    
+    /**
+     * Generates a sub-query for searching within the specified fields.
+     *
+     * @param string $searchTerm The term to search for.
+     * @param array $searchFields The fields to search within. Can be nested arrays representing relationships.
+     * @param array &$bind The reference array to hold values for the search bind parameters.
+     * @param array &$bindTypes The reference array to hold the bind types for the search parameters.
+     * @param string $prefix An optional prefix used for appending to field names in nested structures.
+     * @return array The generated sub-query as an array of conditional statements.
+     */
+    public function generateSearchSubQuery(string $searchTerm, array $searchFields, array &$bind, array &$bindTypes, string $prefix = ''): array
+    {
+        $subQuery = [];
+        
+        foreach ($searchFields as $key => $searchField) {
+            
+            if (is_array($searchField)) {
+                return array_merge(
+                    $subQuery,
+                    $this->generateSearchSubQuery($searchTerm, $searchField, $bind, $bindTypes, $prefix . $key . '.')
+                );
+            }
+            
+            $field = $this->appendModelName($searchField);
+            $value = $this->generateBindKey('search');
+            
+            $subQuery [] = "{$field} like :{$value}:";
+            $bind[$value] = '%' . $searchTerm . '%';
+            $bindTypes[$value] = Column::BIND_PARAM_STR;
+        }
+        
+        return $subQuery;
     }
 }
