@@ -18,6 +18,7 @@ use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
 use Zemit\Mvc\Controller\Traits\Abstracts\Query\Fields\AbstractFilterFields;
+use Zemit\Support\Helper\Arr\FlattenKeys;
 
 trait FilterConditions
 {
@@ -101,7 +102,7 @@ trait FilterConditions
             ]);
             
             // allowed field
-            if (!isset($allowedFilters) || !in_array($field, $allowedFilters, true)) {
+            if (!isset($allowedFilters) || !(in_array($field, $allowedFilters, true) || FlattenKeys::process($allowedFilters)[$field] ?? false)) {
                 throw new \Exception('The following filter field is not allowed: `' . $field . '`', 403);
             }
             
