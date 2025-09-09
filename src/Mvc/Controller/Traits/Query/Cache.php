@@ -95,7 +95,7 @@ trait Cache
     public function initializeCacheKey(): void
     {
         $cacheKeys = [
-            md5($this->getModelName()),
+            md5($this->getModelName() ?? ""),
             $this->identity->getUserId(),
             $this->getCacheLifetime(),
             md5(json_encode($this->getParams())),
