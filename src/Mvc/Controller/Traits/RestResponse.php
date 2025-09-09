@@ -29,12 +29,12 @@ trait RestResponse
      * Set the REST response error
      *
      * @param int $code The HTTP status code (default: 400)
-     * @param string $status The status message (default: 'Bad Request')
+     * @param ?string $status The status message (default: 'Bad Request')
      * @param mixed $response The response body (default: null)
      * @return ResponseInterface The REST response object
      * @throws \Exception
      */
-    public function setRestErrorResponse(int $code = 400, string $status = 'Bad Request', mixed $response = null): ResponseInterface
+    public function setRestErrorResponse(int $code = 400, ?string $status = null, mixed $response = null): ResponseInterface
     {
         return $this->setRestResponse($response, $code, $status);
     }
