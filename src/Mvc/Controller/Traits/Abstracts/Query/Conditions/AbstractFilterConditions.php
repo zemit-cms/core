@@ -23,7 +23,7 @@ trait AbstractFilterConditions
     
     abstract public function getFilterConditions(): ?Collection;
     
-    abstract public function defaultFilterCondition(array $filters = null, array $allowedFilters = null, bool $or = false): array|string|null;
+    abstract public function defaultFilterCondition(?array $filters, ?array $allowedFilters, bool $or = false): array|string|null;
     
     abstract public function getFilterOperator(string $operator): string;
     
