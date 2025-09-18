@@ -1,0 +1,11 @@
+--- a/src/Mvc/EntityInterface.php
++++ b/src/Mvc/EntityInterface.php
+@@ -22,7 +22,7 @@
+      * @param string $attribute
+      * @return mixed|null
+      */
+-    public function readAttribute(string $attribute): mixed;
++    public function readAttribute(string $attribute);
+ 
+     /**
+      * Writes an attribute value by its name
