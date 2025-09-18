@@ -13,7 +13,7 @@ namespace Zemit\Mvc\Model\Traits\Abstracts;
 
 trait AbstractEntity
 {
-    abstract public function readAttribute(string $attribute): mixed;
+    abstract public function readAttribute(string $attribute);
     
     abstract public function writeAttribute(string $attribute, $value);
 }

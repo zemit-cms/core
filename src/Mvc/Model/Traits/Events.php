@@ -34,18 +34,18 @@ trait Events
         return $ret;
     }
 
-    public static function findFirst(array|null $parameters = null): mixed
+    public static function findFirst($parameters = null): mixed
     {
         $ret = self::fireEventCancelCall(__FUNCTION__, func_get_args());
         return $ret ?: null;
     }
 
-    public static function count(array|string|null $parameters = null): ResultsetInterface|int
+    public static function count($parameters = null): ResultsetInterface|int
     {
         return self::fireEventCancelCall(__FUNCTION__, func_get_args());
     }
 
-    public static function sum(array|null $parameters = null): ResultsetInterface|float
+    public static function sum($parameters = null): ResultsetInterface|float
     {
         return self::fireEventCancelCall(__FUNCTION__, func_get_args());
     }
