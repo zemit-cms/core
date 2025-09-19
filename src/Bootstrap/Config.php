@@ -488,6 +488,8 @@ class Config extends \Zemit\Config\Config
                 Provider\Clamav\ServiceProvider::class => Env::get('PROVIDER_CLAMAV', Provider\Clamav\ServiceProvider::class),
                 Provider\OpenAi\ServiceProvider::class => Env::get('PROVIDER_OPENAI', Provider\OpenAi\ServiceProvider::class),
                 Provider\LoremIpsum\ServiceProvider::class => Env::get('PROVIDER_LOREM_IPSUM', Provider\LoremIpsum\ServiceProvider::class),
+                Provider\Redis\ServiceProvider::class => Env::get('PROVIDER_REDIS', Provider\Redis\ServiceProvider::class),
+                Provider\Swoole\ServiceProvider::class => Env::get('PROVIDER_SWOOLE', Provider\Swoole\ServiceProvider::class),
             ],
             
             /**
@@ -1229,6 +1231,37 @@ class Config extends \Zemit\Config\Config
             'cookies' => [
                 'useEncryption' => Env::get('COOKIES_USE_ENCRYPTION', true),
                 'signKey' => Env::get('COOKIES_SIGN_KEY', ''),
+            ],
+
+            /**
+             * Redis
+             */
+            'redis' => [
+                'host' => Env::get('REDIS_HOST', '127.0.0.1'),
+                'port' => Env::get('REDIS_PORT', 6379),
+                'timeout' => Env::get('REDIS_TIMEOUT', 1.5),
+                'persistentId' => Env::get('REDIS_PERSISTENT_ID', null),
+                'retryInterval' => Env::get('REDIS_RETRY_INTERVAL', 100),
+                'readTimeout' => Env::get('REDIS_READ_TIMEOUT', 1.5),
+                'context' => Env::get('REDIS_CONTEXT', null),
+                'auth' => Env::get('REDIS_AUTH', null),
+                'database' => Env::get('REDIS_DB', 0),
+                'options' => [],
+            ],
+            
+            /**
+             * Swoole
+             */
+            'swoole' => [
+                'host' => Env::get('SWOOLE_HOST', '0.0.0.0'),
+                'port' => Env::get('SWOOLE_PORT', '8081'),
+                'settings' => [
+                    'worker_num' => Env::get('SWOOLE_WORKER_NUM', 4),
+                    'max_conn' => Env::get('SWOOLE_MAX_CONN', 1000),
+                    'daemonize' => Env::get('SWOOLE_DAEMONIZE', false),
+                    'heartbeat_check_interval' => Env::get('SWOOLE_HEARTBEAT_CHECK_INTERVAL', 60),
+                    'heartbeat_idle_time' => Env::get('SWOOLE_HEARTBEAT_IDLE_TIME', 120),
+                ],
             ],
             
             /**
