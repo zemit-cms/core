@@ -31,7 +31,6 @@ use Zemit\Mvc\Controller\Traits\Query\Order;
 use Zemit\Mvc\Controller\Traits\Query\Save;
 use Zemit\Mvc\Controller\Traits\Query\With;
 use Zemit\Mvc\Model\Interfaces\EagerLoadInterface;
-use Zemit\Mvc\Model\Interfaces\RelationshipInterface;
 
 /**
  * Class Query
@@ -178,7 +177,7 @@ trait Query
         $iterator = $find?->getIterator() ?? [];
         foreach ($iterator as $key => $value) {
             if ($value instanceof Collection) {
-                $subIgnoreKey = $ignoreKey || in_array($key, ['conditions', 'joins', 'group']);
+                $subIgnoreKey = $ignoreKey || in_array($key, ['conditions', 'joins', 'group', 'order']);
                 $sub = $this->prepareFind($value, $subIgnoreKey);
                 if ($ignoreKey) {
                     $build = array_merge($build, $sub);
@@ -189,7 +188,36 @@ trait Query
                 $build[$key] = $value;
             }
         }
-        return array_filter($ignoreKey? array_values($build) : $build);
+        
+        return $this->mergeConditions(array_filter($ignoreKey? array_values($build) : $build));
+    }
+
+    /**
+     * Merges and reformats the multiple conditions array to work with Phalcon\Mvc\Model\Query\Builder
+     *
+     * @param array $ret The input array that may contain conditions and other related data.
+     * @return array The modified array with merged and reformatted conditions.
+     */
+    public function mergeConditions(array $ret): array
+    {
+        $mergedConditions = [];
+        if (isset($ret['conditions'])) {
+            foreach ($ret['conditions'] as $key => &$condition) {
+                foreach ($condition as $k => $v) {
+                    if (in_array($k, [1, 2, 'joins', 'group', 'order', 'bind', 'bindTypes'], true) && is_array($v)) {
+                        $k = $k === 1 ? 'bind' : ($k === 2 ? 'bindTypes' : $k);
+                        $ret[$k] = array_merge($ret[$k] ?? [], $v);
+                        unset($condition[$k]);
+                    }
+                }
+                $mergedConditions []= $condition[0] ?? $condition['conditions'] ?? $condition;
+            }
+            $mergedConditions = '(' . implode(') AND (', $mergedConditions) . ')';
+            $ret[0] = $mergedConditions;
+            unset($ret['conditions']);
+        }
+        
+        return $ret;
     }
     
     /**
