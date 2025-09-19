@@ -14,7 +14,7 @@ namespace Zemit\Mvc\Controller\Behavior\Query\Conditions;
 use Phalcon\Events\Event;
 use Zemit\Mvc\Controller\Restful;
 
-class RemoveDefaultSoftDeleteConditions
+class RemoveDefaultSoftDeleteCondition
 {
     public function afterInitializeConditions(Event $event, Restful $controller): void
     {

@@ -14,7 +14,7 @@ namespace Zemit\Mvc\Controller\Behavior\Query\Conditions;
 use Phalcon\Events\Event;
 use Zemit\Mvc\Controller\Restful;
 
-class RemoveDefaultSearchConditions
+class RemoveDefaultSearchCondition
 {
     public function afterInitializeConditions(Event $event, Restful $controller): void
     {
