@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Controller\Behavior\Skip;
+namespace Zemit\Mvc\Controller\Behavior\Query;
 
 use Phalcon\Events\Event;
-use Phalcon\Support\Collection;
 use Zemit\Mvc\Controller\Restful;
 
-class SkipSoftDeleteCondition
+class RemoveDefaultLimit
 {
-    public function afterConditions(Event $event, Restful $controller): void
+    public function beforeInitializeQuery(Event $event, Restful $controller): void
     {
-        $controller->getConditions()->remove('softDelete');
+        $controller->setMaxLimit(-1);
+        $controller->setLimit(-1);
     }
 }

@@ -9,16 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Controller\Behavior\Skip;
+namespace Zemit\Mvc\Controller\Behavior\Query;
 
-class SkipPermissionCondition
+use Phalcon\Events\Event;
+use Zemit\Mvc\Controller\Restful;
+
+class RemoveOffset
 {
-    /**
-     * Stop operation
-     * @return false
-     */
-    public function getPermissionConditions(): bool
+    public function afterInitializeOffset(Event $event, Restful $controller): void
     {
-        return false;
+        $controller->setOffset(0);
     }
 }

@@ -9,16 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Controller\Behavior\Skip;
+namespace Zemit\Mvc\Controller\Behavior\Query\Conditions;
 
 use Phalcon\Events\Event;
-use Phalcon\Support\Collection;
 use Zemit\Mvc\Controller\Restful;
 
-class SkipSoftDeleteCondition
+class RemoveDefaultPermissionCondition
 {
-    public function afterConditions(Event $event, Restful $controller): void
+    public function afterInitializeConditions(Event $event, Restful $controller): void
     {
-        $controller->getConditions()->remove('softDelete');
+        $controller->getPermissionConditions()->remove('default');
     }
 }

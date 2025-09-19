@@ -69,21 +69,54 @@ trait Query
      */
     public function initializeQuery()
     {
+        $this->eventsManager->fire('rest:beforeInitializeQuery', $this);
+        
         $this->initializeCacheConfig();
+        $this->eventsManager->fire('rest:afterInitializeCacheConfig', $this);
+        
         $this->initializeFields();
+        $this->eventsManager->fire('rest:afterInitializeFields', $this);
+        
         $this->initializeBind();
+        $this->eventsManager->fire('rest:afterInitializeBind', $this);
+        
         $this->initializeBindTypes();
+        $this->eventsManager->fire('rest:afterInitializeBindTypes', $this);
+        
         $this->initializeConditions();
+        $this->eventsManager->fire('rest:afterInitializeConditions', $this);
+        
         $this->initializeDistinct();
+        $this->eventsManager->fire('rest:afterInitializeDistinct', $this);
+        
         $this->initializeGroup();
+        $this->eventsManager->fire('rest:afterInitializeGroup', $this);
+        
         $this->initializeHaving();
+        $this->eventsManager->fire('rest:afterInitializeHaving', $this);
+        
         $this->initializeJoins();
+        $this->eventsManager->fire('rest:afterInitializeJoins', $this);
+        
         $this->initializeLimit();
+        $this->eventsManager->fire('rest:afterInitializeLimit', $this);
+        
         $this->initializeOffset();
+        $this->eventsManager->fire('rest:afterInitializeOffset', $this);
+        
         $this->initializeOrder();
+        $this->eventsManager->fire('rest:afterInitializeOrder', $this);
+        
 //        $this->initializeSave();
+//        $this->eventsManager->fire('rest:afterInitializeSave', $this);
+        
         $this->initializeWith();
+        $this->eventsManager->fire('rest:afterInitializeWith', $this);
+        
         $this->initializeFind();
+        $this->eventsManager->fire('rest:afterInitializeFind', $this);
+        
+        $this->eventsManager->fire('rest:afterInitializeQuery', $this);
     }
     
     /**

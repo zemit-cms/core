@@ -9,16 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Controller\Behavior\Skip;
+namespace Zemit\Mvc\Controller\Behavior\Query;
 
-class SkipPermissionCondition
+use Phalcon\Events\Event;
+use Zemit\Mvc\Controller\Restful;
+
+class RemoveGroup
 {
-    /**
-     * Stop operation
-     * @return false
-     */
-    public function getPermissionConditions(): bool
+    public function afterInitializeGroup(Event $event, Restful $controller): void
     {
-        return false;
+        $controller->getGroup()->clear();
     }
 }
