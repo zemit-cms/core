@@ -40,7 +40,7 @@ class ServiceProvider extends AbstractServiceProvider
             Php::debug($isEnabled);
             $debug = new Debug();
             
-            if ($isEnabled && !$causeCyclicError && !$bootstrap->isCli()) {
+            if ($isEnabled && !$causeCyclicError && $bootstrap->isMvc()) {
                 $debugConfig = $config->pathToArray('debug') ?? [];
                 
                 $debug->listen($debugConfig['exceptions'] ?? true, $debugConfig['lowSeverity'] ?? false);
