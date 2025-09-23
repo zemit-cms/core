@@ -418,7 +418,7 @@ class Config extends \Zemit\Config\Config
                 // Application
                 Provider\Application\ServiceProvider::class => Env::get('PROVIDER_APPLICATION', Provider\Application\ServiceProvider::class),
                 Provider\Console\ServiceProvider::class => Env::get('PROVIDER_CONSOLE', Provider\Console\ServiceProvider::class),
-                Provider\WebSocket\ServiceProvider::class => Env::get('PROVIDER_WEB_SOCKET', Provider\WebSocket\ServiceProvider::class),
+//                Provider\WebSocket\ServiceProvider::class => Env::get('PROVIDER_WEB_SOCKET', Provider\WebSocket\ServiceProvider::class),
                 Provider\Debug\ServiceProvider::class => Env::get('PROVIDER_CONSOLE', Provider\Debug\ServiceProvider::class),
                 Provider\Env\ServiceProvider::class => Env::get('PROVIDER_ENVIRONMENT', Provider\Env\ServiceProvider::class),
                 Provider\Router\ServiceProvider::class => Env::get('PROVIDER_ROUTER', Provider\Router\ServiceProvider::class),
