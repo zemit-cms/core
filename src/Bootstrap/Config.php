@@ -297,6 +297,7 @@ class Config extends \Zemit\Config\Config
                 'adapter' => Env::get('IDENTITY_ADAPTER', 'session'), // session | database | redis
                 'mode' => Env::get('IDENTITY_SESSION_MODE', 'jwt'), // jwt | string
                 'sessionKey' => Env::get('IDENTITY_SESSION_KEY', 'zemit-identity'),
+                'sessionRestate' => Env::get('IDENTITY_SESSION_RESTATE', false),
                 'sessionFallback' => Env::get('IDENTITY_SESSION_FALLBACK', false),
                 'token' => [
                     'expiration' => $this->getDateTime(Env::get('IDENTITY_TOKEN_EXPIRATION', '+1 day'), $now)->getTimestamp(),

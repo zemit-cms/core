@@ -139,6 +139,16 @@ trait Jwt
      */
     public function setClaim(array $claim): void
     {
+        // if we allow session re-state from JWT
+        $sessionRestate = $this->config->path('identity.sessionRestate', false);
+        if ($sessionRestate) {
+            if (empty($claim['sessionId'])) {
+                $claim['sessionId'] = $this->session->getId();
+            } else {
+                $this->session->setId($claim['sessionId']);
+            }
+        }
+        
         $this->claim = $claim;
     }
     
