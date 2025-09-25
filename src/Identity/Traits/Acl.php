@@ -18,6 +18,7 @@ trait Acl
 {
     /**
      * Return the list of ACL roles
+     * - role `ws` is automatically added if the bootstrap mode is websocket/ws
      * - role `cli` is automatically added if the bootstrap mode is console/cli
      * - role `everyone` is automatically added to everyone at all time
      * - role `guest` is automatically added only if no role was found
@@ -29,6 +30,11 @@ trait Acl
     public function getAclRoles(?array $roleList = null): array
     {
         $aclRoles = [];
+        
+        // Add websocket role
+        if ($this->bootstrap->isWs()) {
+            $aclRoles['ws'] = new Role('ws');
+        }
         
         // Add console role
         if ($this->bootstrap->isCli()) {

@@ -419,7 +419,7 @@ class Config extends \Zemit\Config\Config
                 // Application
                 Provider\Application\ServiceProvider::class => Env::get('PROVIDER_APPLICATION', Provider\Application\ServiceProvider::class),
                 Provider\Console\ServiceProvider::class => Env::get('PROVIDER_CONSOLE', Provider\Console\ServiceProvider::class),
-//                Provider\WebSocket\ServiceProvider::class => Env::get('PROVIDER_WEB_SOCKET', Provider\WebSocket\ServiceProvider::class),
+                Provider\WebSocket\ServiceProvider::class => Env::get('PROVIDER_WEB_SOCKET', Provider\WebSocket\ServiceProvider::class),
                 Provider\Debug\ServiceProvider::class => Env::get('PROVIDER_CONSOLE', Provider\Debug\ServiceProvider::class),
                 Provider\Env\ServiceProvider::class => Env::get('PROVIDER_ENVIRONMENT', Provider\Env\ServiceProvider::class),
                 Provider\Router\ServiceProvider::class => Env::get('PROVIDER_ROUTER', Provider\Router\ServiceProvider::class),
@@ -686,10 +686,10 @@ class Config extends \Zemit\Config\Config
                     'action' => Env::get('ROUTER_CLI_DEFAULT_ACTION', 'main'),
                 ],
                 'ws' => [
-                    'namespace' => Env::get('ROUTER_CLI_DEFAULT_NAMESPACE', 'Zemit\\Modules\\Ws\\Handlers'),
-                    'module' => Env::get('ROUTER_CLI_DEFAULT_MODULE', 'ws'),
-                    'task' => Env::get('ROUTER_CLI_DEFAULT_HANDLER', 'main'),
-                    'action' => Env::get('ROUTER_CLI_DEFAULT_HANDLER', 'listen'),
+                    'namespace' => Env::get('ROUTER_WS_DEFAULT_NAMESPACE', 'Zemit\\Modules\\Ws\\Tasks'),
+                    'module' => Env::get('ROUTER_WS_DEFAULT_MODULE', 'ws'),
+                    'task' => Env::get('ROUTER_WS_DEFAULT_TASK', 'main'),
+                    'action' => Env::get('ROUTER_WS_DEFAULT_ACTION', 'listen'),
                 ],
                 'notFound' => [
                     'namespace' => Env::get('ROUTER_NOTFOUND_NAMESPACE', ''),
@@ -1584,6 +1584,13 @@ class Config extends \Zemit\Config\Config
                             Cli\Tasks\TsScaffoldTask::class => ['*'],
                             Cli\Tasks\TestTask::class => ['*'],
                             Cli\Tasks\UserTask::class => ['*'],
+                        ],
+                    ],
+                    
+                    // WebSocket (WS)
+                    'ws' => [
+                        'components' => [
+                            Cli\Tasks\ErrorTask::class => ['*'],
                         ],
                     ],
                     

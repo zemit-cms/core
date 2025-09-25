@@ -15,6 +15,7 @@ use Phalcon\Di\DiInterface;
 use Zemit\Bootstrap;
 use Zemit\Config\ConfigInterface;
 use Zemit\Cli\Dispatcher as CliDispatcher;
+use Zemit\Ws\Dispatcher as WsDispatcher;
 use Zemit\Mvc\Dispatcher as MvcDispatcher;
 use Zemit\Mvc\Dispatcher\Camelize;
 use Zemit\Mvc\Dispatcher\Preflight;
@@ -87,6 +88,10 @@ class ServiceProvider extends AbstractServiceProvider
              */
             if ($bootstrap->isCli()) {
                 $dispatcher = new CliDispatcher();
+            }
+            
+            elseif ($bootstrap->isWs()) {
+                $dispatcher = new WsDispatcher();
             }
             
             /**

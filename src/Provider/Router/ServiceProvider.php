@@ -15,6 +15,7 @@ use Phalcon\Di\DiInterface;
 use Zemit\Bootstrap;
 use Zemit\Bootstrap\Router;
 use Zemit\Cli\Router as CliRouter;
+use Zemit\Ws\Router as WsRouter;
 use Zemit\Provider\AbstractServiceProvider;
 
 class ServiceProvider extends AbstractServiceProvider
@@ -30,11 +31,20 @@ class ServiceProvider extends AbstractServiceProvider
             
             $config = $bootstrap->getConfig();
             
-            $router = $bootstrap->router ?? $bootstrap->isCli()
-                ? new CliRouter(true)
-                : new Router(true, $config);
+            $router = $bootstrap->router ?? match ($bootstrap->getMode()) {
+                Bootstrap::MODE_CLI => new CliRouter(true),
+                Bootstrap::MODE_WS => new WsRouter(true),
+                Bootstrap::MODE_MVC => new Router(true, $config),
+                default => throw new \Exception('Unable to register router in bootstrap mode: `' . $bootstrap->getMode() . '`', 400),
+            };
             
-            $defaults = $config->pathToArray($bootstrap->isCli() ? 'router.cli' : 'router.defaults') ?? [];
+            $configPath = match ($bootstrap->getMode()) {
+                Bootstrap::MODE_CLI => 'router.cli',
+                Bootstrap::MODE_WS => 'router.ws',
+                default => 'router.defaults'
+            };
+            
+            $defaults = $config->pathToArray($configPath) ?? [];
             $router->setDefaults($defaults);
             $router->setDI($di);
             

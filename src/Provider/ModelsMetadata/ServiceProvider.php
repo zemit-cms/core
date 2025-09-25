@@ -19,6 +19,7 @@ use Phalcon\Storage\SerializerFactory;
 use Zemit\Bootstrap;
 use Zemit\Config\ConfigInterface;
 use Zemit\Provider\AbstractServiceProvider;
+use Zemit\Support\Php;
 
 class ServiceProvider extends AbstractServiceProvider
 {
@@ -36,7 +37,7 @@ class ServiceProvider extends AbstractServiceProvider
             
             $metadataConfig = $config->pathToArray('metadata') ?? [];
             
-            $driverKey = $bootstrap->isCli() ? 'driverCli' : 'driver';
+            $driverKey = Php::isCli() ? 'driverCli' : 'driver';
             $driverName = $metadataConfig[$driverKey] ?? 'memory';
             $driver = $metadataConfig['drivers'][$driverName] ?? [];
             $default = $metadataConfig['default'] ?? [];

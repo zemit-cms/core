@@ -300,7 +300,7 @@ DOC;
      */
     public function handleWebSocket(WebSocket $webSocket): ?string
     {
-        $webSocket->handle($this->getArgs());
+        $webSocket->handle();
         return null;
     }
     

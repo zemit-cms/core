@@ -18,6 +18,7 @@ use Zemit\Cache\Cache;
 use Phalcon\Cache\AdapterFactory;
 use Phalcon\Storage\SerializerFactory;
 use Zemit\Provider\AbstractServiceProvider;
+use Zemit\Support\Php;
 
 class ServiceProvider extends AbstractServiceProvider
 {
@@ -27,15 +28,12 @@ class ServiceProvider extends AbstractServiceProvider
     {
         $di->setShared($this->getName(), function () use ($di) {
             
-            $bootstrap = $di->get('bootstrap');
-            assert($bootstrap instanceof Bootstrap);
-            
             $config = $di->get('config');
             assert($config instanceof ConfigInterface);
             
             $cacheConfig = $config->pathToArray('cache') ?? [];
             
-            $driverNameKey = $bootstrap->isCli() ? 'cli' : 'driver';
+            $driverNameKey = Php::isCli() ? 'cli' : 'driver';
             $driverName = $cacheConfig[$driverNameKey] ?? 'memory';
             $driverOptions = $cacheConfig['drivers'][$driverName] ?? [];
             $defaultOptions = $cacheConfig['default'] ?? [];
