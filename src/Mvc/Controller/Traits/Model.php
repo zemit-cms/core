@@ -67,8 +67,10 @@ trait Model
      */
     public function getModelNamespaces(): array
     {
-        if (!isset($this->modelNamespaces)) {
-            $this->modelNamespaces = $this->loader->getNamespaces();
+        if (!isset($this->modelNamespaces) && $this->di->has('loader')) {
+            $loader = $this->di->get('loader');
+            assert($loader instanceof \Phalcon\Autoload\Loader);
+            $this->modelNamespaces = $loader->getNamespaces();
         }
         
         return $this->modelNamespaces ?? [];
