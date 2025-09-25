@@ -26,6 +26,7 @@ use Zemit\Provider\Config\ServiceProvider as ConfigServiceProvider;
 use Zemit\Provider\Router\ServiceProvider as RouterServiceProvider;
 use Zemit\Router\RouterInterface;
 use Zemit\Support\Php;
+use Zemit\Ws\WebSocket;
 use Docopt;
 
 /**
@@ -36,10 +37,8 @@ class Bootstrap
     use EventsAwareTrait;
     
     public const string MODE_CLI = 'cli';
+    public const string MODE_WS = 'ws';
     public const string MODE_MVC = 'mvc';
-    
-    public const string MODE_DEFAULT = self::MODE_MVC;
-    public const string MODE_CONSOLE = self::MODE_CLI;
     
     public string $mode;
     
@@ -228,12 +227,16 @@ DOC;
     
     /**
      * Register modules
+     * @throws \Exception
      */
     public function registerModules(?AbstractApplication $application = null, ?array $modules = null, ?string $defaultModule = null): void
     {
-        $application ??= $this->isMvc()
-            ? $this->di->get('application')
-            : $this->di->get('console');
+        $application = match ($this->getMode()) {
+            self::MODE_CLI => $this->di->get('console'),
+            self::MODE_WS => $this->di->get('webSocket'),
+            self::MODE_MVC => $this->di->get('application'),
+            default => throw new \Exception('Unable to register modules in bootstrap mode: `' . $this->getMode() . '`', 400),
+        };
         assert($application instanceof AbstractApplication);
         
         $config = $this->getConfig();
@@ -244,7 +247,7 @@ DOC;
         $defaultModule ??= $config->path('router.defaults.module') ?? '';
         $application->setDefaultModule($defaultModule);
     }
-    
+
     /**
      * Handle cli or mvc application
      * @throws \Exception
@@ -252,23 +255,19 @@ DOC;
     public function run(): ?string
     {
         $this->fire('beforeRun');
-        
-        if ($this->isMvc()) {
-            
-            $application = $this->di->get('application');
-            $content = $this->handleApplication($application);
-        }
-        elseif ($this->isCli()) {
-            
-            $console = $this->di->get('console');
-            $content = $this->handleConsole($console);
-        }
-        else {
-            throw new \Exception('Application or Console not found', 404);
-        }
-        
+
+        $content = match ($this->getMode()) {
+            self::MODE_MVC => $this->handleApplication($this->di->get('application')),
+            self::MODE_CLI => $this->handleConsole($this->di->get('console')),
+            self::MODE_WS  => $this->handleWebSocket($this->di->get('webSocket')),
+            default => throw new \Exception(
+                'Unable to handle run application in bootstrap mode: `' . $this->getMode() . '`',
+                400
+            ),
+        };
+
         $this->fire('afterRun', $content);
-        
+
         return $content;
     }
     
@@ -295,15 +294,24 @@ DOC;
         
         return $response;
     }
+
+    /**
+     * Handle Swoole (For WebSocket only)
+     */
+    public function handleWebSocket(WebSocket $webSocket): ?string
+    {
+        $webSocket->handle($this->getArgs());
+        return null;
+    }
     
     /**
-     * Handle Application
+     * Handle Application (For MVC only)
      * @throws \Exception
      */
-    public function handleApplication(Application $application): string
+    public function handleApplication(Application $application): ?string
     {
         $this->response = $application->handle($_SERVER['REQUEST_URI'] ?? '/') ?: null;
-        return $this->response ? $this->response->getContent() : '';
+        return $this->response ? $this->response->getContent() : null;
     }
     
     /**
@@ -311,16 +319,17 @@ DOC;
      */
     public function getArgs(): array
     {
-        $args = [];
+        if (!Php::isCli()) {
+            return [];
+        }
         
-        if ($this->isCli()) {
-            $argv = array_slice($_SERVER['argv'] ?? [], 1);
-            $response = (new Docopt())->handle($this->cliDoc, ['argv' => $argv, 'optionsFirst' => true]);
-            foreach ($response as $key => $value) {
-                if (!is_null($value) && preg_match('/(<(.*?)>|\-\-(.*))/', $key, $match)) {
-                    $key = lcfirst(Helper::camelize(Helper::uncamelize(array_pop($match))));
-                    $args[$key] = $value;
-                }
+        $args = [];
+        $argv = array_slice($_SERVER['argv'] ?? [], 1);
+        $response = (new Docopt())->handle($this->cliDoc, ['argv' => $argv, 'optionsFirst' => true]);
+        foreach ($response as $key => $value) {
+            if (!is_null($value) && preg_match('/(<(.*?)>|\-\-(.*))/', $key, $match)) {
+                $key = lcfirst(Helper::camelize(Helper::uncamelize(array_pop($match))));
+                $args[$key] = $value;
             }
         }
         
@@ -336,28 +345,18 @@ DOC;
     }
     
     /**
+     * Return true if the bootstrap mode is set to 'ws'
+     */
+    public function isWs(): bool
+    {
+        return $this->getMode() === self::MODE_WS;
+    }
+    
+    /**
      * Return true if the bootstrap mode is set to 'mvc'
      */
     public function isMvc(): bool
     {
         return $this->getMode() === self::MODE_MVC;
-    }
-    
-    /**
-     * Alias for the ->isCli() method
-     * @deprecated
-     */
-    public function isConsole(): bool
-    {
-        return $this->isCli();
-    }
-    
-    /**
-     * Alias for the ->isMvc() method
-     * @deprecated
-     */
-    public function isDefault(): bool
-    {
-        return $this->isMvc();
     }
 }
