@@ -20,6 +20,7 @@ class Router extends \Phalcon\Cli\Router implements RouterInterface
         $mathedRoute = $this->getMatchedRoute();
         return [
             'module' => $this->getModuleName(),
+            'task' => $this->getTaskName(),
             'action' => $this->getActionName(),
             'params' => $this->getParams(),
             'matches' => $this->getMatches(),
