@@ -73,9 +73,8 @@ class ValidatorMigration_100 extends Migration
                 new Column(
                     'params',
                     [
-                        'type' => Column::TYPE_JSON,
+                        'type' => Column::TYPE_LONGTEXT,
                         'notNull' => false,
-                        'size' => 1,
                         'after' => 'type'
                     ]
                 ),
@@ -94,7 +93,7 @@ class ValidatorMigration_100 extends Migration
                     'created_at',
                     [
                         'type' => Column::TYPE_DATETIME,
-                        'default' => "CURRENT_TIMESTAMP",
+                        'default' => "current_timestamp()",
                         'notNull' => true,
                         'after' => 'deleted'
                     ]

@@ -85,7 +85,7 @@ class ColumnMigration_100 extends Migration
                         'type' => Column::TYPE_ENUM,
                         'default' => "singleLineText",
                         'notNull' => true,
-                        'size' => "'linkToAnotherRecord', 'singleLineText', 'longText', 'attachment', 'checkbox', 'multipleSelect', 'singleSelect', 'user', 'date', 'phoneNumber', 'email', 'url', 'number', 'currency', 'percent', 'duration', 'rating', 'formula', 'rollup', 'count', 'lookup', 'createdTime', 'lastModifiedTime', 'createdBy', 'lastModifiedBy', 'autonumber', 'barcode', 'button'",
+                        'size' => "'linkToAnotherRecord','singleLineText','longText','attachment','checkbox','multipleSelect','singleSelect','user','date','phoneNumber','email','url','number','currency','percent','duration','rating','formula','rollup','count','lookup','createdTime','lastModifiedTime','createdBy','lastModifiedBy','autonumber','barcode','button'",
                         'after' => 'description'
                     ]
                 ),
@@ -113,7 +113,7 @@ class ColumnMigration_100 extends Migration
                     'created_at',
                     [
                         'type' => Column::TYPE_DATETIME,
-                        'default' => "CURRENT_TIMESTAMP",
+                        'default' => "current_timestamp()",
                         'notNull' => true,
                         'after' => 'deleted'
                     ]

@@ -147,7 +147,7 @@ class FileMigration_100 extends Migration
                     'created_at',
                     [
                         'type' => Column::TYPE_DATETIME,
-                        'default' => "CURRENT_TIMESTAMP",
+                        'default' => "current_timestamp()",
                         'notNull' => true,
                         'after' => 'deleted'
                     ]

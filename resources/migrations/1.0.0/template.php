@@ -33,21 +33,30 @@ class TemplateMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'index',
+                    'uuid',
                     [
-                        'type' => Column::TYPE_VARCHAR,
+                        'type' => Column::TYPE_CHAR,
                         'notNull' => true,
-                        'size' => 50,
+                        'size' => 36,
                         'after' => 'id'
                     ]
                 ),
                 new Column(
-                    'name',
+                    'key',
                     [
                         'type' => Column::TYPE_VARCHAR,
                         'notNull' => true,
-                        'size' => 100,
-                        'after' => 'index'
+                        'size' => 120,
+                        'after' => 'uuid'
+                    ]
+                ),
+                new Column(
+                    'label',
+                    [
+                        'type' => Column::TYPE_VARCHAR,
+                        'notNull' => true,
+                        'size' => 120,
+                        'after' => 'key'
                     ]
                 ),
                 new Column(
@@ -55,8 +64,8 @@ class TemplateMigration_100 extends Migration
                     [
                         'type' => Column::TYPE_VARCHAR,
                         'notNull' => true,
-                        'size' => 100,
-                        'after' => 'name'
+                        'size' => 255,
+                        'after' => 'label'
                     ]
                 ),
                 new Column(
@@ -68,14 +77,6 @@ class TemplateMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'meta',
-                    [
-                        'type' => Column::TYPE_MEDIUMTEXT,
-                        'notNull' => false,
-                        'after' => 'content'
-                    ]
-                ),
-                new Column(
                     'deleted',
                     [
                         'type' => Column::TYPE_TINYINTEGER,
@@ -83,14 +84,14 @@ class TemplateMigration_100 extends Migration
                         'unsigned' => true,
                         'notNull' => true,
                         'size' => 1,
-                        'after' => 'meta'
+                        'after' => 'content'
                     ]
                 ),
                 new Column(
                     'created_at',
                     [
                         'type' => Column::TYPE_DATETIME,
-                        'default' => "CURRENT_TIMESTAMP",
+                        'default' => "current_timestamp()",
                         'notNull' => true,
                         'after' => 'deleted'
                     ]
@@ -203,9 +204,9 @@ class TemplateMigration_100 extends Migration
             'indexes' => [
                 new Index('PRIMARY', ['id'], 'PRIMARY'),
                 new Index('id_UNIQUE', ['id'], 'UNIQUE'),
-                new Index('index_UNIQUE', ['index'], 'UNIQUE'),
-                new Index('index', ['index'], ''),
-                new Index('label', ['name'], ''),
+                new Index('index_UNIQUE', ['key'], 'UNIQUE'),
+                new Index('index', ['key'], ''),
+                new Index('label', ['label'], ''),
                 new Index('created_by', ['created_by'], ''),
                 new Index('created_as', ['created_as'], ''),
                 new Index('updated_by', ['updated_by'], ''),

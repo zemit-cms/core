@@ -56,7 +56,7 @@ class EmailMigration_100 extends Migration
                     [
                         'type' => Column::TYPE_VARCHAR,
                         'notNull' => true,
-                        'size' => 500,
+                        'size' => 255,
                         'after' => 'uuid'
                     ]
                 ),
@@ -112,7 +112,7 @@ class EmailMigration_100 extends Migration
                 new Column(
                     'meta',
                     [
-                        'type' => Column::TYPE_MEDIUMTEXT,
+                        'type' => Column::TYPE_LONGTEXT,
                         'notNull' => false,
                         'after' => 'content'
                     ]
@@ -180,7 +180,7 @@ class EmailMigration_100 extends Migration
                     'created_at',
                     [
                         'type' => Column::TYPE_DATETIME,
-                        'default' => "CURRENT_TIMESTAMP",
+                        'default' => "current_timestamp()",
                         'notNull' => true,
                         'after' => 'deleted'
                     ]

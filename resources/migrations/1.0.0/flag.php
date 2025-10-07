@@ -94,9 +94,8 @@ class FlagMigration_100 extends Migration
                 new Column(
                     'meta',
                     [
-                        'type' => Column::TYPE_JSON,
+                        'type' => Column::TYPE_LONGTEXT,
                         'notNull' => false,
-                        'size' => 1,
                         'after' => 'value'
                     ]
                 ),
@@ -115,7 +114,7 @@ class FlagMigration_100 extends Migration
                     'created_at',
                     [
                         'type' => Column::TYPE_DATETIME,
-                        'default' => "CURRENT_TIMESTAMP",
+                        'default' => "current_timestamp()",
                         'notNull' => true,
                         'after' => 'deleted'
                     ]
