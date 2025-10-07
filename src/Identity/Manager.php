@@ -161,81 +161,92 @@ class Manager extends Injectable implements ManagerInterface, OptionsInterface
      */
     public function reset(?array $params = null): array
     {
-        $saved = false;
-        $sent = false;
-        
+        // email is required and must be valid
         $validation = new Validation();
         $validation->add('email', new PresenceOf(['message' => 'required']));
         $validation->add('email', new Email(['message' => 'email-not-valid']));
         $validation->validate($params);
-        
-        $user = false;
-        if (isset($params['email'])) {
-            $user = $this->findUserByEmail($params['email']);
+
+        // reset password is disabled from config
+        $resetPasswordConfig = $this->config->pathToArray('identity.resetPassword') ?? [];
+        if ($resetPasswordConfig['disable'] ?? false) {
+            $validation->appendMessage(new Message('Reset password is disabled', 'resetPassword', 'ResetPasswordDisabled', 403));
         }
         
-        // Reset
-        if ($user) {
-            assert($user instanceof \Zemit\Models\Interfaces\UserInterface);
-            
-            // Password reset request
-            if (!empty($params['token'])) {
-                $validation->add('password', new PresenceOf(['message' => 'required']));
-                $validation->add('passwordConfirm', new PresenceOf(['message' => 'required']));
-                $validation->add('passwordConfirm', new Confirmation(['message' => 'password-not-match', 'with' => 'passwordConfirm']));
-                $validation->validate($params);
-                if (!$user->checkToken($params['token'])) {
-                    $validation->appendMessage(new Message('not-valid', 'token', 'NotValid', 400));
-                }
-                else if (!count($validation->getMessages())) {
-                    $params['token'] = null;
-                    $user->assign($params, ['token', 'password', 'passwordConfirm']);
-                    $saved = $user->save();
-                }
-            }
-            
-            // Reset token request
-            else {
-                // Setup a new reset token hash for the user
-                $token = $this->security->getRandom()->base64Safe(32);
-                $user->setResetToken($user->hash($token, $user->getEmail()));
-                
-                if ($user->save()) {
-                    $email = $this->models->getEmail();
-                    $email->setViewPath('template/email');
-                    $email->setTemplateByIndex('reset-password');
-                    $email->setTo([$user->getEmail()]);
-                    $email->setMeta([
-                        'resetLink' => $this->url->get('/reset-password/' . $token),
-                        'user' => $user->expose([
-                            false,
-                            'firstName',
-                            'lastName',
-                            'email',
-                        ]),
-                    ]);
-                    $sent = $email->send();
-                    foreach ($email->getMessages() as $message) {
-                        $validation->appendMessage($message);
-                    }
-                }
-                
-                foreach ($user->getMessages() as $message) {
-                    $validation->appendMessage($message);
-                }
-            }
+        // invalid email
+        $messages = $validation->getMessages();
+        if (count($messages)) {
+            return ['messages' => $messages];
         }
+        
+        // retrieve the user using the provided email
+        $user = isset($params['email'])? $this->findUserByEmail($params['email']) : false;
+        
+        // user not found
+        if (!$user) {
+            // OWASP: to prevent user enumeration, we return an empty array here
+            return [];
+        }
+        
+        // password reset request
+        if (!empty($params['resetToken'])) {
+            // a password is required
+            $validation->add('password', new PresenceOf(['message' => 'required']));
+            $validation->validate($params);
+            
+            // check if the token is valid
+            if (!$user->checkHash($user->getResetToken(), $params['resetToken'])) {
+                $validation->appendMessage(new Message('not-valid', 'token', 'NotValid', 400));
+            }
+            
+            // validation failed, return messages
+            $messages = $validation->getMessages();
+            if (count($messages)) {
+                return ['messages' => $messages];
+            }
+            
+            // remove the reset token and set the new password
+            $user->setResetToken(null);
+            $user->setPassword($params['password']);
+            if (!$user->save()) {
+                return ['messages' => $user->getMessages()];
+            }
+            
+            // send confirmation email
+            
+        }
+        
+        // reset token request
         else {
-            // OWASP Protect User Enumeration
-            $saved = true;
-            $sent = true;
+            // prepare reset token
+            $resetToken = $this->security->getRandom()->base64Safe(32);
+            $user->setResetToken($user->hash($resetToken, $user->getEmail()));
+            
+            // save hashed reset token
+            if (!$user->save()) {
+                return ['messages' => $user->getMessages()];
+            }
+            
+            // prepare email
+            
+            $email = $this->models->getEmail();
+            $email->setViewPath($resetPasswordConfig['viewPath'] ?? 'email');
+            $email->setTemplateByKey($resetPasswordConfig['templateKey'] ?? 'reset-password');
+            $email->setTo([$user->getEmail()]);
+            $email->setMeta([
+                'resetLink' => $this->url->get($resetPasswordConfig['url'] ?? '/reset-password/' . $resetToken),
+                'user' => $user,
+            ]);
+            
+            // send email
+            if (!$email->send()) {
+                return ['messages' => $email->getMessages()];
+            }
         }
         
-        return [
-            'saved' => $saved,
-            'sent' => $sent,
-            'messages' => $validation->getMessages(),
-        ];
+        // everything went fine
+        // OWASP: to prevent user enumeration, we return an empty array here
+        return [];
     }
     
     /**

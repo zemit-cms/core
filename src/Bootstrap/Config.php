@@ -304,6 +304,12 @@ class Config extends \Zemit\Config\Config
                 'refreshToken' => [
                     'expiration' => $this->getDateTime(Env::get('IDENTITY_REFRESH_TOKEN_EXPIRATION', '+7 day'), $now)->getTimestamp(),
                 ],
+                'resetPassword' => [
+                    'disable' => Env::get('IDENTITY_RESET_PASSWORD_DISABLE', false),
+                    'url' => Env::get('IDENTITY_RESET_PASSWORD_URL', '/reset-password/'),
+                    'viewPath' => Env::get('IDENTITY_RESET_PASSWORD_VIEW_PATH', 'email'),
+                    'templateKey' => Env::get('IDENTITY_RESET_PASSWORD_TEMPLATE_KEY', 'reset-password'),
+                ],
             ],
             
             /**
