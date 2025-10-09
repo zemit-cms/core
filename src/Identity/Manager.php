@@ -144,7 +144,7 @@ class Manager extends Injectable implements ManagerInterface, OptionsInterface
             'loggedInAs' => $this->isLoggedIn(true, true),
         ];
     }
-    
+
     /**
      * Resets a user's password or generates a reset token for the user, depending on the input parameters.
      *
@@ -158,6 +158,7 @@ class Manager extends Injectable implements ManagerInterface, OptionsInterface
      *               - 'saved': A boolean indicating whether the save operation was successful.
      *               - 'sent': A boolean indicating whether the reset token email was sent successfully.
      *               - 'messages': A collection of validation or processing messages.
+     * @throws Exception
      */
     public function reset(?array $params = null): array
     {
@@ -213,7 +214,18 @@ class Manager extends Injectable implements ManagerInterface, OptionsInterface
             }
             
             // send confirmation email
-            
+            $email = $this->models->getEmail();
+            $email->setViewPath($resetPasswordConfig['viewPath'] ?? 'email');
+            $email->setTemplateByKey($resetPasswordConfig['confirmationTemplateKey'] ?? 'reset-password-confirmation');
+            $email->setTo([$user->getEmail()]);
+            $email->setMeta([
+                'user' => $user,
+            ]);
+
+            // send email
+            if (!$email->send()) {
+                return ['messages' => $email->getMessages()];
+            }
         }
         
         // reset token request
@@ -228,10 +240,9 @@ class Manager extends Injectable implements ManagerInterface, OptionsInterface
             }
             
             // prepare email
-            
             $email = $this->models->getEmail();
             $email->setViewPath($resetPasswordConfig['viewPath'] ?? 'email');
-            $email->setTemplateByKey($resetPasswordConfig['templateKey'] ?? 'reset-password');
+            $email->setTemplateByKey($resetPasswordConfig['requestTemplateKey'] ?? 'reset-password-request');
             $email->setTo([$user->getEmail()]);
             $email->setMeta([
                 'resetLink' => $this->url->get($resetPasswordConfig['url'] ?? '/reset-password/' . $resetToken),

@@ -308,7 +308,8 @@ class Config extends \Zemit\Config\Config
                     'disable' => Env::get('IDENTITY_RESET_PASSWORD_DISABLE', false),
                     'url' => Env::get('IDENTITY_RESET_PASSWORD_URL', '/reset-password/'),
                     'viewPath' => Env::get('IDENTITY_RESET_PASSWORD_VIEW_PATH', 'email'),
-                    'templateKey' => Env::get('IDENTITY_RESET_PASSWORD_TEMPLATE_KEY', 'reset-password'),
+                    'requestTemplateKey' => Env::get('IDENTITY_RESET_PASSWORD_REQUEST_TEMPLATE_KEY', 'reset-password-request'),
+                    'confirmationTemplateKey' => Env::get('IDENTITY_RESET_PASSWORD_CONFIRMATION_TEMPLATE_KEY', 'reset-password-confirmation'),
                 ],
             ],
             
