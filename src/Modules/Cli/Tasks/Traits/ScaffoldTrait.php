@@ -24,11 +24,11 @@ use Zemit\Support\Helper;
 trait ScaffoldTrait
 {
     // Paths & directories
-    protected ?string $namespace = null;
+    protected ?string $namespace = 'Zemit';
     
     protected string $directory = './';
     protected string $srcDirectory = 'src/';
-    protected string $testsDirectory = 'tests/';
+    protected string $testsDirectory = 'tests/Unit/';
     
     protected string $enumsDirectory = 'Enums/';
     protected string $modelsDirectory = 'Models/';
@@ -36,7 +36,7 @@ trait ScaffoldTrait
     protected string $interfacesDirectory = 'Interfaces/';
     protected string $controllersDirectory = 'Controllers/';
     
-    protected string $modelsExtend = '\\Zemit\\Models\\ModelAbstract';
+    protected string $modelsExtend = '\\Zemit\\Models\\AbstractModel';
     protected string $interfacesExtend = '\\Zemit\\Mvc\\ModelInterface';
     protected string $testsExtend = '\\Zemit\\Tests\\Unit\\AbstractUnit';
     protected string $controllersExtend = '\\Zemit\\Modules\\Api\\Controllers\\ControllerAbstract';
