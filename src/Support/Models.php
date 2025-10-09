@@ -53,12 +53,6 @@ use Zemit\Models\Interfaces\LangInterface;
 use Zemit\Models\Translate;
 use Zemit\Models\Interfaces\TranslateInterface;
 
-use Zemit\Models\TranslateField;
-use Zemit\Models\Interfaces\TranslateFieldInterface;
-
-use Zemit\Models\TranslateTable;
-use Zemit\Models\Interfaces\TranslateTableInterface;
-
 use Zemit\Models\Workspace;
 use Zemit\Models\Interfaces\WorkspaceInterface;
 
@@ -304,26 +298,6 @@ class Models extends Injectable
     {
         $instance = $this->getInstance(Translate::class);
         assert($instance instanceof TranslateInterface);
-        return $instance;
-    }
-    
-    /**
-     * Return an instance of \Zemit\Models\Interfaces\TranslateFieldInterface
-     */
-    public function getTranslateField(): TranslateFieldInterface
-    {
-        $instance = $this->getInstance(TranslateField::class);
-        assert($instance instanceof TranslateFieldInterface);
-        return $instance;
-    }
-    
-    /**
-     * Return an instance of \Zemit\Models\Interfaces\TranslateTableInterface
-     */
-    public function getTranslateTable(): TranslateTableInterface
-    {
-        $instance = $this->getInstance(TranslateTable::class);
-        assert($instance instanceof TranslateTableInterface);
         return $instance;
     }
     
