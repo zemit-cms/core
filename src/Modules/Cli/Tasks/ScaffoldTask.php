@@ -62,8 +62,8 @@ Options:
 
   --models-extend=<models-extend>             Extend models with this base class (Default: "\Zemit\Models\ModelAbstract")
   --interfaces-extend=<interface-extend>      Extend models interfaces with this base interface (Default: "\Zemit\Models\ModelInterface")
-  --controllers-extend=<controllers-extends>  Extend controllers with this base class (Default: "Zemit\Mvc\Controller\Rest")
-  --tests-extend=<tests-extends>              Extend tests with this base class (Default: "Zemit\Tests\Unit\AbstractUnit")
+  --controllers-extend=<controllers-extends>  Extend controllers with this base class (Default: "\Zemit\Mvc\Controller\Rest")
+  --tests-extend=<tests-extends>              Extend tests with this base class (Default: "\Zemit\Tests\Unit\AbstractUnit")
 
   --no-controllers                            Do not generate controllers
   --no-interfaces                             Do not generate interfaces
