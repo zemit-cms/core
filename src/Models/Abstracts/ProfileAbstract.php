@@ -14,8 +14,9 @@ namespace Zemit\Models\Abstracts;
 
 use Phalcon\Db\RawValue;
 use Zemit\Filter\Validation;
-use Zemit\Models\AbstractModel;
+use \Zemit\Models\AbstractModel;
 use Zemit\Models\User;
+use Zemit\Models\File;
 use Zemit\Models\Abstracts\Interfaces\ProfileAbstractInterface;
 
 /**
@@ -28,53 +29,69 @@ use Zemit\Models\Abstracts\Interfaces\ProfileAbstractInterface;
  * @property User $UserEntity
  * @method User getUserEntity(?array $params = null)
  *
+ * @property File $avatarfileentity
+ * @property File $AvatarFileEntity
+ * @method File getAvatarFileEntity(?array $params = null)
+ *
  * @property User $createdbyentity
  * @property User $CreatedByEntity
  * @method User getCreatedByEntity(?array $params = null)
- *
- * @property User $createdasentity
- * @property User $CreatedAsEntity
- * @method User getCreatedAsEntity(?array $params = null)
  *
  * @property User $updatedbyentity
  * @property User $UpdatedByEntity
  * @method User getUpdatedByEntity(?array $params = null)
  *
- * @property User $updatedasentity
- * @property User $UpdatedAsEntity
- * @method User getUpdatedAsEntity(?array $params = null)
- *
- * @property User $deletedasentity
- * @property User $DeletedAsEntity
- * @method User getDeletedAsEntity(?array $params = null)
- *
  * @property User $deletedbyentity
  * @property User $DeletedByEntity
  * @method User getDeletedByEntity(?array $params = null)
- *
- * @property User $restoredbyentity
- * @property User $RestoredByEntity
- * @method User getRestoredByEntity(?array $params = null)
  */
-abstract class ProfileAbstract extends AbstractModel implements ProfileAbstractInterface
+abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements ProfileAbstractInterface
 {
     /**
      * Column: id
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $id = null;
         
     /**
+     * Column: uuid
+     * Attributes: NotNull | Size(36) | Type(5)
+     * @var mixed
+     */
+    public mixed $uuid = null;
+        
+    /**
      * Column: user_id
-     * Attributes: NotNull | Numeric | Unsigned
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $userId = null;
         
     /**
+     * Column: first_name
+     * Attributes: Size(100) | Type(2)
+     * @var mixed
+     */
+    public mixed $firstName = null;
+        
+    /**
+     * Column: last_name
+     * Attributes: Size(100) | Type(2)
+     * @var mixed
+     */
+    public mixed $lastName = null;
+        
+    /**
+     * Column: avatar_file_id
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
+     * @var mixed
+     */
+    public mixed $avatarFileId = null;
+        
+    /**
      * Column: deleted
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @var mixed
      */
     public mixed $deleted = 0;
@@ -84,21 +101,14 @@ abstract class ProfileAbstract extends AbstractModel implements ProfileAbstractI
      * Attributes: NotNull | Type(4)
      * @var mixed
      */
-    public mixed $createdAt = null;
+    public mixed $createdAt = 'current_timestamp()';
         
     /**
      * Column: created_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $createdBy = null;
-        
-    /**
-     * Column: created_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $createdAs = null;
         
     /**
      * Column: updated_at
@@ -109,17 +119,10 @@ abstract class ProfileAbstract extends AbstractModel implements ProfileAbstractI
         
     /**
      * Column: updated_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $updatedBy = null;
-        
-    /**
-     * Column: updated_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $updatedAs = null;
         
     /**
      * Column: deleted_at
@@ -129,37 +132,16 @@ abstract class ProfileAbstract extends AbstractModel implements ProfileAbstractI
     public mixed $deletedAt = null;
         
     /**
-     * Column: deleted_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $deletedAs = null;
-        
-    /**
      * Column: deleted_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $deletedBy = null;
-        
-    /**
-     * Column: restored_at
-     * Attributes: Type(4)
-     * @var mixed
-     */
-    public mixed $restoredAt = null;
-        
-    /**
-     * Column: restored_by
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $restoredBy = null;
     
     /**
      * Returns the value of field id
      * Column: id
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
     public function getId(): mixed
@@ -170,7 +152,7 @@ abstract class ProfileAbstract extends AbstractModel implements ProfileAbstractI
     /**
      * Sets the value of field id
      * Column: id 
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @param mixed $id
      * @return void
      */
@@ -180,9 +162,32 @@ abstract class ProfileAbstract extends AbstractModel implements ProfileAbstractI
     }
     
     /**
+     * Returns the value of field uuid
+     * Column: uuid
+     * Attributes: NotNull | Size(36) | Type(5)
+     * @return mixed
+     */
+    public function getUuid(): mixed
+    {
+        return $this->uuid;
+    }
+    
+    /**
+     * Sets the value of field uuid
+     * Column: uuid 
+     * Attributes: NotNull | Size(36) | Type(5)
+     * @param mixed $uuid
+     * @return void
+     */
+    public function setUuid(mixed $uuid): void
+    {
+        $this->uuid = $uuid;
+    }
+    
+    /**
      * Returns the value of field userId
      * Column: user_id
-     * Attributes: NotNull | Numeric | Unsigned
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getUserId(): mixed
@@ -193,7 +198,7 @@ abstract class ProfileAbstract extends AbstractModel implements ProfileAbstractI
     /**
      * Sets the value of field userId
      * Column: user_id 
-     * Attributes: NotNull | Numeric | Unsigned
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $userId
      * @return void
      */
@@ -203,9 +208,78 @@ abstract class ProfileAbstract extends AbstractModel implements ProfileAbstractI
     }
     
     /**
+     * Returns the value of field firstName
+     * Column: first_name
+     * Attributes: Size(100) | Type(2)
+     * @return mixed
+     */
+    public function getFirstName(): mixed
+    {
+        return $this->firstName;
+    }
+    
+    /**
+     * Sets the value of field firstName
+     * Column: first_name 
+     * Attributes: Size(100) | Type(2)
+     * @param mixed $firstName
+     * @return void
+     */
+    public function setFirstName(mixed $firstName): void
+    {
+        $this->firstName = $firstName;
+    }
+    
+    /**
+     * Returns the value of field lastName
+     * Column: last_name
+     * Attributes: Size(100) | Type(2)
+     * @return mixed
+     */
+    public function getLastName(): mixed
+    {
+        return $this->lastName;
+    }
+    
+    /**
+     * Sets the value of field lastName
+     * Column: last_name 
+     * Attributes: Size(100) | Type(2)
+     * @param mixed $lastName
+     * @return void
+     */
+    public function setLastName(mixed $lastName): void
+    {
+        $this->lastName = $lastName;
+    }
+    
+    /**
+     * Returns the value of field avatarFileId
+     * Column: avatar_file_id
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
+     * @return mixed
+     */
+    public function getAvatarFileId(): mixed
+    {
+        return $this->avatarFileId;
+    }
+    
+    /**
+     * Sets the value of field avatarFileId
+     * Column: avatar_file_id 
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
+     * @param mixed $avatarFileId
+     * @return void
+     */
+    public function setAvatarFileId(mixed $avatarFileId): void
+    {
+        $this->avatarFileId = $avatarFileId;
+    }
+    
+    /**
      * Returns the value of field deleted
      * Column: deleted
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
     public function getDeleted(): mixed
@@ -216,7 +290,7 @@ abstract class ProfileAbstract extends AbstractModel implements ProfileAbstractI
     /**
      * Sets the value of field deleted
      * Column: deleted 
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @param mixed $deleted
      * @return void
      */
@@ -251,7 +325,7 @@ abstract class ProfileAbstract extends AbstractModel implements ProfileAbstractI
     /**
      * Returns the value of field createdBy
      * Column: created_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getCreatedBy(): mixed
@@ -262,36 +336,13 @@ abstract class ProfileAbstract extends AbstractModel implements ProfileAbstractI
     /**
      * Sets the value of field createdBy
      * Column: created_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $createdBy
      * @return void
      */
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
-    }
-    
-    /**
-     * Returns the value of field createdAs
-     * Column: created_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getCreatedAs(): mixed
-    {
-        return $this->createdAs;
-    }
-    
-    /**
-     * Sets the value of field createdAs
-     * Column: created_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $createdAs
-     * @return void
-     */
-    public function setCreatedAs(mixed $createdAs): void
-    {
-        $this->createdAs = $createdAs;
     }
     
     /**
@@ -320,7 +371,7 @@ abstract class ProfileAbstract extends AbstractModel implements ProfileAbstractI
     /**
      * Returns the value of field updatedBy
      * Column: updated_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getUpdatedBy(): mixed
@@ -331,36 +382,13 @@ abstract class ProfileAbstract extends AbstractModel implements ProfileAbstractI
     /**
      * Sets the value of field updatedBy
      * Column: updated_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $updatedBy
      * @return void
      */
     public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
-    }
-    
-    /**
-     * Returns the value of field updatedAs
-     * Column: updated_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getUpdatedAs(): mixed
-    {
-        return $this->updatedAs;
-    }
-    
-    /**
-     * Sets the value of field updatedAs
-     * Column: updated_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $updatedAs
-     * @return void
-     */
-    public function setUpdatedAs(mixed $updatedAs): void
-    {
-        $this->updatedAs = $updatedAs;
     }
     
     /**
@@ -387,32 +415,9 @@ abstract class ProfileAbstract extends AbstractModel implements ProfileAbstractI
     }
     
     /**
-     * Returns the value of field deletedAs
-     * Column: deleted_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getDeletedAs(): mixed
-    {
-        return $this->deletedAs;
-    }
-    
-    /**
-     * Sets the value of field deletedAs
-     * Column: deleted_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $deletedAs
-     * @return void
-     */
-    public function setDeletedAs(mixed $deletedAs): void
-    {
-        $this->deletedAs = $deletedAs;
-    }
-    
-    /**
      * Returns the value of field deletedBy
      * Column: deleted_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getDeletedBy(): mixed
@@ -423,59 +428,13 @@ abstract class ProfileAbstract extends AbstractModel implements ProfileAbstractI
     /**
      * Sets the value of field deletedBy
      * Column: deleted_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $deletedBy
      * @return void
      */
     public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;
-    }
-    
-    /**
-     * Returns the value of field restoredAt
-     * Column: restored_at
-     * Attributes: Type(4)
-     * @return mixed
-     */
-    public function getRestoredAt(): mixed
-    {
-        return $this->restoredAt;
-    }
-    
-    /**
-     * Sets the value of field restoredAt
-     * Column: restored_at 
-     * Attributes: Type(4)
-     * @param mixed $restoredAt
-     * @return void
-     */
-    public function setRestoredAt(mixed $restoredAt): void
-    {
-        $this->restoredAt = $restoredAt;
-    }
-    
-    /**
-     * Returns the value of field restoredBy
-     * Column: restored_by
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getRestoredBy(): mixed
-    {
-        return $this->restoredBy;
-    }
-    
-    /**
-     * Sets the value of field restoredBy
-     * Column: restored_by 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $restoredBy
-     * @return void
-     */
-    public function setRestoredBy(mixed $restoredBy): void
-    {
-        $this->restoredBy = $restoredBy;
     }
 
     /**
@@ -486,19 +445,13 @@ abstract class ProfileAbstract extends AbstractModel implements ProfileAbstractI
     {
         $this->belongsTo('userId', User::class, 'id', ['alias' => 'UserEntity']);
 
-        $this->belongsTo('createdBy', User::class, 'id', ['alias' => 'CreatedByEntity']);
+        $this->belongsTo('avatarFileId', File::class, 'id', ['alias' => 'AvatarFileEntity']);
 
-        $this->belongsTo('createdAs', User::class, 'id', ['alias' => 'CreatedAsEntity']);
+        $this->belongsTo('createdBy', User::class, 'id', ['alias' => 'CreatedByEntity']);
 
         $this->belongsTo('updatedBy', User::class, 'id', ['alias' => 'UpdatedByEntity']);
 
-        $this->belongsTo('updatedAs', User::class, 'id', ['alias' => 'UpdatedAsEntity']);
-
-        $this->belongsTo('deletedAs', User::class, 'id', ['alias' => 'DeletedAsEntity']);
-
         $this->belongsTo('deletedBy', User::class, 'id', ['alias' => 'DeletedByEntity']);
-
-        $this->belongsTo('restoredBy', User::class, 'id', ['alias' => 'RestoredByEntity']);
     }
     
     /**
@@ -511,19 +464,18 @@ abstract class ProfileAbstract extends AbstractModel implements ProfileAbstractI
         $validator ??= new Validation();
     
         $this->addUnsignedIntValidation($validator, 'id', true);
+        $this->addStringLengthValidation($validator, 'uuid', 0, 36, false);
         $this->addUnsignedIntValidation($validator, 'userId', false);
+        $this->addStringLengthValidation($validator, 'firstName', 0, 100, true);
+        $this->addStringLengthValidation($validator, 'lastName', 0, 100, true);
+        $this->addUnsignedIntValidation($validator, 'avatarFileId', true);
         $this->addUnsignedIntValidation($validator, 'deleted', false);
         $this->addDateTimeValidation($validator, 'createdAt', false);
         $this->addUnsignedIntValidation($validator, 'createdBy', true);
-        $this->addUnsignedIntValidation($validator, 'createdAs', true);
         $this->addDateTimeValidation($validator, 'updatedAt', true);
         $this->addUnsignedIntValidation($validator, 'updatedBy', true);
-        $this->addUnsignedIntValidation($validator, 'updatedAs', true);
         $this->addDateTimeValidation($validator, 'deletedAt', true);
-        $this->addUnsignedIntValidation($validator, 'deletedAs', true);
         $this->addUnsignedIntValidation($validator, 'deletedBy', true);
-        $this->addDateTimeValidation($validator, 'restoredAt', true);
-        $this->addUnsignedIntValidation($validator, 'restoredBy', true);
         
         return $validator;
     }
@@ -539,19 +491,18 @@ abstract class ProfileAbstract extends AbstractModel implements ProfileAbstractI
     {
         return [
             'id' => 'id',
+            'uuid' => 'uuid',
             'user_id' => 'userId',
+            'first_name' => 'firstName',
+            'last_name' => 'lastName',
+            'avatar_file_id' => 'avatarFileId',
             'deleted' => 'deleted',
             'created_at' => 'createdAt',
             'created_by' => 'createdBy',
-            'created_as' => 'createdAs',
             'updated_at' => 'updatedAt',
             'updated_by' => 'updatedBy',
-            'updated_as' => 'updatedAs',
             'deleted_at' => 'deletedAt',
-            'deleted_as' => 'deletedAs',
             'deleted_by' => 'deletedBy',
-            'restored_at' => 'restoredAt',
-            'restored_by' => 'restoredBy',
         ];
     }
 }

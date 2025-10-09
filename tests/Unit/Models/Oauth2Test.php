@@ -62,6 +62,18 @@ class Oauth2Test extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->oauth2->getId());
     }
 
+    public function testGetUuid(): void
+    {
+        $this->assertEquals(null, $this->oauth2->getUuid());
+    }
+    
+    public function testSetUuid(): void
+    {
+        $value = uniqid();
+        $this->oauth2->setUuid($value);
+        $this->assertEquals($value, $this->oauth2->getUuid());
+    }
+
     public function testGetUserId(): void
     {
         $this->assertEquals(null, $this->oauth2->getUserId());
@@ -134,42 +146,6 @@ class Oauth2Test extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->oauth2->getEmail());
     }
 
-    public function testGetName(): void
-    {
-        $this->assertEquals(null, $this->oauth2->getName());
-    }
-    
-    public function testSetName(): void
-    {
-        $value = uniqid();
-        $this->oauth2->setName($value);
-        $this->assertEquals($value, $this->oauth2->getName());
-    }
-
-    public function testGetFirstName(): void
-    {
-        $this->assertEquals(null, $this->oauth2->getFirstName());
-    }
-    
-    public function testSetFirstName(): void
-    {
-        $value = uniqid();
-        $this->oauth2->setFirstName($value);
-        $this->assertEquals($value, $this->oauth2->getFirstName());
-    }
-
-    public function testGetLastName(): void
-    {
-        $this->assertEquals(null, $this->oauth2->getLastName());
-    }
-    
-    public function testSetLastName(): void
-    {
-        $value = uniqid();
-        $this->oauth2->setLastName($value);
-        $this->assertEquals($value, $this->oauth2->getLastName());
-    }
-
     public function testGetMeta(): void
     {
         $this->assertEquals(null, $this->oauth2->getMeta());
@@ -196,7 +172,7 @@ class Oauth2Test extends \Zemit\Tests\Unit\AbstractUnit
 
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->oauth2->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->oauth2->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -216,18 +192,6 @@ class Oauth2Test extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->oauth2->setCreatedBy($value);
         $this->assertEquals($value, $this->oauth2->getCreatedBy());
-    }
-
-    public function testGetCreatedAs(): void
-    {
-        $this->assertEquals(null, $this->oauth2->getCreatedAs());
-    }
-    
-    public function testSetCreatedAs(): void
-    {
-        $value = uniqid();
-        $this->oauth2->setCreatedAs($value);
-        $this->assertEquals($value, $this->oauth2->getCreatedAs());
     }
 
     public function testGetUpdatedAt(): void
@@ -254,18 +218,6 @@ class Oauth2Test extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->oauth2->getUpdatedBy());
     }
 
-    public function testGetUpdatedAs(): void
-    {
-        $this->assertEquals(null, $this->oauth2->getUpdatedAs());
-    }
-    
-    public function testSetUpdatedAs(): void
-    {
-        $value = uniqid();
-        $this->oauth2->setUpdatedAs($value);
-        $this->assertEquals($value, $this->oauth2->getUpdatedAs());
-    }
-
     public function testGetDeletedAt(): void
     {
         $this->assertEquals(null, $this->oauth2->getDeletedAt());
@@ -278,18 +230,6 @@ class Oauth2Test extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->oauth2->getDeletedAt());
     }
 
-    public function testGetDeletedAs(): void
-    {
-        $this->assertEquals(null, $this->oauth2->getDeletedAs());
-    }
-    
-    public function testSetDeletedAs(): void
-    {
-        $value = uniqid();
-        $this->oauth2->setDeletedAs($value);
-        $this->assertEquals($value, $this->oauth2->getDeletedAs());
-    }
-
     public function testGetDeletedBy(): void
     {
         $this->assertEquals(null, $this->oauth2->getDeletedBy());
@@ -300,30 +240,6 @@ class Oauth2Test extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->oauth2->setDeletedBy($value);
         $this->assertEquals($value, $this->oauth2->getDeletedBy());
-    }
-
-    public function testGetRestoredAt(): void
-    {
-        $this->assertEquals(null, $this->oauth2->getRestoredAt());
-    }
-    
-    public function testSetRestoredAt(): void
-    {
-        $value = uniqid();
-        $this->oauth2->setRestoredAt($value);
-        $this->assertEquals($value, $this->oauth2->getRestoredAt());
-    }
-
-    public function testGetRestoredBy(): void
-    {
-        $this->assertEquals(null, $this->oauth2->getRestoredBy());
-    }
-    
-    public function testSetRestoredBy(): void
-    {
-        $value = uniqid();
-        $this->oauth2->setRestoredBy($value);
-        $this->assertEquals($value, $this->oauth2->getRestoredBy());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void

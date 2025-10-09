@@ -10,10 +10,9 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Models\Interfaces;
+namespace Zemit\Models\Enums;
 
-use Zemit\Models\Abstracts\Interfaces\FieldAbstractInterface;
-
-interface FieldInterface extends FieldAbstractInterface
-{
+enum WorkspaceStatus: string {
+    case ACTIVE = 'active';
+    case INACTIVE = 'inactive';
 }

@@ -62,6 +62,18 @@ class FlagTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->flag->getId());
     }
 
+    public function testGetUuid(): void
+    {
+        $this->assertEquals(null, $this->flag->getUuid());
+    }
+    
+    public function testSetUuid(): void
+    {
+        $value = uniqid();
+        $this->flag->setUuid($value);
+        $this->assertEquals($value, $this->flag->getUuid());
+    }
+
     public function testGetSiteId(): void
     {
         $this->assertEquals(null, $this->flag->getSiteId());
@@ -74,28 +86,16 @@ class FlagTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->flag->getSiteId());
     }
 
-    public function testGetPageId(): void
+    public function testGetKey(): void
     {
-        $this->assertEquals(null, $this->flag->getPageId());
+        $this->assertEquals(null, $this->flag->getKey());
     }
     
-    public function testSetPageId(): void
+    public function testSetKey(): void
     {
         $value = uniqid();
-        $this->flag->setPageId($value);
-        $this->assertEquals($value, $this->flag->getPageId());
-    }
-
-    public function testGetLangId(): void
-    {
-        $this->assertEquals(null, $this->flag->getLangId());
-    }
-    
-    public function testSetLangId(): void
-    {
-        $value = uniqid();
-        $this->flag->setLangId($value);
-        $this->assertEquals($value, $this->flag->getLangId());
+        $this->flag->setKey($value);
+        $this->assertEquals($value, $this->flag->getKey());
     }
 
     public function testGetLabel(): void
@@ -108,18 +108,6 @@ class FlagTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->flag->setLabel($value);
         $this->assertEquals($value, $this->flag->getLabel());
-    }
-
-    public function testGetIndex(): void
-    {
-        $this->assertEquals(null, $this->flag->getIndex());
-    }
-    
-    public function testSetIndex(): void
-    {
-        $value = uniqid();
-        $this->flag->setIndex($value);
-        $this->assertEquals($value, $this->flag->getIndex());
     }
 
     public function testGetValue(): void
@@ -160,7 +148,7 @@ class FlagTest extends \Zemit\Tests\Unit\AbstractUnit
 
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->flag->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->flag->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -180,18 +168,6 @@ class FlagTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->flag->setCreatedBy($value);
         $this->assertEquals($value, $this->flag->getCreatedBy());
-    }
-
-    public function testGetCreatedAs(): void
-    {
-        $this->assertEquals(null, $this->flag->getCreatedAs());
-    }
-    
-    public function testSetCreatedAs(): void
-    {
-        $value = uniqid();
-        $this->flag->setCreatedAs($value);
-        $this->assertEquals($value, $this->flag->getCreatedAs());
     }
 
     public function testGetUpdatedAt(): void
@@ -218,18 +194,6 @@ class FlagTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->flag->getUpdatedBy());
     }
 
-    public function testGetUpdatedAs(): void
-    {
-        $this->assertEquals(null, $this->flag->getUpdatedAs());
-    }
-    
-    public function testSetUpdatedAs(): void
-    {
-        $value = uniqid();
-        $this->flag->setUpdatedAs($value);
-        $this->assertEquals($value, $this->flag->getUpdatedAs());
-    }
-
     public function testGetDeletedAt(): void
     {
         $this->assertEquals(null, $this->flag->getDeletedAt());
@@ -242,18 +206,6 @@ class FlagTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->flag->getDeletedAt());
     }
 
-    public function testGetDeletedAs(): void
-    {
-        $this->assertEquals(null, $this->flag->getDeletedAs());
-    }
-    
-    public function testSetDeletedAs(): void
-    {
-        $value = uniqid();
-        $this->flag->setDeletedAs($value);
-        $this->assertEquals($value, $this->flag->getDeletedAs());
-    }
-
     public function testGetDeletedBy(): void
     {
         $this->assertEquals(null, $this->flag->getDeletedBy());
@@ -264,42 +216,6 @@ class FlagTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->flag->setDeletedBy($value);
         $this->assertEquals($value, $this->flag->getDeletedBy());
-    }
-
-    public function testGetRestoredAt(): void
-    {
-        $this->assertEquals(null, $this->flag->getRestoredAt());
-    }
-    
-    public function testSetRestoredAt(): void
-    {
-        $value = uniqid();
-        $this->flag->setRestoredAt($value);
-        $this->assertEquals($value, $this->flag->getRestoredAt());
-    }
-
-    public function testGetRestoredBy(): void
-    {
-        $this->assertEquals(null, $this->flag->getRestoredBy());
-    }
-    
-    public function testSetRestoredBy(): void
-    {
-        $value = uniqid();
-        $this->flag->setRestoredBy($value);
-        $this->assertEquals($value, $this->flag->getRestoredBy());
-    }
-
-    public function testGetRestoredAs(): void
-    {
-        $this->assertEquals(null, $this->flag->getRestoredAs());
-    }
-    
-    public function testSetRestoredAs(): void
-    {
-        $value = uniqid();
-        $this->flag->setRestoredAs($value);
-        $this->assertEquals($value, $this->flag->getRestoredAs());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void

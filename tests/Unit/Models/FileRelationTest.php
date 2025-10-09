@@ -62,6 +62,18 @@ class FileRelationTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->fileRelation->getId());
     }
 
+    public function testGetUuid(): void
+    {
+        $this->assertEquals(null, $this->fileRelation->getUuid());
+    }
+    
+    public function testSetUuid(): void
+    {
+        $value = uniqid();
+        $this->fileRelation->setUuid($value);
+        $this->assertEquals($value, $this->fileRelation->getUuid());
+    }
+
     public function testGetFileId(): void
     {
         $this->assertEquals(null, $this->fileRelation->getFileId());
@@ -74,16 +86,28 @@ class FileRelationTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->fileRelation->getFileId());
     }
 
-    public function testGetCategory(): void
+    public function testGetRelationTable(): void
     {
-        $this->assertEquals('other', $this->fileRelation->getCategory());
+        $this->assertEquals(null, $this->fileRelation->getRelationTable());
     }
     
-    public function testSetCategory(): void
+    public function testSetRelationTable(): void
     {
         $value = uniqid();
-        $this->fileRelation->setCategory($value);
-        $this->assertEquals($value, $this->fileRelation->getCategory());
+        $this->fileRelation->setRelationTable($value);
+        $this->assertEquals($value, $this->fileRelation->getRelationTable());
+    }
+
+    public function testGetRelationId(): void
+    {
+        $this->assertEquals(null, $this->fileRelation->getRelationId());
+    }
+    
+    public function testSetRelationId(): void
+    {
+        $value = uniqid();
+        $this->fileRelation->setRelationId($value);
+        $this->assertEquals($value, $this->fileRelation->getRelationId());
     }
 
     public function testGetDeleted(): void
@@ -100,7 +124,7 @@ class FileRelationTest extends \Zemit\Tests\Unit\AbstractUnit
 
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->fileRelation->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->fileRelation->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -120,126 +144,6 @@ class FileRelationTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->fileRelation->setCreatedBy($value);
         $this->assertEquals($value, $this->fileRelation->getCreatedBy());
-    }
-
-    public function testGetCreatedAs(): void
-    {
-        $this->assertEquals(null, $this->fileRelation->getCreatedAs());
-    }
-    
-    public function testSetCreatedAs(): void
-    {
-        $value = uniqid();
-        $this->fileRelation->setCreatedAs($value);
-        $this->assertEquals($value, $this->fileRelation->getCreatedAs());
-    }
-
-    public function testGetUpdatedAt(): void
-    {
-        $this->assertEquals(null, $this->fileRelation->getUpdatedAt());
-    }
-    
-    public function testSetUpdatedAt(): void
-    {
-        $value = uniqid();
-        $this->fileRelation->setUpdatedAt($value);
-        $this->assertEquals($value, $this->fileRelation->getUpdatedAt());
-    }
-
-    public function testGetUpdatedBy(): void
-    {
-        $this->assertEquals(null, $this->fileRelation->getUpdatedBy());
-    }
-    
-    public function testSetUpdatedBy(): void
-    {
-        $value = uniqid();
-        $this->fileRelation->setUpdatedBy($value);
-        $this->assertEquals($value, $this->fileRelation->getUpdatedBy());
-    }
-
-    public function testGetUpdatedAs(): void
-    {
-        $this->assertEquals(null, $this->fileRelation->getUpdatedAs());
-    }
-    
-    public function testSetUpdatedAs(): void
-    {
-        $value = uniqid();
-        $this->fileRelation->setUpdatedAs($value);
-        $this->assertEquals($value, $this->fileRelation->getUpdatedAs());
-    }
-
-    public function testGetDeletedAt(): void
-    {
-        $this->assertEquals(null, $this->fileRelation->getDeletedAt());
-    }
-    
-    public function testSetDeletedAt(): void
-    {
-        $value = uniqid();
-        $this->fileRelation->setDeletedAt($value);
-        $this->assertEquals($value, $this->fileRelation->getDeletedAt());
-    }
-
-    public function testGetDeletedAs(): void
-    {
-        $this->assertEquals(null, $this->fileRelation->getDeletedAs());
-    }
-    
-    public function testSetDeletedAs(): void
-    {
-        $value = uniqid();
-        $this->fileRelation->setDeletedAs($value);
-        $this->assertEquals($value, $this->fileRelation->getDeletedAs());
-    }
-
-    public function testGetDeletedBy(): void
-    {
-        $this->assertEquals(null, $this->fileRelation->getDeletedBy());
-    }
-    
-    public function testSetDeletedBy(): void
-    {
-        $value = uniqid();
-        $this->fileRelation->setDeletedBy($value);
-        $this->assertEquals($value, $this->fileRelation->getDeletedBy());
-    }
-
-    public function testGetRestoredAt(): void
-    {
-        $this->assertEquals(null, $this->fileRelation->getRestoredAt());
-    }
-    
-    public function testSetRestoredAt(): void
-    {
-        $value = uniqid();
-        $this->fileRelation->setRestoredAt($value);
-        $this->assertEquals($value, $this->fileRelation->getRestoredAt());
-    }
-
-    public function testGetRestoredBy(): void
-    {
-        $this->assertEquals(null, $this->fileRelation->getRestoredBy());
-    }
-    
-    public function testSetRestoredBy(): void
-    {
-        $value = uniqid();
-        $this->fileRelation->setRestoredBy($value);
-        $this->assertEquals($value, $this->fileRelation->getRestoredBy());
-    }
-
-    public function testGetRestoredAs(): void
-    {
-        $this->assertEquals(null, $this->fileRelation->getRestoredAs());
-    }
-    
-    public function testSetRestoredAs(): void
-    {
-        $value = uniqid();
-        $this->fileRelation->setRestoredAs($value);
-        $this->assertEquals($value, $this->fileRelation->getRestoredAs());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void

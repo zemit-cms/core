@@ -14,9 +14,8 @@ namespace Zemit\Models\Abstracts;
 
 use Phalcon\Db\RawValue;
 use Zemit\Filter\Validation;
-use Zemit\Models\AbstractModel;
+use \Zemit\Models\AbstractModel;
 use Zemit\Models\AuditDetail;
-use Zemit\Models\Audit;
 use Zemit\Models\User;
 use Zemit\Models\Abstracts\Interfaces\AuditAbstractInterface;
 
@@ -30,10 +29,6 @@ use Zemit\Models\Abstracts\Interfaces\AuditAbstractInterface;
  * @property AuditDetail[] $AuditDetailList
  * @method AuditDetail[] getAuditDetailList(?array $params = null)
  *
- * @property Audit $parententity
- * @property Audit $ParentEntity
- * @method Audit getParentEntity(?array $params = null)
- *
  * @property User $createdbyentity
  * @property User $CreatedByEntity
  * @method User getCreatedByEntity(?array $params = null)
@@ -41,46 +36,22 @@ use Zemit\Models\Abstracts\Interfaces\AuditAbstractInterface;
  * @property User $createdasentity
  * @property User $CreatedAsEntity
  * @method User getCreatedAsEntity(?array $params = null)
- *
- * @property User $updatedbyentity
- * @property User $UpdatedByEntity
- * @method User getUpdatedByEntity(?array $params = null)
- *
- * @property User $updatedasentity
- * @property User $UpdatedAsEntity
- * @method User getUpdatedAsEntity(?array $params = null)
- *
- * @property User $deletedasentity
- * @property User $DeletedAsEntity
- * @method User getDeletedAsEntity(?array $params = null)
- *
- * @property User $deletedbyentity
- * @property User $DeletedByEntity
- * @method User getDeletedByEntity(?array $params = null)
- *
- * @property User $restoredbyentity
- * @property User $RestoredByEntity
- * @method User getRestoredByEntity(?array $params = null)
- *
- * @property User $restoredasentity
- * @property User $RestoredAsEntity
- * @method User getRestoredAsEntity(?array $params = null)
  */
-abstract class AuditAbstract extends AbstractModel implements AuditAbstractInterface
+abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements AuditAbstractInterface
 {
     /**
      * Column: id
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Type(14)
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $id = null;
         
     /**
-     * Column: parent_id
-     * Attributes: Numeric | Unsigned | Type(14)
+     * Column: uuid
+     * Attributes: NotNull | Size(36) | Type(5)
      * @var mixed
      */
-    public mixed $parentId = null;
+    public mixed $uuid = null;
         
     /**
      * Column: model
@@ -98,7 +69,7 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
         
     /**
      * Column: primary
-     * Attributes: NotNull | Numeric | Unsigned
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $primary = null;
@@ -111,121 +82,44 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     public mixed $event = 'other';
         
     /**
-     * Column: columns
-     * Attributes: Type(6)
-     * @var mixed
-     */
-    public mixed $columns = null;
-        
-    /**
      * Column: before
-     * Attributes: Type(23)
+     * Attributes: Type(24)
      * @var mixed
      */
     public mixed $before = null;
         
     /**
      * Column: after
-     * Attributes: Type(23)
+     * Attributes: Type(24)
      * @var mixed
      */
     public mixed $after = null;
-        
-    /**
-     * Column: deleted
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
-     * @var mixed
-     */
-    public mixed $deleted = 0;
         
     /**
      * Column: created_at
      * Attributes: NotNull | Type(4)
      * @var mixed
      */
-    public mixed $createdAt = null;
+    public mixed $createdAt = 'current_timestamp()';
         
     /**
      * Column: created_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $createdBy = null;
         
     /**
      * Column: created_as
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $createdAs = null;
-        
-    /**
-     * Column: updated_at
-     * Attributes: Type(4)
-     * @var mixed
-     */
-    public mixed $updatedAt = null;
-        
-    /**
-     * Column: updated_by
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $updatedBy = null;
-        
-    /**
-     * Column: updated_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $updatedAs = null;
-        
-    /**
-     * Column: deleted_at
-     * Attributes: Type(4)
-     * @var mixed
-     */
-    public mixed $deletedAt = null;
-        
-    /**
-     * Column: deleted_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $deletedAs = null;
-        
-    /**
-     * Column: deleted_by
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $deletedBy = null;
-        
-    /**
-     * Column: restored_at
-     * Attributes: Type(4)
-     * @var mixed
-     */
-    public mixed $restoredAt = null;
-        
-    /**
-     * Column: restored_by
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $restoredBy = null;
-        
-    /**
-     * Column: restored_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $restoredAs = null;
     
     /**
      * Returns the value of field id
      * Column: id
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Type(14)
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
     public function getId(): mixed
@@ -236,7 +130,7 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field id
      * Column: id 
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Type(14)
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @param mixed $id
      * @return void
      */
@@ -246,26 +140,26 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     }
     
     /**
-     * Returns the value of field parentId
-     * Column: parent_id
-     * Attributes: Numeric | Unsigned | Type(14)
+     * Returns the value of field uuid
+     * Column: uuid
+     * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
-    public function getParentId(): mixed
+    public function getUuid(): mixed
     {
-        return $this->parentId;
+        return $this->uuid;
     }
     
     /**
-     * Sets the value of field parentId
-     * Column: parent_id 
-     * Attributes: Numeric | Unsigned | Type(14)
-     * @param mixed $parentId
+     * Sets the value of field uuid
+     * Column: uuid 
+     * Attributes: NotNull | Size(36) | Type(5)
+     * @param mixed $uuid
      * @return void
      */
-    public function setParentId(mixed $parentId): void
+    public function setUuid(mixed $uuid): void
     {
-        $this->parentId = $parentId;
+        $this->uuid = $uuid;
     }
     
     /**
@@ -317,7 +211,7 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Returns the value of field primary
      * Column: primary
-     * Attributes: NotNull | Numeric | Unsigned
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getPrimary(): mixed
@@ -328,7 +222,7 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field primary
      * Column: primary 
-     * Attributes: NotNull | Numeric | Unsigned
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $primary
      * @return void
      */
@@ -361,32 +255,9 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     }
     
     /**
-     * Returns the value of field columns
-     * Column: columns
-     * Attributes: Type(6)
-     * @return mixed
-     */
-    public function getColumns(): mixed
-    {
-        return $this->columns;
-    }
-    
-    /**
-     * Sets the value of field columns
-     * Column: columns 
-     * Attributes: Type(6)
-     * @param mixed $columns
-     * @return void
-     */
-    public function setColumns(mixed $columns): void
-    {
-        $this->columns = $columns;
-    }
-    
-    /**
      * Returns the value of field before
      * Column: before
-     * Attributes: Type(23)
+     * Attributes: Type(24)
      * @return mixed
      */
     public function getBefore(): mixed
@@ -397,7 +268,7 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field before
      * Column: before 
-     * Attributes: Type(23)
+     * Attributes: Type(24)
      * @param mixed $before
      * @return void
      */
@@ -409,7 +280,7 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Returns the value of field after
      * Column: after
-     * Attributes: Type(23)
+     * Attributes: Type(24)
      * @return mixed
      */
     public function getAfter(): mixed
@@ -420,36 +291,13 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field after
      * Column: after 
-     * Attributes: Type(23)
+     * Attributes: Type(24)
      * @param mixed $after
      * @return void
      */
     public function setAfter(mixed $after): void
     {
         $this->after = $after;
-    }
-    
-    /**
-     * Returns the value of field deleted
-     * Column: deleted
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
-     * @return mixed
-     */
-    public function getDeleted(): mixed
-    {
-        return $this->deleted;
-    }
-    
-    /**
-     * Sets the value of field deleted
-     * Column: deleted 
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
-     * @param mixed $deleted
-     * @return void
-     */
-    public function setDeleted(mixed $deleted): void
-    {
-        $this->deleted = $deleted;
     }
     
     /**
@@ -478,7 +326,7 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Returns the value of field createdBy
      * Column: created_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getCreatedBy(): mixed
@@ -489,7 +337,7 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field createdBy
      * Column: created_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $createdBy
      * @return void
      */
@@ -501,7 +349,7 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Returns the value of field createdAs
      * Column: created_as
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getCreatedAs(): mixed
@@ -512,220 +360,13 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     /**
      * Sets the value of field createdAs
      * Column: created_as 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $createdAs
      * @return void
      */
     public function setCreatedAs(mixed $createdAs): void
     {
         $this->createdAs = $createdAs;
-    }
-    
-    /**
-     * Returns the value of field updatedAt
-     * Column: updated_at
-     * Attributes: Type(4)
-     * @return mixed
-     */
-    public function getUpdatedAt(): mixed
-    {
-        return $this->updatedAt;
-    }
-    
-    /**
-     * Sets the value of field updatedAt
-     * Column: updated_at 
-     * Attributes: Type(4)
-     * @param mixed $updatedAt
-     * @return void
-     */
-    public function setUpdatedAt(mixed $updatedAt): void
-    {
-        $this->updatedAt = $updatedAt;
-    }
-    
-    /**
-     * Returns the value of field updatedBy
-     * Column: updated_by
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getUpdatedBy(): mixed
-    {
-        return $this->updatedBy;
-    }
-    
-    /**
-     * Sets the value of field updatedBy
-     * Column: updated_by 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $updatedBy
-     * @return void
-     */
-    public function setUpdatedBy(mixed $updatedBy): void
-    {
-        $this->updatedBy = $updatedBy;
-    }
-    
-    /**
-     * Returns the value of field updatedAs
-     * Column: updated_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getUpdatedAs(): mixed
-    {
-        return $this->updatedAs;
-    }
-    
-    /**
-     * Sets the value of field updatedAs
-     * Column: updated_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $updatedAs
-     * @return void
-     */
-    public function setUpdatedAs(mixed $updatedAs): void
-    {
-        $this->updatedAs = $updatedAs;
-    }
-    
-    /**
-     * Returns the value of field deletedAt
-     * Column: deleted_at
-     * Attributes: Type(4)
-     * @return mixed
-     */
-    public function getDeletedAt(): mixed
-    {
-        return $this->deletedAt;
-    }
-    
-    /**
-     * Sets the value of field deletedAt
-     * Column: deleted_at 
-     * Attributes: Type(4)
-     * @param mixed $deletedAt
-     * @return void
-     */
-    public function setDeletedAt(mixed $deletedAt): void
-    {
-        $this->deletedAt = $deletedAt;
-    }
-    
-    /**
-     * Returns the value of field deletedAs
-     * Column: deleted_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getDeletedAs(): mixed
-    {
-        return $this->deletedAs;
-    }
-    
-    /**
-     * Sets the value of field deletedAs
-     * Column: deleted_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $deletedAs
-     * @return void
-     */
-    public function setDeletedAs(mixed $deletedAs): void
-    {
-        $this->deletedAs = $deletedAs;
-    }
-    
-    /**
-     * Returns the value of field deletedBy
-     * Column: deleted_by
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getDeletedBy(): mixed
-    {
-        return $this->deletedBy;
-    }
-    
-    /**
-     * Sets the value of field deletedBy
-     * Column: deleted_by 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $deletedBy
-     * @return void
-     */
-    public function setDeletedBy(mixed $deletedBy): void
-    {
-        $this->deletedBy = $deletedBy;
-    }
-    
-    /**
-     * Returns the value of field restoredAt
-     * Column: restored_at
-     * Attributes: Type(4)
-     * @return mixed
-     */
-    public function getRestoredAt(): mixed
-    {
-        return $this->restoredAt;
-    }
-    
-    /**
-     * Sets the value of field restoredAt
-     * Column: restored_at 
-     * Attributes: Type(4)
-     * @param mixed $restoredAt
-     * @return void
-     */
-    public function setRestoredAt(mixed $restoredAt): void
-    {
-        $this->restoredAt = $restoredAt;
-    }
-    
-    /**
-     * Returns the value of field restoredBy
-     * Column: restored_by
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getRestoredBy(): mixed
-    {
-        return $this->restoredBy;
-    }
-    
-    /**
-     * Sets the value of field restoredBy
-     * Column: restored_by 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $restoredBy
-     * @return void
-     */
-    public function setRestoredBy(mixed $restoredBy): void
-    {
-        $this->restoredBy = $restoredBy;
-    }
-    
-    /**
-     * Returns the value of field restoredAs
-     * Column: restored_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getRestoredAs(): mixed
-    {
-        return $this->restoredAs;
-    }
-    
-    /**
-     * Sets the value of field restoredAs
-     * Column: restored_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $restoredAs
-     * @return void
-     */
-    public function setRestoredAs(mixed $restoredAs): void
-    {
-        $this->restoredAs = $restoredAs;
     }
 
     /**
@@ -736,23 +377,9 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     {
         $this->hasMany('id', AuditDetail::class, 'auditId', ['alias' => 'AuditDetailList']);
 
-        $this->belongsTo('parentId', Audit::class, 'id', ['alias' => 'ParentEntity']);
-
         $this->belongsTo('createdBy', User::class, 'id', ['alias' => 'CreatedByEntity']);
 
         $this->belongsTo('createdAs', User::class, 'id', ['alias' => 'CreatedAsEntity']);
-
-        $this->belongsTo('updatedBy', User::class, 'id', ['alias' => 'UpdatedByEntity']);
-
-        $this->belongsTo('updatedAs', User::class, 'id', ['alias' => 'UpdatedAsEntity']);
-
-        $this->belongsTo('deletedAs', User::class, 'id', ['alias' => 'DeletedAsEntity']);
-
-        $this->belongsTo('deletedBy', User::class, 'id', ['alias' => 'DeletedByEntity']);
-
-        $this->belongsTo('restoredBy', User::class, 'id', ['alias' => 'RestoredByEntity']);
-
-        $this->belongsTo('restoredAs', User::class, 'id', ['alias' => 'RestoredAsEntity']);
     }
     
     /**
@@ -765,24 +392,14 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
         $validator ??= new Validation();
     
         $this->addUnsignedIntValidation($validator, 'id', true);
-        $this->addUnsignedIntValidation($validator, 'parentId', true);
+        $this->addStringLengthValidation($validator, 'uuid', 0, 36, false);
         $this->addStringLengthValidation($validator, 'model', 0, 255, false);
         $this->addStringLengthValidation($validator, 'table', 0, 60, false);
         $this->addUnsignedIntValidation($validator, 'primary', false);
         $this->addInclusionInValidation($validator, 'event', ['create','update','delete','restore','other'], false);
-        $this->addUnsignedIntValidation($validator, 'deleted', false);
         $this->addDateTimeValidation($validator, 'createdAt', false);
         $this->addUnsignedIntValidation($validator, 'createdBy', true);
         $this->addUnsignedIntValidation($validator, 'createdAs', true);
-        $this->addDateTimeValidation($validator, 'updatedAt', true);
-        $this->addUnsignedIntValidation($validator, 'updatedBy', true);
-        $this->addUnsignedIntValidation($validator, 'updatedAs', true);
-        $this->addDateTimeValidation($validator, 'deletedAt', true);
-        $this->addUnsignedIntValidation($validator, 'deletedAs', true);
-        $this->addUnsignedIntValidation($validator, 'deletedBy', true);
-        $this->addDateTimeValidation($validator, 'restoredAt', true);
-        $this->addUnsignedIntValidation($validator, 'restoredBy', true);
-        $this->addUnsignedIntValidation($validator, 'restoredAs', true);
         
         return $validator;
     }
@@ -798,27 +415,16 @@ abstract class AuditAbstract extends AbstractModel implements AuditAbstractInter
     {
         return [
             'id' => 'id',
-            'parent_id' => 'parentId',
+            'uuid' => 'uuid',
             'model' => 'model',
             'table' => 'table',
             'primary' => 'primary',
             'event' => 'event',
-            'columns' => 'columns',
             'before' => 'before',
             'after' => 'after',
-            'deleted' => 'deleted',
             'created_at' => 'createdAt',
             'created_by' => 'createdBy',
             'created_as' => 'createdAs',
-            'updated_at' => 'updatedAt',
-            'updated_by' => 'updatedBy',
-            'updated_as' => 'updatedAs',
-            'deleted_at' => 'deletedAt',
-            'deleted_as' => 'deletedAs',
-            'deleted_by' => 'deletedBy',
-            'restored_at' => 'restoredAt',
-            'restored_by' => 'restoredBy',
-            'restored_as' => 'restoredAs',
         ];
     }
 }

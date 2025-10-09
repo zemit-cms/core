@@ -122,42 +122,6 @@ class JobTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->job->getParams());
     }
 
-    public function testGetThread(): void
-    {
-        $this->assertEquals(null, $this->job->getThread());
-    }
-    
-    public function testSetThread(): void
-    {
-        $value = uniqid();
-        $this->job->setThread($value);
-        $this->assertEquals($value, $this->job->getThread());
-    }
-
-    public function testGetPriority(): void
-    {
-        $this->assertEquals(null, $this->job->getPriority());
-    }
-    
-    public function testSetPriority(): void
-    {
-        $value = uniqid();
-        $this->job->setPriority($value);
-        $this->assertEquals($value, $this->job->getPriority());
-    }
-
-    public function testGetAt(): void
-    {
-        $this->assertEquals(null, $this->job->getAt());
-    }
-    
-    public function testSetAt(): void
-    {
-        $value = uniqid();
-        $this->job->setAt($value);
-        $this->assertEquals($value, $this->job->getAt());
-    }
-
     public function testGetStatus(): void
     {
         $this->assertEquals('new', $this->job->getStatus());
@@ -182,6 +146,30 @@ class JobTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->job->getResult());
     }
 
+    public function testGetPriority(): void
+    {
+        $this->assertEquals(null, $this->job->getPriority());
+    }
+    
+    public function testSetPriority(): void
+    {
+        $value = uniqid();
+        $this->job->setPriority($value);
+        $this->assertEquals($value, $this->job->getPriority());
+    }
+
+    public function testGetRunAt(): void
+    {
+        $this->assertEquals(null, $this->job->getRunAt());
+    }
+    
+    public function testSetRunAt(): void
+    {
+        $value = uniqid();
+        $this->job->setRunAt($value);
+        $this->assertEquals($value, $this->job->getRunAt());
+    }
+
     public function testGetDeleted(): void
     {
         $this->assertEquals(null, $this->job->getDeleted());
@@ -196,7 +184,7 @@ class JobTest extends \Zemit\Tests\Unit\AbstractUnit
 
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->job->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->job->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -216,18 +204,6 @@ class JobTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->job->setCreatedBy($value);
         $this->assertEquals($value, $this->job->getCreatedBy());
-    }
-
-    public function testGetCreatedAs(): void
-    {
-        $this->assertEquals(null, $this->job->getCreatedAs());
-    }
-    
-    public function testSetCreatedAs(): void
-    {
-        $value = uniqid();
-        $this->job->setCreatedAs($value);
-        $this->assertEquals($value, $this->job->getCreatedAs());
     }
 
     public function testGetUpdatedAt(): void
@@ -254,18 +230,6 @@ class JobTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->job->getUpdatedBy());
     }
 
-    public function testGetUpdatedAs(): void
-    {
-        $this->assertEquals(null, $this->job->getUpdatedAs());
-    }
-    
-    public function testSetUpdatedAs(): void
-    {
-        $value = uniqid();
-        $this->job->setUpdatedAs($value);
-        $this->assertEquals($value, $this->job->getUpdatedAs());
-    }
-
     public function testGetDeletedAt(): void
     {
         $this->assertEquals(null, $this->job->getDeletedAt());
@@ -278,18 +242,6 @@ class JobTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->job->getDeletedAt());
     }
 
-    public function testGetDeletedAs(): void
-    {
-        $this->assertEquals(null, $this->job->getDeletedAs());
-    }
-    
-    public function testSetDeletedAs(): void
-    {
-        $value = uniqid();
-        $this->job->setDeletedAs($value);
-        $this->assertEquals($value, $this->job->getDeletedAs());
-    }
-
     public function testGetDeletedBy(): void
     {
         $this->assertEquals(null, $this->job->getDeletedBy());
@@ -300,42 +252,6 @@ class JobTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->job->setDeletedBy($value);
         $this->assertEquals($value, $this->job->getDeletedBy());
-    }
-
-    public function testGetRestoredAt(): void
-    {
-        $this->assertEquals(null, $this->job->getRestoredAt());
-    }
-    
-    public function testSetRestoredAt(): void
-    {
-        $value = uniqid();
-        $this->job->setRestoredAt($value);
-        $this->assertEquals($value, $this->job->getRestoredAt());
-    }
-
-    public function testGetRestoredBy(): void
-    {
-        $this->assertEquals(null, $this->job->getRestoredBy());
-    }
-    
-    public function testSetRestoredBy(): void
-    {
-        $value = uniqid();
-        $this->job->setRestoredBy($value);
-        $this->assertEquals($value, $this->job->getRestoredBy());
-    }
-
-    public function testGetRestoredAs(): void
-    {
-        $this->assertEquals(null, $this->job->getRestoredAs());
-    }
-    
-    public function testSetRestoredAs(): void
-    {
-        $value = uniqid();
-        $this->job->setRestoredAs($value);
-        $this->assertEquals($value, $this->job->getRestoredAs());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void

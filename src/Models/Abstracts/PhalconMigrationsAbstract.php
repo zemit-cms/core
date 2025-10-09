@@ -14,7 +14,7 @@ namespace Zemit\Models\Abstracts;
 
 use Phalcon\Db\RawValue;
 use Zemit\Filter\Validation;
-use Zemit\Models\AbstractModel;
+use \Zemit\Models\AbstractModel;
 
 use Zemit\Models\Abstracts\Interfaces\PhalconMigrationsAbstractInterface;
 
@@ -26,18 +26,11 @@ use Zemit\Models\Abstracts\Interfaces\PhalconMigrationsAbstractInterface;
  * 
  * 
  */
-abstract class PhalconMigrationsAbstract extends AbstractModel implements PhalconMigrationsAbstractInterface
+abstract class PhalconMigrationsAbstract extends \Zemit\Models\AbstractModel implements PhalconMigrationsAbstractInterface
 {
     /**
-     * Column: id
-     * Attributes: First | NotNull | Numeric | Unsigned | AutoIncrement
-     * @var mixed
-     */
-    public mixed $id = null;
-        
-    /**
      * Column: version
-     * Attributes: Primary | NotNull | Size(255) | Type(2)
+     * Attributes: First | Primary | NotNull | Size(255) | Type(2)
      * @var mixed
      */
     public mixed $version = null;
@@ -57,32 +50,9 @@ abstract class PhalconMigrationsAbstract extends AbstractModel implements Phalco
     public mixed $endTime = 0;
     
     /**
-     * Returns the value of field id
-     * Column: id
-     * Attributes: First | NotNull | Numeric | Unsigned | AutoIncrement
-     * @return mixed
-     */
-    public function getId(): mixed
-    {
-        return $this->id;
-    }
-    
-    /**
-     * Sets the value of field id
-     * Column: id 
-     * Attributes: First | NotNull | Numeric | Unsigned | AutoIncrement
-     * @param mixed $id
-     * @return void
-     */
-    public function setId(mixed $id): void
-    {
-        $this->id = $id;
-    }
-    
-    /**
      * Returns the value of field version
      * Column: version
-     * Attributes: Primary | NotNull | Size(255) | Type(2)
+     * Attributes: First | Primary | NotNull | Size(255) | Type(2)
      * @return mixed
      */
     public function getVersion(): mixed
@@ -93,7 +63,7 @@ abstract class PhalconMigrationsAbstract extends AbstractModel implements Phalco
     /**
      * Sets the value of field version
      * Column: version 
-     * Attributes: Primary | NotNull | Size(255) | Type(2)
+     * Attributes: First | Primary | NotNull | Size(255) | Type(2)
      * @param mixed $version
      * @return void
      */
@@ -166,7 +136,6 @@ abstract class PhalconMigrationsAbstract extends AbstractModel implements Phalco
     {
         $validator ??= new Validation();
     
-        $this->addUnsignedIntValidation($validator, 'id', true);
         $this->addStringLengthValidation($validator, 'version', 0, 255, false);
         
         return $validator;
@@ -182,7 +151,6 @@ abstract class PhalconMigrationsAbstract extends AbstractModel implements Phalco
     public function columnMap(): array
     {
         return [
-            'id' => 'id',
             'version' => 'version',
             'start_time' => 'startTime',
             'end_time' => 'endTime',

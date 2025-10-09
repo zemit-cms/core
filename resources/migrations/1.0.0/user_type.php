@@ -24,7 +24,7 @@ class UserTypeMigration_100 extends Migration
                 new Column(
                     'id',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => true,
                         'autoIncrement' => true,
@@ -33,19 +33,28 @@ class UserTypeMigration_100 extends Migration
                     ]
                 ),
                 new Column(
+                    'uuid',
+                    [
+                        'type' => Column::TYPE_CHAR,
+                        'notNull' => true,
+                        'size' => 36,
+                        'after' => 'id'
+                    ]
+                ),
+                new Column(
                     'user_id',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => true,
                         'size' => 1,
-                        'after' => 'id'
+                        'after' => 'uuid'
                     ]
                 ),
                 new Column(
                     'type_id',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => true,
                         'size' => 1,
@@ -86,7 +95,7 @@ class UserTypeMigration_100 extends Migration
                 new Column(
                     'created_by',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => false,
                         'size' => 1,
@@ -94,27 +103,17 @@ class UserTypeMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'created_as',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'created_by'
-                    ]
-                ),
-                new Column(
                     'updated_at',
                     [
                         'type' => Column::TYPE_DATETIME,
                         'notNull' => false,
-                        'after' => 'created_as'
+                        'after' => 'created_by'
                     ]
                 ),
                 new Column(
                     'updated_by',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => false,
                         'size' => 1,
@@ -122,85 +121,89 @@ class UserTypeMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'updated_as',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'updated_by'
-                    ]
-                ),
-                new Column(
                     'deleted_at',
                     [
                         'type' => Column::TYPE_DATETIME,
                         'notNull' => false,
-                        'after' => 'updated_as'
+                        'after' => 'updated_by'
                     ]
                 ),
                 new Column(
-                    'deleted_as',
+                    'deleted_by',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => false,
                         'size' => 1,
                         'after' => 'deleted_at'
                     ]
                 ),
-                new Column(
-                    'deleted_by',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'deleted_as'
-                    ]
-                ),
-                new Column(
-                    'restored_at',
-                    [
-                        'type' => Column::TYPE_DATETIME,
-                        'notNull' => false,
-                        'after' => 'deleted_by'
-                    ]
-                ),
-                new Column(
-                    'restored_by',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'restored_at'
-                    ]
-                ),
-                new Column(
-                    'restored_as',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'restored_by'
-                    ]
-                ),
             ],
             'indexes' => [
                 new Index('PRIMARY', ['id'], 'PRIMARY'),
-                new Index('id_UNIQUE', ['id'], 'UNIQUE'),
-                new Index('user_id', ['user_id'], ''),
-                new Index('type_id', ['type_id'], ''),
-                new Index('created_by', ['created_by'], ''),
-                new Index('created_as', ['created_as'], ''),
-                new Index('updated_by', ['updated_by'], ''),
-                new Index('updated_as', ['updated_as'], ''),
-                new Index('deleted_by', ['deleted_by'], ''),
-                new Index('deleted_as', ['deleted_as'], ''),
-                new Index('restored_by', ['restored_by'], ''),
-                new Index('restored_as', ['restored_as'], ''),
+                new Index('uuid_UNIQUE', ['uuid'], 'UNIQUE'),
+                new Index('uq_user_type', ['user_id', 'type_id'], 'UNIQUE'),
+                new Index('idx_type_id', ['type_id'], ''),
+                new Index('fk_user_type_created_by', ['created_by'], ''),
+                new Index('fk_user_type_updated_by', ['updated_by'], ''),
+                new Index('fk_user_type_deleted_by', ['deleted_by'], ''),
+            ],
+            'references' => [
+                new Reference(
+                    'fk_user_type_created_by',
+                    [
+                        'referencedSchema' => 'zemit_core',
+                        'referencedTable' => 'user',
+                        'columns' => ['created_by'],
+                        'referencedColumns' => ['id'],
+                        'onUpdate' => 'CASCADE',
+                        'onDelete' => 'SET NULL'
+                    ]
+                ),
+                new Reference(
+                    'fk_user_type_deleted_by',
+                    [
+                        'referencedSchema' => 'zemit_core',
+                        'referencedTable' => 'user',
+                        'columns' => ['deleted_by'],
+                        'referencedColumns' => ['id'],
+                        'onUpdate' => 'CASCADE',
+                        'onDelete' => 'SET NULL'
+                    ]
+                ),
+                new Reference(
+                    'fk_user_type_type_id',
+                    [
+                        'referencedSchema' => 'zemit_core',
+                        'referencedTable' => 'type',
+                        'columns' => ['type_id'],
+                        'referencedColumns' => ['id'],
+                        'onUpdate' => 'CASCADE',
+                        'onDelete' => 'CASCADE'
+                    ]
+                ),
+                new Reference(
+                    'fk_user_type_updated_by',
+                    [
+                        'referencedSchema' => 'zemit_core',
+                        'referencedTable' => 'user',
+                        'columns' => ['updated_by'],
+                        'referencedColumns' => ['id'],
+                        'onUpdate' => 'CASCADE',
+                        'onDelete' => 'SET NULL'
+                    ]
+                ),
+                new Reference(
+                    'fk_user_type_user_id',
+                    [
+                        'referencedSchema' => 'zemit_core',
+                        'referencedTable' => 'user',
+                        'columns' => ['user_id'],
+                        'referencedColumns' => ['id'],
+                        'onUpdate' => 'CASCADE',
+                        'onDelete' => 'CASCADE'
+                    ]
+                ),
             ],
             'options' => [
                 'TABLE_TYPE' => 'BASE TABLE',

@@ -62,18 +62,6 @@ class EmailTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->email->getId());
     }
 
-    public function testGetTemplateId(): void
-    {
-        $this->assertEquals(null, $this->email->getTemplateId());
-    }
-    
-    public function testSetTemplateId(): void
-    {
-        $value = uniqid();
-        $this->email->setTemplateId($value);
-        $this->assertEquals($value, $this->email->getTemplateId());
-    }
-
     public function testGetUuid(): void
     {
         $this->assertEquals(null, $this->email->getUuid());
@@ -84,6 +72,18 @@ class EmailTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->email->setUuid($value);
         $this->assertEquals($value, $this->email->getUuid());
+    }
+
+    public function testGetTemplateId(): void
+    {
+        $this->assertEquals(null, $this->email->getTemplateId());
+    }
+    
+    public function testSetTemplateId(): void
+    {
+        $value = uniqid();
+        $this->email->setTemplateId($value);
+        $this->assertEquals($value, $this->email->getTemplateId());
     }
 
     public function testGetFrom(): void
@@ -134,18 +134,6 @@ class EmailTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->email->getBcc());
     }
 
-    public function testGetReadReceiptTo(): void
-    {
-        $this->assertEquals(null, $this->email->getReadReceiptTo());
-    }
-    
-    public function testSetReadReceiptTo(): void
-    {
-        $value = uniqid();
-        $this->email->setReadReceiptTo($value);
-        $this->assertEquals($value, $this->email->getReadReceiptTo());
-    }
-
     public function testGetSubject(): void
     {
         $this->assertEquals(null, $this->email->getSubject());
@@ -182,30 +170,6 @@ class EmailTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->email->getMeta());
     }
 
-    public function testGetViewPath(): void
-    {
-        $this->assertEquals(null, $this->email->getViewPath());
-    }
-    
-    public function testSetViewPath(): void
-    {
-        $value = uniqid();
-        $this->email->setViewPath($value);
-        $this->assertEquals($value, $this->email->getViewPath());
-    }
-
-    public function testGetSent(): void
-    {
-        $this->assertEquals(null, $this->email->getSent());
-    }
-    
-    public function testSetSent(): void
-    {
-        $value = uniqid();
-        $this->email->setSent($value);
-        $this->assertEquals($value, $this->email->getSent());
-    }
-
     public function testGetSentAt(): void
     {
         $this->assertEquals(null, $this->email->getSentAt());
@@ -216,30 +180,6 @@ class EmailTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->email->setSentAt($value);
         $this->assertEquals($value, $this->email->getSentAt());
-    }
-
-    public function testGetSentBy(): void
-    {
-        $this->assertEquals(null, $this->email->getSentBy());
-    }
-    
-    public function testSetSentBy(): void
-    {
-        $value = uniqid();
-        $this->email->setSentBy($value);
-        $this->assertEquals($value, $this->email->getSentBy());
-    }
-
-    public function testGetSentAs(): void
-    {
-        $this->assertEquals(null, $this->email->getSentAs());
-    }
-    
-    public function testSetSentAs(): void
-    {
-        $value = uniqid();
-        $this->email->setSentAs($value);
-        $this->assertEquals($value, $this->email->getSentAs());
     }
 
     public function testGetDeleted(): void
@@ -256,7 +196,7 @@ class EmailTest extends \Zemit\Tests\Unit\AbstractUnit
 
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->email->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->email->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -276,18 +216,6 @@ class EmailTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->email->setCreatedBy($value);
         $this->assertEquals($value, $this->email->getCreatedBy());
-    }
-
-    public function testGetCreatedAs(): void
-    {
-        $this->assertEquals(null, $this->email->getCreatedAs());
-    }
-    
-    public function testSetCreatedAs(): void
-    {
-        $value = uniqid();
-        $this->email->setCreatedAs($value);
-        $this->assertEquals($value, $this->email->getCreatedAs());
     }
 
     public function testGetUpdatedAt(): void
@@ -314,18 +242,6 @@ class EmailTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->email->getUpdatedBy());
     }
 
-    public function testGetUpdatedAs(): void
-    {
-        $this->assertEquals(null, $this->email->getUpdatedAs());
-    }
-    
-    public function testSetUpdatedAs(): void
-    {
-        $value = uniqid();
-        $this->email->setUpdatedAs($value);
-        $this->assertEquals($value, $this->email->getUpdatedAs());
-    }
-
     public function testGetDeletedAt(): void
     {
         $this->assertEquals(null, $this->email->getDeletedAt());
@@ -348,54 +264,6 @@ class EmailTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->email->setDeletedBy($value);
         $this->assertEquals($value, $this->email->getDeletedBy());
-    }
-
-    public function testGetDeletedAs(): void
-    {
-        $this->assertEquals(null, $this->email->getDeletedAs());
-    }
-    
-    public function testSetDeletedAs(): void
-    {
-        $value = uniqid();
-        $this->email->setDeletedAs($value);
-        $this->assertEquals($value, $this->email->getDeletedAs());
-    }
-
-    public function testGetRestoredAt(): void
-    {
-        $this->assertEquals(null, $this->email->getRestoredAt());
-    }
-    
-    public function testSetRestoredAt(): void
-    {
-        $value = uniqid();
-        $this->email->setRestoredAt($value);
-        $this->assertEquals($value, $this->email->getRestoredAt());
-    }
-
-    public function testGetRestoredBy(): void
-    {
-        $this->assertEquals(null, $this->email->getRestoredBy());
-    }
-    
-    public function testSetRestoredBy(): void
-    {
-        $value = uniqid();
-        $this->email->setRestoredBy($value);
-        $this->assertEquals($value, $this->email->getRestoredBy());
-    }
-
-    public function testGetRestoredAs(): void
-    {
-        $this->assertEquals(null, $this->email->getRestoredAs());
-    }
-    
-    public function testSetRestoredAs(): void
-    {
-        $value = uniqid();
-        $this->email->setRestoredAs($value);
-        $this->assertEquals($value, $this->email->getRestoredAs());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void

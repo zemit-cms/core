@@ -14,7 +14,7 @@ namespace Zemit\Models\Abstracts;
 
 use Phalcon\Db\RawValue;
 use Zemit\Filter\Validation;
-use Zemit\Models\AbstractModel;
+use \Zemit\Models\AbstractModel;
 use Zemit\Models\Email;
 use Zemit\Models\User;
 use Zemit\Models\Abstracts\Interfaces\TemplateAbstractInterface;
@@ -33,63 +33,50 @@ use Zemit\Models\Abstracts\Interfaces\TemplateAbstractInterface;
  * @property User $CreatedByEntity
  * @method User getCreatedByEntity(?array $params = null)
  *
- * @property User $createdasentity
- * @property User $CreatedAsEntity
- * @method User getCreatedAsEntity(?array $params = null)
- *
  * @property User $updatedbyentity
  * @property User $UpdatedByEntity
  * @method User getUpdatedByEntity(?array $params = null)
  *
- * @property User $updatedasentity
- * @property User $UpdatedAsEntity
- * @method User getUpdatedAsEntity(?array $params = null)
- *
  * @property User $deletedbyentity
  * @property User $DeletedByEntity
  * @method User getDeletedByEntity(?array $params = null)
- *
- * @property User $deletedasentity
- * @property User $DeletedAsEntity
- * @method User getDeletedAsEntity(?array $params = null)
- *
- * @property User $restoredbyentity
- * @property User $RestoredByEntity
- * @method User getRestoredByEntity(?array $params = null)
- *
- * @property User $restoredasentity
- * @property User $RestoredAsEntity
- * @method User getRestoredAsEntity(?array $params = null)
  */
-abstract class TemplateAbstract extends AbstractModel implements TemplateAbstractInterface
+abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements TemplateAbstractInterface
 {
     /**
      * Column: id
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $id = null;
         
     /**
-     * Column: index
-     * Attributes: NotNull | Size(50) | Type(2)
+     * Column: uuid
+     * Attributes: NotNull | Size(36) | Type(5)
      * @var mixed
      */
-    public mixed $index = null;
+    public mixed $uuid = null;
         
     /**
-     * Column: name
-     * Attributes: NotNull | Size(100) | Type(2)
+     * Column: key
+     * Attributes: NotNull | Size(120) | Type(2)
      * @var mixed
      */
-    public mixed $name = null;
+    public mixed $key = null;
         
     /**
-     * Column: title
-     * Attributes: NotNull | Size(100) | Type(2)
+     * Column: label
+     * Attributes: NotNull | Size(120) | Type(2)
      * @var mixed
      */
-    public mixed $title = null;
+    public mixed $label = null;
+        
+    /**
+     * Column: subject
+     * Attributes: NotNull | Size(255) | Type(2)
+     * @var mixed
+     */
+    public mixed $subject = null;
         
     /**
      * Column: content
@@ -99,15 +86,8 @@ abstract class TemplateAbstract extends AbstractModel implements TemplateAbstrac
     public mixed $content = null;
         
     /**
-     * Column: meta
-     * Attributes: Type(23)
-     * @var mixed
-     */
-    public mixed $meta = null;
-        
-    /**
      * Column: deleted
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @var mixed
      */
     public mixed $deleted = 0;
@@ -117,21 +97,14 @@ abstract class TemplateAbstract extends AbstractModel implements TemplateAbstrac
      * Attributes: NotNull | Type(4)
      * @var mixed
      */
-    public mixed $createdAt = null;
+    public mixed $createdAt = 'current_timestamp()';
         
     /**
      * Column: created_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $createdBy = null;
-        
-    /**
-     * Column: created_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $createdAs = null;
         
     /**
      * Column: updated_at
@@ -142,17 +115,10 @@ abstract class TemplateAbstract extends AbstractModel implements TemplateAbstrac
         
     /**
      * Column: updated_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $updatedBy = null;
-        
-    /**
-     * Column: updated_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $updatedAs = null;
         
     /**
      * Column: deleted_at
@@ -163,43 +129,15 @@ abstract class TemplateAbstract extends AbstractModel implements TemplateAbstrac
         
     /**
      * Column: deleted_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $deletedBy = null;
-        
-    /**
-     * Column: deleted_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $deletedAs = null;
-        
-    /**
-     * Column: restored_at
-     * Attributes: Type(4)
-     * @var mixed
-     */
-    public mixed $restoredAt = null;
-        
-    /**
-     * Column: restored_by
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $restoredBy = null;
-        
-    /**
-     * Column: restored_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $restoredAs = null;
     
     /**
      * Returns the value of field id
      * Column: id
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
     public function getId(): mixed
@@ -210,7 +148,7 @@ abstract class TemplateAbstract extends AbstractModel implements TemplateAbstrac
     /**
      * Sets the value of field id
      * Column: id 
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @param mixed $id
      * @return void
      */
@@ -220,72 +158,95 @@ abstract class TemplateAbstract extends AbstractModel implements TemplateAbstrac
     }
     
     /**
-     * Returns the value of field index
-     * Column: index
-     * Attributes: NotNull | Size(50) | Type(2)
+     * Returns the value of field uuid
+     * Column: uuid
+     * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
-    public function getIndex(): mixed
+    public function getUuid(): mixed
     {
-        return $this->index;
+        return $this->uuid;
     }
     
     /**
-     * Sets the value of field index
-     * Column: index 
-     * Attributes: NotNull | Size(50) | Type(2)
-     * @param mixed $index
+     * Sets the value of field uuid
+     * Column: uuid 
+     * Attributes: NotNull | Size(36) | Type(5)
+     * @param mixed $uuid
      * @return void
      */
-    public function setIndex(mixed $index): void
+    public function setUuid(mixed $uuid): void
     {
-        $this->index = $index;
+        $this->uuid = $uuid;
     }
     
     /**
-     * Returns the value of field name
-     * Column: name
-     * Attributes: NotNull | Size(100) | Type(2)
+     * Returns the value of field key
+     * Column: key
+     * Attributes: NotNull | Size(120) | Type(2)
      * @return mixed
      */
-    public function getName(): mixed
+    public function getKey(): mixed
     {
-        return $this->name;
+        return $this->key;
     }
     
     /**
-     * Sets the value of field name
-     * Column: name 
-     * Attributes: NotNull | Size(100) | Type(2)
-     * @param mixed $name
+     * Sets the value of field key
+     * Column: key 
+     * Attributes: NotNull | Size(120) | Type(2)
+     * @param mixed $key
      * @return void
      */
-    public function setName(mixed $name): void
+    public function setKey(mixed $key): void
     {
-        $this->name = $name;
+        $this->key = $key;
     }
     
     /**
-     * Returns the value of field title
-     * Column: title
-     * Attributes: NotNull | Size(100) | Type(2)
+     * Returns the value of field label
+     * Column: label
+     * Attributes: NotNull | Size(120) | Type(2)
      * @return mixed
      */
-    public function getTitle(): mixed
+    public function getLabel(): mixed
     {
-        return $this->title;
+        return $this->label;
     }
     
     /**
-     * Sets the value of field title
-     * Column: title 
-     * Attributes: NotNull | Size(100) | Type(2)
-     * @param mixed $title
+     * Sets the value of field label
+     * Column: label 
+     * Attributes: NotNull | Size(120) | Type(2)
+     * @param mixed $label
      * @return void
      */
-    public function setTitle(mixed $title): void
+    public function setLabel(mixed $label): void
     {
-        $this->title = $title;
+        $this->label = $label;
+    }
+    
+    /**
+     * Returns the value of field subject
+     * Column: subject
+     * Attributes: NotNull | Size(255) | Type(2)
+     * @return mixed
+     */
+    public function getSubject(): mixed
+    {
+        return $this->subject;
+    }
+    
+    /**
+     * Sets the value of field subject
+     * Column: subject 
+     * Attributes: NotNull | Size(255) | Type(2)
+     * @param mixed $subject
+     * @return void
+     */
+    public function setSubject(mixed $subject): void
+    {
+        $this->subject = $subject;
     }
     
     /**
@@ -312,32 +273,9 @@ abstract class TemplateAbstract extends AbstractModel implements TemplateAbstrac
     }
     
     /**
-     * Returns the value of field meta
-     * Column: meta
-     * Attributes: Type(23)
-     * @return mixed
-     */
-    public function getMeta(): mixed
-    {
-        return $this->meta;
-    }
-    
-    /**
-     * Sets the value of field meta
-     * Column: meta 
-     * Attributes: Type(23)
-     * @param mixed $meta
-     * @return void
-     */
-    public function setMeta(mixed $meta): void
-    {
-        $this->meta = $meta;
-    }
-    
-    /**
      * Returns the value of field deleted
      * Column: deleted
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
     public function getDeleted(): mixed
@@ -348,7 +286,7 @@ abstract class TemplateAbstract extends AbstractModel implements TemplateAbstrac
     /**
      * Sets the value of field deleted
      * Column: deleted 
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @param mixed $deleted
      * @return void
      */
@@ -383,7 +321,7 @@ abstract class TemplateAbstract extends AbstractModel implements TemplateAbstrac
     /**
      * Returns the value of field createdBy
      * Column: created_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getCreatedBy(): mixed
@@ -394,36 +332,13 @@ abstract class TemplateAbstract extends AbstractModel implements TemplateAbstrac
     /**
      * Sets the value of field createdBy
      * Column: created_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $createdBy
      * @return void
      */
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
-    }
-    
-    /**
-     * Returns the value of field createdAs
-     * Column: created_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getCreatedAs(): mixed
-    {
-        return $this->createdAs;
-    }
-    
-    /**
-     * Sets the value of field createdAs
-     * Column: created_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $createdAs
-     * @return void
-     */
-    public function setCreatedAs(mixed $createdAs): void
-    {
-        $this->createdAs = $createdAs;
     }
     
     /**
@@ -452,7 +367,7 @@ abstract class TemplateAbstract extends AbstractModel implements TemplateAbstrac
     /**
      * Returns the value of field updatedBy
      * Column: updated_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getUpdatedBy(): mixed
@@ -463,36 +378,13 @@ abstract class TemplateAbstract extends AbstractModel implements TemplateAbstrac
     /**
      * Sets the value of field updatedBy
      * Column: updated_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $updatedBy
      * @return void
      */
     public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
-    }
-    
-    /**
-     * Returns the value of field updatedAs
-     * Column: updated_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getUpdatedAs(): mixed
-    {
-        return $this->updatedAs;
-    }
-    
-    /**
-     * Sets the value of field updatedAs
-     * Column: updated_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $updatedAs
-     * @return void
-     */
-    public function setUpdatedAs(mixed $updatedAs): void
-    {
-        $this->updatedAs = $updatedAs;
     }
     
     /**
@@ -521,7 +413,7 @@ abstract class TemplateAbstract extends AbstractModel implements TemplateAbstrac
     /**
      * Returns the value of field deletedBy
      * Column: deleted_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getDeletedBy(): mixed
@@ -532,105 +424,13 @@ abstract class TemplateAbstract extends AbstractModel implements TemplateAbstrac
     /**
      * Sets the value of field deletedBy
      * Column: deleted_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $deletedBy
      * @return void
      */
     public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;
-    }
-    
-    /**
-     * Returns the value of field deletedAs
-     * Column: deleted_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getDeletedAs(): mixed
-    {
-        return $this->deletedAs;
-    }
-    
-    /**
-     * Sets the value of field deletedAs
-     * Column: deleted_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $deletedAs
-     * @return void
-     */
-    public function setDeletedAs(mixed $deletedAs): void
-    {
-        $this->deletedAs = $deletedAs;
-    }
-    
-    /**
-     * Returns the value of field restoredAt
-     * Column: restored_at
-     * Attributes: Type(4)
-     * @return mixed
-     */
-    public function getRestoredAt(): mixed
-    {
-        return $this->restoredAt;
-    }
-    
-    /**
-     * Sets the value of field restoredAt
-     * Column: restored_at 
-     * Attributes: Type(4)
-     * @param mixed $restoredAt
-     * @return void
-     */
-    public function setRestoredAt(mixed $restoredAt): void
-    {
-        $this->restoredAt = $restoredAt;
-    }
-    
-    /**
-     * Returns the value of field restoredBy
-     * Column: restored_by
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getRestoredBy(): mixed
-    {
-        return $this->restoredBy;
-    }
-    
-    /**
-     * Sets the value of field restoredBy
-     * Column: restored_by 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $restoredBy
-     * @return void
-     */
-    public function setRestoredBy(mixed $restoredBy): void
-    {
-        $this->restoredBy = $restoredBy;
-    }
-    
-    /**
-     * Returns the value of field restoredAs
-     * Column: restored_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getRestoredAs(): mixed
-    {
-        return $this->restoredAs;
-    }
-    
-    /**
-     * Sets the value of field restoredAs
-     * Column: restored_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $restoredAs
-     * @return void
-     */
-    public function setRestoredAs(mixed $restoredAs): void
-    {
-        $this->restoredAs = $restoredAs;
     }
 
     /**
@@ -643,19 +443,9 @@ abstract class TemplateAbstract extends AbstractModel implements TemplateAbstrac
 
         $this->belongsTo('createdBy', User::class, 'id', ['alias' => 'CreatedByEntity']);
 
-        $this->belongsTo('createdAs', User::class, 'id', ['alias' => 'CreatedAsEntity']);
-
         $this->belongsTo('updatedBy', User::class, 'id', ['alias' => 'UpdatedByEntity']);
 
-        $this->belongsTo('updatedAs', User::class, 'id', ['alias' => 'UpdatedAsEntity']);
-
         $this->belongsTo('deletedBy', User::class, 'id', ['alias' => 'DeletedByEntity']);
-
-        $this->belongsTo('deletedAs', User::class, 'id', ['alias' => 'DeletedAsEntity']);
-
-        $this->belongsTo('restoredBy', User::class, 'id', ['alias' => 'RestoredByEntity']);
-
-        $this->belongsTo('restoredAs', User::class, 'id', ['alias' => 'RestoredAsEntity']);
     }
     
     /**
@@ -668,22 +458,17 @@ abstract class TemplateAbstract extends AbstractModel implements TemplateAbstrac
         $validator ??= new Validation();
     
         $this->addUnsignedIntValidation($validator, 'id', true);
-        $this->addStringLengthValidation($validator, 'index', 0, 50, false);
-        $this->addStringLengthValidation($validator, 'name', 0, 100, false);
-        $this->addStringLengthValidation($validator, 'title', 0, 100, false);
+        $this->addStringLengthValidation($validator, 'uuid', 0, 36, false);
+        $this->addStringLengthValidation($validator, 'key', 0, 120, false);
+        $this->addStringLengthValidation($validator, 'label', 0, 120, false);
+        $this->addStringLengthValidation($validator, 'subject', 0, 255, false);
         $this->addUnsignedIntValidation($validator, 'deleted', false);
         $this->addDateTimeValidation($validator, 'createdAt', false);
         $this->addUnsignedIntValidation($validator, 'createdBy', true);
-        $this->addUnsignedIntValidation($validator, 'createdAs', true);
         $this->addDateTimeValidation($validator, 'updatedAt', true);
         $this->addUnsignedIntValidation($validator, 'updatedBy', true);
-        $this->addUnsignedIntValidation($validator, 'updatedAs', true);
         $this->addDateTimeValidation($validator, 'deletedAt', true);
         $this->addUnsignedIntValidation($validator, 'deletedBy', true);
-        $this->addUnsignedIntValidation($validator, 'deletedAs', true);
-        $this->addDateTimeValidation($validator, 'restoredAt', true);
-        $this->addUnsignedIntValidation($validator, 'restoredBy', true);
-        $this->addUnsignedIntValidation($validator, 'restoredAs', true);
         
         return $validator;
     }
@@ -699,24 +484,18 @@ abstract class TemplateAbstract extends AbstractModel implements TemplateAbstrac
     {
         return [
             'id' => 'id',
-            'index' => 'index',
-            'name' => 'name',
-            'title' => 'title',
+            'uuid' => 'uuid',
+            'key' => 'key',
+            'label' => 'label',
+            'subject' => 'subject',
             'content' => 'content',
-            'meta' => 'meta',
             'deleted' => 'deleted',
             'created_at' => 'createdAt',
             'created_by' => 'createdBy',
-            'created_as' => 'createdAs',
             'updated_at' => 'updatedAt',
             'updated_by' => 'updatedBy',
-            'updated_as' => 'updatedAs',
             'deleted_at' => 'deletedAt',
             'deleted_by' => 'deletedBy',
-            'deleted_as' => 'deletedAs',
-            'restored_at' => 'restoredAt',
-            'restored_by' => 'restoredBy',
-            'restored_as' => 'restoredAs',
         ];
     }
 }

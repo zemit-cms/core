@@ -62,16 +62,28 @@ class FileTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->file->getId());
     }
 
-    public function testGetUserId(): void
+    public function testGetUuid(): void
     {
-        $this->assertEquals(null, $this->file->getUserId());
+        $this->assertEquals(null, $this->file->getUuid());
     }
     
-    public function testSetUserId(): void
+    public function testSetUuid(): void
     {
         $value = uniqid();
-        $this->file->setUserId($value);
-        $this->assertEquals($value, $this->file->getUserId());
+        $this->file->setUuid($value);
+        $this->assertEquals($value, $this->file->getUuid());
+    }
+
+    public function testGetLabel(): void
+    {
+        $this->assertEquals(null, $this->file->getLabel());
+    }
+    
+    public function testSetLabel(): void
+    {
+        $value = uniqid();
+        $this->file->setLabel($value);
+        $this->assertEquals($value, $this->file->getLabel());
     }
 
     public function testGetCategory(): void
@@ -86,18 +98,6 @@ class FileTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->file->getCategory());
     }
 
-    public function testGetKey(): void
-    {
-        $this->assertEquals(null, $this->file->getKey());
-    }
-    
-    public function testSetKey(): void
-    {
-        $value = uniqid();
-        $this->file->setKey($value);
-        $this->assertEquals($value, $this->file->getKey());
-    }
-
     public function testGetPath(): void
     {
         $this->assertEquals(null, $this->file->getPath());
@@ -110,28 +110,16 @@ class FileTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->file->getPath());
     }
 
-    public function testGetType(): void
+    public function testGetMimeType(): void
     {
-        $this->assertEquals(null, $this->file->getType());
+        $this->assertEquals(null, $this->file->getMimeType());
     }
     
-    public function testSetType(): void
+    public function testSetMimeType(): void
     {
         $value = uniqid();
-        $this->file->setType($value);
-        $this->assertEquals($value, $this->file->getType());
-    }
-
-    public function testGetTypeReal(): void
-    {
-        $this->assertEquals(null, $this->file->getTypeReal());
-    }
-    
-    public function testSetTypeReal(): void
-    {
-        $value = uniqid();
-        $this->file->setTypeReal($value);
-        $this->assertEquals($value, $this->file->getTypeReal());
+        $this->file->setMimeType($value);
+        $this->assertEquals($value, $this->file->getMimeType());
     }
 
     public function testGetExtension(): void
@@ -146,30 +134,6 @@ class FileTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->file->getExtension());
     }
 
-    public function testGetName(): void
-    {
-        $this->assertEquals(null, $this->file->getName());
-    }
-    
-    public function testSetName(): void
-    {
-        $value = uniqid();
-        $this->file->setName($value);
-        $this->assertEquals($value, $this->file->getName());
-    }
-
-    public function testGetNameTemp(): void
-    {
-        $this->assertEquals(null, $this->file->getNameTemp());
-    }
-    
-    public function testSetNameTemp(): void
-    {
-        $value = uniqid();
-        $this->file->setNameTemp($value);
-        $this->assertEquals($value, $this->file->getNameTemp());
-    }
-
     public function testGetSize(): void
     {
         $this->assertEquals(null, $this->file->getSize());
@@ -180,18 +144,6 @@ class FileTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->file->setSize($value);
         $this->assertEquals($value, $this->file->getSize());
-    }
-
-    public function testGetError(): void
-    {
-        $this->assertEquals(null, $this->file->getError());
-    }
-    
-    public function testSetError(): void
-    {
-        $value = uniqid();
-        $this->file->setError($value);
-        $this->assertEquals($value, $this->file->getError());
     }
 
     public function testGetDeleted(): void
@@ -208,7 +160,7 @@ class FileTest extends \Zemit\Tests\Unit\AbstractUnit
 
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->file->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->file->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -228,18 +180,6 @@ class FileTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->file->setCreatedBy($value);
         $this->assertEquals($value, $this->file->getCreatedBy());
-    }
-
-    public function testGetCreatedAs(): void
-    {
-        $this->assertEquals(null, $this->file->getCreatedAs());
-    }
-    
-    public function testSetCreatedAs(): void
-    {
-        $value = uniqid();
-        $this->file->setCreatedAs($value);
-        $this->assertEquals($value, $this->file->getCreatedAs());
     }
 
     public function testGetUpdatedAt(): void
@@ -266,18 +206,6 @@ class FileTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->file->getUpdatedBy());
     }
 
-    public function testGetUpdatedAs(): void
-    {
-        $this->assertEquals(null, $this->file->getUpdatedAs());
-    }
-    
-    public function testSetUpdatedAs(): void
-    {
-        $value = uniqid();
-        $this->file->setUpdatedAs($value);
-        $this->assertEquals($value, $this->file->getUpdatedAs());
-    }
-
     public function testGetDeletedAt(): void
     {
         $this->assertEquals(null, $this->file->getDeletedAt());
@@ -290,18 +218,6 @@ class FileTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->file->getDeletedAt());
     }
 
-    public function testGetDeletedAs(): void
-    {
-        $this->assertEquals(null, $this->file->getDeletedAs());
-    }
-    
-    public function testSetDeletedAs(): void
-    {
-        $value = uniqid();
-        $this->file->setDeletedAs($value);
-        $this->assertEquals($value, $this->file->getDeletedAs());
-    }
-
     public function testGetDeletedBy(): void
     {
         $this->assertEquals(null, $this->file->getDeletedBy());
@@ -312,42 +228,6 @@ class FileTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->file->setDeletedBy($value);
         $this->assertEquals($value, $this->file->getDeletedBy());
-    }
-
-    public function testGetRestoredAt(): void
-    {
-        $this->assertEquals(null, $this->file->getRestoredAt());
-    }
-    
-    public function testSetRestoredAt(): void
-    {
-        $value = uniqid();
-        $this->file->setRestoredAt($value);
-        $this->assertEquals($value, $this->file->getRestoredAt());
-    }
-
-    public function testGetRestoredBy(): void
-    {
-        $this->assertEquals(null, $this->file->getRestoredBy());
-    }
-    
-    public function testSetRestoredBy(): void
-    {
-        $value = uniqid();
-        $this->file->setRestoredBy($value);
-        $this->assertEquals($value, $this->file->getRestoredBy());
-    }
-
-    public function testGetRestoredAs(): void
-    {
-        $this->assertEquals(null, $this->file->getRestoredAs());
-    }
-    
-    public function testSetRestoredAs(): void
-    {
-        $value = uniqid();
-        $this->file->setRestoredAs($value);
-        $this->assertEquals($value, $this->file->getRestoredAs());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void

@@ -62,16 +62,28 @@ class GroupTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->group->getId());
     }
 
-    public function testGetIndex(): void
+    public function testGetUuid(): void
     {
-        $this->assertEquals(null, $this->group->getIndex());
+        $this->assertEquals(null, $this->group->getUuid());
     }
     
-    public function testSetIndex(): void
+    public function testSetUuid(): void
     {
         $value = uniqid();
-        $this->group->setIndex($value);
-        $this->assertEquals($value, $this->group->getIndex());
+        $this->group->setUuid($value);
+        $this->assertEquals($value, $this->group->getUuid());
+    }
+
+    public function testGetKey(): void
+    {
+        $this->assertEquals(null, $this->group->getKey());
+    }
+    
+    public function testSetKey(): void
+    {
+        $value = uniqid();
+        $this->group->setKey($value);
+        $this->assertEquals($value, $this->group->getKey());
     }
 
     public function testGetLabel(): void
@@ -112,7 +124,7 @@ class GroupTest extends \Zemit\Tests\Unit\AbstractUnit
 
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->group->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->group->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -132,18 +144,6 @@ class GroupTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->group->setCreatedBy($value);
         $this->assertEquals($value, $this->group->getCreatedBy());
-    }
-
-    public function testGetCreatedAs(): void
-    {
-        $this->assertEquals(null, $this->group->getCreatedAs());
-    }
-    
-    public function testSetCreatedAs(): void
-    {
-        $value = uniqid();
-        $this->group->setCreatedAs($value);
-        $this->assertEquals($value, $this->group->getCreatedAs());
     }
 
     public function testGetUpdatedAt(): void
@@ -170,18 +170,6 @@ class GroupTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->group->getUpdatedBy());
     }
 
-    public function testGetUpdatedAs(): void
-    {
-        $this->assertEquals(null, $this->group->getUpdatedAs());
-    }
-    
-    public function testSetUpdatedAs(): void
-    {
-        $value = uniqid();
-        $this->group->setUpdatedAs($value);
-        $this->assertEquals($value, $this->group->getUpdatedAs());
-    }
-
     public function testGetDeletedAt(): void
     {
         $this->assertEquals(null, $this->group->getDeletedAt());
@@ -194,18 +182,6 @@ class GroupTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->group->getDeletedAt());
     }
 
-    public function testGetDeletedAs(): void
-    {
-        $this->assertEquals(null, $this->group->getDeletedAs());
-    }
-    
-    public function testSetDeletedAs(): void
-    {
-        $value = uniqid();
-        $this->group->setDeletedAs($value);
-        $this->assertEquals($value, $this->group->getDeletedAs());
-    }
-
     public function testGetDeletedBy(): void
     {
         $this->assertEquals(null, $this->group->getDeletedBy());
@@ -216,42 +192,6 @@ class GroupTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->group->setDeletedBy($value);
         $this->assertEquals($value, $this->group->getDeletedBy());
-    }
-
-    public function testGetRestoredAt(): void
-    {
-        $this->assertEquals(null, $this->group->getRestoredAt());
-    }
-    
-    public function testSetRestoredAt(): void
-    {
-        $value = uniqid();
-        $this->group->setRestoredAt($value);
-        $this->assertEquals($value, $this->group->getRestoredAt());
-    }
-
-    public function testGetRestoredBy(): void
-    {
-        $this->assertEquals(null, $this->group->getRestoredBy());
-    }
-    
-    public function testSetRestoredBy(): void
-    {
-        $value = uniqid();
-        $this->group->setRestoredBy($value);
-        $this->assertEquals($value, $this->group->getRestoredBy());
-    }
-
-    public function testGetRestoredAs(): void
-    {
-        $this->assertEquals(null, $this->group->getRestoredAs());
-    }
-    
-    public function testSetRestoredAs(): void
-    {
-        $value = uniqid();
-        $this->group->setRestoredAs($value);
-        $this->assertEquals($value, $this->group->getRestoredAs());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void

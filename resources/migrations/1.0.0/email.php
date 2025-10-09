@@ -24,7 +24,7 @@ class EmailMigration_100 extends Migration
                 new Column(
                     'id',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => true,
                         'autoIncrement' => true,
@@ -33,22 +33,22 @@ class EmailMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'template_id',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => true,
-                        'size' => 1,
-                        'after' => 'id'
-                    ]
-                ),
-                new Column(
                     'uuid',
                     [
                         'type' => Column::TYPE_CHAR,
                         'notNull' => true,
                         'size' => 36,
-                        'after' => 'template_id'
+                        'after' => 'id'
+                    ]
+                ),
+                new Column(
+                    'template_id',
+                    [
+                        'type' => Column::TYPE_BIGINTEGER,
+                        'unsigned' => true,
+                        'notNull' => false,
+                        'size' => 1,
+                        'after' => 'uuid'
                     ]
                 ),
                 new Column(
@@ -57,7 +57,7 @@ class EmailMigration_100 extends Migration
                         'type' => Column::TYPE_VARCHAR,
                         'notNull' => true,
                         'size' => 255,
-                        'after' => 'uuid'
+                        'after' => 'template_id'
                     ]
                 ),
                 new Column(
@@ -85,20 +85,12 @@ class EmailMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'read_receipt_to',
-                    [
-                        'type' => Column::TYPE_TEXT,
-                        'notNull' => false,
-                        'after' => 'bcc'
-                    ]
-                ),
-                new Column(
                     'subject',
                     [
                         'type' => Column::TYPE_VARCHAR,
                         'notNull' => true,
                         'size' => 255,
-                        'after' => 'read_receipt_to'
+                        'after' => 'bcc'
                     ]
                 ),
                 new Column(
@@ -118,51 +110,11 @@ class EmailMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'view_path',
-                    [
-                        'type' => Column::TYPE_VARCHAR,
-                        'notNull' => false,
-                        'size' => 255,
-                        'after' => 'meta'
-                    ]
-                ),
-                new Column(
-                    'sent',
-                    [
-                        'type' => Column::TYPE_TINYINTEGER,
-                        'default' => "0",
-                        'unsigned' => true,
-                        'notNull' => true,
-                        'size' => 1,
-                        'after' => 'view_path'
-                    ]
-                ),
-                new Column(
                     'sent_at',
                     [
                         'type' => Column::TYPE_DATETIME,
                         'notNull' => false,
-                        'after' => 'sent'
-                    ]
-                ),
-                new Column(
-                    'sent_by',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'sent_at'
-                    ]
-                ),
-                new Column(
-                    'sent_as',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'sent_by'
+                        'after' => 'meta'
                     ]
                 ),
                 new Column(
@@ -173,7 +125,7 @@ class EmailMigration_100 extends Migration
                         'unsigned' => true,
                         'notNull' => true,
                         'size' => 1,
-                        'after' => 'sent_as'
+                        'after' => 'sent_at'
                     ]
                 ),
                 new Column(
@@ -188,7 +140,7 @@ class EmailMigration_100 extends Migration
                 new Column(
                     'created_by',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => false,
                         'size' => 1,
@@ -196,27 +148,17 @@ class EmailMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'created_as',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'created_by'
-                    ]
-                ),
-                new Column(
                     'updated_at',
                     [
                         'type' => Column::TYPE_DATETIME,
                         'notNull' => false,
-                        'after' => 'created_as'
+                        'after' => 'created_by'
                     ]
                 ),
                 new Column(
                     'updated_by',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => false,
                         'size' => 1,
@@ -224,86 +166,77 @@ class EmailMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'updated_as',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'updated_by'
-                    ]
-                ),
-                new Column(
                     'deleted_at',
                     [
                         'type' => Column::TYPE_DATETIME,
                         'notNull' => false,
-                        'after' => 'updated_as'
+                        'after' => 'updated_by'
                     ]
                 ),
                 new Column(
                     'deleted_by',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => false,
                         'size' => 1,
                         'after' => 'deleted_at'
                     ]
                 ),
-                new Column(
-                    'deleted_as',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'deleted_by'
-                    ]
-                ),
-                new Column(
-                    'restored_at',
-                    [
-                        'type' => Column::TYPE_DATETIME,
-                        'notNull' => false,
-                        'after' => 'deleted_as'
-                    ]
-                ),
-                new Column(
-                    'restored_by',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'restored_at'
-                    ]
-                ),
-                new Column(
-                    'restored_as',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'restored_by'
-                    ]
-                ),
             ],
             'indexes' => [
                 new Index('PRIMARY', ['id'], 'PRIMARY'),
-                new Index('id_UNIQUE', ['id'], 'UNIQUE'),
                 new Index('uuid_UNIQUE', ['uuid'], 'UNIQUE'),
-                new Index('template_id', ['template_id'], ''),
-                new Index('uuid', ['uuid'], ''),
-                new Index('created_by', ['created_by'], ''),
-                new Index('created_as', ['created_as'], ''),
-                new Index('updated_by', ['updated_by'], ''),
-                new Index('updated_as', ['updated_as'], ''),
-                new Index('deleted_by', ['deleted_by'], ''),
-                new Index('deleted_as', ['deleted_as'], ''),
-                new Index('restored_by', ['restored_by'], ''),
-                new Index('restored_as', ['restored_as'], ''),
+                new Index('idx_template_id', ['template_id'], ''),
+                new Index('fk_email_created_by', ['created_by'], ''),
+                new Index('fk_email_updated_by', ['updated_by'], ''),
+                new Index('fk_email_deleted_by', ['deleted_by'], ''),
+            ],
+            'references' => [
+                new Reference(
+                    'fk_email_created_by',
+                    [
+                        'referencedSchema' => 'zemit_core',
+                        'referencedTable' => 'user',
+                        'columns' => ['created_by'],
+                        'referencedColumns' => ['id'],
+                        'onUpdate' => 'CASCADE',
+                        'onDelete' => 'SET NULL'
+                    ]
+                ),
+                new Reference(
+                    'fk_email_deleted_by',
+                    [
+                        'referencedSchema' => 'zemit_core',
+                        'referencedTable' => 'user',
+                        'columns' => ['deleted_by'],
+                        'referencedColumns' => ['id'],
+                        'onUpdate' => 'CASCADE',
+                        'onDelete' => 'SET NULL'
+                    ]
+                ),
+                new Reference(
+                    'fk_email_template_id',
+                    [
+                        'referencedSchema' => 'zemit_core',
+                        'referencedTable' => 'template',
+                        'columns' => ['template_id'],
+                        'referencedColumns' => ['id'],
+                        'onUpdate' => 'CASCADE',
+                        'onDelete' => 'SET NULL'
+                    ]
+                ),
+                new Reference(
+                    'fk_email_updated_by',
+                    [
+                        'referencedSchema' => 'zemit_core',
+                        'referencedTable' => 'user',
+                        'columns' => ['updated_by'],
+                        'referencedColumns' => ['id'],
+                        'onUpdate' => 'CASCADE',
+                        'onDelete' => 'SET NULL'
+                    ]
+                ),
             ],
             'options' => [
                 'TABLE_TYPE' => 'BASE TABLE',

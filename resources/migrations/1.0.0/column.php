@@ -24,7 +24,7 @@ class ColumnMigration_100 extends Migration
                 new Column(
                     'id',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => true,
                         'autoIncrement' => true,
@@ -42,9 +42,9 @@ class ColumnMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'workspace_id',
+                    'table_id',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => true,
                         'size' => 1,
@@ -52,31 +52,12 @@ class ColumnMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'table_id',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => true,
-                        'size' => 1,
-                        'after' => 'workspace_id'
-                    ]
-                ),
-                new Column(
-                    'name',
+                    'label',
                     [
                         'type' => Column::TYPE_VARCHAR,
                         'notNull' => true,
                         'size' => 60,
                         'after' => 'table_id'
-                    ]
-                ),
-                new Column(
-                    'description',
-                    [
-                        'type' => Column::TYPE_VARCHAR,
-                        'notNull' => false,
-                        'size' => 120,
-                        'after' => 'name'
                     ]
                 ),
                 new Column(
@@ -86,16 +67,25 @@ class ColumnMigration_100 extends Migration
                         'default' => "singleLineText",
                         'notNull' => true,
                         'size' => "'linkToAnotherRecord','singleLineText','longText','attachment','checkbox','multipleSelect','singleSelect','user','date','phoneNumber','email','url','number','currency','percent','duration','rating','formula','rollup','count','lookup','createdTime','lastModifiedTime','createdBy','lastModifiedBy','autonumber','barcode','button'",
-                        'after' => 'description'
+                        'after' => 'label'
                     ]
                 ),
                 new Column(
-                    'validation_regex',
+                    'description',
                     [
                         'type' => Column::TYPE_VARCHAR,
                         'notNull' => false,
-                        'size' => 1000,
+                        'size' => 120,
                         'after' => 'type'
+                    ]
+                ),
+                new Column(
+                    'options',
+                    [
+                        'type' => Column::TYPE_LONGTEXT,
+                        'notNull' => false,
+                        'comment' => "Stores options for select, formula, lookups etc.",
+                        'after' => 'description'
                     ]
                 ),
                 new Column(
@@ -106,7 +96,7 @@ class ColumnMigration_100 extends Migration
                         'unsigned' => true,
                         'notNull' => true,
                         'size' => 1,
-                        'after' => 'validation_regex'
+                        'after' => 'options'
                     ]
                 ),
                 new Column(
@@ -121,7 +111,7 @@ class ColumnMigration_100 extends Migration
                 new Column(
                     'created_by',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => false,
                         'size' => 1,
@@ -129,27 +119,17 @@ class ColumnMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'created_as',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'created_by'
-                    ]
-                ),
-                new Column(
                     'updated_at',
                     [
                         'type' => Column::TYPE_DATETIME,
                         'notNull' => false,
-                        'after' => 'created_as'
+                        'after' => 'created_by'
                     ]
                 ),
                 new Column(
                     'updated_by',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => false,
                         'size' => 1,
@@ -157,66 +137,77 @@ class ColumnMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'updated_as',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'updated_by'
-                    ]
-                ),
-                new Column(
                     'deleted_at',
                     [
                         'type' => Column::TYPE_DATETIME,
                         'notNull' => false,
-                        'after' => 'updated_as'
+                        'after' => 'updated_by'
                     ]
                 ),
                 new Column(
-                    'deleted_as',
+                    'deleted_by',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => false,
                         'size' => 1,
                         'after' => 'deleted_at'
                     ]
                 ),
-                new Column(
-                    'deleted_by',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'deleted_as'
-                    ]
-                ),
-                new Column(
-                    'restored_at',
-                    [
-                        'type' => Column::TYPE_DATETIME,
-                        'notNull' => false,
-                        'after' => 'deleted_by'
-                    ]
-                ),
-                new Column(
-                    'restored_by',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'restored_at'
-                    ]
-                ),
             ],
             'indexes' => [
                 new Index('PRIMARY', ['id'], 'PRIMARY'),
-                new Index('id_UNIQUE', ['id'], 'UNIQUE'),
                 new Index('uuid_UNIQUE', ['uuid'], 'UNIQUE'),
+                new Index('idx_table_id', ['table_id'], ''),
+                new Index('fk_column_created_by', ['created_by'], ''),
+                new Index('fk_column_updated_by', ['updated_by'], ''),
+                new Index('fk_column_deleted_by', ['deleted_by'], ''),
+            ],
+            'references' => [
+                new Reference(
+                    'fk_column_created_by',
+                    [
+                        'referencedSchema' => 'zemit_core',
+                        'referencedTable' => 'user',
+                        'columns' => ['created_by'],
+                        'referencedColumns' => ['id'],
+                        'onUpdate' => 'CASCADE',
+                        'onDelete' => 'SET NULL'
+                    ]
+                ),
+                new Reference(
+                    'fk_column_deleted_by',
+                    [
+                        'referencedSchema' => 'zemit_core',
+                        'referencedTable' => 'user',
+                        'columns' => ['deleted_by'],
+                        'referencedColumns' => ['id'],
+                        'onUpdate' => 'CASCADE',
+                        'onDelete' => 'SET NULL'
+                    ]
+                ),
+                new Reference(
+                    'fk_column_table_id',
+                    [
+                        'referencedSchema' => 'zemit_core',
+                        'referencedTable' => 'table',
+                        'columns' => ['table_id'],
+                        'referencedColumns' => ['id'],
+                        'onUpdate' => 'CASCADE',
+                        'onDelete' => 'CASCADE'
+                    ]
+                ),
+                new Reference(
+                    'fk_column_updated_by',
+                    [
+                        'referencedSchema' => 'zemit_core',
+                        'referencedTable' => 'user',
+                        'columns' => ['updated_by'],
+                        'referencedColumns' => ['id'],
+                        'onUpdate' => 'CASCADE',
+                        'onDelete' => 'SET NULL'
+                    ]
+                ),
             ],
             'options' => [
                 'TABLE_TYPE' => 'BASE TABLE',

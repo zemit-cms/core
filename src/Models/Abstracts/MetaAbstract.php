@@ -14,12 +14,8 @@ namespace Zemit\Models\Abstracts;
 
 use Phalcon\Db\RawValue;
 use Zemit\Filter\Validation;
-use Zemit\Models\AbstractModel;
-use Zemit\Models\Lang;
-use Zemit\Models\Site;
-use Zemit\Models\Page;
-use Zemit\Models\Post;
-use Zemit\Models\Category;
+use \Zemit\Models\AbstractModel;
+use Zemit\Models\Meta;
 use Zemit\Models\User;
 use Zemit\Models\Abstracts\Interfaces\MetaAbstractInterface;
 
@@ -29,101 +25,41 @@ use Zemit\Models\Abstracts\Interfaces\MetaAbstractInterface;
  * This class defines a Meta abstract model that extends the AbstractModel class and implements the MetaAbstractInterface.
  * It provides properties and methods for managing Meta data.
  * 
- * @property Lang $langentity
- * @property Lang $LangEntity
- * @method Lang getLangEntity(?array $params = null)
- *
- * @property Site $siteentity
- * @property Site $SiteEntity
- * @method Site getSiteEntity(?array $params = null)
- *
- * @property Page $pageentity
- * @property Page $PageEntity
- * @method Page getPageEntity(?array $params = null)
- *
- * @property Post $postentity
- * @property Post $PostEntity
- * @method Post getPostEntity(?array $params = null)
- *
- * @property Category $categoryentity
- * @property Category $CategoryEntity
- * @method Category getCategoryEntity(?array $params = null)
+ * @property Meta $metaentity
+ * @property Meta $MetaEntity
+ * @method Meta getMetaEntity(?array $params = null)
  *
  * @property User $createdbyentity
  * @property User $CreatedByEntity
  * @method User getCreatedByEntity(?array $params = null)
  *
- * @property User $createdasentity
- * @property User $CreatedAsEntity
- * @method User getCreatedAsEntity(?array $params = null)
- *
  * @property User $updatedbyentity
  * @property User $UpdatedByEntity
  * @method User getUpdatedByEntity(?array $params = null)
  *
- * @property User $updatedasentity
- * @property User $UpdatedAsEntity
- * @method User getUpdatedAsEntity(?array $params = null)
- *
- * @property User $deletedasentity
- * @property User $DeletedAsEntity
- * @method User getDeletedAsEntity(?array $params = null)
- *
  * @property User $deletedbyentity
  * @property User $DeletedByEntity
  * @method User getDeletedByEntity(?array $params = null)
- *
- * @property User $restoredbyentity
- * @property User $RestoredByEntity
- * @method User getRestoredByEntity(?array $params = null)
  */
-abstract class MetaAbstract extends AbstractModel implements MetaAbstractInterface
+abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaAbstractInterface
 {
     /**
      * Column: id
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $id = null;
         
     /**
-     * Column: lang_id
-     * Attributes: Numeric | Unsigned
+     * Column: uuid
+     * Attributes: NotNull | Size(36) | Type(5)
      * @var mixed
      */
-    public mixed $langId = null;
-        
-    /**
-     * Column: site_id
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $siteId = null;
-        
-    /**
-     * Column: page_id
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $pageId = null;
-        
-    /**
-     * Column: post_id
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $postId = null;
-        
-    /**
-     * Column: category_id
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $categoryId = null;
+    public mixed $uuid = null;
         
     /**
      * Column: key
-     * Attributes: Size(255) | Type(2)
+     * Attributes: NotNull | Size(255) | Type(2)
      * @var mixed
      */
     public mixed $key = null;
@@ -136,8 +72,22 @@ abstract class MetaAbstract extends AbstractModel implements MetaAbstractInterfa
     public mixed $value = null;
         
     /**
+     * Column: meta_table
+     * Attributes: NotNull | Size(60) | Type(2)
+     * @var mixed
+     */
+    public mixed $metaTable = null;
+        
+    /**
+     * Column: meta_id
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
+     * @var mixed
+     */
+    public mixed $metaId = null;
+        
+    /**
      * Column: deleted
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @var mixed
      */
     public mixed $deleted = 0;
@@ -147,21 +97,14 @@ abstract class MetaAbstract extends AbstractModel implements MetaAbstractInterfa
      * Attributes: NotNull | Type(4)
      * @var mixed
      */
-    public mixed $createdAt = null;
+    public mixed $createdAt = 'current_timestamp()';
         
     /**
      * Column: created_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $createdBy = null;
-        
-    /**
-     * Column: created_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $createdAs = null;
         
     /**
      * Column: updated_at
@@ -172,17 +115,10 @@ abstract class MetaAbstract extends AbstractModel implements MetaAbstractInterfa
         
     /**
      * Column: updated_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $updatedBy = null;
-        
-    /**
-     * Column: updated_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $updatedAs = null;
         
     /**
      * Column: deleted_at
@@ -192,37 +128,16 @@ abstract class MetaAbstract extends AbstractModel implements MetaAbstractInterfa
     public mixed $deletedAt = null;
         
     /**
-     * Column: deleted_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $deletedAs = null;
-        
-    /**
      * Column: deleted_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $deletedBy = null;
-        
-    /**
-     * Column: restored_at
-     * Attributes: Type(4)
-     * @var mixed
-     */
-    public mixed $restoredAt = null;
-        
-    /**
-     * Column: restored_by
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $restoredBy = null;
     
     /**
      * Returns the value of field id
      * Column: id
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
     public function getId(): mixed
@@ -233,7 +148,7 @@ abstract class MetaAbstract extends AbstractModel implements MetaAbstractInterfa
     /**
      * Sets the value of field id
      * Column: id 
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @param mixed $id
      * @return void
      */
@@ -243,124 +158,32 @@ abstract class MetaAbstract extends AbstractModel implements MetaAbstractInterfa
     }
     
     /**
-     * Returns the value of field langId
-     * Column: lang_id
-     * Attributes: Numeric | Unsigned
+     * Returns the value of field uuid
+     * Column: uuid
+     * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
-    public function getLangId(): mixed
+    public function getUuid(): mixed
     {
-        return $this->langId;
+        return $this->uuid;
     }
     
     /**
-     * Sets the value of field langId
-     * Column: lang_id 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $langId
+     * Sets the value of field uuid
+     * Column: uuid 
+     * Attributes: NotNull | Size(36) | Type(5)
+     * @param mixed $uuid
      * @return void
      */
-    public function setLangId(mixed $langId): void
+    public function setUuid(mixed $uuid): void
     {
-        $this->langId = $langId;
-    }
-    
-    /**
-     * Returns the value of field siteId
-     * Column: site_id
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getSiteId(): mixed
-    {
-        return $this->siteId;
-    }
-    
-    /**
-     * Sets the value of field siteId
-     * Column: site_id 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $siteId
-     * @return void
-     */
-    public function setSiteId(mixed $siteId): void
-    {
-        $this->siteId = $siteId;
-    }
-    
-    /**
-     * Returns the value of field pageId
-     * Column: page_id
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getPageId(): mixed
-    {
-        return $this->pageId;
-    }
-    
-    /**
-     * Sets the value of field pageId
-     * Column: page_id 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $pageId
-     * @return void
-     */
-    public function setPageId(mixed $pageId): void
-    {
-        $this->pageId = $pageId;
-    }
-    
-    /**
-     * Returns the value of field postId
-     * Column: post_id
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getPostId(): mixed
-    {
-        return $this->postId;
-    }
-    
-    /**
-     * Sets the value of field postId
-     * Column: post_id 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $postId
-     * @return void
-     */
-    public function setPostId(mixed $postId): void
-    {
-        $this->postId = $postId;
-    }
-    
-    /**
-     * Returns the value of field categoryId
-     * Column: category_id
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getCategoryId(): mixed
-    {
-        return $this->categoryId;
-    }
-    
-    /**
-     * Sets the value of field categoryId
-     * Column: category_id 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $categoryId
-     * @return void
-     */
-    public function setCategoryId(mixed $categoryId): void
-    {
-        $this->categoryId = $categoryId;
+        $this->uuid = $uuid;
     }
     
     /**
      * Returns the value of field key
      * Column: key
-     * Attributes: Size(255) | Type(2)
+     * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
      */
     public function getKey(): mixed
@@ -371,7 +194,7 @@ abstract class MetaAbstract extends AbstractModel implements MetaAbstractInterfa
     /**
      * Sets the value of field key
      * Column: key 
-     * Attributes: Size(255) | Type(2)
+     * Attributes: NotNull | Size(255) | Type(2)
      * @param mixed $key
      * @return void
      */
@@ -404,9 +227,55 @@ abstract class MetaAbstract extends AbstractModel implements MetaAbstractInterfa
     }
     
     /**
+     * Returns the value of field metaTable
+     * Column: meta_table
+     * Attributes: NotNull | Size(60) | Type(2)
+     * @return mixed
+     */
+    public function getMetaTable(): mixed
+    {
+        return $this->metaTable;
+    }
+    
+    /**
+     * Sets the value of field metaTable
+     * Column: meta_table 
+     * Attributes: NotNull | Size(60) | Type(2)
+     * @param mixed $metaTable
+     * @return void
+     */
+    public function setMetaTable(mixed $metaTable): void
+    {
+        $this->metaTable = $metaTable;
+    }
+    
+    /**
+     * Returns the value of field metaId
+     * Column: meta_id
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
+     * @return mixed
+     */
+    public function getMetaId(): mixed
+    {
+        return $this->metaId;
+    }
+    
+    /**
+     * Sets the value of field metaId
+     * Column: meta_id 
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
+     * @param mixed $metaId
+     * @return void
+     */
+    public function setMetaId(mixed $metaId): void
+    {
+        $this->metaId = $metaId;
+    }
+    
+    /**
      * Returns the value of field deleted
      * Column: deleted
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
     public function getDeleted(): mixed
@@ -417,7 +286,7 @@ abstract class MetaAbstract extends AbstractModel implements MetaAbstractInterfa
     /**
      * Sets the value of field deleted
      * Column: deleted 
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @param mixed $deleted
      * @return void
      */
@@ -452,7 +321,7 @@ abstract class MetaAbstract extends AbstractModel implements MetaAbstractInterfa
     /**
      * Returns the value of field createdBy
      * Column: created_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getCreatedBy(): mixed
@@ -463,36 +332,13 @@ abstract class MetaAbstract extends AbstractModel implements MetaAbstractInterfa
     /**
      * Sets the value of field createdBy
      * Column: created_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $createdBy
      * @return void
      */
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
-    }
-    
-    /**
-     * Returns the value of field createdAs
-     * Column: created_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getCreatedAs(): mixed
-    {
-        return $this->createdAs;
-    }
-    
-    /**
-     * Sets the value of field createdAs
-     * Column: created_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $createdAs
-     * @return void
-     */
-    public function setCreatedAs(mixed $createdAs): void
-    {
-        $this->createdAs = $createdAs;
     }
     
     /**
@@ -521,7 +367,7 @@ abstract class MetaAbstract extends AbstractModel implements MetaAbstractInterfa
     /**
      * Returns the value of field updatedBy
      * Column: updated_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getUpdatedBy(): mixed
@@ -532,36 +378,13 @@ abstract class MetaAbstract extends AbstractModel implements MetaAbstractInterfa
     /**
      * Sets the value of field updatedBy
      * Column: updated_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $updatedBy
      * @return void
      */
     public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
-    }
-    
-    /**
-     * Returns the value of field updatedAs
-     * Column: updated_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getUpdatedAs(): mixed
-    {
-        return $this->updatedAs;
-    }
-    
-    /**
-     * Sets the value of field updatedAs
-     * Column: updated_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $updatedAs
-     * @return void
-     */
-    public function setUpdatedAs(mixed $updatedAs): void
-    {
-        $this->updatedAs = $updatedAs;
     }
     
     /**
@@ -588,32 +411,9 @@ abstract class MetaAbstract extends AbstractModel implements MetaAbstractInterfa
     }
     
     /**
-     * Returns the value of field deletedAs
-     * Column: deleted_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getDeletedAs(): mixed
-    {
-        return $this->deletedAs;
-    }
-    
-    /**
-     * Sets the value of field deletedAs
-     * Column: deleted_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $deletedAs
-     * @return void
-     */
-    public function setDeletedAs(mixed $deletedAs): void
-    {
-        $this->deletedAs = $deletedAs;
-    }
-    
-    /**
      * Returns the value of field deletedBy
      * Column: deleted_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getDeletedBy(): mixed
@@ -624,59 +424,13 @@ abstract class MetaAbstract extends AbstractModel implements MetaAbstractInterfa
     /**
      * Sets the value of field deletedBy
      * Column: deleted_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $deletedBy
      * @return void
      */
     public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;
-    }
-    
-    /**
-     * Returns the value of field restoredAt
-     * Column: restored_at
-     * Attributes: Type(4)
-     * @return mixed
-     */
-    public function getRestoredAt(): mixed
-    {
-        return $this->restoredAt;
-    }
-    
-    /**
-     * Sets the value of field restoredAt
-     * Column: restored_at 
-     * Attributes: Type(4)
-     * @param mixed $restoredAt
-     * @return void
-     */
-    public function setRestoredAt(mixed $restoredAt): void
-    {
-        $this->restoredAt = $restoredAt;
-    }
-    
-    /**
-     * Returns the value of field restoredBy
-     * Column: restored_by
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getRestoredBy(): mixed
-    {
-        return $this->restoredBy;
-    }
-    
-    /**
-     * Sets the value of field restoredBy
-     * Column: restored_by 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $restoredBy
-     * @return void
-     */
-    public function setRestoredBy(mixed $restoredBy): void
-    {
-        $this->restoredBy = $restoredBy;
     }
 
     /**
@@ -685,29 +439,13 @@ abstract class MetaAbstract extends AbstractModel implements MetaAbstractInterfa
      */
     public function addDefaultRelationships(): void
     {
-        $this->belongsTo('langId', Lang::class, 'id', ['alias' => 'LangEntity']);
-
-        $this->belongsTo('siteId', Site::class, 'id', ['alias' => 'SiteEntity']);
-
-        $this->belongsTo('pageId', Page::class, 'id', ['alias' => 'PageEntity']);
-
-        $this->belongsTo('postId', Post::class, 'id', ['alias' => 'PostEntity']);
-
-        $this->belongsTo('categoryId', Category::class, 'id', ['alias' => 'CategoryEntity']);
+        $this->belongsTo('metaId', Meta::class, 'id', ['alias' => 'MetaEntity']);
 
         $this->belongsTo('createdBy', User::class, 'id', ['alias' => 'CreatedByEntity']);
 
-        $this->belongsTo('createdAs', User::class, 'id', ['alias' => 'CreatedAsEntity']);
-
         $this->belongsTo('updatedBy', User::class, 'id', ['alias' => 'UpdatedByEntity']);
 
-        $this->belongsTo('updatedAs', User::class, 'id', ['alias' => 'UpdatedAsEntity']);
-
-        $this->belongsTo('deletedAs', User::class, 'id', ['alias' => 'DeletedAsEntity']);
-
         $this->belongsTo('deletedBy', User::class, 'id', ['alias' => 'DeletedByEntity']);
-
-        $this->belongsTo('restoredBy', User::class, 'id', ['alias' => 'RestoredByEntity']);
     }
     
     /**
@@ -720,24 +458,17 @@ abstract class MetaAbstract extends AbstractModel implements MetaAbstractInterfa
         $validator ??= new Validation();
     
         $this->addUnsignedIntValidation($validator, 'id', true);
-        $this->addUnsignedIntValidation($validator, 'langId', true);
-        $this->addUnsignedIntValidation($validator, 'siteId', true);
-        $this->addUnsignedIntValidation($validator, 'pageId', true);
-        $this->addUnsignedIntValidation($validator, 'postId', true);
-        $this->addUnsignedIntValidation($validator, 'categoryId', true);
-        $this->addStringLengthValidation($validator, 'key', 0, 255, true);
+        $this->addStringLengthValidation($validator, 'uuid', 0, 36, false);
+        $this->addStringLengthValidation($validator, 'key', 0, 255, false);
+        $this->addStringLengthValidation($validator, 'metaTable', 0, 60, false);
+        $this->addUnsignedIntValidation($validator, 'metaId', false);
         $this->addUnsignedIntValidation($validator, 'deleted', false);
         $this->addDateTimeValidation($validator, 'createdAt', false);
         $this->addUnsignedIntValidation($validator, 'createdBy', true);
-        $this->addUnsignedIntValidation($validator, 'createdAs', true);
         $this->addDateTimeValidation($validator, 'updatedAt', true);
         $this->addUnsignedIntValidation($validator, 'updatedBy', true);
-        $this->addUnsignedIntValidation($validator, 'updatedAs', true);
         $this->addDateTimeValidation($validator, 'deletedAt', true);
-        $this->addUnsignedIntValidation($validator, 'deletedAs', true);
         $this->addUnsignedIntValidation($validator, 'deletedBy', true);
-        $this->addDateTimeValidation($validator, 'restoredAt', true);
-        $this->addUnsignedIntValidation($validator, 'restoredBy', true);
         
         return $validator;
     }
@@ -753,25 +484,18 @@ abstract class MetaAbstract extends AbstractModel implements MetaAbstractInterfa
     {
         return [
             'id' => 'id',
-            'lang_id' => 'langId',
-            'site_id' => 'siteId',
-            'page_id' => 'pageId',
-            'post_id' => 'postId',
-            'category_id' => 'categoryId',
+            'uuid' => 'uuid',
             'key' => 'key',
             'value' => 'value',
+            'meta_table' => 'metaTable',
+            'meta_id' => 'metaId',
             'deleted' => 'deleted',
             'created_at' => 'createdAt',
             'created_by' => 'createdBy',
-            'created_as' => 'createdAs',
             'updated_at' => 'updatedAt',
             'updated_by' => 'updatedBy',
-            'updated_as' => 'updatedAs',
             'deleted_at' => 'deletedAt',
-            'deleted_as' => 'deletedAs',
             'deleted_by' => 'deletedBy',
-            'restored_at' => 'restoredAt',
-            'restored_by' => 'restoredBy',
         ];
     }
 }

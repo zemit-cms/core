@@ -62,6 +62,18 @@ class ProfileTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->profile->getId());
     }
 
+    public function testGetUuid(): void
+    {
+        $this->assertEquals(null, $this->profile->getUuid());
+    }
+    
+    public function testSetUuid(): void
+    {
+        $value = uniqid();
+        $this->profile->setUuid($value);
+        $this->assertEquals($value, $this->profile->getUuid());
+    }
+
     public function testGetUserId(): void
     {
         $this->assertEquals(null, $this->profile->getUserId());
@@ -72,6 +84,42 @@ class ProfileTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->profile->setUserId($value);
         $this->assertEquals($value, $this->profile->getUserId());
+    }
+
+    public function testGetFirstName(): void
+    {
+        $this->assertEquals(null, $this->profile->getFirstName());
+    }
+    
+    public function testSetFirstName(): void
+    {
+        $value = uniqid();
+        $this->profile->setFirstName($value);
+        $this->assertEquals($value, $this->profile->getFirstName());
+    }
+
+    public function testGetLastName(): void
+    {
+        $this->assertEquals(null, $this->profile->getLastName());
+    }
+    
+    public function testSetLastName(): void
+    {
+        $value = uniqid();
+        $this->profile->setLastName($value);
+        $this->assertEquals($value, $this->profile->getLastName());
+    }
+
+    public function testGetAvatarFileId(): void
+    {
+        $this->assertEquals(null, $this->profile->getAvatarFileId());
+    }
+    
+    public function testSetAvatarFileId(): void
+    {
+        $value = uniqid();
+        $this->profile->setAvatarFileId($value);
+        $this->assertEquals($value, $this->profile->getAvatarFileId());
     }
 
     public function testGetDeleted(): void
@@ -88,7 +136,7 @@ class ProfileTest extends \Zemit\Tests\Unit\AbstractUnit
 
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->profile->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->profile->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -108,18 +156,6 @@ class ProfileTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->profile->setCreatedBy($value);
         $this->assertEquals($value, $this->profile->getCreatedBy());
-    }
-
-    public function testGetCreatedAs(): void
-    {
-        $this->assertEquals(null, $this->profile->getCreatedAs());
-    }
-    
-    public function testSetCreatedAs(): void
-    {
-        $value = uniqid();
-        $this->profile->setCreatedAs($value);
-        $this->assertEquals($value, $this->profile->getCreatedAs());
     }
 
     public function testGetUpdatedAt(): void
@@ -146,18 +182,6 @@ class ProfileTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->profile->getUpdatedBy());
     }
 
-    public function testGetUpdatedAs(): void
-    {
-        $this->assertEquals(null, $this->profile->getUpdatedAs());
-    }
-    
-    public function testSetUpdatedAs(): void
-    {
-        $value = uniqid();
-        $this->profile->setUpdatedAs($value);
-        $this->assertEquals($value, $this->profile->getUpdatedAs());
-    }
-
     public function testGetDeletedAt(): void
     {
         $this->assertEquals(null, $this->profile->getDeletedAt());
@@ -170,18 +194,6 @@ class ProfileTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->profile->getDeletedAt());
     }
 
-    public function testGetDeletedAs(): void
-    {
-        $this->assertEquals(null, $this->profile->getDeletedAs());
-    }
-    
-    public function testSetDeletedAs(): void
-    {
-        $value = uniqid();
-        $this->profile->setDeletedAs($value);
-        $this->assertEquals($value, $this->profile->getDeletedAs());
-    }
-
     public function testGetDeletedBy(): void
     {
         $this->assertEquals(null, $this->profile->getDeletedBy());
@@ -192,30 +204,6 @@ class ProfileTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->profile->setDeletedBy($value);
         $this->assertEquals($value, $this->profile->getDeletedBy());
-    }
-
-    public function testGetRestoredAt(): void
-    {
-        $this->assertEquals(null, $this->profile->getRestoredAt());
-    }
-    
-    public function testSetRestoredAt(): void
-    {
-        $value = uniqid();
-        $this->profile->setRestoredAt($value);
-        $this->assertEquals($value, $this->profile->getRestoredAt());
-    }
-
-    public function testGetRestoredBy(): void
-    {
-        $this->assertEquals(null, $this->profile->getRestoredBy());
-    }
-    
-    public function testSetRestoredBy(): void
-    {
-        $value = uniqid();
-        $this->profile->setRestoredBy($value);
-        $this->assertEquals($value, $this->profile->getRestoredBy());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void

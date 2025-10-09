@@ -14,7 +14,7 @@ namespace Zemit\Models\Abstracts;
 
 use Phalcon\Db\RawValue;
 use Zemit\Filter\Validation;
-use Zemit\Models\AbstractModel;
+use \Zemit\Models\AbstractModel;
 use Zemit\Models\User;
 use Zemit\Models\Abstracts\Interfaces\JobSchedulerAbstractInterface;
 
@@ -28,49 +28,36 @@ use Zemit\Models\Abstracts\Interfaces\JobSchedulerAbstractInterface;
  * @property User $CreatedByEntity
  * @method User getCreatedByEntity(?array $params = null)
  *
- * @property User $createdasentity
- * @property User $CreatedAsEntity
- * @method User getCreatedAsEntity(?array $params = null)
- *
  * @property User $updatedbyentity
  * @property User $UpdatedByEntity
  * @method User getUpdatedByEntity(?array $params = null)
  *
- * @property User $updatedasentity
- * @property User $UpdatedAsEntity
- * @method User getUpdatedAsEntity(?array $params = null)
- *
- * @property User $deletedasentity
- * @property User $DeletedAsEntity
- * @method User getDeletedAsEntity(?array $params = null)
- *
  * @property User $deletedbyentity
  * @property User $DeletedByEntity
  * @method User getDeletedByEntity(?array $params = null)
- *
- * @property User $restoredbyentity
- * @property User $RestoredByEntity
- * @method User getRestoredByEntity(?array $params = null)
- *
- * @property User $restoredasentity
- * @property User $RestoredAsEntity
- * @method User getRestoredAsEntity(?array $params = null)
  */
-abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedulerAbstractInterface
+abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implements JobSchedulerAbstractInterface
 {
     /**
      * Column: id
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $id = null;
         
     /**
-     * Column: index
+     * Column: uuid
+     * Attributes: NotNull | Size(36) | Type(5)
+     * @var mixed
+     */
+    public mixed $uuid = null;
+        
+    /**
+     * Column: key
      * Attributes: NotNull | Size(100) | Type(5)
      * @var mixed
      */
-    public mixed $index = null;
+    public mixed $key = null;
         
     /**
      * Column: label
@@ -95,7 +82,7 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
         
     /**
      * Column: params
-     * Attributes: Type(15)
+     * Attributes: Type(24)
      * @var mixed
      */
     public mixed $params = null;
@@ -116,7 +103,7 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
         
     /**
      * Column: deleted
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @var mixed
      */
     public mixed $deleted = 0;
@@ -126,21 +113,14 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
      * Attributes: NotNull | Type(4)
      * @var mixed
      */
-    public mixed $createdAt = null;
+    public mixed $createdAt = 'current_timestamp()';
         
     /**
      * Column: created_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $createdBy = null;
-        
-    /**
-     * Column: created_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $createdAs = null;
         
     /**
      * Column: updated_at
@@ -151,17 +131,10 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
         
     /**
      * Column: updated_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $updatedBy = null;
-        
-    /**
-     * Column: updated_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $updatedAs = null;
         
     /**
      * Column: deleted_at
@@ -171,44 +144,16 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     public mixed $deletedAt = null;
         
     /**
-     * Column: deleted_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $deletedAs = null;
-        
-    /**
      * Column: deleted_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $deletedBy = null;
-        
-    /**
-     * Column: restored_at
-     * Attributes: Type(4)
-     * @var mixed
-     */
-    public mixed $restoredAt = null;
-        
-    /**
-     * Column: restored_by
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $restoredBy = null;
-        
-    /**
-     * Column: restored_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $restoredAs = null;
     
     /**
      * Returns the value of field id
      * Column: id
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
     public function getId(): mixed
@@ -219,7 +164,7 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field id
      * Column: id 
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @param mixed $id
      * @return void
      */
@@ -229,26 +174,49 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     }
     
     /**
-     * Returns the value of field index
-     * Column: index
-     * Attributes: NotNull | Size(100) | Type(5)
+     * Returns the value of field uuid
+     * Column: uuid
+     * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
-    public function getIndex(): mixed
+    public function getUuid(): mixed
     {
-        return $this->index;
+        return $this->uuid;
     }
     
     /**
-     * Sets the value of field index
-     * Column: index 
-     * Attributes: NotNull | Size(100) | Type(5)
-     * @param mixed $index
+     * Sets the value of field uuid
+     * Column: uuid 
+     * Attributes: NotNull | Size(36) | Type(5)
+     * @param mixed $uuid
      * @return void
      */
-    public function setIndex(mixed $index): void
+    public function setUuid(mixed $uuid): void
     {
-        $this->index = $index;
+        $this->uuid = $uuid;
+    }
+    
+    /**
+     * Returns the value of field key
+     * Column: key
+     * Attributes: NotNull | Size(100) | Type(5)
+     * @return mixed
+     */
+    public function getKey(): mixed
+    {
+        return $this->key;
+    }
+    
+    /**
+     * Sets the value of field key
+     * Column: key 
+     * Attributes: NotNull | Size(100) | Type(5)
+     * @param mixed $key
+     * @return void
+     */
+    public function setKey(mixed $key): void
+    {
+        $this->key = $key;
     }
     
     /**
@@ -323,7 +291,7 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Returns the value of field params
      * Column: params
-     * Attributes: Type(15)
+     * Attributes: Type(24)
      * @return mixed
      */
     public function getParams(): mixed
@@ -334,7 +302,7 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field params
      * Column: params 
-     * Attributes: Type(15)
+     * Attributes: Type(24)
      * @param mixed $params
      * @return void
      */
@@ -392,7 +360,7 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Returns the value of field deleted
      * Column: deleted
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
     public function getDeleted(): mixed
@@ -403,7 +371,7 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field deleted
      * Column: deleted 
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @param mixed $deleted
      * @return void
      */
@@ -438,7 +406,7 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Returns the value of field createdBy
      * Column: created_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getCreatedBy(): mixed
@@ -449,36 +417,13 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field createdBy
      * Column: created_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $createdBy
      * @return void
      */
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
-    }
-    
-    /**
-     * Returns the value of field createdAs
-     * Column: created_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getCreatedAs(): mixed
-    {
-        return $this->createdAs;
-    }
-    
-    /**
-     * Sets the value of field createdAs
-     * Column: created_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $createdAs
-     * @return void
-     */
-    public function setCreatedAs(mixed $createdAs): void
-    {
-        $this->createdAs = $createdAs;
     }
     
     /**
@@ -507,7 +452,7 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Returns the value of field updatedBy
      * Column: updated_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getUpdatedBy(): mixed
@@ -518,36 +463,13 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field updatedBy
      * Column: updated_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $updatedBy
      * @return void
      */
     public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
-    }
-    
-    /**
-     * Returns the value of field updatedAs
-     * Column: updated_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getUpdatedAs(): mixed
-    {
-        return $this->updatedAs;
-    }
-    
-    /**
-     * Sets the value of field updatedAs
-     * Column: updated_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $updatedAs
-     * @return void
-     */
-    public function setUpdatedAs(mixed $updatedAs): void
-    {
-        $this->updatedAs = $updatedAs;
     }
     
     /**
@@ -574,32 +496,9 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     }
     
     /**
-     * Returns the value of field deletedAs
-     * Column: deleted_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getDeletedAs(): mixed
-    {
-        return $this->deletedAs;
-    }
-    
-    /**
-     * Sets the value of field deletedAs
-     * Column: deleted_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $deletedAs
-     * @return void
-     */
-    public function setDeletedAs(mixed $deletedAs): void
-    {
-        $this->deletedAs = $deletedAs;
-    }
-    
-    /**
      * Returns the value of field deletedBy
      * Column: deleted_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getDeletedBy(): mixed
@@ -610,82 +509,13 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     /**
      * Sets the value of field deletedBy
      * Column: deleted_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $deletedBy
      * @return void
      */
     public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;
-    }
-    
-    /**
-     * Returns the value of field restoredAt
-     * Column: restored_at
-     * Attributes: Type(4)
-     * @return mixed
-     */
-    public function getRestoredAt(): mixed
-    {
-        return $this->restoredAt;
-    }
-    
-    /**
-     * Sets the value of field restoredAt
-     * Column: restored_at 
-     * Attributes: Type(4)
-     * @param mixed $restoredAt
-     * @return void
-     */
-    public function setRestoredAt(mixed $restoredAt): void
-    {
-        $this->restoredAt = $restoredAt;
-    }
-    
-    /**
-     * Returns the value of field restoredBy
-     * Column: restored_by
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getRestoredBy(): mixed
-    {
-        return $this->restoredBy;
-    }
-    
-    /**
-     * Sets the value of field restoredBy
-     * Column: restored_by 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $restoredBy
-     * @return void
-     */
-    public function setRestoredBy(mixed $restoredBy): void
-    {
-        $this->restoredBy = $restoredBy;
-    }
-    
-    /**
-     * Returns the value of field restoredAs
-     * Column: restored_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getRestoredAs(): mixed
-    {
-        return $this->restoredAs;
-    }
-    
-    /**
-     * Sets the value of field restoredAs
-     * Column: restored_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $restoredAs
-     * @return void
-     */
-    public function setRestoredAs(mixed $restoredAs): void
-    {
-        $this->restoredAs = $restoredAs;
     }
 
     /**
@@ -696,19 +526,9 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     {
         $this->belongsTo('createdBy', User::class, 'id', ['alias' => 'CreatedByEntity']);
 
-        $this->belongsTo('createdAs', User::class, 'id', ['alias' => 'CreatedAsEntity']);
-
         $this->belongsTo('updatedBy', User::class, 'id', ['alias' => 'UpdatedByEntity']);
 
-        $this->belongsTo('updatedAs', User::class, 'id', ['alias' => 'UpdatedAsEntity']);
-
-        $this->belongsTo('deletedAs', User::class, 'id', ['alias' => 'DeletedAsEntity']);
-
         $this->belongsTo('deletedBy', User::class, 'id', ['alias' => 'DeletedByEntity']);
-
-        $this->belongsTo('restoredBy', User::class, 'id', ['alias' => 'RestoredByEntity']);
-
-        $this->belongsTo('restoredAs', User::class, 'id', ['alias' => 'RestoredAsEntity']);
     }
     
     /**
@@ -721,26 +541,20 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
         $validator ??= new Validation();
     
         $this->addUnsignedIntValidation($validator, 'id', true);
-        $this->addStringLengthValidation($validator, 'index', 0, 100, false);
+        $this->addStringLengthValidation($validator, 'uuid', 0, 36, false);
+        $this->addStringLengthValidation($validator, 'key', 0, 100, false);
         $this->addStringLengthValidation($validator, 'label', 0, 100, false);
         $this->addStringLengthValidation($validator, 'task', 0, 100, false);
         $this->addStringLengthValidation($validator, 'action', 0, 100, false);
-        $this->addJsonValidation($validator, 'params', true);
         $this->addInclusionInValidation($validator, 'frequency', ['manually','minutely','hourly','daily','weekdays','weekends','weekly','bi-weekly','monthly','bi-monthly','quarterly','semi-annually','yearly'], false);
         $this->addDateTimeValidation($validator, 'startingAt', false);
         $this->addUnsignedIntValidation($validator, 'deleted', false);
         $this->addDateTimeValidation($validator, 'createdAt', false);
         $this->addUnsignedIntValidation($validator, 'createdBy', true);
-        $this->addUnsignedIntValidation($validator, 'createdAs', true);
         $this->addDateTimeValidation($validator, 'updatedAt', true);
         $this->addUnsignedIntValidation($validator, 'updatedBy', true);
-        $this->addUnsignedIntValidation($validator, 'updatedAs', true);
         $this->addDateTimeValidation($validator, 'deletedAt', true);
-        $this->addUnsignedIntValidation($validator, 'deletedAs', true);
         $this->addUnsignedIntValidation($validator, 'deletedBy', true);
-        $this->addDateTimeValidation($validator, 'restoredAt', true);
-        $this->addUnsignedIntValidation($validator, 'restoredBy', true);
-        $this->addUnsignedIntValidation($validator, 'restoredAs', true);
         
         return $validator;
     }
@@ -756,7 +570,8 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
     {
         return [
             'id' => 'id',
-            'index' => 'index',
+            'uuid' => 'uuid',
+            'key' => 'key',
             'label' => 'label',
             'task' => 'task',
             'action' => 'action',
@@ -766,16 +581,10 @@ abstract class JobSchedulerAbstract extends AbstractModel implements JobSchedule
             'deleted' => 'deleted',
             'created_at' => 'createdAt',
             'created_by' => 'createdBy',
-            'created_as' => 'createdAs',
             'updated_at' => 'updatedAt',
             'updated_by' => 'updatedBy',
-            'updated_as' => 'updatedAs',
             'deleted_at' => 'deletedAt',
-            'deleted_as' => 'deletedAs',
             'deleted_by' => 'deletedBy',
-            'restored_at' => 'restoredAt',
-            'restored_by' => 'restoredBy',
-            'restored_as' => 'restoredAs',
         ];
     }
 }

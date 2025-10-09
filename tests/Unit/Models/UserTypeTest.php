@@ -62,6 +62,18 @@ class UserTypeTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->userType->getId());
     }
 
+    public function testGetUuid(): void
+    {
+        $this->assertEquals(null, $this->userType->getUuid());
+    }
+    
+    public function testSetUuid(): void
+    {
+        $value = uniqid();
+        $this->userType->setUuid($value);
+        $this->assertEquals($value, $this->userType->getUuid());
+    }
+
     public function testGetUserId(): void
     {
         $this->assertEquals(null, $this->userType->getUserId());
@@ -112,7 +124,7 @@ class UserTypeTest extends \Zemit\Tests\Unit\AbstractUnit
 
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->userType->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->userType->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -132,18 +144,6 @@ class UserTypeTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->userType->setCreatedBy($value);
         $this->assertEquals($value, $this->userType->getCreatedBy());
-    }
-
-    public function testGetCreatedAs(): void
-    {
-        $this->assertEquals(null, $this->userType->getCreatedAs());
-    }
-    
-    public function testSetCreatedAs(): void
-    {
-        $value = uniqid();
-        $this->userType->setCreatedAs($value);
-        $this->assertEquals($value, $this->userType->getCreatedAs());
     }
 
     public function testGetUpdatedAt(): void
@@ -170,18 +170,6 @@ class UserTypeTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->userType->getUpdatedBy());
     }
 
-    public function testGetUpdatedAs(): void
-    {
-        $this->assertEquals(null, $this->userType->getUpdatedAs());
-    }
-    
-    public function testSetUpdatedAs(): void
-    {
-        $value = uniqid();
-        $this->userType->setUpdatedAs($value);
-        $this->assertEquals($value, $this->userType->getUpdatedAs());
-    }
-
     public function testGetDeletedAt(): void
     {
         $this->assertEquals(null, $this->userType->getDeletedAt());
@@ -194,18 +182,6 @@ class UserTypeTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->userType->getDeletedAt());
     }
 
-    public function testGetDeletedAs(): void
-    {
-        $this->assertEquals(null, $this->userType->getDeletedAs());
-    }
-    
-    public function testSetDeletedAs(): void
-    {
-        $value = uniqid();
-        $this->userType->setDeletedAs($value);
-        $this->assertEquals($value, $this->userType->getDeletedAs());
-    }
-
     public function testGetDeletedBy(): void
     {
         $this->assertEquals(null, $this->userType->getDeletedBy());
@@ -216,42 +192,6 @@ class UserTypeTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->userType->setDeletedBy($value);
         $this->assertEquals($value, $this->userType->getDeletedBy());
-    }
-
-    public function testGetRestoredAt(): void
-    {
-        $this->assertEquals(null, $this->userType->getRestoredAt());
-    }
-    
-    public function testSetRestoredAt(): void
-    {
-        $value = uniqid();
-        $this->userType->setRestoredAt($value);
-        $this->assertEquals($value, $this->userType->getRestoredAt());
-    }
-
-    public function testGetRestoredBy(): void
-    {
-        $this->assertEquals(null, $this->userType->getRestoredBy());
-    }
-    
-    public function testSetRestoredBy(): void
-    {
-        $value = uniqid();
-        $this->userType->setRestoredBy($value);
-        $this->assertEquals($value, $this->userType->getRestoredBy());
-    }
-
-    public function testGetRestoredAs(): void
-    {
-        $this->assertEquals(null, $this->userType->getRestoredAs());
-    }
-    
-    public function testSetRestoredAs(): void
-    {
-        $value = uniqid();
-        $this->userType->setRestoredAs($value);
-        $this->assertEquals($value, $this->userType->getRestoredAs());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void

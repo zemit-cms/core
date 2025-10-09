@@ -62,28 +62,16 @@ class PostTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->post->getId());
     }
 
-    public function testGetLangId(): void
+    public function testGetUuid(): void
     {
-        $this->assertEquals(null, $this->post->getLangId());
+        $this->assertEquals(null, $this->post->getUuid());
     }
     
-    public function testSetLangId(): void
+    public function testSetUuid(): void
     {
         $value = uniqid();
-        $this->post->setLangId($value);
-        $this->assertEquals($value, $this->post->getLangId());
-    }
-
-    public function testGetSiteId(): void
-    {
-        $this->assertEquals(null, $this->post->getSiteId());
-    }
-    
-    public function testSetSiteId(): void
-    {
-        $value = uniqid();
-        $this->post->setSiteId($value);
-        $this->assertEquals($value, $this->post->getSiteId());
+        $this->post->setUuid($value);
+        $this->assertEquals($value, $this->post->getUuid());
     }
 
     public function testGetPageId(): void
@@ -98,16 +86,16 @@ class PostTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->post->getPageId());
     }
 
-    public function testGetName(): void
+    public function testGetLabel(): void
     {
-        $this->assertEquals(null, $this->post->getName());
+        $this->assertEquals(null, $this->post->getLabel());
     }
     
-    public function testSetName(): void
+    public function testSetLabel(): void
     {
         $value = uniqid();
-        $this->post->setName($value);
-        $this->assertEquals($value, $this->post->getName());
+        $this->post->setLabel($value);
+        $this->assertEquals($value, $this->post->getLabel());
     }
 
     public function testGetDescription(): void
@@ -148,7 +136,7 @@ class PostTest extends \Zemit\Tests\Unit\AbstractUnit
 
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->post->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->post->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -168,18 +156,6 @@ class PostTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->post->setCreatedBy($value);
         $this->assertEquals($value, $this->post->getCreatedBy());
-    }
-
-    public function testGetCreatedAs(): void
-    {
-        $this->assertEquals(null, $this->post->getCreatedAs());
-    }
-    
-    public function testSetCreatedAs(): void
-    {
-        $value = uniqid();
-        $this->post->setCreatedAs($value);
-        $this->assertEquals($value, $this->post->getCreatedAs());
     }
 
     public function testGetUpdatedAt(): void
@@ -206,18 +182,6 @@ class PostTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->post->getUpdatedBy());
     }
 
-    public function testGetUpdatedAs(): void
-    {
-        $this->assertEquals(null, $this->post->getUpdatedAs());
-    }
-    
-    public function testSetUpdatedAs(): void
-    {
-        $value = uniqid();
-        $this->post->setUpdatedAs($value);
-        $this->assertEquals($value, $this->post->getUpdatedAs());
-    }
-
     public function testGetDeletedAt(): void
     {
         $this->assertEquals(null, $this->post->getDeletedAt());
@@ -230,18 +194,6 @@ class PostTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->post->getDeletedAt());
     }
 
-    public function testGetDeletedAs(): void
-    {
-        $this->assertEquals(null, $this->post->getDeletedAs());
-    }
-    
-    public function testSetDeletedAs(): void
-    {
-        $value = uniqid();
-        $this->post->setDeletedAs($value);
-        $this->assertEquals($value, $this->post->getDeletedAs());
-    }
-
     public function testGetDeletedBy(): void
     {
         $this->assertEquals(null, $this->post->getDeletedBy());
@@ -252,42 +204,6 @@ class PostTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->post->setDeletedBy($value);
         $this->assertEquals($value, $this->post->getDeletedBy());
-    }
-
-    public function testGetRestoredAt(): void
-    {
-        $this->assertEquals(null, $this->post->getRestoredAt());
-    }
-    
-    public function testSetRestoredAt(): void
-    {
-        $value = uniqid();
-        $this->post->setRestoredAt($value);
-        $this->assertEquals($value, $this->post->getRestoredAt());
-    }
-
-    public function testGetRestoredBy(): void
-    {
-        $this->assertEquals(null, $this->post->getRestoredBy());
-    }
-    
-    public function testSetRestoredBy(): void
-    {
-        $value = uniqid();
-        $this->post->setRestoredBy($value);
-        $this->assertEquals($value, $this->post->getRestoredBy());
-    }
-
-    public function testGetRestoredAs(): void
-    {
-        $this->assertEquals(null, $this->post->getRestoredAs());
-    }
-    
-    public function testSetRestoredAs(): void
-    {
-        $value = uniqid();
-        $this->post->setRestoredAs($value);
-        $this->assertEquals($value, $this->post->getRestoredAs());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void

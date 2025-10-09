@@ -62,6 +62,18 @@ class PostCategoryTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->postCategory->getId());
     }
 
+    public function testGetUuid(): void
+    {
+        $this->assertEquals(null, $this->postCategory->getUuid());
+    }
+    
+    public function testSetUuid(): void
+    {
+        $value = uniqid();
+        $this->postCategory->setUuid($value);
+        $this->assertEquals($value, $this->postCategory->getUuid());
+    }
+
     public function testGetPostId(): void
     {
         $this->assertEquals(null, $this->postCategory->getPostId());
@@ -100,7 +112,7 @@ class PostCategoryTest extends \Zemit\Tests\Unit\AbstractUnit
 
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->postCategory->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->postCategory->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -120,18 +132,6 @@ class PostCategoryTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->postCategory->setCreatedBy($value);
         $this->assertEquals($value, $this->postCategory->getCreatedBy());
-    }
-
-    public function testGetCreatedAs(): void
-    {
-        $this->assertEquals(null, $this->postCategory->getCreatedAs());
-    }
-    
-    public function testSetCreatedAs(): void
-    {
-        $value = uniqid();
-        $this->postCategory->setCreatedAs($value);
-        $this->assertEquals($value, $this->postCategory->getCreatedAs());
     }
 
     public function testGetUpdatedAt(): void
@@ -158,18 +158,6 @@ class PostCategoryTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->postCategory->getUpdatedBy());
     }
 
-    public function testGetUpdatedAs(): void
-    {
-        $this->assertEquals(null, $this->postCategory->getUpdatedAs());
-    }
-    
-    public function testSetUpdatedAs(): void
-    {
-        $value = uniqid();
-        $this->postCategory->setUpdatedAs($value);
-        $this->assertEquals($value, $this->postCategory->getUpdatedAs());
-    }
-
     public function testGetDeletedAt(): void
     {
         $this->assertEquals(null, $this->postCategory->getDeletedAt());
@@ -182,18 +170,6 @@ class PostCategoryTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->postCategory->getDeletedAt());
     }
 
-    public function testGetDeletedAs(): void
-    {
-        $this->assertEquals(null, $this->postCategory->getDeletedAs());
-    }
-    
-    public function testSetDeletedAs(): void
-    {
-        $value = uniqid();
-        $this->postCategory->setDeletedAs($value);
-        $this->assertEquals($value, $this->postCategory->getDeletedAs());
-    }
-
     public function testGetDeletedBy(): void
     {
         $this->assertEquals(null, $this->postCategory->getDeletedBy());
@@ -204,42 +180,6 @@ class PostCategoryTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->postCategory->setDeletedBy($value);
         $this->assertEquals($value, $this->postCategory->getDeletedBy());
-    }
-
-    public function testGetRestoredAt(): void
-    {
-        $this->assertEquals(null, $this->postCategory->getRestoredAt());
-    }
-    
-    public function testSetRestoredAt(): void
-    {
-        $value = uniqid();
-        $this->postCategory->setRestoredAt($value);
-        $this->assertEquals($value, $this->postCategory->getRestoredAt());
-    }
-
-    public function testGetRestoredBy(): void
-    {
-        $this->assertEquals(null, $this->postCategory->getRestoredBy());
-    }
-    
-    public function testSetRestoredBy(): void
-    {
-        $value = uniqid();
-        $this->postCategory->setRestoredBy($value);
-        $this->assertEquals($value, $this->postCategory->getRestoredBy());
-    }
-
-    public function testGetDeletedCopy1(): void
-    {
-        $this->assertEquals(null, $this->postCategory->getDeletedCopy1());
-    }
-    
-    public function testSetDeletedCopy1(): void
-    {
-        $value = uniqid();
-        $this->postCategory->setDeletedCopy1($value);
-        $this->assertEquals($value, $this->postCategory->getDeletedCopy1());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void

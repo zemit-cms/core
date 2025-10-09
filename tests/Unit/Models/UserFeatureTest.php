@@ -62,6 +62,18 @@ class UserFeatureTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->userFeature->getId());
     }
 
+    public function testGetUuid(): void
+    {
+        $this->assertEquals(null, $this->userFeature->getUuid());
+    }
+    
+    public function testSetUuid(): void
+    {
+        $value = uniqid();
+        $this->userFeature->setUuid($value);
+        $this->assertEquals($value, $this->userFeature->getUuid());
+    }
+
     public function testGetUserId(): void
     {
         $this->assertEquals(null, $this->userFeature->getUserId());
@@ -112,7 +124,7 @@ class UserFeatureTest extends \Zemit\Tests\Unit\AbstractUnit
 
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->userFeature->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->userFeature->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -132,18 +144,6 @@ class UserFeatureTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->userFeature->setCreatedBy($value);
         $this->assertEquals($value, $this->userFeature->getCreatedBy());
-    }
-
-    public function testGetCreatedAs(): void
-    {
-        $this->assertEquals(null, $this->userFeature->getCreatedAs());
-    }
-    
-    public function testSetCreatedAs(): void
-    {
-        $value = uniqid();
-        $this->userFeature->setCreatedAs($value);
-        $this->assertEquals($value, $this->userFeature->getCreatedAs());
     }
 
     public function testGetUpdatedAt(): void
@@ -170,18 +170,6 @@ class UserFeatureTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->userFeature->getUpdatedBy());
     }
 
-    public function testGetUpdatedAs(): void
-    {
-        $this->assertEquals(null, $this->userFeature->getUpdatedAs());
-    }
-    
-    public function testSetUpdatedAs(): void
-    {
-        $value = uniqid();
-        $this->userFeature->setUpdatedAs($value);
-        $this->assertEquals($value, $this->userFeature->getUpdatedAs());
-    }
-
     public function testGetDeletedAt(): void
     {
         $this->assertEquals(null, $this->userFeature->getDeletedAt());
@@ -194,18 +182,6 @@ class UserFeatureTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->userFeature->getDeletedAt());
     }
 
-    public function testGetDeletedAs(): void
-    {
-        $this->assertEquals(null, $this->userFeature->getDeletedAs());
-    }
-    
-    public function testSetDeletedAs(): void
-    {
-        $value = uniqid();
-        $this->userFeature->setDeletedAs($value);
-        $this->assertEquals($value, $this->userFeature->getDeletedAs());
-    }
-
     public function testGetDeletedBy(): void
     {
         $this->assertEquals(null, $this->userFeature->getDeletedBy());
@@ -216,42 +192,6 @@ class UserFeatureTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->userFeature->setDeletedBy($value);
         $this->assertEquals($value, $this->userFeature->getDeletedBy());
-    }
-
-    public function testGetRestoredAt(): void
-    {
-        $this->assertEquals(null, $this->userFeature->getRestoredAt());
-    }
-    
-    public function testSetRestoredAt(): void
-    {
-        $value = uniqid();
-        $this->userFeature->setRestoredAt($value);
-        $this->assertEquals($value, $this->userFeature->getRestoredAt());
-    }
-
-    public function testGetRestoredBy(): void
-    {
-        $this->assertEquals(null, $this->userFeature->getRestoredBy());
-    }
-    
-    public function testSetRestoredBy(): void
-    {
-        $value = uniqid();
-        $this->userFeature->setRestoredBy($value);
-        $this->assertEquals($value, $this->userFeature->getRestoredBy());
-    }
-
-    public function testGetRestoredAs(): void
-    {
-        $this->assertEquals(null, $this->userFeature->getRestoredAs());
-    }
-    
-    public function testSetRestoredAs(): void
-    {
-        $value = uniqid();
-        $this->userFeature->setRestoredAs($value);
-        $this->assertEquals($value, $this->userFeature->getRestoredAs());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void

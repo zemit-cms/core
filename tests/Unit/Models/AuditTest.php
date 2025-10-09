@@ -62,16 +62,16 @@ class AuditTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->audit->getId());
     }
 
-    public function testGetParentId(): void
+    public function testGetUuid(): void
     {
-        $this->assertEquals(null, $this->audit->getParentId());
+        $this->assertEquals(null, $this->audit->getUuid());
     }
     
-    public function testSetParentId(): void
+    public function testSetUuid(): void
     {
         $value = uniqid();
-        $this->audit->setParentId($value);
-        $this->assertEquals($value, $this->audit->getParentId());
+        $this->audit->setUuid($value);
+        $this->assertEquals($value, $this->audit->getUuid());
     }
 
     public function testGetModel(): void
@@ -122,18 +122,6 @@ class AuditTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->audit->getEvent());
     }
 
-    public function testGetColumns(): void
-    {
-        $this->assertEquals(null, $this->audit->getColumns());
-    }
-    
-    public function testSetColumns(): void
-    {
-        $value = uniqid();
-        $this->audit->setColumns($value);
-        $this->assertEquals($value, $this->audit->getColumns());
-    }
-
     public function testGetBefore(): void
     {
         $this->assertEquals(null, $this->audit->getBefore());
@@ -158,21 +146,9 @@ class AuditTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->audit->getAfter());
     }
 
-    public function testGetDeleted(): void
-    {
-        $this->assertEquals(null, $this->audit->getDeleted());
-    }
-    
-    public function testSetDeleted(): void
-    {
-        $value = uniqid();
-        $this->audit->setDeleted($value);
-        $this->assertEquals($value, $this->audit->getDeleted());
-    }
-
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->audit->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->audit->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -204,114 +180,6 @@ class AuditTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->audit->setCreatedAs($value);
         $this->assertEquals($value, $this->audit->getCreatedAs());
-    }
-
-    public function testGetUpdatedAt(): void
-    {
-        $this->assertEquals(null, $this->audit->getUpdatedAt());
-    }
-    
-    public function testSetUpdatedAt(): void
-    {
-        $value = uniqid();
-        $this->audit->setUpdatedAt($value);
-        $this->assertEquals($value, $this->audit->getUpdatedAt());
-    }
-
-    public function testGetUpdatedBy(): void
-    {
-        $this->assertEquals(null, $this->audit->getUpdatedBy());
-    }
-    
-    public function testSetUpdatedBy(): void
-    {
-        $value = uniqid();
-        $this->audit->setUpdatedBy($value);
-        $this->assertEquals($value, $this->audit->getUpdatedBy());
-    }
-
-    public function testGetUpdatedAs(): void
-    {
-        $this->assertEquals(null, $this->audit->getUpdatedAs());
-    }
-    
-    public function testSetUpdatedAs(): void
-    {
-        $value = uniqid();
-        $this->audit->setUpdatedAs($value);
-        $this->assertEquals($value, $this->audit->getUpdatedAs());
-    }
-
-    public function testGetDeletedAt(): void
-    {
-        $this->assertEquals(null, $this->audit->getDeletedAt());
-    }
-    
-    public function testSetDeletedAt(): void
-    {
-        $value = uniqid();
-        $this->audit->setDeletedAt($value);
-        $this->assertEquals($value, $this->audit->getDeletedAt());
-    }
-
-    public function testGetDeletedAs(): void
-    {
-        $this->assertEquals(null, $this->audit->getDeletedAs());
-    }
-    
-    public function testSetDeletedAs(): void
-    {
-        $value = uniqid();
-        $this->audit->setDeletedAs($value);
-        $this->assertEquals($value, $this->audit->getDeletedAs());
-    }
-
-    public function testGetDeletedBy(): void
-    {
-        $this->assertEquals(null, $this->audit->getDeletedBy());
-    }
-    
-    public function testSetDeletedBy(): void
-    {
-        $value = uniqid();
-        $this->audit->setDeletedBy($value);
-        $this->assertEquals($value, $this->audit->getDeletedBy());
-    }
-
-    public function testGetRestoredAt(): void
-    {
-        $this->assertEquals(null, $this->audit->getRestoredAt());
-    }
-    
-    public function testSetRestoredAt(): void
-    {
-        $value = uniqid();
-        $this->audit->setRestoredAt($value);
-        $this->assertEquals($value, $this->audit->getRestoredAt());
-    }
-
-    public function testGetRestoredBy(): void
-    {
-        $this->assertEquals(null, $this->audit->getRestoredBy());
-    }
-    
-    public function testSetRestoredBy(): void
-    {
-        $value = uniqid();
-        $this->audit->setRestoredBy($value);
-        $this->assertEquals($value, $this->audit->getRestoredBy());
-    }
-
-    public function testGetRestoredAs(): void
-    {
-        $this->assertEquals(null, $this->audit->getRestoredAs());
-    }
-    
-    public function testSetRestoredAs(): void
-    {
-        $value = uniqid();
-        $this->audit->setRestoredAs($value);
-        $this->assertEquals($value, $this->audit->getRestoredAs());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void

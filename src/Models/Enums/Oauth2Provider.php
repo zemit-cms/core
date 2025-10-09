@@ -10,10 +10,9 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Models\Interfaces;
+namespace Zemit\Models\Enums;
 
-use Zemit\Models\Abstracts\Interfaces\TranslateFieldAbstractInterface;
-
-interface TranslateFieldInterface extends TranslateFieldAbstractInterface
-{
+enum Oauth2Provider: string {
+    case GOOGLE = 'google';
+    case MICROSOFT = 'microsoft';
 }

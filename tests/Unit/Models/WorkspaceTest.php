@@ -74,16 +74,16 @@ class WorkspaceTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->workspace->getUuid());
     }
 
-    public function testGetName(): void
+    public function testGetLabel(): void
     {
-        $this->assertEquals(null, $this->workspace->getName());
+        $this->assertEquals(null, $this->workspace->getLabel());
     }
     
-    public function testSetName(): void
+    public function testSetLabel(): void
     {
         $value = uniqid();
-        $this->workspace->setName($value);
-        $this->assertEquals($value, $this->workspace->getName());
+        $this->workspace->setLabel($value);
+        $this->assertEquals($value, $this->workspace->getLabel());
     }
 
     public function testGetDescription(): void
@@ -148,7 +148,7 @@ class WorkspaceTest extends \Zemit\Tests\Unit\AbstractUnit
 
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->workspace->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->workspace->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -168,18 +168,6 @@ class WorkspaceTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->workspace->setCreatedBy($value);
         $this->assertEquals($value, $this->workspace->getCreatedBy());
-    }
-
-    public function testGetCreatedAs(): void
-    {
-        $this->assertEquals(null, $this->workspace->getCreatedAs());
-    }
-    
-    public function testSetCreatedAs(): void
-    {
-        $value = uniqid();
-        $this->workspace->setCreatedAs($value);
-        $this->assertEquals($value, $this->workspace->getCreatedAs());
     }
 
     public function testGetUpdatedAt(): void
@@ -206,18 +194,6 @@ class WorkspaceTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->workspace->getUpdatedBy());
     }
 
-    public function testGetUpdatedAs(): void
-    {
-        $this->assertEquals(null, $this->workspace->getUpdatedAs());
-    }
-    
-    public function testSetUpdatedAs(): void
-    {
-        $value = uniqid();
-        $this->workspace->setUpdatedAs($value);
-        $this->assertEquals($value, $this->workspace->getUpdatedAs());
-    }
-
     public function testGetDeletedAt(): void
     {
         $this->assertEquals(null, $this->workspace->getDeletedAt());
@@ -230,18 +206,6 @@ class WorkspaceTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->workspace->getDeletedAt());
     }
 
-    public function testGetDeletedAs(): void
-    {
-        $this->assertEquals(null, $this->workspace->getDeletedAs());
-    }
-    
-    public function testSetDeletedAs(): void
-    {
-        $value = uniqid();
-        $this->workspace->setDeletedAs($value);
-        $this->assertEquals($value, $this->workspace->getDeletedAs());
-    }
-
     public function testGetDeletedBy(): void
     {
         $this->assertEquals(null, $this->workspace->getDeletedBy());
@@ -252,42 +216,6 @@ class WorkspaceTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->workspace->setDeletedBy($value);
         $this->assertEquals($value, $this->workspace->getDeletedBy());
-    }
-
-    public function testGetRestoredAt(): void
-    {
-        $this->assertEquals(null, $this->workspace->getRestoredAt());
-    }
-    
-    public function testSetRestoredAt(): void
-    {
-        $value = uniqid();
-        $this->workspace->setRestoredAt($value);
-        $this->assertEquals($value, $this->workspace->getRestoredAt());
-    }
-
-    public function testGetRestoredBy(): void
-    {
-        $this->assertEquals(null, $this->workspace->getRestoredBy());
-    }
-    
-    public function testSetRestoredBy(): void
-    {
-        $value = uniqid();
-        $this->workspace->setRestoredBy($value);
-        $this->assertEquals($value, $this->workspace->getRestoredBy());
-    }
-
-    public function testGetRestoredAs(): void
-    {
-        $this->assertEquals(null, $this->workspace->getRestoredAs());
-    }
-    
-    public function testSetRestoredAs(): void
-    {
-        $value = uniqid();
-        $this->workspace->setRestoredAs($value);
-        $this->assertEquals($value, $this->workspace->getRestoredAs());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void

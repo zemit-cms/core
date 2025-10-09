@@ -14,11 +14,11 @@ namespace Zemit\Models\Abstracts;
 
 use Phalcon\Db\RawValue;
 use Zemit\Filter\Validation;
-use Zemit\Models\AbstractModel;
+use \Zemit\Models\AbstractModel;
 use Zemit\Models\Data;
-use Zemit\Models\Workspace;
-use Zemit\Models\Table;
 use Zemit\Models\Record;
+use Zemit\Models\Validator;
+use Zemit\Models\Table;
 use Zemit\Models\User;
 use Zemit\Models\Abstracts\Interfaces\ColumnAbstractInterface;
 
@@ -32,21 +32,13 @@ use Zemit\Models\Abstracts\Interfaces\ColumnAbstractInterface;
  * @property Data[] $DataList
  * @method Data[] getDataList(?array $params = null)
  *
- * @property Workspace[] $dataworkspacelist
- * @property Workspace[] $DataWorkspaceList
- * @method Workspace[] getDataWorkspaceList(?array $params = null)
- *
- * @property Table[] $datatablelist
- * @property Table[] $DataTableList
- * @method Table[] getDataTableList(?array $params = null)
- *
  * @property Record[] $datarecordlist
  * @property Record[] $DataRecordList
  * @method Record[] getDataRecordList(?array $params = null)
  *
- * @property Workspace $workspaceentity
- * @property Workspace $WorkspaceEntity
- * @method Workspace getWorkspaceEntity(?array $params = null)
+ * @property Validator[] $validatorlist
+ * @property Validator[] $ValidatorList
+ * @method Validator[] getValidatorList(?array $params = null)
  *
  * @property Table $tableentity
  * @property Table $TableEntity
@@ -56,35 +48,19 @@ use Zemit\Models\Abstracts\Interfaces\ColumnAbstractInterface;
  * @property User $CreatedByEntity
  * @method User getCreatedByEntity(?array $params = null)
  *
- * @property User $createdasentity
- * @property User $CreatedAsEntity
- * @method User getCreatedAsEntity(?array $params = null)
- *
  * @property User $updatedbyentity
  * @property User $UpdatedByEntity
  * @method User getUpdatedByEntity(?array $params = null)
  *
- * @property User $updatedasentity
- * @property User $UpdatedAsEntity
- * @method User getUpdatedAsEntity(?array $params = null)
- *
- * @property User $deletedasentity
- * @property User $DeletedAsEntity
- * @method User getDeletedAsEntity(?array $params = null)
- *
  * @property User $deletedbyentity
  * @property User $DeletedByEntity
  * @method User getDeletedByEntity(?array $params = null)
- *
- * @property User $restoredbyentity
- * @property User $RestoredByEntity
- * @method User getRestoredByEntity(?array $params = null)
  */
-abstract class ColumnAbstract extends AbstractModel implements ColumnAbstractInterface
+abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements ColumnAbstractInterface
 {
     /**
      * Column: id
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $id = null;
@@ -97,32 +73,18 @@ abstract class ColumnAbstract extends AbstractModel implements ColumnAbstractInt
     public mixed $uuid = null;
         
     /**
-     * Column: workspace_id
-     * Attributes: NotNull | Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $workspaceId = null;
-        
-    /**
      * Column: table_id
-     * Attributes: NotNull | Numeric | Unsigned
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $tableId = null;
         
     /**
-     * Column: name
+     * Column: label
      * Attributes: NotNull | Size(60) | Type(2)
      * @var mixed
      */
-    public mixed $name = null;
-        
-    /**
-     * Column: description
-     * Attributes: Size(120) | Type(2)
-     * @var mixed
-     */
-    public mixed $description = null;
+    public mixed $label = null;
         
     /**
      * Column: type
@@ -132,15 +94,22 @@ abstract class ColumnAbstract extends AbstractModel implements ColumnAbstractInt
     public mixed $type = 'singleLineText';
         
     /**
-     * Column: validation_regex
-     * Attributes: Size(1000) | Type(2)
+     * Column: description
+     * Attributes: Size(120) | Type(2)
      * @var mixed
      */
-    public mixed $validationRegex = null;
+    public mixed $description = null;
+        
+    /**
+     * Column: options
+     * Attributes: Type(24)
+     * @var mixed
+     */
+    public mixed $options = null;
         
     /**
      * Column: deleted
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @var mixed
      */
     public mixed $deleted = 0;
@@ -150,21 +119,14 @@ abstract class ColumnAbstract extends AbstractModel implements ColumnAbstractInt
      * Attributes: NotNull | Type(4)
      * @var mixed
      */
-    public mixed $createdAt = null;
+    public mixed $createdAt = 'current_timestamp()';
         
     /**
      * Column: created_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $createdBy = null;
-        
-    /**
-     * Column: created_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $createdAs = null;
         
     /**
      * Column: updated_at
@@ -175,17 +137,10 @@ abstract class ColumnAbstract extends AbstractModel implements ColumnAbstractInt
         
     /**
      * Column: updated_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $updatedBy = null;
-        
-    /**
-     * Column: updated_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $updatedAs = null;
         
     /**
      * Column: deleted_at
@@ -195,37 +150,16 @@ abstract class ColumnAbstract extends AbstractModel implements ColumnAbstractInt
     public mixed $deletedAt = null;
         
     /**
-     * Column: deleted_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $deletedAs = null;
-        
-    /**
      * Column: deleted_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $deletedBy = null;
-        
-    /**
-     * Column: restored_at
-     * Attributes: Type(4)
-     * @var mixed
-     */
-    public mixed $restoredAt = null;
-        
-    /**
-     * Column: restored_by
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $restoredBy = null;
     
     /**
      * Returns the value of field id
      * Column: id
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
     public function getId(): mixed
@@ -236,7 +170,7 @@ abstract class ColumnAbstract extends AbstractModel implements ColumnAbstractInt
     /**
      * Sets the value of field id
      * Column: id 
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @param mixed $id
      * @return void
      */
@@ -269,32 +203,9 @@ abstract class ColumnAbstract extends AbstractModel implements ColumnAbstractInt
     }
     
     /**
-     * Returns the value of field workspaceId
-     * Column: workspace_id
-     * Attributes: NotNull | Numeric | Unsigned
-     * @return mixed
-     */
-    public function getWorkspaceId(): mixed
-    {
-        return $this->workspaceId;
-    }
-    
-    /**
-     * Sets the value of field workspaceId
-     * Column: workspace_id 
-     * Attributes: NotNull | Numeric | Unsigned
-     * @param mixed $workspaceId
-     * @return void
-     */
-    public function setWorkspaceId(mixed $workspaceId): void
-    {
-        $this->workspaceId = $workspaceId;
-    }
-    
-    /**
      * Returns the value of field tableId
      * Column: table_id
-     * Attributes: NotNull | Numeric | Unsigned
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getTableId(): mixed
@@ -305,7 +216,7 @@ abstract class ColumnAbstract extends AbstractModel implements ColumnAbstractInt
     /**
      * Sets the value of field tableId
      * Column: table_id 
-     * Attributes: NotNull | Numeric | Unsigned
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $tableId
      * @return void
      */
@@ -315,49 +226,26 @@ abstract class ColumnAbstract extends AbstractModel implements ColumnAbstractInt
     }
     
     /**
-     * Returns the value of field name
-     * Column: name
+     * Returns the value of field label
+     * Column: label
      * Attributes: NotNull | Size(60) | Type(2)
      * @return mixed
      */
-    public function getName(): mixed
+    public function getLabel(): mixed
     {
-        return $this->name;
+        return $this->label;
     }
     
     /**
-     * Sets the value of field name
-     * Column: name 
+     * Sets the value of field label
+     * Column: label 
      * Attributes: NotNull | Size(60) | Type(2)
-     * @param mixed $name
+     * @param mixed $label
      * @return void
      */
-    public function setName(mixed $name): void
+    public function setLabel(mixed $label): void
     {
-        $this->name = $name;
-    }
-    
-    /**
-     * Returns the value of field description
-     * Column: description
-     * Attributes: Size(120) | Type(2)
-     * @return mixed
-     */
-    public function getDescription(): mixed
-    {
-        return $this->description;
-    }
-    
-    /**
-     * Sets the value of field description
-     * Column: description 
-     * Attributes: Size(120) | Type(2)
-     * @param mixed $description
-     * @return void
-     */
-    public function setDescription(mixed $description): void
-    {
-        $this->description = $description;
+        $this->label = $label;
     }
     
     /**
@@ -384,32 +272,55 @@ abstract class ColumnAbstract extends AbstractModel implements ColumnAbstractInt
     }
     
     /**
-     * Returns the value of field validationRegex
-     * Column: validation_regex
-     * Attributes: Size(1000) | Type(2)
+     * Returns the value of field description
+     * Column: description
+     * Attributes: Size(120) | Type(2)
      * @return mixed
      */
-    public function getValidationRegex(): mixed
+    public function getDescription(): mixed
     {
-        return $this->validationRegex;
+        return $this->description;
     }
     
     /**
-     * Sets the value of field validationRegex
-     * Column: validation_regex 
-     * Attributes: Size(1000) | Type(2)
-     * @param mixed $validationRegex
+     * Sets the value of field description
+     * Column: description 
+     * Attributes: Size(120) | Type(2)
+     * @param mixed $description
      * @return void
      */
-    public function setValidationRegex(mixed $validationRegex): void
+    public function setDescription(mixed $description): void
     {
-        $this->validationRegex = $validationRegex;
+        $this->description = $description;
+    }
+    
+    /**
+     * Returns the value of field options
+     * Column: options
+     * Attributes: Type(24)
+     * @return mixed
+     */
+    public function getOptions(): mixed
+    {
+        return $this->options;
+    }
+    
+    /**
+     * Sets the value of field options
+     * Column: options 
+     * Attributes: Type(24)
+     * @param mixed $options
+     * @return void
+     */
+    public function setOptions(mixed $options): void
+    {
+        $this->options = $options;
     }
     
     /**
      * Returns the value of field deleted
      * Column: deleted
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
     public function getDeleted(): mixed
@@ -420,7 +331,7 @@ abstract class ColumnAbstract extends AbstractModel implements ColumnAbstractInt
     /**
      * Sets the value of field deleted
      * Column: deleted 
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @param mixed $deleted
      * @return void
      */
@@ -455,7 +366,7 @@ abstract class ColumnAbstract extends AbstractModel implements ColumnAbstractInt
     /**
      * Returns the value of field createdBy
      * Column: created_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getCreatedBy(): mixed
@@ -466,36 +377,13 @@ abstract class ColumnAbstract extends AbstractModel implements ColumnAbstractInt
     /**
      * Sets the value of field createdBy
      * Column: created_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $createdBy
      * @return void
      */
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
-    }
-    
-    /**
-     * Returns the value of field createdAs
-     * Column: created_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getCreatedAs(): mixed
-    {
-        return $this->createdAs;
-    }
-    
-    /**
-     * Sets the value of field createdAs
-     * Column: created_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $createdAs
-     * @return void
-     */
-    public function setCreatedAs(mixed $createdAs): void
-    {
-        $this->createdAs = $createdAs;
     }
     
     /**
@@ -524,7 +412,7 @@ abstract class ColumnAbstract extends AbstractModel implements ColumnAbstractInt
     /**
      * Returns the value of field updatedBy
      * Column: updated_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getUpdatedBy(): mixed
@@ -535,36 +423,13 @@ abstract class ColumnAbstract extends AbstractModel implements ColumnAbstractInt
     /**
      * Sets the value of field updatedBy
      * Column: updated_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $updatedBy
      * @return void
      */
     public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
-    }
-    
-    /**
-     * Returns the value of field updatedAs
-     * Column: updated_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getUpdatedAs(): mixed
-    {
-        return $this->updatedAs;
-    }
-    
-    /**
-     * Sets the value of field updatedAs
-     * Column: updated_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $updatedAs
-     * @return void
-     */
-    public function setUpdatedAs(mixed $updatedAs): void
-    {
-        $this->updatedAs = $updatedAs;
     }
     
     /**
@@ -591,32 +456,9 @@ abstract class ColumnAbstract extends AbstractModel implements ColumnAbstractInt
     }
     
     /**
-     * Returns the value of field deletedAs
-     * Column: deleted_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getDeletedAs(): mixed
-    {
-        return $this->deletedAs;
-    }
-    
-    /**
-     * Sets the value of field deletedAs
-     * Column: deleted_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $deletedAs
-     * @return void
-     */
-    public function setDeletedAs(mixed $deletedAs): void
-    {
-        $this->deletedAs = $deletedAs;
-    }
-    
-    /**
      * Returns the value of field deletedBy
      * Column: deleted_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getDeletedBy(): mixed
@@ -627,59 +469,13 @@ abstract class ColumnAbstract extends AbstractModel implements ColumnAbstractInt
     /**
      * Sets the value of field deletedBy
      * Column: deleted_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $deletedBy
      * @return void
      */
     public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;
-    }
-    
-    /**
-     * Returns the value of field restoredAt
-     * Column: restored_at
-     * Attributes: Type(4)
-     * @return mixed
-     */
-    public function getRestoredAt(): mixed
-    {
-        return $this->restoredAt;
-    }
-    
-    /**
-     * Sets the value of field restoredAt
-     * Column: restored_at 
-     * Attributes: Type(4)
-     * @param mixed $restoredAt
-     * @return void
-     */
-    public function setRestoredAt(mixed $restoredAt): void
-    {
-        $this->restoredAt = $restoredAt;
-    }
-    
-    /**
-     * Returns the value of field restoredBy
-     * Column: restored_by
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getRestoredBy(): mixed
-    {
-        return $this->restoredBy;
-    }
-    
-    /**
-     * Sets the value of field restoredBy
-     * Column: restored_by 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $restoredBy
-     * @return void
-     */
-    public function setRestoredBy(mixed $restoredBy): void
-    {
-        $this->restoredBy = $restoredBy;
     }
 
     /**
@@ -694,49 +490,21 @@ abstract class ColumnAbstract extends AbstractModel implements ColumnAbstractInt
             'id',
             Data::class,
             'columnId',
-            'workspaceId',
-            Workspace::class,
-            'id',
-            ['alias' => 'DataWorkspaceList']
-        );
-
-        $this->hasManyToMany(
-            'id',
-            Data::class,
-            'columnId',
-            'tableId',
-            Table::class,
-            'id',
-            ['alias' => 'DataTableList']
-        );
-
-        $this->hasManyToMany(
-            'id',
-            Data::class,
-            'columnId',
             'recordId',
             Record::class,
             'id',
             ['alias' => 'DataRecordList']
         );
 
-        $this->belongsTo('workspaceId', Workspace::class, 'id', ['alias' => 'WorkspaceEntity']);
+        $this->hasMany('id', Validator::class, 'columnId', ['alias' => 'ValidatorList']);
 
         $this->belongsTo('tableId', Table::class, 'id', ['alias' => 'TableEntity']);
 
         $this->belongsTo('createdBy', User::class, 'id', ['alias' => 'CreatedByEntity']);
 
-        $this->belongsTo('createdAs', User::class, 'id', ['alias' => 'CreatedAsEntity']);
-
         $this->belongsTo('updatedBy', User::class, 'id', ['alias' => 'UpdatedByEntity']);
 
-        $this->belongsTo('updatedAs', User::class, 'id', ['alias' => 'UpdatedAsEntity']);
-
-        $this->belongsTo('deletedAs', User::class, 'id', ['alias' => 'DeletedAsEntity']);
-
         $this->belongsTo('deletedBy', User::class, 'id', ['alias' => 'DeletedByEntity']);
-
-        $this->belongsTo('restoredBy', User::class, 'id', ['alias' => 'RestoredByEntity']);
     }
     
     /**
@@ -750,24 +518,17 @@ abstract class ColumnAbstract extends AbstractModel implements ColumnAbstractInt
     
         $this->addUnsignedIntValidation($validator, 'id', true);
         $this->addStringLengthValidation($validator, 'uuid', 0, 36, false);
-        $this->addUnsignedIntValidation($validator, 'workspaceId', false);
         $this->addUnsignedIntValidation($validator, 'tableId', false);
-        $this->addStringLengthValidation($validator, 'name', 0, 60, false);
-        $this->addStringLengthValidation($validator, 'description', 0, 120, true);
+        $this->addStringLengthValidation($validator, 'label', 0, 60, false);
         $this->addInclusionInValidation($validator, 'type', ['linkToAnotherRecord','singleLineText','longText','attachment','checkbox','multipleSelect','singleSelect','user','date','phoneNumber','email','url','number','currency','percent','duration','rating','formula','rollup','count','lookup','createdTime','lastModifiedTime','createdBy','lastModifiedBy','autonumber','barcode','button'], false);
-        $this->addStringLengthValidation($validator, 'validationRegex', 0, 1000, true);
+        $this->addStringLengthValidation($validator, 'description', 0, 120, true);
         $this->addUnsignedIntValidation($validator, 'deleted', false);
         $this->addDateTimeValidation($validator, 'createdAt', false);
         $this->addUnsignedIntValidation($validator, 'createdBy', true);
-        $this->addUnsignedIntValidation($validator, 'createdAs', true);
         $this->addDateTimeValidation($validator, 'updatedAt', true);
         $this->addUnsignedIntValidation($validator, 'updatedBy', true);
-        $this->addUnsignedIntValidation($validator, 'updatedAs', true);
         $this->addDateTimeValidation($validator, 'deletedAt', true);
-        $this->addUnsignedIntValidation($validator, 'deletedAs', true);
         $this->addUnsignedIntValidation($validator, 'deletedBy', true);
-        $this->addDateTimeValidation($validator, 'restoredAt', true);
-        $this->addUnsignedIntValidation($validator, 'restoredBy', true);
         
         return $validator;
     }
@@ -784,24 +545,18 @@ abstract class ColumnAbstract extends AbstractModel implements ColumnAbstractInt
         return [
             'id' => 'id',
             'uuid' => 'uuid',
-            'workspace_id' => 'workspaceId',
             'table_id' => 'tableId',
-            'name' => 'name',
-            'description' => 'description',
+            'label' => 'label',
             'type' => 'type',
-            'validation_regex' => 'validationRegex',
+            'description' => 'description',
+            'options' => 'options',
             'deleted' => 'deleted',
             'created_at' => 'createdAt',
             'created_by' => 'createdBy',
-            'created_as' => 'createdAs',
             'updated_at' => 'updatedAt',
             'updated_by' => 'updatedBy',
-            'updated_as' => 'updatedAs',
             'deleted_at' => 'deletedAt',
-            'deleted_as' => 'deletedAs',
             'deleted_by' => 'deletedBy',
-            'restored_at' => 'restoredAt',
-            'restored_by' => 'restoredBy',
         ];
     }
 }

@@ -33,51 +33,22 @@ class AuditDetailMigration_100 extends Migration
                     ]
                 ),
                 new Column(
+                    'uuid',
+                    [
+                        'type' => Column::TYPE_CHAR,
+                        'notNull' => true,
+                        'size' => 36,
+                        'after' => 'id'
+                    ]
+                ),
+                new Column(
                     'audit_id',
                     [
                         'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => true,
                         'size' => 1,
-                        'after' => 'id'
-                    ]
-                ),
-                new Column(
-                    'model',
-                    [
-                        'type' => Column::TYPE_VARCHAR,
-                        'notNull' => true,
-                        'size' => 255,
-                        'after' => 'audit_id'
-                    ]
-                ),
-                new Column(
-                    'table',
-                    [
-                        'type' => Column::TYPE_VARCHAR,
-                        'notNull' => true,
-                        'size' => 60,
-                        'after' => 'model'
-                    ]
-                ),
-                new Column(
-                    'primary',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => true,
-                        'size' => 1,
-                        'after' => 'table'
-                    ]
-                ),
-                new Column(
-                    'event',
-                    [
-                        'type' => Column::TYPE_ENUM,
-                        'default' => "other",
-                        'notNull' => true,
-                        'size' => "'create','update','delete','restore','other'",
-                        'after' => 'primary'
+                        'after' => 'uuid'
                     ]
                 ),
                 new Column(
@@ -86,16 +57,7 @@ class AuditDetailMigration_100 extends Migration
                         'type' => Column::TYPE_VARCHAR,
                         'notNull' => true,
                         'size' => 60,
-                        'after' => 'event'
-                    ]
-                ),
-                new Column(
-                    'map',
-                    [
-                        'type' => Column::TYPE_VARCHAR,
-                        'notNull' => true,
-                        'size' => 60,
-                        'after' => 'column'
+                        'after' => 'audit_id'
                     ]
                 ),
                 new Column(
@@ -103,7 +65,7 @@ class AuditDetailMigration_100 extends Migration
                     [
                         'type' => Column::TYPE_MEDIUMTEXT,
                         'notNull' => false,
-                        'after' => 'map'
+                        'after' => 'column'
                     ]
                 ),
                 new Column(
@@ -137,125 +99,43 @@ class AuditDetailMigration_100 extends Migration
                 new Column(
                     'created_by',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => false,
                         'size' => 1,
                         'after' => 'created_at'
                     ]
                 ),
-                new Column(
-                    'created_as',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'created_by'
-                    ]
-                ),
-                new Column(
-                    'updated_at',
-                    [
-                        'type' => Column::TYPE_DATETIME,
-                        'notNull' => false,
-                        'after' => 'created_as'
-                    ]
-                ),
-                new Column(
-                    'updated_by',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'updated_at'
-                    ]
-                ),
-                new Column(
-                    'updated_as',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'updated_by'
-                    ]
-                ),
-                new Column(
-                    'deleted_at',
-                    [
-                        'type' => Column::TYPE_DATETIME,
-                        'notNull' => false,
-                        'after' => 'updated_as'
-                    ]
-                ),
-                new Column(
-                    'deleted_by',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'deleted_at'
-                    ]
-                ),
-                new Column(
-                    'deleted_as',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'deleted_by'
-                    ]
-                ),
-                new Column(
-                    'restored_at',
-                    [
-                        'type' => Column::TYPE_DATETIME,
-                        'notNull' => false,
-                        'after' => 'deleted_as'
-                    ]
-                ),
-                new Column(
-                    'restored_by',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'restored_at'
-                    ]
-                ),
-                new Column(
-                    'restored_as',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'restored_by'
-                    ]
-                ),
             ],
             'indexes' => [
                 new Index('PRIMARY', ['id'], 'PRIMARY'),
-                new Index('id_UNIQUE', ['id'], 'UNIQUE'),
-                new Index('audit_id', ['audit_id'], ''),
-                new Index('model', ['model'], ''),
-                new Index('table', ['table'], ''),
-                new Index('primary_2', ['primary'], ''),
-                new Index('column', ['column'], ''),
-                new Index('map', ['map'], ''),
-                new Index('created_by', ['created_by'], ''),
-                new Index('created_as', ['created_as'], ''),
-                new Index('updated_by', ['updated_by'], ''),
-                new Index('updated_as', ['updated_as'], ''),
-                new Index('deleted_by', ['deleted_by'], ''),
-                new Index('deleted_as', ['deleted_as'], ''),
-                new Index('restored_by', ['restored_by'], ''),
-                new Index('restored_as', ['restored_as'], ''),
+                new Index('uuid_UNIQUE', ['uuid'], 'UNIQUE'),
+                new Index('idx_audit_id', ['audit_id'], ''),
+                new Index('fk_audit_detail_created_by', ['created_by'], ''),
+            ],
+            'references' => [
+                new Reference(
+                    'fk_audit_detail_audit_id',
+                    [
+                        'referencedSchema' => 'zemit_core',
+                        'referencedTable' => 'audit',
+                        'columns' => ['audit_id'],
+                        'referencedColumns' => ['id'],
+                        'onUpdate' => 'CASCADE',
+                        'onDelete' => 'CASCADE'
+                    ]
+                ),
+                new Reference(
+                    'fk_audit_detail_created_by',
+                    [
+                        'referencedSchema' => 'zemit_core',
+                        'referencedTable' => 'user',
+                        'columns' => ['created_by'],
+                        'referencedColumns' => ['id'],
+                        'onUpdate' => 'CASCADE',
+                        'onDelete' => 'SET NULL'
+                    ]
+                ),
             ],
             'options' => [
                 'TABLE_TYPE' => 'BASE TABLE',

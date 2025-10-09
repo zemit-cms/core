@@ -62,6 +62,18 @@ class RoleFeatureTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->roleFeature->getId());
     }
 
+    public function testGetUuid(): void
+    {
+        $this->assertEquals(null, $this->roleFeature->getUuid());
+    }
+    
+    public function testSetUuid(): void
+    {
+        $value = uniqid();
+        $this->roleFeature->setUuid($value);
+        $this->assertEquals($value, $this->roleFeature->getUuid());
+    }
+
     public function testGetRoleId(): void
     {
         $this->assertEquals(null, $this->roleFeature->getRoleId());
@@ -112,7 +124,7 @@ class RoleFeatureTest extends \Zemit\Tests\Unit\AbstractUnit
 
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->roleFeature->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->roleFeature->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -132,18 +144,6 @@ class RoleFeatureTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->roleFeature->setCreatedBy($value);
         $this->assertEquals($value, $this->roleFeature->getCreatedBy());
-    }
-
-    public function testGetCreatedAs(): void
-    {
-        $this->assertEquals(null, $this->roleFeature->getCreatedAs());
-    }
-    
-    public function testSetCreatedAs(): void
-    {
-        $value = uniqid();
-        $this->roleFeature->setCreatedAs($value);
-        $this->assertEquals($value, $this->roleFeature->getCreatedAs());
     }
 
     public function testGetUpdatedAt(): void
@@ -170,18 +170,6 @@ class RoleFeatureTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->roleFeature->getUpdatedBy());
     }
 
-    public function testGetUpdatedAs(): void
-    {
-        $this->assertEquals(null, $this->roleFeature->getUpdatedAs());
-    }
-    
-    public function testSetUpdatedAs(): void
-    {
-        $value = uniqid();
-        $this->roleFeature->setUpdatedAs($value);
-        $this->assertEquals($value, $this->roleFeature->getUpdatedAs());
-    }
-
     public function testGetDeletedAt(): void
     {
         $this->assertEquals(null, $this->roleFeature->getDeletedAt());
@@ -194,18 +182,6 @@ class RoleFeatureTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->roleFeature->getDeletedAt());
     }
 
-    public function testGetDeletedAs(): void
-    {
-        $this->assertEquals(null, $this->roleFeature->getDeletedAs());
-    }
-    
-    public function testSetDeletedAs(): void
-    {
-        $value = uniqid();
-        $this->roleFeature->setDeletedAs($value);
-        $this->assertEquals($value, $this->roleFeature->getDeletedAs());
-    }
-
     public function testGetDeletedBy(): void
     {
         $this->assertEquals(null, $this->roleFeature->getDeletedBy());
@@ -216,42 +192,6 @@ class RoleFeatureTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->roleFeature->setDeletedBy($value);
         $this->assertEquals($value, $this->roleFeature->getDeletedBy());
-    }
-
-    public function testGetRestoredAt(): void
-    {
-        $this->assertEquals(null, $this->roleFeature->getRestoredAt());
-    }
-    
-    public function testSetRestoredAt(): void
-    {
-        $value = uniqid();
-        $this->roleFeature->setRestoredAt($value);
-        $this->assertEquals($value, $this->roleFeature->getRestoredAt());
-    }
-
-    public function testGetRestoredBy(): void
-    {
-        $this->assertEquals(null, $this->roleFeature->getRestoredBy());
-    }
-    
-    public function testSetRestoredBy(): void
-    {
-        $value = uniqid();
-        $this->roleFeature->setRestoredBy($value);
-        $this->assertEquals($value, $this->roleFeature->getRestoredBy());
-    }
-
-    public function testGetRestoredAs(): void
-    {
-        $this->assertEquals(null, $this->roleFeature->getRestoredAs());
-    }
-    
-    public function testSetRestoredAs(): void
-    {
-        $value = uniqid();
-        $this->roleFeature->setRestoredAs($value);
-        $this->assertEquals($value, $this->roleFeature->getRestoredAs());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void

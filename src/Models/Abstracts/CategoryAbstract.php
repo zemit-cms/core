@@ -14,14 +14,10 @@ namespace Zemit\Models\Abstracts;
 
 use Phalcon\Db\RawValue;
 use Zemit\Filter\Validation;
-use Zemit\Models\AbstractModel;
-use Zemit\Models\Meta;
-use Zemit\Models\Lang;
-use Zemit\Models\Site;
-use Zemit\Models\Page;
-use Zemit\Models\Post;
+use \Zemit\Models\AbstractModel;
 use Zemit\Models\PostCategory;
-use Zemit\Models\Translate;
+use Zemit\Models\Post;
+use Zemit\Models\Site;
 use Zemit\Models\User;
 use Zemit\Models\Abstracts\Interfaces\CategoryAbstractInterface;
 
@@ -31,26 +27,6 @@ use Zemit\Models\Abstracts\Interfaces\CategoryAbstractInterface;
  * This class defines a Category abstract model that extends the AbstractModel class and implements the CategoryAbstractInterface.
  * It provides properties and methods for managing Category data.
  * 
- * @property Meta[] $metalist
- * @property Meta[] $MetaList
- * @method Meta[] getMetaList(?array $params = null)
- *
- * @property Lang[] $metalanglist
- * @property Lang[] $MetaLangList
- * @method Lang[] getMetaLangList(?array $params = null)
- *
- * @property Site[] $metasitelist
- * @property Site[] $MetaSiteList
- * @method Site[] getMetaSiteList(?array $params = null)
- *
- * @property Page[] $metapagelist
- * @property Page[] $MetaPageList
- * @method Page[] getMetaPageList(?array $params = null)
- *
- * @property Post[] $metapostlist
- * @property Post[] $MetaPostList
- * @method Post[] getMetaPostList(?array $params = null)
- *
  * @property PostCategory[] $postcategorylist
  * @property PostCategory[] $PostCategoryList
  * @method PostCategory[] getPostCategoryList(?array $params = null)
@@ -59,98 +35,58 @@ use Zemit\Models\Abstracts\Interfaces\CategoryAbstractInterface;
  * @property Post[] $PostList
  * @method Post[] getPostList(?array $params = null)
  *
- * @property Translate[] $translatelist
- * @property Translate[] $TranslateList
- * @method Translate[] getTranslateList(?array $params = null)
- *
- * @property Lang[] $translatelanglist
- * @property Lang[] $TranslateLangList
- * @method Lang[] getTranslateLangList(?array $params = null)
- *
- * @property Site[] $translatesitelist
- * @property Site[] $TranslateSiteList
- * @method Site[] getTranslateSiteList(?array $params = null)
- *
- * @property Page[] $translatepagelist
- * @property Page[] $TranslatePageList
- * @method Page[] getTranslatePageList(?array $params = null)
- *
- * @property Post[] $translatepostlist
- * @property Post[] $TranslatePostList
- * @method Post[] getTranslatePostList(?array $params = null)
- *
  * @property Site $siteentity
  * @property Site $SiteEntity
  * @method Site getSiteEntity(?array $params = null)
- *
- * @property Lang $langentity
- * @property Lang $LangEntity
- * @method Lang getLangEntity(?array $params = null)
  *
  * @property User $createdbyentity
  * @property User $CreatedByEntity
  * @method User getCreatedByEntity(?array $params = null)
  *
- * @property User $createdasentity
- * @property User $CreatedAsEntity
- * @method User getCreatedAsEntity(?array $params = null)
- *
  * @property User $updatedbyentity
  * @property User $UpdatedByEntity
  * @method User getUpdatedByEntity(?array $params = null)
  *
- * @property User $updatedasentity
- * @property User $UpdatedAsEntity
- * @method User getUpdatedAsEntity(?array $params = null)
- *
- * @property User $deletedasentity
- * @property User $DeletedAsEntity
- * @method User getDeletedAsEntity(?array $params = null)
- *
  * @property User $deletedbyentity
  * @property User $DeletedByEntity
  * @method User getDeletedByEntity(?array $params = null)
- *
- * @property User $restoredbyentity
- * @property User $RestoredByEntity
- * @method User getRestoredByEntity(?array $params = null)
  */
-abstract class CategoryAbstract extends AbstractModel implements CategoryAbstractInterface
+abstract class CategoryAbstract extends \Zemit\Models\AbstractModel implements CategoryAbstractInterface
 {
     /**
      * Column: id
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $id = null;
         
     /**
+     * Column: uuid
+     * Attributes: NotNull | Size(36) | Type(5)
+     * @var mixed
+     */
+    public mixed $uuid = null;
+        
+    /**
      * Column: site_id
-     * Attributes: NotNull | Numeric | Unsigned
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $siteId = null;
         
     /**
-     * Column: lang_id
-     * Attributes: NotNull | Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $langId = null;
-        
-    /**
-     * Column: name
+     * Column: key
      * Attributes: NotNull | Size(255) | Type(2)
      * @var mixed
      */
-    public mixed $name = null;
+    public mixed $key = null;
         
     /**
-     * Column: index
+     * Column: label
      * Attributes: NotNull | Size(255) | Type(2)
      * @var mixed
      */
-    public mixed $index = null;
+    public mixed $label = null;
         
     /**
      * Column: description
@@ -161,7 +97,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
         
     /**
      * Column: deleted
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @var mixed
      */
     public mixed $deleted = 0;
@@ -171,21 +107,14 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      * Attributes: NotNull | Type(4)
      * @var mixed
      */
-    public mixed $createdAt = null;
+    public mixed $createdAt = 'current_timestamp()';
         
     /**
      * Column: created_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $createdBy = null;
-        
-    /**
-     * Column: created_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $createdAs = null;
         
     /**
      * Column: updated_at
@@ -196,17 +125,10 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
         
     /**
      * Column: updated_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $updatedBy = null;
-        
-    /**
-     * Column: updated_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $updatedAs = null;
         
     /**
      * Column: deleted_at
@@ -216,37 +138,16 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     public mixed $deletedAt = null;
         
     /**
-     * Column: deleted_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $deletedAs = null;
-        
-    /**
      * Column: deleted_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $deletedBy = null;
-        
-    /**
-     * Column: restored_at
-     * Attributes: Type(4)
-     * @var mixed
-     */
-    public mixed $restoredAt = null;
-        
-    /**
-     * Column: restored_by
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $restoredBy = null;
     
     /**
      * Returns the value of field id
      * Column: id
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
     public function getId(): mixed
@@ -257,7 +158,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Sets the value of field id
      * Column: id 
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @param mixed $id
      * @return void
      */
@@ -267,9 +168,32 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     }
     
     /**
+     * Returns the value of field uuid
+     * Column: uuid
+     * Attributes: NotNull | Size(36) | Type(5)
+     * @return mixed
+     */
+    public function getUuid(): mixed
+    {
+        return $this->uuid;
+    }
+    
+    /**
+     * Sets the value of field uuid
+     * Column: uuid 
+     * Attributes: NotNull | Size(36) | Type(5)
+     * @param mixed $uuid
+     * @return void
+     */
+    public function setUuid(mixed $uuid): void
+    {
+        $this->uuid = $uuid;
+    }
+    
+    /**
      * Returns the value of field siteId
      * Column: site_id
-     * Attributes: NotNull | Numeric | Unsigned
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getSiteId(): mixed
@@ -280,7 +204,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Sets the value of field siteId
      * Column: site_id 
-     * Attributes: NotNull | Numeric | Unsigned
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $siteId
      * @return void
      */
@@ -290,72 +214,49 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     }
     
     /**
-     * Returns the value of field langId
-     * Column: lang_id
-     * Attributes: NotNull | Numeric | Unsigned
-     * @return mixed
-     */
-    public function getLangId(): mixed
-    {
-        return $this->langId;
-    }
-    
-    /**
-     * Sets the value of field langId
-     * Column: lang_id 
-     * Attributes: NotNull | Numeric | Unsigned
-     * @param mixed $langId
-     * @return void
-     */
-    public function setLangId(mixed $langId): void
-    {
-        $this->langId = $langId;
-    }
-    
-    /**
-     * Returns the value of field name
-     * Column: name
+     * Returns the value of field key
+     * Column: key
      * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
      */
-    public function getName(): mixed
+    public function getKey(): mixed
     {
-        return $this->name;
+        return $this->key;
     }
     
     /**
-     * Sets the value of field name
-     * Column: name 
+     * Sets the value of field key
+     * Column: key 
      * Attributes: NotNull | Size(255) | Type(2)
-     * @param mixed $name
+     * @param mixed $key
      * @return void
      */
-    public function setName(mixed $name): void
+    public function setKey(mixed $key): void
     {
-        $this->name = $name;
+        $this->key = $key;
     }
     
     /**
-     * Returns the value of field index
-     * Column: index
+     * Returns the value of field label
+     * Column: label
      * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
      */
-    public function getIndex(): mixed
+    public function getLabel(): mixed
     {
-        return $this->index;
+        return $this->label;
     }
     
     /**
-     * Sets the value of field index
-     * Column: index 
+     * Sets the value of field label
+     * Column: label 
      * Attributes: NotNull | Size(255) | Type(2)
-     * @param mixed $index
+     * @param mixed $label
      * @return void
      */
-    public function setIndex(mixed $index): void
+    public function setLabel(mixed $label): void
     {
-        $this->index = $index;
+        $this->label = $label;
     }
     
     /**
@@ -384,7 +285,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Returns the value of field deleted
      * Column: deleted
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
     public function getDeleted(): mixed
@@ -395,7 +296,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Sets the value of field deleted
      * Column: deleted 
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @param mixed $deleted
      * @return void
      */
@@ -430,7 +331,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Returns the value of field createdBy
      * Column: created_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getCreatedBy(): mixed
@@ -441,36 +342,13 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Sets the value of field createdBy
      * Column: created_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $createdBy
      * @return void
      */
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
-    }
-    
-    /**
-     * Returns the value of field createdAs
-     * Column: created_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getCreatedAs(): mixed
-    {
-        return $this->createdAs;
-    }
-    
-    /**
-     * Sets the value of field createdAs
-     * Column: created_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $createdAs
-     * @return void
-     */
-    public function setCreatedAs(mixed $createdAs): void
-    {
-        $this->createdAs = $createdAs;
     }
     
     /**
@@ -499,7 +377,7 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Returns the value of field updatedBy
      * Column: updated_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getUpdatedBy(): mixed
@@ -510,36 +388,13 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Sets the value of field updatedBy
      * Column: updated_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $updatedBy
      * @return void
      */
     public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
-    }
-    
-    /**
-     * Returns the value of field updatedAs
-     * Column: updated_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getUpdatedAs(): mixed
-    {
-        return $this->updatedAs;
-    }
-    
-    /**
-     * Sets the value of field updatedAs
-     * Column: updated_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $updatedAs
-     * @return void
-     */
-    public function setUpdatedAs(mixed $updatedAs): void
-    {
-        $this->updatedAs = $updatedAs;
     }
     
     /**
@@ -566,32 +421,9 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     }
     
     /**
-     * Returns the value of field deletedAs
-     * Column: deleted_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getDeletedAs(): mixed
-    {
-        return $this->deletedAs;
-    }
-    
-    /**
-     * Sets the value of field deletedAs
-     * Column: deleted_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $deletedAs
-     * @return void
-     */
-    public function setDeletedAs(mixed $deletedAs): void
-    {
-        $this->deletedAs = $deletedAs;
-    }
-    
-    /**
      * Returns the value of field deletedBy
      * Column: deleted_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getDeletedBy(): mixed
@@ -602,59 +434,13 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     /**
      * Sets the value of field deletedBy
      * Column: deleted_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $deletedBy
      * @return void
      */
     public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;
-    }
-    
-    /**
-     * Returns the value of field restoredAt
-     * Column: restored_at
-     * Attributes: Type(4)
-     * @return mixed
-     */
-    public function getRestoredAt(): mixed
-    {
-        return $this->restoredAt;
-    }
-    
-    /**
-     * Sets the value of field restoredAt
-     * Column: restored_at 
-     * Attributes: Type(4)
-     * @param mixed $restoredAt
-     * @return void
-     */
-    public function setRestoredAt(mixed $restoredAt): void
-    {
-        $this->restoredAt = $restoredAt;
-    }
-    
-    /**
-     * Returns the value of field restoredBy
-     * Column: restored_by
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getRestoredBy(): mixed
-    {
-        return $this->restoredBy;
-    }
-    
-    /**
-     * Sets the value of field restoredBy
-     * Column: restored_by 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $restoredBy
-     * @return void
-     */
-    public function setRestoredBy(mixed $restoredBy): void
-    {
-        $this->restoredBy = $restoredBy;
     }
 
     /**
@@ -663,48 +449,6 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
      */
     public function addDefaultRelationships(): void
     {
-        $this->hasMany('id', Meta::class, 'categoryId', ['alias' => 'MetaList']);
-
-        $this->hasManyToMany(
-            'id',
-            Meta::class,
-            'categoryId',
-            'langId',
-            Lang::class,
-            'id',
-            ['alias' => 'MetaLangList']
-        );
-
-        $this->hasManyToMany(
-            'id',
-            Meta::class,
-            'categoryId',
-            'siteId',
-            Site::class,
-            'id',
-            ['alias' => 'MetaSiteList']
-        );
-
-        $this->hasManyToMany(
-            'id',
-            Meta::class,
-            'categoryId',
-            'pageId',
-            Page::class,
-            'id',
-            ['alias' => 'MetaPageList']
-        );
-
-        $this->hasManyToMany(
-            'id',
-            Meta::class,
-            'categoryId',
-            'postId',
-            Post::class,
-            'id',
-            ['alias' => 'MetaPostList']
-        );
-
         $this->hasMany('id', PostCategory::class, 'categoryId', ['alias' => 'PostCategoryList']);
 
         $this->hasManyToMany(
@@ -717,65 +461,13 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
             ['alias' => 'PostList']
         );
 
-        $this->hasMany('id', Translate::class, 'categoryId', ['alias' => 'TranslateList']);
-
-        $this->hasManyToMany(
-            'id',
-            Translate::class,
-            'categoryId',
-            'langId',
-            Lang::class,
-            'id',
-            ['alias' => 'TranslateLangList']
-        );
-
-        $this->hasManyToMany(
-            'id',
-            Translate::class,
-            'categoryId',
-            'siteId',
-            Site::class,
-            'id',
-            ['alias' => 'TranslateSiteList']
-        );
-
-        $this->hasManyToMany(
-            'id',
-            Translate::class,
-            'categoryId',
-            'pageId',
-            Page::class,
-            'id',
-            ['alias' => 'TranslatePageList']
-        );
-
-        $this->hasManyToMany(
-            'id',
-            Translate::class,
-            'categoryId',
-            'postId',
-            Post::class,
-            'id',
-            ['alias' => 'TranslatePostList']
-        );
-
         $this->belongsTo('siteId', Site::class, 'id', ['alias' => 'SiteEntity']);
-
-        $this->belongsTo('langId', Lang::class, 'id', ['alias' => 'LangEntity']);
 
         $this->belongsTo('createdBy', User::class, 'id', ['alias' => 'CreatedByEntity']);
 
-        $this->belongsTo('createdAs', User::class, 'id', ['alias' => 'CreatedAsEntity']);
-
         $this->belongsTo('updatedBy', User::class, 'id', ['alias' => 'UpdatedByEntity']);
 
-        $this->belongsTo('updatedAs', User::class, 'id', ['alias' => 'UpdatedAsEntity']);
-
-        $this->belongsTo('deletedAs', User::class, 'id', ['alias' => 'DeletedAsEntity']);
-
         $this->belongsTo('deletedBy', User::class, 'id', ['alias' => 'DeletedByEntity']);
-
-        $this->belongsTo('restoredBy', User::class, 'id', ['alias' => 'RestoredByEntity']);
     }
     
     /**
@@ -788,22 +480,17 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
         $validator ??= new Validation();
     
         $this->addUnsignedIntValidation($validator, 'id', true);
+        $this->addStringLengthValidation($validator, 'uuid', 0, 36, false);
         $this->addUnsignedIntValidation($validator, 'siteId', false);
-        $this->addUnsignedIntValidation($validator, 'langId', false);
-        $this->addStringLengthValidation($validator, 'name', 0, 255, false);
-        $this->addStringLengthValidation($validator, 'index', 0, 255, false);
+        $this->addStringLengthValidation($validator, 'key', 0, 255, false);
+        $this->addStringLengthValidation($validator, 'label', 0, 255, false);
         $this->addUnsignedIntValidation($validator, 'deleted', false);
         $this->addDateTimeValidation($validator, 'createdAt', false);
         $this->addUnsignedIntValidation($validator, 'createdBy', true);
-        $this->addUnsignedIntValidation($validator, 'createdAs', true);
         $this->addDateTimeValidation($validator, 'updatedAt', true);
         $this->addUnsignedIntValidation($validator, 'updatedBy', true);
-        $this->addUnsignedIntValidation($validator, 'updatedAs', true);
         $this->addDateTimeValidation($validator, 'deletedAt', true);
-        $this->addUnsignedIntValidation($validator, 'deletedAs', true);
         $this->addUnsignedIntValidation($validator, 'deletedBy', true);
-        $this->addDateTimeValidation($validator, 'restoredAt', true);
-        $this->addUnsignedIntValidation($validator, 'restoredBy', true);
         
         return $validator;
     }
@@ -819,23 +506,18 @@ abstract class CategoryAbstract extends AbstractModel implements CategoryAbstrac
     {
         return [
             'id' => 'id',
+            'uuid' => 'uuid',
             'site_id' => 'siteId',
-            'lang_id' => 'langId',
-            'name' => 'name',
-            'index' => 'index',
+            'key' => 'key',
+            'label' => 'label',
             'description' => 'description',
             'deleted' => 'deleted',
             'created_at' => 'createdAt',
             'created_by' => 'createdBy',
-            'created_as' => 'createdAs',
             'updated_at' => 'updatedAt',
             'updated_by' => 'updatedBy',
-            'updated_as' => 'updatedAs',
             'deleted_at' => 'deletedAt',
-            'deleted_as' => 'deletedAs',
             'deleted_by' => 'deletedBy',
-            'restored_at' => 'restoredAt',
-            'restored_by' => 'restoredBy',
         ];
     }
 }

@@ -24,7 +24,7 @@ class MetaMigration_100 extends Migration
                 new Column(
                     'id',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => true,
                         'autoIncrement' => true,
@@ -33,62 +33,21 @@ class MetaMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'lang_id',
+                    'uuid',
                     [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
+                        'type' => Column::TYPE_CHAR,
+                        'notNull' => true,
+                        'size' => 36,
                         'after' => 'id'
-                    ]
-                ),
-                new Column(
-                    'site_id',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'lang_id'
-                    ]
-                ),
-                new Column(
-                    'page_id',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'site_id'
-                    ]
-                ),
-                new Column(
-                    'post_id',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'page_id'
-                    ]
-                ),
-                new Column(
-                    'category_id',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'post_id'
                     ]
                 ),
                 new Column(
                     'key',
                     [
                         'type' => Column::TYPE_VARCHAR,
-                        'notNull' => false,
+                        'notNull' => true,
                         'size' => 255,
-                        'after' => 'category_id'
+                        'after' => 'uuid'
                     ]
                 ),
                 new Column(
@@ -100,6 +59,27 @@ class MetaMigration_100 extends Migration
                     ]
                 ),
                 new Column(
+                    'meta_table',
+                    [
+                        'type' => Column::TYPE_VARCHAR,
+                        'notNull' => true,
+                        'size' => 60,
+                        'comment' => "e.g., post, user, site",
+                        'after' => 'value'
+                    ]
+                ),
+                new Column(
+                    'meta_id',
+                    [
+                        'type' => Column::TYPE_BIGINTEGER,
+                        'unsigned' => true,
+                        'notNull' => true,
+                        'size' => 1,
+                        'comment' => "The ID of the record this meta belongs to",
+                        'after' => 'meta_table'
+                    ]
+                ),
+                new Column(
                     'deleted',
                     [
                         'type' => Column::TYPE_TINYINTEGER,
@@ -107,7 +87,7 @@ class MetaMigration_100 extends Migration
                         'unsigned' => true,
                         'notNull' => true,
                         'size' => 1,
-                        'after' => 'value'
+                        'after' => 'meta_id'
                     ]
                 ),
                 new Column(
@@ -122,7 +102,7 @@ class MetaMigration_100 extends Migration
                 new Column(
                     'created_by',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => false,
                         'size' => 1,
@@ -130,27 +110,17 @@ class MetaMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'created_as',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'created_by'
-                    ]
-                ),
-                new Column(
                     'updated_at',
                     [
                         'type' => Column::TYPE_DATETIME,
                         'notNull' => false,
-                        'after' => 'created_as'
+                        'after' => 'created_by'
                     ]
                 ),
                 new Column(
                     'updated_by',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => false,
                         'size' => 1,
@@ -158,65 +128,66 @@ class MetaMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'updated_as',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'updated_by'
-                    ]
-                ),
-                new Column(
                     'deleted_at',
                     [
                         'type' => Column::TYPE_DATETIME,
                         'notNull' => false,
-                        'after' => 'updated_as'
+                        'after' => 'updated_by'
                     ]
                 ),
                 new Column(
-                    'deleted_as',
+                    'deleted_by',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => false,
                         'size' => 1,
                         'after' => 'deleted_at'
                     ]
                 ),
-                new Column(
-                    'deleted_by',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'deleted_as'
-                    ]
-                ),
-                new Column(
-                    'restored_at',
-                    [
-                        'type' => Column::TYPE_DATETIME,
-                        'notNull' => false,
-                        'after' => 'deleted_by'
-                    ]
-                ),
-                new Column(
-                    'restored_by',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'restored_at'
-                    ]
-                ),
             ],
             'indexes' => [
                 new Index('PRIMARY', ['id'], 'PRIMARY'),
-                new Index('id_UNIQUE', ['id'], 'UNIQUE'),
+                new Index('uuid_UNIQUE', ['uuid'], 'UNIQUE'),
+                new Index('uq_meta', ['meta_table', 'meta_id', 'key'], 'UNIQUE'),
+                new Index('fk_meta_created_by', ['created_by'], ''),
+                new Index('fk_meta_updated_by', ['updated_by'], ''),
+                new Index('fk_meta_deleted_by', ['deleted_by'], ''),
+            ],
+            'references' => [
+                new Reference(
+                    'fk_meta_created_by',
+                    [
+                        'referencedSchema' => 'zemit_core',
+                        'referencedTable' => 'user',
+                        'columns' => ['created_by'],
+                        'referencedColumns' => ['id'],
+                        'onUpdate' => 'CASCADE',
+                        'onDelete' => 'SET NULL'
+                    ]
+                ),
+                new Reference(
+                    'fk_meta_deleted_by',
+                    [
+                        'referencedSchema' => 'zemit_core',
+                        'referencedTable' => 'user',
+                        'columns' => ['deleted_by'],
+                        'referencedColumns' => ['id'],
+                        'onUpdate' => 'CASCADE',
+                        'onDelete' => 'SET NULL'
+                    ]
+                ),
+                new Reference(
+                    'fk_meta_updated_by',
+                    [
+                        'referencedSchema' => 'zemit_core',
+                        'referencedTable' => 'user',
+                        'columns' => ['updated_by'],
+                        'referencedColumns' => ['id'],
+                        'onUpdate' => 'CASCADE',
+                        'onDelete' => 'SET NULL'
+                    ]
+                ),
             ],
             'options' => [
                 'TABLE_TYPE' => 'BASE TABLE',

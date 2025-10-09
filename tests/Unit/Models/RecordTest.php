@@ -62,30 +62,6 @@ class RecordTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->record->getId());
     }
 
-    public function testGetWorkspaceId(): void
-    {
-        $this->assertEquals(null, $this->record->getWorkspaceId());
-    }
-    
-    public function testSetWorkspaceId(): void
-    {
-        $value = uniqid();
-        $this->record->setWorkspaceId($value);
-        $this->assertEquals($value, $this->record->getWorkspaceId());
-    }
-
-    public function testGetTableId(): void
-    {
-        $this->assertEquals(null, $this->record->getTableId());
-    }
-    
-    public function testSetTableId(): void
-    {
-        $value = uniqid();
-        $this->record->setTableId($value);
-        $this->assertEquals($value, $this->record->getTableId());
-    }
-
     public function testGetUuid(): void
     {
         $this->assertEquals(null, $this->record->getUuid());
@@ -98,16 +74,16 @@ class RecordTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->record->getUuid());
     }
 
-    public function testGetName(): void
+    public function testGetTableId(): void
     {
-        $this->assertEquals(null, $this->record->getName());
+        $this->assertEquals(null, $this->record->getTableId());
     }
     
-    public function testSetName(): void
+    public function testSetTableId(): void
     {
         $value = uniqid();
-        $this->record->setName($value);
-        $this->assertEquals($value, $this->record->getName());
+        $this->record->setTableId($value);
+        $this->assertEquals($value, $this->record->getTableId());
     }
 
     public function testGetDeleted(): void
@@ -124,7 +100,7 @@ class RecordTest extends \Zemit\Tests\Unit\AbstractUnit
 
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->record->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->record->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -144,18 +120,6 @@ class RecordTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->record->setCreatedBy($value);
         $this->assertEquals($value, $this->record->getCreatedBy());
-    }
-
-    public function testGetCreatedAs(): void
-    {
-        $this->assertEquals(null, $this->record->getCreatedAs());
-    }
-    
-    public function testSetCreatedAs(): void
-    {
-        $value = uniqid();
-        $this->record->setCreatedAs($value);
-        $this->assertEquals($value, $this->record->getCreatedAs());
     }
 
     public function testGetUpdatedAt(): void
@@ -182,18 +146,6 @@ class RecordTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->record->getUpdatedBy());
     }
 
-    public function testGetUpdatedAs(): void
-    {
-        $this->assertEquals(null, $this->record->getUpdatedAs());
-    }
-    
-    public function testSetUpdatedAs(): void
-    {
-        $value = uniqid();
-        $this->record->setUpdatedAs($value);
-        $this->assertEquals($value, $this->record->getUpdatedAs());
-    }
-
     public function testGetDeletedAt(): void
     {
         $this->assertEquals(null, $this->record->getDeletedAt());
@@ -206,18 +158,6 @@ class RecordTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->record->getDeletedAt());
     }
 
-    public function testGetDeletedAs(): void
-    {
-        $this->assertEquals(null, $this->record->getDeletedAs());
-    }
-    
-    public function testSetDeletedAs(): void
-    {
-        $value = uniqid();
-        $this->record->setDeletedAs($value);
-        $this->assertEquals($value, $this->record->getDeletedAs());
-    }
-
     public function testGetDeletedBy(): void
     {
         $this->assertEquals(null, $this->record->getDeletedBy());
@@ -228,30 +168,6 @@ class RecordTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->record->setDeletedBy($value);
         $this->assertEquals($value, $this->record->getDeletedBy());
-    }
-
-    public function testGetRestoredAt(): void
-    {
-        $this->assertEquals(null, $this->record->getRestoredAt());
-    }
-    
-    public function testSetRestoredAt(): void
-    {
-        $value = uniqid();
-        $this->record->setRestoredAt($value);
-        $this->assertEquals($value, $this->record->getRestoredAt());
-    }
-
-    public function testGetRestoredBy(): void
-    {
-        $this->assertEquals(null, $this->record->getRestoredBy());
-    }
-    
-    public function testSetRestoredBy(): void
-    {
-        $value = uniqid();
-        $this->record->setRestoredBy($value);
-        $this->assertEquals($value, $this->record->getRestoredBy());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void

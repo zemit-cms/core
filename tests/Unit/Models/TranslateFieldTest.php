@@ -62,6 +62,18 @@ class TranslateFieldTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->translateField->getId());
     }
 
+    public function testGetUuid(): void
+    {
+        $this->assertEquals(null, $this->translateField->getUuid());
+    }
+    
+    public function testSetUuid(): void
+    {
+        $value = uniqid();
+        $this->translateField->setUuid($value);
+        $this->assertEquals($value, $this->translateField->getUuid());
+    }
+
     public function testGetSiteId(): void
     {
         $this->assertEquals(null, $this->translateField->getSiteId());
@@ -148,7 +160,7 @@ class TranslateFieldTest extends \Zemit\Tests\Unit\AbstractUnit
 
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->translateField->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->translateField->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -276,6 +288,18 @@ class TranslateFieldTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->translateField->setRestoredBy($value);
         $this->assertEquals($value, $this->translateField->getRestoredBy());
+    }
+
+    public function testGetRestoredAs(): void
+    {
+        $this->assertEquals(null, $this->translateField->getRestoredAs());
+    }
+    
+    public function testSetRestoredAs(): void
+    {
+        $value = uniqid();
+        $this->translateField->setRestoredAs($value);
+        $this->assertEquals($value, $this->translateField->getRestoredAs());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void

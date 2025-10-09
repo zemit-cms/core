@@ -62,40 +62,52 @@ class TemplateTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->template->getId());
     }
 
-    public function testGetIndex(): void
+    public function testGetUuid(): void
     {
-        $this->assertEquals(null, $this->template->getIndex());
+        $this->assertEquals(null, $this->template->getUuid());
     }
     
-    public function testSetIndex(): void
+    public function testSetUuid(): void
     {
         $value = uniqid();
-        $this->template->setIndex($value);
-        $this->assertEquals($value, $this->template->getIndex());
+        $this->template->setUuid($value);
+        $this->assertEquals($value, $this->template->getUuid());
     }
 
-    public function testGetName(): void
+    public function testGetKey(): void
     {
-        $this->assertEquals(null, $this->template->getName());
+        $this->assertEquals(null, $this->template->getKey());
     }
     
-    public function testSetName(): void
+    public function testSetKey(): void
     {
         $value = uniqid();
-        $this->template->setName($value);
-        $this->assertEquals($value, $this->template->getName());
+        $this->template->setKey($value);
+        $this->assertEquals($value, $this->template->getKey());
     }
 
-    public function testGetTitle(): void
+    public function testGetLabel(): void
     {
-        $this->assertEquals(null, $this->template->getTitle());
+        $this->assertEquals(null, $this->template->getLabel());
     }
     
-    public function testSetTitle(): void
+    public function testSetLabel(): void
     {
         $value = uniqid();
-        $this->template->setTitle($value);
-        $this->assertEquals($value, $this->template->getTitle());
+        $this->template->setLabel($value);
+        $this->assertEquals($value, $this->template->getLabel());
+    }
+
+    public function testGetSubject(): void
+    {
+        $this->assertEquals(null, $this->template->getSubject());
+    }
+    
+    public function testSetSubject(): void
+    {
+        $value = uniqid();
+        $this->template->setSubject($value);
+        $this->assertEquals($value, $this->template->getSubject());
     }
 
     public function testGetContent(): void
@@ -108,18 +120,6 @@ class TemplateTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->template->setContent($value);
         $this->assertEquals($value, $this->template->getContent());
-    }
-
-    public function testGetMeta(): void
-    {
-        $this->assertEquals(null, $this->template->getMeta());
-    }
-    
-    public function testSetMeta(): void
-    {
-        $value = uniqid();
-        $this->template->setMeta($value);
-        $this->assertEquals($value, $this->template->getMeta());
     }
 
     public function testGetDeleted(): void
@@ -136,7 +136,7 @@ class TemplateTest extends \Zemit\Tests\Unit\AbstractUnit
 
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->template->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->template->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -156,18 +156,6 @@ class TemplateTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->template->setCreatedBy($value);
         $this->assertEquals($value, $this->template->getCreatedBy());
-    }
-
-    public function testGetCreatedAs(): void
-    {
-        $this->assertEquals(null, $this->template->getCreatedAs());
-    }
-    
-    public function testSetCreatedAs(): void
-    {
-        $value = uniqid();
-        $this->template->setCreatedAs($value);
-        $this->assertEquals($value, $this->template->getCreatedAs());
     }
 
     public function testGetUpdatedAt(): void
@@ -194,18 +182,6 @@ class TemplateTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->template->getUpdatedBy());
     }
 
-    public function testGetUpdatedAs(): void
-    {
-        $this->assertEquals(null, $this->template->getUpdatedAs());
-    }
-    
-    public function testSetUpdatedAs(): void
-    {
-        $value = uniqid();
-        $this->template->setUpdatedAs($value);
-        $this->assertEquals($value, $this->template->getUpdatedAs());
-    }
-
     public function testGetDeletedAt(): void
     {
         $this->assertEquals(null, $this->template->getDeletedAt());
@@ -228,54 +204,6 @@ class TemplateTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->template->setDeletedBy($value);
         $this->assertEquals($value, $this->template->getDeletedBy());
-    }
-
-    public function testGetDeletedAs(): void
-    {
-        $this->assertEquals(null, $this->template->getDeletedAs());
-    }
-    
-    public function testSetDeletedAs(): void
-    {
-        $value = uniqid();
-        $this->template->setDeletedAs($value);
-        $this->assertEquals($value, $this->template->getDeletedAs());
-    }
-
-    public function testGetRestoredAt(): void
-    {
-        $this->assertEquals(null, $this->template->getRestoredAt());
-    }
-    
-    public function testSetRestoredAt(): void
-    {
-        $value = uniqid();
-        $this->template->setRestoredAt($value);
-        $this->assertEquals($value, $this->template->getRestoredAt());
-    }
-
-    public function testGetRestoredBy(): void
-    {
-        $this->assertEquals(null, $this->template->getRestoredBy());
-    }
-    
-    public function testSetRestoredBy(): void
-    {
-        $value = uniqid();
-        $this->template->setRestoredBy($value);
-        $this->assertEquals($value, $this->template->getRestoredBy());
-    }
-
-    public function testGetRestoredAs(): void
-    {
-        $this->assertEquals(null, $this->template->getRestoredAs());
-    }
-    
-    public function testSetRestoredAs(): void
-    {
-        $value = uniqid();
-        $this->template->setRestoredAs($value);
-        $this->assertEquals($value, $this->template->getRestoredAs());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void

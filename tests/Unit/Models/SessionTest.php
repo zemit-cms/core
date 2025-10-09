@@ -62,6 +62,18 @@ class SessionTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->session->getId());
     }
 
+    public function testGetUuid(): void
+    {
+        $this->assertEquals(null, $this->session->getUuid());
+    }
+    
+    public function testSetUuid(): void
+    {
+        $value = uniqid();
+        $this->session->setUuid($value);
+        $this->assertEquals($value, $this->session->getUuid());
+    }
+
     public function testGetUserId(): void
     {
         $this->assertEquals(null, $this->session->getUserId());
@@ -84,18 +96,6 @@ class SessionTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->session->setAsUserId($value);
         $this->assertEquals($value, $this->session->getAsUserId());
-    }
-
-    public function testGetKey(): void
-    {
-        $this->assertEquals(null, $this->session->getKey());
-    }
-    
-    public function testSetKey(): void
-    {
-        $value = uniqid();
-        $this->session->setKey($value);
-        $this->assertEquals($value, $this->session->getKey());
     }
 
     public function testGetToken(): void
@@ -134,33 +134,21 @@ class SessionTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->session->getMeta());
     }
 
-    public function testGetDate(): void
+    public function testGetExpiresAt(): void
     {
-        $this->assertEquals(null, $this->session->getDate());
+        $this->assertEquals(null, $this->session->getExpiresAt());
     }
     
-    public function testSetDate(): void
+    public function testSetExpiresAt(): void
     {
         $value = uniqid();
-        $this->session->setDate($value);
-        $this->assertEquals($value, $this->session->getDate());
-    }
-
-    public function testGetDeleted(): void
-    {
-        $this->assertEquals(null, $this->session->getDeleted());
-    }
-    
-    public function testSetDeleted(): void
-    {
-        $value = uniqid();
-        $this->session->setDeleted($value);
-        $this->assertEquals($value, $this->session->getDeleted());
+        $this->session->setExpiresAt($value);
+        $this->assertEquals($value, $this->session->getExpiresAt());
     }
 
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->session->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->session->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -168,138 +156,6 @@ class SessionTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->session->setCreatedAt($value);
         $this->assertEquals($value, $this->session->getCreatedAt());
-    }
-
-    public function testGetCreatedBy(): void
-    {
-        $this->assertEquals(null, $this->session->getCreatedBy());
-    }
-    
-    public function testSetCreatedBy(): void
-    {
-        $value = uniqid();
-        $this->session->setCreatedBy($value);
-        $this->assertEquals($value, $this->session->getCreatedBy());
-    }
-
-    public function testGetCreatedAs(): void
-    {
-        $this->assertEquals(null, $this->session->getCreatedAs());
-    }
-    
-    public function testSetCreatedAs(): void
-    {
-        $value = uniqid();
-        $this->session->setCreatedAs($value);
-        $this->assertEquals($value, $this->session->getCreatedAs());
-    }
-
-    public function testGetUpdatedAt(): void
-    {
-        $this->assertEquals(null, $this->session->getUpdatedAt());
-    }
-    
-    public function testSetUpdatedAt(): void
-    {
-        $value = uniqid();
-        $this->session->setUpdatedAt($value);
-        $this->assertEquals($value, $this->session->getUpdatedAt());
-    }
-
-    public function testGetUpdatedBy(): void
-    {
-        $this->assertEquals(null, $this->session->getUpdatedBy());
-    }
-    
-    public function testSetUpdatedBy(): void
-    {
-        $value = uniqid();
-        $this->session->setUpdatedBy($value);
-        $this->assertEquals($value, $this->session->getUpdatedBy());
-    }
-
-    public function testGetUpdatedAs(): void
-    {
-        $this->assertEquals(null, $this->session->getUpdatedAs());
-    }
-    
-    public function testSetUpdatedAs(): void
-    {
-        $value = uniqid();
-        $this->session->setUpdatedAs($value);
-        $this->assertEquals($value, $this->session->getUpdatedAs());
-    }
-
-    public function testGetDeletedAt(): void
-    {
-        $this->assertEquals(null, $this->session->getDeletedAt());
-    }
-    
-    public function testSetDeletedAt(): void
-    {
-        $value = uniqid();
-        $this->session->setDeletedAt($value);
-        $this->assertEquals($value, $this->session->getDeletedAt());
-    }
-
-    public function testGetDeletedBy(): void
-    {
-        $this->assertEquals(null, $this->session->getDeletedBy());
-    }
-    
-    public function testSetDeletedBy(): void
-    {
-        $value = uniqid();
-        $this->session->setDeletedBy($value);
-        $this->assertEquals($value, $this->session->getDeletedBy());
-    }
-
-    public function testGetDeletedAs(): void
-    {
-        $this->assertEquals(null, $this->session->getDeletedAs());
-    }
-    
-    public function testSetDeletedAs(): void
-    {
-        $value = uniqid();
-        $this->session->setDeletedAs($value);
-        $this->assertEquals($value, $this->session->getDeletedAs());
-    }
-
-    public function testGetRestoredAt(): void
-    {
-        $this->assertEquals(null, $this->session->getRestoredAt());
-    }
-    
-    public function testSetRestoredAt(): void
-    {
-        $value = uniqid();
-        $this->session->setRestoredAt($value);
-        $this->assertEquals($value, $this->session->getRestoredAt());
-    }
-
-    public function testGetRestoredBy(): void
-    {
-        $this->assertEquals(null, $this->session->getRestoredBy());
-    }
-    
-    public function testSetRestoredBy(): void
-    {
-        $value = uniqid();
-        $this->session->setRestoredBy($value);
-        $this->assertEquals($value, $this->session->getRestoredBy());
-    }
-
-    public function testGetRestoredAs(): void
-    {
-        $this->assertEquals(null, $this->session->getRestoredAs());
-    }
-    
-    public function testSetRestoredAs(): void
-    {
-        $value = uniqid();
-        $this->session->setRestoredAs($value);
-        $this->assertEquals($value, $this->session->getRestoredAs());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void

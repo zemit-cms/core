@@ -14,7 +14,7 @@ namespace Zemit\Models\Abstracts;
 
 use Phalcon\Db\RawValue;
 use Zemit\Filter\Validation;
-use Zemit\Models\AbstractModel;
+use \Zemit\Models\AbstractModel;
 use Zemit\Models\EmailFile;
 use Zemit\Models\Email;
 use Zemit\Models\FileRelation;
@@ -39,131 +39,79 @@ use Zemit\Models\Abstracts\Interfaces\FileAbstractInterface;
  * @property FileRelation[] $FileRelationList
  * @method FileRelation[] getFileRelationList(?array $params = null)
  *
- * @property User $userentity
- * @property User $UserEntity
- * @method User getUserEntity(?array $params = null)
- *
  * @property User $createdbyentity
  * @property User $CreatedByEntity
  * @method User getCreatedByEntity(?array $params = null)
- *
- * @property User $createdasentity
- * @property User $CreatedAsEntity
- * @method User getCreatedAsEntity(?array $params = null)
  *
  * @property User $updatedbyentity
  * @property User $UpdatedByEntity
  * @method User getUpdatedByEntity(?array $params = null)
  *
- * @property User $updatedasentity
- * @property User $UpdatedAsEntity
- * @method User getUpdatedAsEntity(?array $params = null)
- *
- * @property User $deletedasentity
- * @property User $DeletedAsEntity
- * @method User getDeletedAsEntity(?array $params = null)
- *
  * @property User $deletedbyentity
  * @property User $DeletedByEntity
  * @method User getDeletedByEntity(?array $params = null)
- *
- * @property User $restoredbyentity
- * @property User $RestoredByEntity
- * @method User getRestoredByEntity(?array $params = null)
- *
- * @property User $restoredasentity
- * @property User $RestoredAsEntity
- * @method User getRestoredAsEntity(?array $params = null)
  */
-abstract class FileAbstract extends AbstractModel implements FileAbstractInterface
+abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileAbstractInterface
 {
     /**
      * Column: id
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $id = null;
         
     /**
-     * Column: user_id
-     * Attributes: Numeric | Unsigned
+     * Column: uuid
+     * Attributes: NotNull | Size(36) | Type(5)
      * @var mixed
      */
-    public mixed $userId = null;
+    public mixed $uuid = null;
+        
+    /**
+     * Column: label
+     * Attributes: Size(255) | Type(2)
+     * @var mixed
+     */
+    public mixed $label = null;
         
     /**
      * Column: category
-     * Attributes: NotNull | Size('partner','speaker','event','other') | Type(18)
+     * Attributes: NotNull | Size('other') | Type(18)
      * @var mixed
      */
     public mixed $category = 'other';
         
     /**
-     * Column: key
-     * Attributes: Size(50) | Type(2)
-     * @var mixed
-     */
-    public mixed $key = null;
-        
-    /**
      * Column: path
-     * Attributes: Size(120) | Type(2)
+     * Attributes: NotNull | Size(255) | Type(2)
      * @var mixed
      */
     public mixed $path = null;
         
     /**
-     * Column: type
+     * Column: mime_type
      * Attributes: Size(100) | Type(2)
      * @var mixed
      */
-    public mixed $type = null;
-        
-    /**
-     * Column: type_real
-     * Attributes: Size(100) | Type(2)
-     * @var mixed
-     */
-    public mixed $typeReal = null;
+    public mixed $mimeType = null;
         
     /**
      * Column: extension
-     * Attributes: Size(6) | Type(5)
+     * Attributes: Size(20) | Type(2)
      * @var mixed
      */
     public mixed $extension = null;
         
     /**
-     * Column: name
-     * Attributes: Size(100) | Type(2)
-     * @var mixed
-     */
-    public mixed $name = null;
-        
-    /**
-     * Column: name_temp
-     * Attributes: Size(120) | Type(2)
-     * @var mixed
-     */
-    public mixed $nameTemp = null;
-        
-    /**
      * Column: size
-     * Attributes: Size(45) | Type(2)
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $size = null;
         
     /**
-     * Column: error
-     * Attributes: Type(6)
-     * @var mixed
-     */
-    public mixed $error = null;
-        
-    /**
      * Column: deleted
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @var mixed
      */
     public mixed $deleted = 0;
@@ -173,21 +121,14 @@ abstract class FileAbstract extends AbstractModel implements FileAbstractInterfa
      * Attributes: NotNull | Type(4)
      * @var mixed
      */
-    public mixed $createdAt = null;
+    public mixed $createdAt = 'current_timestamp()';
         
     /**
      * Column: created_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $createdBy = null;
-        
-    /**
-     * Column: created_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $createdAs = null;
         
     /**
      * Column: updated_at
@@ -198,17 +139,10 @@ abstract class FileAbstract extends AbstractModel implements FileAbstractInterfa
         
     /**
      * Column: updated_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $updatedBy = null;
-        
-    /**
-     * Column: updated_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $updatedAs = null;
         
     /**
      * Column: deleted_at
@@ -218,44 +152,16 @@ abstract class FileAbstract extends AbstractModel implements FileAbstractInterfa
     public mixed $deletedAt = null;
         
     /**
-     * Column: deleted_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $deletedAs = null;
-        
-    /**
      * Column: deleted_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $deletedBy = null;
-        
-    /**
-     * Column: restored_at
-     * Attributes: Type(4)
-     * @var mixed
-     */
-    public mixed $restoredAt = null;
-        
-    /**
-     * Column: restored_by
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $restoredBy = null;
-        
-    /**
-     * Column: restored_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $restoredAs = null;
     
     /**
      * Returns the value of field id
      * Column: id
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
     public function getId(): mixed
@@ -266,7 +172,7 @@ abstract class FileAbstract extends AbstractModel implements FileAbstractInterfa
     /**
      * Sets the value of field id
      * Column: id 
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @param mixed $id
      * @return void
      */
@@ -276,32 +182,55 @@ abstract class FileAbstract extends AbstractModel implements FileAbstractInterfa
     }
     
     /**
-     * Returns the value of field userId
-     * Column: user_id
-     * Attributes: Numeric | Unsigned
+     * Returns the value of field uuid
+     * Column: uuid
+     * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
-    public function getUserId(): mixed
+    public function getUuid(): mixed
     {
-        return $this->userId;
+        return $this->uuid;
     }
     
     /**
-     * Sets the value of field userId
-     * Column: user_id 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $userId
+     * Sets the value of field uuid
+     * Column: uuid 
+     * Attributes: NotNull | Size(36) | Type(5)
+     * @param mixed $uuid
      * @return void
      */
-    public function setUserId(mixed $userId): void
+    public function setUuid(mixed $uuid): void
     {
-        $this->userId = $userId;
+        $this->uuid = $uuid;
+    }
+    
+    /**
+     * Returns the value of field label
+     * Column: label
+     * Attributes: Size(255) | Type(2)
+     * @return mixed
+     */
+    public function getLabel(): mixed
+    {
+        return $this->label;
+    }
+    
+    /**
+     * Sets the value of field label
+     * Column: label 
+     * Attributes: Size(255) | Type(2)
+     * @param mixed $label
+     * @return void
+     */
+    public function setLabel(mixed $label): void
+    {
+        $this->label = $label;
     }
     
     /**
      * Returns the value of field category
      * Column: category
-     * Attributes: NotNull | Size('partner','speaker','event','other') | Type(18)
+     * Attributes: NotNull | Size('other') | Type(18)
      * @return mixed
      */
     public function getCategory(): mixed
@@ -312,7 +241,7 @@ abstract class FileAbstract extends AbstractModel implements FileAbstractInterfa
     /**
      * Sets the value of field category
      * Column: category 
-     * Attributes: NotNull | Size('partner','speaker','event','other') | Type(18)
+     * Attributes: NotNull | Size('other') | Type(18)
      * @param mixed $category
      * @return void
      */
@@ -322,32 +251,9 @@ abstract class FileAbstract extends AbstractModel implements FileAbstractInterfa
     }
     
     /**
-     * Returns the value of field key
-     * Column: key
-     * Attributes: Size(50) | Type(2)
-     * @return mixed
-     */
-    public function getKey(): mixed
-    {
-        return $this->key;
-    }
-    
-    /**
-     * Sets the value of field key
-     * Column: key 
-     * Attributes: Size(50) | Type(2)
-     * @param mixed $key
-     * @return void
-     */
-    public function setKey(mixed $key): void
-    {
-        $this->key = $key;
-    }
-    
-    /**
      * Returns the value of field path
      * Column: path
-     * Attributes: Size(120) | Type(2)
+     * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
      */
     public function getPath(): mixed
@@ -358,7 +264,7 @@ abstract class FileAbstract extends AbstractModel implements FileAbstractInterfa
     /**
      * Sets the value of field path
      * Column: path 
-     * Attributes: Size(120) | Type(2)
+     * Attributes: NotNull | Size(255) | Type(2)
      * @param mixed $path
      * @return void
      */
@@ -368,55 +274,32 @@ abstract class FileAbstract extends AbstractModel implements FileAbstractInterfa
     }
     
     /**
-     * Returns the value of field type
-     * Column: type
+     * Returns the value of field mimeType
+     * Column: mime_type
      * Attributes: Size(100) | Type(2)
      * @return mixed
      */
-    public function getType(): mixed
+    public function getMimeType(): mixed
     {
-        return $this->type;
+        return $this->mimeType;
     }
     
     /**
-     * Sets the value of field type
-     * Column: type 
+     * Sets the value of field mimeType
+     * Column: mime_type 
      * Attributes: Size(100) | Type(2)
-     * @param mixed $type
+     * @param mixed $mimeType
      * @return void
      */
-    public function setType(mixed $type): void
+    public function setMimeType(mixed $mimeType): void
     {
-        $this->type = $type;
-    }
-    
-    /**
-     * Returns the value of field typeReal
-     * Column: type_real
-     * Attributes: Size(100) | Type(2)
-     * @return mixed
-     */
-    public function getTypeReal(): mixed
-    {
-        return $this->typeReal;
-    }
-    
-    /**
-     * Sets the value of field typeReal
-     * Column: type_real 
-     * Attributes: Size(100) | Type(2)
-     * @param mixed $typeReal
-     * @return void
-     */
-    public function setTypeReal(mixed $typeReal): void
-    {
-        $this->typeReal = $typeReal;
+        $this->mimeType = $mimeType;
     }
     
     /**
      * Returns the value of field extension
      * Column: extension
-     * Attributes: Size(6) | Type(5)
+     * Attributes: Size(20) | Type(2)
      * @return mixed
      */
     public function getExtension(): mixed
@@ -427,7 +310,7 @@ abstract class FileAbstract extends AbstractModel implements FileAbstractInterfa
     /**
      * Sets the value of field extension
      * Column: extension 
-     * Attributes: Size(6) | Type(5)
+     * Attributes: Size(20) | Type(2)
      * @param mixed $extension
      * @return void
      */
@@ -437,55 +320,9 @@ abstract class FileAbstract extends AbstractModel implements FileAbstractInterfa
     }
     
     /**
-     * Returns the value of field name
-     * Column: name
-     * Attributes: Size(100) | Type(2)
-     * @return mixed
-     */
-    public function getName(): mixed
-    {
-        return $this->name;
-    }
-    
-    /**
-     * Sets the value of field name
-     * Column: name 
-     * Attributes: Size(100) | Type(2)
-     * @param mixed $name
-     * @return void
-     */
-    public function setName(mixed $name): void
-    {
-        $this->name = $name;
-    }
-    
-    /**
-     * Returns the value of field nameTemp
-     * Column: name_temp
-     * Attributes: Size(120) | Type(2)
-     * @return mixed
-     */
-    public function getNameTemp(): mixed
-    {
-        return $this->nameTemp;
-    }
-    
-    /**
-     * Sets the value of field nameTemp
-     * Column: name_temp 
-     * Attributes: Size(120) | Type(2)
-     * @param mixed $nameTemp
-     * @return void
-     */
-    public function setNameTemp(mixed $nameTemp): void
-    {
-        $this->nameTemp = $nameTemp;
-    }
-    
-    /**
      * Returns the value of field size
      * Column: size
-     * Attributes: Size(45) | Type(2)
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getSize(): mixed
@@ -496,7 +333,7 @@ abstract class FileAbstract extends AbstractModel implements FileAbstractInterfa
     /**
      * Sets the value of field size
      * Column: size 
-     * Attributes: Size(45) | Type(2)
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $size
      * @return void
      */
@@ -506,32 +343,9 @@ abstract class FileAbstract extends AbstractModel implements FileAbstractInterfa
     }
     
     /**
-     * Returns the value of field error
-     * Column: error
-     * Attributes: Type(6)
-     * @return mixed
-     */
-    public function getError(): mixed
-    {
-        return $this->error;
-    }
-    
-    /**
-     * Sets the value of field error
-     * Column: error 
-     * Attributes: Type(6)
-     * @param mixed $error
-     * @return void
-     */
-    public function setError(mixed $error): void
-    {
-        $this->error = $error;
-    }
-    
-    /**
      * Returns the value of field deleted
      * Column: deleted
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
     public function getDeleted(): mixed
@@ -542,7 +356,7 @@ abstract class FileAbstract extends AbstractModel implements FileAbstractInterfa
     /**
      * Sets the value of field deleted
      * Column: deleted 
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @param mixed $deleted
      * @return void
      */
@@ -577,7 +391,7 @@ abstract class FileAbstract extends AbstractModel implements FileAbstractInterfa
     /**
      * Returns the value of field createdBy
      * Column: created_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getCreatedBy(): mixed
@@ -588,36 +402,13 @@ abstract class FileAbstract extends AbstractModel implements FileAbstractInterfa
     /**
      * Sets the value of field createdBy
      * Column: created_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $createdBy
      * @return void
      */
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
-    }
-    
-    /**
-     * Returns the value of field createdAs
-     * Column: created_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getCreatedAs(): mixed
-    {
-        return $this->createdAs;
-    }
-    
-    /**
-     * Sets the value of field createdAs
-     * Column: created_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $createdAs
-     * @return void
-     */
-    public function setCreatedAs(mixed $createdAs): void
-    {
-        $this->createdAs = $createdAs;
     }
     
     /**
@@ -646,7 +437,7 @@ abstract class FileAbstract extends AbstractModel implements FileAbstractInterfa
     /**
      * Returns the value of field updatedBy
      * Column: updated_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getUpdatedBy(): mixed
@@ -657,36 +448,13 @@ abstract class FileAbstract extends AbstractModel implements FileAbstractInterfa
     /**
      * Sets the value of field updatedBy
      * Column: updated_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $updatedBy
      * @return void
      */
     public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
-    }
-    
-    /**
-     * Returns the value of field updatedAs
-     * Column: updated_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getUpdatedAs(): mixed
-    {
-        return $this->updatedAs;
-    }
-    
-    /**
-     * Sets the value of field updatedAs
-     * Column: updated_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $updatedAs
-     * @return void
-     */
-    public function setUpdatedAs(mixed $updatedAs): void
-    {
-        $this->updatedAs = $updatedAs;
     }
     
     /**
@@ -713,32 +481,9 @@ abstract class FileAbstract extends AbstractModel implements FileAbstractInterfa
     }
     
     /**
-     * Returns the value of field deletedAs
-     * Column: deleted_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getDeletedAs(): mixed
-    {
-        return $this->deletedAs;
-    }
-    
-    /**
-     * Sets the value of field deletedAs
-     * Column: deleted_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $deletedAs
-     * @return void
-     */
-    public function setDeletedAs(mixed $deletedAs): void
-    {
-        $this->deletedAs = $deletedAs;
-    }
-    
-    /**
      * Returns the value of field deletedBy
      * Column: deleted_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getDeletedBy(): mixed
@@ -749,82 +494,13 @@ abstract class FileAbstract extends AbstractModel implements FileAbstractInterfa
     /**
      * Sets the value of field deletedBy
      * Column: deleted_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $deletedBy
      * @return void
      */
     public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;
-    }
-    
-    /**
-     * Returns the value of field restoredAt
-     * Column: restored_at
-     * Attributes: Type(4)
-     * @return mixed
-     */
-    public function getRestoredAt(): mixed
-    {
-        return $this->restoredAt;
-    }
-    
-    /**
-     * Sets the value of field restoredAt
-     * Column: restored_at 
-     * Attributes: Type(4)
-     * @param mixed $restoredAt
-     * @return void
-     */
-    public function setRestoredAt(mixed $restoredAt): void
-    {
-        $this->restoredAt = $restoredAt;
-    }
-    
-    /**
-     * Returns the value of field restoredBy
-     * Column: restored_by
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getRestoredBy(): mixed
-    {
-        return $this->restoredBy;
-    }
-    
-    /**
-     * Sets the value of field restoredBy
-     * Column: restored_by 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $restoredBy
-     * @return void
-     */
-    public function setRestoredBy(mixed $restoredBy): void
-    {
-        $this->restoredBy = $restoredBy;
-    }
-    
-    /**
-     * Returns the value of field restoredAs
-     * Column: restored_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getRestoredAs(): mixed
-    {
-        return $this->restoredAs;
-    }
-    
-    /**
-     * Sets the value of field restoredAs
-     * Column: restored_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $restoredAs
-     * @return void
-     */
-    public function setRestoredAs(mixed $restoredAs): void
-    {
-        $this->restoredAs = $restoredAs;
     }
 
     /**
@@ -847,23 +523,11 @@ abstract class FileAbstract extends AbstractModel implements FileAbstractInterfa
 
         $this->hasMany('id', FileRelation::class, 'fileId', ['alias' => 'FileRelationList']);
 
-        $this->belongsTo('userId', User::class, 'id', ['alias' => 'UserEntity']);
-
         $this->belongsTo('createdBy', User::class, 'id', ['alias' => 'CreatedByEntity']);
-
-        $this->belongsTo('createdAs', User::class, 'id', ['alias' => 'CreatedAsEntity']);
 
         $this->belongsTo('updatedBy', User::class, 'id', ['alias' => 'UpdatedByEntity']);
 
-        $this->belongsTo('updatedAs', User::class, 'id', ['alias' => 'UpdatedAsEntity']);
-
-        $this->belongsTo('deletedAs', User::class, 'id', ['alias' => 'DeletedAsEntity']);
-
         $this->belongsTo('deletedBy', User::class, 'id', ['alias' => 'DeletedByEntity']);
-
-        $this->belongsTo('restoredBy', User::class, 'id', ['alias' => 'RestoredByEntity']);
-
-        $this->belongsTo('restoredAs', User::class, 'id', ['alias' => 'RestoredAsEntity']);
     }
     
     /**
@@ -876,29 +540,20 @@ abstract class FileAbstract extends AbstractModel implements FileAbstractInterfa
         $validator ??= new Validation();
     
         $this->addUnsignedIntValidation($validator, 'id', true);
-        $this->addUnsignedIntValidation($validator, 'userId', true);
-        $this->addInclusionInValidation($validator, 'category', ['partner','speaker','event','other'], false);
-        $this->addStringLengthValidation($validator, 'key', 0, 50, true);
-        $this->addStringLengthValidation($validator, 'path', 0, 120, true);
-        $this->addStringLengthValidation($validator, 'type', 0, 100, true);
-        $this->addStringLengthValidation($validator, 'typeReal', 0, 100, true);
-        $this->addStringLengthValidation($validator, 'extension', 0, 6, true);
-        $this->addStringLengthValidation($validator, 'name', 0, 100, true);
-        $this->addStringLengthValidation($validator, 'nameTemp', 0, 120, true);
-        $this->addStringLengthValidation($validator, 'size', 0, 45, true);
+        $this->addStringLengthValidation($validator, 'uuid', 0, 36, false);
+        $this->addStringLengthValidation($validator, 'label', 0, 255, true);
+        $this->addInclusionInValidation($validator, 'category', ['other'], false);
+        $this->addStringLengthValidation($validator, 'path', 0, 255, false);
+        $this->addStringLengthValidation($validator, 'mimeType', 0, 100, true);
+        $this->addStringLengthValidation($validator, 'extension', 0, 20, true);
+        $this->addUnsignedIntValidation($validator, 'size', true);
         $this->addUnsignedIntValidation($validator, 'deleted', false);
         $this->addDateTimeValidation($validator, 'createdAt', false);
         $this->addUnsignedIntValidation($validator, 'createdBy', true);
-        $this->addUnsignedIntValidation($validator, 'createdAs', true);
         $this->addDateTimeValidation($validator, 'updatedAt', true);
         $this->addUnsignedIntValidation($validator, 'updatedBy', true);
-        $this->addUnsignedIntValidation($validator, 'updatedAs', true);
         $this->addDateTimeValidation($validator, 'deletedAt', true);
-        $this->addUnsignedIntValidation($validator, 'deletedAs', true);
         $this->addUnsignedIntValidation($validator, 'deletedBy', true);
-        $this->addDateTimeValidation($validator, 'restoredAt', true);
-        $this->addUnsignedIntValidation($validator, 'restoredBy', true);
-        $this->addUnsignedIntValidation($validator, 'restoredAs', true);
         
         return $validator;
     }
@@ -914,30 +569,20 @@ abstract class FileAbstract extends AbstractModel implements FileAbstractInterfa
     {
         return [
             'id' => 'id',
-            'user_id' => 'userId',
+            'uuid' => 'uuid',
+            'label' => 'label',
             'category' => 'category',
-            'key' => 'key',
             'path' => 'path',
-            'type' => 'type',
-            'type_real' => 'typeReal',
+            'mime_type' => 'mimeType',
             'extension' => 'extension',
-            'name' => 'name',
-            'name_temp' => 'nameTemp',
             'size' => 'size',
-            'error' => 'error',
             'deleted' => 'deleted',
             'created_at' => 'createdAt',
             'created_by' => 'createdBy',
-            'created_as' => 'createdAs',
             'updated_at' => 'updatedAt',
             'updated_by' => 'updatedBy',
-            'updated_as' => 'updatedAs',
             'deleted_at' => 'deletedAt',
-            'deleted_as' => 'deletedAs',
             'deleted_by' => 'deletedBy',
-            'restored_at' => 'restoredAt',
-            'restored_by' => 'restoredBy',
-            'restored_as' => 'restoredAs',
         ];
     }
 }

@@ -20,40 +20,20 @@ use Zemit\Mvc\ModelInterface;
  * @property UserAbstractInterface $CreatedByEntity
  * @method UserAbstractInterface getCreatedByEntity(?array $params = null)
  *
- * @property UserAbstractInterface $createdasentity
- * @property UserAbstractInterface $CreatedAsEntity
- * @method UserAbstractInterface getCreatedAsEntity(?array $params = null)
- *
  * @property UserAbstractInterface $updatedbyentity
  * @property UserAbstractInterface $UpdatedByEntity
  * @method UserAbstractInterface getUpdatedByEntity(?array $params = null)
  *
- * @property UserAbstractInterface $updatedasentity
- * @property UserAbstractInterface $UpdatedAsEntity
- * @method UserAbstractInterface getUpdatedAsEntity(?array $params = null)
- *
- * @property UserAbstractInterface $deletedasentity
- * @property UserAbstractInterface $DeletedAsEntity
- * @method UserAbstractInterface getDeletedAsEntity(?array $params = null)
- *
  * @property UserAbstractInterface $deletedbyentity
  * @property UserAbstractInterface $DeletedByEntity
  * @method UserAbstractInterface getDeletedByEntity(?array $params = null)
- *
- * @property UserAbstractInterface $restoredbyentity
- * @property UserAbstractInterface $RestoredByEntity
- * @method UserAbstractInterface getRestoredByEntity(?array $params = null)
- *
- * @property UserAbstractInterface $restoredasentity
- * @property UserAbstractInterface $RestoredAsEntity
- * @method UserAbstractInterface getRestoredAsEntity(?array $params = null)
  */
 interface JobAbstractInterface extends ModelInterface
 {
     /**
      * Returns the value of field id
      * Column: id
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
     public function getId(): mixed;
@@ -61,7 +41,7 @@ interface JobAbstractInterface extends ModelInterface
     /**
      * Sets the value of field id
      * Column: id 
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @param mixed $id
      * @return void
      */
@@ -138,7 +118,7 @@ interface JobAbstractInterface extends ModelInterface
     /**
      * Returns the value of field params
      * Column: params
-     * Attributes: Type(15)
+     * Attributes: Type(24)
      * @return mixed
      */
     public function getParams(): mixed;
@@ -146,62 +126,11 @@ interface JobAbstractInterface extends ModelInterface
     /**
      * Sets the value of field params
      * Column: params 
-     * Attributes: Type(15)
+     * Attributes: Type(24)
      * @param mixed $params
      * @return void
      */
     public function setParams(mixed $params): void;
-    
-    /**
-     * Returns the value of field thread
-     * Column: thread
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
-     * @return mixed
-     */
-    public function getThread(): mixed;
-    
-    /**
-     * Sets the value of field thread
-     * Column: thread 
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
-     * @param mixed $thread
-     * @return void
-     */
-    public function setThread(mixed $thread): void;
-    
-    /**
-     * Returns the value of field priority
-     * Column: priority
-     * Attributes: NotNull | Numeric | Unsigned
-     * @return mixed
-     */
-    public function getPriority(): mixed;
-    
-    /**
-     * Sets the value of field priority
-     * Column: priority 
-     * Attributes: NotNull | Numeric | Unsigned
-     * @param mixed $priority
-     * @return void
-     */
-    public function setPriority(mixed $priority): void;
-    
-    /**
-     * Returns the value of field at
-     * Column: at
-     * Attributes: Type(4)
-     * @return mixed
-     */
-    public function getAt(): mixed;
-    
-    /**
-     * Sets the value of field at
-     * Column: at 
-     * Attributes: Type(4)
-     * @param mixed $at
-     * @return void
-     */
-    public function setAt(mixed $at): void;
     
     /**
      * Returns the value of field status
@@ -223,7 +152,7 @@ interface JobAbstractInterface extends ModelInterface
     /**
      * Returns the value of field result
      * Column: result
-     * Attributes: Type(15)
+     * Attributes: Type(24)
      * @return mixed
      */
     public function getResult(): mixed;
@@ -231,16 +160,50 @@ interface JobAbstractInterface extends ModelInterface
     /**
      * Sets the value of field result
      * Column: result 
-     * Attributes: Type(15)
+     * Attributes: Type(24)
      * @param mixed $result
      * @return void
      */
     public function setResult(mixed $result): void;
     
     /**
+     * Returns the value of field priority
+     * Column: priority
+     * Attributes: NotNull | Numeric | Unsigned | Size(1)
+     * @return mixed
+     */
+    public function getPriority(): mixed;
+    
+    /**
+     * Sets the value of field priority
+     * Column: priority 
+     * Attributes: NotNull | Numeric | Unsigned | Size(1)
+     * @param mixed $priority
+     * @return void
+     */
+    public function setPriority(mixed $priority): void;
+    
+    /**
+     * Returns the value of field runAt
+     * Column: run_at
+     * Attributes: Type(4)
+     * @return mixed
+     */
+    public function getRunAt(): mixed;
+    
+    /**
+     * Sets the value of field runAt
+     * Column: run_at 
+     * Attributes: Type(4)
+     * @param mixed $runAt
+     * @return void
+     */
+    public function setRunAt(mixed $runAt): void;
+    
+    /**
      * Returns the value of field deleted
      * Column: deleted
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
     public function getDeleted(): mixed;
@@ -248,7 +211,7 @@ interface JobAbstractInterface extends ModelInterface
     /**
      * Sets the value of field deleted
      * Column: deleted 
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @param mixed $deleted
      * @return void
      */
@@ -274,7 +237,7 @@ interface JobAbstractInterface extends ModelInterface
     /**
      * Returns the value of field createdBy
      * Column: created_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getCreatedBy(): mixed;
@@ -282,28 +245,11 @@ interface JobAbstractInterface extends ModelInterface
     /**
      * Sets the value of field createdBy
      * Column: created_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $createdBy
      * @return void
      */
     public function setCreatedBy(mixed $createdBy): void;
-    
-    /**
-     * Returns the value of field createdAs
-     * Column: created_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getCreatedAs(): mixed;
-    
-    /**
-     * Sets the value of field createdAs
-     * Column: created_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $createdAs
-     * @return void
-     */
-    public function setCreatedAs(mixed $createdAs): void;
     
     /**
      * Returns the value of field updatedAt
@@ -325,7 +271,7 @@ interface JobAbstractInterface extends ModelInterface
     /**
      * Returns the value of field updatedBy
      * Column: updated_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getUpdatedBy(): mixed;
@@ -333,28 +279,11 @@ interface JobAbstractInterface extends ModelInterface
     /**
      * Sets the value of field updatedBy
      * Column: updated_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $updatedBy
      * @return void
      */
     public function setUpdatedBy(mixed $updatedBy): void;
-    
-    /**
-     * Returns the value of field updatedAs
-     * Column: updated_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getUpdatedAs(): mixed;
-    
-    /**
-     * Sets the value of field updatedAs
-     * Column: updated_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $updatedAs
-     * @return void
-     */
-    public function setUpdatedAs(mixed $updatedAs): void;
     
     /**
      * Returns the value of field deletedAt
@@ -374,26 +303,9 @@ interface JobAbstractInterface extends ModelInterface
     public function setDeletedAt(mixed $deletedAt): void;
     
     /**
-     * Returns the value of field deletedAs
-     * Column: deleted_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getDeletedAs(): mixed;
-    
-    /**
-     * Sets the value of field deletedAs
-     * Column: deleted_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $deletedAs
-     * @return void
-     */
-    public function setDeletedAs(mixed $deletedAs): void;
-    
-    /**
      * Returns the value of field deletedBy
      * Column: deleted_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getDeletedBy(): mixed;
@@ -401,60 +313,9 @@ interface JobAbstractInterface extends ModelInterface
     /**
      * Sets the value of field deletedBy
      * Column: deleted_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $deletedBy
      * @return void
      */
     public function setDeletedBy(mixed $deletedBy): void;
-    
-    /**
-     * Returns the value of field restoredAt
-     * Column: restored_at
-     * Attributes: Type(4)
-     * @return mixed
-     */
-    public function getRestoredAt(): mixed;
-    
-    /**
-     * Sets the value of field restoredAt
-     * Column: restored_at 
-     * Attributes: Type(4)
-     * @param mixed $restoredAt
-     * @return void
-     */
-    public function setRestoredAt(mixed $restoredAt): void;
-    
-    /**
-     * Returns the value of field restoredBy
-     * Column: restored_by
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getRestoredBy(): mixed;
-    
-    /**
-     * Sets the value of field restoredBy
-     * Column: restored_by 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $restoredBy
-     * @return void
-     */
-    public function setRestoredBy(mixed $restoredBy): void;
-    
-    /**
-     * Returns the value of field restoredAs
-     * Column: restored_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getRestoredAs(): mixed;
-    
-    /**
-     * Sets the value of field restoredAs
-     * Column: restored_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $restoredAs
-     * @return void
-     */
-    public function setRestoredAs(mixed $restoredAs): void;
 }

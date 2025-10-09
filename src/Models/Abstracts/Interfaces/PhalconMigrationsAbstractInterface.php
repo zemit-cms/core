@@ -21,26 +21,9 @@ use Zemit\Mvc\ModelInterface;
 interface PhalconMigrationsAbstractInterface extends ModelInterface
 {
     /**
-     * Returns the value of field id
-     * Column: id
-     * Attributes: First | NotNull | Numeric | Unsigned | AutoIncrement
-     * @return mixed
-     */
-    public function getId(): mixed;
-    
-    /**
-     * Sets the value of field id
-     * Column: id 
-     * Attributes: First | NotNull | Numeric | Unsigned | AutoIncrement
-     * @param mixed $id
-     * @return void
-     */
-    public function setId(mixed $id): void;
-    
-    /**
      * Returns the value of field version
      * Column: version
-     * Attributes: Primary | NotNull | Size(255) | Type(2)
+     * Attributes: First | Primary | NotNull | Size(255) | Type(2)
      * @return mixed
      */
     public function getVersion(): mixed;
@@ -48,7 +31,7 @@ interface PhalconMigrationsAbstractInterface extends ModelInterface
     /**
      * Sets the value of field version
      * Column: version 
-     * Attributes: Primary | NotNull | Size(255) | Type(2)
+     * Attributes: First | Primary | NotNull | Size(255) | Type(2)
      * @param mixed $version
      * @return void
      */

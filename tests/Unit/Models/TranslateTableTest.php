@@ -62,6 +62,18 @@ class TranslateTableTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->translateTable->getId());
     }
 
+    public function testGetUuid(): void
+    {
+        $this->assertEquals(null, $this->translateTable->getUuid());
+    }
+    
+    public function testSetUuid(): void
+    {
+        $value = uniqid();
+        $this->translateTable->setUuid($value);
+        $this->assertEquals($value, $this->translateTable->getUuid());
+    }
+
     public function testGetTable(): void
     {
         $this->assertEquals(null, $this->translateTable->getTable());
@@ -112,7 +124,7 @@ class TranslateTableTest extends \Zemit\Tests\Unit\AbstractUnit
 
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->translateTable->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->translateTable->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void

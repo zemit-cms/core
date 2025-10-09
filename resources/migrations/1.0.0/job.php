@@ -24,7 +24,7 @@ class JobMigration_100 extends Migration
                 new Column(
                     'id',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => true,
                         'autoIncrement' => true,
@@ -77,43 +77,13 @@ class JobMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'thread',
-                    [
-                        'type' => Column::TYPE_TINYINTEGER,
-                        'default' => "0",
-                        'unsigned' => true,
-                        'notNull' => true,
-                        'size' => 1,
-                        'after' => 'params'
-                    ]
-                ),
-                new Column(
-                    'priority',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'default' => "0",
-                        'unsigned' => true,
-                        'notNull' => true,
-                        'size' => 1,
-                        'after' => 'thread'
-                    ]
-                ),
-                new Column(
-                    'at',
-                    [
-                        'type' => Column::TYPE_DATETIME,
-                        'notNull' => false,
-                        'after' => 'priority'
-                    ]
-                ),
-                new Column(
                     'status',
                     [
                         'type' => Column::TYPE_ENUM,
                         'default' => "new",
                         'notNull' => true,
                         'size' => "'new','progress','failed','finished'",
-                        'after' => 'at'
+                        'after' => 'params'
                     ]
                 ),
                 new Column(
@@ -125,6 +95,25 @@ class JobMigration_100 extends Migration
                     ]
                 ),
                 new Column(
+                    'priority',
+                    [
+                        'type' => Column::TYPE_INTEGER,
+                        'default' => "0",
+                        'unsigned' => true,
+                        'notNull' => true,
+                        'size' => 1,
+                        'after' => 'result'
+                    ]
+                ),
+                new Column(
+                    'run_at',
+                    [
+                        'type' => Column::TYPE_DATETIME,
+                        'notNull' => false,
+                        'after' => 'priority'
+                    ]
+                ),
+                new Column(
                     'deleted',
                     [
                         'type' => Column::TYPE_TINYINTEGER,
@@ -132,7 +121,7 @@ class JobMigration_100 extends Migration
                         'unsigned' => true,
                         'notNull' => true,
                         'size' => 1,
-                        'after' => 'result'
+                        'after' => 'run_at'
                     ]
                 ),
                 new Column(
@@ -147,7 +136,7 @@ class JobMigration_100 extends Migration
                 new Column(
                     'created_by',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => false,
                         'size' => 1,
@@ -155,27 +144,17 @@ class JobMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'created_as',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'created_by'
-                    ]
-                ),
-                new Column(
                     'updated_at',
                     [
                         'type' => Column::TYPE_DATETIME,
                         'notNull' => false,
-                        'after' => 'created_as'
+                        'after' => 'created_by'
                     ]
                 ),
                 new Column(
                     'updated_by',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => false,
                         'size' => 1,
@@ -183,76 +162,66 @@ class JobMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'updated_as',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'updated_by'
-                    ]
-                ),
-                new Column(
                     'deleted_at',
                     [
                         'type' => Column::TYPE_DATETIME,
                         'notNull' => false,
-                        'after' => 'updated_as'
+                        'after' => 'updated_by'
                     ]
                 ),
                 new Column(
-                    'deleted_as',
+                    'deleted_by',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => false,
                         'size' => 1,
                         'after' => 'deleted_at'
                     ]
                 ),
-                new Column(
-                    'deleted_by',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'deleted_as'
-                    ]
-                ),
-                new Column(
-                    'restored_at',
-                    [
-                        'type' => Column::TYPE_DATETIME,
-                        'notNull' => false,
-                        'after' => 'deleted_by'
-                    ]
-                ),
-                new Column(
-                    'restored_by',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'restored_at'
-                    ]
-                ),
-                new Column(
-                    'restored_as',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'restored_by'
-                    ]
-                ),
             ],
             'indexes' => [
                 new Index('PRIMARY', ['id'], 'PRIMARY'),
-                new Index('id_UNIQUE', ['id'], 'UNIQUE'),
                 new Index('uuid_UNIQUE', ['uuid'], 'UNIQUE'),
+                new Index('idx_status_priority', ['status', 'priority'], ''),
+                new Index('fk_job_created_by', ['created_by'], ''),
+                new Index('fk_job_updated_by', ['updated_by'], ''),
+                new Index('fk_job_deleted_by', ['deleted_by'], ''),
+            ],
+            'references' => [
+                new Reference(
+                    'fk_job_created_by',
+                    [
+                        'referencedSchema' => 'zemit_core',
+                        'referencedTable' => 'user',
+                        'columns' => ['created_by'],
+                        'referencedColumns' => ['id'],
+                        'onUpdate' => 'CASCADE',
+                        'onDelete' => 'SET NULL'
+                    ]
+                ),
+                new Reference(
+                    'fk_job_deleted_by',
+                    [
+                        'referencedSchema' => 'zemit_core',
+                        'referencedTable' => 'user',
+                        'columns' => ['deleted_by'],
+                        'referencedColumns' => ['id'],
+                        'onUpdate' => 'CASCADE',
+                        'onDelete' => 'SET NULL'
+                    ]
+                ),
+                new Reference(
+                    'fk_job_updated_by',
+                    [
+                        'referencedSchema' => 'zemit_core',
+                        'referencedTable' => 'user',
+                        'columns' => ['updated_by'],
+                        'referencedColumns' => ['id'],
+                        'onUpdate' => 'CASCADE',
+                        'onDelete' => 'SET NULL'
+                    ]
+                ),
             ],
             'options' => [
                 'TABLE_TYPE' => 'BASE TABLE',

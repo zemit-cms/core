@@ -62,6 +62,18 @@ class TranslateTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->translate->getId());
     }
 
+    public function testGetUuid(): void
+    {
+        $this->assertEquals(null, $this->translate->getUuid());
+    }
+    
+    public function testSetUuid(): void
+    {
+        $value = uniqid();
+        $this->translate->setUuid($value);
+        $this->assertEquals($value, $this->translate->getUuid());
+    }
+
     public function testGetLangId(): void
     {
         $this->assertEquals(null, $this->translate->getLangId());
@@ -74,64 +86,40 @@ class TranslateTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->translate->getLangId());
     }
 
-    public function testGetSiteId(): void
+    public function testGetTranslatableTable(): void
     {
-        $this->assertEquals(null, $this->translate->getSiteId());
+        $this->assertEquals(null, $this->translate->getTranslatableTable());
     }
     
-    public function testSetSiteId(): void
+    public function testSetTranslatableTable(): void
     {
         $value = uniqid();
-        $this->translate->setSiteId($value);
-        $this->assertEquals($value, $this->translate->getSiteId());
+        $this->translate->setTranslatableTable($value);
+        $this->assertEquals($value, $this->translate->getTranslatableTable());
     }
 
-    public function testGetPageId(): void
+    public function testGetTranslatableId(): void
     {
-        $this->assertEquals(null, $this->translate->getPageId());
+        $this->assertEquals(null, $this->translate->getTranslatableId());
     }
     
-    public function testSetPageId(): void
+    public function testSetTranslatableId(): void
     {
         $value = uniqid();
-        $this->translate->setPageId($value);
-        $this->assertEquals($value, $this->translate->getPageId());
+        $this->translate->setTranslatableId($value);
+        $this->assertEquals($value, $this->translate->getTranslatableId());
     }
 
-    public function testGetPostId(): void
+    public function testGetField(): void
     {
-        $this->assertEquals(null, $this->translate->getPostId());
+        $this->assertEquals(null, $this->translate->getField());
     }
     
-    public function testSetPostId(): void
+    public function testSetField(): void
     {
         $value = uniqid();
-        $this->translate->setPostId($value);
-        $this->assertEquals($value, $this->translate->getPostId());
-    }
-
-    public function testGetCategoryId(): void
-    {
-        $this->assertEquals(null, $this->translate->getCategoryId());
-    }
-    
-    public function testSetCategoryId(): void
-    {
-        $value = uniqid();
-        $this->translate->setCategoryId($value);
-        $this->assertEquals($value, $this->translate->getCategoryId());
-    }
-
-    public function testGetKey(): void
-    {
-        $this->assertEquals(null, $this->translate->getKey());
-    }
-    
-    public function testSetKey(): void
-    {
-        $value = uniqid();
-        $this->translate->setKey($value);
-        $this->assertEquals($value, $this->translate->getKey());
+        $this->translate->setField($value);
+        $this->assertEquals($value, $this->translate->getField());
     }
 
     public function testGetValue(): void
@@ -160,7 +148,7 @@ class TranslateTest extends \Zemit\Tests\Unit\AbstractUnit
 
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->translate->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->translate->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -180,18 +168,6 @@ class TranslateTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->translate->setCreatedBy($value);
         $this->assertEquals($value, $this->translate->getCreatedBy());
-    }
-
-    public function testGetCreatedAs(): void
-    {
-        $this->assertEquals(null, $this->translate->getCreatedAs());
-    }
-    
-    public function testSetCreatedAs(): void
-    {
-        $value = uniqid();
-        $this->translate->setCreatedAs($value);
-        $this->assertEquals($value, $this->translate->getCreatedAs());
     }
 
     public function testGetUpdatedAt(): void
@@ -218,18 +194,6 @@ class TranslateTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->translate->getUpdatedBy());
     }
 
-    public function testGetUpdatedAs(): void
-    {
-        $this->assertEquals(null, $this->translate->getUpdatedAs());
-    }
-    
-    public function testSetUpdatedAs(): void
-    {
-        $value = uniqid();
-        $this->translate->setUpdatedAs($value);
-        $this->assertEquals($value, $this->translate->getUpdatedAs());
-    }
-
     public function testGetDeletedAt(): void
     {
         $this->assertEquals(null, $this->translate->getDeletedAt());
@@ -242,18 +206,6 @@ class TranslateTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->translate->getDeletedAt());
     }
 
-    public function testGetDeletedAs(): void
-    {
-        $this->assertEquals(null, $this->translate->getDeletedAs());
-    }
-    
-    public function testSetDeletedAs(): void
-    {
-        $value = uniqid();
-        $this->translate->setDeletedAs($value);
-        $this->assertEquals($value, $this->translate->getDeletedAs());
-    }
-
     public function testGetDeletedBy(): void
     {
         $this->assertEquals(null, $this->translate->getDeletedBy());
@@ -264,30 +216,6 @@ class TranslateTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->translate->setDeletedBy($value);
         $this->assertEquals($value, $this->translate->getDeletedBy());
-    }
-
-    public function testGetRestoredAt(): void
-    {
-        $this->assertEquals(null, $this->translate->getRestoredAt());
-    }
-    
-    public function testSetRestoredAt(): void
-    {
-        $value = uniqid();
-        $this->translate->setRestoredAt($value);
-        $this->assertEquals($value, $this->translate->getRestoredAt());
-    }
-
-    public function testGetRestoredBy(): void
-    {
-        $this->assertEquals(null, $this->translate->getRestoredBy());
-    }
-    
-    public function testSetRestoredBy(): void
-    {
-        $value = uniqid();
-        $this->translate->setRestoredBy($value);
-        $this->assertEquals($value, $this->translate->getRestoredBy());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void

@@ -10,10 +10,8 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Models\Interfaces;
+namespace Zemit\Models\Enums;
 
-use Zemit\Models\Abstracts\Interfaces\TranslateTableAbstractInterface;
-
-interface TranslateTableInterface extends TranslateTableAbstractInterface
-{
+enum FileCategory: string {
+    case OTHER = 'other';
 }

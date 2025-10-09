@@ -14,14 +14,10 @@ namespace Zemit\Models\Abstracts;
 
 use Phalcon\Db\RawValue;
 use Zemit\Filter\Validation;
-use Zemit\Models\AbstractModel;
+use \Zemit\Models\AbstractModel;
 use Zemit\Models\Column;
-use Zemit\Models\Workspace;
-use Zemit\Models\Data;
 use Zemit\Models\Record;
-use Zemit\Models\TranslateField;
-use Zemit\Models\Site;
-use Zemit\Models\Lang;
+use Zemit\Models\Workspace;
 use Zemit\Models\User;
 use Zemit\Models\Abstracts\Interfaces\TableAbstractInterface;
 
@@ -35,49 +31,9 @@ use Zemit\Models\Abstracts\Interfaces\TableAbstractInterface;
  * @property Column[] $ColumnList
  * @method Column[] getColumnList(?array $params = null)
  *
- * @property Workspace[] $columnworkspacelist
- * @property Workspace[] $ColumnWorkspaceList
- * @method Workspace[] getColumnWorkspaceList(?array $params = null)
- *
- * @property Data[] $datalist
- * @property Data[] $DataList
- * @method Data[] getDataList(?array $params = null)
- *
- * @property Workspace[] $dataworkspacelist
- * @property Workspace[] $DataWorkspaceList
- * @method Workspace[] getDataWorkspaceList(?array $params = null)
- *
- * @property Column[] $datacolumnlist
- * @property Column[] $DataColumnList
- * @method Column[] getDataColumnList(?array $params = null)
- *
- * @property Record[] $datarecordlist
- * @property Record[] $DataRecordList
- * @method Record[] getDataRecordList(?array $params = null)
- *
  * @property Record[] $recordlist
  * @property Record[] $RecordList
  * @method Record[] getRecordList(?array $params = null)
- *
- * @property Workspace[] $recordworkspacelist
- * @property Workspace[] $RecordWorkspaceList
- * @method Workspace[] getRecordWorkspaceList(?array $params = null)
- *
- * @property TranslateField[] $translatefieldlist
- * @property TranslateField[] $TranslateFieldList
- * @method TranslateField[] getTranslateFieldList(?array $params = null)
- *
- * @property Site[] $translatefieldsitelist
- * @property Site[] $TranslateFieldSiteList
- * @method Site[] getTranslateFieldSiteList(?array $params = null)
- *
- * @property Lang[] $translatefieldlanglist
- * @property Lang[] $TranslateFieldLangList
- * @method Lang[] getTranslateFieldLangList(?array $params = null)
- *
- * @property Lang $langentity
- * @property Lang $LangEntity
- * @method Lang getLangEntity(?array $params = null)
  *
  * @property Workspace $workspaceentity
  * @property Workspace $WorkspaceEntity
@@ -87,35 +43,19 @@ use Zemit\Models\Abstracts\Interfaces\TableAbstractInterface;
  * @property User $CreatedByEntity
  * @method User getCreatedByEntity(?array $params = null)
  *
- * @property User $createdasentity
- * @property User $CreatedAsEntity
- * @method User getCreatedAsEntity(?array $params = null)
- *
  * @property User $updatedbyentity
  * @property User $UpdatedByEntity
  * @method User getUpdatedByEntity(?array $params = null)
  *
- * @property User $updatedasentity
- * @property User $UpdatedAsEntity
- * @method User getUpdatedAsEntity(?array $params = null)
- *
- * @property User $deletedasentity
- * @property User $DeletedAsEntity
- * @method User getDeletedAsEntity(?array $params = null)
- *
  * @property User $deletedbyentity
  * @property User $DeletedByEntity
  * @method User getDeletedByEntity(?array $params = null)
- *
- * @property User $restoredbyentity
- * @property User $RestoredByEntity
- * @method User getRestoredByEntity(?array $params = null)
  */
-abstract class TableAbstract extends AbstractModel implements TableAbstractInterface
+abstract class TableAbstract extends \Zemit\Models\AbstractModel implements TableAbstractInterface
 {
     /**
      * Column: id
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $id = null;
@@ -128,25 +68,18 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
     public mixed $uuid = null;
         
     /**
-     * Column: lang_id
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $langId = null;
-        
-    /**
      * Column: workspace_id
-     * Attributes: NotNull | Numeric | Unsigned
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $workspaceId = null;
         
     /**
-     * Column: name
+     * Column: label
      * Attributes: NotNull | Size(60) | Type(2)
      * @var mixed
      */
-    public mixed $name = null;
+    public mixed $label = null;
         
     /**
      * Column: description
@@ -171,7 +104,7 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
         
     /**
      * Column: deleted
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @var mixed
      */
     public mixed $deleted = 0;
@@ -181,21 +114,14 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
      * Attributes: NotNull | Type(4)
      * @var mixed
      */
-    public mixed $createdAt = null;
+    public mixed $createdAt = 'current_timestamp()';
         
     /**
      * Column: created_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $createdBy = null;
-        
-    /**
-     * Column: created_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $createdAs = null;
         
     /**
      * Column: updated_at
@@ -206,17 +132,10 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
         
     /**
      * Column: updated_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $updatedBy = null;
-        
-    /**
-     * Column: updated_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $updatedAs = null;
         
     /**
      * Column: deleted_at
@@ -226,37 +145,16 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
     public mixed $deletedAt = null;
         
     /**
-     * Column: deleted_as
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $deletedAs = null;
-        
-    /**
      * Column: deleted_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @var mixed
      */
     public mixed $deletedBy = null;
-        
-    /**
-     * Column: restored_at
-     * Attributes: Type(4)
-     * @var mixed
-     */
-    public mixed $restoredAt = null;
-        
-    /**
-     * Column: restored_by
-     * Attributes: Numeric | Unsigned
-     * @var mixed
-     */
-    public mixed $restoredBy = null;
     
     /**
      * Returns the value of field id
      * Column: id
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
     public function getId(): mixed
@@ -267,7 +165,7 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
     /**
      * Sets the value of field id
      * Column: id 
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @param mixed $id
      * @return void
      */
@@ -300,32 +198,9 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
     }
     
     /**
-     * Returns the value of field langId
-     * Column: lang_id
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getLangId(): mixed
-    {
-        return $this->langId;
-    }
-    
-    /**
-     * Sets the value of field langId
-     * Column: lang_id 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $langId
-     * @return void
-     */
-    public function setLangId(mixed $langId): void
-    {
-        $this->langId = $langId;
-    }
-    
-    /**
      * Returns the value of field workspaceId
      * Column: workspace_id
-     * Attributes: NotNull | Numeric | Unsigned
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getWorkspaceId(): mixed
@@ -336,7 +211,7 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
     /**
      * Sets the value of field workspaceId
      * Column: workspace_id 
-     * Attributes: NotNull | Numeric | Unsigned
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $workspaceId
      * @return void
      */
@@ -346,26 +221,26 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
     }
     
     /**
-     * Returns the value of field name
-     * Column: name
+     * Returns the value of field label
+     * Column: label
      * Attributes: NotNull | Size(60) | Type(2)
      * @return mixed
      */
-    public function getName(): mixed
+    public function getLabel(): mixed
     {
-        return $this->name;
+        return $this->label;
     }
     
     /**
-     * Sets the value of field name
-     * Column: name 
+     * Sets the value of field label
+     * Column: label 
      * Attributes: NotNull | Size(60) | Type(2)
-     * @param mixed $name
+     * @param mixed $label
      * @return void
      */
-    public function setName(mixed $name): void
+    public function setLabel(mixed $label): void
     {
-        $this->name = $name;
+        $this->label = $label;
     }
     
     /**
@@ -440,7 +315,7 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
     /**
      * Returns the value of field deleted
      * Column: deleted
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
     public function getDeleted(): mixed
@@ -451,7 +326,7 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
     /**
      * Sets the value of field deleted
      * Column: deleted 
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @param mixed $deleted
      * @return void
      */
@@ -486,7 +361,7 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
     /**
      * Returns the value of field createdBy
      * Column: created_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getCreatedBy(): mixed
@@ -497,36 +372,13 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
     /**
      * Sets the value of field createdBy
      * Column: created_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $createdBy
      * @return void
      */
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
-    }
-    
-    /**
-     * Returns the value of field createdAs
-     * Column: created_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getCreatedAs(): mixed
-    {
-        return $this->createdAs;
-    }
-    
-    /**
-     * Sets the value of field createdAs
-     * Column: created_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $createdAs
-     * @return void
-     */
-    public function setCreatedAs(mixed $createdAs): void
-    {
-        $this->createdAs = $createdAs;
     }
     
     /**
@@ -555,7 +407,7 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
     /**
      * Returns the value of field updatedBy
      * Column: updated_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getUpdatedBy(): mixed
@@ -566,36 +418,13 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
     /**
      * Sets the value of field updatedBy
      * Column: updated_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $updatedBy
      * @return void
      */
     public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
-    }
-    
-    /**
-     * Returns the value of field updatedAs
-     * Column: updated_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getUpdatedAs(): mixed
-    {
-        return $this->updatedAs;
-    }
-    
-    /**
-     * Sets the value of field updatedAs
-     * Column: updated_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $updatedAs
-     * @return void
-     */
-    public function setUpdatedAs(mixed $updatedAs): void
-    {
-        $this->updatedAs = $updatedAs;
     }
     
     /**
@@ -622,32 +451,9 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
     }
     
     /**
-     * Returns the value of field deletedAs
-     * Column: deleted_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getDeletedAs(): mixed
-    {
-        return $this->deletedAs;
-    }
-    
-    /**
-     * Sets the value of field deletedAs
-     * Column: deleted_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $deletedAs
-     * @return void
-     */
-    public function setDeletedAs(mixed $deletedAs): void
-    {
-        $this->deletedAs = $deletedAs;
-    }
-    
-    /**
      * Returns the value of field deletedBy
      * Column: deleted_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getDeletedBy(): mixed
@@ -658,59 +464,13 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
     /**
      * Sets the value of field deletedBy
      * Column: deleted_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $deletedBy
      * @return void
      */
     public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;
-    }
-    
-    /**
-     * Returns the value of field restoredAt
-     * Column: restored_at
-     * Attributes: Type(4)
-     * @return mixed
-     */
-    public function getRestoredAt(): mixed
-    {
-        return $this->restoredAt;
-    }
-    
-    /**
-     * Sets the value of field restoredAt
-     * Column: restored_at 
-     * Attributes: Type(4)
-     * @param mixed $restoredAt
-     * @return void
-     */
-    public function setRestoredAt(mixed $restoredAt): void
-    {
-        $this->restoredAt = $restoredAt;
-    }
-    
-    /**
-     * Returns the value of field restoredBy
-     * Column: restored_by
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getRestoredBy(): mixed
-    {
-        return $this->restoredBy;
-    }
-    
-    /**
-     * Sets the value of field restoredBy
-     * Column: restored_by 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $restoredBy
-     * @return void
-     */
-    public function setRestoredBy(mixed $restoredBy): void
-    {
-        $this->restoredBy = $restoredBy;
     }
 
     /**
@@ -721,99 +481,15 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
     {
         $this->hasMany('id', Column::class, 'tableId', ['alias' => 'ColumnList']);
 
-        $this->hasManyToMany(
-            'id',
-            Column::class,
-            'tableId',
-            'workspaceId',
-            Workspace::class,
-            'id',
-            ['alias' => 'ColumnWorkspaceList']
-        );
-
-        $this->hasMany('id', Data::class, 'tableId', ['alias' => 'DataList']);
-
-        $this->hasManyToMany(
-            'id',
-            Data::class,
-            'tableId',
-            'workspaceId',
-            Workspace::class,
-            'id',
-            ['alias' => 'DataWorkspaceList']
-        );
-
-        $this->hasManyToMany(
-            'id',
-            Data::class,
-            'tableId',
-            'columnId',
-            Column::class,
-            'id',
-            ['alias' => 'DataColumnList']
-        );
-
-        $this->hasManyToMany(
-            'id',
-            Data::class,
-            'tableId',
-            'recordId',
-            Record::class,
-            'id',
-            ['alias' => 'DataRecordList']
-        );
-
         $this->hasMany('id', Record::class, 'tableId', ['alias' => 'RecordList']);
-
-        $this->hasManyToMany(
-            'id',
-            Record::class,
-            'tableId',
-            'workspaceId',
-            Workspace::class,
-            'id',
-            ['alias' => 'RecordWorkspaceList']
-        );
-
-        $this->hasMany('id', TranslateField::class, 'tableId', ['alias' => 'TranslateFieldList']);
-
-        $this->hasManyToMany(
-            'id',
-            TranslateField::class,
-            'tableId',
-            'siteId',
-            Site::class,
-            'id',
-            ['alias' => 'TranslateFieldSiteList']
-        );
-
-        $this->hasManyToMany(
-            'id',
-            TranslateField::class,
-            'tableId',
-            'langId',
-            Lang::class,
-            'id',
-            ['alias' => 'TranslateFieldLangList']
-        );
-
-        $this->belongsTo('langId', Lang::class, 'id', ['alias' => 'LangEntity']);
 
         $this->belongsTo('workspaceId', Workspace::class, 'id', ['alias' => 'WorkspaceEntity']);
 
         $this->belongsTo('createdBy', User::class, 'id', ['alias' => 'CreatedByEntity']);
 
-        $this->belongsTo('createdAs', User::class, 'id', ['alias' => 'CreatedAsEntity']);
-
         $this->belongsTo('updatedBy', User::class, 'id', ['alias' => 'UpdatedByEntity']);
 
-        $this->belongsTo('updatedAs', User::class, 'id', ['alias' => 'UpdatedAsEntity']);
-
-        $this->belongsTo('deletedAs', User::class, 'id', ['alias' => 'DeletedAsEntity']);
-
         $this->belongsTo('deletedBy', User::class, 'id', ['alias' => 'DeletedByEntity']);
-
-        $this->belongsTo('restoredBy', User::class, 'id', ['alias' => 'RestoredByEntity']);
     }
     
     /**
@@ -827,24 +503,18 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
     
         $this->addUnsignedIntValidation($validator, 'id', true);
         $this->addStringLengthValidation($validator, 'uuid', 0, 36, false);
-        $this->addUnsignedIntValidation($validator, 'langId', true);
         $this->addUnsignedIntValidation($validator, 'workspaceId', false);
-        $this->addStringLengthValidation($validator, 'name', 0, 60, false);
+        $this->addStringLengthValidation($validator, 'label', 0, 60, false);
         $this->addStringLengthValidation($validator, 'description', 0, 240, true);
         $this->addStringLengthValidation($validator, 'icon', 0, 64, true);
         $this->addStringLengthValidation($validator, 'color', 0, 9, true);
         $this->addUnsignedIntValidation($validator, 'deleted', false);
         $this->addDateTimeValidation($validator, 'createdAt', false);
         $this->addUnsignedIntValidation($validator, 'createdBy', true);
-        $this->addUnsignedIntValidation($validator, 'createdAs', true);
         $this->addDateTimeValidation($validator, 'updatedAt', true);
         $this->addUnsignedIntValidation($validator, 'updatedBy', true);
-        $this->addUnsignedIntValidation($validator, 'updatedAs', true);
         $this->addDateTimeValidation($validator, 'deletedAt', true);
-        $this->addUnsignedIntValidation($validator, 'deletedAs', true);
         $this->addUnsignedIntValidation($validator, 'deletedBy', true);
-        $this->addDateTimeValidation($validator, 'restoredAt', true);
-        $this->addUnsignedIntValidation($validator, 'restoredBy', true);
         
         return $validator;
     }
@@ -861,24 +531,18 @@ abstract class TableAbstract extends AbstractModel implements TableAbstractInter
         return [
             'id' => 'id',
             'uuid' => 'uuid',
-            'lang_id' => 'langId',
             'workspace_id' => 'workspaceId',
-            'name' => 'name',
+            'label' => 'label',
             'description' => 'description',
             'icon' => 'icon',
             'color' => 'color',
             'deleted' => 'deleted',
             'created_at' => 'createdAt',
             'created_by' => 'createdBy',
-            'created_as' => 'createdAs',
             'updated_at' => 'updatedAt',
             'updated_by' => 'updatedBy',
-            'updated_as' => 'updatedAs',
             'deleted_at' => 'deletedAt',
-            'deleted_as' => 'deletedAs',
             'deleted_by' => 'deletedBy',
-            'restored_at' => 'restoredAt',
-            'restored_by' => 'restoredBy',
         ];
     }
 }

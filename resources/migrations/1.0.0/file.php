@@ -24,7 +24,7 @@ class FileMigration_100 extends Migration
                 new Column(
                     'id',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => true,
                         'autoIncrement' => true,
@@ -33,13 +33,22 @@ class FileMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'user_id',
+                    'uuid',
                     [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
+                        'type' => Column::TYPE_CHAR,
+                        'notNull' => true,
+                        'size' => 36,
                         'after' => 'id'
+                    ]
+                ),
+                new Column(
+                    'label',
+                    [
+                        'type' => Column::TYPE_VARCHAR,
+                        'notNull' => false,
+                        'size' => 255,
+                        'comment' => "The original or display name of the file",
+                        'after' => 'uuid'
                     ]
                 ),
                 new Column(
@@ -48,88 +57,49 @@ class FileMigration_100 extends Migration
                         'type' => Column::TYPE_ENUM,
                         'default' => "other",
                         'notNull' => true,
-                        'size' => "'partner','speaker','event','other'",
-                        'after' => 'user_id'
-                    ]
-                ),
-                new Column(
-                    'key',
-                    [
-                        'type' => Column::TYPE_VARCHAR,
-                        'notNull' => false,
-                        'size' => 50,
-                        'after' => 'category'
+                        'size' => "'other'",
+                        'after' => 'label'
                     ]
                 ),
                 new Column(
                     'path',
                     [
                         'type' => Column::TYPE_VARCHAR,
-                        'notNull' => false,
-                        'size' => 120,
-                        'after' => 'key'
+                        'notNull' => true,
+                        'size' => 255,
+                        'comment' => "Relative path to the file in storage",
+                        'after' => 'category'
                     ]
                 ),
                 new Column(
-                    'type',
+                    'mime_type',
                     [
                         'type' => Column::TYPE_VARCHAR,
                         'notNull' => false,
                         'size' => 100,
+                        'comment' => "e.g., image/jpeg, application/pdf",
                         'after' => 'path'
-                    ]
-                ),
-                new Column(
-                    'type_real',
-                    [
-                        'type' => Column::TYPE_VARCHAR,
-                        'notNull' => false,
-                        'size' => 100,
-                        'after' => 'type'
                     ]
                 ),
                 new Column(
                     'extension',
                     [
-                        'type' => Column::TYPE_CHAR,
-                        'notNull' => false,
-                        'size' => 6,
-                        'after' => 'type_real'
-                    ]
-                ),
-                new Column(
-                    'name',
-                    [
                         'type' => Column::TYPE_VARCHAR,
                         'notNull' => false,
-                        'size' => 100,
-                        'after' => 'extension'
-                    ]
-                ),
-                new Column(
-                    'name_temp',
-                    [
-                        'type' => Column::TYPE_VARCHAR,
-                        'notNull' => false,
-                        'size' => 120,
-                        'after' => 'name'
+                        'size' => 20,
+                        'comment' => "e.g., jpg, pdf",
+                        'after' => 'mime_type'
                     ]
                 ),
                 new Column(
                     'size',
                     [
-                        'type' => Column::TYPE_VARCHAR,
+                        'type' => Column::TYPE_BIGINTEGER,
+                        'unsigned' => true,
                         'notNull' => false,
-                        'size' => 45,
-                        'after' => 'name_temp'
-                    ]
-                ),
-                new Column(
-                    'error',
-                    [
-                        'type' => Column::TYPE_TEXT,
-                        'notNull' => false,
-                        'after' => 'size'
+                        'size' => 1,
+                        'comment' => "Size in bytes",
+                        'after' => 'extension'
                     ]
                 ),
                 new Column(
@@ -140,7 +110,7 @@ class FileMigration_100 extends Migration
                         'unsigned' => true,
                         'notNull' => true,
                         'size' => 1,
-                        'after' => 'error'
+                        'after' => 'size'
                     ]
                 ),
                 new Column(
@@ -155,7 +125,7 @@ class FileMigration_100 extends Migration
                 new Column(
                     'created_by',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => false,
                         'size' => 1,
@@ -163,27 +133,17 @@ class FileMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'created_as',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'created_by'
-                    ]
-                ),
-                new Column(
                     'updated_at',
                     [
                         'type' => Column::TYPE_DATETIME,
                         'notNull' => false,
-                        'after' => 'created_as'
+                        'after' => 'created_by'
                     ]
                 ),
                 new Column(
                     'updated_by',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => false,
                         'size' => 1,
@@ -191,88 +151,68 @@ class FileMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'updated_as',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'updated_by'
-                    ]
-                ),
-                new Column(
                     'deleted_at',
                     [
                         'type' => Column::TYPE_DATETIME,
                         'notNull' => false,
-                        'after' => 'updated_as'
+                        'after' => 'updated_by'
                     ]
                 ),
                 new Column(
-                    'deleted_as',
+                    'deleted_by',
                     [
-                        'type' => Column::TYPE_INTEGER,
+                        'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => false,
                         'size' => 1,
                         'after' => 'deleted_at'
                     ]
                 ),
-                new Column(
-                    'deleted_by',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'deleted_as'
-                    ]
-                ),
-                new Column(
-                    'restored_at',
-                    [
-                        'type' => Column::TYPE_DATETIME,
-                        'notNull' => false,
-                        'after' => 'deleted_by'
-                    ]
-                ),
-                new Column(
-                    'restored_by',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'restored_at'
-                    ]
-                ),
-                new Column(
-                    'restored_as',
-                    [
-                        'type' => Column::TYPE_INTEGER,
-                        'unsigned' => true,
-                        'notNull' => false,
-                        'size' => 1,
-                        'after' => 'restored_by'
-                    ]
-                ),
             ],
             'indexes' => [
                 new Index('PRIMARY', ['id'], 'PRIMARY'),
-                new Index('id_UNIQUE', ['id'], 'UNIQUE'),
-                new Index('user_id', ['user_id'], ''),
-                new Index('key', ['key'], ''),
-                new Index('type', ['type'], ''),
-                new Index('type_real', ['type_real'], ''),
-                new Index('extension', ['extension'], ''),
-                new Index('created_by', ['created_by'], ''),
-                new Index('created_as', ['created_as'], ''),
-                new Index('updated_by', ['updated_by'], ''),
-                new Index('updated_as', ['updated_as'], ''),
-                new Index('deleted_by', ['deleted_by'], ''),
-                new Index('deleted_as', ['deleted_as'], ''),
-                new Index('restored_by', ['restored_by'], ''),
-                new Index('restored_as', ['restored_as'], ''),
+                new Index('uuid_UNIQUE', ['uuid'], 'UNIQUE'),
+                new Index('idx_category', ['category'], ''),
+                new Index('idx_mime_type', ['mime_type'], ''),
+                new Index('idx_extension', ['extension'], ''),
+                new Index('fk_file_created_by', ['created_by'], ''),
+                new Index('fk_file_updated_by', ['updated_by'], ''),
+                new Index('fk_file_deleted_by', ['deleted_by'], ''),
+            ],
+            'references' => [
+                new Reference(
+                    'fk_file_created_by',
+                    [
+                        'referencedSchema' => 'zemit_core',
+                        'referencedTable' => 'user',
+                        'columns' => ['created_by'],
+                        'referencedColumns' => ['id'],
+                        'onUpdate' => 'CASCADE',
+                        'onDelete' => 'SET NULL'
+                    ]
+                ),
+                new Reference(
+                    'fk_file_deleted_by',
+                    [
+                        'referencedSchema' => 'zemit_core',
+                        'referencedTable' => 'user',
+                        'columns' => ['deleted_by'],
+                        'referencedColumns' => ['id'],
+                        'onUpdate' => 'CASCADE',
+                        'onDelete' => 'SET NULL'
+                    ]
+                ),
+                new Reference(
+                    'fk_file_updated_by',
+                    [
+                        'referencedSchema' => 'zemit_core',
+                        'referencedTable' => 'user',
+                        'columns' => ['updated_by'],
+                        'referencedColumns' => ['id'],
+                        'onUpdate' => 'CASCADE',
+                        'onDelete' => 'SET NULL'
+                    ]
+                ),
             ],
             'options' => [
                 'TABLE_TYPE' => 'BASE TABLE',

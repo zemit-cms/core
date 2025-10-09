@@ -62,6 +62,18 @@ class GroupTypeTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->groupType->getId());
     }
 
+    public function testGetUuid(): void
+    {
+        $this->assertEquals(null, $this->groupType->getUuid());
+    }
+    
+    public function testSetUuid(): void
+    {
+        $value = uniqid();
+        $this->groupType->setUuid($value);
+        $this->assertEquals($value, $this->groupType->getUuid());
+    }
+
     public function testGetGroupId(): void
     {
         $this->assertEquals(null, $this->groupType->getGroupId());
@@ -112,7 +124,7 @@ class GroupTypeTest extends \Zemit\Tests\Unit\AbstractUnit
 
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->groupType->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->groupType->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -132,126 +144,6 @@ class GroupTypeTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->groupType->setCreatedBy($value);
         $this->assertEquals($value, $this->groupType->getCreatedBy());
-    }
-
-    public function testGetCreatedAs(): void
-    {
-        $this->assertEquals(null, $this->groupType->getCreatedAs());
-    }
-    
-    public function testSetCreatedAs(): void
-    {
-        $value = uniqid();
-        $this->groupType->setCreatedAs($value);
-        $this->assertEquals($value, $this->groupType->getCreatedAs());
-    }
-
-    public function testGetUpdatedAt(): void
-    {
-        $this->assertEquals(null, $this->groupType->getUpdatedAt());
-    }
-    
-    public function testSetUpdatedAt(): void
-    {
-        $value = uniqid();
-        $this->groupType->setUpdatedAt($value);
-        $this->assertEquals($value, $this->groupType->getUpdatedAt());
-    }
-
-    public function testGetUpdatedBy(): void
-    {
-        $this->assertEquals(null, $this->groupType->getUpdatedBy());
-    }
-    
-    public function testSetUpdatedBy(): void
-    {
-        $value = uniqid();
-        $this->groupType->setUpdatedBy($value);
-        $this->assertEquals($value, $this->groupType->getUpdatedBy());
-    }
-
-    public function testGetUpdatedAs(): void
-    {
-        $this->assertEquals(null, $this->groupType->getUpdatedAs());
-    }
-    
-    public function testSetUpdatedAs(): void
-    {
-        $value = uniqid();
-        $this->groupType->setUpdatedAs($value);
-        $this->assertEquals($value, $this->groupType->getUpdatedAs());
-    }
-
-    public function testGetDeletedAt(): void
-    {
-        $this->assertEquals(null, $this->groupType->getDeletedAt());
-    }
-    
-    public function testSetDeletedAt(): void
-    {
-        $value = uniqid();
-        $this->groupType->setDeletedAt($value);
-        $this->assertEquals($value, $this->groupType->getDeletedAt());
-    }
-
-    public function testGetDeletedAs(): void
-    {
-        $this->assertEquals(null, $this->groupType->getDeletedAs());
-    }
-    
-    public function testSetDeletedAs(): void
-    {
-        $value = uniqid();
-        $this->groupType->setDeletedAs($value);
-        $this->assertEquals($value, $this->groupType->getDeletedAs());
-    }
-
-    public function testGetDeletedBy(): void
-    {
-        $this->assertEquals(null, $this->groupType->getDeletedBy());
-    }
-    
-    public function testSetDeletedBy(): void
-    {
-        $value = uniqid();
-        $this->groupType->setDeletedBy($value);
-        $this->assertEquals($value, $this->groupType->getDeletedBy());
-    }
-
-    public function testGetRestoredAt(): void
-    {
-        $this->assertEquals(null, $this->groupType->getRestoredAt());
-    }
-    
-    public function testSetRestoredAt(): void
-    {
-        $value = uniqid();
-        $this->groupType->setRestoredAt($value);
-        $this->assertEquals($value, $this->groupType->getRestoredAt());
-    }
-
-    public function testGetRestoredBy(): void
-    {
-        $this->assertEquals(null, $this->groupType->getRestoredBy());
-    }
-    
-    public function testSetRestoredBy(): void
-    {
-        $value = uniqid();
-        $this->groupType->setRestoredBy($value);
-        $this->assertEquals($value, $this->groupType->getRestoredBy());
-    }
-
-    public function testGetRestoredAs(): void
-    {
-        $this->assertEquals(null, $this->groupType->getRestoredAs());
-    }
-    
-    public function testSetRestoredAs(): void
-    {
-        $value = uniqid();
-        $this->groupType->setRestoredAs($value);
-        $this->assertEquals($value, $this->groupType->getRestoredAs());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void

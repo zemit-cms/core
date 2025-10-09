@@ -62,6 +62,18 @@ class UserGroupTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->userGroup->getId());
     }
 
+    public function testGetUuid(): void
+    {
+        $this->assertEquals(null, $this->userGroup->getUuid());
+    }
+    
+    public function testSetUuid(): void
+    {
+        $value = uniqid();
+        $this->userGroup->setUuid($value);
+        $this->assertEquals($value, $this->userGroup->getUuid());
+    }
+
     public function testGetUserId(): void
     {
         $this->assertEquals(null, $this->userGroup->getUserId());
@@ -112,7 +124,7 @@ class UserGroupTest extends \Zemit\Tests\Unit\AbstractUnit
 
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->userGroup->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->userGroup->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -132,18 +144,6 @@ class UserGroupTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->userGroup->setCreatedBy($value);
         $this->assertEquals($value, $this->userGroup->getCreatedBy());
-    }
-
-    public function testGetCreatedAs(): void
-    {
-        $this->assertEquals(null, $this->userGroup->getCreatedAs());
-    }
-    
-    public function testSetCreatedAs(): void
-    {
-        $value = uniqid();
-        $this->userGroup->setCreatedAs($value);
-        $this->assertEquals($value, $this->userGroup->getCreatedAs());
     }
 
     public function testGetUpdatedAt(): void
@@ -170,18 +170,6 @@ class UserGroupTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->userGroup->getUpdatedBy());
     }
 
-    public function testGetUpdatedAs(): void
-    {
-        $this->assertEquals(null, $this->userGroup->getUpdatedAs());
-    }
-    
-    public function testSetUpdatedAs(): void
-    {
-        $value = uniqid();
-        $this->userGroup->setUpdatedAs($value);
-        $this->assertEquals($value, $this->userGroup->getUpdatedAs());
-    }
-
     public function testGetDeletedAt(): void
     {
         $this->assertEquals(null, $this->userGroup->getDeletedAt());
@@ -194,18 +182,6 @@ class UserGroupTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->userGroup->getDeletedAt());
     }
 
-    public function testGetDeletedAs(): void
-    {
-        $this->assertEquals(null, $this->userGroup->getDeletedAs());
-    }
-    
-    public function testSetDeletedAs(): void
-    {
-        $value = uniqid();
-        $this->userGroup->setDeletedAs($value);
-        $this->assertEquals($value, $this->userGroup->getDeletedAs());
-    }
-
     public function testGetDeletedBy(): void
     {
         $this->assertEquals(null, $this->userGroup->getDeletedBy());
@@ -216,42 +192,6 @@ class UserGroupTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->userGroup->setDeletedBy($value);
         $this->assertEquals($value, $this->userGroup->getDeletedBy());
-    }
-
-    public function testGetRestoredAt(): void
-    {
-        $this->assertEquals(null, $this->userGroup->getRestoredAt());
-    }
-    
-    public function testSetRestoredAt(): void
-    {
-        $value = uniqid();
-        $this->userGroup->setRestoredAt($value);
-        $this->assertEquals($value, $this->userGroup->getRestoredAt());
-    }
-
-    public function testGetRestoredBy(): void
-    {
-        $this->assertEquals(null, $this->userGroup->getRestoredBy());
-    }
-    
-    public function testSetRestoredBy(): void
-    {
-        $value = uniqid();
-        $this->userGroup->setRestoredBy($value);
-        $this->assertEquals($value, $this->userGroup->getRestoredBy());
-    }
-
-    public function testGetRestoredAs(): void
-    {
-        $this->assertEquals(null, $this->userGroup->getRestoredAs());
-    }
-    
-    public function testSetRestoredAs(): void
-    {
-        $value = uniqid();
-        $this->userGroup->setRestoredAs($value);
-        $this->assertEquals($value, $this->userGroup->getRestoredAs());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void

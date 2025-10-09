@@ -62,64 +62,16 @@ class MetaTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->meta->getId());
     }
 
-    public function testGetLangId(): void
+    public function testGetUuid(): void
     {
-        $this->assertEquals(null, $this->meta->getLangId());
+        $this->assertEquals(null, $this->meta->getUuid());
     }
     
-    public function testSetLangId(): void
+    public function testSetUuid(): void
     {
         $value = uniqid();
-        $this->meta->setLangId($value);
-        $this->assertEquals($value, $this->meta->getLangId());
-    }
-
-    public function testGetSiteId(): void
-    {
-        $this->assertEquals(null, $this->meta->getSiteId());
-    }
-    
-    public function testSetSiteId(): void
-    {
-        $value = uniqid();
-        $this->meta->setSiteId($value);
-        $this->assertEquals($value, $this->meta->getSiteId());
-    }
-
-    public function testGetPageId(): void
-    {
-        $this->assertEquals(null, $this->meta->getPageId());
-    }
-    
-    public function testSetPageId(): void
-    {
-        $value = uniqid();
-        $this->meta->setPageId($value);
-        $this->assertEquals($value, $this->meta->getPageId());
-    }
-
-    public function testGetPostId(): void
-    {
-        $this->assertEquals(null, $this->meta->getPostId());
-    }
-    
-    public function testSetPostId(): void
-    {
-        $value = uniqid();
-        $this->meta->setPostId($value);
-        $this->assertEquals($value, $this->meta->getPostId());
-    }
-
-    public function testGetCategoryId(): void
-    {
-        $this->assertEquals(null, $this->meta->getCategoryId());
-    }
-    
-    public function testSetCategoryId(): void
-    {
-        $value = uniqid();
-        $this->meta->setCategoryId($value);
-        $this->assertEquals($value, $this->meta->getCategoryId());
+        $this->meta->setUuid($value);
+        $this->assertEquals($value, $this->meta->getUuid());
     }
 
     public function testGetKey(): void
@@ -146,6 +98,30 @@ class MetaTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->meta->getValue());
     }
 
+    public function testGetMetaTable(): void
+    {
+        $this->assertEquals(null, $this->meta->getMetaTable());
+    }
+    
+    public function testSetMetaTable(): void
+    {
+        $value = uniqid();
+        $this->meta->setMetaTable($value);
+        $this->assertEquals($value, $this->meta->getMetaTable());
+    }
+
+    public function testGetMetaId(): void
+    {
+        $this->assertEquals(null, $this->meta->getMetaId());
+    }
+    
+    public function testSetMetaId(): void
+    {
+        $value = uniqid();
+        $this->meta->setMetaId($value);
+        $this->assertEquals($value, $this->meta->getMetaId());
+    }
+
     public function testGetDeleted(): void
     {
         $this->assertEquals(null, $this->meta->getDeleted());
@@ -160,7 +136,7 @@ class MetaTest extends \Zemit\Tests\Unit\AbstractUnit
 
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->meta->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->meta->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -180,18 +156,6 @@ class MetaTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->meta->setCreatedBy($value);
         $this->assertEquals($value, $this->meta->getCreatedBy());
-    }
-
-    public function testGetCreatedAs(): void
-    {
-        $this->assertEquals(null, $this->meta->getCreatedAs());
-    }
-    
-    public function testSetCreatedAs(): void
-    {
-        $value = uniqid();
-        $this->meta->setCreatedAs($value);
-        $this->assertEquals($value, $this->meta->getCreatedAs());
     }
 
     public function testGetUpdatedAt(): void
@@ -218,18 +182,6 @@ class MetaTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->meta->getUpdatedBy());
     }
 
-    public function testGetUpdatedAs(): void
-    {
-        $this->assertEquals(null, $this->meta->getUpdatedAs());
-    }
-    
-    public function testSetUpdatedAs(): void
-    {
-        $value = uniqid();
-        $this->meta->setUpdatedAs($value);
-        $this->assertEquals($value, $this->meta->getUpdatedAs());
-    }
-
     public function testGetDeletedAt(): void
     {
         $this->assertEquals(null, $this->meta->getDeletedAt());
@@ -242,18 +194,6 @@ class MetaTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->meta->getDeletedAt());
     }
 
-    public function testGetDeletedAs(): void
-    {
-        $this->assertEquals(null, $this->meta->getDeletedAs());
-    }
-    
-    public function testSetDeletedAs(): void
-    {
-        $value = uniqid();
-        $this->meta->setDeletedAs($value);
-        $this->assertEquals($value, $this->meta->getDeletedAs());
-    }
-
     public function testGetDeletedBy(): void
     {
         $this->assertEquals(null, $this->meta->getDeletedBy());
@@ -264,30 +204,6 @@ class MetaTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->meta->setDeletedBy($value);
         $this->assertEquals($value, $this->meta->getDeletedBy());
-    }
-
-    public function testGetRestoredAt(): void
-    {
-        $this->assertEquals(null, $this->meta->getRestoredAt());
-    }
-    
-    public function testSetRestoredAt(): void
-    {
-        $value = uniqid();
-        $this->meta->setRestoredAt($value);
-        $this->assertEquals($value, $this->meta->getRestoredAt());
-    }
-
-    public function testGetRestoredBy(): void
-    {
-        $this->assertEquals(null, $this->meta->getRestoredBy());
-    }
-    
-    public function testSetRestoredBy(): void
-    {
-        $value = uniqid();
-        $this->meta->setRestoredBy($value);
-        $this->assertEquals($value, $this->meta->getRestoredBy());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void

@@ -28,48 +28,24 @@ use Zemit\Mvc\ModelInterface;
  * @property FileRelationAbstractInterface[] $FileRelationList
  * @method FileRelationAbstractInterface[] getFileRelationList(?array $params = null)
  *
- * @property UserAbstractInterface $userentity
- * @property UserAbstractInterface $UserEntity
- * @method UserAbstractInterface getUserEntity(?array $params = null)
- *
  * @property UserAbstractInterface $createdbyentity
  * @property UserAbstractInterface $CreatedByEntity
  * @method UserAbstractInterface getCreatedByEntity(?array $params = null)
- *
- * @property UserAbstractInterface $createdasentity
- * @property UserAbstractInterface $CreatedAsEntity
- * @method UserAbstractInterface getCreatedAsEntity(?array $params = null)
  *
  * @property UserAbstractInterface $updatedbyentity
  * @property UserAbstractInterface $UpdatedByEntity
  * @method UserAbstractInterface getUpdatedByEntity(?array $params = null)
  *
- * @property UserAbstractInterface $updatedasentity
- * @property UserAbstractInterface $UpdatedAsEntity
- * @method UserAbstractInterface getUpdatedAsEntity(?array $params = null)
- *
- * @property UserAbstractInterface $deletedasentity
- * @property UserAbstractInterface $DeletedAsEntity
- * @method UserAbstractInterface getDeletedAsEntity(?array $params = null)
- *
  * @property UserAbstractInterface $deletedbyentity
  * @property UserAbstractInterface $DeletedByEntity
  * @method UserAbstractInterface getDeletedByEntity(?array $params = null)
- *
- * @property UserAbstractInterface $restoredbyentity
- * @property UserAbstractInterface $RestoredByEntity
- * @method UserAbstractInterface getRestoredByEntity(?array $params = null)
- *
- * @property UserAbstractInterface $restoredasentity
- * @property UserAbstractInterface $RestoredAsEntity
- * @method UserAbstractInterface getRestoredAsEntity(?array $params = null)
  */
 interface FileAbstractInterface extends ModelInterface
 {
     /**
      * Returns the value of field id
      * Column: id
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
     public function getId(): mixed;
@@ -77,33 +53,50 @@ interface FileAbstractInterface extends ModelInterface
     /**
      * Sets the value of field id
      * Column: id 
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @param mixed $id
      * @return void
      */
     public function setId(mixed $id): void;
     
     /**
-     * Returns the value of field userId
-     * Column: user_id
-     * Attributes: Numeric | Unsigned
+     * Returns the value of field uuid
+     * Column: uuid
+     * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
-    public function getUserId(): mixed;
+    public function getUuid(): mixed;
     
     /**
-     * Sets the value of field userId
-     * Column: user_id 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $userId
+     * Sets the value of field uuid
+     * Column: uuid 
+     * Attributes: NotNull | Size(36) | Type(5)
+     * @param mixed $uuid
      * @return void
      */
-    public function setUserId(mixed $userId): void;
+    public function setUuid(mixed $uuid): void;
+    
+    /**
+     * Returns the value of field label
+     * Column: label
+     * Attributes: Size(255) | Type(2)
+     * @return mixed
+     */
+    public function getLabel(): mixed;
+    
+    /**
+     * Sets the value of field label
+     * Column: label 
+     * Attributes: Size(255) | Type(2)
+     * @param mixed $label
+     * @return void
+     */
+    public function setLabel(mixed $label): void;
     
     /**
      * Returns the value of field category
      * Column: category
-     * Attributes: NotNull | Size('partner','speaker','event','other') | Type(18)
+     * Attributes: NotNull | Size('other') | Type(18)
      * @return mixed
      */
     public function getCategory(): mixed;
@@ -111,33 +104,16 @@ interface FileAbstractInterface extends ModelInterface
     /**
      * Sets the value of field category
      * Column: category 
-     * Attributes: NotNull | Size('partner','speaker','event','other') | Type(18)
+     * Attributes: NotNull | Size('other') | Type(18)
      * @param mixed $category
      * @return void
      */
     public function setCategory(mixed $category): void;
     
     /**
-     * Returns the value of field key
-     * Column: key
-     * Attributes: Size(50) | Type(2)
-     * @return mixed
-     */
-    public function getKey(): mixed;
-    
-    /**
-     * Sets the value of field key
-     * Column: key 
-     * Attributes: Size(50) | Type(2)
-     * @param mixed $key
-     * @return void
-     */
-    public function setKey(mixed $key): void;
-    
-    /**
      * Returns the value of field path
      * Column: path
-     * Attributes: Size(120) | Type(2)
+     * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
      */
     public function getPath(): mixed;
@@ -145,50 +121,33 @@ interface FileAbstractInterface extends ModelInterface
     /**
      * Sets the value of field path
      * Column: path 
-     * Attributes: Size(120) | Type(2)
+     * Attributes: NotNull | Size(255) | Type(2)
      * @param mixed $path
      * @return void
      */
     public function setPath(mixed $path): void;
     
     /**
-     * Returns the value of field type
-     * Column: type
+     * Returns the value of field mimeType
+     * Column: mime_type
      * Attributes: Size(100) | Type(2)
      * @return mixed
      */
-    public function getType(): mixed;
+    public function getMimeType(): mixed;
     
     /**
-     * Sets the value of field type
-     * Column: type 
+     * Sets the value of field mimeType
+     * Column: mime_type 
      * Attributes: Size(100) | Type(2)
-     * @param mixed $type
+     * @param mixed $mimeType
      * @return void
      */
-    public function setType(mixed $type): void;
-    
-    /**
-     * Returns the value of field typeReal
-     * Column: type_real
-     * Attributes: Size(100) | Type(2)
-     * @return mixed
-     */
-    public function getTypeReal(): mixed;
-    
-    /**
-     * Sets the value of field typeReal
-     * Column: type_real 
-     * Attributes: Size(100) | Type(2)
-     * @param mixed $typeReal
-     * @return void
-     */
-    public function setTypeReal(mixed $typeReal): void;
+    public function setMimeType(mixed $mimeType): void;
     
     /**
      * Returns the value of field extension
      * Column: extension
-     * Attributes: Size(6) | Type(5)
+     * Attributes: Size(20) | Type(2)
      * @return mixed
      */
     public function getExtension(): mixed;
@@ -196,50 +155,16 @@ interface FileAbstractInterface extends ModelInterface
     /**
      * Sets the value of field extension
      * Column: extension 
-     * Attributes: Size(6) | Type(5)
+     * Attributes: Size(20) | Type(2)
      * @param mixed $extension
      * @return void
      */
     public function setExtension(mixed $extension): void;
     
     /**
-     * Returns the value of field name
-     * Column: name
-     * Attributes: Size(100) | Type(2)
-     * @return mixed
-     */
-    public function getName(): mixed;
-    
-    /**
-     * Sets the value of field name
-     * Column: name 
-     * Attributes: Size(100) | Type(2)
-     * @param mixed $name
-     * @return void
-     */
-    public function setName(mixed $name): void;
-    
-    /**
-     * Returns the value of field nameTemp
-     * Column: name_temp
-     * Attributes: Size(120) | Type(2)
-     * @return mixed
-     */
-    public function getNameTemp(): mixed;
-    
-    /**
-     * Sets the value of field nameTemp
-     * Column: name_temp 
-     * Attributes: Size(120) | Type(2)
-     * @param mixed $nameTemp
-     * @return void
-     */
-    public function setNameTemp(mixed $nameTemp): void;
-    
-    /**
      * Returns the value of field size
      * Column: size
-     * Attributes: Size(45) | Type(2)
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getSize(): mixed;
@@ -247,33 +172,16 @@ interface FileAbstractInterface extends ModelInterface
     /**
      * Sets the value of field size
      * Column: size 
-     * Attributes: Size(45) | Type(2)
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $size
      * @return void
      */
     public function setSize(mixed $size): void;
     
     /**
-     * Returns the value of field error
-     * Column: error
-     * Attributes: Type(6)
-     * @return mixed
-     */
-    public function getError(): mixed;
-    
-    /**
-     * Sets the value of field error
-     * Column: error 
-     * Attributes: Type(6)
-     * @param mixed $error
-     * @return void
-     */
-    public function setError(mixed $error): void;
-    
-    /**
      * Returns the value of field deleted
      * Column: deleted
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
     public function getDeleted(): mixed;
@@ -281,7 +189,7 @@ interface FileAbstractInterface extends ModelInterface
     /**
      * Sets the value of field deleted
      * Column: deleted 
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @param mixed $deleted
      * @return void
      */
@@ -307,7 +215,7 @@ interface FileAbstractInterface extends ModelInterface
     /**
      * Returns the value of field createdBy
      * Column: created_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getCreatedBy(): mixed;
@@ -315,28 +223,11 @@ interface FileAbstractInterface extends ModelInterface
     /**
      * Sets the value of field createdBy
      * Column: created_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $createdBy
      * @return void
      */
     public function setCreatedBy(mixed $createdBy): void;
-    
-    /**
-     * Returns the value of field createdAs
-     * Column: created_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getCreatedAs(): mixed;
-    
-    /**
-     * Sets the value of field createdAs
-     * Column: created_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $createdAs
-     * @return void
-     */
-    public function setCreatedAs(mixed $createdAs): void;
     
     /**
      * Returns the value of field updatedAt
@@ -358,7 +249,7 @@ interface FileAbstractInterface extends ModelInterface
     /**
      * Returns the value of field updatedBy
      * Column: updated_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getUpdatedBy(): mixed;
@@ -366,28 +257,11 @@ interface FileAbstractInterface extends ModelInterface
     /**
      * Sets the value of field updatedBy
      * Column: updated_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $updatedBy
      * @return void
      */
     public function setUpdatedBy(mixed $updatedBy): void;
-    
-    /**
-     * Returns the value of field updatedAs
-     * Column: updated_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getUpdatedAs(): mixed;
-    
-    /**
-     * Sets the value of field updatedAs
-     * Column: updated_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $updatedAs
-     * @return void
-     */
-    public function setUpdatedAs(mixed $updatedAs): void;
     
     /**
      * Returns the value of field deletedAt
@@ -407,26 +281,9 @@ interface FileAbstractInterface extends ModelInterface
     public function setDeletedAt(mixed $deletedAt): void;
     
     /**
-     * Returns the value of field deletedAs
-     * Column: deleted_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getDeletedAs(): mixed;
-    
-    /**
-     * Sets the value of field deletedAs
-     * Column: deleted_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $deletedAs
-     * @return void
-     */
-    public function setDeletedAs(mixed $deletedAs): void;
-    
-    /**
      * Returns the value of field deletedBy
      * Column: deleted_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getDeletedBy(): mixed;
@@ -434,60 +291,9 @@ interface FileAbstractInterface extends ModelInterface
     /**
      * Sets the value of field deletedBy
      * Column: deleted_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $deletedBy
      * @return void
      */
     public function setDeletedBy(mixed $deletedBy): void;
-    
-    /**
-     * Returns the value of field restoredAt
-     * Column: restored_at
-     * Attributes: Type(4)
-     * @return mixed
-     */
-    public function getRestoredAt(): mixed;
-    
-    /**
-     * Sets the value of field restoredAt
-     * Column: restored_at 
-     * Attributes: Type(4)
-     * @param mixed $restoredAt
-     * @return void
-     */
-    public function setRestoredAt(mixed $restoredAt): void;
-    
-    /**
-     * Returns the value of field restoredBy
-     * Column: restored_by
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getRestoredBy(): mixed;
-    
-    /**
-     * Sets the value of field restoredBy
-     * Column: restored_by 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $restoredBy
-     * @return void
-     */
-    public function setRestoredBy(mixed $restoredBy): void;
-    
-    /**
-     * Returns the value of field restoredAs
-     * Column: restored_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getRestoredAs(): mixed;
-    
-    /**
-     * Sets the value of field restoredAs
-     * Column: restored_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $restoredAs
-     * @return void
-     */
-    public function setRestoredAs(mixed $restoredAs): void;
 }

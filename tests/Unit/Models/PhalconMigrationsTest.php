@@ -50,18 +50,6 @@ class PhalconMigrationsTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertInstanceOf(\Phalcon\Mvc\Model::class, $this->phalconMigrations);
     }
     
-    public function testGetId(): void
-    {
-        $this->assertEquals(null, $this->phalconMigrations->getId());
-    }
-    
-    public function testSetId(): void
-    {
-        $value = uniqid();
-        $this->phalconMigrations->setId($value);
-        $this->assertEquals($value, $this->phalconMigrations->getId());
-    }
-
     public function testGetVersion(): void
     {
         $this->assertEquals(null, $this->phalconMigrations->getVersion());

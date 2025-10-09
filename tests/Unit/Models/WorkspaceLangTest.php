@@ -62,6 +62,18 @@ class WorkspaceLangTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->workspaceLang->getId());
     }
 
+    public function testGetUuid(): void
+    {
+        $this->assertEquals(null, $this->workspaceLang->getUuid());
+    }
+    
+    public function testSetUuid(): void
+    {
+        $value = uniqid();
+        $this->workspaceLang->setUuid($value);
+        $this->assertEquals($value, $this->workspaceLang->getUuid());
+    }
+
     public function testGetWorkspaceId(): void
     {
         $this->assertEquals(null, $this->workspaceLang->getWorkspaceId());
@@ -100,7 +112,7 @@ class WorkspaceLangTest extends \Zemit\Tests\Unit\AbstractUnit
 
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->workspaceLang->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->workspaceLang->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -120,126 +132,6 @@ class WorkspaceLangTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->workspaceLang->setCreatedBy($value);
         $this->assertEquals($value, $this->workspaceLang->getCreatedBy());
-    }
-
-    public function testGetCreatedAs(): void
-    {
-        $this->assertEquals(null, $this->workspaceLang->getCreatedAs());
-    }
-    
-    public function testSetCreatedAs(): void
-    {
-        $value = uniqid();
-        $this->workspaceLang->setCreatedAs($value);
-        $this->assertEquals($value, $this->workspaceLang->getCreatedAs());
-    }
-
-    public function testGetUpdatedAt(): void
-    {
-        $this->assertEquals(null, $this->workspaceLang->getUpdatedAt());
-    }
-    
-    public function testSetUpdatedAt(): void
-    {
-        $value = uniqid();
-        $this->workspaceLang->setUpdatedAt($value);
-        $this->assertEquals($value, $this->workspaceLang->getUpdatedAt());
-    }
-
-    public function testGetUpdatedBy(): void
-    {
-        $this->assertEquals(null, $this->workspaceLang->getUpdatedBy());
-    }
-    
-    public function testSetUpdatedBy(): void
-    {
-        $value = uniqid();
-        $this->workspaceLang->setUpdatedBy($value);
-        $this->assertEquals($value, $this->workspaceLang->getUpdatedBy());
-    }
-
-    public function testGetUpdatedAs(): void
-    {
-        $this->assertEquals(null, $this->workspaceLang->getUpdatedAs());
-    }
-    
-    public function testSetUpdatedAs(): void
-    {
-        $value = uniqid();
-        $this->workspaceLang->setUpdatedAs($value);
-        $this->assertEquals($value, $this->workspaceLang->getUpdatedAs());
-    }
-
-    public function testGetDeletedAt(): void
-    {
-        $this->assertEquals(null, $this->workspaceLang->getDeletedAt());
-    }
-    
-    public function testSetDeletedAt(): void
-    {
-        $value = uniqid();
-        $this->workspaceLang->setDeletedAt($value);
-        $this->assertEquals($value, $this->workspaceLang->getDeletedAt());
-    }
-
-    public function testGetDeletedAs(): void
-    {
-        $this->assertEquals(null, $this->workspaceLang->getDeletedAs());
-    }
-    
-    public function testSetDeletedAs(): void
-    {
-        $value = uniqid();
-        $this->workspaceLang->setDeletedAs($value);
-        $this->assertEquals($value, $this->workspaceLang->getDeletedAs());
-    }
-
-    public function testGetDeletedBy(): void
-    {
-        $this->assertEquals(null, $this->workspaceLang->getDeletedBy());
-    }
-    
-    public function testSetDeletedBy(): void
-    {
-        $value = uniqid();
-        $this->workspaceLang->setDeletedBy($value);
-        $this->assertEquals($value, $this->workspaceLang->getDeletedBy());
-    }
-
-    public function testGetRestoredAt(): void
-    {
-        $this->assertEquals(null, $this->workspaceLang->getRestoredAt());
-    }
-    
-    public function testSetRestoredAt(): void
-    {
-        $value = uniqid();
-        $this->workspaceLang->setRestoredAt($value);
-        $this->assertEquals($value, $this->workspaceLang->getRestoredAt());
-    }
-
-    public function testGetRestoredBy(): void
-    {
-        $this->assertEquals(null, $this->workspaceLang->getRestoredBy());
-    }
-    
-    public function testSetRestoredBy(): void
-    {
-        $value = uniqid();
-        $this->workspaceLang->setRestoredBy($value);
-        $this->assertEquals($value, $this->workspaceLang->getRestoredBy());
-    }
-
-    public function testGetDeletedCopy1(): void
-    {
-        $this->assertEquals(null, $this->workspaceLang->getDeletedCopy1());
-    }
-    
-    public function testSetDeletedCopy1(): void
-    {
-        $value = uniqid();
-        $this->workspaceLang->setDeletedCopy1($value);
-        $this->assertEquals($value, $this->workspaceLang->getDeletedCopy1());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void

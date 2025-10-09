@@ -62,6 +62,18 @@ class LogTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->log->getId());
     }
 
+    public function testGetUuid(): void
+    {
+        $this->assertEquals(null, $this->log->getUuid());
+    }
+    
+    public function testSetUuid(): void
+    {
+        $value = uniqid();
+        $this->log->setUuid($value);
+        $this->assertEquals($value, $this->log->getUuid());
+    }
+
     public function testGetLevel(): void
     {
         $this->assertEquals(null, $this->log->getLevel());
@@ -84,18 +96,6 @@ class LogTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->log->setType($value);
         $this->assertEquals($value, $this->log->getType());
-    }
-
-    public function testGetName(): void
-    {
-        $this->assertEquals(null, $this->log->getName());
-    }
-    
-    public function testSetName(): void
-    {
-        $value = uniqid();
-        $this->log->setName($value);
-        $this->assertEquals($value, $this->log->getName());
     }
 
     public function testGetMessage(): void
@@ -122,33 +122,9 @@ class LogTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->log->getContext());
     }
 
-    public function testGetDate(): void
-    {
-        $this->assertEquals(null, $this->log->getDate());
-    }
-    
-    public function testSetDate(): void
-    {
-        $value = uniqid();
-        $this->log->setDate($value);
-        $this->assertEquals($value, $this->log->getDate());
-    }
-
-    public function testGetDeleted(): void
-    {
-        $this->assertEquals(null, $this->log->getDeleted());
-    }
-    
-    public function testSetDeleted(): void
-    {
-        $value = uniqid();
-        $this->log->setDeleted($value);
-        $this->assertEquals($value, $this->log->getDeleted());
-    }
-
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->log->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->log->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -168,126 +144,6 @@ class LogTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->log->setCreatedBy($value);
         $this->assertEquals($value, $this->log->getCreatedBy());
-    }
-
-    public function testGetCreatedAs(): void
-    {
-        $this->assertEquals(null, $this->log->getCreatedAs());
-    }
-    
-    public function testSetCreatedAs(): void
-    {
-        $value = uniqid();
-        $this->log->setCreatedAs($value);
-        $this->assertEquals($value, $this->log->getCreatedAs());
-    }
-
-    public function testGetUpdatedAt(): void
-    {
-        $this->assertEquals(null, $this->log->getUpdatedAt());
-    }
-    
-    public function testSetUpdatedAt(): void
-    {
-        $value = uniqid();
-        $this->log->setUpdatedAt($value);
-        $this->assertEquals($value, $this->log->getUpdatedAt());
-    }
-
-    public function testGetUpdatedBy(): void
-    {
-        $this->assertEquals(null, $this->log->getUpdatedBy());
-    }
-    
-    public function testSetUpdatedBy(): void
-    {
-        $value = uniqid();
-        $this->log->setUpdatedBy($value);
-        $this->assertEquals($value, $this->log->getUpdatedBy());
-    }
-
-    public function testGetUpdatedAs(): void
-    {
-        $this->assertEquals(null, $this->log->getUpdatedAs());
-    }
-    
-    public function testSetUpdatedAs(): void
-    {
-        $value = uniqid();
-        $this->log->setUpdatedAs($value);
-        $this->assertEquals($value, $this->log->getUpdatedAs());
-    }
-
-    public function testGetDeletedAt(): void
-    {
-        $this->assertEquals(null, $this->log->getDeletedAt());
-    }
-    
-    public function testSetDeletedAt(): void
-    {
-        $value = uniqid();
-        $this->log->setDeletedAt($value);
-        $this->assertEquals($value, $this->log->getDeletedAt());
-    }
-
-    public function testGetDeletedAs(): void
-    {
-        $this->assertEquals(null, $this->log->getDeletedAs());
-    }
-    
-    public function testSetDeletedAs(): void
-    {
-        $value = uniqid();
-        $this->log->setDeletedAs($value);
-        $this->assertEquals($value, $this->log->getDeletedAs());
-    }
-
-    public function testGetDeletedBy(): void
-    {
-        $this->assertEquals(null, $this->log->getDeletedBy());
-    }
-    
-    public function testSetDeletedBy(): void
-    {
-        $value = uniqid();
-        $this->log->setDeletedBy($value);
-        $this->assertEquals($value, $this->log->getDeletedBy());
-    }
-
-    public function testGetRestoredAt(): void
-    {
-        $this->assertEquals(null, $this->log->getRestoredAt());
-    }
-    
-    public function testSetRestoredAt(): void
-    {
-        $value = uniqid();
-        $this->log->setRestoredAt($value);
-        $this->assertEquals($value, $this->log->getRestoredAt());
-    }
-
-    public function testGetRestoredBy(): void
-    {
-        $this->assertEquals(null, $this->log->getRestoredBy());
-    }
-    
-    public function testSetRestoredBy(): void
-    {
-        $value = uniqid();
-        $this->log->setRestoredBy($value);
-        $this->assertEquals($value, $this->log->getRestoredBy());
-    }
-
-    public function testGetRestoredAs(): void
-    {
-        $this->assertEquals(null, $this->log->getRestoredAs());
-    }
-    
-    public function testSetRestoredAs(): void
-    {
-        $value = uniqid();
-        $this->log->setRestoredAs($value);
-        $this->assertEquals($value, $this->log->getRestoredAs());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void

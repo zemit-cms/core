@@ -20,21 +20,13 @@ use Zemit\Mvc\ModelInterface;
  * @property DataAbstractInterface[] $DataList
  * @method DataAbstractInterface[] getDataList(?array $params = null)
  *
- * @property WorkspaceAbstractInterface[] $dataworkspacelist
- * @property WorkspaceAbstractInterface[] $DataWorkspaceList
- * @method WorkspaceAbstractInterface[] getDataWorkspaceList(?array $params = null)
- *
- * @property TableAbstractInterface[] $datatablelist
- * @property TableAbstractInterface[] $DataTableList
- * @method TableAbstractInterface[] getDataTableList(?array $params = null)
- *
  * @property RecordAbstractInterface[] $datarecordlist
  * @property RecordAbstractInterface[] $DataRecordList
  * @method RecordAbstractInterface[] getDataRecordList(?array $params = null)
  *
- * @property WorkspaceAbstractInterface $workspaceentity
- * @property WorkspaceAbstractInterface $WorkspaceEntity
- * @method WorkspaceAbstractInterface getWorkspaceEntity(?array $params = null)
+ * @property ValidatorAbstractInterface[] $validatorlist
+ * @property ValidatorAbstractInterface[] $ValidatorList
+ * @method ValidatorAbstractInterface[] getValidatorList(?array $params = null)
  *
  * @property TableAbstractInterface $tableentity
  * @property TableAbstractInterface $TableEntity
@@ -44,36 +36,20 @@ use Zemit\Mvc\ModelInterface;
  * @property UserAbstractInterface $CreatedByEntity
  * @method UserAbstractInterface getCreatedByEntity(?array $params = null)
  *
- * @property UserAbstractInterface $createdasentity
- * @property UserAbstractInterface $CreatedAsEntity
- * @method UserAbstractInterface getCreatedAsEntity(?array $params = null)
- *
  * @property UserAbstractInterface $updatedbyentity
  * @property UserAbstractInterface $UpdatedByEntity
  * @method UserAbstractInterface getUpdatedByEntity(?array $params = null)
  *
- * @property UserAbstractInterface $updatedasentity
- * @property UserAbstractInterface $UpdatedAsEntity
- * @method UserAbstractInterface getUpdatedAsEntity(?array $params = null)
- *
- * @property UserAbstractInterface $deletedasentity
- * @property UserAbstractInterface $DeletedAsEntity
- * @method UserAbstractInterface getDeletedAsEntity(?array $params = null)
- *
  * @property UserAbstractInterface $deletedbyentity
  * @property UserAbstractInterface $DeletedByEntity
  * @method UserAbstractInterface getDeletedByEntity(?array $params = null)
- *
- * @property UserAbstractInterface $restoredbyentity
- * @property UserAbstractInterface $RestoredByEntity
- * @method UserAbstractInterface getRestoredByEntity(?array $params = null)
  */
 interface ColumnAbstractInterface extends ModelInterface
 {
     /**
      * Returns the value of field id
      * Column: id
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
     public function getId(): mixed;
@@ -81,7 +57,7 @@ interface ColumnAbstractInterface extends ModelInterface
     /**
      * Sets the value of field id
      * Column: id 
-     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement
+     * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @param mixed $id
      * @return void
      */
@@ -105,26 +81,9 @@ interface ColumnAbstractInterface extends ModelInterface
     public function setUuid(mixed $uuid): void;
     
     /**
-     * Returns the value of field workspaceId
-     * Column: workspace_id
-     * Attributes: NotNull | Numeric | Unsigned
-     * @return mixed
-     */
-    public function getWorkspaceId(): mixed;
-    
-    /**
-     * Sets the value of field workspaceId
-     * Column: workspace_id 
-     * Attributes: NotNull | Numeric | Unsigned
-     * @param mixed $workspaceId
-     * @return void
-     */
-    public function setWorkspaceId(mixed $workspaceId): void;
-    
-    /**
      * Returns the value of field tableId
      * Column: table_id
-     * Attributes: NotNull | Numeric | Unsigned
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getTableId(): mixed;
@@ -132,45 +91,28 @@ interface ColumnAbstractInterface extends ModelInterface
     /**
      * Sets the value of field tableId
      * Column: table_id 
-     * Attributes: NotNull | Numeric | Unsigned
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $tableId
      * @return void
      */
     public function setTableId(mixed $tableId): void;
     
     /**
-     * Returns the value of field name
-     * Column: name
+     * Returns the value of field label
+     * Column: label
      * Attributes: NotNull | Size(60) | Type(2)
      * @return mixed
      */
-    public function getName(): mixed;
+    public function getLabel(): mixed;
     
     /**
-     * Sets the value of field name
-     * Column: name 
+     * Sets the value of field label
+     * Column: label 
      * Attributes: NotNull | Size(60) | Type(2)
-     * @param mixed $name
+     * @param mixed $label
      * @return void
      */
-    public function setName(mixed $name): void;
-    
-    /**
-     * Returns the value of field description
-     * Column: description
-     * Attributes: Size(120) | Type(2)
-     * @return mixed
-     */
-    public function getDescription(): mixed;
-    
-    /**
-     * Sets the value of field description
-     * Column: description 
-     * Attributes: Size(120) | Type(2)
-     * @param mixed $description
-     * @return void
-     */
-    public function setDescription(mixed $description): void;
+    public function setLabel(mixed $label): void;
     
     /**
      * Returns the value of field type
@@ -190,26 +132,43 @@ interface ColumnAbstractInterface extends ModelInterface
     public function setType(mixed $type): void;
     
     /**
-     * Returns the value of field validationRegex
-     * Column: validation_regex
-     * Attributes: Size(1000) | Type(2)
+     * Returns the value of field description
+     * Column: description
+     * Attributes: Size(120) | Type(2)
      * @return mixed
      */
-    public function getValidationRegex(): mixed;
+    public function getDescription(): mixed;
     
     /**
-     * Sets the value of field validationRegex
-     * Column: validation_regex 
-     * Attributes: Size(1000) | Type(2)
-     * @param mixed $validationRegex
+     * Sets the value of field description
+     * Column: description 
+     * Attributes: Size(120) | Type(2)
+     * @param mixed $description
      * @return void
      */
-    public function setValidationRegex(mixed $validationRegex): void;
+    public function setDescription(mixed $description): void;
+    
+    /**
+     * Returns the value of field options
+     * Column: options
+     * Attributes: Type(24)
+     * @return mixed
+     */
+    public function getOptions(): mixed;
+    
+    /**
+     * Sets the value of field options
+     * Column: options 
+     * Attributes: Type(24)
+     * @param mixed $options
+     * @return void
+     */
+    public function setOptions(mixed $options): void;
     
     /**
      * Returns the value of field deleted
      * Column: deleted
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
     public function getDeleted(): mixed;
@@ -217,7 +176,7 @@ interface ColumnAbstractInterface extends ModelInterface
     /**
      * Sets the value of field deleted
      * Column: deleted 
-     * Attributes: NotNull | Numeric | Unsigned | Type(26)
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @param mixed $deleted
      * @return void
      */
@@ -243,7 +202,7 @@ interface ColumnAbstractInterface extends ModelInterface
     /**
      * Returns the value of field createdBy
      * Column: created_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getCreatedBy(): mixed;
@@ -251,28 +210,11 @@ interface ColumnAbstractInterface extends ModelInterface
     /**
      * Sets the value of field createdBy
      * Column: created_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $createdBy
      * @return void
      */
     public function setCreatedBy(mixed $createdBy): void;
-    
-    /**
-     * Returns the value of field createdAs
-     * Column: created_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getCreatedAs(): mixed;
-    
-    /**
-     * Sets the value of field createdAs
-     * Column: created_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $createdAs
-     * @return void
-     */
-    public function setCreatedAs(mixed $createdAs): void;
     
     /**
      * Returns the value of field updatedAt
@@ -294,7 +236,7 @@ interface ColumnAbstractInterface extends ModelInterface
     /**
      * Returns the value of field updatedBy
      * Column: updated_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getUpdatedBy(): mixed;
@@ -302,28 +244,11 @@ interface ColumnAbstractInterface extends ModelInterface
     /**
      * Sets the value of field updatedBy
      * Column: updated_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $updatedBy
      * @return void
      */
     public function setUpdatedBy(mixed $updatedBy): void;
-    
-    /**
-     * Returns the value of field updatedAs
-     * Column: updated_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getUpdatedAs(): mixed;
-    
-    /**
-     * Sets the value of field updatedAs
-     * Column: updated_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $updatedAs
-     * @return void
-     */
-    public function setUpdatedAs(mixed $updatedAs): void;
     
     /**
      * Returns the value of field deletedAt
@@ -343,26 +268,9 @@ interface ColumnAbstractInterface extends ModelInterface
     public function setDeletedAt(mixed $deletedAt): void;
     
     /**
-     * Returns the value of field deletedAs
-     * Column: deleted_as
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getDeletedAs(): mixed;
-    
-    /**
-     * Sets the value of field deletedAs
-     * Column: deleted_as 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $deletedAs
-     * @return void
-     */
-    public function setDeletedAs(mixed $deletedAs): void;
-    
-    /**
      * Returns the value of field deletedBy
      * Column: deleted_by
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
     public function getDeletedBy(): mixed;
@@ -370,43 +278,9 @@ interface ColumnAbstractInterface extends ModelInterface
     /**
      * Sets the value of field deletedBy
      * Column: deleted_by 
-     * Attributes: Numeric | Unsigned
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $deletedBy
      * @return void
      */
     public function setDeletedBy(mixed $deletedBy): void;
-    
-    /**
-     * Returns the value of field restoredAt
-     * Column: restored_at
-     * Attributes: Type(4)
-     * @return mixed
-     */
-    public function getRestoredAt(): mixed;
-    
-    /**
-     * Sets the value of field restoredAt
-     * Column: restored_at 
-     * Attributes: Type(4)
-     * @param mixed $restoredAt
-     * @return void
-     */
-    public function setRestoredAt(mixed $restoredAt): void;
-    
-    /**
-     * Returns the value of field restoredBy
-     * Column: restored_by
-     * Attributes: Numeric | Unsigned
-     * @return mixed
-     */
-    public function getRestoredBy(): mixed;
-    
-    /**
-     * Sets the value of field restoredBy
-     * Column: restored_by 
-     * Attributes: Numeric | Unsigned
-     * @param mixed $restoredBy
-     * @return void
-     */
-    public function setRestoredBy(mixed $restoredBy): void;
 }

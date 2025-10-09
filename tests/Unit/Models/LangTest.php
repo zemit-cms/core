@@ -62,16 +62,16 @@ class LangTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->lang->getId());
     }
 
-    public function testGetLabel(): void
+    public function testGetUuid(): void
     {
-        $this->assertEquals(null, $this->lang->getLabel());
+        $this->assertEquals(null, $this->lang->getUuid());
     }
     
-    public function testSetLabel(): void
+    public function testSetUuid(): void
     {
         $value = uniqid();
-        $this->lang->setLabel($value);
-        $this->assertEquals($value, $this->lang->getLabel());
+        $this->lang->setUuid($value);
+        $this->assertEquals($value, $this->lang->getUuid());
     }
 
     public function testGetCode(): void
@@ -84,6 +84,18 @@ class LangTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->lang->setCode($value);
         $this->assertEquals($value, $this->lang->getCode());
+    }
+
+    public function testGetLabel(): void
+    {
+        $this->assertEquals(null, $this->lang->getLabel());
+    }
+    
+    public function testSetLabel(): void
+    {
+        $value = uniqid();
+        $this->lang->setLabel($value);
+        $this->assertEquals($value, $this->lang->getLabel());
     }
 
     public function testGetDeleted(): void
@@ -100,7 +112,7 @@ class LangTest extends \Zemit\Tests\Unit\AbstractUnit
 
     public function testGetCreatedAt(): void
     {
-        $this->assertEquals(null, $this->lang->getCreatedAt());
+        $this->assertEquals('current_timestamp()', $this->lang->getCreatedAt());
     }
     
     public function testSetCreatedAt(): void
@@ -120,18 +132,6 @@ class LangTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->lang->setCreatedBy($value);
         $this->assertEquals($value, $this->lang->getCreatedBy());
-    }
-
-    public function testGetCreatedAs(): void
-    {
-        $this->assertEquals(null, $this->lang->getCreatedAs());
-    }
-    
-    public function testSetCreatedAs(): void
-    {
-        $value = uniqid();
-        $this->lang->setCreatedAs($value);
-        $this->assertEquals($value, $this->lang->getCreatedAs());
     }
 
     public function testGetUpdatedAt(): void
@@ -158,18 +158,6 @@ class LangTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->lang->getUpdatedBy());
     }
 
-    public function testGetUpdatedAs(): void
-    {
-        $this->assertEquals(null, $this->lang->getUpdatedAs());
-    }
-    
-    public function testSetUpdatedAs(): void
-    {
-        $value = uniqid();
-        $this->lang->setUpdatedAs($value);
-        $this->assertEquals($value, $this->lang->getUpdatedAs());
-    }
-
     public function testGetDeletedAt(): void
     {
         $this->assertEquals(null, $this->lang->getDeletedAt());
@@ -182,18 +170,6 @@ class LangTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->lang->getDeletedAt());
     }
 
-    public function testGetDeletedAs(): void
-    {
-        $this->assertEquals(null, $this->lang->getDeletedAs());
-    }
-    
-    public function testSetDeletedAs(): void
-    {
-        $value = uniqid();
-        $this->lang->setDeletedAs($value);
-        $this->assertEquals($value, $this->lang->getDeletedAs());
-    }
-
     public function testGetDeletedBy(): void
     {
         $this->assertEquals(null, $this->lang->getDeletedBy());
@@ -204,30 +180,6 @@ class LangTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->lang->setDeletedBy($value);
         $this->assertEquals($value, $this->lang->getDeletedBy());
-    }
-
-    public function testGetRestoredAt(): void
-    {
-        $this->assertEquals(null, $this->lang->getRestoredAt());
-    }
-    
-    public function testSetRestoredAt(): void
-    {
-        $value = uniqid();
-        $this->lang->setRestoredAt($value);
-        $this->assertEquals($value, $this->lang->getRestoredAt());
-    }
-
-    public function testGetRestoredBy(): void
-    {
-        $this->assertEquals(null, $this->lang->getRestoredBy());
-    }
-    
-    public function testSetRestoredBy(): void
-    {
-        $value = uniqid();
-        $this->lang->setRestoredBy($value);
-        $this->assertEquals($value, $this->lang->getRestoredBy());
     }
     
     public function testGetColumnMapShouldBeAnArray(): void
