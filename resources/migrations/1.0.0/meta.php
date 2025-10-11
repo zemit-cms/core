@@ -64,7 +64,7 @@ class MetaMigration_100 extends Migration
                         'type' => Column::TYPE_VARCHAR,
                         'notNull' => true,
                         'size' => 60,
-                        'comment' => "e.g., post, user, site",
+                        'comment' => "e.g., "post", "user", "site"",
                         'after' => 'value'
                     ]
                 ),

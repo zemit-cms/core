@@ -60,6 +60,15 @@ class UserMigration_100 extends Migration
                     ]
                 ),
                 new Column(
+                    'reset_token',
+                    [
+                        'type' => Column::TYPE_VARCHAR,
+                        'notNull' => false,
+                        'size' => 255,
+                        'after' => 'password'
+                    ]
+                ),
+                new Column(
                     'deleted',
                     [
                         'type' => Column::TYPE_TINYINTEGER,
@@ -67,7 +76,7 @@ class UserMigration_100 extends Migration
                         'unsigned' => true,
                         'notNull' => true,
                         'size' => 1,
-                        'after' => 'password'
+                        'after' => 'reset_token'
                     ]
                 ),
                 new Column(

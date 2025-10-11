@@ -47,7 +47,7 @@ class RoleMigration_100 extends Migration
                         'type' => Column::TYPE_VARCHAR,
                         'notNull' => true,
                         'size' => 50,
-                        'comment' => "Programmatic identifier, e.g., admin, editor",
+                        'comment' => "Programmatic identifier, e.g., "admin", "editor"",
                         'after' => 'uuid'
                     ]
                 ),
@@ -57,7 +57,7 @@ class RoleMigration_100 extends Migration
                         'type' => Column::TYPE_VARCHAR,
                         'notNull' => true,
                         'size' => 100,
-                        'comment' => "Human-readable name, e.g., Administrator",
+                        'comment' => "Human-readable name, e.g., "Administrator"",
                         'after' => 'key'
                     ]
                 ),

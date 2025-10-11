@@ -57,7 +57,7 @@ class TranslateMigration_100 extends Migration
                         'type' => Column::TYPE_VARCHAR,
                         'notNull' => true,
                         'size' => 60,
-                        'comment' => "e.g., post, category",
+                        'comment' => "e.g., "post", "category"",
                         'after' => 'lang_id'
                     ]
                 ),
@@ -78,7 +78,7 @@ class TranslateMigration_100 extends Migration
                         'type' => Column::TYPE_VARCHAR,
                         'notNull' => true,
                         'size' => 60,
-                        'comment' => "e.g., label, content",
+                        'comment' => "e.g., "label", "content"",
                         'after' => 'translatable_id'
                     ]
                 ),
