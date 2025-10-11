@@ -12,6 +12,7 @@
 namespace Zemit\Encryption;
 
 use Phalcon\Encryption\Security as PhalconSecurity;
+use Zemit\Encryption\Security\Random;
 use Zemit\Config\ConfigInterface;
 
 /**
@@ -19,6 +20,12 @@ use Zemit\Config\ConfigInterface;
  */
 class Security extends PhalconSecurity
 {
+    public function __construct(?\Phalcon\Session\ManagerInterface $session = null, ?\Phalcon\Http\RequestInterface $request = null)
+    {
+        parent::__construct($session, $request);
+        $this->random = new Random();
+    }
+
     public function getConfig(): ConfigInterface
     {
         return $this->getDI()->get('config');
@@ -37,5 +44,10 @@ class Security extends PhalconSecurity
         }
         
         return parent::hash($password, $options);
+    }
+    
+    public function getRandom(): Random
+    {
+        return $this->random;
     }
 }
