@@ -13,7 +13,7 @@ namespace Zemit\Mvc\Model\Traits;
 
 use Phalcon\Db\RawValue;
 use Phalcon\Mvc\EntityInterface;
-use Phalcon\Encryption\Security as SecurityService;
+use Zemit\Encryption\Security;
 use Zemit\Mvc\Model\Behavior\Transformable;
 use Zemit\Mvc\Model\Traits\Abstracts\AbstractBehavior;
 use Zemit\Mvc\Model\Traits\Abstracts\AbstractInjectable;
@@ -33,11 +33,11 @@ trait Uuid
         $options ??= $this->getOptionsManager()->get('uuid') ?? [];
         
         $field = $options['field'] ?? 'uuid';
-        $native = $options['native'] ?? true;
+        $native = $options['native'] ?? false;
         $binary = $options['binary'] ?? false;
         
         $security = $this->getDI()->get('security');
-        assert($security instanceof SecurityService);
+        assert($security instanceof Security);
         
         $this->setUuidBehavior(new Transformable([
             'beforeValidationOnCreate' => [
@@ -48,8 +48,8 @@ trait Uuid
                             : new RawValue('UUID()')
                         )
                         : ($binary
-                            ? $this->getBinaryUuid($security->getRandom()->uuid())
-                            : $security->getRandom()->uuid()
+                            ? $this->getBinaryUuid($security->getRandom()->uuidv7())
+                            : $security->getRandom()->uuidv7()
                         );
                 },
             ],
