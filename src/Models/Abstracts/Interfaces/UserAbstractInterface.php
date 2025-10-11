@@ -143,6 +143,23 @@ interface UserAbstractInterface extends ModelInterface
     public function setPassword(mixed $password): void;
     
     /**
+     * Returns the value of field resetToken
+     * Column: reset_token
+     * Attributes: Size(255) | Type(2)
+     * @return mixed
+     */
+    public function getResetToken(): mixed;
+    
+    /**
+     * Sets the value of field resetToken
+     * Column: reset_token 
+     * Attributes: Size(255) | Type(2)
+     * @param mixed $resetToken
+     * @return void
+     */
+    public function setResetToken(mixed $resetToken): void;
+    
+    /**
      * Returns the value of field deleted
      * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)

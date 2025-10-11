@@ -122,6 +122,13 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
     public mixed $password = null;
         
     /**
+     * Column: reset_token
+     * Attributes: Size(255) | Type(2)
+     * @var mixed
+     */
+    public mixed $resetToken = null;
+        
+    /**
      * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @var mixed
@@ -260,6 +267,29 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
     public function setPassword(mixed $password): void
     {
         $this->password = $password;
+    }
+    
+    /**
+     * Returns the value of field resetToken
+     * Column: reset_token
+     * Attributes: Size(255) | Type(2)
+     * @return mixed
+     */
+    public function getResetToken(): mixed
+    {
+        return $this->resetToken;
+    }
+    
+    /**
+     * Sets the value of field resetToken
+     * Column: reset_token 
+     * Attributes: Size(255) | Type(2)
+     * @param mixed $resetToken
+     * @return void
+     */
+    public function setResetToken(mixed $resetToken): void
+    {
+        $this->resetToken = $resetToken;
     }
     
     /**
@@ -503,6 +533,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
         $this->addStringLengthValidation($validator, 'uuid', 0, 36, false);
         $this->addStringLengthValidation($validator, 'email', 0, 255, false);
         $this->addStringLengthValidation($validator, 'password', 0, 255, true);
+        $this->addStringLengthValidation($validator, 'resetToken', 0, 255, true);
         $this->addUnsignedIntValidation($validator, 'deleted', false);
         $this->addDateTimeValidation($validator, 'createdAt', false);
         $this->addUnsignedIntValidation($validator, 'createdBy', true);
@@ -528,6 +559,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
             'uuid' => 'uuid',
             'email' => 'email',
             'password' => 'password',
+            'reset_token' => 'resetToken',
             'deleted' => 'deleted',
             'created_at' => 'createdAt',
             'created_by' => 'createdBy',
