@@ -98,6 +98,18 @@ class UserTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->user->getPassword());
     }
 
+    public function testGetResetToken(): void
+    {
+        $this->assertEquals(null, $this->user->getResetToken());
+    }
+    
+    public function testSetResetToken(): void
+    {
+        $value = uniqid();
+        $this->user->setResetToken($value);
+        $this->assertEquals($value, $this->user->getResetToken());
+    }
+
     public function testGetDeleted(): void
     {
         $this->assertEquals(null, $this->user->getDeleted());
