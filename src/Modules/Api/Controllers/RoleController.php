@@ -25,7 +25,7 @@ class RoleController extends Controller
     public function initializeSaveFields(): void
     {
         $this->setSaveFields(new Collection([
-            'index',
+            'key',
             'labelFr',
             'labelEn'
         ]));

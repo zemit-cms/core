@@ -63,7 +63,7 @@ trait UserTrait
         ];
         
         $roleEntity = $this->models->getRole()::findFirst([
-            'index = :role:',
+            'key = :role:',
             'bind' => ['role' => $role],
             'bindTypes' => ['role' => Column::BIND_PARAM_STR],
         ]);
@@ -98,7 +98,7 @@ trait UserTrait
         ]);
         
         $roleEntity = $this->models->getRole()::findFirst([
-            'index = :role:',
+            'key = :role:',
             'bind' => ['role' => $role],
             'bindTypes' => ['role' => Column::BIND_PARAM_STR],
         ]);
