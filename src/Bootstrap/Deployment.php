@@ -131,11 +131,11 @@ class Deployment extends \Zemit\Config\Config
             'insert' => [
                 UserRole::class => [],
                 Role::class => [
-                    ['index' => 'dev', 'label' => 'Developer'],
-                    ['index' => 'admin', 'label' => 'Administrator'],
-                    ['index' => 'user', 'label' => 'User'],
-                    ['index' => 'guest', 'label' => 'Guest'],
-                    ['index' => 'everyone', 'label' => 'Everyone'],
+                    ['key' => 'dev', 'label' => 'Developer'],
+                    ['key' => 'admin', 'label' => 'Administrator'],
+                    ['key' => 'user', 'label' => 'User'],
+                    ['key' => 'guest', 'label' => 'Guest'],
+                    ['key' => 'everyone', 'label' => 'Everyone'],
                 ],
                 User::class => [
                     ['username' => 'dev', 'email' => 'dev@zemit.com', 'firstName' => 'Developer', 'lastName' => 'Zemit', 'rolelist' => [1]],

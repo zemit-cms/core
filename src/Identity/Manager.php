@@ -214,8 +214,35 @@ class Manager extends Injectable implements ManagerInterface, OptionsInterface
             }
             
             // send confirmation email
+            
+            $template = $this->models->getTemplate();
+            $template = $template::findFirst([
+                'key = :key: and deleted = 0',
+                'bind' => ['key' => $resetPasswordConfig['confirmationTemplateKey'] ?? 'reset-password-confirmation'],
+                'bindTypes' => ['key' => \Phalcon\Db\Column::BIND_PARAM_STR],
+            ]);
+            
+            
+            if ($template) {
+                $message = $this->mailer->createMessageFromView(
+                    $resetPasswordConfig['viewPath'] ?? 'email',
+                    [
+                        'subject' => $template->getSubject(),
+                        'content' => $template->getContent(),
+                        'user' => $user,
+                    ],
+                    $this->view->getViewsDir()
+                );
+                $message->to($user->getEmail());
+                $message->subject($template->getSubject());
+                
+                assert($template instanceof \Zemit\Models\Template);
+                $message->getMessage()->Subject = $template->getSubject() ?: 'Password reset confirmation';
+            }
+            
+            
             $email = $this->models->getEmail();
-            $email->setViewPath($resetPasswordConfig['viewPath'] ?? 'email');
+            $email->setViewPath();
             $email->setTemplateByKey($resetPasswordConfig['confirmationTemplateKey'] ?? 'reset-password-confirmation');
             $email->setTo([$user->getEmail()]);
             $email->setMeta([
@@ -261,17 +288,17 @@ class Manager extends Injectable implements ManagerInterface, OptionsInterface
     }
     
     /**
-     * Processes the given list of entities and organizes them into an associative array indexed by each entity's index.
+     * Processes the given list of entities and organizes them into an associative array indexed by each entity's key.
      *
-     * @param array $list A list of entities, each of which must have a method `getIndex`.
-     * @return array An associative array where keys are derived from each entity's `getIndex` method and values are the entities.
+     * @param array $list A list of entities, each of which must have a method `getKey`.
+     * @return array An associative array where keys are derived from each entity's `getKey` method and values are the entities.
      */
     private function collectList(array $list): array
     {
         $ret = [];
         foreach ($list as $entity) {
-            assert(method_exists($entity, 'getIndex'));
-            $ret [$entity->getIndex()] = $entity;
+            assert(method_exists($entity, 'getKey'));
+            $ret [$entity->getKey()] = $entity;
         }
         
         return $ret;
