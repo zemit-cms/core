@@ -43,6 +43,19 @@ trait Params
             ? $this->filter->sanitize($params[$key], $filters ?? [])
             : $this->dispatcher->getParam($key, $filters ?? [], $default);
     }
+
+    /**
+     * Checks if a specific key exists in the given array of parameters or in the default parameters.
+     *
+     * @param string $key The key to check for in the parameters.
+     * @param array|null $params The array of parameters to search in. If null, the default parameters will be used.
+     * @return bool Returns true if the key exists in the parameters, false otherwise.
+     */
+    public function hasParam(string $key, ?array $params = null): bool
+    {
+        $params ??= $this->getParams();
+        return isset($params[$key]);
+    }
     
     /**
      * Retrieves parameters from the request, optionally applying filters and caching results.
