@@ -55,4 +55,16 @@ trait SearchFields
     {
         return $this->searchFields;
     }
+
+    /**
+     * Determines if the search fields are defined.
+     *
+     * This method checks whether the search fields for the model have been set.
+     *
+     * @return bool True if search fields are defined, false otherwise.
+     */
+    public function hasSearchFields(): bool
+    {
+        return $this->searchFields !== null;
+    }
 }

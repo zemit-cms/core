@@ -55,4 +55,17 @@ trait FilterFields
     {
         return $this->filterFields;
     }
+
+    /**
+     * Determines if filter fields are set.
+     *
+     * This method checks whether the filter fields have been initialized
+     * or are set to a non-null value.
+     *
+     * @return bool True if filter fields are set, false otherwise.
+     */
+    public function hasFilterFields(): bool
+    {
+        return $this->filterFields !== null;
+    }
 }

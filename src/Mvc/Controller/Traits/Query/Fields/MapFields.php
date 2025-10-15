@@ -55,4 +55,16 @@ trait MapFields
     {
         return $this->mapFields;
     }
+
+    /**
+     * Determines if map fields are set.
+     *
+     * This method checks whether the map fields have been initialized and are not null.
+     *
+     * @return bool True if map fields are set, otherwise false.
+     */
+    public function hasMapFields(): bool
+    {
+        return $this->mapFields !== null;
+    }
 }

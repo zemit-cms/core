@@ -55,4 +55,16 @@ trait SaveFields
     {
         return $this->saveFields;
     }
+
+    /**
+     * Checks if the save fields are set.
+     *
+     * This method determines whether the save fields have been initialized.
+     *
+     * @return bool True if save fields are set, otherwise false.
+     */
+    public function hasSaveFields(): bool
+    {
+        return $this->saveFields !== null;
+    }
 }

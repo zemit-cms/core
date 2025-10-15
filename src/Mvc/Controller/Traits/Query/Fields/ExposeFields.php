@@ -55,4 +55,14 @@ trait ExposeFields
     {
         return $this->exposeFields;
     }
+
+    /**
+     * Determines if the exposeFields property is set to a non-null value.
+     *
+     * @return bool True if exposeFields is not null, false otherwise.
+     */
+    public function hasExposeFields(): bool
+    {
+        return $this->exposeFields !== null;
+    }
 }
