@@ -12,6 +12,7 @@
 namespace Zemit\Mvc\Controller\Traits\Query\Conditions;
 
 use Phalcon\Db\Column;
+use Phalcon\Filter\Exception;
 use Phalcon\Filter\Filter;
 use Phalcon\Support\Collection;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
@@ -76,7 +77,7 @@ trait FilterConditions
             if (isset($filter[0]) && is_array($filter[0])) {
                 $defaultFilterCondition = $this->defaultFilterCondition($filter, $allowedFilters, !$or);
                 if (is_string($defaultFilterCondition)) {
-                    $query []= $defaultFilterCondition;
+                    $query[] = $defaultFilterCondition;
                 } elseif (is_array($defaultFilterCondition)) {
                     $query[] = $defaultFilterCondition[0] ?? null;
                     $bind[] = $defaultFilterCondition[1] ?? null;
@@ -249,7 +250,7 @@ trait FilterConditions
             }
         }
         
-        return empty($query)? null : [
+        return empty($query) ? null : [
             '(' . implode($or ? ' or ' : ' and ', $query) . ')',
             $bind,
             $bindTypes,
@@ -366,5 +367,90 @@ trait FilterConditions
         }
         
         return Column::BIND_PARAM_NULL;
+    }
+    
+    /**
+     * Check whether the current request filters contain one or more of the specified fields.
+     *
+     * Supports nested AND/OR logic - each nested array inverts the operator.
+     *
+     * Examples:
+     *   hasFiltersParams('status')                      // checks if "status" filter exists
+     *   hasFiltersParams(['status', 'type'], true)      // "status" OR "type"
+     *   hasFiltersParams(['status', 'type'])            // "status" AND "type"
+     *   hasFiltersParams([['status', 'type']])          // "status" OR "type"
+     *   hasFiltersParams([[['status', 'type']]])        // "status" AND "type"
+     *
+     * @param array|string|null $fields List of fields to check against. If null, checks if "filters" param exists.
+     * @param bool $or If true, matches at least one (OR). If false, matches all (AND).
+     *
+     * @return bool True if the filters satisfy the condition, false otherwise.
+     *
+     * @throws Exception
+     */
+    public function hasFiltersFieldsParams(array|string|null $fields = null, bool $or = false): bool
+    {
+        // no filters param
+        if (!$this->hasParam('filters')) {
+            return false;
+        }
+        
+        $filters = $this->getParam('filters');
+        if (empty($filters)) {
+            return false;
+        }
+        
+        // if no fields specified, just check presence of filters param
+        if (is_null($fields)) {
+            return true;
+        }
+        
+        // normalize to array
+        $fields = (array)$fields;
+        
+        // collect all filter fields recursively
+        $flattenFilters = static function (array $filters) use (&$flattenFilters): array {
+            $found = [];
+            foreach ($filters as $filter) {
+                // handle nested groups
+                if (isset($filter[0]) && is_array($filter[0])) {
+                    $found = array_merge($found, $flattenFilters($filter));
+                    continue;
+                }
+                
+                if (!empty($filter['field'])) {
+                    $found[] = $filter['field'];
+                }
+            }
+            return $found;
+        };
+        
+        // helper for nested evaluation (similar to has())
+        $nestedCheck = function (array|string|null $needles, array $filters, bool $or) use (&$nestedCheck, &$flattenFilters): bool {
+            if (!is_array($needles)) {
+                $needles = isset($needles) ? [$needles] : [];
+            }
+            if (empty($needles)) {
+                return false;
+            }
+            
+            $filterFields = $flattenFilters($filters);
+            $result = [];
+            
+            foreach ($needles as $needle) {
+                if (is_array($needle)) {
+                    $result[] = $nestedCheck($needle, $filters, !$or);
+                } else {
+                    $result[] = in_array($needle, $filterFields, true);
+                }
+            }
+            
+            // logical inversion rule
+            return $or
+                ? in_array(true, $result, true) // OR
+                : !in_array(false, $result, true); // AND
+        };
+        
+        return $nestedCheck($fields, $filters, $or);
     }
 }
