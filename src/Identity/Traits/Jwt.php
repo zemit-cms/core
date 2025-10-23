@@ -42,7 +42,7 @@ trait Jwt
             
             // save new key into session when using session fallback
             if ($sessionFallback) {
-                $this->session->set($this->getSessionKey(), $claim);
+                $this->session->set($this->getSessionKey(), $this->getClaim());
             }
         }
         
@@ -62,7 +62,7 @@ trait Jwt
             
             // save new key into session when using session fallback
             if ($sessionFallback) {
-                $this->session->set($this->getSessionKey(), $claim);
+                $this->session->set($this->getSessionKey(), $this->getClaim());
             }
         }
         
@@ -122,6 +122,7 @@ trait Jwt
         }
         
         // Using Session Fallback (less secure)
+//        dd($this->config->path('identity.sessionFallback', false));
         if ($this->config->path('identity.sessionFallback', false) && $this->session->has($this->getSessionKey())) {
             $this->setClaim($this->session->get($this->getSessionKey()));
             return $this->claim;
