@@ -122,7 +122,6 @@ trait Jwt
         }
         
         // Using Session Fallback (less secure)
-//        dd($this->config->path('identity.sessionFallback', false));
         if ($this->config->path('identity.sessionFallback', false) && $this->session->has($this->getSessionKey())) {
             $this->setClaim($this->session->get($this->getSessionKey()));
             return $this->claim;
