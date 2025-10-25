@@ -16,4 +16,6 @@ use Phalcon\Di\InjectionAwareInterface;
 interface RouterInterface extends InjectionAwareInterface
 {
     public function toArray(): array;
+    
+    public function setDefaults(array $defaults);
 }
