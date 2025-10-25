@@ -368,7 +368,7 @@ PHP;
     public function createEnumOutput(string $enumName, Column $column): string
     {
         $size = $column->getSize();
-        $list = explode(',',str_replace('\'', '', $size));
+        $list = explode(',', str_replace('\'', '', (string)$size));
         $enumValues = [];
         foreach ($list as $item) {
             $constantName = Helper::upper(Helper::slugify(Helper::uncamelize($item), [], '_')) ?: '_EMPTY';
