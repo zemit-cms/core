@@ -190,6 +190,10 @@ trait Query
             }
         }
         
+        if (isset($build['group']) && is_array($build['group'])) {
+            $build['group'] = implode(', ', $build['group']);
+        }
+        
         return $this->mergeConditions(array_filter($ignoreKey? array_values($build) : $build));
     }
 
@@ -365,22 +369,33 @@ trait Query
     }
     
     /**
-     * Retrieves the count criteria based on the specified find criteria.
+     * Prepares and retrieves the modified `find` array with optional adjustments.
      *
-     * @param array|null $find An array of find criteria to filter the results. If null, the default criteria will be used.
-     *
-     * @return array An array of filtered find criteria without the 'limit' and 'offset' keys.
+     * @param array|null $find The initial `find` array to modify. If null, it defaults
+     *                         to the result of `getFind()->toArray()` or an empty array.
+     * @param bool $removeLimitOffset Whether to remove `limit` and `offset` keys
+     *                                from the `find` array. Defaults to true.
+     * @return array The adjusted `find` array, filtered with any necessary modifications.
      */
-    protected function getCalculationFind(?array $find = null): array
+    protected function getCalculationFind(?array $find = null, bool $removeLimitOffset = true): array
     {
         $find ??= $this->getFind()?->toArray() ?? [];
         
-        if (isset($find['limit'])) {
-            unset($find['limit']);
+        // remove limit
+        if ($removeLimitOffset) {
+            if (isset($find['limit'])) {
+                unset($find['limit']);
+            }
+            
+            // remove offset
+            if (isset($find['offset'])) {
+                unset($find['offset']);
+            }
         }
         
-        if (isset($find['offset'])) {
-            unset($find['offset']);
+        // calculation columns fail when the group is an array, combine it to a string
+        if (isset($find['group']) && is_array($find['group'])) {
+            $find['group'] = implode(', ', $find['group']);
         }
         
         return array_filter($find);
