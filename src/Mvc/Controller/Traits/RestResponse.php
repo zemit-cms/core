@@ -11,7 +11,6 @@
 
 namespace Zemit\Mvc\Controller\Traits;
 
-use Phalcon\Filter\Filter;
 use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\Dispatcher;
 use Zemit\Http\StatusCode as HttpStatusCode;
@@ -57,61 +56,141 @@ trait RestResponse
      */
     public function setRestResponse(mixed $response = null, ?int $code = null, ?string $status = null, int $jsonOptions = 0, int $depth = 512): ResponseInterface
     {
-        // keep forced status code or set our own
-        $statusCode = $this->response->getStatusCode();
-        $reasonPhrase = $this->response->getReasonPhrase();
-        $code ??= (int)$statusCode ?: 200;
-        $status ??= $reasonPhrase ?: HttpStatusCode::getMessage($code);
+        // Determine code & status
+        $code ??= $this->response->getStatusCode() ?: 200;
+        $status ??= $this->response->getReasonPhrase() ?: HttpStatusCode::getMessage($code);
         
-        $view = $this->view->getParamsToView();
+        // Collect view data safely
+        $view = $this->view?->getParamsToView() ?? [];
         unset($view['_']);
         
-        $hash = hash('sha512', json_encode($view)); // @todo store hash in cache layer with response content
+        // Build base response payload
+        $payload = [
+            'timestamp' => date('c'),
+            'status' => $status,
+            'code' => $code,
+            'response' => $response,
+            'view' => $view,
+        ];
         
-        // set response status code
-        $this->response->setStatusCode($code, $code . ' ' . $status);
-        
-        // @todo handle this correctly (private vs public, with cache result stored)
-        // @todo etag should be the cache key
-        $lifetime = $this->getParam('lifetime', [Filter::FILTER_ABSINT]);
-        if (!empty($lifetime)) {
-            if ($this->response->getStatusCode() === 200) {
-                $this->response->setCache($lifetime);
-                $this->response->setEtag($hash);
-            }
-        }
-        else {
-            $this->response->setCache(0);
-            $this->response->setHeader('Cache-Control', 'no-cache, max-age=0');
-        }
-        
-        $ret = [];
-        $ret['api'] = [];
-        $ret['api']['version'] = ['0.1']; // @todo
-        $ret['timestamp'] = date('c');
-        $ret['hash'] = $hash;
-        $ret['status'] = $status;
-        $ret['code'] = $code;
-        $ret['response'] = $response;
-        $ret['view'] = $view;
-        
+        // Add debug info if enabled
         if ($this->isDebugEnabled()) {
-            $ret['api']['php'] = phpversion();
-            $ret['api']['phalcon'] = $this->config->path('phalcon.version');
-            $ret['api']['zemit'] = $this->config->path('core.version');
-            $ret['api']['core'] = $this->config->path('core.name');
-            $ret['api']['app'] = $this->config->path('app.version');
-            $ret['api']['name'] = $this->config->path('app.name');
-            
-            $ret['identity'] = $this->identity ? $this->identity->getIdentity() : null;
-            $ret['profiler'] = $this->profiler ? $this->profiler->toArray() : null;
-            $ret['request'] = $this->request ? $this->request->toArray() : null;
-            $ret['dispatcher'] = $this->dispatcher ? $this->dispatcher->toArray() : null;
-            $ret['router'] = $this->router ? $this->router->toArray() : null;
-            $ret['memory'] = Utils::getMemoryUsage();
+            $payload['debug'] = $this->getDebugInfo();
         }
         
-        return $this->response->setJsonContent($ret, $jsonOptions, $depth);
+        $this->applyCacheHeaders($payload, $code);
+        if ($this->response->getStatusCode() === 304) {
+            return $this->response;
+        }
+        
+        // Finalize and return JSON response
+        $this->response->setStatusCode($code, $status);
+        return $this->response->setJsonContent($payload, $jsonOptions, $depth);
+    }
+    
+    /**
+     * Applies automatic, safe Cache-Control and ETag headers.
+     *
+     * Logic:
+     *  - Only cache "GET" 200 responses.
+     *  - Authenticated requests → private cache.
+     *  - Unauthenticated requests → public cache.
+     *  - Everything else → no-store.
+     */
+    protected function applyCacheHeaders(array $payload, int $code): void
+    {
+        $cacheConfig = $this->config->pathToArray('response.cache');
+        $enabled = $cacheConfig['enable'] ?? false;
+        $lifetime = $cacheConfig['lifetime'] ?? 0;
+        
+        // response cache is disabled
+        if (!$enabled) {
+            return;
+        }
+        
+        // Default: disable caching
+        $isAuthenticated = $this->identity?->isLoggedIn();
+        $cacheControl = 'no-store, no-cache, must-revalidate';
+        $expires = '0';
+        
+        if ($this->request->isGet() && $code === 200 && $lifetime > 0) {
+            
+            if ($cacheConfig['etag'] ?? false) {
+                $etag = hash($cacheConfig['etagAlgo'] ?? 'md5', json_encode($payload, JSON_UNESCAPED_SLASHES) ?: '');
+                $this->response->setEtag($etag);
+                
+                // If client's ETag matches → 304
+                if ($this->request->getHeader('If-None-Match') === $etag) {
+                    $this->response->setStatusCode(304, 'Not Modified');
+                    return;
+                }
+            }
+            
+            $cacheControl = $isAuthenticated? "private, max-age={$lifetime}" : "public, max-age={$lifetime}";
+            $expires = gmdate('D, d M Y H:i:s', time() + $lifetime) . ' GMT';
+        }
+        
+        $this->response->setHeader('Cache-Control', $cacheControl);
+        $this->response->setHeader('Expires', $expires);
+        
+        $this->setVaryHeaders($isAuthenticated);
+    }
+    
+    /**
+     * Sets the "Vary" HTTP header to assist caching proxies in varying responses
+     * based on specific headers, particularly authentication-related headers.
+     *
+     * Logic:
+     *  - Retrieves the default list of headers from configuration.
+     *  - If the user is authenticated, adds the authorization header.
+     *  - Ensures the "Vary" header is set with all relevant headers, avoiding duplicates.
+     *
+     * @param bool|null $isAuthenticated Indicates if the request is authenticated;
+     *                                    defaults to checking the current identity.
+     * @return void
+     */
+    public function setVaryHeaders(?bool $isAuthenticated = null): void
+    {
+        $isAuthenticated ??= $this->identity?->isLoggedIn();
+        
+        // Optional: help proxies vary safely on relevant headers
+        $varyHeaders = $this->config->pathToArray('response.cache.vary') ?? [];
+        
+        if ($isAuthenticated) {
+            $varyHeaders[] = $this->identity->getOption('authorizationHeader') ?? 'X-Authorization';
+        }
+        
+        // help proxies vary safely on auth headers
+        $this->response->setHeader('Vary', implode(', ', array_unique($varyHeaders)));
+    }
+    
+    /**
+     * Gather debug context.
+     */
+    public function getDebugInfo(): array
+    {
+        return [
+            'php' => [
+                'version' => phpversion(),
+                'sapi' => php_sapi_name(),
+                'loaded_file' => php_ini_loaded_file(),
+                'scanned_files' => explode(',', php_ini_scanned_files() ?: ''),
+                'loaded_extensions' => get_loaded_extensions(),
+                'ini' => ini_get_all(null, false),
+            ],
+            'phalcon' => [
+                ...$this->config->pathToArray('phalcon') ?? [],
+                'ini' => ini_get_all('phalcon', false)
+            ],
+            'zemit' => $this->config->pathToArray('core'),
+            'app' => $this->config->pathToArray('app'),
+            'identity' => $this->identity?->getIdentity(),
+            'profiler' => $this->profiler?->toArray(),
+            'request' => $this->request?->toArray(),
+            'dispatcher' => $this->dispatcher?->toArray(),
+            'router' => $this->router?->toArray(),
+            'memory' => Utils::getMemoryUsage(),
+        ];
     }
     
     /**
@@ -139,5 +218,4 @@ trait RestResponse
         // Return our Rest normalized response
         $dispatcher->setReturnedValue($this->setRestResponse(is_array($response) ? null : $response));
     }
-    
 }
