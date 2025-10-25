@@ -70,18 +70,23 @@ class View extends \Phalcon\Mvc\View
     #[\Override]
     public function getContent(?bool $minify = null): string
     {
+        // Normalize content from parent to a string
         $content = parent::getContent();
-        if ($minify ?? $this->getMinify()) {
-            
-            // Clean comments
-            $content = preg_replace('/<!--([^\[|(<!)].*)/', '', $content) ?? '';
-            $content = preg_replace('/(?<!\S)\/\/\s*[^\r\n]*/', '', $content) ?? '';
-            
-            // Clean Whitespace
-            $content = preg_replace('/\s{2,}/u', ' ', preg_replace('/\s{2,}/u', ' ', $content)) ?? '';
-            $content = preg_replace('/(\r?\n)/', '', $content) ?? '';
-        }
         
-        return is_array($content)? implode('', $content) : (string)$content;
+        // Determine if minification should apply
+        $shouldMinify = $minify ?? $this->getMinify();
+        if (!$shouldMinify || $content === '') {
+            return $content;
+        }
+    
+        $result = preg_replace([
+            '/<!--(?!\[if).*?-->/s', // remove HTML comments except conditional ones like <!--[if IE]>
+            '/(?<!\S)\/\/[^\r\n]*/', // remove JS-style single-line comments
+            '/\s{2,}/u', // collapse multiple spaces into one
+            '/\r?\n/', // remove newlines
+        ], ['', '', ' ', ''], $content);
+        
+        // Normalize and return
+        return trim(is_array($result) ? implode('', $result) : (string) $result);
     }
 }
