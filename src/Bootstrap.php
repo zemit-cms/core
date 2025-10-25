@@ -15,6 +15,7 @@ use Phalcon\Application\AbstractApplication;
 use Phalcon\Di\Di;
 use Phalcon\Di\DiInterface;
 use Phalcon\Di\FactoryDefault;
+use Phalcon\Di\ServiceProviderInterface;
 use Phalcon\Events;
 use Phalcon\Http\ResponseInterface;
 use Zemit\Support\Helper;
@@ -192,15 +193,23 @@ DOC;
     public function registerServices(?array $providers = null): void
     {
         $providers ??= $this->getConfig()->pathToArray('providers') ?? [];
+        
         foreach ($providers as $key => $provider) {
             if (!is_string($provider)) {
-                throw new Exception('Service Provider `' . $key . '` class name must be a string.', 400);
+                throw new Exception("Service Provider `$key` class name must be a string.", 400);
             }
+            
             if (!class_exists($provider)) {
-                throw new Exception('Service Provider `' . $key . '` class  `' . $provider . '` not found.', 404);
+                throw new Exception("Service Provider `$key` class `$provider` not found.", 404);
             }
+            
+            $instance = new $provider($this->di);
+            if (!$instance instanceof ServiceProviderInterface) {
+                throw new Exception("Service Provider `$provider` must implement ServiceProviderInterface.", 500);
+            }
+            
             if ($this->di instanceof Di) {
-                $this->di->register(new $provider($this->di));
+                $this->di->register($instance);
             }
         }
     }
@@ -327,9 +336,12 @@ DOC;
         $argv = array_slice($_SERVER['argv'] ?? [], 1);
         $response = (new Docopt())->handle($this->cliDoc, ['argv' => $argv, 'optionsFirst' => true]);
         foreach ($response as $key => $value) {
-            if (!is_null($value) && preg_match('/(<(.*?)>|\-\-(.*))/', $key, $match)) {
-                $key = lcfirst(Helper::camelize(Helper::uncamelize(array_pop($match))));
-                $args[$key] = $value;
+            if (!is_null($value) && preg_match('/(<(.*?)>|\-\-(.*))/', $key, $matches)) {
+                $match = array_pop($matches);
+                if (!empty($match)) {
+                    $key = lcfirst(Helper::camelize(Helper::uncamelize($match)));
+                    $args[$key] = $value;
+                }
             }
         }
         
