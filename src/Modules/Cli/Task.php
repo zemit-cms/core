@@ -34,9 +34,12 @@ DOC;
         $argv = array_slice($_SERVER['argv'] ?? [], 1);
         $response = (new \Docopt())->handle($this->cliDoc, ['argv' => $argv, 'optionsFirst' => false]);
         foreach ($response as $key => $value) {
-            if (!is_null($value) && preg_match('/(<(.*?)>|\-\-(.*))/', $key, $match)) {
-                $key = lcfirst(Helper::camelize(Helper::uncamelize(array_pop($match))));
-                $this->dispatcher->setParam($key, $value);
+            if (!is_null($value) && preg_match('/(<(.*?)>|\-\-(.*))/', $key, $matches)) {
+                $match = array_pop($matches);
+                if (!empty($match)) {
+                    $key = lcfirst(Helper::camelize(Helper::uncamelize($match)));
+                    $this->dispatcher->setParam($key, $value);
+                }
             }
         }
     }
@@ -150,7 +153,8 @@ DOC;
                     echo $ret;
                 }
                 else {
-                    echo json_encode($ret, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . PHP_EOL;
+                    echo json_encode($ret, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+                    echo PHP_EOL;
                 }
                 break;
                 
@@ -159,7 +163,8 @@ DOC;
                     echo $ret;
                 }
                 else {
-                    echo json_encode($ret, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . PHP_EOL;
+                    echo json_encode($ret, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+                    echo PHP_EOL;
                 }
                 break;
             
