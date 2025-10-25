@@ -98,6 +98,54 @@ class EmailTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->email->getFrom());
     }
 
+    public function testGetReplyTo(): void
+    {
+        $this->assertEquals(null, $this->email->getReplyTo());
+    }
+    
+    public function testSetReplyTo(): void
+    {
+        $value = uniqid();
+        $this->email->setReplyTo($value);
+        $this->assertEquals($value, $this->email->getReplyTo());
+    }
+
+    public function testGetReturnPath(): void
+    {
+        $this->assertEquals(null, $this->email->getReturnPath());
+    }
+    
+    public function testSetReturnPath(): void
+    {
+        $value = uniqid();
+        $this->email->setReturnPath($value);
+        $this->assertEquals($value, $this->email->getReturnPath());
+    }
+
+    public function testGetReadReceiptTo(): void
+    {
+        $this->assertEquals(null, $this->email->getReadReceiptTo());
+    }
+    
+    public function testSetReadReceiptTo(): void
+    {
+        $value = uniqid();
+        $this->email->setReadReceiptTo($value);
+        $this->assertEquals($value, $this->email->getReadReceiptTo());
+    }
+
+    public function testGetPriority(): void
+    {
+        $this->assertEquals(3, $this->email->getPriority());
+    }
+    
+    public function testSetPriority(): void
+    {
+        $value = uniqid();
+        $this->email->setPriority($value);
+        $this->assertEquals($value, $this->email->getPriority());
+    }
+
     public function testGetTo(): void
     {
         $this->assertEquals(null, $this->email->getTo());
@@ -168,6 +216,18 @@ class EmailTest extends \Zemit\Tests\Unit\AbstractUnit
         $value = uniqid();
         $this->email->setMeta($value);
         $this->assertEquals($value, $this->email->getMeta());
+    }
+
+    public function testGetSent(): void
+    {
+        $this->assertEquals(null, $this->email->getSent());
+    }
+    
+    public function testSetSent(): void
+    {
+        $value = uniqid();
+        $this->email->setSent($value);
+        $this->assertEquals($value, $this->email->getSent());
     }
 
     public function testGetSentAt(): void

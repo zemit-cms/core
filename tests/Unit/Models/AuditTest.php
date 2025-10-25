@@ -62,6 +62,18 @@ class AuditTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->audit->getId());
     }
 
+    public function testGetParentId(): void
+    {
+        $this->assertEquals(null, $this->audit->getParentId());
+    }
+    
+    public function testSetParentId(): void
+    {
+        $value = uniqid();
+        $this->audit->setParentId($value);
+        $this->assertEquals($value, $this->audit->getParentId());
+    }
+
     public function testGetUuid(): void
     {
         $this->assertEquals(null, $this->audit->getUuid());

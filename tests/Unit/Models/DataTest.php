@@ -74,6 +74,18 @@ class DataTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertEquals($value, $this->data->getUuid());
     }
 
+    public function testGetTableId(): void
+    {
+        $this->assertEquals(null, $this->data->getTableId());
+    }
+    
+    public function testSetTableId(): void
+    {
+        $value = uniqid();
+        $this->data->setTableId($value);
+        $this->assertEquals($value, $this->data->getTableId());
+    }
+
     public function testGetRecordId(): void
     {
         $this->assertEquals(null, $this->data->getRecordId());
