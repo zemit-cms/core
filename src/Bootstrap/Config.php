@@ -287,6 +287,12 @@ class Config extends \Zemit\Config\Config
 //                    'Access-Control-Request-Headers' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_REQUEST_HEADERS', ''),
 //                    'Access-Control-Request-Method' => Env::get('RESPONSE_HEADER_ACCESS_CONTROL_REQUEST_METHOD', ''),
                 ],
+                'cache' => [
+                    'enable' => Env::get('RESPONSE_CACHE_ENABLE', false),
+                    'lifetime' => Env::get('RESPONSE_CACHE_LIFETIME', 600),
+                    'vary' => array_map('trim', explode(',', Env::get('RESPONSE_CACHE_VARY', 'Authorization,Accept-Language,Cookie,Accept-Encoding'))),
+                    'etag' => Env::get('RESPONSE_CACHE_ETAG', true),
+                ],
             ],
             
             /**
