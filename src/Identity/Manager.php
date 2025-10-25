@@ -82,10 +82,10 @@ class Manager extends Injectable implements ManagerInterface, OptionsInterface
      * Handles the login process by validating the provided parameters, checking user credentials,
      * and managing session state. Returns the login status along with any validation messages.
      *
-     * @param array|null $params Parameters for login, typically including 'email' and 'password'.
+     * @param array $params Parameters for login, typically including 'email' and 'password'.
      * @return array Contains login status, logged-in user information, and validation messages.
      */
-    public function login(?array $params = null): array
+    public function login(array $params = []): array
     {
         $validation = new Validation();
         $validation->add('email', new PresenceOf(['message' => 'required']));
@@ -95,7 +95,7 @@ class Manager extends Injectable implements ManagerInterface, OptionsInterface
         
         $messages = $validation->getMessages();
         if (!$messages->count()) {
-            $user = $this->findUserByEmail($params['email']);
+            $user = !empty($params['email'])? $this->findUserByEmail($params['email']) : null;
             
             $loginFailedMessage = new Message('Login Failed', ['email', 'password'], 'LoginFailed', 401);
             $loginForbiddenMessage = new Message('Login Forbidden', ['email', 'password'], 'LoginForbidden', 403);

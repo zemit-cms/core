@@ -24,13 +24,13 @@ trait Impersonation
      * Validates the provided parameters to ensure the presence and numericality of the user ID.
      * Also handles the scenario where the user attempts to return to their original session.
      *
-     * @param array|null $params Associative array containing the key 'userId', which represents the ID of the user to log in as.
+     * @param array $params Associative array containing the key 'userId', which represents the ID of the user to log in as.
      * @return array An array containing the validation messages, login status, and login-as status:
      *               - 'messages': Validation messages, if any.
      *               - 'loggedIn': Boolean indicating whether the user is logged in under their original session.
      *               - 'loggedInAs': Boolean indicating whether the user is logged in as another user.
      */
-    public function loginAs(?array $params = []): array
+    public function loginAs(array $params = []): array
     {
         // Validation
         $validation = new Validation();

@@ -14,7 +14,7 @@ namespace Zemit\Identity\Traits\Interfaces;
 
 interface ImpersonationInterface
 {
-    public function loginAs(?array $params = []): array;
+    public function loginAs(array $params = []): array;
 
     public function logoutAs(): array;
 }
