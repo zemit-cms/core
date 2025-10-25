@@ -70,7 +70,7 @@ class Config extends \Zemit\Config\Config
 {
     public function defineConst(): void
     {
-        defined('ROOT_PATH') || define('ROOT_PATH', Env::get('ROOT_PATH', getcwd() . '/'));
+        defined('ROOT_PATH') || define('ROOT_PATH', Env::get('ROOT_PATH', (getcwd() ?: '.') . '/'));
         defined('VENDOR_PATH') || define('VENDOR_PATH', Env::get('ROOT_PATH', 'vendor/'));
         defined('CORE_PATH') || define('CORE_PATH', Env::get('CORE_PATH', mb_substr(__DIR__, 0, mb_strlen(basename(__DIR__)) * -1)));
         defined('APP_PATH') || define('APP_PATH', Env::get('APP_PATH'));
