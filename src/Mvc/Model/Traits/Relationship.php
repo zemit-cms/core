@@ -931,8 +931,9 @@ trait Relationship
     public function appendMessagesFromRecordList(?iterable $recordList = null, ?string $context = null, ?int $index = null): void
     {
         if (isset($recordList)) {
+            $indexStr = $index !== null ? (string) $index : '';
             foreach ($recordList as $key => $record) {
-                $this->appendMessagesFromRecord($record, $context . '[' . $index . ']', $key);
+                $this->appendMessagesFromRecord($record, $context . '[' . $indexStr . ']', $key);
             }
         }
     }
@@ -970,7 +971,8 @@ trait Relationship
     {
         $metaData = $message->getMetaData();
         $previousIndex = $metaData['index'] ?? '';
-        return $index . (empty($previousIndex) ? '' : '.' . $previousIndex);
+        $indexStr = $index !== null ? (string) $index : '';
+        return $indexStr . (empty($previousIndex) ? '' : '.' . $previousIndex);
     }
     
     /**
