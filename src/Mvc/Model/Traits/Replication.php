@@ -128,12 +128,14 @@ trait Replication
     public function addReadWriteConnectionBehavior(): void
     {
         $forceMasterConnectionService = function (): void {
-            self::setReplicationReadyAt((int)round(microtime(true) * 1000) + self::getReplicationLag());
+            $lag = self::getReplicationLag() ?? 0;
+            self::setReplicationReadyAt(self::nowMs() + $lag);
         };
         
         // @todo change to behavior or check if this is added multiple times
         $eventsManager = $this->getEventsManager();
         assert($eventsManager instanceof ManagerInterface);
+        
         $eventsManager->attach('model:afterSave', $forceMasterConnectionService);
         $eventsManager->attach('model:afterCreate', $forceMasterConnectionService);
         $eventsManager->attach('model:afterUpdate', $forceMasterConnectionService);
@@ -148,11 +150,18 @@ trait Replication
     public function isReplicationReady(): bool
     {
         $replicationReadyAt = self::getReplicationReadyAt();
-        if (empty($replicationReadyAt) || $replicationReadyAt < microtime(true) * 1000) {
+        
+        if (empty($replicationReadyAt) || $replicationReadyAt < self::nowMs()) {
             self::setReplicationReadyAt(null);
             return true;
         }
         
         return false;
+    }
+    
+    protected static function nowMs(): int
+    {
+        // floor() avoids rounding up when converting to int
+        return (int) round(microtime(true) * 1000.0);
     }
 }
