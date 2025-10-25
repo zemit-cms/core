@@ -39,7 +39,7 @@ class Random extends PhalconRandom
     public function uuidv7(): string
     {
         // Get Unix timestamp in milliseconds
-        $unix_ms = (int) floor(microtime(true) * 1000);
+        $unix_ms = (int) floor(microtime(true) * 1000.0);
 
         // Convert to 48-bit integer (6 bytes)
         $time_bytes = pack('J', $unix_ms); // pack as 64-bit unsigned
