@@ -30,6 +30,7 @@ class ServiceProvider extends AbstractServiceProvider
     
     protected string $serviceName = 'locale';
     
+    #[\Override]
     public function register(DiInterface $di): void
     {
         $defaultOptions = $this->defaultOptions;

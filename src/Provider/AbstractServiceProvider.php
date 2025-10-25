@@ -40,6 +40,7 @@ abstract class AbstractServiceProvider extends Injectable implements ServiceProv
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getName(): string
     {
         return $this->serviceName;
@@ -48,6 +49,7 @@ abstract class AbstractServiceProvider extends Injectable implements ServiceProv
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function boot(): void
     {
     }
@@ -55,6 +57,7 @@ abstract class AbstractServiceProvider extends Injectable implements ServiceProv
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function configure(): void
     {
     }

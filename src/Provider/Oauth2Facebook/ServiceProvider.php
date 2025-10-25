@@ -26,6 +26,7 @@ class ServiceProvider extends AbstractServiceProvider
 {
     protected string $serviceName = 'oauth2Facebook';
     
+    #[\Override]
     public function register(DiInterface $di): void
     {
         $di->setShared($this->getName(), function () use ($di) {

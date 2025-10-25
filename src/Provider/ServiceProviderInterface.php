@@ -21,6 +21,7 @@ interface ServiceProviderInterface extends \Phalcon\Di\ServiceProviderInterface,
     /**
      * Register application service.
      */
+    #[\Override]
     public function register(DiInterface $di): void;
     
     /**

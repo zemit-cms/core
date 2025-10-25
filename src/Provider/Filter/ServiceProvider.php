@@ -21,6 +21,7 @@ class ServiceProvider extends AbstractServiceProvider
 {
     protected string $serviceName = 'filter';
     
+    #[\Override]
     public function register(DiInterface $di): void
     {
         $di->set($this->getName(), function () use ($di) {

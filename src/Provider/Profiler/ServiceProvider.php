@@ -19,6 +19,7 @@ class ServiceProvider extends AbstractServiceProvider
 {
     protected string $serviceName = 'profiler';
     
+    #[\Override]
     public function register(DiInterface $di): void
     {
         $di->setShared($this->getName(), Profiler::class);

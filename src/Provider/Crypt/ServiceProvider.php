@@ -20,6 +20,7 @@ class ServiceProvider extends AbstractServiceProvider
 {
     protected string $serviceName = 'crypt';
     
+    #[\Override]
     public function register(DiInterface $di): void
     {
         $di->setShared($this->getName(), function (?string $cipher = null, ?bool $useSigning = null) use ($di) {

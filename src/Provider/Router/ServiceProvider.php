@@ -22,6 +22,7 @@ class ServiceProvider extends AbstractServiceProvider
 {
     protected string $serviceName = 'router';
     
+    #[\Override]
     public function register(DiInterface $di): void
     {
         $di->setShared($this->getName(), function () use ($di) {

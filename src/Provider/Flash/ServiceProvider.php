@@ -25,6 +25,7 @@ class ServiceProvider extends AbstractServiceProvider
         'warning' => 'alert alert-warning fade in',
     ];
     
+    #[\Override]
     public function register(\Phalcon\Di\DiInterface $di): void
     {
         $cssStyle = $this->cssStyle;

@@ -20,6 +20,7 @@ class ServiceProvider extends AbstractServiceProvider
 {
     protected string $serviceName = 'cookies';
     
+    #[\Override]
     public function register(DiInterface $di): void
     {
         $di->setShared($this->getName(), function (?bool $useEncryption = null, ?string $signKey = null) use ($di) {

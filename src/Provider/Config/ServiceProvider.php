@@ -24,6 +24,7 @@ class ServiceProvider extends AbstractServiceProvider
     
     protected ConfigInterface $config;
     
+    #[\Override]
     public function register(DiInterface $di): void
     {
         // Set shared service in DI

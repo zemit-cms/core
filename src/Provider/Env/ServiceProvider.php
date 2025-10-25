@@ -19,6 +19,7 @@ class ServiceProvider extends AbstractServiceProvider
 {
     protected string $serviceName = 'env';
     
+    #[\Override]
     public function register(DiInterface $di): void
     {
         $di->setShared($this->getName(), Env::class);

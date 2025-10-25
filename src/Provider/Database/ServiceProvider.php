@@ -26,6 +26,7 @@ class ServiceProvider extends AbstractServiceProvider
     protected string $serviceName = 'db';
     protected static bool $attachedEvents = false;
     
+    #[\Override]
     public function register(DiInterface $di): void
     {
         $driverName = $this->driverName;

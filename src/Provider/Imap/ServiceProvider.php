@@ -18,6 +18,7 @@ class ServiceProvider extends AbstractServiceProvider
 {
     protected string $serviceName = 'imap';
     
+    #[\Override]
     public function register(DiInterface $di): void
     {
         $di->setShared($this->getName(), function (?array $options = null) use ($di) {

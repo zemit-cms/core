@@ -19,6 +19,7 @@ class ServiceProvider extends AbstractServiceProvider
 {
     protected string $serviceName = 'escaper';
     
+    #[\Override]
     public function register(DiInterface $di): void
     {
         $di->set($this->getName(), Escaper::class);

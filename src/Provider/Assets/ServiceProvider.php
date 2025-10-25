@@ -21,6 +21,7 @@ class ServiceProvider extends AbstractServiceProvider
 {
     protected string $serviceName = 'assets';
     
+    #[\Override]
     public function register(DiInterface $di): void
     {
         $escaper = $di->get('escaper');

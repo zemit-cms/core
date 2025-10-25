@@ -20,6 +20,7 @@ class ServiceProvider extends AbstractServiceProvider
 {
     protected string $serviceName = 'gravatar';
     
+    #[\Override]
     public function register(DiInterface $di): void
     {
         // @todo implement based on https://github.com/phalcon/incubator-avatar/blob/master/src/Gravatar.php
