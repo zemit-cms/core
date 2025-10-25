@@ -143,7 +143,7 @@ if (!function_exists('mb_vsprintf')) {
             $type = $pregSplitResult[6] ?? '';
             $post = $pregSplitResult[7] ?? '';
             
-            $newFormat .= mb_convert_encoding($pre, $encoding, 'UTF-8');
+            $newFormat .= mb_convert_encoding($pre, $encoding, 'UTF-8') ?: '';
             
             if ($type == '') {
                 // didn't match. do nothing. this is the last iteration.
@@ -153,7 +153,7 @@ if (!function_exists('mb_vsprintf')) {
                 $newFormat .= '%%';
             }
             else if ($type == 's') {
-                $arg = array_shift($argv);
+                $arg = array_shift($argv) ?? '';
                 $arg = mb_convert_encoding($arg, 'UTF-8', $encoding);
                 assert(is_string($arg));
                 $padding_pre = '';
