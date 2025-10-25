@@ -26,7 +26,6 @@ trait Group
     
     protected ?Collection $group;
     
-    // @todo add model name to group attributes
     public function initializeGroup(): void
     {
         $group = $this->getParam('group', [
