@@ -46,7 +46,7 @@ abstract class AbstractTask extends Task
         $this->initializeRequest();
         $this->initializePipeMessage();
 
-        $this->server ??= $this->di->getShared('swoole');
+        $this->server = $this->di->getShared('swoole');
         $this->handleWebSocket();
     }
 
@@ -72,47 +72,47 @@ abstract class AbstractTask extends Task
 
     public function initializeOpen(): void
     {
-        $this->onOpen = fn(Server $server, Request $request) => $this->onOpen($server, $request);
+        $this->onOpen = fn (Server $server, Request $request) => $this->onOpen($server, $request);
     }
 
     public function initializeMessage(): void
     {
-        $this->onMessage = fn(Server $server, Frame $frame) => $this->onMessage($server, $frame);
+        $this->onMessage = fn (Server $server, Frame $frame) => $this->onMessage($server, $frame);
     }
 
     public function initializeClose(): void
     {
-        $this->onClose = fn(Server $server, int $fd) => $this->onClose($server, $fd);
+        $this->onClose = fn (Server $server, int $fd) => $this->onClose($server, $fd);
     }
 
     public function initializeWorkerError(): void
     {
-        $this->onWorkerError = fn(Server $server, int $fd, int $code, string $reason) => $this->onWorkerError($server, $fd, $code, $reason);
+        $this->onWorkerError = fn (Server $server, int $fd, int $code, string $reason) => $this->onWorkerError($server, $fd, $code, $reason);
     }
 
     public function initializeStart(): void
     {
-        $this->onStart = fn(Server $server) => $this->onStart($server);
+        $this->onStart = fn (Server $server) => $this->onStart($server);
     }
 
     public function initializeWorkerStart(): void
     {
-        $this->onWorkerStart = fn(Server $server, int $workerId) => $this->onWorkerStart($server, $workerId);
+        $this->onWorkerStart = fn (Server $server, int $workerId) => $this->onWorkerStart($server, $workerId);
     }
 
     public function initializeShutdown(): void
     {
-        $this->onShutdown = fn(Server $server) => $this->onShutdown($server);
+        $this->onShutdown = fn (Server $server) => $this->onShutdown($server);
     }
 
     public function initializeRequest(): void
     {
-        $this->onRequest = fn(Request $request, Response $response) => $this->onRequest($request, $response);
+        $this->onRequest = fn (Request $request, Response $response) => $this->onRequest($request, $response);
     }
 
     public function initializePipeMessage(): void
     {
-        $this->onPipeMessage = fn(Server $server, int $srcWorkerId, mixed $data) => $this->onPipeMessage($server, $srcWorkerId, $data);
+        $this->onPipeMessage = fn (Server $server, int $srcWorkerId, mixed $data) => $this->onPipeMessage($server, $srcWorkerId, $data);
     }
 
     // --- Event handlers to override in child classes ---
@@ -212,7 +212,7 @@ abstract class AbstractTask extends Task
             return;
         }
 
-        $this->log("Broadcasting to channel={$channel} data=". json_encode($data));
+        $this->log("Broadcasting to channel={$channel} data=". (json_encode($data) ?: ''));
 
         foreach (self::$subscriptions[$channel] as $fd => $active) {
             if (isset($fdList) && !in_array($fd, $fdList, true)) {
