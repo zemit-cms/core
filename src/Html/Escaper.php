@@ -49,6 +49,10 @@ class Escaper extends \Phalcon\Html\Escaper implements EscaperInterface
         }
         
         // raw url encode
-        return rawurlencode(json_validate($json) ? $json : json_encode($json));
+        return rawurlencode(
+            json_validate($json)
+                ? (string)$json
+                : (json_encode($json) ?: '')
+        );
     }
 }
