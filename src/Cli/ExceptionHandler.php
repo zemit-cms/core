@@ -18,6 +18,7 @@ class ExceptionHandler
     public function __construct(string|\Exception|\Throwable $e, mixed $outputStream = STDERR)
     {
         $this->outputStream = $outputStream;
-        fwrite($this->outputStream, $e . PHP_EOL);
+        $message = is_string($e) ? $e : (string) $e;
+        fwrite($this->outputStream, $message . PHP_EOL);
     }
 }
