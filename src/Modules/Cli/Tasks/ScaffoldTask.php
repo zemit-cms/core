@@ -371,7 +371,7 @@ PHP;
         $list = explode(',',str_replace('\'', '', $size));
         $enumValues = [];
         foreach ($list as $item) {
-            $constantName = Helper::upper(Helper::uncamelize(Helper::camelize($item))) ?: '_EMPTY';
+            $constantName = Helper::upper(Helper::slugify(Helper::uncamelize($item), [], '_')) ?: '_EMPTY';
             $enumValues[] = '    case ' . $constantName . ' = \'' . $item . '\';';
         }
         $enumValues = implode(PHP_EOL, $enumValues);
