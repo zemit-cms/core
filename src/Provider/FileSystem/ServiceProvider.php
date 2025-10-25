@@ -23,10 +23,10 @@ class ServiceProvider extends AbstractServiceProvider
     #[\Override]
     public function register(DiInterface $di): void
     {
-        $di->setShared($this->getName(), function ($root = null) use ($di) {
+        $di->setShared($this->getName(), function (?string $root = null) use ($di) {
 
             $config = $di->get('config');
-            $root ??= $config->path('app.dir.root') ?? getcwd();
+            $root ??= $config->path('app.dir.root') ?? getcwd() ?: '';
             
             return new Filesystem(new LocalFilesystemAdapter($root));
         });
