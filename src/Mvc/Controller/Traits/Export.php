@@ -194,7 +194,7 @@ trait Export
         $filename ??= $this->getFilename();
 
 //        $this->response->setJsonContent($list); // bug with phalcon, avoid
-        $this->response->setContent(json_encode($list, $flags, $depth));
+        $this->response->setContent(json_encode($list, $flags, $depth) ?: '[]');
         $this->response->setContentType('application/json');
         $this->response->setHeader('Content-disposition', 'attachment; filename="' . addslashes($filename) . '.json"');
         
@@ -286,8 +286,7 @@ trait Export
         $relaxEnclosure = $params['relaxEnclosure'] ?? false;
         $keepEndOfLines = $params['keepEndOfLines'] ?? false;
 
-//            $csv = Writer::createFromFileObject(new \SplTempFileObject());
-        $csv = Writer::createFromStream(fopen('php://memory', 'r+'));
+        $csv = Writer::from('php://memory');
         
         // CSV - MS Excel on MacOS
         if ($mode === 'mac') {
@@ -357,7 +356,7 @@ trait Export
                 // sometimes excel can't process the cells multiple lines correctly when loading csv
                 // this is why we remove the new lines by default, user can choose to keep them using $keepEndOfLines
                 if (!$keepEndOfLines && is_string($outputRow[$column])) {
-                    $outputRow[$column] = trim(preg_replace('/\s+/', ' ', $outputRow[$column]));
+                    $outputRow[$column] = trim(preg_replace('/\s+/', ' ', $outputRow[$column]) ?? '');
                 }
             }
             $csv->insertOne($outputRow);
