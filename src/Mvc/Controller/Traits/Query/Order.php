@@ -63,19 +63,24 @@ trait Order
         
         // type check order parameter
         if (!is_array($order)) {
-            throw new Exception('Invalid order parameter received. Expected `null`, `string` or `array` but `' . gettype($order) . '` was provided.', 400);
+            throw new Exception(sprintf('Invalid type for "order" parameter: expected null, string, or array, got %s.', gettype($order)), 400);
         }
         
         $collection = new Collection([], false);
         foreach ($order as $key => $item) {
             if (is_int($key)) {
                 if (is_string($item)) {
-                    $item = explode(' ', $item);
+                    $item = explode(' ', trim($item));
                 }
-                // type check order element
+                
                 if (!is_array($item)) {
-                    throw new Exception('Invalid order element received. Expected `string` or `array` but `' . gettype($item) . '` was provided.', 400);
+                    throw new Exception(sprintf('Invalid order element at index %d: expected string or array, got %s.', $key, gettype($item)), 400);
                 }
+                
+                if (count($item) > 2) {
+                    throw new Exception(sprintf('Invalid order element at index %d: expected [field, direction] with at most 2 elements, got %d.', $key, count($item)), 400);
+                }
+                
                 $collection->set($item[0], $this->appendModelName($item[0]) . ' ' . $this->getSide($item[1] ?? 'asc'));
             }
             // string
