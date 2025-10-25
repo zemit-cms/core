@@ -18,6 +18,6 @@ class RemoveMapFields
 {
     public function afterInitializeFields(Event $event, Restful $controller): void
     {
-        $controller->getMapFields()->clear();
+        $controller->getMapFields()?->clear();
     }
 }

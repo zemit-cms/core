@@ -18,6 +18,6 @@ class RemoveHaving
 {
     public function afterInitializeHaving(Event $event, Restful $controller): void
     {
-        $controller->getHaving()->clear();
+        $controller->getHaving()?->clear();
     }
 }

@@ -18,6 +18,6 @@ class RemoveBind
 {
     public function afterInitializeBind(Event $event, Restful $controller): void
     {
-        $controller->getBind()->clear();
+        $controller->getBind()?->clear();
     }
 }

@@ -18,6 +18,6 @@ class RemoveDistinct
 {
     public function afterInitializeDistinct(Event $event, Restful $controller): void
     {
-        $controller->getDistinct()->clear();
+        $controller->getDistinct()?->clear();
     }
 }

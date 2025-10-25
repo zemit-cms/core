@@ -18,6 +18,6 @@ class RemoveDefaultSoftDeleteCondition
 {
     public function afterInitializeConditions(Event $event, Restful $controller): void
     {
-        $controller->getSoftDeleteConditions()->remove('default');
+        $controller->getSoftDeleteConditions()?->remove('default');
     }
 }

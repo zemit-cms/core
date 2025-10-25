@@ -18,6 +18,6 @@ class RemoveSearchConditions
 {
     public function afterInitializeConditions(Event $event, Restful $controller): void
     {
-        $controller->getSearchConditions()->clear();
+        $controller->getSearchConditions()?->clear();
     }
 }

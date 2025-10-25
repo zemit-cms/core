@@ -18,6 +18,6 @@ class RemoveDefaultSearchCondition
 {
     public function afterInitializeConditions(Event $event, Restful $controller): void
     {
-        $controller->getSearchConditions()->remove('default');
+        $controller->getSearchConditions()?->remove('default');
     }
 }

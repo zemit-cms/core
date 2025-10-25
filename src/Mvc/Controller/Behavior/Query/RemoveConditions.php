@@ -18,6 +18,6 @@ class RemoveConditions
 {
     public function afterInitializeConditions(Event $event, Restful $controller): void
     {
-        $controller->getConditions()->clear();
+        $controller->getConditions()?->clear();
     }
 }

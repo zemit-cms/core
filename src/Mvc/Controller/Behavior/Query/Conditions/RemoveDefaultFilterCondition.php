@@ -18,6 +18,6 @@ class RemoveDefaultFilterCondition
 {
     public function afterInitializeConditions(Event $event, Restful $controller): void
     {
-        $controller->getFilterConditions()->remove('default');
+        $controller->getFilterConditions()?->remove('default');
     }
 }

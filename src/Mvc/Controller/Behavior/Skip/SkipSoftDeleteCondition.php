@@ -19,6 +19,6 @@ class SkipSoftDeleteCondition
 {
     public function afterConditions(Event $event, Restful $controller): void
     {
-        $controller->getConditions()->remove('softDelete');
+        $controller->getConditions()?->remove('softDelete');
     }
 }

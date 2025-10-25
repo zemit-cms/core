@@ -18,6 +18,6 @@ class RemoveSearchFields
 {
     public function afterInitializeFields(Event $event, Restful $controller): void
     {
-        $controller->getSearchFields()->clear();
+        $controller->getSearchFields()?->clear();
     }
 }

@@ -18,6 +18,6 @@ class RemoveFilterFields
 {
     public function afterInitializeFields(Event $event, Restful $controller): void
     {
-        $controller->getFilterFields()->clear();
+        $controller->getFilterFields()?->clear();
     }
 }

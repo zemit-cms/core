@@ -18,6 +18,6 @@ class RemovePermissionConditions
 {
     public function afterInitializeConditions(Event $event, Restful $controller): void
     {
-        $controller->getPermissionConditions()->clear();
+        $controller->getPermissionConditions()?->clear();
     }
 }

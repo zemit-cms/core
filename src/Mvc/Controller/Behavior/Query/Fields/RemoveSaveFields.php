@@ -18,6 +18,6 @@ class RemoveSaveFields
 {
     public function afterInitializeFields(Event $event, Restful $controller): void
     {
-        $controller->getSaveFields()->clear();
+        $controller->getSaveFields()?->clear();
     }
 }

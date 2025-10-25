@@ -29,7 +29,7 @@ class RemoveDefaultSoftDeleteConditionWhileFiltering
     public function afterInitializeConditions(Event $event, Restful $controller): void
     {
         if ($controller->hasFiltersFieldsParams(['deleted'])) {
-            $controller->getSoftDeleteConditions()->remove('default');
+            $controller->getSoftDeleteConditions()?->remove('default');
         }
     }
 }

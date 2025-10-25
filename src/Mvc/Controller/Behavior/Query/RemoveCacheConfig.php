@@ -18,6 +18,6 @@ class RemoveCacheConfig
 {
     public function afterInitializeCacheConfig(Event $event, Restful $controller): void
     {
-        $controller->getCacheConfig()->clear();
+        $controller->getCacheConfig()?->clear();
     }
 }

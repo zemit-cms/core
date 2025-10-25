@@ -18,6 +18,6 @@ class RemoveDefaultPermissionCondition
 {
     public function afterInitializeConditions(Event $event, Restful $controller): void
     {
-        $controller->getPermissionConditions()->remove('default');
+        $controller->getPermissionConditions()?->remove('default');
     }
 }

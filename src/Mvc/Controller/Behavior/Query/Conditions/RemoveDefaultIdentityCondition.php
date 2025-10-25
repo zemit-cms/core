@@ -18,6 +18,6 @@ class RemoveDefaultIdentityCondition
 {
     public function afterInitializeConditions(Event $event, Restful $controller): void
     {
-        $controller->getIdentityConditions()->remove('default');
+        $controller->getIdentityConditions()?->remove('default');
     }
 }

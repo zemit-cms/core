@@ -18,6 +18,6 @@ class RemoveGroup
 {
     public function afterInitializeGroup(Event $event, Restful $controller): void
     {
-        $controller->getGroup()->clear();
+        $controller->getGroup()?->clear();
     }
 }

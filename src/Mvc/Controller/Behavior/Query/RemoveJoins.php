@@ -18,6 +18,6 @@ class RemoveJoins
 {
     public function afterInitializeJoins(Event $event, Restful $controller): void
     {
-        $controller->getJoins()->clear();
+        $controller->getJoins()?->clear();
     }
 }

@@ -18,6 +18,6 @@ class RemoveColumn
 {
     public function afterInitializeColumn(Event $event, Restful $controller): void
     {
-        $controller->getColumn()->clear();
+        $controller->getColumn()?->clear();
     }
 }

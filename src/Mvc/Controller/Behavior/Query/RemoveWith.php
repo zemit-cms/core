@@ -18,6 +18,6 @@ class RemoveWith
 {
     public function afterInitializeWith(Event $event, Restful $controller): void
     {
-        $controller->getWith()->clear();
+        $controller->getWith()?->clear();
     }
 }
