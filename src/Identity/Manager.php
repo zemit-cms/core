@@ -22,6 +22,7 @@ use Zemit\Identity\Traits\Oauth2;
 use Zemit\Identity\Traits\Role;
 use Zemit\Identity\Traits\Session;
 use Zemit\Identity\Traits\User;
+use Zemit\Mvc\ModelInterface;
 use Zemit\Support\Options\Options;
 use Zemit\Support\Options\OptionsInterface;
 
@@ -71,9 +72,9 @@ class Manager extends Injectable implements ManagerInterface, OptionsInterface
             'loggedIn' => $this->isLoggedIn(),
             'user' => isset($userExpose, $user) ? $user->expose($userExpose) : $user,
             
-            'roleList' => $this->collectList($user->rolelist ?? []),
-            'typeList' => $this->collectList($user->grouplist ?? []),
-            'groupList' => $this->collectList($user->rolelist ?? []),
+            'roleList' => $this->collectList($user, 'rolelist'),
+            'typeList' => $this->collectList($user, 'typelist'),
+            'groupList' => $this->collectList($user, 'grouplist'),
         ];
     }
     
@@ -288,17 +289,23 @@ class Manager extends Injectable implements ManagerInterface, OptionsInterface
     }
     
     /**
-     * Processes the given list of entities and organizes them into an associative array indexed by each entity's key.
+     * Collects and returns a list of entities from the specified property of the model, keyed by a method from each entity.
      *
-     * @param array $list A list of entities, each of which must have a method `getKey`.
-     * @return array An associative array where keys are derived from each entity's `getKey` method and values are the entities.
+     * @param ModelInterface|null $model The model containing the property with the list of entities.
+     * @param string $property The name of the property in the model that holds the list of entities.
+     * @param string $keyMethod The name of the method in each entity used to generate the key. Defaults to 'getKey'.
+     * @return array An associative array of entities, keyed by the specified method from each entity.
      */
-    private function collectList(array $list): array
+    private function collectList(?ModelInterface $model, string $property, string $keyMethod = 'getKey'): array
     {
+        if (!isset($model) || !property_exists($model, $property)) {
+            return [];
+        }
+        
         $ret = [];
-        foreach ($list as $entity) {
-            assert(method_exists($entity, 'getKey'));
-            $ret [$entity->getKey()] = $entity;
+        foreach ($model->$property as $entity) {
+            assert(method_exists($entity, $keyMethod));
+            $ret [$entity->$keyMethod()] = $entity;
         }
         
         return $ret;
