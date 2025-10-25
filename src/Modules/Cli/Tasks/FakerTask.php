@@ -132,7 +132,6 @@ DOC;
                 foreach ($columnList as $column) {
                     $data = new Data();
                     $data->setUuid($faker->uuid());
-                    $data->setWorkspaceId($table->getWorkspaceId());
                     $data->setTableId($table->getId());
                     $data->setRecordId($record->getId());
                     $data->setColumnId($column->getId());
