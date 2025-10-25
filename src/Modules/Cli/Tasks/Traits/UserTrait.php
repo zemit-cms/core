@@ -27,7 +27,12 @@ trait UserTrait
         $this->addModelsPermissions();
     }
     
-    public function getDefinitions()
+    /**
+     * @return \Closure[][]
+     *
+     * @psalm-return array<string, array{password?: \Closure(mixed):mixed, passwordConfirm?: \Closure(mixed):mixed}>
+     */
+    public function getDefinitions(): array
     {
         return [
             $this->models->getUserClass() => [
@@ -42,7 +47,12 @@ trait UserTrait
         ];
     }
     
-    final public function createAction(string $email, ?string $password = null)
+    /**
+     * @return (array|int|mixed)[]
+     *
+     * @psalm-return array{errors: array<never, never>|mixed, save: 0|1}
+     */
+    final public function createAction(string $email, ?string $password = null): array
     {
         $response = [
             'errors' => [],
@@ -84,7 +94,12 @@ trait UserTrait
         return $response;
     }
     
-    final public function roleAction(string $email, string $role)
+    /**
+     * @return (array|int|mixed)[]
+     *
+     * @psalm-return array{errors: array<never, never>|mixed, save: 0|1}
+     */
+    final public function roleAction(string $email, string $role): array
     {
         $response = [
             'errors' => [],

@@ -16,6 +16,9 @@ use Zemit\Tag;
 
 abstract class AbstractController extends Controller
 {
+    /**
+     * @return void
+     */
     public function initialize()
     {
         Tag::setAttr('html', ['lang' => $this->dispatcher->getParam('language', 'string', 'en')]);

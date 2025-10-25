@@ -40,6 +40,7 @@ class View extends \Phalcon\Mvc\View
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function render(string $controllerName, string $actionName, array $params = []): \Phalcon\Mvc\View|bool
     {
         if (!$this->has($controllerName . (empty($actionName) ? null : '/' . $actionName))) {
@@ -52,6 +53,7 @@ class View extends \Phalcon\Mvc\View
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function getRender(string $controllerName, string $actionName, array $params = [], $configCallback = null): string
     {
         if (!$this->has($controllerName . (empty($actionName) ? null : '/' . $actionName))) {
@@ -65,6 +67,7 @@ class View extends \Phalcon\Mvc\View
      * {@inheritdoc}
      * Can also minify the content
      */
+    #[\Override]
     public function getContent(?bool $minify = null): string
     {
         $content = parent::getContent();

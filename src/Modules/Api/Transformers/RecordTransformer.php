@@ -16,7 +16,7 @@ use Zemit\Models\Record;
 
 class RecordTransformer extends Transformer
 {
-    public function transform(?Record $record)
+    public function transform(?Record $record): array
     {
         return $record? $record->toArray() : [];
     }
