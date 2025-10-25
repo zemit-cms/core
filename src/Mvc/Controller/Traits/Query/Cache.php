@@ -94,12 +94,12 @@ trait Cache
      */
     public function initializeCacheKey(): void
     {
-        $cacheKeys = [
-            md5($this->getModelName() ?? ""),
-            $this->identity->getUserId(),
+        $cacheKeys = array_filter([
+            $this->getModelName(),
             $this->getCacheLifetime(),
-            md5(json_encode($this->getParams())),
-        ];
+            $this->identity->getUserId(),
+            md5(json_encode($this->getParams()) ?: ''),
+        ]);
         $cacheKey = '_' . implode('-', $cacheKeys) . '_';
         $this->setCacheKey($cacheKey);
     }
