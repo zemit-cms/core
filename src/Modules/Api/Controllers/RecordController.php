@@ -111,11 +111,11 @@ class RecordController extends Controller
         $modelInstance = Dynamic::createInstance($this->getSource(), $this->getColumnMap());
 //        $modelInstance = new $modelName();
 //        $modelInstance = $this->modelsManager->load($modelName);
-        if ($modelInstance instanceof Dynamic) {
+//        if ($modelInstance instanceof Dynamic) {
             $modelInstance->setDynamicSource($this->getSource());
             $modelInstance->setDynamicMetaData($this->getMetaData());
             $modelInstance->setDynamicColumnMap($this->getColumnMap());
-        }
+//        }
         assert($modelInstance instanceof ModelInterface);
         return $modelInstance;
     }
