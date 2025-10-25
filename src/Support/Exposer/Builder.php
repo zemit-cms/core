@@ -29,86 +29,103 @@ class Builder implements BuilderInterface
     
     private bool $protected = false;
     
+    #[\Override]
     public function getValue()
     {
         return $this->value;
     }
     
+    #[\Override]
     public function setValue(mixed $value = null): void
     {
         $this->value = $value;
     }
     
+    #[\Override]
     public function getParent(): mixed
     {
         return $this->parent;
     }
     
+    #[\Override]
     public function setParent(mixed $parent = null): void
     {
         $this->parent = $parent;
     }
     
+    #[\Override]
     public function getKey(): ?string
     {
         return $this->key;
     }
     
+    #[\Override]
     public function setKey(?string $key = null): void
     {
         $this->key = self::processKey($key);
     }
     
+    #[\Override]
     public function getContextKey(): ?string
     {
         return $this->contextKey;
     }
     
+    #[\Override]
     public function setContextKey(?string $contextKey = null): void
     {
         $this->contextKey = self::processKey($contextKey);
     }
     
+    #[\Override]
     public function getField(): ?string
     {
         return $this->field;
     }
     
+    #[\Override]
     public function setField(?string $field = null): void
     {
         $this->field = $field;
     }
     
+    #[\Override]
     public function getColumns(): ?array
     {
         return $this->columns;
     }
     
+    #[\Override]
     public function setColumns(?array $columns = null): void
     {
         $this->columns = $columns;
     }
     
+    #[\Override]
     public function getExpose(): bool
     {
         return $this->expose;
     }
     
+    #[\Override]
     public function setExpose(bool $expose): void
     {
         $this->expose = $expose;
     }
     
+    #[\Override]
     public function getProtected(): bool
     {
         return $this->protected;
     }
     
+    #[\Override]
     public function setProtected(bool $protected): void
     {
         $this->protected = $protected;
     }
     
+    #[\Override]
     public function getFullKey(): ?string
     {
         $key = $this->getKey();
@@ -116,21 +133,20 @@ class Builder implements BuilderInterface
         return $keyContext . (empty($key) ? null : (empty($keyContext) ? $key : '.' . $key));
     }
     
+    /**
+     * Processes the given key by normalizing its format.
+     *
+     * @param string|null $key The input key to be processed. It can be null, an empty string, or a string.
+     * @return string|null Returns the processed key in a normalized format or an empty string if the input is null, empty, or a valid integer string.
+     */
     public static function processKey(?string $key = null): ?string
     {
-        return empty($key) || filter_var($key, FILTER_VALIDATE_INT) ? '' : mb_strtolower(
-            trim(
-                preg_replace(
-                    '/\.+/',
-                    '.',
-                    preg_replace(
-                        '/\s+/',
-                        '.',
-                        $key
-                    )
-                ),
-                '.'
-            )
-        );
+        if ($key === null || $key === '' || filter_var($key, FILTER_VALIDATE_INT)) {
+            return '';
+        }
+        
+        $key = preg_replace('/\s+/', '.', $key) ?? '';
+        $key = preg_replace('/\.+/', '.', $key) ?? '';
+        return trim(mb_strtolower($key), '.');
     }
 }
