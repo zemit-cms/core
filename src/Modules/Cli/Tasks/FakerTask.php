@@ -68,7 +68,7 @@ DOC;
     
     public function insertDataAction(): array
     {
-        
+        return [];
     }
     
     public function generateRealData(): array

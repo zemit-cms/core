@@ -20,10 +20,10 @@ enum JobSchedulerFrequency: string {
     case WEEKDAYS = 'weekdays';
     case WEEKENDS = 'weekends';
     case WEEKLY = 'weekly';
-    case BI-WEEKLY = 'bi-weekly';
+    case BI_WEEKLY = 'bi-weekly';
     case MONTHLY = 'monthly';
-    case BI-MONTHLY = 'bi-monthly';
+    case BI_MONTHLY = 'bi-monthly';
     case QUARTERLY = 'quarterly';
-    case SEMI-ANNUALLY = 'semi-annually';
+    case SEMI_ANNUALLY = 'semi-annually';
     case YEARLY = 'yearly';
 }

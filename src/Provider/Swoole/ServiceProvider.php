@@ -25,6 +25,10 @@ class ServiceProvider extends AbstractServiceProvider
     {
         $di->setShared($this->getName(), function () use ($di) {
             
+            if (!defined('SWOOLE_LOG_WARNING') || !extension_loaded('swoole')) {
+                throw new \LogicException('Swoole not available');
+            }
+            
             $config = $di->get('config');
             assert($config instanceof ConfigInterface);
             

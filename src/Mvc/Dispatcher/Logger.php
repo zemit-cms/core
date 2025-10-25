@@ -38,7 +38,7 @@ class Logger extends Injectable
             if ($this->config->path('logger.dispatcher')) {
                 $log = json_encode([
                     'type' => 'dispatch',
-                    'sessionId' => $this->identity->getSessionId(),
+                    'key' => $this->identity->getKey(),
                     'userId' => $this->identity->getUserId(),
                     'userAsId' => $this->identity->getUserAsId(),
                     'meta' => [

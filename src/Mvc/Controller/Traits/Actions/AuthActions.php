@@ -101,7 +101,7 @@ trait AuthActions
     {
         $this->view->setVars($this->identity->logoutAs());
         $this->view->setVars($this->identity->getIdentity($this->userExpose));
-        return !$this->view->getVar('loggedInAs') ?? false;
+        return !($this->view->getVar('loggedInAs') ?? false);
     }
 
     /**

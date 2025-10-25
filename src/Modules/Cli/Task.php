@@ -132,7 +132,8 @@ DOC;
                 break;
             
             case 'json':
-                echo json_encode($ret, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . PHP_EOL;
+                echo json_encode($ret, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+                echo PHP_EOL;
                 break;
             
             case 'string':

@@ -103,7 +103,12 @@ trait FilterConditions
             ]);
             
             // allowed field
-            if (!isset($allowedFilters) || !(in_array($field, $allowedFilters, true) || FlattenKeys::process($allowedFilters)[$field] ?? false)) {
+            if (!isset($allowedFilters) || !(in_array($field, $allowedFilters, true))) {
+                throw new \Exception('The following filter field is not allowed: `' . $field . '`', 403);
+            }
+            
+            $flattenAllowedFilters = FlattenKeys::process($allowedFilters);
+            if ($flattenAllowedFilters[$field] ?? false) {
                 throw new \Exception('The following filter field is not allowed: `' . $field . '`', 403);
             }
             

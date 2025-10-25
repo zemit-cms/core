@@ -102,10 +102,12 @@ final class EagerLoad
         $bindValues = [];
         foreach ($parentSubject as $record) {
             assert($record instanceof EntityInterface);
-            $relFieldAr = is_array($relField)? $relField : [$relField];
-            foreach ($relFieldAr as $relField) {
-                $bindValues[$record->readAttribute($relField)] = true;
-            }
+            $bindValues[$record->readAttribute($relField)] = true;
+            // @todo support multiples fields with eager loading
+//            $relFieldAr = is_array($relField)? $relField : [$relField];
+//            foreach ($relFieldAr as $relField) {
+//                $bindValues[$record->readAttribute($relField)] = true;
+//            }
         }
         unset($record);
         
@@ -216,9 +218,9 @@ final class EagerLoad
         else {
             // We expect a single object or a set of it
             $isSingle = !$isThrough && (
-                    $relation->getType() === Relation::HAS_ONE ||
-                    $relation->getType() === Relation::BELONGS_TO
-                );
+                $relation->getType() === Relation::HAS_ONE ||
+                $relation->getType() === Relation::BELONGS_TO
+            );
             
             if ($subjectCount === 1) {
                 // Keep all records in memory

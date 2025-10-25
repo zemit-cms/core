@@ -63,10 +63,11 @@ trait Query
     
     /**
      * Initializes the query builder with default values for various properties.
+     *
      * @throws Exception
      * @throws \Exception
      */
-    public function initializeQuery()
+    public function initializeQuery(): void
     {
         $this->eventsManager->fire('rest:beforeInitializeQuery', $this);
         

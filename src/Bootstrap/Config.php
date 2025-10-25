@@ -329,15 +329,12 @@ class Config extends \Zemit\Config\Config
                 \Zemit\Models\Setting::class => Env::get('MODEL_SETTING', \Zemit\Models\Setting::class),
                 \Zemit\Models\Lang::class => Env::get('MODEL_LANG', \Zemit\Models\Lang::class),
                 \Zemit\Models\Translate::class => Env::get('MODEL_TRANSLATE', \Zemit\Models\Translate::class),
-                \Zemit\Models\TranslateField::class => Env::get('MODEL_TRANSLATE_FIELD', \Zemit\Models\TranslateField::class),
-                \Zemit\Models\TranslateTable::class => Env::get('MODEL_TRANSLATE_TABLE', \Zemit\Models\TranslateTable::class),
                 \Zemit\Models\Workspace::class => Env::get('MODEL_WORKSPACE', \Zemit\Models\Workspace::class),
                 \Zemit\Models\WorkspaceLang::class => Env::get('MODEL_WORKSPACE_LANG', \Zemit\Models\WorkspaceLang::class),
                 \Zemit\Models\Page::class => Env::get('MODEL_PAGE', \Zemit\Models\Page::class),
                 \Zemit\Models\Post::class => Env::get('MODEL_POST', \Zemit\Models\Post::class),
                 \Zemit\Models\Template::class => Env::get('MODEL_TEMPLATE', \Zemit\Models\Template::class),
                 \Zemit\Models\Table::class => Env::get('MODEL_TABLE', \Zemit\Models\Table::class),
-                \Zemit\Models\Field::class => Env::get('MODEL_FIELD', \Zemit\Models\Field::class),
                 \Zemit\Models\Oauth2::class => Env::get('MODEL_OAUTH_2', \Zemit\Models\Oauth2::class),
                 \Zemit\Models\Profile::class => Env::get('MODEL_PROFILE', \Zemit\Models\Profile::class),
                 \Zemit\Models\User::class => Env::get('MODEL_USER', \Zemit\Models\User::class),
@@ -432,7 +429,6 @@ class Config extends \Zemit\Config\Config
                 Provider\Dispatcher\ServiceProvider::class => Env::get('PROVIDER_DISPATCHER', Provider\Dispatcher\ServiceProvider::class),
                 Provider\Request\ServiceProvider::class => Env::get('PROVIDER_REQUEST', Provider\Request\ServiceProvider::class),
                 Provider\Response\ServiceProvider::class => Env::get('PROVIDER_RESPONSE', Provider\Response\ServiceProvider::class),
-                Provider\Models\ServiceProvider::class => Env::get('PROVIDER_MODELS', Provider\Models\ServiceProvider::class),
                 
                 // Security
                 Provider\Acl\ServiceProvider::class => Env::get('PROVIDER_ACL', Provider\Acl\ServiceProvider::class),

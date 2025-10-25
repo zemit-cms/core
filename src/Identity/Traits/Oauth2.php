@@ -87,11 +87,6 @@ trait Oauth2
             $validation->appendMessage($message);
         }
         
-        // a session is required
-        if (!isset($session)) {
-            $validation->appendMessage(new Message('A session is required', 'session', 'PresenceOf', 403));
-        }
-        
         // user id is required
         $validation->add('userId', new PresenceOf(['message' => 'userId is required']));
         $validation->validate($oauth2->toArray());

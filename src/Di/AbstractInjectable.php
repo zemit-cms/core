@@ -25,7 +25,7 @@ use Phalcon\Di\DiInterface;
  * @property \Zemit\Http\Request|\Zemit\Http\RequestInterface|\Phalcon\Http\Request|\Phalcon\Http\RequestInterface $request
  * @property \Phalcon\Http\Response|\Phalcon\Http\ResponseInterface $response
  * @property \Phalcon\Http\Response\Cookies|\Phalcon\Http\Response\CookiesInterface $cookies
- * @property \Zemit\Filter|\Phalcon\Filter $filter
+ * @property \Zemit\Filter\Filter|\Phalcon\Filter\Filter $filter
  * @property \Phalcon\Flash\Direct $flash
  * @property \Phalcon\Flash\Session $flashSession
  * @property \Phalcon\Session\ManagerInterface $session
@@ -52,7 +52,7 @@ use Phalcon\Di\DiInterface;
  * @property \Zemit\Support\Utils $utils
  * @property \Zemit\Profiler $profiler
  * @property \Zemit\Logger $logger
- * @property \Zemit\Jwt $jwt
+ * @property \Zemit\Provider\Jwt\Jwt $jwt
  * @property \Zemit\OpenAi $openAi
  * @property \Zemit\LoremIpsum $loremIpsum
  * @property \Zemit\Support\Models $models

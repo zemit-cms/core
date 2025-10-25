@@ -43,7 +43,7 @@ namespace Zemit\Di;
  * @property \Phalcon\Flash\FlashInterface $flash
 // * @property \Zemit\Support\Gravatar $gravatar
  * @property \Zemit\Support\Helper $helper
- * @property \Zemit\Identity $identity
+ * @property \Zemit\Identity\Manager $identity
  * @property \PhpImap\Mailbox $imap
  * @property \Zemit\Provider\Jwt\Jwt $jwt
  * @property \Zemit\Locale $locale

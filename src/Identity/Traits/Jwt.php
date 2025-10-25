@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Zemit\Identity\Traits;
 
+use Phalcon\Encryption\Security\Exception;
+use Phalcon\Encryption\Security\JWT\Exceptions\ValidatorException;
 use Zemit\Di\AbstractInjectable;
 use Phalcon\Filter\Filter;
 use stdClass;
@@ -28,6 +30,7 @@ trait Jwt
      *
      * @param bool $refresh Indicates whether to refresh the claim by generating a new key and invalidating previous tokens.
      * @return array Contains the generated JWT, refresh token, and a flag indicating if the claim was refreshed.
+     * @throws Exception|ValidatorException
      */
     public function getJwt(bool $refresh = false): array
     {
@@ -149,6 +152,7 @@ trait Jwt
      * @param array $data An associative array containing the payload data to be encoded in the JWT.
      * @param array $options An associative array of options for the token such as issuer, audience, subject, etc. Defaults will be applied if not provided.
      * @return string The generated JWT token as a string.
+     * @throws ValidatorException
      */
     public function getJwtToken(string $id, array $data = [], array $options = []): string
     {
