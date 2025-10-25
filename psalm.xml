@@ -13,7 +13,7 @@
         xmlns="https://getpsalm.org/schema/config"
         xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
         xmlns:xi="http://www.w3.org/2001/XInclude"
-        phpVersion="8.3"
+        phpVersion="8.4"
         errorLevel="3"
         resolveFromConfigFile="true"
         findUnusedBaselineEntry="true"
@@ -31,6 +31,9 @@
     </projectFiles>
 
     <issueHandlers>
+        <!-- Framework base classes are intentionally extensible -->
+        <ClassMustBeFinal errorLevel="suppress" />
+        
         <MissingDependency errorLevel="suppress" />
         
         <!-- Used for EagerLoaded properties -->
@@ -43,11 +46,11 @@
         <MissingTemplateParam errorLevel="suppress" />
 
         <!-- To not validate int range for json functions -->
-        <ArgumentTypeCoercion errorLevel="suppress">
-            <errorLevel type="suppress">
-                <referencedFunction name="json_encode" />
-                <referencedFunction name="json_decode" />
-            </errorLevel>
-        </ArgumentTypeCoercion>
+<!--        <ArgumentTypeCoercion errorLevel="suppress">-->
+<!--            <errorLevel type="suppress">-->
+<!--                <referencedFunction name="json_encode" />-->
+<!--                <referencedFunction name="json_decode" />-->
+<!--            </errorLevel>-->
+<!--        </ArgumentTypeCoercion>-->
     </issueHandlers>
 </psalm>
