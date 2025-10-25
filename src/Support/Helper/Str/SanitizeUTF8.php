@@ -34,6 +34,6 @@ class SanitizeUTF8
         // Remove invalid UTF-8 characters
         $sanitized = mb_ereg_replace('[^\x20-\x7E\xA0-\xFF]', '', $string);
         
-        return $sanitized !== false ? $sanitized : '';
+        return $sanitized ?: '';
     }
 }
