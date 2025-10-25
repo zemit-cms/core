@@ -55,7 +55,10 @@ class Logger extends Injectable
                         ],
                     ]);
                     
-                    $this->loggers->get('database')->info($log);
+                    if (!empty($log)) {
+                        $this->loggers->get('database')->info($log);
+                    }
+                    
                     $this->inProgress = false;
                 }
             }

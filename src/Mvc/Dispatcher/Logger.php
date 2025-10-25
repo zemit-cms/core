@@ -46,7 +46,7 @@ class Logger extends Injectable
                     ],
                 ]);
                 
-                if ($log) {
+                if (!empty($log)) {
                     $this->logger->info($log);
                 }
             }
