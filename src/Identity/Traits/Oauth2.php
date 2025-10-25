@@ -27,7 +27,7 @@ trait Oauth2
      * OAuth2 authentication
      *
      * @param string $provider The OAuth2 provider
-     * @param int $providerUuid The UUID associated with the provider
+     * @param string $providerUuid The UUID associated with the provider
      * @param string $accessToken The access token provided by the provider
      * @param string|null $refreshToken The refresh token provided by the provider (optional)
      * @param array|null $meta Additional metadata associated with the user (optional)
@@ -38,9 +38,9 @@ trait Oauth2
      *   - 'loggedInAs': Indicates the user that is currently logged in
      *   - 'messages': An array of validation messages
      *
-     * @throws Exception
+     * @throws \Exception
      */
-    public function oauth2(string $provider, int $providerUuid, string $accessToken, ?string $refreshToken = null, ?array $meta = []): array
+    public function oauth2(string $provider, string $providerUuid, string $accessToken, ?string $refreshToken = null, ?array $meta = []): array
     {
         $loggedInUser = null;
         
@@ -49,11 +49,11 @@ trait Oauth2
             'provider = :provider: and provider_uuid = :providerUuid:',
             'bind' => [
                 'provider' => $this->filter->sanitize($provider, 'string'),
-                'providerUuid' => (int)$providerUuid,
+                'providerUuid' => $providerUuid,
             ],
             'bindTypes' => [
                 'provider' => Column::BIND_PARAM_STR,
-                'id' => Column::BIND_PARAM_STR,
+                'providerUuid' => Column::BIND_PARAM_STR,
             ],
         ]);
         if (!$oauth2) {
@@ -64,10 +64,14 @@ trait Oauth2
         $oauth2->setAccessToken($accessToken);
         $oauth2->setRefreshToken($refreshToken);
         $oauth2->setMeta(!empty($meta) ? json_encode($meta) : null);
-        $oauth2->setName($meta['name'] ?? null);
-        $oauth2->setFirstName($meta['first_name'] ?? null);
-        $oauth2->setLastName($meta['last_name'] ?? null);
         $oauth2->setEmail($meta['email'] ?? null);
+        
+        // legacy fields support, these fields were removed from the oauth2 table
+        $oauth2->assign([
+            'name' => $meta['name'] ?? null,
+            'firstName' => $meta['first_name'] ?? null,
+            'lastName' => $meta['last_name'] ?? null,
+        ]);
         
         // link the current user to the oauth2 entity
         $oauth2UserId = $oauth2->getUserId();
@@ -101,7 +105,7 @@ trait Oauth2
             }
             
             // access forbidden, login failed
-            else if ($user->isDeleted()) {
+            elseif ($user->isDeleted()) {
                 $validation->appendMessage(new Message('Login Forbidden', 'password', 'LoginForbidden', 403));
             }
             

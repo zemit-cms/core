@@ -14,5 +14,5 @@ namespace Zemit\Identity\Traits\Interfaces;
 
 interface Oauth2Interface
 {
-    public function oauth2(string $provider, int $providerUuid, string $accessToken, ?string $refreshToken = null, ?array $meta = []): array;
+    public function oauth2(string $provider, string $providerUuid, string $accessToken, ?string $refreshToken = null, ?array $meta = []): array;
 }
