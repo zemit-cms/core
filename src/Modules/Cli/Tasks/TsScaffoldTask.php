@@ -83,7 +83,7 @@ DOC;
         $ret = [];
         
         $directory = $this->dispatcher->getParam('directory');
-        $files = glob($directory . '*.ts');
+        $files = glob($directory . '*.ts') ?: [];
         
         $exports = [];
         foreach ($files as $file) {
@@ -530,7 +530,7 @@ EOT;
             mkdir($directory, 0755, true);
         }
         
-        $file = fopen($file, 'w');
-        return fwrite($file, $text) && fclose($file);
+        $resource = fopen($file, 'w');
+        return $resource && fwrite($resource, $text) && fclose($resource);
     }
 }
