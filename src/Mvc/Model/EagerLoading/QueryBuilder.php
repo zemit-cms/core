@@ -23,6 +23,7 @@ final class QueryBuilder extends Builder
      * @return BuilderInterface
      * @throws \LogicException
      */
+    #[\Override]
     public function distinct($distinct): BuilderInterface
     {
         throw new \LogicException(self::E_NOT_ALLOWED_METHOD_CALL);
@@ -33,6 +34,7 @@ final class QueryBuilder extends Builder
      * @return BuilderInterface
      * @throws \LogicException
      */
+    #[\Override]
     public function columns($columns): BuilderInterface
     {
         throw new \LogicException(self::E_NOT_ALLOWED_METHOD_CALL);
@@ -41,6 +43,7 @@ final class QueryBuilder extends Builder
     /**
      * Replacing where to andWhere in order to avoid loosing relationship conditions
      */
+    #[\Override]
     public function where(string $conditions, array $bindParams = [], array $bindTypes = []): BuilderInterface
     {
         if (!empty($this->conditions)) {

@@ -34,6 +34,7 @@ class Module implements ModuleDefinitionInterface
     /**
      * Registers an autoloader related to the frontend module
      */
+    #[\Override]
     public function registerAutoloaders(?DiInterface $container = null): void
     {
         $this->loader = $container['loader'] ?? new Loader();
@@ -46,6 +47,7 @@ class Module implements ModuleDefinitionInterface
     /**
      * Registers services related to the module
      */
+    #[\Override]
     public function registerServices(DiInterface $container): void
     {
         $this->getServices($container);

@@ -48,6 +48,7 @@ DOC;
     /**
      * Default action
      */
+    #[\Override]
     public function mainAction(string ...$tables): ?array
     {
         $response = [];
@@ -100,7 +101,7 @@ DOC;
             $records = $model::findLifeCycle($policy['query'] ?? null);
             assert($records instanceof Resultset);
             
-            $callable = $policy['callable'] ?? function (Model $record, string $source, array &$response) {
+            $callable = $policy['callable'] ?? function (Model $record, string $source, array &$response): void {
                 $deleted =  $record->delete();
                 $response[$source]['deleted'] += $deleted? 1 : 0;
                 

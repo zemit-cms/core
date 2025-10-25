@@ -131,6 +131,7 @@ class Model extends \Phalcon\Mvc\Model implements ModelInterface
      *
      * @param array|null $options
      */
+    #[\Override]
     public static function setup(?array $options = null): void
     {
         parent::setup(array_merge([

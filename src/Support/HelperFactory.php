@@ -86,7 +86,7 @@ use Zemit\Support\Helper\Str\Slugify;
  * @method string recursiveStrReplace(array $collection, array $replaces)
  * @method string slugify(string $string, array $replace = [], string $delimiter = '-')
  * @method string sanitizeUTF8(string $string)
- * @method string removeNonPrintable(string $string, string $nonPrintableRegex = '[[:cntrl:]' . PHP_EOL . ']', string $replacement = '')
+ * @method string removeNonPrintable(string $string, string $nonPrintableRegex = '[[:cntrl:]\r\n]', string $replacement = '')
  * @method string normalizeLineBreaks(string $string, string $nonPrintableRegex = "\r\n", string $replacement = "\r")
  */
 class HelperFactory extends \Phalcon\Support\HelperFactory
@@ -96,6 +96,7 @@ class HelperFactory extends \Phalcon\Support\HelperFactory
      *
      * @return string[]
      */
+    #[\Override]
     protected function getServices(): array
     {
         return array_merge(parent::getServices(), [

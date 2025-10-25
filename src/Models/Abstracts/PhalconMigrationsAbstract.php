@@ -55,6 +55,7 @@ abstract class PhalconMigrationsAbstract extends \Zemit\Models\AbstractModel imp
      * Attributes: First | Primary | NotNull | Size(255) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getVersion(): mixed
     {
         return $this->version;
@@ -67,6 +68,7 @@ abstract class PhalconMigrationsAbstract extends \Zemit\Models\AbstractModel imp
      * @param mixed $version
      * @return void
      */
+    #[\Override]
     public function setVersion(mixed $version): void
     {
         $this->version = $version;
@@ -78,6 +80,7 @@ abstract class PhalconMigrationsAbstract extends \Zemit\Models\AbstractModel imp
      * Attributes: NotNull | Type(17)
      * @return mixed
      */
+    #[\Override]
     public function getStartTime(): mixed
     {
         return $this->startTime;
@@ -90,6 +93,7 @@ abstract class PhalconMigrationsAbstract extends \Zemit\Models\AbstractModel imp
      * @param mixed $startTime
      * @return void
      */
+    #[\Override]
     public function setStartTime(mixed $startTime): void
     {
         $this->startTime = $startTime;
@@ -101,6 +105,7 @@ abstract class PhalconMigrationsAbstract extends \Zemit\Models\AbstractModel imp
      * Attributes: NotNull | Type(17)
      * @return mixed
      */
+    #[\Override]
     public function getEndTime(): mixed
     {
         return $this->endTime;
@@ -113,6 +118,7 @@ abstract class PhalconMigrationsAbstract extends \Zemit\Models\AbstractModel imp
      * @param mixed $endTime
      * @return void
      */
+    #[\Override]
     public function setEndTime(mixed $endTime): void
     {
         $this->endTime = $endTime;

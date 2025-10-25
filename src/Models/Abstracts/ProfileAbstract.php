@@ -144,6 +144,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
@@ -156,6 +157,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * @param mixed $id
      * @return void
      */
+    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
@@ -167,6 +169,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
@@ -179,6 +182,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * @param mixed $uuid
      * @return void
      */
+    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
@@ -190,6 +194,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getUserId(): mixed
     {
         return $this->userId;
@@ -202,6 +207,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * @param mixed $userId
      * @return void
      */
+    #[\Override]
     public function setUserId(mixed $userId): void
     {
         $this->userId = $userId;
@@ -213,6 +219,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * Attributes: Size(100) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getFirstName(): mixed
     {
         return $this->firstName;
@@ -225,6 +232,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * @param mixed $firstName
      * @return void
      */
+    #[\Override]
     public function setFirstName(mixed $firstName): void
     {
         $this->firstName = $firstName;
@@ -236,6 +244,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * Attributes: Size(100) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getLastName(): mixed
     {
         return $this->lastName;
@@ -248,6 +257,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * @param mixed $lastName
      * @return void
      */
+    #[\Override]
     public function setLastName(mixed $lastName): void
     {
         $this->lastName = $lastName;
@@ -259,6 +269,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getAvatarFileId(): mixed
     {
         return $this->avatarFileId;
@@ -271,6 +282,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * @param mixed $avatarFileId
      * @return void
      */
+    #[\Override]
     public function setAvatarFileId(mixed $avatarFileId): void
     {
         $this->avatarFileId = $avatarFileId;
@@ -282,6 +294,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
+    #[\Override]
     public function getDeleted(): mixed
     {
         return $this->deleted;
@@ -294,6 +307,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * @param mixed $deleted
      * @return void
      */
+    #[\Override]
     public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
@@ -305,6 +319,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
@@ -317,6 +332,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * @param mixed $createdAt
      * @return void
      */
+    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
@@ -328,6 +344,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
@@ -340,6 +357,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * @param mixed $createdBy
      * @return void
      */
+    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
@@ -351,6 +369,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedAt(): mixed
     {
         return $this->updatedAt;
@@ -363,6 +382,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * @param mixed $updatedAt
      * @return void
      */
+    #[\Override]
     public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
@@ -374,6 +394,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedBy(): mixed
     {
         return $this->updatedBy;
@@ -386,6 +407,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * @param mixed $updatedBy
      * @return void
      */
+    #[\Override]
     public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
@@ -397,6 +419,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedAt(): mixed
     {
         return $this->deletedAt;
@@ -409,6 +432,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * @param mixed $deletedAt
      * @return void
      */
+    #[\Override]
     public function setDeletedAt(mixed $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
@@ -420,6 +444,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedBy(): mixed
     {
         return $this->deletedBy;
@@ -432,6 +457,7 @@ abstract class ProfileAbstract extends \Zemit\Models\AbstractModel implements Pr
      * @param mixed $deletedBy
      * @return void
      */
+    #[\Override]
     public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;

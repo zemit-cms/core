@@ -92,6 +92,7 @@ abstract class LogAbstract extends \Zemit\Models\AbstractModel implements LogAbs
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
@@ -104,6 +105,7 @@ abstract class LogAbstract extends \Zemit\Models\AbstractModel implements LogAbs
      * @param mixed $id
      * @return void
      */
+    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
@@ -115,6 +117,7 @@ abstract class LogAbstract extends \Zemit\Models\AbstractModel implements LogAbs
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
@@ -127,6 +130,7 @@ abstract class LogAbstract extends \Zemit\Models\AbstractModel implements LogAbs
      * @param mixed $uuid
      * @return void
      */
+    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
@@ -138,6 +142,7 @@ abstract class LogAbstract extends \Zemit\Models\AbstractModel implements LogAbs
      * Attributes: NotNull | Numeric | Size(1)
      * @return mixed
      */
+    #[\Override]
     public function getLevel(): mixed
     {
         return $this->level;
@@ -150,6 +155,7 @@ abstract class LogAbstract extends \Zemit\Models\AbstractModel implements LogAbs
      * @param mixed $level
      * @return void
      */
+    #[\Override]
     public function setLevel(mixed $level): void
     {
         $this->level = $level;
@@ -161,6 +167,7 @@ abstract class LogAbstract extends \Zemit\Models\AbstractModel implements LogAbs
      * Attributes: NotNull | Size('critical','alert','error','warning','notice','info','debug','emergency','other') | Type(18)
      * @return mixed
      */
+    #[\Override]
     public function getType(): mixed
     {
         return $this->type;
@@ -173,6 +180,7 @@ abstract class LogAbstract extends \Zemit\Models\AbstractModel implements LogAbs
      * @param mixed $type
      * @return void
      */
+    #[\Override]
     public function setType(mixed $type): void
     {
         $this->type = $type;
@@ -184,6 +192,7 @@ abstract class LogAbstract extends \Zemit\Models\AbstractModel implements LogAbs
      * Attributes: NotNull | Type(6)
      * @return mixed
      */
+    #[\Override]
     public function getMessage(): mixed
     {
         return $this->message;
@@ -196,6 +205,7 @@ abstract class LogAbstract extends \Zemit\Models\AbstractModel implements LogAbs
      * @param mixed $message
      * @return void
      */
+    #[\Override]
     public function setMessage(mixed $message): void
     {
         $this->message = $message;
@@ -207,6 +217,7 @@ abstract class LogAbstract extends \Zemit\Models\AbstractModel implements LogAbs
      * Attributes: Type(24)
      * @return mixed
      */
+    #[\Override]
     public function getContext(): mixed
     {
         return $this->context;
@@ -219,6 +230,7 @@ abstract class LogAbstract extends \Zemit\Models\AbstractModel implements LogAbs
      * @param mixed $context
      * @return void
      */
+    #[\Override]
     public function setContext(mixed $context): void
     {
         $this->context = $context;
@@ -230,6 +242,7 @@ abstract class LogAbstract extends \Zemit\Models\AbstractModel implements LogAbs
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
@@ -242,6 +255,7 @@ abstract class LogAbstract extends \Zemit\Models\AbstractModel implements LogAbs
      * @param mixed $createdAt
      * @return void
      */
+    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
@@ -253,6 +267,7 @@ abstract class LogAbstract extends \Zemit\Models\AbstractModel implements LogAbs
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
@@ -265,6 +280,7 @@ abstract class LogAbstract extends \Zemit\Models\AbstractModel implements LogAbs
      * @param mixed $createdBy
      * @return void
      */
+    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;

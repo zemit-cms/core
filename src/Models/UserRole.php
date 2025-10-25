@@ -23,6 +23,7 @@ use Zemit\Models\Interfaces\UserRoleInterface;
  */
 class UserRole extends UserRoleAbstract implements UserRoleInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

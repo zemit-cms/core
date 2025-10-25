@@ -184,7 +184,7 @@ DOC;
         return $ret;
     }
     
-    public function appendExport(array $definitions, array &$exports)
+    public function appendExport(array $definitions, array &$exports): void
     {
         $exports['models'] [] = "export {{$definitions['model']['name']}} from './{$definitions['model']['name']}'";
         $exports['interfaces'] [] = "export {{$definitions['interface']['name']}} from './{$definitions['interface']['name']}'";
@@ -242,10 +242,7 @@ export class {$definitions['model']['name']} extends {$definitions['abstract']['
 EOT;
     }
     
-    /**
-     *
-     */
-    public function createServiceOutput(array $definitions)
+    public function createServiceOutput(array $definitions): string
     {
         
         $from = '../' . $this->modelsPath . $definitions['model']['name'];
@@ -471,7 +468,7 @@ EOT;
         return $default;
     }
     
-    public function getColumnName(string $name)
+    public function getColumnName(string $name): string
     {
         return lcfirst(
             Helper::camelize(
@@ -482,7 +479,7 @@ EOT;
         );
     }
     
-    public function getTableName(string $name)
+    public function getTableName(string $name): string
     {
         return ucfirst(
             Helper::camelize(
@@ -503,7 +500,7 @@ EOT;
         return new Model();
     }
     
-    public function getModelNameFromClassName(string $className)
+    public function getModelNameFromClassName(string $className): string
     {
         return ucfirst(
             Helper::camelize(

@@ -41,6 +41,7 @@ class Escaper extends \Phalcon\Html\Escaper implements EscaperInterface
      * @param mixed|null $json The JSON string to escape. If null, an empty string is escaped.
      * @return string Returns the raw URL encoded JSON string.
      */
+    #[\Override]
     public function json(mixed $json = null): string
     {
         if (is_null($json)) {

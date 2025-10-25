@@ -18,7 +18,11 @@ class ErrorController extends AbstractController
 {
     use StatusCode;
     use ErrorActions;
-
+    
+    /**
+     * @return void
+     */
+    #[\Override]
     public function initialize()
     {
         $this->view->pick('error/index');

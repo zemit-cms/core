@@ -185,6 +185,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
@@ -197,6 +198,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * @param mixed $id
      * @return void
      */
+    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
@@ -208,6 +210,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
@@ -220,6 +223,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * @param mixed $uuid
      * @return void
      */
+    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
@@ -231,6 +235,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getTemplateId(): mixed
     {
         return $this->templateId;
@@ -243,6 +248,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * @param mixed $templateId
      * @return void
      */
+    #[\Override]
     public function setTemplateId(mixed $templateId): void
     {
         $this->templateId = $templateId;
@@ -254,6 +260,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getFrom(): mixed
     {
         return $this->from;
@@ -266,6 +273,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * @param mixed $from
      * @return void
      */
+    #[\Override]
     public function setFrom(mixed $from): void
     {
         $this->from = $from;
@@ -277,6 +285,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * Attributes: NotNull | Type(6)
      * @return mixed
      */
+    #[\Override]
     public function getTo(): mixed
     {
         return $this->to;
@@ -289,6 +298,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * @param mixed $to
      * @return void
      */
+    #[\Override]
     public function setTo(mixed $to): void
     {
         $this->to = $to;
@@ -300,6 +310,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * Attributes: Type(6)
      * @return mixed
      */
+    #[\Override]
     public function getCc(): mixed
     {
         return $this->cc;
@@ -312,6 +323,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * @param mixed $cc
      * @return void
      */
+    #[\Override]
     public function setCc(mixed $cc): void
     {
         $this->cc = $cc;
@@ -323,6 +335,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * Attributes: Type(6)
      * @return mixed
      */
+    #[\Override]
     public function getBcc(): mixed
     {
         return $this->bcc;
@@ -335,6 +348,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * @param mixed $bcc
      * @return void
      */
+    #[\Override]
     public function setBcc(mixed $bcc): void
     {
         $this->bcc = $bcc;
@@ -346,6 +360,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getSubject(): mixed
     {
         return $this->subject;
@@ -358,6 +373,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * @param mixed $subject
      * @return void
      */
+    #[\Override]
     public function setSubject(mixed $subject): void
     {
         $this->subject = $subject;
@@ -369,6 +385,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * Attributes: NotNull | Type(23)
      * @return mixed
      */
+    #[\Override]
     public function getContent(): mixed
     {
         return $this->content;
@@ -381,6 +398,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * @param mixed $content
      * @return void
      */
+    #[\Override]
     public function setContent(mixed $content): void
     {
         $this->content = $content;
@@ -392,6 +410,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * Attributes: Type(24)
      * @return mixed
      */
+    #[\Override]
     public function getMeta(): mixed
     {
         return $this->meta;
@@ -404,6 +423,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * @param mixed $meta
      * @return void
      */
+    #[\Override]
     public function setMeta(mixed $meta): void
     {
         $this->meta = $meta;
@@ -415,6 +435,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getSentAt(): mixed
     {
         return $this->sentAt;
@@ -427,6 +448,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * @param mixed $sentAt
      * @return void
      */
+    #[\Override]
     public function setSentAt(mixed $sentAt): void
     {
         $this->sentAt = $sentAt;
@@ -438,6 +460,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
+    #[\Override]
     public function getDeleted(): mixed
     {
         return $this->deleted;
@@ -450,6 +473,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * @param mixed $deleted
      * @return void
      */
+    #[\Override]
     public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
@@ -461,6 +485,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
@@ -473,6 +498,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * @param mixed $createdAt
      * @return void
      */
+    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
@@ -484,6 +510,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
@@ -496,6 +523,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * @param mixed $createdBy
      * @return void
      */
+    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
@@ -507,6 +535,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedAt(): mixed
     {
         return $this->updatedAt;
@@ -519,6 +548,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * @param mixed $updatedAt
      * @return void
      */
+    #[\Override]
     public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
@@ -530,6 +560,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedBy(): mixed
     {
         return $this->updatedBy;
@@ -542,6 +573,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * @param mixed $updatedBy
      * @return void
      */
+    #[\Override]
     public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
@@ -553,6 +585,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedAt(): mixed
     {
         return $this->deletedAt;
@@ -565,6 +598,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * @param mixed $deletedAt
      * @return void
      */
+    #[\Override]
     public function setDeletedAt(mixed $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
@@ -576,6 +610,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedBy(): mixed
     {
         return $this->deletedBy;
@@ -588,6 +623,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * @param mixed $deletedBy
      * @return void
      */
+    #[\Override]
     public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;

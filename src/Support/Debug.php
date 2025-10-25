@@ -24,6 +24,7 @@ class Debug extends \Phalcon\Support\Debug
      *
      * @return string The version information as HTML string.
      */
+    #[\Override]
     public function getVersion(): string
     {
         $zemitVersion = new ZemitVersion();

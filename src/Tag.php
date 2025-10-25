@@ -81,6 +81,7 @@ class Tag extends PhalconTag
      *
      * @see PhalconTag::getEscaper()
      */
+    #[\Override]
     public static function getEscaper(array $params): ?EscaperInterface
     {
         @$escaper = PhalconTag::getEscaper($params);
@@ -97,6 +98,7 @@ class Tag extends PhalconTag
      * 
      * @see PhalconTag::getEscaperService()
      */
+    #[\Override]
     public static function getEscaperService(): EscaperInterface
     {
 //        $escaper = PhalconTag::getEscaperService();

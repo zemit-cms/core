@@ -23,6 +23,7 @@ use Zemit\Models\Interfaces\JobSchedulerInterface;
  */
 class JobScheduler extends JobSchedulerAbstract implements JobSchedulerInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

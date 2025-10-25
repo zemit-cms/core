@@ -22,6 +22,7 @@ class Action extends Behavior
     /**
      * @return void
      */
+    #[\Override]
     public function notify(string $type, ModelInterface $model)
     {
         if (!$this->isEnabled()) {

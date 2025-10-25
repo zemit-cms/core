@@ -28,6 +28,7 @@ class Conditional extends Behavior
     /**
      * Listens for notifications from the models manager
      */
+    #[\Override]
     public function notify(string $type, ModelInterface $model): ?bool
     {
         if (!$this->isEnabled()) {

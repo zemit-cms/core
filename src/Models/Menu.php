@@ -23,6 +23,7 @@ use Zemit\Models\Interfaces\MenuInterface;
  */
 class Menu extends MenuAbstract implements MenuInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

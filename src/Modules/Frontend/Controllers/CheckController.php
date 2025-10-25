@@ -144,7 +144,7 @@ class CheckController extends AbstractController
     /**
      * Compatibility and requirements checks
      */
-    public function requirementsAction()
+    public function requirementsAction(): string
     {
         $di = $this->getDI();
         $validation = new Validation();

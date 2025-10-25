@@ -75,7 +75,10 @@ trait EagerLoad
     
     /**
      * @deprecated
+     *
      * @link self::findWith()
+     *
+     * @return array
      */
     #[Deprecated(
         reason: 'since Zemit 1.0, use findWith() instead',
@@ -88,7 +91,10 @@ trait EagerLoad
     
     /**
      * @deprecated
+     *
      * @link self::findFirstWith()
+     *
+     * @return array
      */
     #[Deprecated(
         reason: 'since Zemit 1.0, use findFirstWith() instead',

@@ -17,11 +17,13 @@ use Phalcon\Mvc\ModelInterface;
 
 class Manager extends PhalconModelsManager implements ManagerInterface
 {
+    #[\Override]
     public function getBehaviors(): array
     {
         return $this->behaviors;
     }
     
+    #[\Override]
     public function setBehaviors(array $behaviors): void
     {
         $this->behaviors = $behaviors;
@@ -30,6 +32,7 @@ class Manager extends PhalconModelsManager implements ManagerInterface
     /**
      * Get a behavior using the behavior name
      */
+    #[\Override]
     public function getBehavior(ModelInterface $model, string $behaviorName)
     {
         $entityName = strtolower(get_class($model));
@@ -40,6 +43,7 @@ class Manager extends PhalconModelsManager implements ManagerInterface
     /**
      * Set a behavior using the behavior name
      */
+    #[\Override]
     public function setBehavior(ModelInterface $model, string $behaviorName, BehaviorInterface $behavior): void
     {
         $entityName = strtolower(get_class($model));
@@ -54,6 +58,7 @@ class Manager extends PhalconModelsManager implements ManagerInterface
     /**
      * Return true if the behavior is set
      */
+    #[\Override]
     public function hasBehavior(ModelInterface $model, string $behaviorName): bool
     {
         $entityName = strtolower(get_class($model));

@@ -23,6 +23,7 @@ use Zemit\Models\Interfaces\RoleFeatureInterface;
  */
 class RoleFeature extends RoleFeatureAbstract implements RoleFeatureInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

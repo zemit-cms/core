@@ -127,7 +127,7 @@ trait Replication
      */
     public function addReadWriteConnectionBehavior(): void
     {
-        $forceMasterConnectionService = function () {
+        $forceMasterConnectionService = function (): void {
             self::setReplicationReadyAt((int)round(microtime(true) * 1000) + self::getReplicationLag());
         };
         

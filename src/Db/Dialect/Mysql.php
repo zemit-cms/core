@@ -92,6 +92,7 @@ class Mysql extends \Phalcon\Db\Dialect\Mysql
      * @param ColumnInterface $column The column to get the definition for.
      * @return string The SQL column definition.
      */
+    #[\Override]
     public function getColumnDefinition(ColumnInterface $column): string
     {
         try {

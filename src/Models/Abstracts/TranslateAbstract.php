@@ -147,6 +147,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
@@ -159,6 +160,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $id
      * @return void
      */
+    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
@@ -170,6 +172,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
@@ -182,6 +185,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $uuid
      * @return void
      */
+    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
@@ -193,6 +197,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: NotNull | Numeric | Unsigned | Size(1)
      * @return mixed
      */
+    #[\Override]
     public function getLangId(): mixed
     {
         return $this->langId;
@@ -205,6 +210,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $langId
      * @return void
      */
+    #[\Override]
     public function setLangId(mixed $langId): void
     {
         $this->langId = $langId;
@@ -216,6 +222,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: NotNull | Size(60) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getTranslatableTable(): mixed
     {
         return $this->translatableTable;
@@ -228,6 +235,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $translatableTable
      * @return void
      */
+    #[\Override]
     public function setTranslatableTable(mixed $translatableTable): void
     {
         $this->translatableTable = $translatableTable;
@@ -239,6 +247,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getTranslatableId(): mixed
     {
         return $this->translatableId;
@@ -251,6 +260,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $translatableId
      * @return void
      */
+    #[\Override]
     public function setTranslatableId(mixed $translatableId): void
     {
         $this->translatableId = $translatableId;
@@ -262,6 +272,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: NotNull | Size(60) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getField(): mixed
     {
         return $this->field;
@@ -274,6 +285,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $field
      * @return void
      */
+    #[\Override]
     public function setField(mixed $field): void
     {
         $this->field = $field;
@@ -285,6 +297,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: Type(23)
      * @return mixed
      */
+    #[\Override]
     public function getValue(): mixed
     {
         return $this->value;
@@ -297,6 +310,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $value
      * @return void
      */
+    #[\Override]
     public function setValue(mixed $value): void
     {
         $this->value = $value;
@@ -308,6 +322,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
+    #[\Override]
     public function getDeleted(): mixed
     {
         return $this->deleted;
@@ -320,6 +335,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $deleted
      * @return void
      */
+    #[\Override]
     public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
@@ -331,6 +347,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
@@ -343,6 +360,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $createdAt
      * @return void
      */
+    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
@@ -354,6 +372,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
@@ -366,6 +385,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $createdBy
      * @return void
      */
+    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
@@ -377,6 +397,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedAt(): mixed
     {
         return $this->updatedAt;
@@ -389,6 +410,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $updatedAt
      * @return void
      */
+    #[\Override]
     public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
@@ -400,6 +422,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedBy(): mixed
     {
         return $this->updatedBy;
@@ -412,6 +435,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $updatedBy
      * @return void
      */
+    #[\Override]
     public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
@@ -423,6 +447,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedAt(): mixed
     {
         return $this->deletedAt;
@@ -435,6 +460,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $deletedAt
      * @return void
      */
+    #[\Override]
     public function setDeletedAt(mixed $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
@@ -446,6 +472,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedBy(): mixed
     {
         return $this->deletedBy;
@@ -458,6 +485,7 @@ abstract class TranslateAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $deletedBy
      * @return void
      */
+    #[\Override]
     public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;

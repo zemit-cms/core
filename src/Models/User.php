@@ -23,6 +23,7 @@ use Zemit\Models\Interfaces\UserInterface;
  */
 class User extends UserAbstract implements UserInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

@@ -62,6 +62,7 @@ class Position extends Behavior
      * Set the default position field value before validation
      * Shift position+1 and position-1 to other records after save
      */
+    #[\Override]
     public function notify(string $type, ModelInterface $model): ?bool
     {
         if (!$this->isEnabled()) {

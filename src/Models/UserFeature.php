@@ -23,6 +23,7 @@ use Zemit\Models\Interfaces\UserFeatureInterface;
  */
 class UserFeature extends UserFeatureAbstract implements UserFeatureInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

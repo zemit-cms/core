@@ -35,6 +35,7 @@ class Filter extends \Phalcon\Filter\Filter
     
     public const string FILTER_IPV6 = 'ipv6';
     
+    #[\Override]
     protected function init(array $mapper): void
     {
         parent::init($mapper);

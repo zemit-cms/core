@@ -22,6 +22,7 @@ class Request extends \Phalcon\Http\Request implements RequestInterface
      *
      * @return bool True if the request is a CORS request, false otherwise
      */
+    #[\Override]
     public function isCors(): bool
     {
         return !empty($this->getHeader('Origin')) && !$this->isSameOrigin();
@@ -41,6 +42,7 @@ class Request extends \Phalcon\Http\Request implements RequestInterface
      *
      * @return bool True if the request is a preflight request, false otherwise.
      */
+    #[\Override]
     public function isPreflight(): bool
     {
         return $this->isCors()
@@ -53,6 +55,7 @@ class Request extends \Phalcon\Http\Request implements RequestInterface
      *
      * @return bool Returns true if the request is from the same origin, false otherwise.
      */
+    #[\Override]
     public function isSameOrigin(): bool
     {
         $schemeHost = $this->getScheme() . '://' . $this->getHttpHost();
@@ -104,6 +107,7 @@ class Request extends \Phalcon\Http\Request implements RequestInterface
      *               - isSameOrigin: True if the request is from the same origin, false otherwise.
      *               - isValidHttpMethod: True if the HTTP method is valid, false otherwise.
      */
+    #[\Override]
     public function toArray(): array
     {
         return [

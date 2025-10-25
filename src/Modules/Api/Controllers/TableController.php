@@ -18,6 +18,7 @@ class TableController extends Controller
     protected ?int $limit = 100;
     protected ?int $maxLimit = 100;
     
+    #[\Override]
     public function initializeFilterFields(): void
     {
         $this->setFilterFields(new Collection([

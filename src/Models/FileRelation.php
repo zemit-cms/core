@@ -23,6 +23,7 @@ use Zemit\Models\Interfaces\FileRelationInterface;
  */
 class FileRelation extends FileRelationAbstract implements FileRelationInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

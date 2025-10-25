@@ -15,6 +15,7 @@ use Zemit\Modules\Api\Controller;
 
 class UserController extends Controller
 {
+    #[\Override]
     public function initializeWith(): void
     {
         $this->setWith(new Collection([
@@ -22,6 +23,7 @@ class UserController extends Controller
         ]));
     }
     
+    #[\Override]
     public function initializeSearchFields(): void
     {
         $this->setSearchFields(new Collection([
@@ -32,6 +34,7 @@ class UserController extends Controller
         ]));
     }
     
+    #[\Override]
     public function initializeExposeFields(): void
     {
         $this->setExposeFields(new Collection([

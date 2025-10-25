@@ -106,6 +106,7 @@ class Router extends \Phalcon\Mvc\Router implements RouterInterface
         }
     }
     
+    #[\Override]
     public function toArray(): array
     {
         $matchedRoute = $this->getMatchedRoute();

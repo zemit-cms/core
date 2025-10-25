@@ -19,11 +19,13 @@ use Zemit\Filter\Sanitize\Md5;
 
 class FilterFactory extends \Phalcon\Filter\FilterFactory
 {
+    #[\Override]
     public function newInstance(): FilterInterface
     {
         return new Filter($this->getServices());
     }
     
+    #[\Override]
     protected function getServices(): array
     {
         return array_merge(parent::getServices(), [

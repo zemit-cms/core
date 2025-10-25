@@ -23,6 +23,7 @@ use Zemit\Models\Interfaces\LogInterface;
  */
 class Log extends LogAbstract implements LogInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

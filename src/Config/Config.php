@@ -20,6 +20,7 @@ class Config extends \Phalcon\Config\Config implements ConfigInterface
     /**
      * Return the element as an array
      */
+    #[\Override]
     public function pathToArray(string $path, ?array $defaultValue = null, ?string $delimiter = null): ?array
     {
         $ret = $this->path($path, $defaultValue, $delimiter);
@@ -35,6 +36,7 @@ class Config extends \Phalcon\Config\Config implements ConfigInterface
         return (array)$ret;
     }
     
+    #[\Override]
     public function merge($toMerge, bool $append = false): PhalconConfigInterface
     {
         if (!$append) {

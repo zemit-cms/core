@@ -24,6 +24,7 @@ class Dynamic extends Model
     protected $_metaData = [];
     protected $_columnMap = [];
     
+    #[\Override]
     public function initialize(): void
     {
         $this->setConnectionService('dbd');

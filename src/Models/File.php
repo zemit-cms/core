@@ -23,6 +23,7 @@ use Zemit\Models\Interfaces\FileInterface;
  */
 class File extends FileAbstract implements FileInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

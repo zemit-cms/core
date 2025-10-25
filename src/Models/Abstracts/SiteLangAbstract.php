@@ -95,6 +95,7 @@ abstract class SiteLangAbstract extends \Zemit\Models\AbstractModel implements S
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
@@ -107,6 +108,7 @@ abstract class SiteLangAbstract extends \Zemit\Models\AbstractModel implements S
      * @param mixed $id
      * @return void
      */
+    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
@@ -118,6 +120,7 @@ abstract class SiteLangAbstract extends \Zemit\Models\AbstractModel implements S
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
@@ -130,6 +133,7 @@ abstract class SiteLangAbstract extends \Zemit\Models\AbstractModel implements S
      * @param mixed $uuid
      * @return void
      */
+    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
@@ -141,6 +145,7 @@ abstract class SiteLangAbstract extends \Zemit\Models\AbstractModel implements S
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getSiteId(): mixed
     {
         return $this->siteId;
@@ -153,6 +158,7 @@ abstract class SiteLangAbstract extends \Zemit\Models\AbstractModel implements S
      * @param mixed $siteId
      * @return void
      */
+    #[\Override]
     public function setSiteId(mixed $siteId): void
     {
         $this->siteId = $siteId;
@@ -164,6 +170,7 @@ abstract class SiteLangAbstract extends \Zemit\Models\AbstractModel implements S
      * Attributes: NotNull | Numeric | Unsigned | Size(1)
      * @return mixed
      */
+    #[\Override]
     public function getLangId(): mixed
     {
         return $this->langId;
@@ -176,6 +183,7 @@ abstract class SiteLangAbstract extends \Zemit\Models\AbstractModel implements S
      * @param mixed $langId
      * @return void
      */
+    #[\Override]
     public function setLangId(mixed $langId): void
     {
         $this->langId = $langId;
@@ -187,6 +195,7 @@ abstract class SiteLangAbstract extends \Zemit\Models\AbstractModel implements S
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
+    #[\Override]
     public function getDeleted(): mixed
     {
         return $this->deleted;
@@ -199,6 +208,7 @@ abstract class SiteLangAbstract extends \Zemit\Models\AbstractModel implements S
      * @param mixed $deleted
      * @return void
      */
+    #[\Override]
     public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
@@ -210,6 +220,7 @@ abstract class SiteLangAbstract extends \Zemit\Models\AbstractModel implements S
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
@@ -222,6 +233,7 @@ abstract class SiteLangAbstract extends \Zemit\Models\AbstractModel implements S
      * @param mixed $createdAt
      * @return void
      */
+    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
@@ -233,6 +245,7 @@ abstract class SiteLangAbstract extends \Zemit\Models\AbstractModel implements S
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
@@ -245,6 +258,7 @@ abstract class SiteLangAbstract extends \Zemit\Models\AbstractModel implements S
      * @param mixed $createdBy
      * @return void
      */
+    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;

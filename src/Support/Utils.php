@@ -62,10 +62,10 @@ class Utils
     public static function getMemoryUsage(float $divider = 1048576.2, string $suffix = ' MB'): array
     {
         return [
-            'memory' => (memory_get_usage() / $divider) . $suffix,
-            'memoryPeak' => (memory_get_peak_usage() / $divider) . $suffix,
-            'realMemory' => (memory_get_usage(true) / $divider) . $suffix,
-            'realMemoryPeak' => (memory_get_peak_usage(true) / $divider) . $suffix,
+            'memory' => number_format((float)memory_get_usage() / $divider, 2) . $suffix,
+            'memoryPeak' => number_format((float)memory_get_peak_usage() / $divider, 2) . $suffix,
+            'realMemory' => number_format((float)memory_get_usage(true) / $divider, 2) . $suffix,
+            'realMemoryPeak' => number_format((float)memory_get_peak_usage(true) / $divider, 2) . $suffix,
         ];
     }
 }

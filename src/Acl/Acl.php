@@ -36,6 +36,7 @@ class Acl extends AbstractInjectionAware implements AclInterface
      *
      * @return Memory The ACL (Access Control List) object.
      */
+    #[\Override]
     public function get(array $componentsName = ['components'], ?array $permissions = null, string $inherit = 'inherit'): Memory
     {
         $acl = new Memory();

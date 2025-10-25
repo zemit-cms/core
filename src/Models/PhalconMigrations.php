@@ -23,6 +23,7 @@ use Zemit\Models\Interfaces\PhalconMigrationsInterface;
  */
 class PhalconMigrations extends PhalconMigrationsAbstract implements PhalconMigrationsInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

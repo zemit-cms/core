@@ -114,7 +114,7 @@ trait FilterConditions
             }
             
             $filterId = $this->security->getRandom()->hex(8);
-            $getValue = function (string $value) use ($filterId) {
+            $getValue = function (string $value) use ($filterId): string {
                 return '_' . uniqid($filterId . '_' . $value . '_') . '_';
             };
             

@@ -14,6 +14,7 @@ use Zemit\Modules\Api\Controller;
 
 class TemplateController extends Controller
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

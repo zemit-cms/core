@@ -23,6 +23,7 @@ use Zemit\Models\Interfaces\GroupTypeInterface;
  */
 class GroupType extends GroupTypeAbstract implements GroupTypeInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

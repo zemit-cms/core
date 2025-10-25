@@ -23,6 +23,7 @@ use Zemit\Models\Interfaces\MetaInterface;
  */
 class Meta extends MetaAbstract implements MetaInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

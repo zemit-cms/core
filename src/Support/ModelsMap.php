@@ -211,22 +211,6 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\TranslateField::class
-     */
-    public function getTranslateFieldClass(): string
-    {
-        return $this->getClassMap(TranslateField::class);
-    }
-    
-    /**
-     * Return the mapped class name of \Zemit\Models\TranslateTable::class
-     */
-    public function getTranslateTableClass(): string
-    {
-        return $this->getClassMap(TranslateTable::class);
-    }
-    
-    /**
      * Return the mapped class name of \Zemit\Models\Workspace::class
      */
     public function getWorkspaceClass(): string
@@ -272,14 +256,6 @@ trait ModelsMap
     public function getTableClass(): string
     {
         return $this->getClassMap(Table::class);
-    }
-    
-    /**
-     * Return the mapped class name of \Zemit\Models\Field::class
-     */
-    public function getFieldClass(): string
-    {
-        return $this->getClassMap(Field::class);
     }
     
     /**

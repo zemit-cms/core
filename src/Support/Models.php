@@ -362,16 +362,6 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\FieldInterface
-     */
-    public function getField(): FieldInterface
-    {
-        $instance = $this->getInstance(Field::class);
-        assert($instance instanceof FieldInterface);
-        return $instance;
-    }
-    
-    /**
      * Return an instance of \Zemit\Models\Interfaces\ProfileInterface
      */
     public function getProfile(): ProfileInterface

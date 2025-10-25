@@ -94,6 +94,7 @@ class Locale extends Injectable implements OptionsInterface
      *
      * @return void
      */
+    #[\Override]
     public function initialize(): void
     {
         $this->sessionKey = $this->getOption('sessionKey', $this->sessionKey);

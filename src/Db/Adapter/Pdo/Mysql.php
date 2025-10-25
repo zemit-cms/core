@@ -15,6 +15,7 @@ use Phalcon\Db\Column;
 
 class Mysql extends \Phalcon\Db\Adapter\Pdo\Mysql
 {
+    #[\Override]
     public function describeColumns(string $table, ?string $schema = null): array
     {
         $definitions = parent::describeColumns($table, $schema);
@@ -57,6 +58,7 @@ class Mysql extends \Phalcon\Db\Adapter\Pdo\Mysql
      *
      * @return \PDOStatement
      */
+    #[\Override]
     public function executePrepared(\PDOStatement $statement, array $placeholders, $dataTypes): \PDOStatement
     {
         // Get the original SQL from the statement.

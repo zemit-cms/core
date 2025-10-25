@@ -26,6 +26,7 @@ class Version extends \Phalcon\Support\Version
      * D - Special release: 1 = Alpha, 2 = Beta, 3 = RC, 4 = Stable
      * E - Special release version i.e. RC1, Beta2 etc.
      */
+    #[\Override]
     protected function getVersion(): array
     {
         return [1, 0, 0, 4, 0];

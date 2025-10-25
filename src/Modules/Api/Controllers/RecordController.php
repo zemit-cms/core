@@ -25,6 +25,10 @@ class RecordController extends Controller
     protected array $metaData = [];
     protected string $source = 'dynamic';
     
+    /**
+     * @return void
+     */
+    #[\Override]
     public function initialize()
     {
         $this->initializeSource();
@@ -33,12 +37,12 @@ class RecordController extends Controller
         parent::initialize();
     }
     
-    public function initializeSource()
+    public function initializeSource(): void
     {
         $this->source = $this->getParam('advanced')['tableUuid'] ?? 'dynamic';
     }
     
-    public function initializeTableColumns()
+    public function initializeTableColumns(): void
     {
         $this->columnMap = new Collection([
             'id' => 'id',
@@ -58,16 +62,19 @@ class RecordController extends Controller
         }
     }
     
+    #[\Override]
     public function listExpose(iterable $items, ?array $expose = null): array
     {
         return (array)$items;
     }
     
+    #[\Override]
     public function initializeSearchFields(): void
     {
         $this->setSearchFields($this->columnMap);
     }
     
+    #[\Override]
     public function initializeFilterFields(): void
     {
         $this->setFilterFields(new Collection([
@@ -76,12 +83,13 @@ class RecordController extends Controller
         ]));
     }
     
-    public function hasAdvanced(string $key)
+    public function hasAdvanced(string $key): bool
     {
         $advanced = $this->getParam('advanced') ?? [];
         return isset($advanced[$key]);
     }
     
+    #[\Override]
     public function getModelName(): ?string
     {
         if (!isset($this->modelName)) {
@@ -96,6 +104,7 @@ class RecordController extends Controller
         return $this->modelName;
     }
     
+    #[\Override]
     public function loadModel(?string $modelName = null): ModelInterface
     {
         $modelName ??= $this->getModelName() ?? '';

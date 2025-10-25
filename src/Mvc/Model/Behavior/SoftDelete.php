@@ -49,6 +49,7 @@ class SoftDelete extends Behavior\SoftDelete
         $this->setValue($options['value'] ?? 1);
     }
     
+    #[\Override]
     public function notify(string $type, ModelInterface $model): ?bool
     {
         if (!$this->isEnabled()) {

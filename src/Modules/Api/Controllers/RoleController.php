@@ -15,6 +15,7 @@ use Zemit\Modules\Api\Controller;
 
 class RoleController extends Controller
 {
+    #[\Override]
     public function initializeWith(): void
     {
         $this->setWith(new Collection([
@@ -22,6 +23,7 @@ class RoleController extends Controller
         ]));
     }
     
+    #[\Override]
     public function initializeSaveFields(): void
     {
         $this->setSaveFields(new Collection([
@@ -31,6 +33,7 @@ class RoleController extends Controller
         ]));
     }
     
+    #[\Override]
     public function initializeExposeFields() : void
     {
         $this->setExposeFields(new Collection([

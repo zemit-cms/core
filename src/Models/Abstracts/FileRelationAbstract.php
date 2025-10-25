@@ -97,6 +97,7 @@ abstract class FileRelationAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
@@ -109,6 +110,7 @@ abstract class FileRelationAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $id
      * @return void
      */
+    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
@@ -120,6 +122,7 @@ abstract class FileRelationAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
@@ -132,6 +135,7 @@ abstract class FileRelationAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $uuid
      * @return void
      */
+    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
@@ -143,6 +147,7 @@ abstract class FileRelationAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getFileId(): mixed
     {
         return $this->fileId;
@@ -155,6 +160,7 @@ abstract class FileRelationAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $fileId
      * @return void
      */
+    #[\Override]
     public function setFileId(mixed $fileId): void
     {
         $this->fileId = $fileId;
@@ -166,6 +172,7 @@ abstract class FileRelationAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: NotNull | Size(60) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getRelationTable(): mixed
     {
         return $this->relationTable;
@@ -178,6 +185,7 @@ abstract class FileRelationAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $relationTable
      * @return void
      */
+    #[\Override]
     public function setRelationTable(mixed $relationTable): void
     {
         $this->relationTable = $relationTable;
@@ -189,6 +197,7 @@ abstract class FileRelationAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getRelationId(): mixed
     {
         return $this->relationId;
@@ -201,6 +210,7 @@ abstract class FileRelationAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $relationId
      * @return void
      */
+    #[\Override]
     public function setRelationId(mixed $relationId): void
     {
         $this->relationId = $relationId;
@@ -212,6 +222,7 @@ abstract class FileRelationAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
+    #[\Override]
     public function getDeleted(): mixed
     {
         return $this->deleted;
@@ -224,6 +235,7 @@ abstract class FileRelationAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $deleted
      * @return void
      */
+    #[\Override]
     public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
@@ -235,6 +247,7 @@ abstract class FileRelationAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
@@ -247,6 +260,7 @@ abstract class FileRelationAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $createdAt
      * @return void
      */
+    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
@@ -258,6 +272,7 @@ abstract class FileRelationAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
@@ -270,6 +285,7 @@ abstract class FileRelationAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $createdBy
      * @return void
      */
+    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;

@@ -122,6 +122,7 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
@@ -134,6 +135,7 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
      * @param mixed $id
      * @return void
      */
+    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
@@ -145,6 +147,7 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
@@ -157,6 +160,7 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
      * @param mixed $uuid
      * @return void
      */
+    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
@@ -168,6 +172,7 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
      * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getModel(): mixed
     {
         return $this->model;
@@ -180,6 +185,7 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
      * @param mixed $model
      * @return void
      */
+    #[\Override]
     public function setModel(mixed $model): void
     {
         $this->model = $model;
@@ -191,6 +197,7 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
      * Attributes: NotNull | Size(60) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getTable(): mixed
     {
         return $this->table;
@@ -203,6 +210,7 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
      * @param mixed $table
      * @return void
      */
+    #[\Override]
     public function setTable(mixed $table): void
     {
         $this->table = $table;
@@ -214,6 +222,7 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getPrimary(): mixed
     {
         return $this->primary;
@@ -226,6 +235,7 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
      * @param mixed $primary
      * @return void
      */
+    #[\Override]
     public function setPrimary(mixed $primary): void
     {
         $this->primary = $primary;
@@ -237,6 +247,7 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
      * Attributes: NotNull | Size('create','update','delete','restore','other') | Type(18)
      * @return mixed
      */
+    #[\Override]
     public function getEvent(): mixed
     {
         return $this->event;
@@ -249,6 +260,7 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
      * @param mixed $event
      * @return void
      */
+    #[\Override]
     public function setEvent(mixed $event): void
     {
         $this->event = $event;
@@ -260,6 +272,7 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
      * Attributes: Type(24)
      * @return mixed
      */
+    #[\Override]
     public function getBefore(): mixed
     {
         return $this->before;
@@ -272,6 +285,7 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
      * @param mixed $before
      * @return void
      */
+    #[\Override]
     public function setBefore(mixed $before): void
     {
         $this->before = $before;
@@ -283,6 +297,7 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
      * Attributes: Type(24)
      * @return mixed
      */
+    #[\Override]
     public function getAfter(): mixed
     {
         return $this->after;
@@ -295,6 +310,7 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
      * @param mixed $after
      * @return void
      */
+    #[\Override]
     public function setAfter(mixed $after): void
     {
         $this->after = $after;
@@ -306,6 +322,7 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
@@ -318,6 +335,7 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
      * @param mixed $createdAt
      * @return void
      */
+    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
@@ -329,6 +347,7 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
@@ -341,6 +360,7 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
      * @param mixed $createdBy
      * @return void
      */
+    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
@@ -352,6 +372,7 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedAs(): mixed
     {
         return $this->createdAs;
@@ -364,6 +385,7 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
      * @param mixed $createdAs
      * @return void
      */
+    #[\Override]
     public function setCreatedAs(mixed $createdAs): void
     {
         $this->createdAs = $createdAs;

@@ -107,9 +107,10 @@ if (!function_exists('mb_vsprintf')) {
      * Not supported: Argument swapping.
      *
      * @author Viktor Söderqvist <viktor@textalk.se>
+     *
      * @link http://php.net/manual/en/function.sprintf.php#89020
      */
-    function mb_vsprintf(string $format, array $argv, ?string $encoding = null)
+    function mb_vsprintf(string $format, array $argv, ?string $encoding = null): string
     {
         if (is_null($encoding)) {
             $encoding = strval(mb_internal_encoding());

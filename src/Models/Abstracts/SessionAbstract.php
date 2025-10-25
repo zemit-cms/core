@@ -103,6 +103,7 @@ abstract class SessionAbstract extends \Zemit\Models\AbstractModel implements Se
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
@@ -115,6 +116,7 @@ abstract class SessionAbstract extends \Zemit\Models\AbstractModel implements Se
      * @param mixed $id
      * @return void
      */
+    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
@@ -126,6 +128,7 @@ abstract class SessionAbstract extends \Zemit\Models\AbstractModel implements Se
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
@@ -138,6 +141,7 @@ abstract class SessionAbstract extends \Zemit\Models\AbstractModel implements Se
      * @param mixed $uuid
      * @return void
      */
+    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
@@ -149,6 +153,7 @@ abstract class SessionAbstract extends \Zemit\Models\AbstractModel implements Se
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getUserId(): mixed
     {
         return $this->userId;
@@ -161,6 +166,7 @@ abstract class SessionAbstract extends \Zemit\Models\AbstractModel implements Se
      * @param mixed $userId
      * @return void
      */
+    #[\Override]
     public function setUserId(mixed $userId): void
     {
         $this->userId = $userId;
@@ -172,6 +178,7 @@ abstract class SessionAbstract extends \Zemit\Models\AbstractModel implements Se
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getAsUserId(): mixed
     {
         return $this->asUserId;
@@ -184,6 +191,7 @@ abstract class SessionAbstract extends \Zemit\Models\AbstractModel implements Se
      * @param mixed $asUserId
      * @return void
      */
+    #[\Override]
     public function setAsUserId(mixed $asUserId): void
     {
         $this->asUserId = $asUserId;
@@ -195,6 +203,7 @@ abstract class SessionAbstract extends \Zemit\Models\AbstractModel implements Se
      * Attributes: NotNull | Size(128) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getToken(): mixed
     {
         return $this->token;
@@ -207,6 +216,7 @@ abstract class SessionAbstract extends \Zemit\Models\AbstractModel implements Se
      * @param mixed $token
      * @return void
      */
+    #[\Override]
     public function setToken(mixed $token): void
     {
         $this->token = $token;
@@ -218,6 +228,7 @@ abstract class SessionAbstract extends \Zemit\Models\AbstractModel implements Se
      * Attributes: Type(6)
      * @return mixed
      */
+    #[\Override]
     public function getJwt(): mixed
     {
         return $this->jwt;
@@ -230,6 +241,7 @@ abstract class SessionAbstract extends \Zemit\Models\AbstractModel implements Se
      * @param mixed $jwt
      * @return void
      */
+    #[\Override]
     public function setJwt(mixed $jwt): void
     {
         $this->jwt = $jwt;
@@ -241,6 +253,7 @@ abstract class SessionAbstract extends \Zemit\Models\AbstractModel implements Se
      * Attributes: Type(24)
      * @return mixed
      */
+    #[\Override]
     public function getMeta(): mixed
     {
         return $this->meta;
@@ -253,6 +266,7 @@ abstract class SessionAbstract extends \Zemit\Models\AbstractModel implements Se
      * @param mixed $meta
      * @return void
      */
+    #[\Override]
     public function setMeta(mixed $meta): void
     {
         $this->meta = $meta;
@@ -264,6 +278,7 @@ abstract class SessionAbstract extends \Zemit\Models\AbstractModel implements Se
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getExpiresAt(): mixed
     {
         return $this->expiresAt;
@@ -276,6 +291,7 @@ abstract class SessionAbstract extends \Zemit\Models\AbstractModel implements Se
      * @param mixed $expiresAt
      * @return void
      */
+    #[\Override]
     public function setExpiresAt(mixed $expiresAt): void
     {
         $this->expiresAt = $expiresAt;
@@ -287,6 +303,7 @@ abstract class SessionAbstract extends \Zemit\Models\AbstractModel implements Se
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
@@ -299,6 +316,7 @@ abstract class SessionAbstract extends \Zemit\Models\AbstractModel implements Se
      * @param mixed $createdAt
      * @return void
      */
+    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;

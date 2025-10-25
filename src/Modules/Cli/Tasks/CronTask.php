@@ -26,6 +26,7 @@ Options:
 
 DOC;
 
+    #[\Override]
     public function mainAction(): ?array
     {
         return null;

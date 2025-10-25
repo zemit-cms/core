@@ -15,6 +15,7 @@ use Zemit\Router\RouterInterface;
 
 class Router extends \Phalcon\Cli\Router implements RouterInterface
 {
+    #[\Override]
     public function toArray(): array
     {
         $mathedRoute = $this->getMatchedRoute();

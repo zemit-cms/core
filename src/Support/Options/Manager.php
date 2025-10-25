@@ -15,6 +15,7 @@ class Manager implements ManagerInterface, OptionsInterface
 {
     use Options;
     
+    #[\Override]
     public function get(string $key, mixed $default = null): mixed
     {
         return $this->getOption($key, $default);
@@ -25,21 +26,25 @@ class Manager implements ManagerInterface, OptionsInterface
         return $this->hasOption($key);
     }
     
+    #[\Override]
     public function set(string $key, mixed $value = null): void
     {
         $this->setOption($key, $value);
     }
     
+    #[\Override]
     public function remove(string $key): void
     {
         $this->removeOption($key);
     }
     
+    #[\Override]
     public function reset(): void
     {
         $this->resetOptions();
     }
     
+    #[\Override]
     public function clear(): void
     {
         $this->clearOptions();

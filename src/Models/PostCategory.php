@@ -23,6 +23,7 @@ use Zemit\Models\Interfaces\PostCategoryInterface;
  */
 class PostCategory extends PostCategoryAbstract implements PostCategoryInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

@@ -15,7 +15,7 @@ use Zemit\Support\Utils;
 
 class TestController extends Controller
 {
-    public function memoryAction()
+    public function memoryAction(): array
     {
         return Utils::getMemoryUsage();
     }

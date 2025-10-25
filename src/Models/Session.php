@@ -23,6 +23,7 @@ use Zemit\Models\Interfaces\SessionInterface;
  */
 class Session extends SessionAbstract implements SessionInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

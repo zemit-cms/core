@@ -29,6 +29,7 @@ class ErrorTask extends Task
      *
      * @throws CliException If an error occurs while setting the status code.
      */
+    #[\Override]
     public function setStatusCode(int $code = 500, ?string $message = null): ResponseInterface
     {
         $message ??= StatusCode::getMessage($code);

@@ -23,6 +23,7 @@ use Zemit\Models\Interfaces\BackupInterface;
  */
 class Backup extends BackupAbstract implements BackupInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

@@ -160,6 +160,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
@@ -172,6 +173,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * @param mixed $id
      * @return void
      */
+    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
@@ -183,6 +185,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
@@ -195,6 +198,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * @param mixed $uuid
      * @return void
      */
+    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
@@ -206,6 +210,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getUserId(): mixed
     {
         return $this->userId;
@@ -218,6 +223,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * @param mixed $userId
      * @return void
      */
+    #[\Override]
     public function setUserId(mixed $userId): void
     {
         $this->userId = $userId;
@@ -229,6 +235,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * Attributes: NotNull | Size('google','microsoft') | Type(18)
      * @return mixed
      */
+    #[\Override]
     public function getProvider(): mixed
     {
         return $this->provider;
@@ -241,6 +248,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * @param mixed $provider
      * @return void
      */
+    #[\Override]
     public function setProvider(mixed $provider): void
     {
         $this->provider = $provider;
@@ -252,6 +260,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * Attributes: NotNull | Size(120) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getProviderUuid(): mixed
     {
         return $this->providerUuid;
@@ -264,6 +273,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * @param mixed $providerUuid
      * @return void
      */
+    #[\Override]
     public function setProviderUuid(mixed $providerUuid): void
     {
         $this->providerUuid = $providerUuid;
@@ -275,6 +285,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getAccessToken(): mixed
     {
         return $this->accessToken;
@@ -287,6 +298,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * @param mixed $accessToken
      * @return void
      */
+    #[\Override]
     public function setAccessToken(mixed $accessToken): void
     {
         $this->accessToken = $accessToken;
@@ -298,6 +310,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * Attributes: Size(255) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getRefreshToken(): mixed
     {
         return $this->refreshToken;
@@ -310,6 +323,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * @param mixed $refreshToken
      * @return void
      */
+    #[\Override]
     public function setRefreshToken(mixed $refreshToken): void
     {
         $this->refreshToken = $refreshToken;
@@ -321,6 +335,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * Attributes: Size(320) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getEmail(): mixed
     {
         return $this->email;
@@ -333,6 +348,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * @param mixed $email
      * @return void
      */
+    #[\Override]
     public function setEmail(mixed $email): void
     {
         $this->email = $email;
@@ -344,6 +360,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * Attributes: Type(24)
      * @return mixed
      */
+    #[\Override]
     public function getMeta(): mixed
     {
         return $this->meta;
@@ -356,6 +373,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * @param mixed $meta
      * @return void
      */
+    #[\Override]
     public function setMeta(mixed $meta): void
     {
         $this->meta = $meta;
@@ -367,6 +385,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
+    #[\Override]
     public function getDeleted(): mixed
     {
         return $this->deleted;
@@ -379,6 +398,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * @param mixed $deleted
      * @return void
      */
+    #[\Override]
     public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
@@ -390,6 +410,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
@@ -402,6 +423,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * @param mixed $createdAt
      * @return void
      */
+    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
@@ -413,6 +435,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
@@ -425,6 +448,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * @param mixed $createdBy
      * @return void
      */
+    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
@@ -436,6 +460,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedAt(): mixed
     {
         return $this->updatedAt;
@@ -448,6 +473,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * @param mixed $updatedAt
      * @return void
      */
+    #[\Override]
     public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
@@ -459,6 +485,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedBy(): mixed
     {
         return $this->updatedBy;
@@ -471,6 +498,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * @param mixed $updatedBy
      * @return void
      */
+    #[\Override]
     public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
@@ -482,6 +510,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedAt(): mixed
     {
         return $this->deletedAt;
@@ -494,6 +523,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * @param mixed $deletedAt
      * @return void
      */
+    #[\Override]
     public function setDeletedAt(mixed $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
@@ -505,6 +535,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedBy(): mixed
     {
         return $this->deletedBy;
@@ -517,6 +548,7 @@ abstract class Oauth2Abstract extends \Zemit\Models\AbstractModel implements Oau
      * @param mixed $deletedBy
      * @return void
      */
+    #[\Override]
     public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;

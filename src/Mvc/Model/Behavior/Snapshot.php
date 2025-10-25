@@ -20,6 +20,7 @@ class Snapshot extends Behavior
 {
     use SkippableTrait;
     
+    #[\Override]
     public function notify(string $type, ModelInterface $model): ?bool
     {
         if (!$this->isEnabled()) {

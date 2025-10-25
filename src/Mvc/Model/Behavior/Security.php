@@ -100,6 +100,7 @@ class Security extends Behavior
      * @return bool|null Returns true if the event is allowed, false otherwise.
      *                   Returns null if the notification is disabled or if the check is skipped while in progress.
      */
+    #[\Override]
     public function notify(string $type, ModelInterface $model): ?bool
     {
         if (!$this->isEnabled()) {

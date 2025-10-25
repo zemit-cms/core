@@ -23,6 +23,7 @@ use Zemit\Models\Interfaces\PageInterface;
  */
 class Page extends PageAbstract implements PageInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

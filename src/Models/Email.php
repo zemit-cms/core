@@ -23,6 +23,7 @@ use Zemit\Models\Interfaces\EmailInterface;
  */
 class Email extends EmailAbstract implements EmailInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

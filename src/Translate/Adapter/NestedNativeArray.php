@@ -15,7 +15,6 @@ use JetBrains\PhpStorm\Deprecated;
 use Phalcon\Translate\Adapter\AbstractAdapter;
 use Phalcon\Translate\Exception;
 use Phalcon\Translate\InterpolatorFactory;
-use phpDocumentor\Reflection\PseudoTypes\NonEmptyString;
 
 /**
  * NestedNativeArray class is an implementation of the Translate Adapter interface that uses
@@ -113,6 +112,7 @@ class NestedNativeArray extends AbstractAdapter implements \ArrayAccess
      * @param string $index The index of the translation to check.
      * @return bool Returns true if the translation for the given index exists, false otherwise.
      */
+    #[\Override]
     public function has(string $index): bool
     {
         $translate = $this->translate;
@@ -159,6 +159,7 @@ class NestedNativeArray extends AbstractAdapter implements \ArrayAccess
      * @return string The translated string or the not found string if the translate key is not found.
      * @throws Exception Throws exception if triggerError is enabled and translation key is not found
      */
+    #[\Override]
     public function query(string $translateKey, array $placeholders = []): string
     {
         $translate = $this->translate;

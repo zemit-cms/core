@@ -31,6 +31,7 @@ class Security extends PhalconSecurity
         return $this->getDI()->get('config');
     }
     
+    #[\Override]
     public function hash(string $password, array $options = []) : string
     {
         if (in_array($this->getDefaultHash(), [
@@ -46,6 +47,7 @@ class Security extends PhalconSecurity
         return parent::hash($password, $options);
     }
     
+    #[\Override]
     public function getRandom(): Random
     {
         return $this->random;

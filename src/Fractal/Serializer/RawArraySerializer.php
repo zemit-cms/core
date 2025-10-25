@@ -25,6 +25,7 @@ class RawArraySerializer extends ArraySerializer
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function collection(?string $resourceKey, array $data): array
     {
         return $data;
@@ -33,6 +34,7 @@ class RawArraySerializer extends ArraySerializer
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function item(?string $resourceKey, array $data): array
     {
         return $data;
@@ -41,6 +43,7 @@ class RawArraySerializer extends ArraySerializer
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function null(): ?array
     {
         return [];

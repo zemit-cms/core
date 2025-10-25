@@ -23,6 +23,7 @@ use Zemit\Models\Interfaces\GroupRoleInterface;
  */
 class GroupRole extends GroupRoleAbstract implements GroupRoleInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

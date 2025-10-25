@@ -18,6 +18,7 @@ class WorkspaceController extends Controller
     protected ?int $limit = 100;
     protected ?int $maxLimit = 100;
     
+    #[\Override]
     public function initializeWith(): void
     {
         $this->setWith(new Collection([
@@ -26,11 +27,13 @@ class WorkspaceController extends Controller
         ]));
     }
     
+    #[\Override]
     public function listExpose(iterable $items, ?array $expose = null): array
     {
         return (array)$items;
     }
     
+    #[\Override]
     public function initializeSearchFields(): void
     {
         $this->setSearchFields(new Collection([

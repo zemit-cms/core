@@ -31,6 +31,7 @@ class Color extends AbstractValidator implements ValidatorInterface
         parent::__construct($options);
     }
     
+    #[\Override]
     public function validate(Validation $validation, $field): bool
     {
         $value = $validation->getValue($field);

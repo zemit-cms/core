@@ -23,6 +23,7 @@ use Zemit\Models\Interfaces\SiteInterface;
  */
 class Site extends SiteAbstract implements SiteInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

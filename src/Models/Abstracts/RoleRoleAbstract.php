@@ -101,6 +101,7 @@ abstract class RoleRoleAbstract extends \Zemit\Models\AbstractModel implements R
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
@@ -113,6 +114,7 @@ abstract class RoleRoleAbstract extends \Zemit\Models\AbstractModel implements R
      * @param mixed $id
      * @return void
      */
+    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
@@ -124,6 +126,7 @@ abstract class RoleRoleAbstract extends \Zemit\Models\AbstractModel implements R
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
@@ -136,6 +139,7 @@ abstract class RoleRoleAbstract extends \Zemit\Models\AbstractModel implements R
      * @param mixed $uuid
      * @return void
      */
+    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
@@ -147,6 +151,7 @@ abstract class RoleRoleAbstract extends \Zemit\Models\AbstractModel implements R
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getParentId(): mixed
     {
         return $this->parentId;
@@ -159,6 +164,7 @@ abstract class RoleRoleAbstract extends \Zemit\Models\AbstractModel implements R
      * @param mixed $parentId
      * @return void
      */
+    #[\Override]
     public function setParentId(mixed $parentId): void
     {
         $this->parentId = $parentId;
@@ -170,6 +176,7 @@ abstract class RoleRoleAbstract extends \Zemit\Models\AbstractModel implements R
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getChildId(): mixed
     {
         return $this->childId;
@@ -182,6 +189,7 @@ abstract class RoleRoleAbstract extends \Zemit\Models\AbstractModel implements R
      * @param mixed $childId
      * @return void
      */
+    #[\Override]
     public function setChildId(mixed $childId): void
     {
         $this->childId = $childId;
@@ -193,6 +201,7 @@ abstract class RoleRoleAbstract extends \Zemit\Models\AbstractModel implements R
      * Attributes: NotNull | Numeric | Unsigned | Size(1)
      * @return mixed
      */
+    #[\Override]
     public function getPosition(): mixed
     {
         return $this->position;
@@ -205,6 +214,7 @@ abstract class RoleRoleAbstract extends \Zemit\Models\AbstractModel implements R
      * @param mixed $position
      * @return void
      */
+    #[\Override]
     public function setPosition(mixed $position): void
     {
         $this->position = $position;
@@ -216,6 +226,7 @@ abstract class RoleRoleAbstract extends \Zemit\Models\AbstractModel implements R
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
+    #[\Override]
     public function getDeleted(): mixed
     {
         return $this->deleted;
@@ -228,6 +239,7 @@ abstract class RoleRoleAbstract extends \Zemit\Models\AbstractModel implements R
      * @param mixed $deleted
      * @return void
      */
+    #[\Override]
     public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
@@ -239,6 +251,7 @@ abstract class RoleRoleAbstract extends \Zemit\Models\AbstractModel implements R
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
@@ -251,6 +264,7 @@ abstract class RoleRoleAbstract extends \Zemit\Models\AbstractModel implements R
      * @param mixed $createdAt
      * @return void
      */
+    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
@@ -262,6 +276,7 @@ abstract class RoleRoleAbstract extends \Zemit\Models\AbstractModel implements R
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
@@ -274,6 +289,7 @@ abstract class RoleRoleAbstract extends \Zemit\Models\AbstractModel implements R
      * @param mixed $createdBy
      * @return void
      */
+    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;

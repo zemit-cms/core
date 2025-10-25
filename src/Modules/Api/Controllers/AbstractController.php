@@ -14,6 +14,7 @@ use Zemit\Modules\Api\Controller;
 
 abstract class AbstractController extends Controller
 {
+    #[\Override]
     public function initialize(): void
     {
     }

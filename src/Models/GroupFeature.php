@@ -23,6 +23,7 @@ use Zemit\Models\Interfaces\GroupFeatureInterface;
  */
 class GroupFeature extends GroupFeatureAbstract implements GroupFeatureInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

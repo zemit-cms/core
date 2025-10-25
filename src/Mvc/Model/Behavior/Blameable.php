@@ -55,6 +55,7 @@ class Blameable extends Behavior
     /**
      * @throws \Exception
      */
+    #[\Override]
     public function notify(string $type, ModelInterface $model): ?bool
     {
         if (!$this->isEnabled()) {

@@ -74,7 +74,7 @@ trait Cache
         }
         
         $modelsCache = $this->getModelsCache();
-        $flushAction = function (Model $model) use ($modelsCache) {
+        $flushAction = function (Model $model) use ($modelsCache): bool {
             // Do not flush cache if nothing has changed
             return ($model->hasSnapshotData() && !($model->hasUpdated() || $model->hasChanged()))
                 && $modelsCache->clear();
