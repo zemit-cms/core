@@ -20,6 +20,18 @@ use Zemit\Mvc\ModelInterface;
  * @property ColumnAbstractInterface[] $ColumnList
  * @method ColumnAbstractInterface[] getColumnList(?array $params = null)
  *
+ * @property DataAbstractInterface[] $datalist
+ * @property DataAbstractInterface[] $DataList
+ * @method DataAbstractInterface[] getDataList(?array $params = null)
+ *
+ * @property RecordAbstractInterface[] $datarecordlist
+ * @property RecordAbstractInterface[] $DataRecordList
+ * @method RecordAbstractInterface[] getDataRecordList(?array $params = null)
+ *
+ * @property ColumnAbstractInterface[] $datacolumnlist
+ * @property ColumnAbstractInterface[] $DataColumnList
+ * @method ColumnAbstractInterface[] getDataColumnList(?array $params = null)
+ *
  * @property RecordAbstractInterface[] $recordlist
  * @property RecordAbstractInterface[] $RecordList
  * @method RecordAbstractInterface[] getRecordList(?array $params = null)

@@ -15,6 +15,7 @@ namespace Zemit\Models\Abstracts;
 use Phalcon\Db\RawValue;
 use Zemit\Filter\Validation;
 use \Zemit\Models\AbstractModel;
+use Zemit\Models\Table;
 use Zemit\Models\Record;
 use Zemit\Models\Column;
 use Zemit\Models\User;
@@ -26,6 +27,10 @@ use Zemit\Models\Abstracts\Interfaces\DataAbstractInterface;
  * This class defines a Data abstract model that extends the AbstractModel class and implements the DataAbstractInterface.
  * It provides properties and methods for managing Data data.
  * 
+ * @property Table $tableentity
+ * @property Table $TableEntity
+ * @method Table getTableEntity(?array $params = null)
+ *
  * @property Record $recordentity
  * @property Record $RecordEntity
  * @method Record getRecordEntity(?array $params = null)
@@ -61,6 +66,13 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * @var mixed
      */
     public mixed $uuid = null;
+        
+    /**
+     * Column: table_id
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
+     * @var mixed
+     */
+    public mixed $tableId = null;
         
     /**
      * Column: record_id
@@ -180,6 +192,31 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
+    }
+    
+    /**
+     * Returns the value of field tableId
+     * Column: table_id
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
+     * @return mixed
+     */
+    #[\Override]
+    public function getTableId(): mixed
+    {
+        return $this->tableId;
+    }
+    
+    /**
+     * Sets the value of field tableId
+     * Column: table_id 
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
+     * @param mixed $tableId
+     * @return void
+     */
+    #[\Override]
+    public function setTableId(mixed $tableId): void
+    {
+        $this->tableId = $tableId;
     }
     
     /**
@@ -438,6 +475,8 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      */
     public function addDefaultRelationships(): void
     {
+        $this->belongsTo('tableId', Table::class, 'id', ['alias' => 'TableEntity']);
+
         $this->belongsTo('recordId', Record::class, 'id', ['alias' => 'RecordEntity']);
 
         $this->belongsTo('columnId', Column::class, 'id', ['alias' => 'ColumnEntity']);
@@ -460,6 +499,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
     
         $this->addUnsignedIntValidation($validator, 'id', true);
         $this->addStringLengthValidation($validator, 'uuid', 0, 36, false);
+        $this->addUnsignedIntValidation($validator, 'tableId', false);
         $this->addUnsignedIntValidation($validator, 'recordId', false);
         $this->addUnsignedIntValidation($validator, 'columnId', false);
         $this->addUnsignedIntValidation($validator, 'deleted', false);
@@ -485,6 +525,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
         return [
             'id' => 'id',
             'uuid' => 'uuid',
+            'table_id' => 'tableId',
             'record_id' => 'recordId',
             'column_id' => 'columnId',
             'value' => 'value',

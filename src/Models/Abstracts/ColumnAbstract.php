@@ -16,9 +16,9 @@ use Phalcon\Db\RawValue;
 use Zemit\Filter\Validation;
 use \Zemit\Models\AbstractModel;
 use Zemit\Models\Data;
+use Zemit\Models\Table;
 use Zemit\Models\Record;
 use Zemit\Models\Validator;
-use Zemit\Models\Table;
 use Zemit\Models\User;
 use Zemit\Models\Abstracts\Interfaces\ColumnAbstractInterface;
 
@@ -31,6 +31,10 @@ use Zemit\Models\Abstracts\Interfaces\ColumnAbstractInterface;
  * @property Data[] $datalist
  * @property Data[] $DataList
  * @method Data[] getDataList(?array $params = null)
+ *
+ * @property Table[] $datatablelist
+ * @property Table[] $DataTableList
+ * @method Table[] getDataTableList(?array $params = null)
  *
  * @property Record[] $datarecordlist
  * @property Record[] $DataRecordList
@@ -513,6 +517,16 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
     public function addDefaultRelationships(): void
     {
         $this->hasMany('id', Data::class, 'columnId', ['alias' => 'DataList']);
+
+        $this->hasManyToMany(
+            'id',
+            Data::class,
+            'columnId',
+            'tableId',
+            Table::class,
+            'id',
+            ['alias' => 'DataTableList']
+        );
 
         $this->hasManyToMany(
             'id',

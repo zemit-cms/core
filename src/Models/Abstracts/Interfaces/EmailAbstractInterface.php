@@ -96,7 +96,7 @@ interface EmailAbstractInterface extends ModelInterface
     /**
      * Returns the value of field from
      * Column: from
-     * Attributes: NotNull | Size(255) | Type(2)
+     * Attributes: NotNull | Type(24)
      * @return mixed
      */
     public function getFrom(): mixed;
@@ -104,16 +104,84 @@ interface EmailAbstractInterface extends ModelInterface
     /**
      * Sets the value of field from
      * Column: from 
-     * Attributes: NotNull | Size(255) | Type(2)
+     * Attributes: NotNull | Type(24)
      * @param mixed $from
      * @return void
      */
     public function setFrom(mixed $from): void;
     
     /**
+     * Returns the value of field replyTo
+     * Column: reply_to
+     * Attributes: Size(255) | Type(2)
+     * @return mixed
+     */
+    public function getReplyTo(): mixed;
+    
+    /**
+     * Sets the value of field replyTo
+     * Column: reply_to 
+     * Attributes: Size(255) | Type(2)
+     * @param mixed $replyTo
+     * @return void
+     */
+    public function setReplyTo(mixed $replyTo): void;
+    
+    /**
+     * Returns the value of field returnPath
+     * Column: return_path
+     * Attributes: Size(255) | Type(2)
+     * @return mixed
+     */
+    public function getReturnPath(): mixed;
+    
+    /**
+     * Sets the value of field returnPath
+     * Column: return_path 
+     * Attributes: Size(255) | Type(2)
+     * @param mixed $returnPath
+     * @return void
+     */
+    public function setReturnPath(mixed $returnPath): void;
+    
+    /**
+     * Returns the value of field readReceiptTo
+     * Column: read_receipt_to
+     * Attributes: Size(255) | Type(2)
+     * @return mixed
+     */
+    public function getReadReceiptTo(): mixed;
+    
+    /**
+     * Sets the value of field readReceiptTo
+     * Column: read_receipt_to 
+     * Attributes: Size(255) | Type(2)
+     * @param mixed $readReceiptTo
+     * @return void
+     */
+    public function setReadReceiptTo(mixed $readReceiptTo): void;
+    
+    /**
+     * Returns the value of field priority
+     * Column: priority
+     * Attributes: NotNull | Numeric | Size(1) | Type(26)
+     * @return mixed
+     */
+    public function getPriority(): mixed;
+    
+    /**
+     * Sets the value of field priority
+     * Column: priority 
+     * Attributes: NotNull | Numeric | Size(1) | Type(26)
+     * @param mixed $priority
+     * @return void
+     */
+    public function setPriority(mixed $priority): void;
+    
+    /**
      * Returns the value of field to
      * Column: to
-     * Attributes: NotNull | Type(6)
+     * Attributes: NotNull | Type(24)
      * @return mixed
      */
     public function getTo(): mixed;
@@ -121,7 +189,7 @@ interface EmailAbstractInterface extends ModelInterface
     /**
      * Sets the value of field to
      * Column: to 
-     * Attributes: NotNull | Type(6)
+     * Attributes: NotNull | Type(24)
      * @param mixed $to
      * @return void
      */
@@ -130,7 +198,7 @@ interface EmailAbstractInterface extends ModelInterface
     /**
      * Returns the value of field cc
      * Column: cc
-     * Attributes: Type(6)
+     * Attributes: Type(24)
      * @return mixed
      */
     public function getCc(): mixed;
@@ -138,7 +206,7 @@ interface EmailAbstractInterface extends ModelInterface
     /**
      * Sets the value of field cc
      * Column: cc 
-     * Attributes: Type(6)
+     * Attributes: Type(24)
      * @param mixed $cc
      * @return void
      */
@@ -147,7 +215,7 @@ interface EmailAbstractInterface extends ModelInterface
     /**
      * Returns the value of field bcc
      * Column: bcc
-     * Attributes: Type(6)
+     * Attributes: Type(24)
      * @return mixed
      */
     public function getBcc(): mixed;
@@ -155,7 +223,7 @@ interface EmailAbstractInterface extends ModelInterface
     /**
      * Sets the value of field bcc
      * Column: bcc 
-     * Attributes: Type(6)
+     * Attributes: Type(24)
      * @param mixed $bcc
      * @return void
      */
@@ -211,6 +279,23 @@ interface EmailAbstractInterface extends ModelInterface
      * @return void
      */
     public function setMeta(mixed $meta): void;
+    
+    /**
+     * Returns the value of field sent
+     * Column: sent
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
+     * @return mixed
+     */
+    public function getSent(): mixed;
+    
+    /**
+     * Sets the value of field sent
+     * Column: sent 
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
+     * @param mixed $sent
+     * @return void
+     */
+    public function setSent(mixed $sent): void;
     
     /**
      * Returns the value of field sentAt

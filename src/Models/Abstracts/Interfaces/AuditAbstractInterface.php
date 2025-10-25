@@ -20,6 +20,10 @@ use Zemit\Mvc\ModelInterface;
  * @property AuditDetailAbstractInterface[] $AuditDetailList
  * @method AuditDetailAbstractInterface[] getAuditDetailList(?array $params = null)
  *
+ * @property AuditAbstractInterface $parententity
+ * @property AuditAbstractInterface $ParentEntity
+ * @method AuditAbstractInterface getParentEntity(?array $params = null)
+ *
  * @property UserAbstractInterface $createdbyentity
  * @property UserAbstractInterface $CreatedByEntity
  * @method UserAbstractInterface getCreatedByEntity(?array $params = null)
@@ -46,6 +50,23 @@ interface AuditAbstractInterface extends ModelInterface
      * @return void
      */
     public function setId(mixed $id): void;
+    
+    /**
+     * Returns the value of field parentId
+     * Column: parent_id
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
+     * @return mixed
+     */
+    public function getParentId(): mixed;
+    
+    /**
+     * Sets the value of field parentId
+     * Column: parent_id 
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
+     * @param mixed $parentId
+     * @return void
+     */
+    public function setParentId(mixed $parentId): void;
     
     /**
      * Returns the value of field uuid

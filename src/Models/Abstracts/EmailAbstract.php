@@ -76,28 +76,56 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
         
     /**
      * Column: from
-     * Attributes: NotNull | Size(255) | Type(2)
+     * Attributes: NotNull | Type(24)
      * @var mixed
      */
     public mixed $from = null;
         
     /**
+     * Column: reply_to
+     * Attributes: Size(255) | Type(2)
+     * @var mixed
+     */
+    public mixed $replyTo = null;
+        
+    /**
+     * Column: return_path
+     * Attributes: Size(255) | Type(2)
+     * @var mixed
+     */
+    public mixed $returnPath = null;
+        
+    /**
+     * Column: read_receipt_to
+     * Attributes: Size(255) | Type(2)
+     * @var mixed
+     */
+    public mixed $readReceiptTo = null;
+        
+    /**
+     * Column: priority
+     * Attributes: NotNull | Numeric | Size(1) | Type(26)
+     * @var mixed
+     */
+    public mixed $priority = 3;
+        
+    /**
      * Column: to
-     * Attributes: NotNull | Type(6)
+     * Attributes: NotNull | Type(24)
      * @var mixed
      */
     public mixed $to = null;
         
     /**
      * Column: cc
-     * Attributes: Type(6)
+     * Attributes: Type(24)
      * @var mixed
      */
     public mixed $cc = null;
         
     /**
      * Column: bcc
-     * Attributes: Type(6)
+     * Attributes: Type(24)
      * @var mixed
      */
     public mixed $bcc = null;
@@ -122,6 +150,13 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
      * @var mixed
      */
     public mixed $meta = null;
+        
+    /**
+     * Column: sent
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
+     * @var mixed
+     */
+    public mixed $sent = 0;
         
     /**
      * Column: sent_at
@@ -257,7 +292,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
     /**
      * Returns the value of field from
      * Column: from
-     * Attributes: NotNull | Size(255) | Type(2)
+     * Attributes: NotNull | Type(24)
      * @return mixed
      */
     #[\Override]
@@ -269,7 +304,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
     /**
      * Sets the value of field from
      * Column: from 
-     * Attributes: NotNull | Size(255) | Type(2)
+     * Attributes: NotNull | Type(24)
      * @param mixed $from
      * @return void
      */
@@ -280,9 +315,109 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
     }
     
     /**
+     * Returns the value of field replyTo
+     * Column: reply_to
+     * Attributes: Size(255) | Type(2)
+     * @return mixed
+     */
+    #[\Override]
+    public function getReplyTo(): mixed
+    {
+        return $this->replyTo;
+    }
+    
+    /**
+     * Sets the value of field replyTo
+     * Column: reply_to 
+     * Attributes: Size(255) | Type(2)
+     * @param mixed $replyTo
+     * @return void
+     */
+    #[\Override]
+    public function setReplyTo(mixed $replyTo): void
+    {
+        $this->replyTo = $replyTo;
+    }
+    
+    /**
+     * Returns the value of field returnPath
+     * Column: return_path
+     * Attributes: Size(255) | Type(2)
+     * @return mixed
+     */
+    #[\Override]
+    public function getReturnPath(): mixed
+    {
+        return $this->returnPath;
+    }
+    
+    /**
+     * Sets the value of field returnPath
+     * Column: return_path 
+     * Attributes: Size(255) | Type(2)
+     * @param mixed $returnPath
+     * @return void
+     */
+    #[\Override]
+    public function setReturnPath(mixed $returnPath): void
+    {
+        $this->returnPath = $returnPath;
+    }
+    
+    /**
+     * Returns the value of field readReceiptTo
+     * Column: read_receipt_to
+     * Attributes: Size(255) | Type(2)
+     * @return mixed
+     */
+    #[\Override]
+    public function getReadReceiptTo(): mixed
+    {
+        return $this->readReceiptTo;
+    }
+    
+    /**
+     * Sets the value of field readReceiptTo
+     * Column: read_receipt_to 
+     * Attributes: Size(255) | Type(2)
+     * @param mixed $readReceiptTo
+     * @return void
+     */
+    #[\Override]
+    public function setReadReceiptTo(mixed $readReceiptTo): void
+    {
+        $this->readReceiptTo = $readReceiptTo;
+    }
+    
+    /**
+     * Returns the value of field priority
+     * Column: priority
+     * Attributes: NotNull | Numeric | Size(1) | Type(26)
+     * @return mixed
+     */
+    #[\Override]
+    public function getPriority(): mixed
+    {
+        return $this->priority;
+    }
+    
+    /**
+     * Sets the value of field priority
+     * Column: priority 
+     * Attributes: NotNull | Numeric | Size(1) | Type(26)
+     * @param mixed $priority
+     * @return void
+     */
+    #[\Override]
+    public function setPriority(mixed $priority): void
+    {
+        $this->priority = $priority;
+    }
+    
+    /**
      * Returns the value of field to
      * Column: to
-     * Attributes: NotNull | Type(6)
+     * Attributes: NotNull | Type(24)
      * @return mixed
      */
     #[\Override]
@@ -294,7 +429,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
     /**
      * Sets the value of field to
      * Column: to 
-     * Attributes: NotNull | Type(6)
+     * Attributes: NotNull | Type(24)
      * @param mixed $to
      * @return void
      */
@@ -307,7 +442,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
     /**
      * Returns the value of field cc
      * Column: cc
-     * Attributes: Type(6)
+     * Attributes: Type(24)
      * @return mixed
      */
     #[\Override]
@@ -319,7 +454,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
     /**
      * Sets the value of field cc
      * Column: cc 
-     * Attributes: Type(6)
+     * Attributes: Type(24)
      * @param mixed $cc
      * @return void
      */
@@ -332,7 +467,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
     /**
      * Returns the value of field bcc
      * Column: bcc
-     * Attributes: Type(6)
+     * Attributes: Type(24)
      * @return mixed
      */
     #[\Override]
@@ -344,7 +479,7 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
     /**
      * Sets the value of field bcc
      * Column: bcc 
-     * Attributes: Type(6)
+     * Attributes: Type(24)
      * @param mixed $bcc
      * @return void
      */
@@ -427,6 +562,31 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
     public function setMeta(mixed $meta): void
     {
         $this->meta = $meta;
+    }
+    
+    /**
+     * Returns the value of field sent
+     * Column: sent
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
+     * @return mixed
+     */
+    #[\Override]
+    public function getSent(): mixed
+    {
+        return $this->sent;
+    }
+    
+    /**
+     * Sets the value of field sent
+     * Column: sent 
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
+     * @param mixed $sent
+     * @return void
+     */
+    #[\Override]
+    public function setSent(mixed $sent): void
+    {
+        $this->sent = $sent;
     }
     
     /**
@@ -668,8 +828,11 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
         $this->addUnsignedIntValidation($validator, 'id', true);
         $this->addStringLengthValidation($validator, 'uuid', 0, 36, false);
         $this->addUnsignedIntValidation($validator, 'templateId', true);
-        $this->addStringLengthValidation($validator, 'from', 0, 255, false);
+        $this->addStringLengthValidation($validator, 'replyTo', 0, 255, true);
+        $this->addStringLengthValidation($validator, 'returnPath', 0, 255, true);
+        $this->addStringLengthValidation($validator, 'readReceiptTo', 0, 255, true);
         $this->addStringLengthValidation($validator, 'subject', 0, 255, false);
+        $this->addUnsignedIntValidation($validator, 'sent', false);
         $this->addDateTimeValidation($validator, 'sentAt', true);
         $this->addUnsignedIntValidation($validator, 'deleted', false);
         $this->addDateTimeValidation($validator, 'createdAt', false);
@@ -696,12 +859,17 @@ abstract class EmailAbstract extends \Zemit\Models\AbstractModel implements Emai
             'uuid' => 'uuid',
             'template_id' => 'templateId',
             'from' => 'from',
+            'reply_to' => 'replyTo',
+            'return_path' => 'returnPath',
+            'read_receipt_to' => 'readReceiptTo',
+            'priority' => 'priority',
             'to' => 'to',
             'cc' => 'cc',
             'bcc' => 'bcc',
             'subject' => 'subject',
             'content' => 'content',
             'meta' => 'meta',
+            'sent' => 'sent',
             'sent_at' => 'sentAt',
             'deleted' => 'deleted',
             'created_at' => 'createdAt',

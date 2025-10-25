@@ -16,6 +16,10 @@ use Phalcon\Db\RawValue;
 use Zemit\Mvc\ModelInterface;
 
 /**
+ * @property TableAbstractInterface $tableentity
+ * @property TableAbstractInterface $TableEntity
+ * @method TableAbstractInterface getTableEntity(?array $params = null)
+ *
  * @property RecordAbstractInterface $recordentity
  * @property RecordAbstractInterface $RecordEntity
  * @method RecordAbstractInterface getRecordEntity(?array $params = null)
@@ -71,6 +75,23 @@ interface DataAbstractInterface extends ModelInterface
      * @return void
      */
     public function setUuid(mixed $uuid): void;
+    
+    /**
+     * Returns the value of field tableId
+     * Column: table_id
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
+     * @return mixed
+     */
+    public function getTableId(): mixed;
+    
+    /**
+     * Sets the value of field tableId
+     * Column: table_id 
+     * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
+     * @param mixed $tableId
+     * @return void
+     */
+    public function setTableId(mixed $tableId): void;
     
     /**
      * Returns the value of field recordId

@@ -16,6 +16,7 @@ use Phalcon\Db\RawValue;
 use Zemit\Filter\Validation;
 use \Zemit\Models\AbstractModel;
 use Zemit\Models\AuditDetail;
+use Zemit\Models\Audit;
 use Zemit\Models\User;
 use Zemit\Models\Abstracts\Interfaces\AuditAbstractInterface;
 
@@ -28,6 +29,10 @@ use Zemit\Models\Abstracts\Interfaces\AuditAbstractInterface;
  * @property AuditDetail[] $auditdetaillist
  * @property AuditDetail[] $AuditDetailList
  * @method AuditDetail[] getAuditDetailList(?array $params = null)
+ *
+ * @property Audit $parententity
+ * @property Audit $ParentEntity
+ * @method Audit getParentEntity(?array $params = null)
  *
  * @property User $createdbyentity
  * @property User $CreatedByEntity
@@ -45,6 +50,13 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
      * @var mixed
      */
     public mixed $id = null;
+        
+    /**
+     * Column: parent_id
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
+     * @var mixed
+     */
+    public mixed $parentId = null;
         
     /**
      * Column: uuid
@@ -139,6 +151,31 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
     public function setId(mixed $id): void
     {
         $this->id = $id;
+    }
+    
+    /**
+     * Returns the value of field parentId
+     * Column: parent_id
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
+     * @return mixed
+     */
+    #[\Override]
+    public function getParentId(): mixed
+    {
+        return $this->parentId;
+    }
+    
+    /**
+     * Sets the value of field parentId
+     * Column: parent_id 
+     * Attributes: Numeric | Unsigned | Size(1) | Type(14)
+     * @param mixed $parentId
+     * @return void
+     */
+    #[\Override]
+    public function setParentId(mixed $parentId): void
+    {
+        $this->parentId = $parentId;
     }
     
     /**
@@ -399,6 +436,8 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
     {
         $this->hasMany('id', AuditDetail::class, 'auditId', ['alias' => 'AuditDetailList']);
 
+        $this->belongsTo('parentId', Audit::class, 'id', ['alias' => 'ParentEntity']);
+
         $this->belongsTo('createdBy', User::class, 'id', ['alias' => 'CreatedByEntity']);
 
         $this->belongsTo('createdAs', User::class, 'id', ['alias' => 'CreatedAsEntity']);
@@ -414,6 +453,7 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
         $validator ??= new Validation();
     
         $this->addUnsignedIntValidation($validator, 'id', true);
+        $this->addUnsignedIntValidation($validator, 'parentId', true);
         $this->addStringLengthValidation($validator, 'uuid', 0, 36, false);
         $this->addStringLengthValidation($validator, 'model', 0, 255, false);
         $this->addStringLengthValidation($validator, 'table', 0, 60, false);
@@ -437,6 +477,7 @@ abstract class AuditAbstract extends \Zemit\Models\AbstractModel implements Audi
     {
         return [
             'id' => 'id',
+            'parent_id' => 'parentId',
             'uuid' => 'uuid',
             'model' => 'model',
             'table' => 'table',

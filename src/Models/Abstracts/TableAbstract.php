@@ -16,6 +16,7 @@ use Phalcon\Db\RawValue;
 use Zemit\Filter\Validation;
 use \Zemit\Models\AbstractModel;
 use Zemit\Models\Column;
+use Zemit\Models\Data;
 use Zemit\Models\Record;
 use Zemit\Models\Workspace;
 use Zemit\Models\User;
@@ -30,6 +31,18 @@ use Zemit\Models\Abstracts\Interfaces\TableAbstractInterface;
  * @property Column[] $columnlist
  * @property Column[] $ColumnList
  * @method Column[] getColumnList(?array $params = null)
+ *
+ * @property Data[] $datalist
+ * @property Data[] $DataList
+ * @method Data[] getDataList(?array $params = null)
+ *
+ * @property Record[] $datarecordlist
+ * @property Record[] $DataRecordList
+ * @method Record[] getDataRecordList(?array $params = null)
+ *
+ * @property Column[] $datacolumnlist
+ * @property Column[] $DataColumnList
+ * @method Column[] getDataColumnList(?array $params = null)
  *
  * @property Record[] $recordlist
  * @property Record[] $RecordList
@@ -508,6 +521,28 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
     public function addDefaultRelationships(): void
     {
         $this->hasMany('id', Column::class, 'tableId', ['alias' => 'ColumnList']);
+
+        $this->hasMany('id', Data::class, 'tableId', ['alias' => 'DataList']);
+
+        $this->hasManyToMany(
+            'id',
+            Data::class,
+            'tableId',
+            'recordId',
+            Record::class,
+            'id',
+            ['alias' => 'DataRecordList']
+        );
+
+        $this->hasManyToMany(
+            'id',
+            Data::class,
+            'tableId',
+            'columnId',
+            Column::class,
+            'id',
+            ['alias' => 'DataColumnList']
+        );
 
         $this->hasMany('id', Record::class, 'tableId', ['alias' => 'RecordList']);
 
