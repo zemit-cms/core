@@ -346,7 +346,7 @@ PHP;
                     )
                 )
             );
-        return trim(preg_replace('/\\\\+/', '\\', $namespace), '\\');
+        return trim(preg_replace('/\\\\+/', '\\', $namespace) ?? '', '\\');
     }
     
     // Default namespace
