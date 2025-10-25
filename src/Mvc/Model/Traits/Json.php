@@ -31,6 +31,7 @@ trait Json
      */
     public function jsonEncode(mixed $value, int $flags = JSON_UNESCAPED_SLASHES, int $depth = 512): string|false
     {
+        $depth = $this->validateJsonDepth($depth);
         return json_encode($value, $flags, $depth);
     }
     
@@ -50,6 +51,27 @@ trait Json
      */
     public function jsonDecode(string $json, ?bool $associative = null, int $depth = 512, int $flags = 0): mixed
     {
+        $depth = $this->validateJsonDepth($depth);
         return json_decode($json, $associative, $depth, $flags);
+    }
+    
+    /**
+     * Validates that the provided depth is within the supported JSON recursion range.
+     *
+     * @param int $depth The recursion depth to validate.
+     * @return int<1,2147483647> The validated depth.
+     *
+     * @throws \InvalidArgumentException If depth is outside the valid range.
+     */
+    private function validateJsonDepth(int $depth): int
+    {
+        if ($depth < 1 || $depth > 2147483647) {
+            throw new \InvalidArgumentException(sprintf(
+                'Invalid JSON depth: %d (must be between 1 and 2,147,483,647)',
+                $depth
+            ));
+        }
+        
+        return $depth;
     }
 }
