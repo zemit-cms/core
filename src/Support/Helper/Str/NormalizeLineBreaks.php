@@ -16,8 +16,17 @@ namespace Zemit\Support\Helper\Str;
  */
 class NormalizeLineBreaks
 {
+    /**
+     * Replaces line breaks in the given string based on a specified regular expression and replacement string.
+     *
+     * @param string $string The input string where line breaks will be replaced.
+     * @param string $lineBreaksRegex The regular expression pattern to match line breaks. Defaults to "/\r\n|\r/".
+     * @param string $replacement The string to replace matched line breaks with. Defaults to "\n".
+     *
+     * @return string The processed string with line breaks replaced.
+     */
     public function __invoke(string $string, string $lineBreaksRegex = "/\r\n|\r/", string $replacement = "\n"): string
     {
-        return preg_replace($lineBreaksRegex, $replacement, $string) ?? '';
+        return $lineBreaksRegex === '' ? $string : preg_replace($lineBreaksRegex, $replacement, $string) ?? '';
     }
 }
