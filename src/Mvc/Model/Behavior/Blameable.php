@@ -100,10 +100,14 @@ class Blameable extends Behavior
         $audit->setTable($model->getSource());
         $audit->setPrimary($model->readAttribute('id'));
         $audit->setEvent($event);
-        $audit->setColumns(json_encode($columnMap ?: $columns));
         $audit->setBefore($snapshot ? json_encode($snapshot) : null);
         $audit->setAfter(json_encode($model->toArray()));
         $audit->setParentId(self::$parentId);
+        
+        // legacy fields support, these fields were removed from the audit_detail table for performance reasons
+        $audit->assign([
+            'columns' => $columnMap? json_encode($columnMap) : null
+        ]);
         
         $auditDetailList = [];
         
@@ -122,14 +126,18 @@ class Blameable extends Behavior
             $auditDetail = new $auditDetailClass();
             assert($auditDetail instanceof AuditDetailInterface);
             
-            $auditDetail->setModel($audit->getModel());
-            $auditDetail->setTable($audit->getTable());
-            $auditDetail->setPrimary($audit->getPrimary());
-            $auditDetail->setEvent($event);
             $auditDetail->setColumn($column);
-            $auditDetail->setMap($map);
             $auditDetail->setBefore($before);
             $auditDetail->setAfter($after);
+            
+            // legacy fields support, these fields were removed from the audit_detail table for performance reasons
+            $auditDetail->assign([
+                'model' => $audit->getModel(),
+                'table' => $audit->getTable(),
+                'primary' => $audit->getPrimary(),
+                'event' => $event,
+                'map' => $map,
+            ]);
             
             $auditDetailList[] = $auditDetail;
         }
