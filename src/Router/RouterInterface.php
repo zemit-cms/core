@@ -17,5 +17,6 @@ interface RouterInterface extends InjectionAwareInterface
 {
     public function toArray(): array;
     
+    /** @psalm-suppress MissingReturnType */
     public function setDefaults(array $defaults);
 }
