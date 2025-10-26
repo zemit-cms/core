@@ -19,7 +19,7 @@ interface ExportInterface
     
     public function getExportColumns(array $list): array;
     
-    public function export(array $list, ?string $filename = null, string $contentType = null, array $params = null): bool;
+    public function export(array $list, ?string $filename = null, ?string $contentType = null, ?array $params = null): bool;
     
     public function exportXml(array $list, ?string $filename = null, ?array $params = null): bool;
     
