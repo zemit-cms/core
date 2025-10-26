@@ -12,6 +12,8 @@
 namespace Zemit\Mvc\Model\Traits;
 
 use Phalcon\Db\Column;
+use Phalcon\Mvc\Model\Resultset;
+use Phalcon\Mvc\Model\Resultset\Simple;
 
 /**
  * @todo
@@ -22,7 +24,7 @@ use Phalcon\Db\Column;
  */
 trait FindIn
 {
-    public static function findInById(array $idList = [])
+    public static function findInById(array $idList = []): array|Resultset|Simple
     {
         $castInt = function (string|int $id): int {
             return (int)$id;
