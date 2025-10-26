@@ -15,13 +15,9 @@ use Phalcon\Autoload\Loader;
 use Phalcon\Di\DiInterface;
 use Phalcon\Mvc\ModuleDefinitionInterface;
 use Zemit\Bootstrap\Config;
-use Zemit\Di\Injectable;
 use Zemit\Support\Utils;
 
-/**
- * {@inheritDoc}
- */
-class Module implements ModuleDefinitionInterface
+abstract class Module implements ModuleDefinitionInterface
 {
     public const string NAME_FRONTEND = 'frontend';
     public const string NAME_ADMIN = 'admin';
