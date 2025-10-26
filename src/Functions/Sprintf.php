@@ -13,7 +13,7 @@ if (!function_exists('implode_sprintf')) {
     /**
      * Will implode an array_map return of the sprintf or mb_sprintf results
      */
-    function implode_sprintf(array $array = [], string $glue = ' ', string $format = '%s', $multibyte = false, ?string $encoding = null): string
+    function implode_sprintf(array $array = [], string $glue = ' ', string $format = '%s', bool $multibyte = false, ?string $encoding = null): string
     {
         // Filter out null values from the array
         $array = array_filter($array, function ($value) {
