@@ -18,7 +18,7 @@ class ModuleRoute extends RouterGroup
 {
     public array $locale;
     
-    public function __construct($paths = null, array $locale = [], ?string $hostname = null)
+    public function __construct(array|string|null $paths = null, array $locale = [], ?string $hostname = null)
     {
         $this->locale = $locale;
         if (isset($hostname)) {
