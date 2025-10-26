@@ -12,7 +12,6 @@
 namespace Zemit\Modules\Cli\Tasks;
 
 use Phalcon\Mvc\Model\Resultset;
-use Phalcon\Mvc\Model\ResultsetInterface;
 use Zemit\Modules\Cli\Task;
 use Zemit\Mvc\Model;
 use Zemit\Support\Utils;
@@ -30,39 +29,79 @@ Options:
 
 DOC;
     
-    public ?array $models = null;
+    /**
+     * Configuration array for defining the data lifecycle settings,
+     * including the models and policies applicable.
+     */
+    public array $dataLifeCycleConfig = [
+        'models' => [],
+        'policies' => [],
+    ];
     
-    public ?array $policies = null;
-    
+    /**
+     * Initializes the configuration for data life cycle and sets up permissions for models.
+     *
+     * @return void
+     */
     public function initialize(): void
     {
         Utils::setUnlimitedRuntime();
         
-        $dataLifeCycleConfig = $this->config->pathToArray('dataLifeCycle');
-        $this->models ??= $dataLifeCycleConfig['models'] ?? [];
-        $this->policies ??= $dataLifeCycleConfig['policies'] ?? [];
+        $this->dataLifeCycleConfig = $this->config->pathToArray('dataLifeCycle') ?? [];
+        $this->dataLifeCycleConfig['models'] ??= [];
+        $this->dataLifeCycleConfig['policies'] ??= [];
         
         $this->addModelsPermissions();
     }
     
     /**
-     * Default action
+     * Executes the main action by processing the provided table names.
+     *
+     * This method delegates processing to the modelsAction method with the given
+     * table names. The results are then returned in an associative array under the
+     * 'models' key.
+     *
+     * @param string ...$tables A variable number of table names to process.
+     * @return array|null An associative array with the processed data under the 'models'
+     *                    key, or null if no data is returned.
      */
     #[\Override]
     public function mainAction(string ...$tables): ?array
     {
         $response = [];
-
-//        $response ['backup'] = $this->backupAction();
         $response ['models'] = $this->modelsAction(...$tables);
-        
         return $response;
     }
     
+    /**
+     * Processes lifecycle models based on a defined retention policy and tables whitelist,
+     * executing actions such as deletion and collecting associated messages.
+     *
+     * The method retrieves the lifecycle models and applies retention policies to the records.
+     * It processes only whitelisted tables if specified, and skips models not matching the input.
+     * The response contains information about the number of records processed (deleted) and
+     * any associated messages per table.
+     *
+     * @param string ...$tables A variadic list of table names, which may include comma-separated
+     *                          values. These are used to filter models by matching the table names.
+     *                          Only matched table records are processed.
+     * @return array An associative array where keys are table names and values are arrays
+     *               containing the count of deleted records ('deleted') and any messages
+     *               ('messages') encountered during processing.
+     */
     public function modelsAction(string ...$tables): array
     {
+        $models = $this->getDataLifeCycleModels();
+        
+        // no model to process
+        if (empty($models)) {
+            return [];
+        }
+        
+        // prepare response
         $response = [];
         
+        // prepare tables to process
         $parsedTables = [];
         foreach ($tables as $table) {
             // Explode each table by comma, trim values, and merge into $parsedTables
@@ -72,10 +111,11 @@ DOC;
         // Flip the array to swap keys and values
         $parsedTables = array_flip($parsedTables);
         
-        foreach ($this->models as $modelClass => $policyName) {
+        // loop through models to process
+        foreach ($models as $modelClass => $policyName) {
             
             // retrieve configured model the policy
-            $policy = $this->policies[$policyName] ?? [];
+            $policy = $this->getDataLifeCyclePolicies()[$policyName] ?? [];
             
             // load an instance of the model class
             $model = $this->modelsManager->load($modelClass);
@@ -102,7 +142,7 @@ DOC;
             assert($records instanceof Resultset);
             
             $callable = $policy['callable'] ?? function (Model $record, string $source, array &$response): void {
-                $deleted =  $record->delete();
+                $deleted = $record->delete();
                 $response[$source]['deleted'] += $deleted? 1 : 0;
                 
                 $messages = $record->getMessages();
@@ -122,20 +162,55 @@ DOC;
         return $response;
     }
     
+    /**
+     * Retrieves the data lifecycle models from the configuration.
+     *
+     * @return array An array of data lifecycle models or an empty array if not configured.
+     */
+    public function getDataLifeCycleModels(): array
+    {
+        return $this->dataLifeCycleConfig['models'] ?? [];
+    }
+    
+    /**
+     * Retrieves the data lifecycle policies from the configuration.
+     *
+     * @return array An array of data lifecycle policies or an empty array if not configured.
+     */
+    public function getDataLifeCyclePolicies(): array
+    {
+        return $this->dataLifeCycleConfig['policies'] ?? [];
+    }
+    
+    /**
+     * Adds permissions for the specified models to the configuration.
+     *
+     * If no models are provided, the method retrieves models from the data lifecycle.
+     * Each model is granted full permissions ('*'), and these permissions are merged
+     * into the configuration under the 'cli' role.
+     *
+     * @param array|null $models An associative array of models to add permissions for,
+     *                           where keys are the model names and values are entities.
+     *                           If null, the models are retrieved using the data lifecycle logic.
+     * @return void
+     */
     public function addModelsPermissions(?array $models = null): void
     {
-        $permissions = [];
-        $models ??= $this->models;
-        if ($models) {
-            foreach ($models as $model => $entity) {
-                $permissions[$model] = ['*'];
-            }
+        $models ??= $this->getDataLifeCycleModels();
+        
+        // no models to add
+        if (empty($models)) {
+            return;
         }
+        
+        // add the permissions
         $this->config->merge([
             'permissions' => [
                 'roles' => [
                     'cli' => [
-                        'models' => $permissions,
+                        'models' => array_map(function ($entity) {
+                            return ['*'];
+                        }, $models),
                     ],
                 ],
             ],
