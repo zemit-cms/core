@@ -12,12 +12,12 @@ namespace Zemit\Models\Behaviors\Blameable;
 
 interface RestoredInterface
 {
-    public function setRestoredAt($restoredAt): void;
+    public function setRestoredAt(mixed $restoredAt): void;
     public function getRestoredAt(): mixed;
     
-    public function setRestoredBy($restoredBy): void;
+    public function setRestoredBy(mixed $restoredBy): void;
     public function getRestoredBy(): mixed;
     
-    public function setRestoredAs($restoredAs): void;
+    public function setRestoredAs(mixed $restoredAs): void;
     public function getRestoredAs(): mixed;
 }

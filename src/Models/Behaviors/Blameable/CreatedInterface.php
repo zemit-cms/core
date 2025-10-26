@@ -12,12 +12,12 @@ namespace Zemit\Models\Behaviors\Blameable;
 
 interface CreatedInterface
 {
-    public function setCreatedAt($createdAt): void;
+    public function setCreatedAt(mixed $createdAt): void;
     public function getCreatedAt(): mixed;
     
-    public function setCreatedBy($createdBy): void;
+    public function setCreatedBy(mixed $createdBy): void;
     public function getCreatedBy(): mixed;
     
-    public function setCreatedAs($createdAs): void;
+    public function setCreatedAs(mixed $createdAs): void;
     public function getCreatedAs(): mixed;
 }
