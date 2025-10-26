@@ -81,7 +81,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: ${{ env.EXTENSIONS }}
-          tools: composer, cs2pr
+          tools: composer, cs2pr, phpcs
           
       - uses: ramsey/composer-install@v3
         with:
@@ -90,7 +90,7 @@ jobs:
           custom-cache-suffix: zemit-composer
 
       - name: PHP Code Sniffer
-        run: vendor/bin/phpcs -q --report=checkstyle | cs2pr --graceful-warnings
+        run: phpcs -q --report=checkstyle | cs2pr --graceful-warnings
         
   # PHP STATIC ANALYSIS
   static-analysis:
@@ -116,7 +116,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: ${{ env.EXTENSIONS }}
-          tools: composer, cs2pr
+          tools: composer, cs2pr, phpstan
           
       - uses: ramsey/composer-install@v3
         with:
@@ -125,7 +125,7 @@ jobs:
           custom-cache-suffix: zemit-composer
 
       - name: PHP Stan
-        run: ./vendor/bin/phpstan
+        run: phpstan
   
   # PHP PSALM
   php-security:
@@ -169,7 +169,7 @@ jobs:
         run: rm -rf ~/.cache/psalm
 
       - name: Run Psalm Security Scan
-        run: ./vendor/bin/psalm --config=psalm.xml --output-format=sarif > results.sarif
+        run: psalm --config=psalm.xml --output-format=sarif > results.sarif
 
       - name: Display SARIF results
         run: cat results.sarif
@@ -231,14 +231,21 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: ${{ env.EXTENSIONS }}
-          tools: composer, cs2pr
+          tools: composer, cs2pr, phpunit
           
       - uses: ramsey/composer-install@v3
         with:
           dependency-versions: ${{ matrix.dependencies }}
           composer-options: ${{ matrix.composer-options }}
           custom-cache-suffix: zemit-composer
-          
+
+      - name: Install Phalcon DevTools
+        run: |
+          composer global config minimum-stability dev
+          composer global config prefer-stable true
+          composer global require phalcon/devtools:^5.0 --no-interaction --no-progress
+          echo "$(composer global config home)/vendor/bin" >> $GITHUB_PATH
+
       - name: Set permissions and environment
         run: |
           chmod +x ./bin/* ./vendor/bin/* ./zemit
@@ -252,5 +259,5 @@ jobs:
           ./bin/migration-run.sh
       
       - name: PHP Unit
-        run: ./vendor/bin/phpunit
+        run: phpunit
         
