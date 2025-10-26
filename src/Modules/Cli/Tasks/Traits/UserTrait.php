@@ -12,6 +12,7 @@
 namespace Zemit\Modules\Cli\Tasks\Traits;
 
 use Phalcon\Db\Column;
+use Zemit\Models\Interfaces\UserInterface;
 use Zemit\Models\Role;
 use Zemit\Models\User;
 use Zemit\Models\UserRole;
@@ -28,19 +29,16 @@ trait UserTrait
     }
     
     /**
-     * @return \Closure[][]
+     * Retrieves an array of class definitions mapped to their respective configurations.
      *
-     * @psalm-return array<string, array{password?: \Closure(mixed):mixed, passwordConfirm?: \Closure(mixed):mixed}>
+     * @return array<string, array<string, string|callable>>
      */
     public function getDefinitions(): array
     {
         return [
             $this->models->getUserClass() => [
-                'password' => function ($row) {
-                    return $row->getEmail();
-                },
-                'passwordConfirm' => function ($row) {
-                    return $row->getEmail();
+                'password' => function (UserInterface $user): ?string {
+                    return $user->getEmail();
                 },
             ],
             $this->models->getUserRoleClass() => [],
