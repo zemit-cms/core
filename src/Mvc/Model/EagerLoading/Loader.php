@@ -428,7 +428,7 @@ final class Loader
     /**
      * Loads the data from a data source and returns an instance of the current object.
      *
-     * @return $this The current object instance after loading the data.
+     * @return self The current object instance after loading the data.
      */
     public function load(): self
     {
