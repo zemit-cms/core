@@ -8,4 +8,4 @@
 # file that was distributed with this source code.
 #
 
-php -d xdebug.mode=develop ./vendor/bin/phpunit --no-coverage "$@"
+phpunit --no-coverage "$@"

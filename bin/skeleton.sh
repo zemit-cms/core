@@ -8,4 +8,4 @@
 # file that was distributed with this source code.
 #
 
-php -d xdebug.mode=off ./vendor/bin/pds-skeleton "$@"
+pds-skeleton "$@"

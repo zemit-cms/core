@@ -8,4 +8,4 @@
 # file that was distributed with this source code.
 #
 
-php -d xdebug.mode=off ~/.config/composer/vendor/bin/psalm --config=psalm.xml --threads=16 --taint-analysis --dump-taint-graph=taints.dot "$@"
+psalm --config=psalm.xml --threads=16 --taint-analysis --dump-taint-graph=taints.dot "$@"
