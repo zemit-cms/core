@@ -18,7 +18,12 @@ use Exception;
 class Config extends \Phalcon\Config\Config implements ConfigInterface
 {
     /**
-     * Return the element as an array
+     * Retrieves a value from a path and converts it to an array.
+     *
+     * @param string $path The path to retrieve the value from.
+     * @param array|null $defaultValue The default value to return if the path does not exist.
+     * @param string|null $delimiter The delimiter to use for splitting the path.
+     * @return array|null The value from the path as an array, or null if the value does not exist.
      */
     #[\Override]
     public function pathToArray(string $path, ?array $defaultValue = null, ?string $delimiter = null): ?array
@@ -36,8 +41,19 @@ class Config extends \Phalcon\Config\Config implements ConfigInterface
         return (array)$ret;
     }
     
+    /**
+     * Merges the current configuration object with another set of data.
+     *
+     * @param array|PhalconConfigInterface $toMerge The data to merge into the current configuration.
+     *                        This can be an array or another configuration object that implements PhalconConfigInterface.
+     * @param bool $append Whether to append the data during the merge or replace existing values.
+     *                       Defaults to false, meaning values will be replaced during the merge.
+     * @return PhalconConfigInterface Returns the updated configuration object after the merge operation.
+     *                                The current instance is modified and returned.
+     * @throws \Exception If the $toMerge parameter is not of a valid data type.
+     */
     #[\Override]
-    public function merge($toMerge, bool $append = false): PhalconConfigInterface
+    public function merge(mixed $toMerge, bool $append = false): PhalconConfigInterface
     {
         if (!$append) {
             return parent::merge($toMerge);
@@ -56,6 +72,15 @@ class Config extends \Phalcon\Config\Config implements ConfigInterface
         return $this;
     }
     
+    /**
+     * Merges two arrays recursively, appending values from the target array into the source array.
+     * Handles both associative and indexed arrays.
+     *
+     * @param array $source The source array to merge values into.
+     * @param array $target The target array to merge values from.
+     *
+     * @return array The resulting array after the merge operation.
+     */
     final protected function internalMergeAppend(array $source, array $target): array
     {
         foreach ($target as $key => $value) {
