@@ -25,13 +25,13 @@ trait Model
      * The name of the model.
      * @var ?string
      */
-    protected ?string $modelName;
+    protected ?string $modelName = null;
     
     /**
      * The namespaces for the model lookup.
      * @var string[]
      */
-    protected ?array $modelNamespaces;
+    protected ?array $modelNamespaces = null;
     
     /**
      * Retrieves the name of the model associated with the controller.
