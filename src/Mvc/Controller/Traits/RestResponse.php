@@ -61,7 +61,7 @@ trait RestResponse
         $status ??= $this->response->getReasonPhrase() ?: HttpStatusCode::getMessage($code);
         
         // Collect view data safely
-        $view = $this->view?->getParamsToView() ?? [];
+        $view = $this->view->getParamsToView() ?? [];
         unset($view['_']);
         
         // Build base response payload
@@ -109,7 +109,7 @@ trait RestResponse
         }
         
         // Default: disable caching
-        $isAuthenticated = $this->identity?->isLoggedIn();
+        $isAuthenticated = $this->identity->isLoggedIn();
         $cacheControl = 'no-store, no-cache, must-revalidate';
         $expires = '0';
         
@@ -184,11 +184,11 @@ trait RestResponse
             ],
             'zemit' => $this->config->pathToArray('core'),
             'app' => $this->config->pathToArray('app'),
-            'identity' => $this->identity?->getIdentity(),
-            'profiler' => $this->profiler?->toArray(),
-            'request' => $this->request?->toArray(),
-            'dispatcher' => $this->dispatcher?->toArray(),
-            'router' => $this->router?->toArray(),
+            'identity' => $this->identity->getIdentity(),
+            'profiler' => $this->profiler->toArray(),
+            'request' => $this->request->toArray(),
+            'dispatcher' => $this->dispatcher->toArray(),
+            'router' => $this->router->toArray(),
             'memory' => Utils::getMemoryUsage(),
         ];
     }
