@@ -308,22 +308,26 @@ PHP;
     }
     
     // Models Extend Class
-    public function getModelsExtend() {
+    public function getModelsExtend(): string
+    {
         return $this->dispatcher->getParam('modelsExtend') ?? $this->modelsExtend;
     }
     
     // Models Interface Extend Class
-    public function getInterfacesExtend() {
+    public function getInterfacesExtend(): string
+    {
         return $this->dispatcher->getParam('interfacesExtend') ?? $this->interfacesExtend;
     }
     
     // Tests Extend Class
-    public function getTestsExtend() {
+    public function getTestsExtend(): string
+    {
         return $this->dispatcher->getParam('testsExtend') ?? $this->testsExtend;
     }
     
     // Controllers Extend Class
-    public function getControllersExtend() {
+    public function getControllersExtend(): string
+    {
         return $this->dispatcher->getParam('controllersExtend') ?? $this->controllersExtend;
     }
     
