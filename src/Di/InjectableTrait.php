@@ -23,15 +23,13 @@ trait InjectableTrait
     
     /**
      * Holds the container instance.
-     * @var DiInterface|null
      */
-    public ?DiInterface $container;
+    public ?DiInterface $container = null;
     
     /**
      * Holds a list of loaded services from the container
-     * @var array
      */
-    public array $instanceContainer;
+    public array $instanceContainer = [];
     
     /**
      * Returns the Dependency Injection (DI) container used by this object.
@@ -51,7 +49,6 @@ trait InjectableTrait
      * Sets the dependency injection container.
      *
      * @param DiInterface $container The dependency injection container.
-     *
      * @return void
      */
     public function setDI(DiInterface $container): void
