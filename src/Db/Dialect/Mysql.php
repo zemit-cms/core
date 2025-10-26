@@ -12,6 +12,7 @@ namespace Zemit\Db\Dialect;
 
 use Phalcon\Db\Column;
 use Phalcon\Db\ColumnInterface;
+use Phalcon\Db\Dialect;
 
 /**
  * Class MySQL
@@ -56,8 +57,8 @@ class Mysql extends \Phalcon\Db\Dialect\Mysql
      */
     public function registerDistanceSphereFunction(): void
     {
-        $this->registerCustomFunction('ST_Distance_Sphere', function ($dialect, $expression) {
-            $arguments = $expression['arguments'];
+        $this->registerCustomFunction('ST_Distance_Sphere', function (Dialect $dialect, array $expression) {
+            $arguments = $expression['arguments'] ?? [];
             return sprintf(
                 " ST_Distance_Sphere(%s, %s)",
                 $dialect->getSqlExpression($arguments[0]),
@@ -73,8 +74,8 @@ class Mysql extends \Phalcon\Db\Dialect\Mysql
      */
     public function registerPointFunction(): void
     {
-        $this->registerCustomFunction('point', function ($dialect, $expression) {
-            $arguments = $expression['arguments'];
+        $this->registerCustomFunction('point', function (Dialect $dialect, array $expression) {
+            $arguments = $expression['arguments'] ?? [];
             return sprintf(
                 " point(%s, %s)",
                 $dialect->getSqlExpression($arguments[0]),
