@@ -19,7 +19,7 @@ use Zemit\Support\Options\ManagerInterface;
  */
 trait Options
 {
-    public ManagerInterface $optionsManager;
+    public ?ManagerInterface $optionsManager = null;
     
     /**
      * Initialize the Options Manager for the current instance
@@ -39,6 +39,11 @@ trait Options
      */
     public function getOptionsManager(): ManagerInterface
     {
+        if (!isset($this->optionsManager)){
+            $this->initializeOptions();
+        }
+        
+        assert($this->optionsManager instanceof ManagerInterface);
         return $this->optionsManager;
     }
     
