@@ -12,12 +12,12 @@ namespace Zemit\Models\Behaviors\Blameable;
 
 interface DeletedInterface
 {
-    public function setDeletedAt($deletedAt);
-    public function getDeletedAt();
+    public function setDeletedAt($deletedAt): void;
+    public function getDeletedAt(): mixed;
     
-    public function setDeletedBy($deletedBy);
-    public function getDeletedBy();
+    public function setDeletedBy($deletedBy): void;
+    public function getDeletedBy(): mixed;
     
-    public function setDeletedAs($deletedAs);
-    public function getDeletedAs();
+    public function setDeletedAs($deletedAs): void;
+    public function getDeletedAs(): mixed;
 }

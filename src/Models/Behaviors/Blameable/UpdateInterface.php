@@ -12,12 +12,12 @@ namespace Zemit\Models\Behaviors\Blameable;
 
 interface UpdateInterface
 {
-    public function setUpdatedAt($updatedAt);
-    public function getUpdatedAt();
+    public function setUpdatedAt($updatedAt): void;
+    public function getUpdatedAt(): mixed;
     
-    public function setUpdatedBy($updatedBy);
-    public function getUpdatedBy();
+    public function setUpdatedBy($updatedBy): void;
+    public function getUpdatedBy(): mixed;
     
-    public function setUpdatedAs($updatedAs);
-    public function getUpdatedAs();
+    public function setUpdatedAs($updatedAs): void;
+    public function getUpdatedAs(): mixed;
 }
