@@ -19,11 +19,11 @@ interface EagerLoadInterface
     
     public static function findFirstWith(array ...$arguments): ?ModelInterface;
     
-    public static function with(array ...$arguments);
+    public static function with(array ...$arguments): array;
     
-    public static function firstWith(array ...$arguments);
+    public static function firstWith(array ...$arguments): ?ModelInterface;
     
-    public function load(array ...$arguments);
+    public function load(array ...$arguments): ?ModelInterface;
     
-    public static function getParametersFromArguments(array &$arguments);
+    public static function getParametersFromArguments(array &$arguments): mixed;
 }

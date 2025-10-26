@@ -26,7 +26,7 @@ trait EagerLoad
      * <code>
      * <?php
      *
-     * $limit  = 100;
+     * $limit = 100;
      * $offset = max(0, $this->request->getQuery('page', 'int') - 1) * $limit;
      *
      * $manufacturers = Manufacturer::with('Robots.Parts', [
@@ -48,7 +48,7 @@ trait EagerLoad
         $parameters = self::getParametersFromArguments($arguments);
         $list = static::find($parameters);
         
-        if ($list instanceof ResultsetInterface && is_countable($list) && $list->count()) {
+        if ($list instanceof ResultsetInterface && $list->count()) {
             return Loader::fromResultset($list, ...$arguments);
         }
         
@@ -75,51 +75,49 @@ trait EagerLoad
     
     /**
      * @deprecated
-     *
      * @link self::findWith()
-     *
+     * @param array ...$arguments
      * @return array
      */
     #[Deprecated(
         reason: 'since Zemit 1.0, use findWith() instead',
         replacement: '%class%::findWith(%parametersList%)'
     )]
-    public static function with(array ...$arguments)
+    public static function with(array ...$arguments): array
     {
         return self::findWith(...$arguments);
     }
     
     /**
      * @deprecated
-     *
      * @link self::findFirstWith()
-     *
-     * @return array
+     * @param array ...$arguments
+     * @return ?ModelInterface
      */
     #[Deprecated(
         reason: 'since Zemit 1.0, use findFirstWith() instead',
         replacement: '%class%::findFirstWith(%parametersList%)'
     )]
-    public static function firstWith(array ...$arguments)
+    public static function firstWith(array ...$arguments): ?ModelInterface
     {
-        return self::findWith(...$arguments);
+        return self::findFirstWith(...$arguments);
     }
     
     /**
      * Call magic method to make the with works in an implicit way
      * @todo change it to behavior missingMethods()
      */
-    public static function __callStatic(string $method, array $arguments = [])
+    public static function __callStatic(string $method, array $arguments = []): array|null|ModelInterface
     {
         // Single - FindFirstBy...
-        if (strpos($method, 'findFirstWithBy') === 0 || strpos($method, 'firstWithBy') === 0) {
+        if (str_starts_with($method, 'findFirstWithBy') || str_starts_with($method, 'firstWithBy')) {
             
             $forwardMethod = str_replace(['findFirstWithBy', 'firstWithBy'], 'findFirstBy', $method);
             return self::findFirstWithBy($forwardMethod, $arguments);
         }
         
         // List - FindWithBy...
-        elseif (strpos($method, 'findWithBy') === 0 || strpos($method, 'withBy') === 0) {
+        elseif (str_starts_with($method, 'findWithBy') || str_starts_with($method, 'withBy')) {
     
             $forwardMethod = str_replace(['findWithBy', 'withBy'], 'findBy', $method);
             return self::findWithBy($forwardMethod, $arguments);
@@ -183,9 +181,10 @@ trait EagerLoad
     
     /**
      * Get the query parameters from a list of arguments
+     * @param array $arguments
      * @return mixed
      */
-    public static function getParametersFromArguments(array &$arguments)
+    public static function getParametersFromArguments(array &$arguments): mixed
     {
         $parameters = null;
         
