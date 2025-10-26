@@ -32,7 +32,7 @@ class Color extends AbstractValidator implements ValidatorInterface
     }
     
     #[\Override]
-    public function validate(Validation $validation, $field): bool
+    public function validate(Validation $validation, mixed $field): bool
     {
         $value = $validation->getValue($field);
         
