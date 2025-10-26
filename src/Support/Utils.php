@@ -58,6 +58,13 @@ class Utils
     
     /**
      * Return an array of the current memory usage in MB
+     *
+     * @return array{
+     *      memory: string,
+     *      memoryPeak: string,
+     *      realMemory: string,
+     *      realMemoryPeak: string,
+     *  }
      */
     public static function getMemoryUsage(float $divider = 1048576.2, string $suffix = ' MB'): array
     {
