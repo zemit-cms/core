@@ -274,13 +274,14 @@ trait Export
         $delimiter = $params['delimiter'] ?? null;
         $enclosure = $params['enclosure'] ?? null;
         $endOfLine = $params['endOfLine'] ?? null;
-        $escape = $params['escape'] ?? '\\';
+        $escape = $params['escape'] ?? null;
         $outputBOM = $params['outputBOM'] ?? null;
         $skipIncludeBOM = $params['skipIncludeBOM'] ?? false;
         $necessaryEnclosure = $params['necessaryEnclosure'] ?? false;
         $keepEndOfLines = $params['keepEndOfLines'] ?? false;
 
         $csv = Writer::from('php://memory');
+        $csv->setEscape('\\');
         
         // CSV - MS Excel on MacOS
         if ($mode === 'mac') {
