@@ -51,7 +51,14 @@ class View extends \Phalcon\Mvc\View
     }
     
     /**
+     * Perform the automatic rendering returning the output as a string
+     *
      * {@inheritDoc}
+     * @param string $controllerName
+     * @param string $actionName
+     * @param array $params
+     * @param mixed $configCallback
+     * @return string
      */
     #[\Override]
     public function getRender(string $controllerName, string $actionName, array $params = [], $configCallback = null): string
@@ -64,7 +71,7 @@ class View extends \Phalcon\Mvc\View
     }
     
     /**
-     * {@inheritdoc}
+     * Returns output from another view stage
      * Can also minify the content
      */
     #[\Override]
