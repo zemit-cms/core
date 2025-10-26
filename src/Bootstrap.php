@@ -41,11 +41,11 @@ class Bootstrap
     public const string MODE_WS = 'ws';
     public const string MODE_MVC = 'mvc';
     
+    public DiInterface $di;
+    
     public string $mode;
     
-    public ?array $args;
-    
-    public DiInterface $di;
+    public ?array $args = null;
     
     public ?ConfigInterface $config = null;
     
