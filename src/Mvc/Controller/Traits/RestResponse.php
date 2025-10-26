@@ -151,7 +151,7 @@ trait RestResponse
      */
     public function setVaryHeaders(?bool $isAuthenticated = null): void
     {
-        $isAuthenticated ??= $this->identity?->isLoggedIn();
+        $isAuthenticated ??= $this->identity->isLoggedIn();
         
         // Optional: help proxies vary safely on relevant headers
         $varyHeaders = $this->config->pathToArray('response.cache.vary') ?? [];
