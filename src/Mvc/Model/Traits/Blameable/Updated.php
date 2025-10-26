@@ -46,13 +46,13 @@ trait Updated
         
         $this->setUpdatedBehavior(new Transformable([
             'beforeValidationOnUpdate' => [
-                $fieldBy => $this->hasChangedCallback(function () {
+                $fieldBy => $this->hasChangedCallback(function (): ?int {
                     return $this->getCurrentUserIdCallback(false)();
                 }),
-                $fieldAs => $this->hasChangedCallback(function () {
+                $fieldAs => $this->hasChangedCallback(function (): ?int {
                     return $this->getCurrentUserIdCallback(true)();
                 }),
-                $fieldAt => $this->hasChangedCallback(function () {
+                $fieldAt => $this->hasChangedCallback(function (): ?string {
                     return $this->getDateCallback(Column::DATETIME_FORMAT)();
                 }),
             ],

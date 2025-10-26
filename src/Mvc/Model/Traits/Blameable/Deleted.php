@@ -13,12 +13,14 @@ namespace Zemit\Mvc\Model\Traits\Blameable;
 
 use Zemit\Db\Column;
 use Zemit\Mvc\Model\Behavior\Transformable;
+use Zemit\Mvc\Model\Interfaces\SoftDeleteInterface;
 use Zemit\Mvc\Model\Traits\Abstracts\AbstractBehavior;
 use Zemit\Mvc\Model\Traits\Abstracts\AbstractBlameable;
 use Zemit\Mvc\Model\Traits\Identity;
 use Zemit\Mvc\Model\Traits\Options;
 use Zemit\Mvc\Model\Traits\Snapshot;
 use Zemit\Mvc\Model\Traits\SoftDelete;
+use Zemit\Mvc\ModelInterface;
 
 trait Deleted
 {
@@ -54,19 +56,19 @@ trait Deleted
                 $fieldAt => $this->getDateCallback(Column::DATETIME_FORMAT),
             ],
             'beforeValidationOnUpdate' => [
-                $fieldBy => $this->hasChangedCallback(function ($model, $field) use ($deletedField, $deletedValue) {
+                $fieldBy => $this->hasChangedCallback(function (ModelInterface $model, string $field) use ($deletedField, $deletedValue): ?int {
                     return $model->isDeleted($deletedField, $deletedValue)
                         ? $this->getCurrentUserIdCallback()()
                         : $model->readAttribute($field);
                 }),
-                $fieldAs => $this->hasChangedCallback(function ($model, $field) use ($deletedField, $deletedValue) {
+                $fieldAs => $this->hasChangedCallback(function (ModelInterface $model, string $field) use ($deletedField, $deletedValue): ?int {
                     return $model->isDeleted($deletedField, $deletedValue)
                         ? $this->getCurrentUserIdCallback(true)()
                         : $model->readAttribute($field);
                 }),
-                $fieldAt => $this->hasChangedCallback(function ($model, $field) use ($deletedField, $deletedValue) {
+                $fieldAt => $this->hasChangedCallback(function (ModelInterface $model, string $field) use ($deletedField, $deletedValue): ?string {
                     return $model->isDeleted($deletedField, $deletedValue)
-                        ? $this->getDateCallback(Column::DATETIME_FORMAT)
+                        ? $this->getDateCallback(Column::DATETIME_FORMAT)()
                         : $model->readAttribute($field);
                 }),
             ],
