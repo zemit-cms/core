@@ -78,7 +78,7 @@ trait Snapshot
      */
     public function hasChangedCallback(callable $callback, bool $anyField = true): \Closure
     {
-        return function (Model $model, $field) use ($callback, $anyField) {
+        return function (Model $model, string $field) use ($callback, $anyField): mixed {
             return (!$model->hasSnapshotData()
                 || $model->hasChanged($anyField ? null : $field)
                 || $model->hasUpdated($anyField ? null : $field))
