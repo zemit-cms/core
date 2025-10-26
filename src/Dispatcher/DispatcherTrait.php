@@ -40,7 +40,7 @@ trait DispatcherTrait
      * @param $handler
      * @return mixed
      */
-    public function callActionMethod($handler, string $actionMethod, array $params = [])
+    public function callActionMethod($handler, string $actionMethod, array $params = []): mixed
     {
         return call_user_func_array(
             [$handler, $actionMethod],
