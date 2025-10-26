@@ -11,4 +11,6 @@
 
 use Zemit\Bootstrap\Devtools;
 
+require_once 'loader.php';
+
 return new Devtools();
