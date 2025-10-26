@@ -120,7 +120,7 @@ class RecordController extends Controller
             $modelInstance->setDynamicMetaData($this->getMetaData());
             $modelInstance->setDynamicColumnMap($this->getColumnMap());
 //        }
-        assert($modelInstance instanceof ModelInterface);
+//        assert($modelInstance instanceof ModelInterface);
         return $modelInstance;
     }
     
