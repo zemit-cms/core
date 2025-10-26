@@ -104,14 +104,9 @@ trait PermissionConditions
             return null;
         }
         
-        // no identity found
-        if (!isset($this->identity)) {
-            return ['false'];
-        }
-        
         // check if current user role is a super admin
         if ($this->identity->hasRole($superRoleList)) {
-            return ['true'];
+            return null;
         }
         
         $query = [];
