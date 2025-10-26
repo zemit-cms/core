@@ -13,10 +13,12 @@ declare(strict_types=1);
 namespace Zemit\Identity\Traits;
 
 use Zemit\Di\AbstractInjectable;
+use Zemit\Identity\Traits\Abstracts\AbstractJwt;
 
 trait Session
 {
     use AbstractInjectable;
+    use AbstractJwt;
     
     public const SESSION_KEY = 'zemit-identity';
     public const REFRESH_SUFFIX = '-refresh';

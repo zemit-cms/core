@@ -12,6 +12,9 @@ declare(strict_types=1);
 
 namespace Zemit\Identity\Traits\Abstracts;
 
+/**
+ * @phpstan-ignore trait.unused
+ */
 trait AbstractImpersonation
 {
     abstract public function loginAs(?array $params = []): array;

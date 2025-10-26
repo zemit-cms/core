@@ -18,10 +18,12 @@ use Phalcon\Filter\Validation\Validator\PresenceOf;
 use Phalcon\Messages\Message;
 use Zemit\Filter\Validation;
 use Zemit\Identity\Traits\Abstracts\AbstractSession;
+use Zemit\Identity\Traits\Abstracts\AbstractUser;
 
 trait Oauth2
 {
     use AbstractSession;
+    use AbstractUser;
     
     /**
      * OAuth2 authentication

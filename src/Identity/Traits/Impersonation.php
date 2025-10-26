@@ -16,9 +16,12 @@ use Phalcon\Filter\Validation\Validator\Numericality;
 use Phalcon\Filter\Validation\Validator\PresenceOf;
 use Phalcon\Messages\Message;
 use Zemit\Filter\Validation;
+use Zemit\Identity\Traits\Abstracts\AbstractRole;
 
 trait Impersonation
 {
+    use AbstractRole;
+    
     /**
      * Allows an admin or developer to log in as another user based on their user ID.
      * Validates the provided parameters to ensure the presence and numericality of the user ID.

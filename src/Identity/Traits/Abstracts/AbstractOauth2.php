@@ -12,7 +12,10 @@ declare(strict_types=1);
 
 namespace Zemit\Identity\Traits\Abstracts;
 
+/**
+ * @phpstan-ignore trait.unused
+ */
 trait AbstractOauth2
 {
-    abstract public function oauth2(string $provider, int $providerUuid, string $accessToken, ?string $refreshToken = null, ?array $meta = []): array;
+    abstract public function oauth2(string $provider, string $providerUuid, string $accessToken, ?string $refreshToken = null, ?array $meta = []): array;
 }
