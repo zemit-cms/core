@@ -14,8 +14,11 @@ namespace Zemit\Mvc\Controller\Traits;
 use Phalcon\Filter\Exception;
 use Zemit\Support\Helper;
 
+// @todo refactor for zemit 1
+/** @phpstan-ignore-next-line */
 trait DynamicJoins
 {
+    protected array $dynamicJoinsAllowed = [];
     protected ?array $dynamicJoins = null;
     protected array $dynamicJoinsMapping = [];
     
