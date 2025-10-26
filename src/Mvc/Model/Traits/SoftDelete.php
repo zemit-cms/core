@@ -33,6 +33,9 @@ trait SoftDelete
     use AbstractOptions;
     use AbstractSave;
     
+    /**
+     * @var bool $skipped
+     */
     protected $skipped = false;
     
     /**
