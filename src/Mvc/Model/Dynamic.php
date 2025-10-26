@@ -21,8 +21,8 @@ use Zemit\Support\Utils;
  */
 class Dynamic extends Model
 {
-    protected $_metaData = [];
-    protected $_columnMap = [];
+    protected array $_metaData = [];
+    protected array $_columnMap = [];
     
     #[\Override]
     public function initialize(): void
