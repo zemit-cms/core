@@ -24,7 +24,7 @@ trait FindIn
 {
     public static function findInById(array $idList = [])
     {
-        $castInt = function ($id): int {
+        $castInt = function (string|int $id): int {
             return (int)$id;
         };
         
