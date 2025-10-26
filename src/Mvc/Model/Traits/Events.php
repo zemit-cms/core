@@ -11,6 +11,7 @@
 
 namespace Zemit\Mvc\Model\Traits;
 
+use Phalcon\Mvc\Model\Resultset;
 use Phalcon\Mvc\Model\Resultset\Simple;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\ModelInterface;
@@ -20,7 +21,7 @@ trait Events
 {
     abstract public function fireEventCancel(string $eventName): bool;
     
-    public static function find($parameters = null)
+    public static function find(mixed $parameters = null): array|Resultset|Simple
     {
         $ret = self::fireEventCancelCall(__FUNCTION__, func_get_args());
         
@@ -34,18 +35,18 @@ trait Events
         return $ret;
     }
 
-    public static function findFirst($parameters = null): mixed
+    public static function findFirst(mixed $parameters = null): mixed
     {
         $ret = self::fireEventCancelCall(__FUNCTION__, func_get_args());
         return $ret ?: null;
     }
 
-    public static function count($parameters = null): ResultsetInterface|int
+    public static function count(mixed $parameters = null): ResultsetInterface|int
     {
         return self::fireEventCancelCall(__FUNCTION__, func_get_args());
     }
 
-    public static function sum($parameters = null): ResultsetInterface|float
+    public static function sum(mixed $parameters = null): ResultsetInterface|float
     {
         return self::fireEventCancelCall(__FUNCTION__, func_get_args());
     }
@@ -54,9 +55,10 @@ trait Events
     {
         return self::fireEventCancelCall(__FUNCTION__, func_get_args());
     }
-
+    
     public static function fireEventCancelCall(string $method, array $arguments = [])
     {
+        // @todo fix without creating a new $class instance
         $class = get_called_class();
         $that = new $class();
         $event = ucfirst(Helper::camelize($method));
