@@ -13,9 +13,9 @@ namespace Zemit\Support\Exposer;
 
 class Builder implements BuilderInterface
 {
-    private mixed $value;
+    private mixed $value = null;
     
-    private mixed $parent;
+    private mixed $parent = null;
     
     private ?array $columns = null;
     
@@ -30,7 +30,7 @@ class Builder implements BuilderInterface
     private bool $protected = false;
     
     #[\Override]
-    public function getValue()
+    public function getValue(): mixed
     {
         return $this->value;
     }

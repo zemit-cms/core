@@ -13,14 +13,14 @@ namespace Zemit\Support\Exposer;
 
 interface BuilderInterface
 {
-    public function getValue();
+    public function getValue(): mixed;
     
-    public function setValue($value = null): void;
+    public function setValue(mixed $value = null): void;
     
     
-    public function getParent();
+    public function getParent(): mixed;
     
-    public function setParent($parent = null): void;
+    public function setParent(mixed $parent = null): void;
     
     
     public function getColumns(): ?array;
