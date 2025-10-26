@@ -18,7 +18,6 @@ use Zemit\Support\Utils;
 
 class Task extends \Zemit\Cli\Task
 {
-    
     public string $cliDoc = <<<DOC
 Usage:
   zemit cli <task> <action> [<params> ...]
@@ -32,8 +31,8 @@ DOC;
     public function beforeExecuteRoute(): void
     {
         $argv = array_slice($_SERVER['argv'] ?? [], 1);
-        $response = (new \Docopt())->handle($this->cliDoc, ['argv' => $argv, 'optionsFirst' => false]);
-        foreach ($response as $key => $value) {
+        $payload = (new \Docopt())->handle($this->cliDoc, ['argv' => $argv, 'optionsFirst' => false]);
+        foreach ($payload as $key => $value) {
             if (!is_null($value) && preg_match('/(<(.*?)>|\-\-(.*))/', $key, $matches)) {
                 $match = array_pop($matches);
                 if (!empty($match)) {
@@ -56,38 +55,6 @@ DOC;
         return null;
     }
     
-    public function normalizeResponse(bool $response = true, ?int $code = null, ?string $status = null): array
-    {
-        $debug = $this->config->path('app.debug') ?? false;
-        $view = $this->view->getParamsToView();
-        
-        $ret = [];
-        $ret['api'] = [];
-        $ret['api']['version'] = ['0.1']; // @todo
-        $ret['timestamp'] = date('c');
-        $ret['status'] = $status;
-        $ret['code'] = $code;
-        $ret['response'] = $response;
-        $ret['view'] = $view;
-        
-        if ($debug !== false) {
-            $ret['api']['php'] = phpversion();
-            $ret['api']['phalcon'] = $this->config->path('phalcon.version');
-            $ret['api']['zemit'] = $this->config->path('core.version');
-            $ret['api']['core'] = $this->config->path('core.name');
-            $ret['api']['app'] = $this->config->path('app.version');
-            $ret['api']['name'] = $this->config->path('app.name');
-            
-            $ret['identity'] = $this->identity ? $this->identity->getIdentity() : null;
-            $ret['profiler'] = $this->profiler ? $this->profiler->toArray() : null;
-            $ret['dispatcher'] = $this->dispatcher ? $this->dispatcher->toArray() : null;
-            $ret['router'] = $this->router ? $this->router->toArray() : null;
-            $ret['memory'] = Utils::getMemoryUsage();
-        }
-        
-        return $ret;
-    }
-    
     /**
      * Handle rest response automagically
      * @param Dispatcher $dispatcher
@@ -97,73 +64,64 @@ DOC;
     public function afterExecuteRoute(Dispatcher $dispatcher): void
     {
         // Merge response into view variables
-        $response = $dispatcher->getReturnedValue();
+        $payload = $dispatcher->getReturnedValue();
         
         // Quiet output
         $quiet = $this->dispatcher->getParam('quiet');
         if ($quiet) {
-            exit(!$response ? 1 : 0);
+            exit(!$payload ? 1 : 0);
         }
-        
-        // Normalize response
-        $this->view->setVars((array)$response);
-        $normalizedResponse = $this->normalizeResponse((bool)$response);
-        $dispatcher->setReturnedValue($normalizedResponse);
-        
-        // Set response
-        $verbose = $this->dispatcher->getParam('verbose');
-        $ret = $verbose ? $normalizedResponse : $response;
         
         // Format response
         $format = $this->dispatcher->getParam('format');
         $format ??= 'json';
         switch (strtolower($format)) {
             case 'dump':
-                dump($ret);
+                dump($payload);
                 break;
-                
+            
             case 'var_export':
-                var_export($ret);
+                var_export($payload);
                 break;
-                
+            
             case 'print_r':
-                print_r($ret);
+                print_r($payload);
                 break;
-    
+            
             case 'serialize':
-                echo serialize($ret);
+                echo serialize($payload);
                 break;
             
             case 'json':
-                echo json_encode($ret, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+                echo json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
                 echo PHP_EOL;
                 break;
             
             case 'string':
-                if (is_string($ret)) {
-                    echo $ret;
+                if (is_string($payload)) {
+                    echo $payload;
                 }
-                elseif (is_bool($ret)) {
-                    echo $ret? 'true' : 'false';
+                else if (is_bool($payload)) {
+                    echo $payload ? 'true' : 'false';
                 }
-                elseif (is_null($ret)) {
+                else if (is_null($payload)) {
                     echo 'null';
                 }
-                elseif (is_numeric($ret)) {
-                    echo $ret;
+                else if (is_numeric($payload)) {
+                    echo $payload;
                 }
                 else {
-                    echo json_encode($ret, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+                    echo json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
                     echo PHP_EOL;
                 }
                 break;
-                
+            
             case 'raw':
-                if (is_string($ret) || is_bool($ret) || is_null($ret) || is_numeric($ret)) {
-                    echo $ret;
+                if (is_string($payload) || is_bool($payload) || is_null($payload) || is_numeric($payload)) {
+                    echo $payload;
                 }
                 else {
-                    echo json_encode($ret, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+                    echo json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
                     echo PHP_EOL;
                 }
                 break;
