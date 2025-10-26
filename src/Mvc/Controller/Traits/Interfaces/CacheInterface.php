@@ -11,12 +11,7 @@
 
 namespace Zemit\Mvc\Controller\Traits\Interfaces;
 
-use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
-use Zemit\Support\Slug;
-
 interface CacheInterface
 {
     public function getCacheKey(?array $params = null): ?string;
-    
-    public function getCache(?array $params = null);
 }
