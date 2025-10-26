@@ -105,7 +105,7 @@ trait Identity
      */
     public function getCurrentUserIdCallback(bool $as = false): \Closure
     {
-        return function () use ($as) {
+        return function () use ($as): ?int {
             return $this->getCurrentUserId($as);
         };
     }
