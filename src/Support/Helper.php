@@ -81,7 +81,7 @@ use Phalcon\Di\Di;
  * @method static string flattenKeys(array $collection = [], string $delimiter = '.', bool $lowerKey = true)
  * @method static string recursiveStrReplace(array $collection, array $replaces)
  * @method static string slugify(string $string, array $replace = [], string $delimiter = '-')
- * @method static string sanitizeUTF8(string $string)
+ * @method static string sanitizeUTF8(string $string, string $invalidUtf8Regex)
  * @method static string removeNonPrintable(string $string, string $nonPrintableRegex = '[[:cntrl:]\r\n]', string $replacement = '')
  * @method static string normalizeLineBreaks(string $string, string $nonPrintableRegex = "\r\n", string $replacement = "\r")
  */

@@ -17,13 +17,14 @@ namespace Zemit\Support\Helper\Str;
 class SanitizeUTF8
 {
     /**
-     * Invokes the method to process the given string by detecting its encoding,
+     * Invokes the function to sanitize a given string by detecting its encoding,
      * converting it to UTF-8, and removing invalid UTF-8 characters.
      *
-     * @param string $string The input string to sanitize.
-     * @return string The sanitized string with invalid UTF-8 characters removed.
+     * @param string $string The input string to be sanitized.
+     * @param string $invalidUtf8Regex A regular expression pattern to identify invalid UTF-8 characters. Default: '[^\x20-\x7E\xA0-\xFF]'.
+     * @return string The sanitized string in UTF-8 encoding, with invalid characters removed.
      */
-    public function __invoke(string $string): string
+    public function __invoke(string $string, string $invalidUtf8Regex = '[^\x20-\x7E\xA0-\xFF]'): string
     {
         // Detect encoding; fallback to UTF-8
         $encoding = mb_detect_encoding($string, ['UTF-8', 'ISO-8859-1', 'Windows-1252'], true) ?: 'UTF-8';
@@ -32,7 +33,7 @@ class SanitizeUTF8
         $string = mb_convert_encoding($string, 'UTF-8', $encoding) ?: '';
         
         // Remove invalid UTF-8 characters
-        $sanitized = mb_ereg_replace('[^\x20-\x7E\xA0-\xFF]', '', $string);
+        $sanitized = mb_ereg_replace($invalidUtf8Regex, '', $string);
         
         return $sanitized ?: '';
     }
