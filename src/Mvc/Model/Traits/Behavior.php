@@ -30,9 +30,9 @@ trait Behavior
      *
      * @param string $behaviorName The name of the behavior to retrieve.
      *
-     * @return BehaviorInterface The behavior instance.
+     * @return ?BehaviorInterface The behavior instance.
      */
-    public function getBehavior(string $behaviorName): BehaviorInterface
+    public function getBehavior(string $behaviorName): ?BehaviorInterface
     {
         $modelsManager = $this->getModelsManager();
         assert($modelsManager instanceof ManagerInterface);
@@ -71,4 +71,18 @@ trait Behavior
         return $modelsManager->hasBehavior($this, $behaviorName);
     }
     
+    /**
+     * Removes a behavior from the model.
+     *
+     * @param string $behaviorName The name of the behavior to remove.
+     *
+     * @return void
+     */
+    public function removeBehavior(string $behaviorName): void
+    {
+        $modelsManager = $this->getModelsManager();
+        assert($modelsManager instanceof ManagerInterface);
+        assert($this instanceof ModelInterface);
+        $modelsManager->removeBehavior($this, $behaviorName);
+    }
 }

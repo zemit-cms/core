@@ -16,9 +16,13 @@ use Phalcon\Mvc\Model\BehaviorInterface as PhalconBehaviorInterface;
 
 interface BehaviorInterface
 {
-    public function getBehavior(string $behaviorName): PhalconBehaviorInterface;
+    public function addBehavior(PhalconBehaviorInterface $behavior): void;
+    
+    public function getBehavior(string $behaviorName): ?PhalconBehaviorInterface;
     
     public function setBehavior(string $behaviorName, PhalconBehaviorInterface $behavior): void;
     
     public function hasBehavior(string $behaviorName): bool;
+    
+    public function removeBehavior(string $behaviorName): void;
 }
