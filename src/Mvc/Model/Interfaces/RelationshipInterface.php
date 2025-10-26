@@ -50,9 +50,9 @@ interface RelationshipInterface
     
     public function assignRelated(array $data, ?array $whiteList = null, ?array $dataColumnMap = null): ModelInterface;
     
-    public function postSaveRelatedRecordsAfter(RelationInterface $relation, $relatedRecords, CollectionInterface $visited): ?bool;
+    public function postSaveRelatedRecordsAfter(RelationInterface $relation, array $relatedRecords, CollectionInterface $visited): ?bool;
     
-    public function postSaveRelatedThroughAfter(RelationInterface $relation, $relatedRecords, CollectionInterface $visited): ?bool;
+    public function postSaveRelatedThroughAfter(RelationInterface $relation, array $relatedRecords, CollectionInterface $visited): ?bool;
     
     public function findFirstByPrimaryKeys(array $data, ?string $modelClass): ModelInterface|Row|null;
     

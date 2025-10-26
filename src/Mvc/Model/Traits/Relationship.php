@@ -44,6 +44,9 @@ trait Relationship
     
     private string $relationshipContext = '';
     
+    /**
+     * @var ModelInterface[]
+     */
     protected $dirtyRelated = [];
     
     /**
@@ -321,10 +324,15 @@ trait Relationship
     }
     
     /**
-     * Saves related records that must be stored prior to save the master record
-     * Refactored based on the native cphalcon version, so we can support :
-     * - combined keys on relationship definition
-     * - relationship context within the model messages based on the alias definition
+     *  Saves related records that must be stored prior to save the master record
+     *  Refactored based on the native cphalcon version, so we can support :
+     *  - combined keys on relationship definition
+     *  - relationship context within the model messages based on the alias definition
+     *
+     * @param AdapterInterface $connection
+     * @param ModelInterface[] $related
+     * @param CollectionInterface $visited
+     * @return bool
      * @throws Exception
      */
     protected function preSaveRelatedRecords(AdapterInterface $connection, $related, CollectionInterface $visited): bool
@@ -391,13 +399,22 @@ trait Relationship
     }
     
     /**
-     * NOTE: we need this, this behaviour only happens:
-     * - in many to many nodes
+     * Processes the saving of related records for the current model.
+     * Performs operations based on relationship types such as HAS_MANY, HAS_ONE, HAS_MANY_THROUGH, etc.
+     * Handles automatic deletion of missing related records and ensures correct binding and transaction management.
+     *
+     * NOTE: we need this, this behavior only happens:
+     * - in many-to-many nodes
      * Fix uniqueness on combined keys in node entities, and possibly more...
      * @link https://forum.phalconphp.com/discussion/2190/many-to-many-expected-behaviour
      * @link http://stackoverflow.com/questions/23374858/update-a-records-n-n-relationships
      * @link https://github.com/phalcon/cphalcon/issues/2871
-     * @throws Exception
+     *
+     * @param AdapterInterface $connection Database connection instance used for transactions.
+     * @param array|object[]|ModelInterface[] $related Related records to be saved, provided as arrays or objects.
+     * @param CollectionInterface $visited A collection of already visited models to prevent recursion.
+     * @return bool Returns true on successful processing of related records, false if an error occurs.
+     * @throws Exception Throws an exception if there are no defined relations for a given alias or if invalid data types are provided.
      */
     protected function postSaveRelatedRecords(AdapterInterface $connection, $related, CollectionInterface $visited): bool
     {
@@ -595,7 +612,7 @@ trait Relationship
                     }
                 }
                 
-                $relatedRecords = $assign instanceof ModelInterface ? [$assign] : $assign;
+                $relatedRecords = is_array($assign) ? $assign : [$assign];
                 
                 if ($this->postSaveRelatedThroughAfter($relation, $relatedRecords, $visited) === false) {
                     $this->appendMessage(new Message('Unable to save related through after', $lowerCaseAlias, 'Bad Request', 400));
@@ -618,7 +635,21 @@ trait Relationship
         return true;
     }
     
-    public function postSaveRelatedRecordsAfter(RelationInterface $relation, $relatedRecords, CollectionInterface $visited): ?bool
+    /**
+     * Handles the saving process of related records after the parent record's save operation.
+     * It assigns referenced fields to the related records and ensures they are saved with proper relationships maintained.
+     * If the relation is defined as `Through`, this method skips further processing.
+     *
+     * @param RelationInterface $relation The relation instance that provides information about the relationship.
+     * @param array|object[]|ModelInterface[] $relatedRecords An array of related records to be saved.
+     * @param CollectionInterface $visited A collection to track visited records to prevent infinite recursion.
+     *
+     * @return bool|null Returns `true` if all related records are saved successfully, `false` if an error occurs during saving,
+     *                   and `null` if the relation is of type `Through`.
+     *
+     * @throws Exception If there is an error during the save operation for a related record.
+     */
+    public function postSaveRelatedRecordsAfter(RelationInterface $relation, array $relatedRecords, CollectionInterface $visited): ?bool
     {
         if ($relation->isThrough()) {
             return null;
@@ -657,7 +688,22 @@ trait Relationship
         return true;
     }
     
-    public function postSaveRelatedThroughAfter(RelationInterface $relation, $relatedRecords, CollectionInterface $visited): ?bool
+    /**
+     * Handles saving related records for through relationships after the primary records have been saved.
+     * Primarily used to manage intermediate models and ensure proper linkage and saving of related records
+     * in many-to-many or has-one-through relationships.
+     *
+     * @param RelationInterface $relation The relation object defining the association details.
+     * @param array|object[]|ModelInterface[] $relatedRecords An array of related records to be processed and saved.
+     * @param CollectionInterface $visited A collection of visited records to maintain state and prevent circular references.
+     *
+     * @return bool|null Returns true if all related records and intermediate records were successfully saved.
+     *                   Returns false if any save operation failed.
+     *                   Returns null if the relation is not a through relationship.
+     *
+     * @throws Exception If the intermediate model or related records cannot be properly saved.
+     */
+    public function postSaveRelatedThroughAfter(RelationInterface $relation, array $relatedRecords, CollectionInterface $visited): ?bool
     {
         assert($this instanceof RelationshipInterface);
         assert($this instanceof EntityInterface);
@@ -1072,7 +1118,11 @@ trait Relationship
     }
     
     /**
-     * {@inheritDoc}
+     * Returns the instance as an array representation
+     *
+     * @param array $columns
+     * @param bool $useGetter
+     * @return array
      */
     public function toArray($columns = null, $useGetter = true): array
     {
