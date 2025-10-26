@@ -59,7 +59,7 @@ trait Query
     use Save;
     use With;
     
-    protected ?Collection $find;
+    protected ?Collection $find = null;
     
     /**
      * Initializes the query builder with default values for various properties.
