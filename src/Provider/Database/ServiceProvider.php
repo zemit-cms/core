@@ -44,7 +44,7 @@ class ServiceProvider extends AbstractServiceProvider
                     throw new \InvalidArgumentException('Database driver option `' . $driverName . '` must be an array');
                 }
                 
-                $driverOptions = array_filter($databaseConfig['drivers'][$driverName], fn($value) => $value !== null);
+                $driverOptions = array_filter($databaseConfig['drivers'][$driverName], fn(mixed $value) => $value !== null);
                 
                 if (isset($driverOptions['extends'])) {
                     if (is_string($driverOptions['extends'])) {
