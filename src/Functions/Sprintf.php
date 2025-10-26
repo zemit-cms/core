@@ -74,7 +74,7 @@ if (!function_exists('sprintfn')) {
             
             // replace the named argument with the corresponding numeric one
             $replace = (string)$array[$key];
-            $format = (string)substr_replace($format, $replace, $position, $length);
+            $format = substr_replace($format, $replace, $position, $length);
             $pos = $position + strlen($replace);
             
             // skip to end of replacement for next iteration
@@ -91,7 +91,7 @@ if (!function_exists('mb_sprintf')) {
      * It should work with any "ASCII preserving" encoding such as UTF-8 and all the ISO-8859 charsets.
      * It handles sign, padding, alignment, width and precision. Argument swapping is not handled.
      */
-    function mb_sprintf(string $format, ...$args): string
+    function mb_sprintf(string $format, string|int|float ...$args): string
     {
         return mb_vsprintf($format, $args);
     }
