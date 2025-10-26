@@ -30,7 +30,7 @@ trait SearchConditions
     use AbstractQuery;
     use AbstractSearchFields;
     
-    protected ?Collection $searchConditions;
+    protected ?Collection $searchConditions = null;
     
     /**
      * Initializes the search conditions.

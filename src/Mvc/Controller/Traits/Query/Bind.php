@@ -18,8 +18,8 @@ trait Bind
 {
     use AbstractBind;
     
-    protected ?Collection $bind;
-    protected ?Collection $bindTypes;
+    protected ?Collection $bind = null;
+    protected ?Collection $bindTypes = null;
     
     /**
      * Initializes the bindings.

@@ -21,7 +21,7 @@ trait SoftDeleteConditions
     use AbstractModel;
     use AbstractQuery;
     
-    protected ?Collection $softDeleteConditions;
+    protected ?Collection $softDeleteConditions = null;
     
     public function initializeSoftDeleteConditions(): void
     {

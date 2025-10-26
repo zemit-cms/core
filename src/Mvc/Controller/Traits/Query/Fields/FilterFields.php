@@ -15,7 +15,7 @@ use Phalcon\Support\Collection;
 
 trait FilterFields
 {
-    protected ?Collection $filterFields;
+    protected ?Collection $filterFields = null;
     
     /**
      * Initializes the filter fields.

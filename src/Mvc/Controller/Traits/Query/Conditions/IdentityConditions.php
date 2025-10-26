@@ -24,7 +24,7 @@ trait IdentityConditions
     use AbstractParams;
     use AbstractQuery;
     
-    protected ?Collection $identityConditions;
+    protected ?Collection $identityConditions = null;
     
     public function initializeIdentityConditions(): void
     {

@@ -18,7 +18,7 @@ trait Column
 {
     use AbstractColumn;
     
-    protected ?Collection $column;
+    protected ?Collection $column = null;
     
     public function initializeColumn(): void
     {

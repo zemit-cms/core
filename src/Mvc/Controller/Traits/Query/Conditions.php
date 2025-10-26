@@ -29,7 +29,7 @@ trait Conditions
     use SearchConditions;
     use SoftDeleteConditions;
     
-    protected ?Collection $conditions;
+    protected ?Collection $conditions = null;
     
     public function initializeConditions(): void
     {

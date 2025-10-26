@@ -15,7 +15,7 @@ use Phalcon\Support\Collection;
 
 trait ExposeFields
 {
-    protected ?Collection $exposeFields;
+    protected ?Collection $exposeFields = null;
     
     /**
      * Initializes the expose fields.

@@ -15,7 +15,7 @@ use Phalcon\Support\Collection;
 
 trait SaveFields
 {
-    protected ?Collection $saveFields;
+    protected ?Collection $saveFields = null;
     
     /**
      * Initializes the save fields.

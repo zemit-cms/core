@@ -15,7 +15,7 @@ use Phalcon\Support\Collection;
 
 trait MapFields
 {
-    protected ?Collection $mapFields;
+    protected ?Collection $mapFields = null;
     
     /**
      * Initializes the map fields.

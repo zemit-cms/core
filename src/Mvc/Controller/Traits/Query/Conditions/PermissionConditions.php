@@ -35,7 +35,7 @@ trait PermissionConditions
      *
      * @var Collection|null
      */
-    protected ?Collection $permissionConditions;
+    protected ?Collection $permissionConditions = null;
     
     /**
      * Initializes the permission conditions for the object.

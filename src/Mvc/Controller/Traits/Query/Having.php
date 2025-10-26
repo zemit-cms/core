@@ -18,7 +18,7 @@ trait Having
 {
     use AbstractHaving;
     
-    protected ?Collection $having;
+    protected ?Collection $having = null;
     
     public function initializeHaving(): void
     {

@@ -24,7 +24,7 @@ trait Group
     use AbstractParams;
     use AbstractModel;
     
-    protected ?Collection $group;
+    protected ?Collection $group = null;
     
     public function initializeGroup(): void
     {

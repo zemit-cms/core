@@ -22,7 +22,7 @@ trait Distinct
     
     use AbstractParams;
     
-    protected ?Collection $distinct;
+    protected ?Collection $distinct = null;
     
     /**
      * Initialize the distinct parameter for the query.

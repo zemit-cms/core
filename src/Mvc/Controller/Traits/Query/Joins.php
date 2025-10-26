@@ -18,7 +18,7 @@ trait Joins
 {
     use AbstractJoins;
     
-    protected ?Collection $joins;
+    protected ?Collection $joins = null;
     
     /**
      * Initializes the joins.

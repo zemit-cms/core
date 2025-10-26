@@ -18,7 +18,7 @@ trait With
 {
     use AbstractWith;
     
-    protected ?Collection $with;
+    protected ?Collection $with = null;
     
     /**
      * Initializes the relationships.

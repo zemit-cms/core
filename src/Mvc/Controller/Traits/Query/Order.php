@@ -29,7 +29,7 @@ trait Order
     use AbstractParams;
     
     protected array|string|null $defaultOrder = null;
-    protected ?Collection $order;
+    protected ?Collection $order = null;
     
     /**
      * Initializes the default order for the instance.

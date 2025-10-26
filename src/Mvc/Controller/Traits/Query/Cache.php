@@ -32,19 +32,19 @@ trait Cache
      * This variable holds the configuration settings for caching.
      * @var Collection|null $cacheConfig
      */
-    public ?Collection $cacheConfig;
+    public ?Collection $cacheConfig = null;
     
     /**
      * The cache key used for storing data in the cache.
      * @var string|null
      */
-    public ?string $cacheKey;
+    public ?string $cacheKey = null;
     
     /**
      * The lifetime of the cache data in seconds.
      * @var int|null
      */
-    public ?int $cacheLifetime;
+    public ?int $cacheLifetime = null;
     
     /**
      * Initializes the cache.

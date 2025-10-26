@@ -28,7 +28,7 @@ trait FilterConditions
     use AbstractParams;
     use AbstractFilterFields;
     
-    protected ?Collection $filterConditions;
+    protected ?Collection $filterConditions = null;
     
     public function initializeFilterConditions(): void
     {

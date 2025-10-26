@@ -15,7 +15,7 @@ use Phalcon\Support\Collection;
 
 trait SearchFields
 {
-    protected ?Collection $searchFields;
+    protected ?Collection $searchFields = null;
     
     /**
      * Initializes the search fields.
