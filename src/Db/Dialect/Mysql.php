@@ -38,8 +38,8 @@ class Mysql extends \Phalcon\Db\Dialect\Mysql
      */
     public function registerRegexpFunction(): void
     {
-        $this->registerCustomFunction('regexp', function ($dialect, $expression) {
-            $arguments = $expression['arguments'];
+        $this->registerCustomFunction('regexp', function (Dialect $dialect, array $expression) {
+            $arguments = $expression['arguments'] ?? [];
             return sprintf(
                 " %s REGEXP %s",
                 $dialect->getSqlExpression($arguments[0]),
