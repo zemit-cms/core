@@ -13,8 +13,15 @@ namespace Zemit\Cli;
 
 class ExceptionHandler
 {
-    private $outputStream;
+    /**
+     * @var resource
+     */
+    private mixed $outputStream;
     
+    /**
+     * @param string|\Exception|\Throwable $e
+     * @param resource $outputStream
+     */
     public function __construct(string|\Exception|\Throwable $e, mixed $outputStream = STDERR)
     {
         $this->outputStream = $outputStream;
