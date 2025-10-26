@@ -20,10 +20,14 @@ use Zemit\Mvc\Model\Dynamic;
 class RecordController extends Controller
 {
     protected ?int $limit = 10000;
+    
     protected ?int $maxLimit = 10000;
-    protected Collection $columnMap;
-    protected array $metaData = [];
+    
     protected string $source = 'dynamic';
+    
+    protected ?Collection $columnMap = null;
+    
+    protected array $metaData = [];
     
     /**
      * @return void
@@ -122,7 +126,7 @@ class RecordController extends Controller
     
     public function getColumnMap(): array
     {
-        return $this->columnMap->toArray();
+        return $this->columnMap?->toArray() ?? [];
     }
     
     public function getSource(): string
