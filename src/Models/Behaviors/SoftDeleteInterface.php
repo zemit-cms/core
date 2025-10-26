@@ -12,6 +12,6 @@ namespace Zemit\Models\Behaviors;
 
 interface SoftDeleteInterface
 {
-    public function setDeleted($deleted): void;
+    public function setDeleted(mixed $deleted): void;
     public function getDeleted(): mixed;
 }
