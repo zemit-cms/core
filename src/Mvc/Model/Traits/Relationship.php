@@ -143,7 +143,14 @@ trait Relationship
     }
     
     /**
-     * {@inheritDoc}
+     * Assigns values to the model from an array, with options to control which fields are assigned.
+     * Handles related records using `assignRelated` method and passes remaining values to the parent's assign method.
+     *
+     * @param array $data The array of data to assign to the model.
+     * @param array|null $whiteList An optional array specifying which fields in the model can be assigned.
+     * @param array|null $dataColumnMap An optional column map to transform external keys into internal model field names.
+     *
+     * @return ModelInterface Returns the updated ModelInterface instance.
      * @throws Exception
      */
     public function assign(array $data, $whiteList = null, $dataColumnMap = null): ModelInterface
@@ -1040,7 +1047,7 @@ trait Relationship
      * passed from the collectRelatedToSave and is mistakenly saved without the user consent
      *
      * @param string $alias
-     * @param $arguments
+     * @param mixed $arguments
      * @return false|int|Model\Resultset\Simple
      * @throws Exception
      */
