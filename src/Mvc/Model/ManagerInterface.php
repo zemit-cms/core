@@ -21,11 +21,13 @@ interface ManagerInterface extends PhalconModelsManagerInterface
     
     public function setBehaviors(array $behaviors): void;
     
-    public function getBehavior(ModelInterface $model, string $behaviorName);
+    public function getBehavior(ModelInterface $model, string $behaviorName): ?BehaviorInterface;
     
     public function setBehavior(ModelInterface $model, string $behaviorName, BehaviorInterface $behavior): void;
     
     public function hasBehavior(ModelInterface $model, string $behaviorName): bool;
+    
+    public function removeBehavior(ModelInterface $model, string $behaviorName): void;
     
 //    public function mergeFindParameters(array $findParamsOne = [], array $findParamsTwo = []): array;
 }
