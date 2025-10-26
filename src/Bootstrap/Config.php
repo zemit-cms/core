@@ -103,7 +103,7 @@ class Config extends \Zemit\Config\Config
              */
             'core' => [
                 'name' => 'Zemit Core',
-                'version' => (new Version())->get(),
+                'version' => new Version()->get(),
                 'package' => 'zemit-cms',
                 'modules' => [
                     'zemit-' . \Zemit\Mvc\Module::NAME_FRONTEND => [
