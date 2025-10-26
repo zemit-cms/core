@@ -21,12 +21,12 @@ trait User
     /**
      * Current/impersonated user instance
      */
-    protected ?UserInterface $user;
+    protected ?UserInterface $user = null;
     
     /**
      * Original user instance when impersonating
      */
-    protected ?UserInterface $userAs;
+    protected ?UserInterface $userAs = null;
     
     /**
      * Return the current user or impersonated user object based on the session
