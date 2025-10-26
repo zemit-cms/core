@@ -36,7 +36,7 @@ class RecursiveMap
      */
     public static function process(array $collection, callable $callback): array
     {
-        $func = function ($item) use (&$func, &$callback): mixed {
+        $func = function (mixed $item) use (&$func, &$callback): mixed {
             return is_array($item) ? array_map($func, $item) : call_user_func($callback, $item);
         };
         
