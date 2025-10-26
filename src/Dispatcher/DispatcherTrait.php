@@ -37,10 +37,10 @@ trait DispatcherTrait
      * The string typed keys are not passed to the action method arguments
      * Only the int keys will be passed
      *
-     * @param $handler
+     * @param mixed $handler
      * @return mixed
      */
-    public function callActionMethod($handler, string $actionMethod, array $params = []): mixed
+    public function callActionMethod(mixed $handler, string $actionMethod, array $params = []): mixed
     {
         return call_user_func_array(
             [$handler, $actionMethod],
