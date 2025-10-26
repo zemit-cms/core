@@ -21,7 +21,7 @@ use Zemit\Support\Utils;
 /**
  * {@inheritDoc}
  */
-class Module extends Injectable implements ModuleDefinitionInterface
+class Module implements ModuleDefinitionInterface
 {
     public const string NAME_FRONTEND = 'frontend';
     public const string NAME_ADMIN = 'admin';
