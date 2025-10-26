@@ -45,8 +45,6 @@ abstract class Module implements ModuleDefinitionInterface
     public function registerAutoloaders(?DiInterface $container = null): void
     {
         $this->loader ??= $container['loader'] ?? new Loader();
-        assert($this->loader instanceof Loader);
-        
         $this->loader->setNamespaces($this->getNamespaces(), true);
         $this->loader->register();
     }
