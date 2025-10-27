@@ -130,6 +130,7 @@
     "orhanerday/open-ai": "^5.3",
     "phalcon/ide-stubs": "^5.9.3",
     "php-imap/php-imap": "^5.0.1",
+    "phpunit/phpunit": "^12.4",
     "saggre/phpdocumentor-markdown": "^1.0.0",
     "shuchkin/simplexlsxgen": "^1.5.12",
     "spatie/array-to-xml": "^3.4.0",
