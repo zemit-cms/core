@@ -53,6 +53,7 @@ class Model extends \Phalcon\Mvc\Model implements ModelInterface
     use Model\Traits\FindIn;
     use Model\Traits\Hash;
     use Model\Traits\Identity;
+    use Model\Traits\Instance;
     use Model\Traits\Json;
     use Model\Traits\LifeCycle;
     use Model\Traits\Locale;

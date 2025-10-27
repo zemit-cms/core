@@ -19,6 +19,7 @@ use Zemit\Mvc\Model\Interfaces\EagerLoadInterface;
 use Zemit\Mvc\Model\Interfaces\ExposeInterface;
 use Zemit\Mvc\Model\Interfaces\HashInterface;
 use Zemit\Mvc\Model\Interfaces\IdentityInterface;
+use Zemit\Mvc\Model\Interfaces\InstanceInterface;
 use Zemit\Mvc\Model\Interfaces\JsonInterface;
 use Zemit\Mvc\Model\Interfaces\LocaleInterface;
 use Zemit\Mvc\Model\Interfaces\MetaDataInterface;
@@ -40,6 +41,7 @@ interface ModelInterface extends
     ExposeInterface,
     HashInterface,
     IdentityInterface,
+    InstanceInterface,
     JsonInterface,
     LocaleInterface,
     MetaDataInterface,
