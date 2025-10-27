@@ -43,7 +43,9 @@ class RequestTest extends AbstractUnit
             'post' => [],
             'get' => [],
             'put' => [],
-            'headers' => [],
+            'headers' => [
+                'Accept-Language' => '',
+            ],
             'userAgent' => '',
             'basicAuth' => null,
             'bestAccept' => '',
