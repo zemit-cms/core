@@ -50,6 +50,7 @@ use Phalcon\Translate\InterpolatorFactory;
  * $translator->query('en.welcome', ['name' => 'John']); // returns 'Welcome to our website, John!'
  * ```
  *
+ * @implements \ArrayAccess<string, mixed>
  * @package Zemit\Translate\Adapter
  */
 class NestedNativeArray extends AbstractAdapter implements \ArrayAccess
@@ -95,7 +96,7 @@ class NestedNativeArray extends AbstractAdapter implements \ArrayAccess
      *
      * @param string $index The translation index to check
      * @return bool True if a translation exists for the index, false otherwise
-     * @deprecated since Zemit 1.0, use has() instead. The replacement method is %class%->has(%parametersList%)
+     * @deprecated since Zemit 1.0, use {@see self::has()} instead
      * @see has()
      */
     #[Deprecated(
