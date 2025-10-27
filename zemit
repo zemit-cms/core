@@ -12,4 +12,4 @@
 use Zemit\Bootstrap;
 
 $loader = require 'loader.php';
-echo (new Bootstrap('cli'))->run();
+echo new Bootstrap('cli')->run();

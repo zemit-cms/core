@@ -11,4 +11,4 @@
 use Zemit\Bootstrap;
 
 $loader = require 'loader.php';
-echo (new Bootstrap())->run();
+echo new Bootstrap()->run();
