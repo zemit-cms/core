@@ -22,7 +22,7 @@ trait AbstractJwt
     
     abstract public function getJwtToken(string $id, array $data = [], array $options = []): string;
     
-    abstract public function getClaimFromToken(string $token, string $claim = null): array;
+    abstract public function getClaimFromToken(string $token, ?string $claim = null): array;
     
     abstract public function getClaimFromAuthorization(array $authorization): array;
 }
