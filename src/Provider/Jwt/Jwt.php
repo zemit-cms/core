@@ -30,15 +30,15 @@ class Jwt
 {
     public array $options;
     
-    public Builder $builder;
-    
-    public Parser $parser;
-    
-    public Validator $validator;
-    
     public AbstractSigner $signer;
     
-    public Token $token;
+    public ?Builder $builder = null;
+    
+    public ?Parser $parser = null;
+    
+    public ?Validator $validator = null;
+    
+    public ?Token $token = null;
     
     public function __construct(array $defaultOptions = [])
     {
@@ -96,6 +96,7 @@ class Jwt
     public function validator(?Token $token = null, int $timeShift = 0): Validator
     {
         $token ??= $this->token;
+        assert($token instanceof Token);
         $this->validator = new Validator($token, $timeShift);
         return $this->validator;
     }
@@ -107,6 +108,7 @@ class Jwt
     public function buildToken(?Builder $builder = null): Token
     {
         $builder ??= $this->builder;
+        assert($builder instanceof Builder);
         $this->token = $builder->getToken();
         return $this->token;
     }
@@ -119,7 +121,9 @@ class Jwt
         // fix phalcon error
         // https://github.com/phalcon/cphalcon/blob/bf9b70cee49afcccd10cfee783218ead2419d8ef/phalcon/Encryption/Security/JWT/Token/Parser.zep#L166
         // https://github.com/phalcon/cphalcon/issues/15608#issuecomment-1359323119
-        json_encode(null);
+        // resolved in: https://github.com/phalcon/cphalcon/pull/16381
+//        json_encode(null);
+        
         $this->token = $this->parser()->parse($token);
         return $this->token;
     }
