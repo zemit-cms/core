@@ -1,28 +1,87 @@
 <?xml version="1.0"?>
 <ruleset name="Zemit">
-    <description>Zemit Coding Standards</description>
+    <description>
+        Zemit Coding Standards — PSR-12 foundation with pragmatic whitespace,
+        modern PHP 8.4 syntax support, and framework-friendly flexibility.
+    </description>
 
-    <!-- Show sniff codes in all reports -->
-    <arg value="s"/>
+    <!-- ====================================================== -->
+    <!-- Global CLI behaviour -->
+    <!-- ====================================================== -->
 
-    <!-- Use PSR-2 with some changes -->
-    <rule ref="PSR2">
+    <!-- Pretty output and parallel scanning -->
+    <arg name="colors"/>
+    <arg name="parallel" value="16"/>
+    <arg value="p"/> <!-- show progress -->
+    <arg value="s"/> <!-- show sniff codes -->
+    <arg value="w"/> <!-- show warnings -->
+
+    <!-- Define base path for relative includes -->
+    <config name="basepath" value="."/>
+
+    <!-- Target PHP version (8.4.x) -->
+    <config name="php_version" value="80400"/>
+
+    <!-- ====================================================== -->
+    <!-- Base Standard with targeted relaxations -->
+    <!-- ====================================================== -->
+
+    <rule ref="PSR12">
+        <!-- ==== Relax control-structure formatting ==== -->
+        <exclude name="PSR2.ControlStructures.ElseIfDeclaration.NotAllowed"/>
+        <exclude name="Squiz.ControlStructures.ElseIfDeclaration.NotAllowed"/>
+        <exclude name="PSR12.ControlStructures.ControlStructureSpacing"/>
+        <exclude name="Squiz.ControlStructures.ControlSignature"/>
+        <exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace"/>
+        <exclude name="Squiz.WhiteSpace.ScopeClosingBrace"/>
+
+        <!-- ==== Allow indented blank lines ==== -->
+        <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndLine"/>
+        <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines"/>
+        <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace"/>
+
+        <!-- ==== Allow longer lines and underscores ==== -->
         <exclude name="Generic.Files.LineLength"/>
         <exclude name="PSR2.Methods.MethodDeclaration.Underscore"/>
         <exclude name="PSR2.Classes.PropertyDeclaration.Underscore"/>
-        <exclude name="PSR2.Classes.ClassDeclaration.CloseBraceAfterBody"/>
-        <exclude name="PSR2.ControlStructures.ElseIfDeclaration.NotAllowed"/>
-        <exclude name="PSR2.ControlStructures.ControlStructureSpacing"/>
-        <exclude name="Squiz.ControlStructures.ElseIfDeclaration.NotAllowed"/>
-        <exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace"/>
-        <exclude name="Squiz.WhiteSpace.ControlStructureSpacing.SpacingAfterOpen"/>
-        <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndLine"/>
     </rule>
 
-    <file>src</file>
+    <rule ref="PSR12.Files.FileHeader">
+        <exclude name="PSR12.Files.FileHeader.IncorrectOrder"/>
+    </rule>
 
-    <exclude-pattern>private/*</exclude-pattern>
+    <!-- ====================================================== -->
+    <!-- Optional style refinements -->
+    <!-- ====================================================== -->
+
+    <!-- Ignore line-length limit for comments and docblocks -->
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="ignoreComments" value="true"/>
+            <property name="absoluteLineLimit" value="0"/>
+        </properties>
+    </rule>
+
+    <!-- Disallow long array syntax (prefer []) -->
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+
+    <!-- Prevent multiple statements per line -->
+    <rule ref="Generic.Formatting.DisallowMultipleStatements"/>
+
+    <!-- ====================================================== -->
+    <!-- Project-specific files and exclusions -->
+    <!-- ====================================================== -->
+
+    <!-- Folders to scan -->
+    <file>src</file>
+    <file>tests</file>
+
+    <!-- Ignore vendor & generated content -->
+    <exclude-pattern>vendor/*</exclude-pattern>
     <exclude-pattern>resources/*</exclude-pattern>
     <exclude-pattern>public/*</exclude-pattern>
-    <exclude-pattern>**vendor**</exclude-pattern>
+    <exclude-pattern>storage/*</exclude-pattern>
+    <exclude-pattern>var/*</exclude-pattern>
+    <exclude-pattern>node_modules/*</exclude-pattern>
+
 </ruleset>

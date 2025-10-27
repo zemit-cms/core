@@ -121,7 +121,7 @@ jobs:
           custom-cache-suffix: zemit-composer
 
       - name: PHP Code Sniffer
-        run: phpcs -q --report=checkstyle | cs2pr --graceful-warnings
+        run: phpcs --standard=phpcs.xml -q --report=checkstyle | cs2pr --graceful-warnings
 
   # PHP STATIC ANALYSIS
   static-analysis:

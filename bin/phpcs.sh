@@ -8,4 +8,4 @@
 # file that was distributed with this source code.
 #
 
-phpcs --parallel=16 --cache --colors -p -s -w "$@"
+phpcs --standard=phpcs.xml --parallel=16 --cache --colors -p -s -w "$@"
