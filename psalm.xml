@@ -14,7 +14,7 @@
         xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
         xmlns:xi="http://www.w3.org/2001/XInclude"
         phpVersion="8.4"
-        errorLevel="3"
+        errorLevel="2"
         resolveFromConfigFile="true"
         findUnusedBaselineEntry="true"
         findUnusedCode="false"
@@ -33,24 +33,45 @@
     <issueHandlers>
         <!-- Framework base classes are intentionally extensible -->
         <ClassMustBeFinal errorLevel="suppress" />
+
+        <!-- Over-strict and often noise -->
+        <RiskyTruthyFalsyComparison errorLevel="suppress" />
         
-        <MissingDependency errorLevel="suppress" />
+<!--        <MissingDependency errorLevel="suppress" />-->
         
         <!-- Used for EagerLoaded properties -->
-        <NoInterfaceProperties errorLevel="info" />
+<!--        <NoInterfaceProperties errorLevel="info" />-->
 
         <!-- Phalcon Stubs are not read correctly -->
         <MethodSignatureMismatch errorLevel="suppress" />
         
         <!-- We are not templating params -->
-        <MissingTemplateParam errorLevel="suppress" />
+<!--        <MissingTemplateParam errorLevel="suppress" />-->
 
         <!-- To not validate int range for json functions -->
-<!--        <ArgumentTypeCoercion errorLevel="suppress">-->
-<!--            <errorLevel type="suppress">-->
-<!--                <referencedFunction name="json_encode" />-->
-<!--                <referencedFunction name="json_decode" />-->
-<!--            </errorLevel>-->
-<!--        </ArgumentTypeCoercion>-->
+        <ArgumentTypeCoercion>
+            <errorLevel type="suppress">
+                <referencedFunction name="json_encode" />
+                <referencedFunction name="json_decode" />
+            </errorLevel>
+        </ArgumentTypeCoercion>
+
+        <!-- False positive -->
+        <InvalidArgument>
+            <errorLevel type="suppress">
+                <referencedFunction name="Redis::connect" />
+            </errorLevel>
+        </InvalidArgument>
+
+        <!-- False positive -->
+        <UndefinedClass>
+            <errorLevel type="suppress">
+                <referencedClass name="Swoole\Http\Request" />
+                <referencedClass name="Swoole\Http\Response" />
+                <referencedClass name="Swoole\WebSocket\Server" />
+                <referencedClass name="Swoole\WebSocket\Frame" />
+                <referencedClass name="Swoole\Coroutine" />
+            </errorLevel>
+        </UndefinedClass>
     </issueHandlers>
 </psalm>
