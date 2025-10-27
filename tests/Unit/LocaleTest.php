@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Zemit\Tests\Unit;
 
-use Zemit\Tests\Unit\AbstractUnit;
 use Zemit\Locale;
 
 class LocaleTest extends AbstractUnit

@@ -45,14 +45,13 @@ class BootstrapTest extends AbstractUnit
         $this->assertInstanceOf(ConfigInterface::class, $bootstrap->getConfig());
         $this->assertEquals(Bootstrap::MODE_MVC, $bootstrap->getMode());
         
-        $this->assertEquals(Bootstrap::MODE_MVC, Bootstrap::MODE_DEFAULT);
-        $this->assertEquals(Bootstrap::MODE_CONSOLE, Bootstrap::MODE_CLI);
+        $this->assertEquals(Bootstrap::MODE_MVC, 'mvc');
+        $this->assertEquals(Bootstrap::MODE_CLI, 'cli');
+        $this->assertEquals(Bootstrap::MODE_WS, 'ws');
         
         $this->assertEquals(false, $bootstrap->isCli());
         $this->assertEquals(true, $bootstrap->isMvc());
-        
-        $this->assertEquals(false, $bootstrap->isConsole());
-        $this->assertEquals(true, $bootstrap->isDefault());
+        $this->assertEquals(false, $bootstrap->isWs());
         
         $bootstrap->setConfig(new Config());
         $this->assertInstanceOf(ConfigInterface::class, $bootstrap->getConfig());
@@ -62,9 +61,14 @@ class BootstrapTest extends AbstractUnit
         
         $this->assertEquals(true, $bootstrap->isCli());
         $this->assertEquals(false, $bootstrap->isMvc());
+        $this->assertEquals(false, $bootstrap->isWs());
         
-        $this->assertEquals(true, $bootstrap->isConsole());
-        $this->assertEquals(false, $bootstrap->isDefault());
+        $bootstrap->setMode(Bootstrap::MODE_WS);
+        $this->assertEquals(Bootstrap::MODE_WS, $bootstrap->getMode());
+        
+        $this->assertEquals(false, $bootstrap->isCli());
+        $this->assertEquals(false, $bootstrap->isMvc());
+        $this->assertEquals(true, $bootstrap->isWs());
         
         $this->assertTrue($bootstrap->di->has('bootstrap'));
         $this->assertTrue($bootstrap->di->has('config'));
@@ -89,9 +93,7 @@ class BootstrapTest extends AbstractUnit
     
         $this->assertEquals(true, $bootstrap->isCli());
         $this->assertEquals(false, $bootstrap->isMvc());
-    
-        $this->assertEquals(true, $bootstrap->isConsole());
-        $this->assertEquals(false, $bootstrap->isDefault());
+        $this->assertEquals(false, $bootstrap->isWs());
     
         $this->assertTrue($bootstrap->di->has('bootstrap'));
         $this->assertTrue($bootstrap->di->has('config'));
