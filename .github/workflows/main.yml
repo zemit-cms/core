@@ -19,7 +19,7 @@ on:
 
 env:
   # PHP extensions required by Composer
-  EXTENSIONS: apcu, gettext, gd, igbinary, imagick, intl, json, mbstring, msgpack, memcached, sqlite3, yaml, redis, openssl, phalcon5, swoole, :memcache
+  EXTENSIONS: apcu, gettext, gd, igbinary, imagick, intl, json, mbstring, msgpack, memcached, sqlite3, yaml, redis, openssl, phalcon5, swoole, :memcache, :psr
 
 permissions: { }
 jobs:
@@ -41,13 +41,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Generate PHP cache key hash
+        id: php-key
+        run: |
+          HASH=$(echo "${EXTENSIONS}" | md5sum | cut -d' ' -f1)
+          echo "EXT_HASH=$HASH" >> $GITHUB_ENV
+
       # Enable caching for PHP Setup
       - name: Cache PHP setup
         id: cache-php
         uses: actions/cache@v4
         with:
           path: /opt/hostedtoolcache/php
-          key: php-${{ runner.os }}-${{ matrix.php }}-${{ env.EXTENSIONS }}
+          key: php-${{ runner.os }}-${{ matrix.php }}-${{ env.EXT_HASH }}
           restore-keys: |
             php-${{ runner.os }}-${{ matrix.php }}-
 
@@ -90,7 +96,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /opt/hostedtoolcache/php
-          key: php-${{ runner.os }}-${{ matrix.php }}-${{ env.EXTENSIONS }}
+          key: php-${{ runner.os }}-${{ matrix.php }}-${{ env.EXT_HASH }}
           restore-keys: |
             php-${{ runner.os }}-${{ matrix.php }}-
 
@@ -130,7 +136,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /opt/hostedtoolcache/php
-          key: php-${{ runner.os }}-${{ matrix.php }}-${{ env.EXTENSIONS }}
+          key: php-${{ runner.os }}-${{ matrix.php }}-${{ env.EXT_HASH }}
           restore-keys: |
             php-${{ runner.os }}-${{ matrix.php }}-
 
@@ -176,7 +182,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /opt/hostedtoolcache/php
-          key: php-${{ runner.os }}-${{ matrix.php }}-${{ env.EXTENSIONS }}
+          key: php-${{ runner.os }}-${{ matrix.php }}-${{ env.EXT_HASH }}
           restore-keys: |
             php-${{ runner.os }}-${{ matrix.php }}-
 
@@ -255,7 +261,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /opt/hostedtoolcache/php
-          key: php-${{ runner.os }}-${{ matrix.php }}-${{ env.EXTENSIONS }}
+          key: php-${{ runner.os }}-${{ matrix.php }}-${{ env.EXT_HASH }}
           restore-keys: |
             php-${{ runner.os }}-${{ matrix.php }}-
 
