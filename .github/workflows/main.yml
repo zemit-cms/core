@@ -19,7 +19,7 @@ on:
 
 env:
   # PHP extensions required by Composer
-  EXTENSIONS: apcu, gettext, gd, igbinary, imagick, intl, json, mbstring, msgpack, memcached, sqlite3, yaml, redis, :memcache, openssl, phalcon5
+  EXTENSIONS: apcu, gettext, gd, igbinary, imagick, intl, json, mbstring, msgpack, memcached, sqlite3, yaml, redis, :memcache, openssl, phalcon5, swoole
 
 permissions: { }
 jobs:
