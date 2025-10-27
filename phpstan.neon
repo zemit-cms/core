@@ -1,5 +1,5 @@
 includes:
-    - ./vendor/phpstan/phpstan/conf/bleedingEdge.neon # Optional: For cutting-edge rules
+#    - ./../../Tools/phpstan/vendor/phpstan/phpstan/conf/bleedingEdge.neon # Optional: For cutting-edge rules
 
 parameters:
     level: 5
@@ -15,6 +15,6 @@ parameters:
     fileExtensions:
         - php
     parallel:
-        maximumNumberOfProcesses: 4
+        maximumNumberOfProcesses: 16
     treatPhpDocTypesAsCertain: false # Treat PHPDoc types as certain to be more strict
     polluteScopeWithLoopInitialAssignments: false # Optional: Configures scope behaviour in loops
