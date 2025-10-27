@@ -19,7 +19,7 @@ on:
 
 env:
   # PHP extensions required by Composer
-  EXTENSIONS: apcu, gettext, gd, igbinary, imagick, intl, json, mbstring, msgpack, memcached, sqlite3, yaml, redis, :memcache, openssl, phalcon5, swoole
+  EXTENSIONS: apcu, gettext, gd, igbinary, imagick, intl, json, mbstring, msgpack, memcached, sqlite3, yaml, redis, openssl, phalcon5, swoole, :memcache
 
 permissions: { }
 jobs:
@@ -31,25 +31,38 @@ jobs:
     strategy:
       matrix:
         php:
-#          - "8.2"
-#          - "8.3"
           - "8.4"
         dependencies:
-#          - "lowest"
           - "highest"
     
     outputs:
       cache-key: ${{ steps.composer-cache.outputs.key }}
-      
+
     steps:
       - uses: actions/checkout@v4
-        
+
+      # Enable caching for PHP Setup
+      - name: Cache PHP setup
+        id: cache-php
+        uses: actions/cache@v4
+        with:
+          path: /opt/hostedtoolcache/php
+          key: php-${{ runner.os }}-${{ matrix.php }}-${{ env.EXTENSIONS }}
+          restore-keys: |
+            php-${{ runner.os }}-${{ matrix.php }}-
+
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           extensions: ${{ env.EXTENSIONS }}
           tools: composer, cs2pr
+
+      - name: Cache global Composer packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer
+          key: composer-global-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
 
       - uses: ramsey/composer-install@v3
         with:
@@ -66,15 +79,20 @@ jobs:
     strategy:
       matrix:
         php:
-#          - "8.2"
-#          - "8.3"
           - "8.4"
         dependencies:
-#          - "lowest"
           - "highest"
-        
+
     steps:
       - uses: actions/checkout@v4
+
+      - name: Restore PHP setup
+        uses: actions/cache@v4
+        with:
+          path: /opt/hostedtoolcache/php
+          key: php-${{ runner.os }}-${{ matrix.php }}-${{ env.EXTENSIONS }}
+          restore-keys: |
+            php-${{ runner.os }}-${{ matrix.php }}-
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
@@ -82,7 +100,7 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: ${{ env.EXTENSIONS }}
           tools: composer, cs2pr, phpcs
-          
+
       - uses: ramsey/composer-install@v3
         with:
           dependency-versions: ${{ matrix.dependencies }}
@@ -91,7 +109,7 @@ jobs:
 
       - name: PHP Code Sniffer
         run: phpcs -q --report=checkstyle | cs2pr --graceful-warnings
-        
+
   # PHP STATIC ANALYSIS
   static-analysis:
     needs: setup
@@ -101,15 +119,20 @@ jobs:
     strategy:
       matrix:
         php:
-#          - "8.2"
-#          - "8.3"
           - "8.4"
         dependencies:
-#          - "lowest"
           - "highest"
-        
+
     steps:
       - uses: actions/checkout@v4
+
+      - name: Restore PHP setup
+        uses: actions/cache@v4
+        with:
+          path: /opt/hostedtoolcache/php
+          key: php-${{ runner.os }}-${{ matrix.php }}-${{ env.EXTENSIONS }}
+          restore-keys: |
+            php-${{ runner.os }}-${{ matrix.php }}-
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
@@ -117,7 +140,7 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: ${{ env.EXTENSIONS }}
           tools: composer, cs2pr, phpstan
-          
+
       - uses: ramsey/composer-install@v3
         with:
           dependency-versions: ${{ matrix.dependencies }}
@@ -136,11 +159,8 @@ jobs:
     strategy:
       matrix:
         php:
-#          - "8.2"
-#          - "8.3"
           - "8.4"
         dependencies:
-#          - "lowest"
           - "highest"
     
     permissions:
@@ -151,7 +171,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
+      - name: Restore PHP setup
+        uses: actions/cache@v4
+        with:
+          path: /opt/hostedtoolcache/php
+          key: php-${{ runner.os }}-${{ matrix.php }}-${{ env.EXTENSIONS }}
+          restore-keys: |
+            php-${{ runner.os }}-${{ matrix.php }}-
+
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -187,13 +215,10 @@ jobs:
     strategy:
       matrix:
         php:
-#          - "8.2"
-#          - "8.3"
           - "8.4"
         dependencies:
-#          - "lowest"
           - "highest"
-        
+
     services:
       mysql:
         image: mysql:8.0
@@ -226,13 +251,21 @@ jobs:
           sudo locale-gen fr_CA.UTF-8
           sudo update-locale LANG=fr_CA.UTF-8
 
+      - name: Restore PHP setup
+        uses: actions/cache@v4
+        with:
+          path: /opt/hostedtoolcache/php
+          key: php-${{ runner.os }}-${{ matrix.php }}-${{ env.EXTENSIONS }}
+          restore-keys: |
+            php-${{ runner.os }}-${{ matrix.php }}-
+
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           extensions: ${{ env.EXTENSIONS }}
           tools: composer, cs2pr, phpunit
-          
+
       - uses: ramsey/composer-install@v3
         with:
           dependency-versions: ${{ matrix.dependencies }}
@@ -252,12 +285,12 @@ jobs:
           mkdir .phalcon
           touch .env
           cp .env.github .env
-          
+
       - name: Run migrations
         run: |
           ./bin/migration-list.sh
           ./bin/migration-run.sh
-      
+
       - name: PHP Unit
         run: phpunit
         
