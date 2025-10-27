@@ -65,7 +65,7 @@ class ServiceProvider extends AbstractServiceProvider
             else {
                 $serializerFactory = new SerializerFactory();
                 $adapterFactory = new AdapterFactory($serializerFactory);
-                $adapterInstance = new $adapter($options);
+                $adapterInstance = new $adapter($adapterFactory, $options);
                 assert($adapterInstance instanceof \SessionHandlerInterface);
                 $session->setAdapter($adapterInstance);
                 
