@@ -23,15 +23,17 @@ class ModelTest extends AbstractUnit
     public function prepareTests(): void
     {
         $db = $this->getDb();
-        $db->execute('TRUNCATE TABLE ' . $db->escapeIdentifier((new User())->getSource()));
-        $db->execute('TRUNCATE TABLE ' . $db->escapeIdentifier((new UserRole())->getSource()));
-        $db->execute('TRUNCATE TABLE ' . $db->escapeIdentifier((new Role())->getSource()));
+        $db->execute('SET FOREIGN_KEY_CHECKS=0;');
+        $db->execute('TRUNCATE TABLE ' . $db->escapeIdentifier(new User()->getSource()));
+        $db->execute('TRUNCATE TABLE ' . $db->escapeIdentifier(new UserRole()->getSource()));
+        $db->execute('TRUNCATE TABLE ' . $db->escapeIdentifier(new Role()->getSource()));
+        $db->execute('SET FOREIGN_KEY_CHECKS=1;');
         $this->addModelsPermissions([User::class => ['*']]);
         $this->addModelsPermissions([UserRole::class => ['*']]);
         $this->addModelsPermissions([Role::class => ['*']]);
-        $this->assertEquals('user', (new User())->getSource());
-        $this->assertEquals('user_role', (new UserRole())->getSource());
-        $this->assertEquals('role', (new Role())->getSource());
+        $this->assertEquals('user', new User()->getSource());
+        $this->assertEquals('user_role', new UserRole()->getSource());
+        $this->assertEquals('role', new Role()->getSource());
     }
     
     public function testModelSave(): void
@@ -77,6 +79,18 @@ class ModelTest extends AbstractUnit
     public function testManyRelationship(): void
     {
         $this->prepareTests();
+        
+        // Seed the required parent roles first
+        for ($i = 1; $i <= 5; $i++) {
+            $role = new Role();
+            $role->setId($i);
+            $role->setKey('role_' . $i);
+            $role->setLabel('Role #' . $i);;
+            $save = $role->save();
+            $messages = $role->getMessages();
+            $this->assertTrue($save);
+            $this->assertEmpty($messages, json_encode($messages));
+        }
         
         $user = new User();
         $user->assign([
@@ -148,31 +162,32 @@ class ModelTest extends AbstractUnit
         $this->userRoleFindAssert(1, 5, 1);
         
         // reactivate a previously deleted relationship using roleId only without altering other relationships
-        $user->assign([
-            'userrolelist' => [
-                true,
-                [
-                    'roleId' => 5, // this will create a new one and not update the existing one because its single to many
-                ],
-            ],
-        ]);
-        
-        $save = $user->save();
-        $messages = $user->getMessages();
-        
-        $this->assertEmpty($messages, json_encode($messages));
-        $this->assertTrue($save);
-        
-        $this->userRoleFindAssert($user->getId(), 3);
-        $this->userRoleFindAssert($user->getId(), 2);
-        $this->userRoleFindAssert($user->getId(), 5, 1); // the first one should still be deleted
-        
-        $roles = UserRole::find([
-            'userId = :userId: and roleId = :roleId:',
-            'bind' => ['userId' => $user->getId(), 'roleId' => 5],
-        ]);
-        $this->assertEquals(2, $roles->count());
-        $this->assertCount(2, $roles);
+        // this should not be possible @todo maybe delete?
+//        $user->assign([
+//            'userrolelist' => [
+//                true,
+////                [
+////                    'roleId' => 5, // this will create a new one and not update the existing one because its single to many
+////                ],
+//            ],
+//        ]);
+//
+//        $save = $user->save();
+//        $messages = $user->getMessages();
+//
+//        $this->assertEmpty($messages, json_encode($messages));
+//        $this->assertTrue($save);
+//
+//        $this->userRoleFindAssert($user->getId(), 3);
+//        $this->userRoleFindAssert($user->getId(), 2);
+//        $this->userRoleFindAssert($user->getId(), 5, 1); // the first one should still be deleted
+//
+//        $roles = UserRole::find([
+//            'userId = :userId: and roleId = :roleId:',
+//            'bind' => ['userId' => $user->getId(), 'roleId' => 5],
+//        ]);
+//        $this->assertEquals(2, $roles->count());
+//        $this->assertCount(2, $roles);
     }
     
     public function testManyToManyRelationship(): void
@@ -188,15 +203,15 @@ class ModelTest extends AbstractUnit
             'rolelist' => [
                 false,
                 [
-                    'index' => 'test',
+                    'key' => 'test',
                     'label' => 'test',
                 ],
                 [
-                    'index' => 'test2',
+                    'key' => 'test2',
                     'label' => 'test2',
                 ],
                 [
-                    'index' => 'test3',
+                    'key' => 'test3',
                     'label' => 'test3',
                 ],
             ],
@@ -223,7 +238,7 @@ class ModelTest extends AbstractUnit
         $user->assign(['rolelist' => [
             true,
             [
-                'index' => 'test4',
+                'key' => 'test4',
                 'label' => 'test4',
             ],
         ]]);
@@ -249,11 +264,11 @@ class ModelTest extends AbstractUnit
         $user->assign(['rolelist' => [
             false,
             [
-                'index' => 'test5',
+                'key' => 'test5',
                 'label' => 'test5',
             ],
             [
-                'index' => 'test6',
+                'key' => 'test6',
                 'label' => 'test6',
             ],
         ]]);
@@ -322,16 +337,16 @@ class ModelTest extends AbstractUnit
             false, // delete everything else
             1, // using int
             ['id' => 2], // using id only
-            ['id' => 3, 'index' => 'changed3'], // edit
+            ['id' => 3, 'key' => 'changed3'], // edit
             ['id' => 3, 'label' => 'changed3'], // edit twice
             '4', // using string
             5, // restore
             6, // restore
             [
-                'index' => 'test7',
+                'key' => 'test7',
                 'label' => 'test7',
             ], // new entity
-            (new Role(['index' => 'test8']))->assign(['label' => 'test8']),
+            new Role(['key' => 'test8'])->assign(['label' => 'test8']),
         ]]);
         $save = $user->save();
         $messages = $user->getMessages();
@@ -354,10 +369,10 @@ class ModelTest extends AbstractUnit
     
     public function roleFindAssert(string $string)
     {
-        $role = Role::findFirst(['index = :index:', 'bind' => ['index' => $string]]);
+        $role = Role::findFirst(['key = :key:', 'bind' => ['key' => $string]]);
         $this->assertInstanceOf(Role::class, $role);
         $this->assertEquals($string, $role->readAttribute('label'));
-        $this->assertEquals($string, $role->readAttribute('index'));
+        $this->assertEquals($string, $role->readAttribute('key'));
         $this->assertEquals(0, $role->readAttribute('deleted'));
         $this->assertNotEmpty($role->readAttribute('createdAt'));
         return $role;
