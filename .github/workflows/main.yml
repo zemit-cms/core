@@ -20,6 +20,7 @@ on:
 env:
   # PHP extensions required by Composer
   EXTENSIONS: apcu, gettext, gd, igbinary, imagick, intl, json, mbstring, msgpack, memcached, sqlite3, yaml, redis, openssl, phalcon5, swoole, :memcache, :psr
+  EXTENSIONS_CACHE_KEY: php-ext-v1
 
 permissions: { }
 jobs:
@@ -41,21 +42,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Generate PHP cache key hash
-        id: php-key
-        run: |
-          HASH=$(echo "${EXTENSIONS}" | md5sum | cut -d' ' -f1)
-          echo "EXT_HASH=$HASH" >> $GITHUB_ENV
+      - name: Setup cache environment
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: ${{ env.EXTENSIONS }}
+          key: ${{ env.EXTENSIONS_CACHE_KEY }}
 
-      # Enable caching for PHP Setup
-      - name: Cache PHP setup
-        id: cache-php
+      - name: Cache PHP extensions
         uses: actions/cache@v4
         with:
-          path: /opt/hostedtoolcache/php
-          key: php-${{ runner.os }}-${{ matrix.php }}-${{ env.EXT_HASH }}
-          restore-keys: |
-            php-${{ runner.os }}-${{ matrix.php }}-
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
@@ -68,7 +68,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.composer
-          key: composer-global-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+          key: composer-global-${{ runner.os }}-${{ hashFiles('**/composer.json') }}
 
       - uses: ramsey/composer-install@v3
         with:
@@ -92,13 +92,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Restore PHP setup
+      - name: Setup cache environment
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: ${{ env.EXTENSIONS }}
+          key: ${{ env.EXTENSIONS_CACHE_KEY }}
+
+      - name: Cache PHP extensions
         uses: actions/cache@v4
         with:
-          path: /opt/hostedtoolcache/php
-          key: php-${{ runner.os }}-${{ matrix.php }}-${{ env.EXT_HASH }}
-          restore-keys: |
-            php-${{ runner.os }}-${{ matrix.php }}-
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
@@ -132,13 +139,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Restore PHP setup
+      - name: Setup cache environment
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: ${{ env.EXTENSIONS }}
+          key: ${{ env.EXTENSIONS_CACHE_KEY }}
+
+      - name: Cache PHP extensions
         uses: actions/cache@v4
         with:
-          path: /opt/hostedtoolcache/php
-          key: php-${{ runner.os }}-${{ matrix.php }}-${{ env.EXT_HASH }}
-          restore-keys: |
-            php-${{ runner.os }}-${{ matrix.php }}-
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
@@ -178,13 +192,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Restore PHP setup
+      - name: Setup cache environment
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: ${{ env.EXTENSIONS }}
+          key: ${{ env.EXTENSIONS_CACHE_KEY }}
+
+      - name: Cache PHP extensions
         uses: actions/cache@v4
         with:
-          path: /opt/hostedtoolcache/php
-          key: php-${{ runner.os }}-${{ matrix.php }}-${{ env.EXT_HASH }}
-          restore-keys: |
-            php-${{ runner.os }}-${{ matrix.php }}-
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
@@ -257,13 +278,20 @@ jobs:
           sudo locale-gen fr_CA.UTF-8
           sudo update-locale LANG=fr_CA.UTF-8
 
-      - name: Restore PHP setup
+      - name: Setup cache environment
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: ${{ env.EXTENSIONS }}
+          key: ${{ env.EXTENSIONS_CACHE_KEY }}
+
+      - name: Cache PHP extensions
         uses: actions/cache@v4
         with:
-          path: /opt/hostedtoolcache/php
-          key: php-${{ runner.os }}-${{ matrix.php }}-${{ env.EXT_HASH }}
-          restore-keys: |
-            php-${{ runner.os }}-${{ matrix.php }}-
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
