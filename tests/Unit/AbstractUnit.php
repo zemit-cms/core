@@ -15,6 +15,7 @@ namespace Zemit\Tests\Unit;
 use Phalcon\Autoload\Loader;
 use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Di\DiInterface;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 use Zemit\Bootstrap;
 use Zemit\Bootstrap\Config;
@@ -24,8 +25,8 @@ use Zemit\Support\Env;
 /**
  * Class AbstractUnitTest
  * @package Tests\Unit
- * @coversNothing
  */
+#[CoversNothing]
 abstract class AbstractUnit extends TestCase
 {
     protected bool $loaded = false;
@@ -77,7 +78,13 @@ abstract class AbstractUnit extends TestCase
         $this->bootstrap = null;
         $this->di = null;
         $this->loaded = false;
+        $this->restoreExceptionHandler();
         parent::tearDown();
+    }
+    
+    public function restoreExceptionHandler(): void
+    {
+        restore_exception_handler();
     }
     
     public function setErrorHandler(int $errorLevels = E_ALL): void
