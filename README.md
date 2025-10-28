@@ -99,7 +99,7 @@ If you want to expose the application to the public world wide web,
 you can use apache, nginx or any similar production ready web servers.
 
 You will need a Web server service to point to the `/public/` folder of your new project.
-Here is virtual host example using apache 2.4 + php-fpm 8.2 from remi repository on Redhat.
+Here is virtual host example using apache 2.4 + php-fpm 8.4 from remi repository on Redhat.
 
 ```apacheconf
 <VirtualHost *:80>
@@ -114,7 +114,7 @@ Here is virtual host example using apache 2.4 + php-fpm 8.2 from remi repository
     </Directory>
     
     <FilesMatch \.(php|phar)$>
-        SetHandler "proxy:unix:/var/opt/remi/php82/run/php-fpm/www.sock|fcgi://localhost"
+        SetHandler "proxy:unix:/var/opt/remi/php84/run/php-fpm/www.sock|fcgi://localhost"
     </FilesMatch>
 </VirtualHost>
 
@@ -130,7 +130,7 @@ Here is virtual host example using apache 2.4 + php-fpm 8.2 from remi repository
     </Directory>
     
     <FilesMatch \.(php|phar)$>
-        SetHandler "proxy:unix:/var/opt/remi/php82/run/php-fpm/www.sock|fcgi://localhost"
+        SetHandler "proxy:unix:/var/opt/remi/php84/run/php-fpm/www.sock|fcgi://localhost"
     </FilesMatch>
     
     SetEnv HTTPS on
