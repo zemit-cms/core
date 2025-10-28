@@ -21,8 +21,8 @@ trait Session
     use AbstractInjectable;
     use AbstractJwt;
     
-    public const SESSION_KEY = 'zemit-identity';
-    public const REFRESH_SUFFIX = '-refresh';
+    public const string SESSION_KEY = 'zemit-identity';
+    public const string REFRESH_SUFFIX = '-refresh';
     
     /**
      * Retrieves the session key, optionally appending a refresh suffix.
