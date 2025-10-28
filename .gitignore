@@ -32,6 +32,7 @@ phpunit-clover.xml
 # PSALM
 results.sarif
 taints.dot
+psalm-local.xml
 
 # Phive Phar
 phive.phar.asc
