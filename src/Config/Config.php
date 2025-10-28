@@ -113,10 +113,6 @@ class Config extends \Phalcon\Config\Config implements ConfigInterface
     public function getDateTime(string $modifier, ?DateTimeImmutable $dateTime = null): DateTimeImmutable
     {
         $dateTime ??= new DateTimeImmutable();
-        $modified = $dateTime->modify($modifier);
-        if ($modified === false) {
-            throw new Exception("Failed to modify the date with the period '{$modifier}'.");
-        }
-        return $modified;
+        return $dateTime->modify($modifier);
     }
 }
