@@ -67,7 +67,7 @@ if (!function_exists('dd')) {
 
 if (!function_exists('vdd')) {
     /**
-     * Prints the values of the given parameters using var_dump and 
+     * Prints the values of the given parameters using var_dump and
      * then exits the program with a HTTP response status code of 500.
      *
      * @param mixed ...$params The parameters to be dumped.
