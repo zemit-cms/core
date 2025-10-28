@@ -1,5 +1,6 @@
 <?php
 
+
 use Phalcon\Db\Column;
 use Phalcon\Db\Exception;
 use Phalcon\Db\Index;
@@ -19,6 +20,7 @@ class AuditMigration_100 extends Migration
      */
     public function morph(): void
     {
+        $this->getConnection()->execute('SET FOREIGN_KEY_CHECKS=0;');
         $this->morphTable('audit', [
             'columns' => [
                 new Column(
@@ -33,12 +35,22 @@ class AuditMigration_100 extends Migration
                     ]
                 ),
                 new Column(
+                    'parent_id',
+                    [
+                        'type' => Column::TYPE_BIGINTEGER,
+                        'unsigned' => true,
+                        'notNull' => false,
+                        'size' => 1,
+                        'after' => 'id'
+                    ]
+                ),
+                new Column(
                     'uuid',
                     [
                         'type' => Column::TYPE_CHAR,
                         'notNull' => true,
                         'size' => 36,
-                        'after' => 'id'
+                        'after' => 'parent_id'
                     ]
                 ),
                 new Column(

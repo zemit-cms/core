@@ -19,6 +19,7 @@ class TemplateMigration_100 extends Migration
      */
     public function morph(): void
     {
+        $this->getConnection()->execute('SET FOREIGN_KEY_CHECKS=0;');
         $this->morphTable('template', [
             'columns' => [
                 new Column(
