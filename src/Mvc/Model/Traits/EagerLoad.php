@@ -47,7 +47,7 @@ trait EagerLoad
      */
     public static function findWith(array ...$arguments): array
     {
-        $parameters = self::getParametersFromArguments($arguments);
+        $parameters = static::getParametersFromArguments($arguments);
         $list = static::find($parameters);
         
         if ($list instanceof ResultsetInterface && $list->count()) {
@@ -65,7 +65,7 @@ trait EagerLoad
      */
     public static function findFirstWith(array ...$arguments): ?ModelInterface
     {
-        $parameters = self::getParametersFromArguments($arguments);
+        $parameters = static::getParametersFromArguments($arguments);
         $entity = static::findFirst($parameters);
         
         if ($entity instanceof ModelInterface) {
@@ -77,7 +77,7 @@ trait EagerLoad
     
     /**
      * @deprecated
-     * @link self::findWith()
+     * @link static::findWith()
      * @param array ...$arguments
      * @return array
      */
@@ -87,12 +87,12 @@ trait EagerLoad
     )]
     public static function with(array ...$arguments): array
     {
-        return self::findWith(...$arguments);
+        return static::findWith(...$arguments);
     }
     
     /**
      * @deprecated
-     * @link self::findFirstWith()
+     * @link static::findFirstWith()
      * @param array ...$arguments
      * @return ?ModelInterface
      */
@@ -102,37 +102,47 @@ trait EagerLoad
     )]
     public static function firstWith(array ...$arguments): ?ModelInterface
     {
-        return self::findFirstWith(...$arguments);
+        return static::findFirstWith(...$arguments);
     }
     
     /**
-     * Call magic method to make the with works in an implicit way
-     * @todo change it to behavior missingMethods()
+     * Dynamically handles static method calls for the class, forwarding them to
+     * appropriate internal methods based on the method name patterns.
+     *
+     * The method provides a mechanism to resolve calls like "findFirstWithBy..."/"firstWithBy..."
+     * and "findWithBy..."/"withBy..." to their corresponding mapped operations.
+     *
+     * @todo see if we should refactor this to use the native phalcon behavior "missingMethods()"
+     *
+     * @param string $method The name of the static method being called.
+     * @param array $arguments An array of arguments passed to the static method.
+     * @return array|ModelInterface|null Returns the result of the forwarded operation, which may be
+     *                                   an array, an implementation of ModelInterface, or null.
      */
     public static function __callStatic(string $method, array $arguments = []): array|null|ModelInterface
     {
         // Single - FindFirstBy...
         if (str_starts_with($method, 'findFirstWithBy') || str_starts_with($method, 'firstWithBy')) {
             $forwardMethod = str_replace(['findFirstWithBy', 'firstWithBy'], 'findFirstBy', $method);
-            return self::findFirstWithBy($forwardMethod, $arguments);
+            return static::findFirstWithBy($forwardMethod, $arguments);
         }
         
         // List - FindWithBy...
         elseif (str_starts_with($method, 'findWithBy') || str_starts_with($method, 'withBy')) {
             $forwardMethod = str_replace(['findWithBy', 'withBy'], 'findBy', $method);
-            return self::findWithBy($forwardMethod, $arguments);
+            return static::findWithBy($forwardMethod, $arguments);
         }
     
-        return @parent::$method(...$arguments); // @todo refactor for php83+
+        return parent::$method(...$arguments);
     }
     
     /**
      * Call native Phalcon FindFirstBy function then eager load relationships from the model
      */
-    private static function findFirstWithBy(string $forwardMethod, array $arguments): ?ModelInterface
+    protected static function findFirstWithBy(string $forwardMethod, array $arguments): ?ModelInterface
     {
-        $parameters = self::getParametersFromArguments($arguments);
-        $entity = @parent::$forwardMethod($parameters); // @todo refactor for php83+
+        $parameters = static::getParametersFromArguments($arguments);
+        $entity = parent::$forwardMethod($parameters);
     
         if ($entity instanceof ModelInterface) {
             return Loader::fromModel($entity, ...$arguments);
@@ -144,9 +154,9 @@ trait EagerLoad
     /**
      * Call native Phalcon findBy function then eager load relationships from the resultset
      */
-    private static function findWithBy(string $forwardMethod, array $arguments): ?array
+    protected static function findWithBy(string $forwardMethod, array $arguments): ?array
     {
-        $parameters = self::getParametersFromArguments($arguments);
+        $parameters = static::getParametersFromArguments($arguments);
         $list = parent::$forwardMethod($parameters);
         assert($list instanceof ResultsetInterface);
         
