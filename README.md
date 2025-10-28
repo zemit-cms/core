@@ -1,6 +1,5 @@
 # Zemit Core
 [![Zemit CI](https://github.com/zemit-cms/core/actions/workflows/main.yml/badge.svg)](https://github.com/zemit-cms/core/actions/workflows/main.yml)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=zemit-cms_core&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=zemit-cms_core)
 [![Total Downloads](http://poser.pugx.org/zemit-cms/core/downloads)](https://packagist.org/packages/zemit-cms/core)
 [![PHP Version Require](http://poser.pugx.org/zemit-cms/core/require/php)](https://packagist.org/packages/zemit-cms/core)
 
