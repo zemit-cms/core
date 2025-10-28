@@ -45,9 +45,9 @@ class BootstrapTest extends AbstractUnit
         $this->assertInstanceOf(ConfigInterface::class, $bootstrap->getConfig());
         $this->assertEquals(Bootstrap::MODE_MVC, $bootstrap->getMode());
         
-        $this->assertEquals(Bootstrap::MODE_MVC, 'mvc');
-        $this->assertEquals(Bootstrap::MODE_CLI, 'cli');
-        $this->assertEquals(Bootstrap::MODE_WS, 'ws');
+        $this->assertEquals('mvc', Bootstrap::MODE_MVC);
+        $this->assertEquals('cli', Bootstrap::MODE_CLI);
+        $this->assertEquals('ws', Bootstrap::MODE_WS);
         
         $this->assertEquals(false, $bootstrap->isCli());
         $this->assertEquals(true, $bootstrap->isMvc());
