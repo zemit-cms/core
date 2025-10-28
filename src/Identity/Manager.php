@@ -214,46 +214,7 @@ class Manager extends Injectable implements ManagerInterface, OptionsInterface
                 return ['messages' => $user->getMessages()];
             }
             
-            // send confirmation email
-            
-            $template = $this->models->getTemplate();
-            $template = $template::findFirst([
-                'key = :key: and deleted = 0',
-                'bind' => ['key' => $resetPasswordConfig['confirmationTemplateKey'] ?? 'reset-password-confirmation'],
-                'bindTypes' => ['key' => \Phalcon\Db\Column::BIND_PARAM_STR],
-            ]);
-            
-            
-            if ($template) {
-                $message = $this->mailer->createMessageFromView(
-                    $resetPasswordConfig['viewPath'] ?? 'email',
-                    [
-                        'subject' => $template->getSubject(),
-                        'content' => $template->getContent(),
-                        'user' => $user,
-                    ],
-                    $this->view->getViewsDir()
-                );
-                $message->to($user->getEmail());
-                $message->subject($template->getSubject());
-                
-                assert($template instanceof \Zemit\Models\Template);
-                $message->getMessage()->Subject = $template->getSubject() ?: 'Password reset confirmation';
-            }
-            
-            
-            $email = $this->models->getEmail();
-            $email->setViewPath();
-            $email->setTemplateByKey($resetPasswordConfig['confirmationTemplateKey'] ?? 'reset-password-confirmation');
-            $email->setTo([$user->getEmail()]);
-            $email->setMeta([
-                'user' => $user,
-            ]);
-
-            // send email
-            if (!$email->send()) {
-                return ['messages' => $email->getMessages()];
-            }
+            // @todo send confirmation email
         }
         
         // reset token request
@@ -267,20 +228,7 @@ class Manager extends Injectable implements ManagerInterface, OptionsInterface
                 return ['messages' => $user->getMessages()];
             }
             
-            // prepare email
-            $email = $this->models->getEmail();
-            $email->setViewPath($resetPasswordConfig['viewPath'] ?? 'email');
-            $email->setTemplateByKey($resetPasswordConfig['requestTemplateKey'] ?? 'reset-password-request');
-            $email->setTo([$user->getEmail()]);
-            $email->setMeta([
-                'resetLink' => $this->url->get($resetPasswordConfig['url'] ?? '/reset-password/' . $resetToken),
-                'user' => $user,
-            ]);
-            
-            // send email
-            if (!$email->send()) {
-                return ['messages' => $email->getMessages()];
-            }
+            // @todo send reset email
         }
         
         // everything went fine
