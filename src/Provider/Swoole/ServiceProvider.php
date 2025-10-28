@@ -35,7 +35,7 @@ class ServiceProvider extends AbstractServiceProvider
             $swooleConfig = $config->pathToArray('swoole') ?? [];
             
             $swooleConfig['host'] ??= '0.0.0.0';
-            $swooleConfig['port'] ??= '8080';
+            $swooleConfig['port'] ??= 8080;
             
             $swooleConfig['settings'] ??= [];
             $swooleConfig['settings']['worker_num'] ??= 1;
@@ -46,7 +46,7 @@ class ServiceProvider extends AbstractServiceProvider
             $swooleConfig['settings']['log_level'] ??= SWOOLE_LOG_WARNING;
             $swooleConfig['settings']['trace_flags'] ??= 0;
 
-            $server = new Server($swooleConfig['host'], $swooleConfig['port']);
+            $server = new Server($swooleConfig['host'], (int)$swooleConfig['port']);
             $server->set($swooleConfig['settings']);
             
             return $server;
