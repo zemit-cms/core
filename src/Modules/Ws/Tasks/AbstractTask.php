@@ -212,14 +212,19 @@ abstract class AbstractTask extends Task
             return;
         }
         
-        $this->log("Broadcasting to channel={$channel} data=" . (json_encode($data) ?: ''));
+        $jsonData = json_encode($data);
+        if (empty($jsonData)) {
+            return;
+        }
+        
+        $this->log("Broadcasting to channel={$channel} data=" . $jsonData);
         
         foreach (self::$subscriptions[$channel] as $fd => $active) {
             if (isset($fdList) && !in_array($fd, $fdList, true)) {
                 continue;
             }
             if ($server->isEstablished($fd)) {
-                $server->push($fd, json_encode($data));
+                $server->push($fd, $jsonData);
             }
         }
     }
