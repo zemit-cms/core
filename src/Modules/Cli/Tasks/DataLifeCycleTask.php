@@ -209,9 +209,7 @@ DOC;
             'permissions' => [
                 'roles' => [
                     'cli' => [
-                        'models' => array_map(function ($entity) {
-                            return ['*'];
-                        }, $models),
+                        'models' => array_map(static fn($_): array => ['*'], $models)
                     ],
                 ],
             ],
