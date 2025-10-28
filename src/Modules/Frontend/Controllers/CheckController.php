@@ -175,7 +175,7 @@ class CheckController extends AbstractController
         }
         
         // check service providers automagically
-        foreach ($this->config->providers as $fromClassName => $toClassName) {
+        foreach ($this->config->pathToArray('providers') ?? [] as $toClassName) {
             $provider = new $toClassName($di);
             $providerName = $provider->getName();
             
