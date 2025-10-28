@@ -24,15 +24,15 @@ use Zemit\Mvc\Model\Traits\Abstracts\AbstractInjectable;
  */
 trait Replication
 {
+    use AbstractEventsManager;
+    use AbstractInjectable;
+    use Options;
+    
     abstract public function setConnectionService(string $connectionService): void;
     abstract public function setReadConnectionService(string $connectionService): void;
     abstract public function setWriteConnectionService(string $connectionService): void;
     abstract public function getWriteConnectionService(): string;
     abstract public function getReadConnectionService(): string;
-    
-    use AbstractEventsManager;
-    use AbstractInjectable;
-    use Options;
     
     /**
      * Replica Lag in milliseconds
