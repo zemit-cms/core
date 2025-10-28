@@ -3,6 +3,10 @@
 [![Total Downloads](http://poser.pugx.org/zemit-cms/core/downloads)](https://packagist.org/packages/zemit-cms/core)
 [![PHP Version Require](http://poser.pugx.org/zemit-cms/core/require/php)](https://packagist.org/packages/zemit-cms/core)
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=zemit-cms_core&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=zemit-cms_core)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=zemit-cms_core&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=zemit-cms_core)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=zemit-cms_core&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=zemit-cms_core)
+
 [![Latest Stable Version](http://poser.pugx.org/zemit-cms/core/v)](https://packagist.org/packages/zemit-cms/core)
 [![Latest Unstable Version](http://poser.pugx.org/zemit-cms/core/v/unstable)](https://packagist.org/packages/zemit-cms/core)
 [![License](http://poser.pugx.org/zemit-cms/core/license)](https://packagist.org/packages/zemit-cms/core)
