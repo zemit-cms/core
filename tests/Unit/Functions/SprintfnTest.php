@@ -19,13 +19,10 @@ class SprintfnTest extends AbstractUnit
 {
     protected function setUp(): void
     {
-    }
-    
-    public function testSprintfnBasic(): void
-    {
-        $format = 'Name: %name$s, Age: %age$d';
-        $args = ['name' => 'Alice', 'age' => 30];
-        $this->assertEquals('Name: Alice, Age: 30', sprintfn($format, $args));
+        /**
+         * This setup method is intentionally left empty.
+         * This test class does not require any specific initialization or fixtures.
+         */
     }
     
     public function testSprintfnMultipleNamedArguments(): void

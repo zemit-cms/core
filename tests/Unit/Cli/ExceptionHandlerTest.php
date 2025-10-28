@@ -23,14 +23,7 @@ class ExceptionHandlerTest extends AbstractUnit
     {
         /**
          * This setup method is intentionally left empty.
-         *
-         * Explanation:
-         * - The parent AbstractUnit::setUp() may already handle dependency loading,
-         *   DI container initialization, and environment configuration.
-         * - This test class does not require any specific initialization or fixtures.
-         *
-         * If future tests require CLI environment mocking or additional bootstrap logic,
-         * this method can be extended accordingly.
+         * This test class does not require any specific initialization or fixtures.
          */
     }
     

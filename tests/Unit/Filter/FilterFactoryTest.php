@@ -21,6 +21,10 @@ class FilterFactoryTest extends AbstractUnit
 {
     protected function setUp(): void
     {
+        /**
+         * This setup method is intentionally left empty.
+         * This test class does not require any specific initialization or fixtures.
+         */
     }
     
     public function testNewInstance(): void
