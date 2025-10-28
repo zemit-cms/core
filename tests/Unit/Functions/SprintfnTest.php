@@ -48,7 +48,8 @@ class SprintfnTest extends AbstractUnit
     
     public function testSprintfnMissingArguments(): void
     {
-        $format = 'Name: %name$s, Age: %age$d, Gender: %gender$s';;
+        $format = 'Name: %name$s, Age: %age$d, Gender: %gender$s';
+        ;
         $args = ['name' => 'Alice']; // Missing 'age'
         
         $this->setErrorHandler();
