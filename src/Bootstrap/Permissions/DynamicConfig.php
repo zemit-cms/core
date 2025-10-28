@@ -14,9 +14,6 @@ declare(strict_types=1);
 namespace Zemit\Bootstrap\Permissions;
 
 use Zemit\Config\Config;
-use Zemit\Mvc\Controller\Behavior\Skip\SkipIdentityCondition;
-use Zemit\Mvc\Controller\Behavior\Skip\SkipSoftDeleteCondition;
-//use Zemit\Modules\Api\Controllers\DynamicController;
 use Zemit\Mvc\Model\Dynamic;
 
 class DynamicConfig extends Config
@@ -28,19 +25,13 @@ class DynamicConfig extends Config
                 'features' => [
                     'manageDynamicList' => [
                         'components' => [
-//                            DynamicController::class => ['*'],
                             Dynamic::class => ['*'],
                         ],
                         'behaviors' => [
-//                            DynamicController::class => [
-//                                SkipIdentityCondition::class,
-//                                SkipSoftDeleteCondition::class,
-//                            ],
                         ],
                     ],
                     'viewDynamicList' => [
                         'components' => [
-//                            DynamicController::class => ['get', 'get-all'],
                             Dynamic::class => ['find', 'findFirst'],
                         ],
                     ],
