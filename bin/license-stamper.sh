@@ -36,12 +36,12 @@ process_path() {
 }
 
 # Check if any path is provided, otherwise use ./src/
-if [ $# -eq 0 ]; then
+if [[ $# -eq 0 ]]; then
     process_path "./src"
 else
     # Loop over each argument
     for path in "$@"; do
-        if [ -d "$path" ]; then
+        if [[ -d "$path" ]]; then
             process_path "$path"
         else
             echo "Warning: '$path' is not a directory. Skipping."
