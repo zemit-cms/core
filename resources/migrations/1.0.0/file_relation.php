@@ -57,7 +57,7 @@ class FileRelationMigration_100 extends Migration
                         'type' => Column::TYPE_VARCHAR,
                         'notNull' => true,
                         'size' => 60,
-                        'comment' => "e.g., "post", "user_profile"",
+                        'comment' => "e.g., post, user_profile",
                         'after' => 'file_id'
                     ]
                 ),
