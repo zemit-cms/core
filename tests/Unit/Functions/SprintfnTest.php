@@ -48,7 +48,7 @@ class SprintfnTest extends AbstractUnit
     
     public function testSprintfnMissingArguments(): void
     {
-        $format = 'Name: %name$s, Age: %age$d';
+        $format = 'Name: %name$s, Age: %age$d, Gender: %gender$s';;
         $args = ['name' => 'Alice']; // Missing 'age'
         
         $this->setErrorHandler();
@@ -80,15 +80,5 @@ class SprintfnTest extends AbstractUnit
         $format = 'Name: %-10s | Age: %04d | Salary: %.2f';
         $args = ['name' => 'Alice', 'age' => 30, 'salary' => 12345.678];
         $this->assertEquals('Name: Alice      | Age: 0030 | Salary: 12345.68', sprintfn($format, $args));
-    }
-    
-    public function testSprintfnMissingArgument(): void
-    {
-        $format = 'Name: %name$s, Age: %age$d';
-        $args = ['name' => 'Alice']; // 'age' argument is missing
-        
-        $this->setErrorHandler();
-        $this->expectException(\Exception::class);
-        $this->assertFalse(sprintfn($format, $args));
     }
 }
