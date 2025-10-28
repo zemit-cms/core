@@ -16,7 +16,7 @@
         phpVersion="8.4"
         errorLevel="2"
         resolveFromConfigFile="true"
-        findUnusedBaselineEntry="false"
+        findUnusedBaselineEntry="true"
         findUnusedCode="false"
         hideExternalErrors="true"
         totallyTyped="true"
@@ -31,9 +31,6 @@
     </projectFiles>
 
     <issueHandlers>
-        <!-- Allow suppressions that are unused (local vs pipeline) -->
-        <UnusedIssueHandlerSuppression errorLevel="suppress" />
-
         <!-- Framework base classes are intentionally extensible -->
         <ClassMustBeFinal errorLevel="suppress" />
 
@@ -57,16 +54,5 @@
                 <referencedFunction name="Redis::connect" />
             </errorLevel>
         </InvalidArgument>
-
-        <!-- False positive -->
-        <UndefinedClass>
-            <errorLevel type="suppress">
-                <referencedClass name="Swoole\Http\Request" />
-                <referencedClass name="Swoole\Http\Response" />
-                <referencedClass name="Swoole\WebSocket\Server" />
-                <referencedClass name="Swoole\WebSocket\Frame" />
-                <referencedClass name="Swoole\Coroutine" />
-            </errorLevel>
-        </UndefinedClass>
     </issueHandlers>
 </psalm>
