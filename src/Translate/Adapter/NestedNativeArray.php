@@ -121,7 +121,7 @@ class NestedNativeArray extends AbstractAdapter implements \ArrayAccess
         $translate = $this->translate;
         
         if (isset($translate[$index])) {
-            return $translate[$index];
+            return (bool)$translate[$index];
         }
         
         foreach (explode($this->delimiter ?: '.', $index) as $nestedIndex) {

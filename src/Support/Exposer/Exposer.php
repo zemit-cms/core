@@ -193,7 +193,7 @@ class Exposer
             $builder->setContextKey($builder->getFullKey());
             foreach ($toParse as $fieldKey => $fieldValue) {
                 $builder->setParent($value);
-                $builder->setKey($fieldKey);
+                $builder->setKey((string)$fieldKey);
                 $builder->setValue($fieldValue);
                 self::checkExpose($builder);
                 if ($builder->getExpose()) {

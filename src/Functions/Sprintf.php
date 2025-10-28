@@ -155,6 +155,7 @@ if (!function_exists('mb_vsprintf')) {
             }
             else if ($type == 's') {
                 $arg = array_shift($argv) ?? '';
+                $arg = strval($arg);
                 $arg = mb_convert_encoding($arg, 'UTF-8', $encoding);
                 assert(is_string($arg));
                 $padding_pre = '';
