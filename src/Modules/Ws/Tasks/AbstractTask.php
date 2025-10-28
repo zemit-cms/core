@@ -131,7 +131,6 @@ abstract class AbstractTask extends Task
     
     public function onClose(Server $server, int $fd): void
     {
-        $workerId = $server->getWorkerId();
         $this->log("Client fd={$fd} disconnected");
     }
     
