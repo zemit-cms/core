@@ -56,20 +56,12 @@ class Column extends \Phalcon\Db\Column implements ColumnInterface
     public const float MAX_SIGNED_FLOAT = -PHP_FLOAT_MIN;
     public const float MIN_UNSIGNED_FLOAT = PHP_FLOAT_MIN;
     public const float MAX_UNSIGNED_FLOAT = PHP_FLOAT_MAX;
-//    public const float MIN_SIGNED_FLOAT = -3.402823466E+38;
-//    public const float MAX_SIGNED_FLOAT = -1.175494351E-38;
-//    public const float MIN_UNSIGNED_FLOAT = 1.175494351E-38;
-//    public const float MAX_UNSIGNED_FLOAT = 3.402823466E+38;
     
     // Double
     public const float MIN_SIGNED_DOUBLE = -PHP_FLOAT_MAX;
     public const float MAX_SIGNED_DOUBLE = -PHP_FLOAT_MIN;
     public const float MIN_UNSIGNED_DOUBLE = PHP_FLOAT_MIN;
     public const float MAX_UNSIGNED_DOUBLE = PHP_FLOAT_MAX;
-//    public const float MIN_SIGNED_DOUBLE = -1.7976931348623157E+308;
-//    public const float MAX_SIGNED_DOUBLE = -2.2250738585072014E-308;
-//    public const float MIN_UNSIGNED_DOUBLE = 2.2250738585072014E-308;
-//    public const float MAX_UNSIGNED_DOUBLE = 1.7976931348623157E+308;
     
     // Decimal
     public const int MAX_DECIMAL_DIGIT = 65;
