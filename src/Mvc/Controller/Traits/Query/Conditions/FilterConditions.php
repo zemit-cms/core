@@ -104,13 +104,8 @@ trait FilterConditions
             ]);
             
             // allowed field
-            if (!isset($allowedFilters) || !(in_array($field, $allowedFilters, true))) {
-                throw new \Exception('The following filter field is not allowed: `' . $field . '`', 403);
-            }
-            
-            $flattenAllowedFilters = FlattenKeys::process($allowedFilters);
-            if (isset($flattenAllowedFilters[$field]) && !$flattenAllowedFilters[$field]) {
-                throw new \Exception('The following filter field is not allowed: `' . $field . '`', 403);
+            if (!$this->isFilterAllowed($field, $allowedFilters ?? null)) {
+                throw new \Exception(sprintf('Unauthorized filter field: "%s"', $field), 403);
             }
             
             $operator = $this->getFilterOperator($filter['operator']);
@@ -373,6 +368,23 @@ trait FilterConditions
         }
         
         return Column::BIND_PARAM_NULL;
+    }
+    
+    /**
+     * Determines if the specified field is allowed as a filter based on the provided allowed filters.
+     *
+     * @param string $field The field name to check against the allowed filters.
+     * @param array|null $allowedFilters The array of allowed filters or null if no filters are provided.
+     *
+     * @return bool True if the field is allowed as a filter, false otherwise.
+     */
+    public function isFilterAllowed(string $field, ?array $allowedFilters): bool {
+        if (empty($allowedFilters)) {
+            return false;
+        }
+        
+        $flat = FlattenKeys::process($allowedFilters);
+        return in_array($field, $allowedFilters, true) || !empty($flat[$field]);
     }
     
     /**
