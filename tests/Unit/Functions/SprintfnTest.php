@@ -73,22 +73,6 @@ class SprintfnTest extends AbstractUnit
         $this->assertEquals('Data: $pecial@Character!', sprintfn($format, $args));
     }
     
-    // @todo maybe support nested arguments or fail
-//    public function testSprintfnNestedNamedArguments(): void
-//    {
-//        $format = 'Outer: %outer$s, Inner: %outer.inner$s';
-//        $args = ['outer' => ['inner' => 'InnerValue']];
-//        $this->assertFalse(sprintfn($format, $args)); // Expected to fail as nested arguments are not supported
-//    }
-    
-    // @todo
-//    public function testSprintfnInvalidFormatString(): void
-//    {
-//        $format = 'Broken % Format';
-//        $args = ['name' => 'Alice'];
-//        $this->assertFalse(sprintfn($format, $args));
-//    }
-    
     public function testSprintfnEmptyFormatString(): void
     {
         $this->assertEquals('', sprintfn('', []));
