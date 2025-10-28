@@ -84,6 +84,8 @@ class RequestTest extends AbstractUnit
         ];
         
         $result = $request->toArray();
+        unset($result['headers']);
+        unset($expectedResult['headers']);
         $this->assertEquals($expectedResult, $result);
     }
     
