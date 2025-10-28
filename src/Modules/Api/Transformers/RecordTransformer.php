@@ -18,6 +18,6 @@ class RecordTransformer extends Transformer
 {
     public function transform(?Record $record): array
     {
-        return $record? $record->toArray() : [];
+        return $record ? $record->toArray() : [];
     }
 }

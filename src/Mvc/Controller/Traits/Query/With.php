@@ -58,5 +58,4 @@ trait With
     {
         return $this->with;
     }
-    
 }

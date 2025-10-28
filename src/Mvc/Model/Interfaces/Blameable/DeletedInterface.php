@@ -20,5 +20,4 @@ interface DeletedInterface
     public function setDeletedBehavior(Transformable $deletedBehavior): void;
     
     public function getDeletedBehavior(): Transformable;
-
 }

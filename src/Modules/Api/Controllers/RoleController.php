@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -34,7 +35,7 @@ class RoleController extends Controller
     }
     
     #[\Override]
-    public function initializeExposeFields() : void
+    public function initializeExposeFields(): void
     {
         $this->setExposeFields(new Collection([
             true,

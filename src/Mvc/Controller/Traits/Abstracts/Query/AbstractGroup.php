@@ -22,5 +22,4 @@ trait AbstractGroup
     abstract public function getGroup(): ?Collection;
     
     abstract public function defaultGroup(): array|string|null;
-    
 }

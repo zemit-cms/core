@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -14,5 +15,4 @@ use Zemit\Modules\Api\Controller;
 
 class FieldController extends Controller
 {
-
 }

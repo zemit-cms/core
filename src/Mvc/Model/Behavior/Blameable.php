@@ -106,7 +106,7 @@ class Blameable extends Behavior
         
         // legacy fields support, these fields were removed from the audit_detail table for performance reasons
         $audit->assign([
-            'columns' => $columnMap? json_encode($columnMap) : null
+            'columns' => $columnMap ? json_encode($columnMap) : null
         ]);
         
         $auditDetailList = [];

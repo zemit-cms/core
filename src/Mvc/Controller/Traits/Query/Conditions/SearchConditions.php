@@ -115,7 +115,6 @@ trait SearchConditions
         $subQuery = [];
         
         foreach ($searchFields as $key => $searchField) {
-            
             if (is_array($searchField)) {
                 return array_merge(
                     $subQuery,

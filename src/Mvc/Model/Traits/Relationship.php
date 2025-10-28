@@ -195,7 +195,6 @@ trait Relationship
         $modelsManager = $this->getModelsManager();
         
         foreach ($data as $alias => $relationData) {
-            
             $relation = $modelsManager->getRelationByAlias($modelClass, $alias);
             
             // alias is not whitelisted
@@ -303,7 +302,6 @@ trait Relationship
                 
                 // we got something to assign
                 if (!empty($assign) || !$this->getKeepMissingRelatedAlias($alias)) {
-                    
 //                    $assign = is_array($assign) ? array_values(array_filter($assign)) : $assign;
                     $this->{$alias} = $assign;
                     
@@ -352,7 +350,6 @@ trait Relationship
                 
                 // Only belongsTo are stored before save the master record
                 if ($type === Relation::BELONGS_TO) {
-                    
                     // Belongs-to relation: We only support model interface
                     if (!($record instanceof ModelInterface)) {
                         $connection->rollback($nesting);
@@ -372,7 +369,7 @@ trait Relationship
                     // Set the relationship context
                     if ($record instanceof RelationshipInterface) {
                         $currentRelationshipContext = $this->getRelationshipContext();
-                        $relationshipPrefix = !empty($currentRelationshipContext)? $currentRelationshipContext . '.' : '';
+                        $relationshipPrefix = !empty($currentRelationshipContext) ? $currentRelationshipContext . '.' : '';
                         $record->setRelationshipContext($relationshipPrefix . $alias);
                     }
                     
@@ -423,7 +420,6 @@ trait Relationship
         
         if ($related) {
             foreach ($related as $lowerCaseAlias => $assign) {
-                
                 $modelsManager = $this->getModelsManager();
                 $relation = $modelsManager->getRelationByAlias(get_class($this), $lowerCaseAlias);
                 
@@ -451,7 +447,6 @@ trait Relationship
                  * Custom logic for single-to-many relationships
                  */
                 if ($relation->getType() === Relation::HAS_MANY) {
-                    
                     // auto-delete missing related if keepMissingRelated is false
                     if (!$this->getKeepMissingRelatedAlias($lowerCaseAlias)) {
                         $originFields = $relation->getFields();
@@ -584,7 +579,7 @@ trait Relationship
                     
                     if (!$this->getKeepMissingRelatedAlias($lowerCaseAlias)) {
                         $idBindType = count($intermediatePrimaryKeyAttributes) === 1 ? $intermediateBindTypes[$intermediatePrimaryKeyAttributes[0]] : Column::BIND_PARAM_STR;
-                        $nodeIdListToKeep = empty($nodeIdListToKeep)? [0] : array_keys(array_flip($nodeIdListToKeep));
+                        $nodeIdListToKeep = empty($nodeIdListToKeep) ? [0] : array_keys(array_flip($nodeIdListToKeep));
                         $nodeEntityToDeleteResultset = $intermediateModel::find([
                             'conditions' => implode_sprintf(array_merge($intermediateFields), ' and ', '[' . $intermediateModelClass . '].[%s] = ?%s')
                                 . ' and concat(' . implode_sprintf($intermediatePrimaryKeyAttributes, ', \'.\', ', '[' . $intermediateModelClass . '].[%s]') . ') not in ({id:array})',
@@ -858,18 +853,13 @@ trait Relationship
         // not found, using the relationship fields instead
         if (!$entity) {
             if ($type === Relation::HAS_ONE || $type === Relation::BELONGS_TO) {
-                
                 // Set value to compare
                 if (!empty($readFields)) {
-                    
                     foreach ($readFields as $key => $field) {
-                        
                         if (empty($data[$fields[$key]])) {
-                            
                             // @todo maybe remove this if
                             $value = $this->readAttribute($field);
                             if (!empty($value)) {
-                                
                                 // @todo maybe remove this if
                                 $data [$fields[$key]] = $value;
                             }
@@ -883,15 +873,12 @@ trait Relationship
             
             // all keys were found
             if (count($dataKeys) === count($fields)) {
-                
                 if ($type === Relation::HAS_MANY) {
-                    
                     $modelsMetaData = $this->getModelsMetaData();
                     $primaryKeys = $modelsMetaData->getPrimaryKeyAttributes($this);
                     
                     // Force primary keys for single to many
                     foreach ($primaryKeys as $primaryKey) {
-                        
                         if (!in_array($primaryKey, $fields, true)) {
                             $dataKeys [$primaryKey] = $data[$primaryKey] ?? null;
                             $fields [] = $primaryKey;
@@ -919,8 +906,8 @@ trait Relationship
         
         // assign new values
         // can be null to bypass, empty array for nothing or filled array
-        $whiteListAlias = isset($whiteList, $alias)? $whiteList[$alias] ?? [] : null;
-        $dataColumnMapAlias = isset($dataColumnMap, $alias)? $dataColumnMap[$alias] ?? [] : null;
+        $whiteListAlias = isset($whiteList, $alias) ? $whiteList[$alias] ?? [] : null;
+        $dataColumnMapAlias = isset($dataColumnMap, $alias) ? $dataColumnMap[$alias] ?? [] : null;
         $entity->assign($data, $whiteListAlias, $dataColumnMapAlias);
 //        $entity->setDirtyState(self::DIRTY_STATE_TRANSIENT);
         
@@ -1047,7 +1034,6 @@ trait Relationship
         $columnMap = $this->getModelsMetaData()->getColumnMap($this);
         
         foreach ($this->getDirtyRelated() as $attribute => $related) {
-            
             // Map column if defined
             if ($columnMap && isset($columnMap[$attribute])) {
                 $attributeField = $columnMap[$attribute];

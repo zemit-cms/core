@@ -97,10 +97,8 @@ class Position extends Behavior
     public function beforeValidation(ModelInterface $model, string $field): void
     {
         if (property_exists($model, $field) && $model instanceof EntityInterface) {
-            
             $positionValue = $model->readAttribute($field);
             if (is_null($positionValue)) {
-                
                 // if position field is empty, force current max(position)+1
                 $lastRecord = $model::findFirst(['order' => $field . ' DESC']);
                 if ($lastRecord && assert($lastRecord instanceof $model)) {

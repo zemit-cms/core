@@ -16,7 +16,7 @@ trait BlameAt
     public function getDateCallback(string $format, ?int $timestamp = null): \Closure
     {
         return function () use ($format, $timestamp): ?string {
-            return (isset($timestamp)? date($format, $timestamp) : date($format)) ?: null;
+            return (isset($timestamp) ? date($format, $timestamp) : date($format)) ?: null;
         };
     }
 }

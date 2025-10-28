@@ -37,7 +37,6 @@ class Color extends AbstractValidator implements ValidatorInterface
         $value = $validation->getValue($field);
         
         if (!is_string($value) || !$this->isValidColor($value)) {
-            
             $validation->appendMessage(
                 $this->messageFactory($validation, $field)
             );

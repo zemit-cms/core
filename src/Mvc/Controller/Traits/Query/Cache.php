@@ -62,7 +62,7 @@ trait Cache
         $lifetime = $this->getCacheLifetime();
         $key = $this->getCacheKey();
         
-        $this->setCacheConfig(new Collection(isset($lifetime, $key)? [
+        $this->setCacheConfig(new Collection(isset($lifetime, $key) ? [
             'lifetime' => $this->getCacheLifetime(),
             'key' => $this->getCacheKey()
         ] : []));

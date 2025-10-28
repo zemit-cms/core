@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -98,7 +99,6 @@ class RouterTest extends AbstractUnit
         }
         
         foreach ($testRoutes as $name => $uris) {
-            
             // add some testing for -action routes
             if (str_contains($name, '-action')) {
                 $uris [] = $uris[0] . '/params';

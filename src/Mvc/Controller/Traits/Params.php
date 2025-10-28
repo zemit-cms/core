@@ -111,5 +111,4 @@ trait Params
         $this->params = $params;
         return $params;
     }
-    
 }

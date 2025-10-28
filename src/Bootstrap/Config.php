@@ -808,7 +808,7 @@ class Config extends \Zemit\Config\Config
             'translate' => [
                 'locale' => explode(',', Env::get('TRANSLATE_LOCALE', 'en_CA.UTF-8')),
                 'defaultDomain' => Env::get('TRANSLATE_DEFAULT_DOMAIN', 'messages'),
-                'category' => Env::get('TRANSLATE_CATEGORY', defined('LC_MESSAGES')? LC_MESSAGES : 5),
+                'category' => Env::get('TRANSLATE_CATEGORY', defined('LC_MESSAGES') ? LC_MESSAGES : 5),
                 'directory' => Env::get('TRANSLATE_DEFAULT_PATH', RESOURCES_PATH . 'translations'),
             ],
             
@@ -1099,7 +1099,7 @@ class Config extends \Zemit\Config\Config
                         'options' => [
                             \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . Env::get('DATABASE_CHARSET', 'utf8') .
                             ', sql_mode = \'' . Env::get('DATABASE_SQL_MODE', 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION') . '\'' .
-                                ', block_encryption_mode = \''.Env::get('DATABASE_BLOCK_ENCRYPTION_MODE', 'aes-256-cbc').'\'',
+                                ', block_encryption_mode = \'' . Env::get('DATABASE_BLOCK_ENCRYPTION_MODE', 'aes-256-cbc') . '\'',
                             \PDO::ATTR_EMULATE_PREPARES => Env::get('DATABASE_EMULATE_PREPARES', false), // https://stackoverflow.com/questions/10113562/pdo-mysql-use-pdoattr-emulate-prepares-or-not
                             \PDO::ATTR_STRINGIFY_FETCHES => Env::get('DATABASE_STRINGIFY_FETCHES', false),
                             \PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => Env::get('DATABASE_SSL_VERIFY_SERVER_CERT', true),
@@ -1197,7 +1197,7 @@ class Config extends \Zemit\Config\Config
                         'timeout' => Env::get('FILE_SYSTEM_FTP_TIMEOUT', 10),
                         'utf8' => Env::get('FILE_SYSTEM_FTP_UTF8', false),
                         'passive' => Env::get('FILE_SYSTEM_FTP_PASSIVE', true),
-                        'transferMode' => Env::get('FILE_SYSTEM_FTP_TRANSFER_MODE', defined('FTP_BINARY')? FTP_BINARY : 2),
+                        'transferMode' => Env::get('FILE_SYSTEM_FTP_TRANSFER_MODE', defined('FTP_BINARY') ? FTP_BINARY : 2),
                         'systemType' => Env::get('FILE_SYSTEM_FTP_SYSTEM_TYPE'), // windows or unix
                         'ignorePassiveAddress' => Env::get('FILE_SYSTEM_FTP_SYSTEM_IGNORE_PASSIVE_ADDRESS'), // true or false
                         'timestampsOnUnixListingsEnabled' => Env::get('FILE_SYSTEM_FTP_TIMESTAMPS_ON_UNIX_LISTING_ENABLED', false), // true or false

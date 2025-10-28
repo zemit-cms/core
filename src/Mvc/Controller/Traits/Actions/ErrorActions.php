@@ -34,7 +34,7 @@ trait ErrorActions
      * Http Status Code 400
      * bad-request
      */
-    public function badRequestAction() : void
+    public function badRequestAction(): void
     {
         $this->setStatusCode(400);
     }
@@ -70,7 +70,7 @@ trait ErrorActions
      * Http Status Code 500
      * fatal
      */
-    public function fatalAction() : void
+    public function fatalAction(): void
     {
         $this->setStatusCode(500);
     }
@@ -79,7 +79,7 @@ trait ErrorActions
      * Http Status Code 503
      * maintenance
      */
-    public function maintenanceAction() : void
+    public function maintenanceAction(): void
     {
         $this->setStatusCode(503);
     }

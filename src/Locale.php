@@ -284,7 +284,6 @@ class Locale extends Injectable implements OptionsInterface
         
         // lookup for the first configured region based on the locale without region
         if (empty($lookup) || $force) {
-            
             // matches all the possible regions from the locale
             $matches = array_filter($allowed, function ($haystack) use ($locale) {
                 $needle = $locale . '_';

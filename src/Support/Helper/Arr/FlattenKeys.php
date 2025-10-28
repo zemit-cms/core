@@ -31,7 +31,6 @@ class FlattenKeys
         $ret = [];
         
         foreach ($collection as $key => $value) {
-            
             // flip value to key
             if (is_int($key)) {
                 if (is_string($value)) {

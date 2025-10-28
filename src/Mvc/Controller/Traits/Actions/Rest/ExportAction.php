@@ -44,5 +44,4 @@ trait ExportAction
         $data = $this->exportExpose($resultset);
         return $this->export($data);
     }
-    
 }

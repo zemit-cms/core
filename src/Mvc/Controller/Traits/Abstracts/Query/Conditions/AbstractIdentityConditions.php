@@ -26,5 +26,4 @@ trait AbstractIdentityConditions
     abstract public function defaultIdentityCondition(): array|string|null;
     
     abstract public function getIdentityColumns(): array;
-    
 }

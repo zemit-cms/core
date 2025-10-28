@@ -47,7 +47,6 @@ class Acl extends AbstractInjectionAware implements AclInterface
         $roleList = $permissions['roles'] ?? [];
         
         foreach ($roleList as $role => $rolePermission) {
-            
             $role = $role === '*' ? 'everyone' : $role;
             $aclRole = new Role($role);
             $aclRoleList[$role] = $aclRole;

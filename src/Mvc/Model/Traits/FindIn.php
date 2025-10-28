@@ -36,7 +36,7 @@ trait FindIn
         $bindParam = '_id' . uniqid('_') . '_';
         
         return self::find([
-            '[id] in ({'.$bindParam.':array})',
+            '[id] in ({' . $bindParam . ':array})',
             'bind' => [$bindParam => $idList],
             'bindTypes' => [$bindParam => Column::BIND_PARAM_INT]
         ]);

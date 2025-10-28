@@ -31,5 +31,4 @@ trait AbstractConditions
     abstract public function setConditions(?Collection $conditions): void;
     
     abstract public function getConditions(): ?Collection;
-    
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -12,7 +13,8 @@ declare(strict_types=1);
 
 namespace Zemit\Models\Enums;
 
-enum ValidatorType: string {
+enum ValidatorType: string
+{
     case TEXT = 'text';
     case ALPHANUM = 'alphanum';
     case MIN = 'min';

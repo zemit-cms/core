@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -23,7 +24,7 @@ class OptionsTest extends AbstractUnit
     public function testConstruct(): void
     {
         $options = ['test' => 'test', 'nesting' => ['test' => 'nested']];
-        $this->options = new class($options) implements OptionsInterface {
+        $this->options = new class ($options) implements OptionsInterface {
             use Options;
         };
         

@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -19,6 +21,6 @@ trait Expose
     {
         $builder = Exposer::createBuilder($this, $columns, $expose, $protected);
         $expose = Exposer::expose($builder);
-        return is_array($expose)? $expose : [];
+        return is_array($expose) ? $expose : [];
     }
 }

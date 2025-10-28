@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -89,7 +90,6 @@ trait Role
         
         // While we still have role index list to process
         while (!empty($roleIndexList)) {
-            
             // Process role index list
             foreach ($roleIndexList as $roleIndex) {
                 // Get inherited roles from config service
@@ -97,7 +97,6 @@ trait Role
                 $configRoleList = $this->config->path('permissions.roles.' . $roleIndex . '.inherit', false);
                 
                 if ($configRoleList) {
-                    
                     // Append inherited role to process list
                     $roleList = $configRoleList->toArray();
                     $roleIndexList = array_merge($roleIndexList, $roleList);
@@ -115,6 +114,4 @@ trait Role
         // Return the list of inherited role list (recursively)
         return array_values(array_filter(array_unique($inheritedRoleList)));
     }
-    
-    
 }

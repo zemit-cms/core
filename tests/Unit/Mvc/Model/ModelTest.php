@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -85,7 +86,8 @@ class ModelTest extends AbstractUnit
             $role = new Role();
             $role->setId($i);
             $role->setKey('role_' . $i);
-            $role->setLabel('Role #' . $i);;
+            $role->setLabel('Role #' . $i);
+            ;
             $save = $role->save();
             $messages = $role->getMessages();
             $this->assertTrue($save);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -22,5 +23,4 @@ trait AbstractSearchFields
     abstract public function setSearchFields(?Collection $searchFields): void;
     
     abstract public function getSearchFields(): ?Collection;
-    
 }

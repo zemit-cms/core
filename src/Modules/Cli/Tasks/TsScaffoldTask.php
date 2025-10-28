@@ -21,7 +21,6 @@ use Zemit\Support\Slug;
 
 class TsScaffoldTask extends Task
 {
-    
     public string $cliDoc = <<<DOC
 Usage:
   zemit cli ts-scaffold <action> [<params>...] [--force] [--table=<table>] [--directory=<directory>]

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -12,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zemit\Models\Enums;
 
-enum FileCategory: string {
+enum FileCategory: string
+{
     case OTHER = 'other';
 }

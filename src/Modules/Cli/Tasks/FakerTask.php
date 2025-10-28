@@ -107,7 +107,7 @@ DOC;
                 foreach ($assign as $key => $value) {
                     $data->{$key} = $value;
                 }
-                $tableList[$table->getUuid()] []= [
+                $tableList[$table->getUuid()] [] = [
                     'save' => $data->save(),
                     'messages' => $data->getMessages(),
                 ];
@@ -136,7 +136,7 @@ DOC;
                     $data->setColumnId($column->getId());
                     $data->setValue($faker->sentences($faker->randomNumber(1), true));
                     $data->setDeleted((int)$faker->boolean(10));
-                    $dataList []= $data->toArray();
+                    $dataList [] = $data->toArray();
                 }
             }
         }
@@ -162,23 +162,20 @@ DOC;
         $data[Data::class] = [];
         $data[Model\Dynamic::class] = [];
         for ($i = 0; $i < $nbWorkspace; $i++) {
-            
             // tables
             $tableList = [];
             for ($x = 0; $x < $nbTable; $x++) {
-                
                 // records
                 $recordList = [];
                 $columnList = [];
                 for ($r = 0; $r < $nbColumns; $r++) {
-                    
 //                    $recordList []= [
 //                        'uuid' => $faker->uuid(),
 //                        'name' => $faker->realTextBetween(5, 60),
 //                        'deleted' => (int)$faker->boolean(10),
 //                    ];
                     
-                    $columnList []= [
+                    $columnList [] = [
                         'uuid' => $faker->uuid(),
                         'name' => $faker->realTextBetween(5, 60),
                         'description' => $faker->realTextBetween(5, 120),
@@ -187,7 +184,7 @@ DOC;
                     ];
                 }
                 
-                $tableList []= [
+                $tableList [] = [
                     'uuid' => $faker->uuid(),
                     'name' => $faker->realTextBetween(5, 60),
                     'description' => $faker->text(240),
@@ -199,7 +196,7 @@ DOC;
                 ];
             }
             
-            $data[Workspace::class] []= [
+            $data[Workspace::class] [] = [
                 'uuid' => $faker->uuid(),
                 'name' => $faker->realTextBetween(5, 60),
                 'description' => $faker->text(240),

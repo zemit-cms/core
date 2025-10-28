@@ -28,5 +28,4 @@ trait AbstractFilterConditions
     abstract public function getFilterOperator(string $operator): string;
     
     abstract public function getBindTypeFromRawValue(mixed $rawValue = null): int;
-    
 }

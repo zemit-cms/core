@@ -82,7 +82,7 @@ trait IdentityConditions
             $query [] = "{$field} = :{$value}:";
         }
         
-        return empty($query)? null : [
+        return empty($query) ? null : [
             implode(' and ', $query),
             $bind,
             $bindTypes,

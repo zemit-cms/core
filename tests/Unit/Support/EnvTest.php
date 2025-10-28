@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -27,7 +28,7 @@ class EnvTest extends AbstractUnit
 {
     public Env $env;
     
-    protected function setUp() : void
+    protected function setUp(): void
     {
     }
     

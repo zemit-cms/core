@@ -123,7 +123,6 @@ if (!function_exists('mb_vsprintf')) {
         $newArgv = []; // unhandled args in unchanged encoding
         
         while ($format !== '') {
-            
             // Split the format in two parts: $pre and $post by the first %-directive
             // We get also the matched groups
             $pregSplitResult =

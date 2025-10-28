@@ -88,7 +88,7 @@ class Loggers
         $formatter ??= $this->getFormatter();
         
         $ret = [];
-        $loggerDrivers = is_array($loggerDrivers)? $loggerDrivers : explode(',', $loggerDrivers ?? 'noop');
+        $loggerDrivers = is_array($loggerDrivers) ? $loggerDrivers : explode(',', $loggerDrivers ?? 'noop');
         foreach ($loggerDrivers as $loggerDriver) {
             if (!isset($drivers[$loggerDriver])) {
                 throw new \Exception('Logger driver adapter `' . $loggerDriver . '` is not defined.');

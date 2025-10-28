@@ -73,7 +73,7 @@ trait Options
      */
     public function setOptions(array $options, bool $merge = false): void
     {
-        $this->options = $merge? array_merge($this->options, $options) : $options;
+        $this->options = $merge ? array_merge($this->options, $options) : $options;
     }
     
     /**

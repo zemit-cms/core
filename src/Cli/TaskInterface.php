@@ -16,5 +16,4 @@ namespace Zemit\Cli;
  */
 interface TaskInterface extends \Phalcon\Cli\TaskInterface
 {
-
 }

@@ -46,5 +46,4 @@ trait NewAction
         $this->view->setVar('data', $this->expose($entity));
         return $this->setRestResponse(true);
     }
-    
 }

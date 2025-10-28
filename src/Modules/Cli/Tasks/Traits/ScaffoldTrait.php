@@ -67,7 +67,7 @@ PHP;
      */
     public function getLicenseStamp(): ?string
     {
-        return $this->isNoLicense()? '' : $this->dispatcher->getParam('license') ?? $this->licenseStamp;
+        return $this->isNoLicense() ? '' : $this->dispatcher->getParam('license') ?? $this->licenseStamp;
     }
     
     /**
@@ -77,7 +77,7 @@ PHP;
      */
     public function getStrictTypes(): ?string
     {
-        return $this->isNoStrictTypes()? '' : $this->strictTypes;
+        return $this->isNoStrictTypes() ? '' : $this->strictTypes;
     }
     
     /**
@@ -229,7 +229,7 @@ PHP;
      */
     public function absolutePathOr(string $path = '', string $fullPath = ''): string
     {
-        return $this->isAbsolutePath($path)? $path : $fullPath;
+        return $this->isAbsolutePath($path) ? $path : $fullPath;
     }
     
     /**
@@ -346,7 +346,7 @@ PHP;
                     str_replace(
                         '/',
                         '\\',
-                        ltrim($path, isset($baseNamespace)? $this->getSrcDirectory() : '')
+                        ltrim($path, isset($baseNamespace) ? $this->getSrcDirectory() : '')
                     )
                 )
             );

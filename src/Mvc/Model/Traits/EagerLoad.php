@@ -111,14 +111,12 @@ trait EagerLoad
     {
         // Single - FindFirstBy...
         if (str_starts_with($method, 'findFirstWithBy') || str_starts_with($method, 'firstWithBy')) {
-            
             $forwardMethod = str_replace(['findFirstWithBy', 'firstWithBy'], 'findFirstBy', $method);
             return self::findFirstWithBy($forwardMethod, $arguments);
         }
         
         // List - FindWithBy...
         elseif (str_starts_with($method, 'findWithBy') || str_starts_with($method, 'withBy')) {
-    
             $forwardMethod = str_replace(['findWithBy', 'withBy'], 'findBy', $method);
             return self::findWithBy($forwardMethod, $arguments);
         }

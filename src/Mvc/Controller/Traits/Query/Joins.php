@@ -58,5 +58,4 @@ trait Joins
     {
         return $this->joins;
     }
-    
 }

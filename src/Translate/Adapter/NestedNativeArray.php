@@ -123,7 +123,6 @@ class NestedNativeArray extends AbstractAdapter implements \ArrayAccess
         }
         
         foreach (explode($this->delimiter ?: '.', $index) as $nestedIndex) {
-            
             if (is_array($translate) && array_key_exists($nestedIndex, $translate)) {
                 $translate = $translate[$nestedIndex];
             }
@@ -170,7 +169,6 @@ class NestedNativeArray extends AbstractAdapter implements \ArrayAccess
         }
         
         foreach (explode($this->delimiter ?: '.', $translateKey) as $nestedIndex) {
-            
             if (is_array($translate) && array_key_exists($nestedIndex, $translate)) {
                 $translate = $translate[$nestedIndex];
             }

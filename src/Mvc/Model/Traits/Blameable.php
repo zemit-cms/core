@@ -100,7 +100,6 @@ trait Blameable
         ?string $class = null
     ): ?Relation {
         if (property_exists($this, $field)) {
-            
             if (empty($class)) {
                 $models = $this->getDI()->get('models');
                 assert($models instanceof Models);

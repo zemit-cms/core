@@ -13,7 +13,6 @@ namespace Zemit\Support;
 
 use Phalcon\Di\DiInterface;
 use Zemit\Bootstrap\Config;
-
 use Zemit\Models\Backup;
 use Zemit\Models\Audit;
 use Zemit\Models\AuditDetail;

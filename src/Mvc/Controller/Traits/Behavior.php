@@ -98,5 +98,4 @@ trait Behavior
             $this->attachBehavior($behavior, $eventType, $priority);
         }
     }
-    
 }

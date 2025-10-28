@@ -40,7 +40,6 @@ class Error extends Injectable
     public function beforeException(Event $event, Dispatcher $dispatcher, Exception $exception): bool
     {
         switch ($exception->getCode()) {
-            
             case DispatchException::EXCEPTION_HANDLER_NOT_FOUND:
             case DispatchException::EXCEPTION_ACTION_NOT_FOUND:
                 if ($exception instanceof DispatchException) {

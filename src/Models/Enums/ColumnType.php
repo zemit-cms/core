@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -12,7 +13,8 @@ declare(strict_types=1);
 
 namespace Zemit\Models\Enums;
 
-enum ColumnType: string {
+enum ColumnType: string
+{
     case LINK_TO_ANOTHER_RECORD = 'linkToAnotherRecord';
     case SINGLE_LINE_TEXT = 'singleLineText';
     case LONG_TEXT = 'longText';

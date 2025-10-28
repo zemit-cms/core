@@ -37,7 +37,6 @@ trait Attribute
     {
         assert($this instanceof ModelInterface);
         if ($this->getModelsMetaData()->hasAttribute($this, $attribute)) {
-            
             $method = 'get' . ucfirst(Helper::camelize($attribute));
             if (method_exists($this, $method)) {
                 return $this->$method();
@@ -61,7 +60,6 @@ trait Attribute
     {
         assert($this instanceof ModelInterface);
         if ($this->getModelsMetaData()->hasAttribute($this, $attribute)) {
-            
             $method = 'set' . ucfirst(Helper::camelize($attribute));
             if (method_exists($this, $method)) {
                 $this->$method($value);

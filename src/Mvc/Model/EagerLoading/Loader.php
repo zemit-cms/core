@@ -76,7 +76,7 @@ final class Loader
                 assert($row instanceof Row);
                 $array = $row->toArray();
                 $firstModel = reset($array);
-                $tmp []= $firstModel;
+                $tmp [] = $firstModel;
             }
             $from = $tmp;
             if (isset($from[0])) {
@@ -384,7 +384,6 @@ final class Loader
                     $relType !== Relation::HAS_MANY &&
                     $relType !== Relation::HAS_MANY_THROUGH
                 ) {
-                    
                     throw new \RuntimeException(sprintf('Unknown relation type `%s`', $relType));
                 }
                 
@@ -395,7 +394,7 @@ final class Loader
 //                    throw new \RuntimeException('Relations with composite keys are not supported');
 //                }
                 
-                $parent = $nestingLevel > 0 && isset($parentName)? $eagerLoads[$parentName] : $this;
+                $parent = $nestingLevel > 0 && isset($parentName) ? $eagerLoads[$parentName] : $this;
                 $constraints = $nestingLevel + 1 === $nestingLevels ? $queryConstraints : null;
                 
                 $eagerLoads[$name] = new EagerLoad($relation, $constraints, $parent);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -12,7 +13,8 @@ declare(strict_types=1);
 
 namespace Zemit\Models\Enums;
 
-enum LogType: string {
+enum LogType: string
+{
     case CRITICAL = 'critical';
     case ALERT = 'alert';
     case ERROR = 'error';

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -12,7 +13,8 @@ declare(strict_types=1);
 
 namespace Zemit\Models\Enums;
 
-enum AuditDetailEvent: string {
+enum AuditDetailEvent: string
+{
     case CREATE = 'create';
     case UPDATE = 'update';
     case DELETE = 'delete';

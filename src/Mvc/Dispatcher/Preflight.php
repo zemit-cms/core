@@ -38,7 +38,6 @@ class Preflight extends Injectable
     public function beforeExecuteRoute(): void
     {
         if ($this->request->isCors()) {
-            
             $origin = $this->request->getHeader('Origin');
             $headers = $this->config->pathToArray('response.corsHeaders') ?? [];
             $this->setCorsHeaders($this->response, $origin, $headers);
@@ -67,7 +66,6 @@ class Preflight extends Injectable
         // Set cors headers
         foreach ($headers as $headerKey => $headerValue) {
             if (!$response->hasHeader($headerKey) && !is_array($headerValue)) {
-                
                 // ignore Access-Control-Allow-Origin as we will add the header after
                 if ($headerKey === 'Access-Control-Allow-Origin') {
                     continue;

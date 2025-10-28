@@ -23,5 +23,4 @@ trait AbstractSearchConditions
     abstract public function getSearchConditions(): ?Collection;
     
     abstract public function defaultSearchCondition(): array|string|null;
-    
 }

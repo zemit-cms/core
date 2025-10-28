@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -12,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zemit\Identity\Traits\Interfaces;
 
-use \Zemit\Models\Interfaces\UserInterface as UserModelInterface;
+use Zemit\Models\Interfaces\UserInterface as UserModelInterface;
 
 interface UserInterface
 {

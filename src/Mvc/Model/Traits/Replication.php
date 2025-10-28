@@ -113,7 +113,6 @@ trait Replication
         
         // Check if the replication is ready
         if ($this->isReplicationReady()) {
-            
             // Use the read connection service
             $di->get($this->getReadConnectionService());
         }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -25,7 +26,7 @@ class DebugTest extends AbstractUnit
 {
     public Debug $debug;
     
-    protected function setUp() : void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->debug = $this->di->get('debug');

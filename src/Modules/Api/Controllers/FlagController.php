@@ -15,5 +15,4 @@ use Zemit\Modules\Api\Controller;
 
 class FlagController extends Controller
 {
-
 }

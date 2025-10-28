@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -25,7 +26,6 @@ use Zemit\Identity\Traits\User;
 use Zemit\Mvc\ModelInterface;
 use Zemit\Support\Options\Options;
 use Zemit\Support\Options\OptionsInterface;
-
 use Phalcon\Filter\Validation\Validator\Confirmation;
 use Phalcon\Filter\Validation\Validator\Email;
 use Phalcon\Filter\Validation\Validator\PresenceOf;
@@ -95,7 +95,7 @@ class Manager extends Injectable implements ManagerInterface, OptionsInterface
         
         $messages = $validation->getMessages();
         if (!$messages->count()) {
-            $user = !empty($params['email'])? $this->findUserByEmail($params['email']) : null;
+            $user = !empty($params['email']) ? $this->findUserByEmail($params['email']) : null;
             
             $loginFailedMessage = new Message('Login Failed', ['email', 'password'], 'LoginFailed', 401);
             $loginForbiddenMessage = new Message('Login Forbidden', ['email', 'password'], 'LoginForbidden', 403);
@@ -182,7 +182,7 @@ class Manager extends Injectable implements ManagerInterface, OptionsInterface
         }
         
         // retrieve the user using the provided email
-        $user = isset($params['email'])? $this->findUserByEmail($params['email']) : false;
+        $user = isset($params['email']) ? $this->findUserByEmail($params['email']) : false;
         
         // user not found
         if (!$user) {

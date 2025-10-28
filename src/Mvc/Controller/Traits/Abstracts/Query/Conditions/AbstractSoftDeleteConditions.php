@@ -23,5 +23,4 @@ trait AbstractSoftDeleteConditions
     abstract public function getSoftDeleteConditions(): ?Collection;
     
     abstract public function defaultSoftDeleteCondition(): array|string|null;
-    
 }

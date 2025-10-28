@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -22,5 +23,4 @@ trait AbstractFilterFields
     abstract public function setFilterFields(?Collection $filterFields): void;
     
     abstract public function getFilterFields(): ?Collection;
-    
 }

@@ -72,7 +72,6 @@ trait FilterConditions
         $bind = [];
         $bindTypes = [];
         foreach ($filters as $filter) {
-            
             // nesting filtering, switch logical and append filter group
             if (isset($filter[0]) && is_array($filter[0])) {
                 $defaultFilterCondition = $this->defaultFilterCondition($filter, $allowedFilters, !$or);

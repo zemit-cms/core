@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -12,7 +13,8 @@ declare(strict_types=1);
 
 namespace Zemit\Models\Enums;
 
-enum TranslateTableTable: string {
+enum TranslateTableTable: string
+{
     case PAGE = 'page';
     case POST = 'post';
     case CATEGORY = 'category';

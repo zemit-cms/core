@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -14,7 +15,7 @@ namespace Zemit\Models\Abstracts;
 
 use Phalcon\Db\RawValue;
 use Zemit\Filter\Validation;
-use \Zemit\Models\AbstractModel;
+use Zemit\Models\AbstractModel;
 use Zemit\Models\Lang;
 use Zemit\Models\User;
 use Zemit\Models\Abstracts\Interfaces\TranslateAbstractInterface;

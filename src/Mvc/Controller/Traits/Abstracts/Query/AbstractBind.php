@@ -26,5 +26,4 @@ trait AbstractBind
     abstract public function setBindTypes(?Collection $bindTypes): void;
     
     abstract public function getBindTypes(): ?Collection;
-    
 }

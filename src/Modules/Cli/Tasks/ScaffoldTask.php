@@ -138,7 +138,6 @@ DOC;
         
         $tables = $this->db->listTables();
         foreach ($tables as $table) {
-            
             // filter excluded tables
             if ($this->isExcludedTable($table)) {
                 continue;
@@ -385,7 +384,6 @@ enum {$enumName}: string {
 {$enumValues}
 }
 PHP;
-
     }
     
     /**
@@ -523,9 +521,9 @@ PHP;
             $propertyName = $this->getPropertyName($columnName);
             
             $minSize = 0;
-            $maxSize = is_int($column->getSize())? $column->getSize() : 0;
+            $maxSize = is_int($column->getSize()) ? $column->getSize() : 0;
             
-            $allowEmpty = $column->isNotNull() && !$column->isAutoIncrement()? 'false' : 'true';
+            $allowEmpty = $column->isNotNull() && !$column->isAutoIncrement() ? 'false' : 'true';
             
             if ($columnType === Column::TYPE_DATE) {
                 $validationItems [] = <<<PHP
@@ -554,14 +552,14 @@ PHP;
             
             // String
             if ($propertyType === 'string' && $maxSize) {
-                $validationItems []= <<<PHP
+                $validationItems [] = <<<PHP
         \$this->addStringLengthValidation(\$validator, '{$propertyName}', {$minSize}, {$maxSize}, {$allowEmpty});
 PHP;
             }
             
             // Int
             if ($propertyType === 'int' && $column->isUnsigned()) {
-                $validationItems []= <<<PHP
+                $validationItems [] = <<<PHP
         \$this->addUnsignedIntValidation(\$validator, '{$propertyName}', {$allowEmpty});
 PHP;
             }
@@ -601,7 +599,6 @@ PHP;
             
         // Has Many
         foreach ($tables as $otherTable) {
-            
             // skip the current table
             if ($otherTable === $table) {
                 continue;
@@ -621,7 +618,6 @@ PHP;
                 
                 // if the column name starts with the current table name
                 if (str_starts_with($otherColumnName, $table . '_')) {
-                    
                     // foreach column of the current table
                     foreach ($columns as $column) {
                         assert($column instanceof ColumnInterface);
@@ -632,20 +628,20 @@ PHP;
                             $propertyName = $this->getPropertyName($columnName);
                             
                             $useInterfaces[$relationInterface] = true;
-                            $interfaceInjectableItems []= <<<PHP
+                            $interfaceInjectableItems [] = <<<PHP
  * @property {$relationInterface}[] \${$relationEager}
  * @property {$relationInterface}[] \${$relationAlias}
  * @method {$relationInterface}[] get{$relationAlias}(?array \$params = null)
 PHP;
                             
                             $useModels[$relationName] = true;
-                            $relationshipInjectableItems []= <<<PHP
+                            $relationshipInjectableItems [] = <<<PHP
  * @property {$relationName}[] \${$relationEager}
  * @property {$relationName}[] \${$relationAlias}
  * @method {$relationName}[] get{$relationAlias}(?array \$params = null)
 PHP;
                             
-                            $relationshipItems []= <<<PHP
+                            $relationshipItems [] = <<<PHP
         \$this->hasMany('{$propertyName}', {$relationClass}, '{$otherPropertyName}', ['alias' => '{$relationAlias}']);
 PHP;
                             // check if we have many-to-many
@@ -674,7 +670,6 @@ PHP;
                                     $manyManyTableEager = strtolower($manyManyTableAlias);
                                     
                                     if (str_starts_with($manyColumnName, $manyManyTable . '_')) {
-                                        
                                         $manyManyTableColumns = $this->describeColumns($manyManyTable);
                                         foreach ($manyManyTableColumns as $manyManyTableColumn) {
                                             $manyManyColumnName = $manyManyTableColumn->getName();
@@ -682,20 +677,20 @@ PHP;
                                                 $manyManyPropertyName = $this->getPropertyName($manyManyColumnName);
                                                 
                                                 $useInterfaces[$manyManyTableInterface] = true;
-                                                $interfaceInjectableItems []= <<<PHP
+                                                $interfaceInjectableItems [] = <<<PHP
  * @property {$manyManyTableInterface}[] \${$manyManyTableEager}
  * @property {$manyManyTableInterface}[] \${$manyManyTableAlias}
  * @method {$manyManyTableInterface}[] get{$manyManyTableAlias}(?array \$params = null)
 PHP;
                                                 
                                                 $useModels[$manyManyTableName] = true;
-                                                $relationshipInjectableItems []= <<<PHP
+                                                $relationshipInjectableItems [] = <<<PHP
  * @property {$manyManyTableName}[] \${$manyManyTableEager}
  * @property {$manyManyTableName}[] \${$manyManyTableAlias}
  * @method {$manyManyTableName}[] get{$manyManyTableAlias}(?array \$params = null)
 PHP;
                                                 
-                                                $relationshipItems []= <<<PHP
+                                                $relationshipItems [] = <<<PHP
         \$this->hasManyToMany(
             '{$propertyName}',
             {$relationClass},
@@ -737,7 +732,7 @@ PHP;
                             $length = strlen($relationTableName);
                             $midpoint = (int)floor($length / 2);
                             $firstPart = substr($relationTableName, 0, $midpoint);
-                            $secondPart = substr($relationTableName, $midpoint + (($length % 2 === 0)? 0 : 1));
+                            $secondPart = substr($relationTableName, $midpoint + (($length % 2 === 0) ? 0 : 1));
                             if ($firstPart === $secondPart) {
                                 $relationTableName = $firstPart;
                             }
@@ -753,11 +748,10 @@ PHP;
             }
             
             if ($relationName) {
-                
                 $relationTableNameUncamelized = Helper::uncamelize($relationTableName);
                 while (!empty($relationTableNameUncamelized) && !in_array($relationTableNameUncamelized, $tables, true)) {
                     $index = strpos($relationTableNameUncamelized, '_');
-                    $relationTableNameUncamelized = $index? substr($relationTableNameUncamelized, $index + 1, strlen($relationTableNameUncamelized)) : null;
+                    $relationTableNameUncamelized = $index ? substr($relationTableNameUncamelized, $index + 1, strlen($relationTableNameUncamelized)) : null;
                 }
                 
                 // can't find the table, skip
@@ -772,30 +766,30 @@ PHP;
                 $relationEager = strtolower($relationAlias);
                 
                 $useInterfaces[$relationTableInterface] = true;
-                $interfaceInjectableItems []= <<<PHP
+                $interfaceInjectableItems [] = <<<PHP
  * @property {$relationTableInterface} \${$relationEager}
  * @property {$relationTableInterface} \${$relationAlias}
  * @method {$relationTableInterface} get{$relationAlias}(?array \$params = null)
 PHP;
                 
                 $useModels[$relationTableName] = true;
-                $relationshipInjectableItems []= <<<PHP
+                $relationshipInjectableItems [] = <<<PHP
  * @property {$relationTableName} \${$relationEager}
  * @property {$relationTableName} \${$relationAlias}
  * @method {$relationTableName} get{$relationAlias}(?array \$params = null)
 PHP;
                 
-                $relationshipItems []= <<<PHP
+                $relationshipItems [] = <<<PHP
         \$this->belongsTo('{$propertyName}', {$relationClass}, 'id', ['alias' => '{$relationAlias}']);
 PHP;
             }
         }
         
         foreach (array_keys($useModels) as $useItem) {
-            $relationshipUseItems []= 'use ' . $modelNamespace . $useItem . ';';
+            $relationshipUseItems [] = 'use ' . $modelNamespace . $useItem . ';';
         }
         foreach (array_keys($useInterfaces) as $useInterface) {
-            $interfaceUseItems []= 'use ' . $modelNamespace . $useInterface . ';';
+            $interfaceUseItems [] = 'use ' . $modelNamespace . $useInterface . ';';
         }
         
         // Avoid empty lines if not relationship were found
@@ -951,7 +945,7 @@ PHP;
             $setMethodComments = $this->getSetMethodComment($column, $definition, false);
             
             if (!$this->isNoTypings()) {
-                $propertyType = isset($definition['type'])? ': ' . $definition['type'] : '';
+                $propertyType = isset($definition['type']) ? ': ' . $definition['type'] : '';
                 $voidType = ': void';
             } else {
                 $propertyType = '';
@@ -1052,31 +1046,31 @@ PHP;
     {
         $attributes = [];
         if ($column->isFirst()) {
-            $attributes []= 'First';
+            $attributes [] = 'First';
         }
         if ($column->isPrimary()) {
-            $attributes []= 'Primary';
+            $attributes [] = 'Primary';
         }
         if ($column->isNotNull()) {
-            $attributes []= 'NotNull';
+            $attributes [] = 'NotNull';
         }
         if ($column->isNumeric()) {
-            $attributes []= 'Numeric';
+            $attributes [] = 'Numeric';
         }
         if ($column->isUnsigned()) {
-            $attributes []= 'Unsigned';
+            $attributes [] = 'Unsigned';
         }
         if ($column->isAutoIncrement()) {
-            $attributes []= 'AutoIncrement';
+            $attributes [] = 'AutoIncrement';
         }
         if ($column->getSize()) {
-            $attributes []= 'Size(' . $column->getSize() . ')';
+            $attributes [] = 'Size(' . $column->getSize() . ')';
         }
         if ($column->getScale()) {
-            $attributes []= 'Scale(' . $column->getSize() . ')';
+            $attributes [] = 'Scale(' . $column->getSize() . ')';
         }
         if ($column->getType()) {
-            $attributes []= 'Type(' . $column->getType() . ')';
+            $attributes [] = 'Type(' . $column->getType() . ')';
         }
         return implode(' | ', $attributes);
     }
@@ -1090,24 +1084,24 @@ PHP;
         $optional = !$column->isNotNull() || $column->isAutoIncrement() || is_null($defaultValue);
         
         // property
-        $propertyVisibility = $this->isProtectedProperties()? 'protected' : 'public';
+        $propertyVisibility = $this->isProtectedProperties() ? 'protected' : 'public';
         $propertyName = $this->getPropertyName($column->getName());
         
         // property type
-        $propertyType = $this->isNoTypings()? '' : 'mixed';
+        $propertyType = $this->isNoTypings() ? '' : 'mixed';
         if ($this->isGranularTypings()) {
-            $rawValueType = $this->isAddRawValueType()? 'RawValue|' : '';
-            $nullType = $optional? '|null' : '';
+            $rawValueType = $this->isAddRawValueType() ? 'RawValue|' : '';
+            $nullType = $optional ? '|null' : '';
             $propertyType = $rawValueType . $columnType . $nullType;
         }
         
         // property raw value
-        $propertyValue = isset($defaultValue)? ' = ' . $defaultValue : '';
+        $propertyValue = isset($defaultValue) ? ' = ' . $defaultValue : '';
         if (empty($propertyValue) && $optional) {
             $propertyValue = ' = null';
         }
         
-        $param = (empty($propertyType)? '' : $propertyType . ' ') . "\${$propertyName}";
+        $param = (empty($propertyType) ? '' : $propertyType . ' ') . "\${$propertyName}";
         $property = "{$param}{$propertyValue}";
         
         return [

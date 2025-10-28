@@ -32,7 +32,7 @@ class Security extends PhalconSecurity
     }
     
     #[\Override]
-    public function hash(string $password, array $options = []) : string
+    public function hash(string $password, array $options = []): string
     {
         if (in_array($this->getDefaultHash(), [
             PhalconSecurity::CRYPT_ARGON2I,

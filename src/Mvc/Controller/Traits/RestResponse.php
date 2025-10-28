@@ -114,7 +114,6 @@ trait RestResponse
         $expires = '0';
         
         if ($this->request->isGet() && $code === 200 && $lifetime > 0) {
-            
             if ($cacheConfig['etag'] ?? false) {
                 $etag = hash($cacheConfig['etagAlgo'] ?? 'md5', json_encode($payload, JSON_UNESCAPED_SLASHES) ?: '');
                 $this->response->setEtag($etag);
@@ -126,7 +125,7 @@ trait RestResponse
                 }
             }
             
-            $cacheControl = $isAuthenticated? "private, max-age={$lifetime}" : "public, max-age={$lifetime}";
+            $cacheControl = $isAuthenticated ? "private, max-age={$lifetime}" : "public, max-age={$lifetime}";
             $expires = gmdate('D, d M Y H:i:s', time() + $lifetime) . ' GMT';
         }
         

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -15,7 +16,6 @@ namespace Zemit\Tests\Unit;
 use Phalcon\Application\AbstractApplication;
 use Phalcon\Di\DiInterface;
 use Phalcon\Mvc\RouterInterface as MvcRouterInterface;
-
 use Zemit\Bootstrap;
 use Zemit\Config\ConfigInterface;
 use Zemit\Bootstrap\Config;

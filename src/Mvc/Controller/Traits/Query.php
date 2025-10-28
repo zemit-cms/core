@@ -194,7 +194,7 @@ trait Query
             $build['group'] = implode(', ', $build['group']);
         }
         
-        return $this->mergeConditions(array_filter($ignoreKey? array_values($build) : $build));
+        return $this->mergeConditions(array_filter($ignoreKey ? array_values($build) : $build));
     }
 
     /**
@@ -215,7 +215,7 @@ trait Query
                         unset($condition[$k]);
                     }
                 }
-                $mergedConditions []= $condition[0] ?? $condition['conditions'] ?? $condition;
+                $mergedConditions [] = $condition[0] ?? $condition['conditions'] ?? $condition;
             }
             $mergedConditions = '(' . implode(') AND (', $mergedConditions) . ')';
             $ret[0] = $mergedConditions;

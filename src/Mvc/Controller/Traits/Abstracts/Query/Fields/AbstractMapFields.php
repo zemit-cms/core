@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -22,5 +23,4 @@ trait AbstractMapFields
     abstract public function setMapFields(?Collection $mapFields): void;
     
     abstract public function getMapFields(): ?Collection;
-    
 }

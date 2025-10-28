@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Zemit Framework.
  *
@@ -100,12 +101,10 @@ class Mysql extends \Phalcon\Db\Dialect\Mysql
             return parent::getColumnDefinition($column);
         }
         catch (\Phalcon\Db\Exception $e) {
-            
             $columnSql = $this->checkColumnTypeSql($column);
             $columnType = $this->checkColumnType($column);
             
             switch ($columnType) {
-                
                 case Column::TYPE_BINARY:
                     if (empty($columnSql)) {
                         $columnSql .= 'BINARY';

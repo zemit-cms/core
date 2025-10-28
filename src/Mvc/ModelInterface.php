@@ -56,5 +56,4 @@ interface ModelInterface extends
     ValidateInterface,
     PhalconModelInterface
 {
-    
 }

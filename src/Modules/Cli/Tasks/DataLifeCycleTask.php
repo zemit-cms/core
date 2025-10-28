@@ -113,7 +113,6 @@ DOC;
         
         // loop through models to process
         foreach ($models as $modelClass => $policyName) {
-            
             // retrieve configured model the policy
             $policy = $this->getDataLifeCyclePolicies()[$policyName] ?? [];
             
@@ -143,11 +142,11 @@ DOC;
             
             $callable = $policy['callable'] ?? function (Model $record, string $source, array &$response): void {
                 $deleted = $record->delete();
-                $response[$source]['deleted'] += $deleted? 1 : 0;
+                $response[$source]['deleted'] += $deleted ? 1 : 0;
                 
                 $messages = $record->getMessages();
                 if (!empty($messages)) {
-                    $response[$source]['messages']= array_merge($response[$source]['messages'], $messages);
+                    $response[$source]['messages'] = array_merge($response[$source]['messages'], $messages);
                 }
             };
             

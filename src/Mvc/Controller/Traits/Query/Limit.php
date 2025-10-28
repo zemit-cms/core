@@ -80,7 +80,7 @@ trait Limit
      */
     public function getLimit(): ?int
     {
-        return $this->limit === -1? null : $this->limit;
+        return $this->limit === -1 ? null : $this->limit;
     }
     
     /**

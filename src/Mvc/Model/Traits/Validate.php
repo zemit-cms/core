@@ -463,7 +463,6 @@ trait Validate
     public function addPositionValidation(Validation $validator, string $field = 'position', bool $allowEmpty = true, bool $allowRawValue = true): Validation
     {
         if (property_exists($this, $field)) {
-            
             $this->addNotEmptyValidation($validator, $field, $allowEmpty);
             
             if ($allowRawValue) {
@@ -503,7 +502,6 @@ trait Validate
     public function addSoftDeleteValidation(Validation $validator, string $field = 'deleted', bool $allowEmpty = true): Validation
     {
         if (property_exists($this, $field)) {
-            
             $this->addNotEmptyValidation($validator, $field, $allowEmpty);
             
             // Must be YES or NO
@@ -535,7 +533,6 @@ trait Validate
     public function addUuidValidation(Validation $validator, string $field = 'uuid', bool $allowEmpty = false): Validation
     {
         if (property_exists($this, $field)) {
-            
             $this->addNotEmptyValidation($validator, $field, $allowEmpty);
             
             // Must be unique
@@ -561,7 +558,6 @@ trait Validate
     public function addCrudValidation(Validation $validator, string $userIdField, string $dateField, bool $allowEmpty = true): Validation
     {
         if (property_exists($this, $userIdField)) {
-            
             $this->addNotEmptyValidation($validator, $userIdField, $allowEmpty);
             
             // Must be numeric
@@ -580,10 +576,8 @@ trait Validate
         }
         
         if (property_exists($this, $dateField)) {
-            
             // if the $userIdField is filled
             if (!empty($this->readAttribute($userIdField))) {
-                
                 $this->addPresenceValidation($validator, $dateField, false);
                 
                 // Must be a valid date format
