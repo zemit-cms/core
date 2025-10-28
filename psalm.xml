@@ -16,7 +16,7 @@
         phpVersion="8.4"
         errorLevel="2"
         resolveFromConfigFile="true"
-        findUnusedBaselineEntry="true"
+        findUnusedBaselineEntry="false"
         findUnusedCode="false"
         hideExternalErrors="true"
         totallyTyped="true"
@@ -31,15 +31,15 @@
     </projectFiles>
 
     <issueHandlers>
+        <!-- Allow suppressions that are unused (local vs pipeline) -->
+        <UnusedIssueHandlerSuppression errorLevel="suppress" />
+
         <!-- Framework base classes are intentionally extensible -->
         <ClassMustBeFinal errorLevel="suppress" />
 
         <!-- Over-strict and often noise -->
         <RiskyTruthyFalsyComparison errorLevel="suppress" />
 
-        <!-- Allow suppressions that are unused (local vs pipeline) -->
-        <UnusedIssueHandlerSuppression errorLevel="suppress" />
-        
         <!-- Phalcon Stubs are not read correctly -->
         <MethodSignatureMismatch errorLevel="suppress" />
         
