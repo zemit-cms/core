@@ -293,14 +293,8 @@ DOC;
             $console->handle($this->getArgs());
             $response = ob_get_clean() ?: null;
         }
-        catch (\Zemit\Exception $e) {
-            new Cli\ExceptionHandler($e);
-        }
-        catch (\Exception $exception) {
-            new Cli\ExceptionHandler($exception);
-        }
-        catch (\Throwable $throwable) {
-            new Cli\ExceptionHandler($throwable);
+        catch (\Throwable $e) {
+            new Cli\ExceptionHandler($e)->write();
         }
         
         return $response;

@@ -35,7 +35,7 @@ class ExceptionHandlerTest extends AbstractUnit
         $memoryStream = fopen('php://memory', 'r+');
         
         // Instantiate your handler with the memory stream
-        new ExceptionHandler($testException, $memoryStream);
+        new ExceptionHandler($testException, $memoryStream)->write();
         
         // Rewind and read the content of the memory stream
         rewind($memoryStream);
