@@ -378,7 +378,8 @@ trait FilterConditions
      *
      * @return bool True if the field is allowed as a filter, false otherwise.
      */
-    public function isFilterAllowed(string $field, ?array $allowedFilters): bool {
+    public function isFilterAllowed(string $field, ?array $allowedFilters): bool
+    {
         if (empty($allowedFilters)) {
             return false;
         }
