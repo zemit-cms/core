@@ -44,7 +44,7 @@ class Acl extends AbstractInjectionAware implements AclInterface
         $acl = new Memory();
         $aclRoleList = [];
         
-        $permissions = $this->getOption('permissions', []);
+        $permissions ??= $this->getOption('permissions', []);
         $featureList = $permissions['features'] ?? [];
         $roleList = $permissions['roles'] ?? [];
         
@@ -56,8 +56,10 @@ class Acl extends AbstractInjectionAware implements AclInterface
             
             if (isset($rolePermission['features'])) {
                 foreach ($rolePermission['features'] as $feature) {
-                    $rolePermission = array_merge_recursive($rolePermission, $featureList[$feature] ?? []);
-                    // @todo remove duplicates
+                    if (!isset($featureList[$feature])) {
+                        continue;
+                    }
+                    $rolePermission = array_merge_recursive($rolePermission, $featureList[$feature]);
                 }
             }
             
@@ -66,16 +68,20 @@ class Acl extends AbstractInjectionAware implements AclInterface
                 $components = is_array($components) ? $components : [$components];
                 
                 foreach ($components as $component => $accessList) {
-                    if (empty($component)) {
+                    // Support shorthand ['SomeController'] => '*'
+                    if (is_int($component)) {
                         $component = $accessList;
                         $accessList = '*';
                     }
                     
-                    if ($component !== '*') {
-                        $aclComponent = new Component($component);
-                        $acl->addComponent($aclComponent, $accessList);
-                        $acl->allow((string)$aclRole, (string)$aclComponent, $accessList);
+                    if ($component === '*') {
+                        continue;
                     }
+                    
+                    $aclAccess = is_array($accessList) ? array_values(array_unique(array_filter($accessList))) : [$accessList];
+                    $aclComponent = new Component($component);
+                    $acl->addComponent($aclComponent, $aclAccess);
+                    $acl->allow((string)$aclRole, (string)$aclComponent, $aclAccess);
                 }
             }
         }
