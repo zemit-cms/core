@@ -1,40 +1,9 @@
 build:
   nodes:
-    zemit:
-      root_path: './'
-      services:
-        mysql: latest
-        redis: 6
-      resources:
-        cpus: 1
-      environment:
-        timezone: 'America/New_York'
-        hosts:
-          core.zemit.local: 127.0.0.1
-        php:
-          version: 8.4
-          pecl_extensions:
-            - redis
-            - memcached
-            - apcu
-            - swoole
-            - phalcon-5.9.3
-          ini:
-            memory_limit: -1
-      dependencies:
-        before:
-          - composer self-update
-        after:
-          - composer update --no-interaction --prefer-dist
+    analysis:
       tests:
-        stop_on_failure: false
         override:
-          - command: php-scrutinizer-run --enable-security-analysis
-      cache:
-        disabled: false
-        directories:
-          - ~/.composer
-          - vendor/
+          - php-scrutinizer-run
 checks:
   php: true
 filter:
