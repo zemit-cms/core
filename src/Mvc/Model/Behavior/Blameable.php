@@ -119,10 +119,11 @@ class Blameable extends Behavior
             $after = $model->readAttribute($map);
             
             // skip unchanged
-            if ($event === 'update' && $changedFields !== null && $snapshot !== null) {
-                if ($before === $after || !in_array($map, $changedFields, true)) {
-                    continue;
-                }
+            if (
+                ($event === 'update' && $changedFields !== null && $snapshot !== null) &&
+                ($before === $after || !in_array($map, $changedFields, true))
+            ) {
+                continue;
             }
             
             $auditDetail = new $auditDetailClass();
