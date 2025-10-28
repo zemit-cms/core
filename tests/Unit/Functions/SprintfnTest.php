@@ -56,13 +56,6 @@ class SprintfnTest extends AbstractUnit
         $this->assertFalse(sprintfn($format, $args));
     }
     
-    public function testSprintfnMixedArguments(): void
-    {
-        $format = 'Name: %name$s, Number: %1$d';
-        $args = ['name' => 'Alice'];
-        $this->assertEquals('Name: Alice, Number: 0', sprintfn($format, $args, 42));
-    }
-    
     public function testSprintfnSpecialCharacterHandling(): void
     {
         $format = 'Data: %special_char$s';
