@@ -48,16 +48,17 @@ trait DatabaseTrait
     /**
      * The resetAction method is responsible for resetting the state of the application by performing
      * the following actions:
-     * 
+     *
      * 1. Truncate database tables using the truncateAction method.
      * 2. Insert initial data into the database using the insertAction method.
      *
      * Use Case:
-     * 
+     *
      * This method can be used when you need to reset the state of the application to its initial state.
      * It is commonly used for testing or when you want to re-populate the database with initial data.
      *
      * @return array
+     * @throws CliException
      */
     public function resetAction(): array
     {
