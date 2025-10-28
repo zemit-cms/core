@@ -42,13 +42,23 @@ class DataMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'record_id',
+                    'table_id',
                     [
                         'type' => Column::TYPE_BIGINTEGER,
                         'unsigned' => true,
                         'notNull' => true,
                         'size' => 1,
                         'after' => 'uuid'
+                    ]
+                ),
+                new Column(
+                    'record_id',
+                    [
+                        'type' => Column::TYPE_BIGINTEGER,
+                        'unsigned' => true,
+                        'notNull' => true,
+                        'size' => 1,
+                        'after' => 'table_id'
                     ]
                 ),
                 new Column(
@@ -144,6 +154,7 @@ class DataMigration_100 extends Migration
                 new Index('fk_data_created_by', ['created_by'], ''),
                 new Index('fk_data_updated_by', ['updated_by'], ''),
                 new Index('fk_data_deleted_by', ['deleted_by'], ''),
+                new Index('fk_data_table_id', ['table_id'], ''),
                 new Index('value_fulltext', ['value'], 'FULLTEXT'),
             ],
             'references' => [
@@ -186,6 +197,17 @@ class DataMigration_100 extends Migration
                         'referencedSchema' => 'zemit_core',
                         'referencedTable' => 'record',
                         'columns' => ['record_id'],
+                        'referencedColumns' => ['id'],
+                        'onUpdate' => 'CASCADE',
+                        'onDelete' => 'CASCADE'
+                    ]
+                ),
+                new Reference(
+                    'fk_data_table_id',
+                    [
+                        'referencedSchema' => 'zemit_core',
+                        'referencedTable' => 'table',
+                        'columns' => ['table_id'],
                         'referencedColumns' => ['id'],
                         'onUpdate' => 'CASCADE',
                         'onDelete' => 'CASCADE'

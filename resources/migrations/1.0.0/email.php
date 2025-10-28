@@ -54,24 +54,60 @@ class EmailMigration_100 extends Migration
                 new Column(
                     'from',
                     [
-                        'type' => Column::TYPE_VARCHAR,
+                        'type' => Column::TYPE_LONGTEXT,
                         'notNull' => true,
-                        'size' => 255,
                         'after' => 'template_id'
+                    ]
+                ),
+                new Column(
+                    'reply_to',
+                    [
+                        'type' => Column::TYPE_VARCHAR,
+                        'notNull' => false,
+                        'size' => 255,
+                        'after' => 'from'
+                    ]
+                ),
+                new Column(
+                    'return_path',
+                    [
+                        'type' => Column::TYPE_VARCHAR,
+                        'notNull' => false,
+                        'size' => 255,
+                        'after' => 'reply_to'
+                    ]
+                ),
+                new Column(
+                    'read_receipt_to',
+                    [
+                        'type' => Column::TYPE_VARCHAR,
+                        'notNull' => false,
+                        'size' => 255,
+                        'after' => 'return_path'
+                    ]
+                ),
+                new Column(
+                    'priority',
+                    [
+                        'type' => Column::TYPE_TINYINTEGER,
+                        'default' => "3",
+                        'notNull' => true,
+                        'size' => 1,
+                        'after' => 'read_receipt_to'
                     ]
                 ),
                 new Column(
                     'to',
                     [
-                        'type' => Column::TYPE_TEXT,
+                        'type' => Column::TYPE_LONGTEXT,
                         'notNull' => true,
-                        'after' => 'from'
+                        'after' => 'priority'
                     ]
                 ),
                 new Column(
                     'cc',
                     [
-                        'type' => Column::TYPE_TEXT,
+                        'type' => Column::TYPE_LONGTEXT,
                         'notNull' => false,
                         'after' => 'to'
                     ]
@@ -79,7 +115,7 @@ class EmailMigration_100 extends Migration
                 new Column(
                     'bcc',
                     [
-                        'type' => Column::TYPE_TEXT,
+                        'type' => Column::TYPE_LONGTEXT,
                         'notNull' => false,
                         'after' => 'cc'
                     ]
@@ -110,11 +146,22 @@ class EmailMigration_100 extends Migration
                     ]
                 ),
                 new Column(
+                    'sent',
+                    [
+                        'type' => Column::TYPE_TINYINTEGER,
+                        'default' => "0",
+                        'unsigned' => true,
+                        'notNull' => true,
+                        'size' => 1,
+                        'after' => 'meta'
+                    ]
+                ),
+                new Column(
                     'sent_at',
                     [
                         'type' => Column::TYPE_DATETIME,
                         'notNull' => false,
-                        'after' => 'meta'
+                        'after' => 'sent'
                     ]
                 ),
                 new Column(
