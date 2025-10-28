@@ -224,16 +224,14 @@ jobs:
         run: rm -rf ~/.cache/psalm
 
       - name: Run Psalm Security Scan
-        run: psalm --config=psalm.xml --output-format=sarif > results.sarif
-
-      - name: Display SARIF results
-        run: cat results.sarif
-
-      - name: Import Security Analysis results into GitHub Security Code Scanning
-        if: always()
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: results.sarif
+        run: |
+          psalm --config=psalm.xml \
+                 --output-format=github \
+                 --no-progress \
+                 --no-cache \
+                 --stats \
+                 --show-info=false \
+                 --threads=4
   
   # PHP UNIT TEST
   unit-tests:
