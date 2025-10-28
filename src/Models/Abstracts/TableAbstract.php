@@ -171,6 +171,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
@@ -183,6 +184,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * @param mixed $id
      * @return void
      */
+    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
@@ -194,6 +196,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
@@ -206,6 +209,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * @param mixed $uuid
      * @return void
      */
+    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
@@ -217,6 +221,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getWorkspaceId(): mixed
     {
         return $this->workspaceId;
@@ -229,6 +234,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * @param mixed $workspaceId
      * @return void
      */
+    #[\Override]
     public function setWorkspaceId(mixed $workspaceId): void
     {
         $this->workspaceId = $workspaceId;
@@ -240,6 +246,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * Attributes: NotNull | Size(60) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getLabel(): mixed
     {
         return $this->label;
@@ -252,6 +259,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * @param mixed $label
      * @return void
      */
+    #[\Override]
     public function setLabel(mixed $label): void
     {
         $this->label = $label;
@@ -263,6 +271,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * Attributes: Size(240) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getDescription(): mixed
     {
         return $this->description;
@@ -275,6 +284,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * @param mixed $description
      * @return void
      */
+    #[\Override]
     public function setDescription(mixed $description): void
     {
         $this->description = $description;
@@ -286,6 +296,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * Attributes: Size(64) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getIcon(): mixed
     {
         return $this->icon;
@@ -298,6 +309,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * @param mixed $icon
      * @return void
      */
+    #[\Override]
     public function setIcon(mixed $icon): void
     {
         $this->icon = $icon;
@@ -309,6 +321,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * Attributes: Size(9) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getColor(): mixed
     {
         return $this->color;
@@ -321,6 +334,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * @param mixed $color
      * @return void
      */
+    #[\Override]
     public function setColor(mixed $color): void
     {
         $this->color = $color;
@@ -332,6 +346,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
+    #[\Override]
     public function getDeleted(): mixed
     {
         return $this->deleted;
@@ -344,6 +359,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * @param mixed $deleted
      * @return void
      */
+    #[\Override]
     public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
@@ -355,6 +371,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
@@ -367,6 +384,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * @param mixed $createdAt
      * @return void
      */
+    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
@@ -378,6 +396,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
@@ -390,6 +409,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * @param mixed $createdBy
      * @return void
      */
+    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
@@ -401,6 +421,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedAt(): mixed
     {
         return $this->updatedAt;
@@ -413,6 +434,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * @param mixed $updatedAt
      * @return void
      */
+    #[\Override]
     public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
@@ -424,6 +446,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedBy(): mixed
     {
         return $this->updatedBy;
@@ -436,6 +459,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * @param mixed $updatedBy
      * @return void
      */
+    #[\Override]
     public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
@@ -447,6 +471,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedAt(): mixed
     {
         return $this->deletedAt;
@@ -459,6 +484,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * @param mixed $deletedAt
      * @return void
      */
+    #[\Override]
     public function setDeletedAt(mixed $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
@@ -470,6 +496,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedBy(): mixed
     {
         return $this->deletedBy;
@@ -482,6 +509,7 @@ abstract class TableAbstract extends \Zemit\Models\AbstractModel implements Tabl
      * @param mixed $deletedBy
      * @return void
      */
+    #[\Override]
     public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;

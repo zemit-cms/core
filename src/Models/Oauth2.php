@@ -24,6 +24,7 @@ use Zemit\Models\Interfaces\Oauth2Interface;
  */
 class Oauth2 extends Oauth2Abstract implements Oauth2Interface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

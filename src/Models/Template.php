@@ -24,6 +24,7 @@ use Zemit\Models\Interfaces\TemplateInterface;
  */
 class Template extends TemplateAbstract implements TemplateInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

@@ -24,6 +24,7 @@ use Zemit\Models\Interfaces\ValidatorInterface;
  */
 class Validator extends ValidatorAbstract implements ValidatorInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

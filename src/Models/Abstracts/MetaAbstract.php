@@ -141,6 +141,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
@@ -153,6 +154,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * @param mixed $id
      * @return void
      */
+    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
@@ -164,6 +166,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
@@ -176,6 +179,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * @param mixed $uuid
      * @return void
      */
+    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
@@ -187,6 +191,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getKey(): mixed
     {
         return $this->key;
@@ -199,6 +204,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * @param mixed $key
      * @return void
      */
+    #[\Override]
     public function setKey(mixed $key): void
     {
         $this->key = $key;
@@ -210,6 +216,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * Attributes: Type(23)
      * @return mixed
      */
+    #[\Override]
     public function getValue(): mixed
     {
         return $this->value;
@@ -222,6 +229,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * @param mixed $value
      * @return void
      */
+    #[\Override]
     public function setValue(mixed $value): void
     {
         $this->value = $value;
@@ -233,6 +241,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * Attributes: NotNull | Size(60) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getMetaTable(): mixed
     {
         return $this->metaTable;
@@ -245,6 +254,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * @param mixed $metaTable
      * @return void
      */
+    #[\Override]
     public function setMetaTable(mixed $metaTable): void
     {
         $this->metaTable = $metaTable;
@@ -256,6 +266,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getMetaId(): mixed
     {
         return $this->metaId;
@@ -268,6 +279,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * @param mixed $metaId
      * @return void
      */
+    #[\Override]
     public function setMetaId(mixed $metaId): void
     {
         $this->metaId = $metaId;
@@ -279,6 +291,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
+    #[\Override]
     public function getDeleted(): mixed
     {
         return $this->deleted;
@@ -291,6 +304,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * @param mixed $deleted
      * @return void
      */
+    #[\Override]
     public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
@@ -302,6 +316,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
@@ -314,6 +329,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * @param mixed $createdAt
      * @return void
      */
+    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
@@ -325,6 +341,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
@@ -337,6 +354,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * @param mixed $createdBy
      * @return void
      */
+    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
@@ -348,6 +366,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedAt(): mixed
     {
         return $this->updatedAt;
@@ -360,6 +379,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * @param mixed $updatedAt
      * @return void
      */
+    #[\Override]
     public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
@@ -371,6 +391,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedBy(): mixed
     {
         return $this->updatedBy;
@@ -383,6 +404,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * @param mixed $updatedBy
      * @return void
      */
+    #[\Override]
     public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
@@ -394,6 +416,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedAt(): mixed
     {
         return $this->deletedAt;
@@ -406,6 +429,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * @param mixed $deletedAt
      * @return void
      */
+    #[\Override]
     public function setDeletedAt(mixed $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
@@ -417,6 +441,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedBy(): mixed
     {
         return $this->deletedBy;
@@ -429,6 +454,7 @@ abstract class MetaAbstract extends \Zemit\Models\AbstractModel implements MetaA
      * @param mixed $deletedBy
      * @return void
      */
+    #[\Override]
     public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;

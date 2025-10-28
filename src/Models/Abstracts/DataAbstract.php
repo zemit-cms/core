@@ -151,6 +151,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
@@ -163,6 +164,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * @param mixed $id
      * @return void
      */
+    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
@@ -174,6 +176,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
@@ -186,6 +189,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * @param mixed $uuid
      * @return void
      */
+    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
@@ -197,6 +201,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getTableId(): mixed
     {
         return $this->tableId;
@@ -209,6 +214,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * @param mixed $tableId
      * @return void
      */
+    #[\Override]
     public function setTableId(mixed $tableId): void
     {
         $this->tableId = $tableId;
@@ -220,6 +226,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getRecordId(): mixed
     {
         return $this->recordId;
@@ -232,6 +239,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * @param mixed $recordId
      * @return void
      */
+    #[\Override]
     public function setRecordId(mixed $recordId): void
     {
         $this->recordId = $recordId;
@@ -243,6 +251,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getColumnId(): mixed
     {
         return $this->columnId;
@@ -255,6 +264,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * @param mixed $columnId
      * @return void
      */
+    #[\Override]
     public function setColumnId(mixed $columnId): void
     {
         $this->columnId = $columnId;
@@ -266,6 +276,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * Attributes: Type(23)
      * @return mixed
      */
+    #[\Override]
     public function getValue(): mixed
     {
         return $this->value;
@@ -278,6 +289,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * @param mixed $value
      * @return void
      */
+    #[\Override]
     public function setValue(mixed $value): void
     {
         $this->value = $value;
@@ -289,6 +301,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
+    #[\Override]
     public function getDeleted(): mixed
     {
         return $this->deleted;
@@ -301,6 +314,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * @param mixed $deleted
      * @return void
      */
+    #[\Override]
     public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
@@ -312,6 +326,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
@@ -324,6 +339,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * @param mixed $createdAt
      * @return void
      */
+    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
@@ -335,6 +351,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
@@ -347,6 +364,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * @param mixed $createdBy
      * @return void
      */
+    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
@@ -358,6 +376,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedAt(): mixed
     {
         return $this->updatedAt;
@@ -370,6 +389,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * @param mixed $updatedAt
      * @return void
      */
+    #[\Override]
     public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
@@ -381,6 +401,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedBy(): mixed
     {
         return $this->updatedBy;
@@ -393,6 +414,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * @param mixed $updatedBy
      * @return void
      */
+    #[\Override]
     public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
@@ -404,6 +426,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedAt(): mixed
     {
         return $this->deletedAt;
@@ -416,6 +439,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * @param mixed $deletedAt
      * @return void
      */
+    #[\Override]
     public function setDeletedAt(mixed $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
@@ -427,6 +451,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedBy(): mixed
     {
         return $this->deletedBy;
@@ -439,6 +464,7 @@ abstract class DataAbstract extends \Zemit\Models\AbstractModel implements DataA
      * @param mixed $deletedBy
      * @return void
      */
+    #[\Override]
     public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;

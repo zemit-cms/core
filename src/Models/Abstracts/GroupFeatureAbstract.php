@@ -103,6 +103,7 @@ abstract class GroupFeatureAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
@@ -115,6 +116,7 @@ abstract class GroupFeatureAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $id
      * @return void
      */
+    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
@@ -126,6 +128,7 @@ abstract class GroupFeatureAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
@@ -138,6 +141,7 @@ abstract class GroupFeatureAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $uuid
      * @return void
      */
+    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
@@ -149,6 +153,7 @@ abstract class GroupFeatureAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getGroupId(): mixed
     {
         return $this->groupId;
@@ -161,6 +166,7 @@ abstract class GroupFeatureAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $groupId
      * @return void
      */
+    #[\Override]
     public function setGroupId(mixed $groupId): void
     {
         $this->groupId = $groupId;
@@ -172,6 +178,7 @@ abstract class GroupFeatureAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getFeatureId(): mixed
     {
         return $this->featureId;
@@ -184,6 +191,7 @@ abstract class GroupFeatureAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $featureId
      * @return void
      */
+    #[\Override]
     public function setFeatureId(mixed $featureId): void
     {
         $this->featureId = $featureId;
@@ -195,6 +203,7 @@ abstract class GroupFeatureAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: NotNull | Numeric | Unsigned | Size(1)
      * @return mixed
      */
+    #[\Override]
     public function getPosition(): mixed
     {
         return $this->position;
@@ -207,6 +216,7 @@ abstract class GroupFeatureAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $position
      * @return void
      */
+    #[\Override]
     public function setPosition(mixed $position): void
     {
         $this->position = $position;
@@ -218,6 +228,7 @@ abstract class GroupFeatureAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
+    #[\Override]
     public function getDeleted(): mixed
     {
         return $this->deleted;
@@ -230,6 +241,7 @@ abstract class GroupFeatureAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $deleted
      * @return void
      */
+    #[\Override]
     public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
@@ -241,6 +253,7 @@ abstract class GroupFeatureAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
@@ -253,6 +266,7 @@ abstract class GroupFeatureAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $createdAt
      * @return void
      */
+    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
@@ -264,6 +278,7 @@ abstract class GroupFeatureAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
@@ -276,6 +291,7 @@ abstract class GroupFeatureAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $createdBy
      * @return void
      */
+    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;

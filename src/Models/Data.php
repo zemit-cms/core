@@ -24,6 +24,7 @@ use Zemit\Models\Interfaces\DataInterface;
  */
 class Data extends DataAbstract implements DataInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

@@ -167,6 +167,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
@@ -179,6 +180,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * @param mixed $id
      * @return void
      */
+    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
@@ -190,6 +192,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
@@ -202,6 +205,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * @param mixed $uuid
      * @return void
      */
+    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
@@ -213,6 +217,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getTableId(): mixed
     {
         return $this->tableId;
@@ -225,6 +230,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * @param mixed $tableId
      * @return void
      */
+    #[\Override]
     public function setTableId(mixed $tableId): void
     {
         $this->tableId = $tableId;
@@ -236,6 +242,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * Attributes: NotNull | Size(60) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getLabel(): mixed
     {
         return $this->label;
@@ -248,6 +255,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * @param mixed $label
      * @return void
      */
+    #[\Override]
     public function setLabel(mixed $label): void
     {
         $this->label = $label;
@@ -259,6 +267,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * Attributes: NotNull | Size('linkToAnotherRecord','singleLineText','longText','attachment','checkbox','multipleSelect','singleSelect','user','date','phoneNumber','email','url','number','currency','percent','duration','rating','formula','rollup','count','lookup','createdTime','lastModifiedTime','createdBy','lastModifiedBy','autonumber','barcode','button') | Type(18)
      * @return mixed
      */
+    #[\Override]
     public function getType(): mixed
     {
         return $this->type;
@@ -271,6 +280,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * @param mixed $type
      * @return void
      */
+    #[\Override]
     public function setType(mixed $type): void
     {
         $this->type = $type;
@@ -282,6 +292,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * Attributes: Size(120) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getDescription(): mixed
     {
         return $this->description;
@@ -294,6 +305,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * @param mixed $description
      * @return void
      */
+    #[\Override]
     public function setDescription(mixed $description): void
     {
         $this->description = $description;
@@ -305,6 +317,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * Attributes: Type(24)
      * @return mixed
      */
+    #[\Override]
     public function getOptions(): mixed
     {
         return $this->options;
@@ -317,6 +330,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * @param mixed $options
      * @return void
      */
+    #[\Override]
     public function setOptions(mixed $options): void
     {
         $this->options = $options;
@@ -328,6 +342,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
+    #[\Override]
     public function getDeleted(): mixed
     {
         return $this->deleted;
@@ -340,6 +355,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * @param mixed $deleted
      * @return void
      */
+    #[\Override]
     public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
@@ -351,6 +367,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
@@ -363,6 +380,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * @param mixed $createdAt
      * @return void
      */
+    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
@@ -374,6 +392,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
@@ -386,6 +405,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * @param mixed $createdBy
      * @return void
      */
+    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
@@ -397,6 +417,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedAt(): mixed
     {
         return $this->updatedAt;
@@ -409,6 +430,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * @param mixed $updatedAt
      * @return void
      */
+    #[\Override]
     public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
@@ -420,6 +442,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedBy(): mixed
     {
         return $this->updatedBy;
@@ -432,6 +455,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * @param mixed $updatedBy
      * @return void
      */
+    #[\Override]
     public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
@@ -443,6 +467,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedAt(): mixed
     {
         return $this->deletedAt;
@@ -455,6 +480,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * @param mixed $deletedAt
      * @return void
      */
+    #[\Override]
     public function setDeletedAt(mixed $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
@@ -466,6 +492,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedBy(): mixed
     {
         return $this->deletedBy;
@@ -478,6 +505,7 @@ abstract class ColumnAbstract extends \Zemit\Models\AbstractModel implements Col
      * @param mixed $deletedBy
      * @return void
      */
+    #[\Override]
     public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;

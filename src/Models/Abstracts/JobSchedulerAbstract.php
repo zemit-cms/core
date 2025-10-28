@@ -157,6 +157,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
@@ -169,6 +170,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $id
      * @return void
      */
+    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
@@ -180,6 +182,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
@@ -192,6 +195,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $uuid
      * @return void
      */
+    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
@@ -203,6 +207,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: NotNull | Size(100) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getKey(): mixed
     {
         return $this->key;
@@ -215,6 +220,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $key
      * @return void
      */
+    #[\Override]
     public function setKey(mixed $key): void
     {
         $this->key = $key;
@@ -226,6 +232,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: NotNull | Size(100) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getLabel(): mixed
     {
         return $this->label;
@@ -238,6 +245,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $label
      * @return void
      */
+    #[\Override]
     public function setLabel(mixed $label): void
     {
         $this->label = $label;
@@ -249,6 +257,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: NotNull | Size(100) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getTask(): mixed
     {
         return $this->task;
@@ -261,6 +270,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $task
      * @return void
      */
+    #[\Override]
     public function setTask(mixed $task): void
     {
         $this->task = $task;
@@ -272,6 +282,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: NotNull | Size(100) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getAction(): mixed
     {
         return $this->action;
@@ -284,6 +295,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $action
      * @return void
      */
+    #[\Override]
     public function setAction(mixed $action): void
     {
         $this->action = $action;
@@ -295,6 +307,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: Type(24)
      * @return mixed
      */
+    #[\Override]
     public function getParams(): mixed
     {
         return $this->params;
@@ -307,6 +320,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $params
      * @return void
      */
+    #[\Override]
     public function setParams(mixed $params): void
     {
         $this->params = $params;
@@ -318,6 +332,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: NotNull | Size('manually','minutely','hourly','daily','weekdays','weekends','weekly','bi-weekly','monthly','bi-monthly','quarterly','semi-annually','yearly') | Type(18)
      * @return mixed
      */
+    #[\Override]
     public function getFrequency(): mixed
     {
         return $this->frequency;
@@ -330,6 +345,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $frequency
      * @return void
      */
+    #[\Override]
     public function setFrequency(mixed $frequency): void
     {
         $this->frequency = $frequency;
@@ -341,6 +357,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getStartingAt(): mixed
     {
         return $this->startingAt;
@@ -353,6 +370,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $startingAt
      * @return void
      */
+    #[\Override]
     public function setStartingAt(mixed $startingAt): void
     {
         $this->startingAt = $startingAt;
@@ -364,6 +382,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
+    #[\Override]
     public function getDeleted(): mixed
     {
         return $this->deleted;
@@ -376,6 +395,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $deleted
      * @return void
      */
+    #[\Override]
     public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
@@ -387,6 +407,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
@@ -399,6 +420,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $createdAt
      * @return void
      */
+    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
@@ -410,6 +432,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
@@ -422,6 +445,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $createdBy
      * @return void
      */
+    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
@@ -433,6 +457,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedAt(): mixed
     {
         return $this->updatedAt;
@@ -445,6 +470,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $updatedAt
      * @return void
      */
+    #[\Override]
     public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
@@ -456,6 +482,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedBy(): mixed
     {
         return $this->updatedBy;
@@ -468,6 +495,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $updatedBy
      * @return void
      */
+    #[\Override]
     public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
@@ -479,6 +507,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedAt(): mixed
     {
         return $this->deletedAt;
@@ -491,6 +520,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $deletedAt
      * @return void
      */
+    #[\Override]
     public function setDeletedAt(mixed $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
@@ -502,6 +532,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedBy(): mixed
     {
         return $this->deletedBy;
@@ -514,6 +545,7 @@ abstract class JobSchedulerAbstract extends \Zemit\Models\AbstractModel implemen
      * @param mixed $deletedBy
      * @return void
      */
+    #[\Override]
     public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;

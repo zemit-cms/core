@@ -24,6 +24,7 @@ use Zemit\Models\Interfaces\SettingInterface;
  */
 class Setting extends SettingAbstract implements SettingInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

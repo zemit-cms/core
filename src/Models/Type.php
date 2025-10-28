@@ -24,6 +24,7 @@ use Zemit\Models\Interfaces\TypeInterface;
  */
 class Type extends TypeAbstract implements TypeInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

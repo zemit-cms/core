@@ -24,6 +24,7 @@ use Zemit\Models\Interfaces\UserTypeInterface;
  */
 class UserType extends UserTypeAbstract implements UserTypeInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

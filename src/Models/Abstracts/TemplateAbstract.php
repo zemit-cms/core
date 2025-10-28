@@ -141,6 +141,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
@@ -153,6 +154,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * @param mixed $id
      * @return void
      */
+    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
@@ -164,6 +166,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
@@ -176,6 +179,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * @param mixed $uuid
      * @return void
      */
+    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
@@ -187,6 +191,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * Attributes: NotNull | Size(120) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getKey(): mixed
     {
         return $this->key;
@@ -199,6 +204,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * @param mixed $key
      * @return void
      */
+    #[\Override]
     public function setKey(mixed $key): void
     {
         $this->key = $key;
@@ -210,6 +216,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * Attributes: NotNull | Size(120) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getLabel(): mixed
     {
         return $this->label;
@@ -222,6 +229,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * @param mixed $label
      * @return void
      */
+    #[\Override]
     public function setLabel(mixed $label): void
     {
         $this->label = $label;
@@ -233,6 +241,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getSubject(): mixed
     {
         return $this->subject;
@@ -245,6 +254,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * @param mixed $subject
      * @return void
      */
+    #[\Override]
     public function setSubject(mixed $subject): void
     {
         $this->subject = $subject;
@@ -256,6 +266,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * Attributes: Type(23)
      * @return mixed
      */
+    #[\Override]
     public function getContent(): mixed
     {
         return $this->content;
@@ -268,6 +279,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * @param mixed $content
      * @return void
      */
+    #[\Override]
     public function setContent(mixed $content): void
     {
         $this->content = $content;
@@ -279,6 +291,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
+    #[\Override]
     public function getDeleted(): mixed
     {
         return $this->deleted;
@@ -291,6 +304,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * @param mixed $deleted
      * @return void
      */
+    #[\Override]
     public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
@@ -302,6 +316,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
@@ -314,6 +329,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * @param mixed $createdAt
      * @return void
      */
+    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
@@ -325,6 +341,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
@@ -337,6 +354,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * @param mixed $createdBy
      * @return void
      */
+    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
@@ -348,6 +366,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedAt(): mixed
     {
         return $this->updatedAt;
@@ -360,6 +379,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * @param mixed $updatedAt
      * @return void
      */
+    #[\Override]
     public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
@@ -371,6 +391,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedBy(): mixed
     {
         return $this->updatedBy;
@@ -383,6 +404,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * @param mixed $updatedBy
      * @return void
      */
+    #[\Override]
     public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
@@ -394,6 +416,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedAt(): mixed
     {
         return $this->deletedAt;
@@ -406,6 +429,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * @param mixed $deletedAt
      * @return void
      */
+    #[\Override]
     public function setDeletedAt(mixed $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
@@ -417,6 +441,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedBy(): mixed
     {
         return $this->deletedBy;
@@ -429,6 +454,7 @@ abstract class TemplateAbstract extends \Zemit\Models\AbstractModel implements T
      * @param mixed $deletedBy
      * @return void
      */
+    #[\Override]
     public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;

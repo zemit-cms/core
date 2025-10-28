@@ -165,6 +165,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
@@ -177,6 +178,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * @param mixed $id
      * @return void
      */
+    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
@@ -188,6 +190,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
@@ -200,6 +203,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * @param mixed $uuid
      * @return void
      */
+    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
@@ -211,6 +215,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * Attributes: Size(255) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getLabel(): mixed
     {
         return $this->label;
@@ -223,6 +228,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * @param mixed $label
      * @return void
      */
+    #[\Override]
     public function setLabel(mixed $label): void
     {
         $this->label = $label;
@@ -234,6 +240,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * Attributes: NotNull | Size('other') | Type(18)
      * @return mixed
      */
+    #[\Override]
     public function getCategory(): mixed
     {
         return $this->category;
@@ -246,6 +253,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * @param mixed $category
      * @return void
      */
+    #[\Override]
     public function setCategory(mixed $category): void
     {
         $this->category = $category;
@@ -257,6 +265,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getPath(): mixed
     {
         return $this->path;
@@ -269,6 +278,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * @param mixed $path
      * @return void
      */
+    #[\Override]
     public function setPath(mixed $path): void
     {
         $this->path = $path;
@@ -280,6 +290,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * Attributes: Size(100) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getMimeType(): mixed
     {
         return $this->mimeType;
@@ -292,6 +303,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * @param mixed $mimeType
      * @return void
      */
+    #[\Override]
     public function setMimeType(mixed $mimeType): void
     {
         $this->mimeType = $mimeType;
@@ -303,6 +315,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * Attributes: Size(20) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getExtension(): mixed
     {
         return $this->extension;
@@ -315,6 +328,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * @param mixed $extension
      * @return void
      */
+    #[\Override]
     public function setExtension(mixed $extension): void
     {
         $this->extension = $extension;
@@ -326,6 +340,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getSize(): mixed
     {
         return $this->size;
@@ -338,6 +353,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * @param mixed $size
      * @return void
      */
+    #[\Override]
     public function setSize(mixed $size): void
     {
         $this->size = $size;
@@ -349,6 +365,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
+    #[\Override]
     public function getDeleted(): mixed
     {
         return $this->deleted;
@@ -361,6 +378,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * @param mixed $deleted
      * @return void
      */
+    #[\Override]
     public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
@@ -372,6 +390,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
@@ -384,6 +403,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * @param mixed $createdAt
      * @return void
      */
+    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
@@ -395,6 +415,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
@@ -407,6 +428,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * @param mixed $createdBy
      * @return void
      */
+    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
@@ -418,6 +440,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedAt(): mixed
     {
         return $this->updatedAt;
@@ -430,6 +453,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * @param mixed $updatedAt
      * @return void
      */
+    #[\Override]
     public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
@@ -441,6 +465,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedBy(): mixed
     {
         return $this->updatedBy;
@@ -453,6 +478,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * @param mixed $updatedBy
      * @return void
      */
+    #[\Override]
     public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
@@ -464,6 +490,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedAt(): mixed
     {
         return $this->deletedAt;
@@ -476,6 +503,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * @param mixed $deletedAt
      * @return void
      */
+    #[\Override]
     public function setDeletedAt(mixed $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
@@ -487,6 +515,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedBy(): mixed
     {
         return $this->deletedBy;
@@ -499,6 +528,7 @@ abstract class FileAbstract extends \Zemit\Models\AbstractModel implements FileA
      * @param mixed $deletedBy
      * @return void
      */
+    #[\Override]
     public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;

@@ -24,6 +24,7 @@ use Zemit\Models\Interfaces\ColumnInterface;
  */
 class Column extends ColumnAbstract implements ColumnInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

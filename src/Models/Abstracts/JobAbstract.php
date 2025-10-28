@@ -164,6 +164,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
@@ -176,6 +177,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * @param mixed $id
      * @return void
      */
+    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
@@ -187,6 +189,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
@@ -199,6 +202,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * @param mixed $uuid
      * @return void
      */
+    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
@@ -210,6 +214,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * Attributes: Size(100) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getLabel(): mixed
     {
         return $this->label;
@@ -222,6 +227,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * @param mixed $label
      * @return void
      */
+    #[\Override]
     public function setLabel(mixed $label): void
     {
         $this->label = $label;
@@ -233,6 +239,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * Attributes: NotNull | Size(100) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getTask(): mixed
     {
         return $this->task;
@@ -245,6 +252,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * @param mixed $task
      * @return void
      */
+    #[\Override]
     public function setTask(mixed $task): void
     {
         $this->task = $task;
@@ -256,6 +264,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * Attributes: NotNull | Size(100) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getAction(): mixed
     {
         return $this->action;
@@ -268,6 +277,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * @param mixed $action
      * @return void
      */
+    #[\Override]
     public function setAction(mixed $action): void
     {
         $this->action = $action;
@@ -279,6 +289,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * Attributes: Type(24)
      * @return mixed
      */
+    #[\Override]
     public function getParams(): mixed
     {
         return $this->params;
@@ -291,6 +302,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * @param mixed $params
      * @return void
      */
+    #[\Override]
     public function setParams(mixed $params): void
     {
         $this->params = $params;
@@ -302,6 +314,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * Attributes: NotNull | Size('new','progress','failed','finished') | Type(18)
      * @return mixed
      */
+    #[\Override]
     public function getStatus(): mixed
     {
         return $this->status;
@@ -314,6 +327,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * @param mixed $status
      * @return void
      */
+    #[\Override]
     public function setStatus(mixed $status): void
     {
         $this->status = $status;
@@ -325,6 +339,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * Attributes: Type(24)
      * @return mixed
      */
+    #[\Override]
     public function getResult(): mixed
     {
         return $this->result;
@@ -337,6 +352,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * @param mixed $result
      * @return void
      */
+    #[\Override]
     public function setResult(mixed $result): void
     {
         $this->result = $result;
@@ -348,6 +364,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * Attributes: NotNull | Numeric | Unsigned | Size(1)
      * @return mixed
      */
+    #[\Override]
     public function getPriority(): mixed
     {
         return $this->priority;
@@ -360,6 +377,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * @param mixed $priority
      * @return void
      */
+    #[\Override]
     public function setPriority(mixed $priority): void
     {
         $this->priority = $priority;
@@ -371,6 +389,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getRunAt(): mixed
     {
         return $this->runAt;
@@ -383,6 +402,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * @param mixed $runAt
      * @return void
      */
+    #[\Override]
     public function setRunAt(mixed $runAt): void
     {
         $this->runAt = $runAt;
@@ -394,6 +414,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
+    #[\Override]
     public function getDeleted(): mixed
     {
         return $this->deleted;
@@ -406,6 +427,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * @param mixed $deleted
      * @return void
      */
+    #[\Override]
     public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
@@ -417,6 +439,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
@@ -429,6 +452,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * @param mixed $createdAt
      * @return void
      */
+    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
@@ -440,6 +464,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
@@ -452,6 +477,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * @param mixed $createdBy
      * @return void
      */
+    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
@@ -463,6 +489,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedAt(): mixed
     {
         return $this->updatedAt;
@@ -475,6 +502,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * @param mixed $updatedAt
      * @return void
      */
+    #[\Override]
     public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
@@ -486,6 +514,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedBy(): mixed
     {
         return $this->updatedBy;
@@ -498,6 +527,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * @param mixed $updatedBy
      * @return void
      */
+    #[\Override]
     public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
@@ -509,6 +539,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedAt(): mixed
     {
         return $this->deletedAt;
@@ -521,6 +552,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * @param mixed $deletedAt
      * @return void
      */
+    #[\Override]
     public function setDeletedAt(mixed $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
@@ -532,6 +564,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedBy(): mixed
     {
         return $this->deletedBy;
@@ -544,6 +577,7 @@ abstract class JobAbstract extends \Zemit\Models\AbstractModel implements JobAbs
      * @param mixed $deletedBy
      * @return void
      */
+    #[\Override]
     public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;

@@ -24,6 +24,7 @@ use Zemit\Models\Interfaces\ProfileInterface;
  */
 class Profile extends ProfileAbstract implements ProfileInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

@@ -24,6 +24,7 @@ use Zemit\Models\Interfaces\FeatureInterface;
  */
 class Feature extends FeatureAbstract implements FeatureInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

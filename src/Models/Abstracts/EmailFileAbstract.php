@@ -96,6 +96,7 @@ abstract class EmailFileAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
@@ -108,6 +109,7 @@ abstract class EmailFileAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $id
      * @return void
      */
+    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
@@ -119,6 +121,7 @@ abstract class EmailFileAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
@@ -131,6 +134,7 @@ abstract class EmailFileAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $uuid
      * @return void
      */
+    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
@@ -142,6 +146,7 @@ abstract class EmailFileAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getEmailId(): mixed
     {
         return $this->emailId;
@@ -154,6 +159,7 @@ abstract class EmailFileAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $emailId
      * @return void
      */
+    #[\Override]
     public function setEmailId(mixed $emailId): void
     {
         $this->emailId = $emailId;
@@ -165,6 +171,7 @@ abstract class EmailFileAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getFileId(): mixed
     {
         return $this->fileId;
@@ -177,6 +184,7 @@ abstract class EmailFileAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $fileId
      * @return void
      */
+    #[\Override]
     public function setFileId(mixed $fileId): void
     {
         $this->fileId = $fileId;
@@ -188,6 +196,7 @@ abstract class EmailFileAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
+    #[\Override]
     public function getDeleted(): mixed
     {
         return $this->deleted;
@@ -200,6 +209,7 @@ abstract class EmailFileAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $deleted
      * @return void
      */
+    #[\Override]
     public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
@@ -211,6 +221,7 @@ abstract class EmailFileAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
@@ -223,6 +234,7 @@ abstract class EmailFileAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $createdAt
      * @return void
      */
+    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
@@ -234,6 +246,7 @@ abstract class EmailFileAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
@@ -246,6 +259,7 @@ abstract class EmailFileAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $createdBy
      * @return void
      */
+    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;

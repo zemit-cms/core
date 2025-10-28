@@ -184,6 +184,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
@@ -196,6 +197,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
      * @param mixed $id
      * @return void
      */
+    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
@@ -207,6 +209,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
@@ -219,6 +222,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
      * @param mixed $uuid
      * @return void
      */
+    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
@@ -230,6 +234,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
      * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getEmail(): mixed
     {
         return $this->email;
@@ -242,6 +247,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
      * @param mixed $email
      * @return void
      */
+    #[\Override]
     public function setEmail(mixed $email): void
     {
         $this->email = $email;
@@ -253,6 +259,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
      * Attributes: Size(255) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getPassword(): mixed
     {
         return $this->password;
@@ -265,6 +272,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
      * @param mixed $password
      * @return void
      */
+    #[\Override]
     public function setPassword(mixed $password): void
     {
         $this->password = $password;
@@ -276,6 +284,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
      * Attributes: Size(255) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getResetToken(): mixed
     {
         return $this->resetToken;
@@ -288,6 +297,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
      * @param mixed $resetToken
      * @return void
      */
+    #[\Override]
     public function setResetToken(mixed $resetToken): void
     {
         $this->resetToken = $resetToken;
@@ -299,6 +309,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
+    #[\Override]
     public function getDeleted(): mixed
     {
         return $this->deleted;
@@ -311,6 +322,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
      * @param mixed $deleted
      * @return void
      */
+    #[\Override]
     public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
@@ -322,6 +334,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
@@ -334,6 +347,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
      * @param mixed $createdAt
      * @return void
      */
+    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
@@ -345,6 +359,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
@@ -357,6 +372,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
      * @param mixed $createdBy
      * @return void
      */
+    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
@@ -368,6 +384,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedAt(): mixed
     {
         return $this->updatedAt;
@@ -380,6 +397,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
      * @param mixed $updatedAt
      * @return void
      */
+    #[\Override]
     public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
@@ -391,6 +409,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedBy(): mixed
     {
         return $this->updatedBy;
@@ -403,6 +422,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
      * @param mixed $updatedBy
      * @return void
      */
+    #[\Override]
     public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
@@ -414,6 +434,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedAt(): mixed
     {
         return $this->deletedAt;
@@ -426,6 +447,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
      * @param mixed $deletedAt
      * @return void
      */
+    #[\Override]
     public function setDeletedAt(mixed $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
@@ -437,6 +459,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedBy(): mixed
     {
         return $this->deletedBy;
@@ -449,6 +472,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
      * @param mixed $deletedBy
      * @return void
      */
+    #[\Override]
     public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;

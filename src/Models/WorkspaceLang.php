@@ -24,6 +24,7 @@ use Zemit\Models\Interfaces\WorkspaceLangInterface;
  */
 class WorkspaceLang extends WorkspaceLangAbstract implements WorkspaceLangInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

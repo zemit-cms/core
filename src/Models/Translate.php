@@ -24,6 +24,7 @@ use Zemit\Models\Interfaces\TranslateInterface;
  */
 class Translate extends TranslateAbstract implements TranslateInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

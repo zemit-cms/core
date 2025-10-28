@@ -147,6 +147,7 @@ abstract class LangAbstract extends \Zemit\Models\AbstractModel implements LangA
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1)
      * @return mixed
      */
+    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
@@ -159,6 +160,7 @@ abstract class LangAbstract extends \Zemit\Models\AbstractModel implements LangA
      * @param mixed $id
      * @return void
      */
+    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
@@ -170,6 +172,7 @@ abstract class LangAbstract extends \Zemit\Models\AbstractModel implements LangA
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
@@ -182,6 +185,7 @@ abstract class LangAbstract extends \Zemit\Models\AbstractModel implements LangA
      * @param mixed $uuid
      * @return void
      */
+    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
@@ -193,6 +197,7 @@ abstract class LangAbstract extends \Zemit\Models\AbstractModel implements LangA
      * Attributes: NotNull | Size(10) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getCode(): mixed
     {
         return $this->code;
@@ -205,6 +210,7 @@ abstract class LangAbstract extends \Zemit\Models\AbstractModel implements LangA
      * @param mixed $code
      * @return void
      */
+    #[\Override]
     public function setCode(mixed $code): void
     {
         $this->code = $code;
@@ -216,6 +222,7 @@ abstract class LangAbstract extends \Zemit\Models\AbstractModel implements LangA
      * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getLabel(): mixed
     {
         return $this->label;
@@ -228,6 +235,7 @@ abstract class LangAbstract extends \Zemit\Models\AbstractModel implements LangA
      * @param mixed $label
      * @return void
      */
+    #[\Override]
     public function setLabel(mixed $label): void
     {
         $this->label = $label;
@@ -239,6 +247,7 @@ abstract class LangAbstract extends \Zemit\Models\AbstractModel implements LangA
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
+    #[\Override]
     public function getDeleted(): mixed
     {
         return $this->deleted;
@@ -251,6 +260,7 @@ abstract class LangAbstract extends \Zemit\Models\AbstractModel implements LangA
      * @param mixed $deleted
      * @return void
      */
+    #[\Override]
     public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
@@ -262,6 +272,7 @@ abstract class LangAbstract extends \Zemit\Models\AbstractModel implements LangA
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
@@ -274,6 +285,7 @@ abstract class LangAbstract extends \Zemit\Models\AbstractModel implements LangA
      * @param mixed $createdAt
      * @return void
      */
+    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
@@ -285,6 +297,7 @@ abstract class LangAbstract extends \Zemit\Models\AbstractModel implements LangA
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
@@ -297,6 +310,7 @@ abstract class LangAbstract extends \Zemit\Models\AbstractModel implements LangA
      * @param mixed $createdBy
      * @return void
      */
+    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
@@ -308,6 +322,7 @@ abstract class LangAbstract extends \Zemit\Models\AbstractModel implements LangA
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedAt(): mixed
     {
         return $this->updatedAt;
@@ -320,6 +335,7 @@ abstract class LangAbstract extends \Zemit\Models\AbstractModel implements LangA
      * @param mixed $updatedAt
      * @return void
      */
+    #[\Override]
     public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
@@ -331,6 +347,7 @@ abstract class LangAbstract extends \Zemit\Models\AbstractModel implements LangA
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedBy(): mixed
     {
         return $this->updatedBy;
@@ -343,6 +360,7 @@ abstract class LangAbstract extends \Zemit\Models\AbstractModel implements LangA
      * @param mixed $updatedBy
      * @return void
      */
+    #[\Override]
     public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
@@ -354,6 +372,7 @@ abstract class LangAbstract extends \Zemit\Models\AbstractModel implements LangA
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedAt(): mixed
     {
         return $this->deletedAt;
@@ -366,6 +385,7 @@ abstract class LangAbstract extends \Zemit\Models\AbstractModel implements LangA
      * @param mixed $deletedAt
      * @return void
      */
+    #[\Override]
     public function setDeletedAt(mixed $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
@@ -377,6 +397,7 @@ abstract class LangAbstract extends \Zemit\Models\AbstractModel implements LangA
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedBy(): mixed
     {
         return $this->deletedBy;
@@ -389,6 +410,7 @@ abstract class LangAbstract extends \Zemit\Models\AbstractModel implements LangA
      * @param mixed $deletedBy
      * @return void
      */
+    #[\Override]
     public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;

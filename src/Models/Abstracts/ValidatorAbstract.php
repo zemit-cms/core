@@ -148,6 +148,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
@@ -160,6 +161,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $id
      * @return void
      */
+    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
@@ -171,6 +173,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
+    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
@@ -183,6 +186,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $uuid
      * @return void
      */
+    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
@@ -194,6 +198,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getColumnId(): mixed
     {
         return $this->columnId;
@@ -206,6 +211,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $columnId
      * @return void
      */
+    #[\Override]
     public function setColumnId(mixed $columnId): void
     {
         $this->columnId = $columnId;
@@ -217,6 +223,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getKey(): mixed
     {
         return $this->key;
@@ -229,6 +236,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $key
      * @return void
      */
+    #[\Override]
     public function setKey(mixed $key): void
     {
         $this->key = $key;
@@ -240,6 +248,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
      */
+    #[\Override]
     public function getLabel(): mixed
     {
         return $this->label;
@@ -252,6 +261,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $label
      * @return void
      */
+    #[\Override]
     public function setLabel(mixed $label): void
     {
         $this->label = $label;
@@ -263,6 +273,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: NotNull | Size('text','alphanum','min','max','email','password','number','decimal','int') | Type(18)
      * @return mixed
      */
+    #[\Override]
     public function getType(): mixed
     {
         return $this->type;
@@ -275,6 +286,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $type
      * @return void
      */
+    #[\Override]
     public function setType(mixed $type): void
     {
         $this->type = $type;
@@ -286,6 +298,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: Type(24)
      * @return mixed
      */
+    #[\Override]
     public function getParams(): mixed
     {
         return $this->params;
@@ -298,6 +311,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $params
      * @return void
      */
+    #[\Override]
     public function setParams(mixed $params): void
     {
         $this->params = $params;
@@ -309,6 +323,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
+    #[\Override]
     public function getDeleted(): mixed
     {
         return $this->deleted;
@@ -321,6 +336,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $deleted
      * @return void
      */
+    #[\Override]
     public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
@@ -332,6 +348,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
@@ -344,6 +361,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $createdAt
      * @return void
      */
+    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
@@ -355,6 +373,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
@@ -367,6 +386,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $createdBy
      * @return void
      */
+    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
@@ -378,6 +398,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedAt(): mixed
     {
         return $this->updatedAt;
@@ -390,6 +411,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $updatedAt
      * @return void
      */
+    #[\Override]
     public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
@@ -401,6 +423,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getUpdatedBy(): mixed
     {
         return $this->updatedBy;
@@ -413,6 +436,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $updatedBy
      * @return void
      */
+    #[\Override]
     public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
@@ -424,6 +448,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: Type(4)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedAt(): mixed
     {
         return $this->deletedAt;
@@ -436,6 +461,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $deletedAt
      * @return void
      */
+    #[\Override]
     public function setDeletedAt(mixed $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
@@ -447,6 +473,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
+    #[\Override]
     public function getDeletedBy(): mixed
     {
         return $this->deletedBy;
@@ -459,6 +486,7 @@ abstract class ValidatorAbstract extends \Zemit\Models\AbstractModel implements 
      * @param mixed $deletedBy
      * @return void
      */
+    #[\Override]
     public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;

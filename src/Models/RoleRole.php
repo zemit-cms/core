@@ -24,6 +24,7 @@ use Zemit\Models\Interfaces\RoleRoleInterface;
  */
 class RoleRole extends RoleRoleAbstract implements RoleRoleInterface
 {
+    #[\Override]
     public function initialize(): void
     {
         parent::initialize();
