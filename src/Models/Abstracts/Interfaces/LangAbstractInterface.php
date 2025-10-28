@@ -52,7 +52,7 @@ use Zemit\Mvc\ModelInterface;
 interface LangAbstractInterface extends ModelInterface
 {
     /**
-     * Returns the value of field id
+     * Returns the value of the field "id"
      * Column: id
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1)
      * @return mixed
@@ -60,8 +60,8 @@ interface LangAbstractInterface extends ModelInterface
     public function getId(): mixed;
     
     /**
-     * Sets the value of field id
-     * Column: id 
+     * Sets the value of the field "id"
+     * Column: id
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1)
      * @param mixed $id
      * @return void
@@ -69,7 +69,7 @@ interface LangAbstractInterface extends ModelInterface
     public function setId(mixed $id): void;
     
     /**
-     * Returns the value of field uuid
+     * Returns the value of the field "uuid"
      * Column: uuid
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
@@ -77,8 +77,8 @@ interface LangAbstractInterface extends ModelInterface
     public function getUuid(): mixed;
     
     /**
-     * Sets the value of field uuid
-     * Column: uuid 
+     * Sets the value of the field "uuid"
+     * Column: uuid
      * Attributes: NotNull | Size(36) | Type(5)
      * @param mixed $uuid
      * @return void
@@ -86,7 +86,7 @@ interface LangAbstractInterface extends ModelInterface
     public function setUuid(mixed $uuid): void;
     
     /**
-     * Returns the value of field code
+     * Returns the value of the field "code"
      * Column: code
      * Attributes: NotNull | Size(10) | Type(5)
      * @return mixed
@@ -94,8 +94,8 @@ interface LangAbstractInterface extends ModelInterface
     public function getCode(): mixed;
     
     /**
-     * Sets the value of field code
-     * Column: code 
+     * Sets the value of the field "code"
+     * Column: code
      * Attributes: NotNull | Size(10) | Type(5)
      * @param mixed $code
      * @return void
@@ -103,7 +103,7 @@ interface LangAbstractInterface extends ModelInterface
     public function setCode(mixed $code): void;
     
     /**
-     * Returns the value of field label
+     * Returns the value of the field "label"
      * Column: label
      * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
@@ -111,8 +111,8 @@ interface LangAbstractInterface extends ModelInterface
     public function getLabel(): mixed;
     
     /**
-     * Sets the value of field label
-     * Column: label 
+     * Sets the value of the field "label"
+     * Column: label
      * Attributes: NotNull | Size(255) | Type(2)
      * @param mixed $label
      * @return void
@@ -120,7 +120,7 @@ interface LangAbstractInterface extends ModelInterface
     public function setLabel(mixed $label): void;
     
     /**
-     * Returns the value of field deleted
+     * Returns the value of the field "deleted"
      * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
@@ -128,8 +128,8 @@ interface LangAbstractInterface extends ModelInterface
     public function getDeleted(): mixed;
     
     /**
-     * Sets the value of field deleted
-     * Column: deleted 
+     * Sets the value of the field "deleted"
+     * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @param mixed $deleted
      * @return void
@@ -137,7 +137,7 @@ interface LangAbstractInterface extends ModelInterface
     public function setDeleted(mixed $deleted): void;
     
     /**
-     * Returns the value of field createdAt
+     * Returns the value of the field "createdAt"
      * Column: created_at
      * Attributes: NotNull | Type(4)
      * @return mixed
@@ -145,8 +145,8 @@ interface LangAbstractInterface extends ModelInterface
     public function getCreatedAt(): mixed;
     
     /**
-     * Sets the value of field createdAt
-     * Column: created_at 
+     * Sets the value of the field "createdAt"
+     * Column: created_at
      * Attributes: NotNull | Type(4)
      * @param mixed $createdAt
      * @return void
@@ -154,7 +154,7 @@ interface LangAbstractInterface extends ModelInterface
     public function setCreatedAt(mixed $createdAt): void;
     
     /**
-     * Returns the value of field createdBy
+     * Returns the value of the field "createdBy"
      * Column: created_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
@@ -162,8 +162,8 @@ interface LangAbstractInterface extends ModelInterface
     public function getCreatedBy(): mixed;
     
     /**
-     * Sets the value of field createdBy
-     * Column: created_by 
+     * Sets the value of the field "createdBy"
+     * Column: created_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $createdBy
      * @return void
@@ -171,7 +171,7 @@ interface LangAbstractInterface extends ModelInterface
     public function setCreatedBy(mixed $createdBy): void;
     
     /**
-     * Returns the value of field updatedAt
+     * Returns the value of the field "updatedAt"
      * Column: updated_at
      * Attributes: Type(4)
      * @return mixed
@@ -179,8 +179,8 @@ interface LangAbstractInterface extends ModelInterface
     public function getUpdatedAt(): mixed;
     
     /**
-     * Sets the value of field updatedAt
-     * Column: updated_at 
+     * Sets the value of the field "updatedAt"
+     * Column: updated_at
      * Attributes: Type(4)
      * @param mixed $updatedAt
      * @return void
@@ -188,7 +188,7 @@ interface LangAbstractInterface extends ModelInterface
     public function setUpdatedAt(mixed $updatedAt): void;
     
     /**
-     * Returns the value of field updatedBy
+     * Returns the value of the field "updatedBy"
      * Column: updated_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
@@ -196,8 +196,8 @@ interface LangAbstractInterface extends ModelInterface
     public function getUpdatedBy(): mixed;
     
     /**
-     * Sets the value of field updatedBy
-     * Column: updated_by 
+     * Sets the value of the field "updatedBy"
+     * Column: updated_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $updatedBy
      * @return void
@@ -205,7 +205,7 @@ interface LangAbstractInterface extends ModelInterface
     public function setUpdatedBy(mixed $updatedBy): void;
     
     /**
-     * Returns the value of field deletedAt
+     * Returns the value of the field "deletedAt"
      * Column: deleted_at
      * Attributes: Type(4)
      * @return mixed
@@ -213,8 +213,8 @@ interface LangAbstractInterface extends ModelInterface
     public function getDeletedAt(): mixed;
     
     /**
-     * Sets the value of field deletedAt
-     * Column: deleted_at 
+     * Sets the value of the field "deletedAt"
+     * Column: deleted_at
      * Attributes: Type(4)
      * @param mixed $deletedAt
      * @return void
@@ -222,7 +222,7 @@ interface LangAbstractInterface extends ModelInterface
     public function setDeletedAt(mixed $deletedAt): void;
     
     /**
-     * Returns the value of field deletedBy
+     * Returns the value of the field "deletedBy"
      * Column: deleted_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
@@ -230,8 +230,8 @@ interface LangAbstractInterface extends ModelInterface
     public function getDeletedBy(): mixed;
     
     /**
-     * Sets the value of field deletedBy
-     * Column: deleted_by 
+     * Sets the value of the field "deletedBy"
+     * Column: deleted_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $deletedBy
      * @return void

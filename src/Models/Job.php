@@ -24,7 +24,6 @@ use Zemit\Models\Interfaces\JobInterface;
  */
 class Job extends JobAbstract implements JobInterface
 {
-    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

@@ -56,7 +56,7 @@ use Phalcon\Di\DiInterface;
  * @property \Phalcon\Logger\Logger $logger
  * @property \Zemit\Provider\Jwt\Jwt $jwt
  * @property \Zemit\Support\Models $models
- * 
+ *
  * @property \Orhanerday\OpenAi\OpenAi $openAi
  * @property joshtronic\LoremIpsum $loremIpsum
  */

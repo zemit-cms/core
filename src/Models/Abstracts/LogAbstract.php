@@ -24,7 +24,7 @@ use Zemit\Models\Abstracts\Interfaces\LogAbstractInterface;
  *
  * This class defines a Log abstract model that extends the AbstractModel class and implements the LogAbstractInterface.
  * It provides properties and methods for managing Log data.
- * 
+ *
  * @property User $createdbyentity
  * @property User $CreatedByEntity
  * @method User getCreatedByEntity(?array $params = null)
@@ -88,200 +88,184 @@ abstract class LogAbstract extends \Zemit\Models\AbstractModel implements LogAbs
     public mixed $createdBy = null;
     
     /**
-     * Returns the value of field id
+     * Returns the value of the field "id"
      * Column: id
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
-    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
     }
     
     /**
-     * Sets the value of field id
-     * Column: id 
+     * Sets the value of the field "id"
+     * Column: id
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @param mixed $id
      * @return void
      */
-    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
     }
     
     /**
-     * Returns the value of field uuid
+     * Returns the value of the field "uuid"
      * Column: uuid
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
-    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
     }
     
     /**
-     * Sets the value of field uuid
-     * Column: uuid 
+     * Sets the value of the field "uuid"
+     * Column: uuid
      * Attributes: NotNull | Size(36) | Type(5)
      * @param mixed $uuid
      * @return void
      */
-    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
     }
     
     /**
-     * Returns the value of field level
+     * Returns the value of the field "level"
      * Column: level
      * Attributes: NotNull | Numeric | Size(1)
      * @return mixed
      */
-    #[\Override]
     public function getLevel(): mixed
     {
         return $this->level;
     }
     
     /**
-     * Sets the value of field level
-     * Column: level 
+     * Sets the value of the field "level"
+     * Column: level
      * Attributes: NotNull | Numeric | Size(1)
      * @param mixed $level
      * @return void
      */
-    #[\Override]
     public function setLevel(mixed $level): void
     {
         $this->level = $level;
     }
     
     /**
-     * Returns the value of field type
+     * Returns the value of the field "type"
      * Column: type
      * Attributes: NotNull | Size('critical','alert','error','warning','notice','info','debug','emergency','other') | Type(18)
      * @return mixed
      */
-    #[\Override]
     public function getType(): mixed
     {
         return $this->type;
     }
     
     /**
-     * Sets the value of field type
-     * Column: type 
+     * Sets the value of the field "type"
+     * Column: type
      * Attributes: NotNull | Size('critical','alert','error','warning','notice','info','debug','emergency','other') | Type(18)
      * @param mixed $type
      * @return void
      */
-    #[\Override]
     public function setType(mixed $type): void
     {
         $this->type = $type;
     }
     
     /**
-     * Returns the value of field message
+     * Returns the value of the field "message"
      * Column: message
      * Attributes: NotNull | Type(6)
      * @return mixed
      */
-    #[\Override]
     public function getMessage(): mixed
     {
         return $this->message;
     }
     
     /**
-     * Sets the value of field message
-     * Column: message 
+     * Sets the value of the field "message"
+     * Column: message
      * Attributes: NotNull | Type(6)
      * @param mixed $message
      * @return void
      */
-    #[\Override]
     public function setMessage(mixed $message): void
     {
         $this->message = $message;
     }
     
     /**
-     * Returns the value of field context
+     * Returns the value of the field "context"
      * Column: context
      * Attributes: Type(24)
      * @return mixed
      */
-    #[\Override]
     public function getContext(): mixed
     {
         return $this->context;
     }
     
     /**
-     * Sets the value of field context
-     * Column: context 
+     * Sets the value of the field "context"
+     * Column: context
      * Attributes: Type(24)
      * @param mixed $context
      * @return void
      */
-    #[\Override]
     public function setContext(mixed $context): void
     {
         $this->context = $context;
     }
     
     /**
-     * Returns the value of field createdAt
+     * Returns the value of the field "createdAt"
      * Column: created_at
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
-    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
     }
     
     /**
-     * Sets the value of field createdAt
-     * Column: created_at 
+     * Sets the value of the field "createdAt"
+     * Column: created_at
      * Attributes: NotNull | Type(4)
      * @param mixed $createdAt
      * @return void
      */
-    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
     
     /**
-     * Returns the value of field createdBy
+     * Returns the value of the field "createdBy"
      * Column: created_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
-    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
     }
     
     /**
-     * Sets the value of field createdBy
-     * Column: created_by 
+     * Sets the value of the field "createdBy"
+     * Column: created_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $createdBy
      * @return void
      */
-    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
@@ -318,7 +302,7 @@ abstract class LogAbstract extends \Zemit\Models\AbstractModel implements LogAbs
     /**
      * Returns an array that maps the column names of the database
      * table to the corresponding property names of the model.
-     * 
+     *
      * @returns array The array mapping the column names to the property names
      */
     public function columnMap(): array

@@ -22,7 +22,7 @@ use Zemit\Mvc\ModelInterface;
 interface PhalconMigrationsAbstractInterface extends ModelInterface
 {
     /**
-     * Returns the value of field version
+     * Returns the value of the field "version"
      * Column: version
      * Attributes: First | Primary | NotNull | Size(255) | Type(2)
      * @return mixed
@@ -30,8 +30,8 @@ interface PhalconMigrationsAbstractInterface extends ModelInterface
     public function getVersion(): mixed;
     
     /**
-     * Sets the value of field version
-     * Column: version 
+     * Sets the value of the field "version"
+     * Column: version
      * Attributes: First | Primary | NotNull | Size(255) | Type(2)
      * @param mixed $version
      * @return void
@@ -39,7 +39,7 @@ interface PhalconMigrationsAbstractInterface extends ModelInterface
     public function setVersion(mixed $version): void;
     
     /**
-     * Returns the value of field startTime
+     * Returns the value of the field "startTime"
      * Column: start_time
      * Attributes: NotNull | Type(17)
      * @return mixed
@@ -47,8 +47,8 @@ interface PhalconMigrationsAbstractInterface extends ModelInterface
     public function getStartTime(): mixed;
     
     /**
-     * Sets the value of field startTime
-     * Column: start_time 
+     * Sets the value of the field "startTime"
+     * Column: start_time
      * Attributes: NotNull | Type(17)
      * @param mixed $startTime
      * @return void
@@ -56,7 +56,7 @@ interface PhalconMigrationsAbstractInterface extends ModelInterface
     public function setStartTime(mixed $startTime): void;
     
     /**
-     * Returns the value of field endTime
+     * Returns the value of the field "endTime"
      * Column: end_time
      * Attributes: NotNull | Type(17)
      * @return mixed
@@ -64,8 +64,8 @@ interface PhalconMigrationsAbstractInterface extends ModelInterface
     public function getEndTime(): mixed;
     
     /**
-     * Sets the value of field endTime
-     * Column: end_time 
+     * Sets the value of the field "endTime"
+     * Column: end_time
      * Attributes: NotNull | Type(17)
      * @param mixed $endTime
      * @return void

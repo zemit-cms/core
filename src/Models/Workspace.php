@@ -24,7 +24,6 @@ use Zemit\Models\Interfaces\WorkspaceInterface;
  */
 class Workspace extends WorkspaceAbstract implements WorkspaceInterface
 {
-    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

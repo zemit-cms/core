@@ -69,7 +69,7 @@ trait Behavior
      * @param string $eventClass The behavior to attach.
      * @param string|null $eventType The event type to attach the behavior to. If null, the behavior will be attached to the default event type.
      * @param int|null $priority The priority of the behavior. If null, the behavior will be attached with the default priority.
-     * 
+     *
      * @return void
      */
     public function attachBehavior(string $eventClass, ?string $eventType = null, ?int $priority = null): void
@@ -91,7 +91,7 @@ trait Behavior
      * @param array $behaviors An array of behaviors to attach.
      * @param string|null $eventType The event type to attach the behaviors to. If null, the behaviors will be attached to all event types.
      * @param int|null $priority The priority of the behaviors. If null, the behaviors will be attached with the default priority.
-     * 
+     *
      * @return void
      */
     public function attachBehaviors(array $behaviors = [], ?string $eventType = null, ?int $priority = null): void

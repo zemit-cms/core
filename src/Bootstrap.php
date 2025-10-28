@@ -242,7 +242,7 @@ DOC;
      */
     public function registerModules(?AbstractApplication $application = null, ?array $modules = null, ?string $defaultModule = null): void
     {
-        $application = match ($this->getMode()) {
+        $application ??= match ($this->getMode()) {
             self::MODE_CLI => $this->di->get('console'),
             self::MODE_WS => $this->di->get('webSocket'),
             self::MODE_MVC => $this->di->get('application'),

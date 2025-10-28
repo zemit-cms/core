@@ -24,7 +24,6 @@ use Zemit\Models\Interfaces\PostInterface;
  */
 class Post extends PostAbstract implements PostInterface
 {
-    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

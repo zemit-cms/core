@@ -44,7 +44,7 @@ use Zemit\Mvc\ModelInterface;
 interface DataAbstractInterface extends ModelInterface
 {
     /**
-     * Returns the value of field id
+     * Returns the value of the field "id"
      * Column: id
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
@@ -52,8 +52,8 @@ interface DataAbstractInterface extends ModelInterface
     public function getId(): mixed;
     
     /**
-     * Sets the value of field id
-     * Column: id 
+     * Sets the value of the field "id"
+     * Column: id
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @param mixed $id
      * @return void
@@ -61,7 +61,7 @@ interface DataAbstractInterface extends ModelInterface
     public function setId(mixed $id): void;
     
     /**
-     * Returns the value of field uuid
+     * Returns the value of the field "uuid"
      * Column: uuid
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
@@ -69,8 +69,8 @@ interface DataAbstractInterface extends ModelInterface
     public function getUuid(): mixed;
     
     /**
-     * Sets the value of field uuid
-     * Column: uuid 
+     * Sets the value of the field "uuid"
+     * Column: uuid
      * Attributes: NotNull | Size(36) | Type(5)
      * @param mixed $uuid
      * @return void
@@ -78,7 +78,7 @@ interface DataAbstractInterface extends ModelInterface
     public function setUuid(mixed $uuid): void;
     
     /**
-     * Returns the value of field tableId
+     * Returns the value of the field "tableId"
      * Column: table_id
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
@@ -86,8 +86,8 @@ interface DataAbstractInterface extends ModelInterface
     public function getTableId(): mixed;
     
     /**
-     * Sets the value of field tableId
-     * Column: table_id 
+     * Sets the value of the field "tableId"
+     * Column: table_id
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $tableId
      * @return void
@@ -95,7 +95,7 @@ interface DataAbstractInterface extends ModelInterface
     public function setTableId(mixed $tableId): void;
     
     /**
-     * Returns the value of field recordId
+     * Returns the value of the field "recordId"
      * Column: record_id
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
@@ -103,8 +103,8 @@ interface DataAbstractInterface extends ModelInterface
     public function getRecordId(): mixed;
     
     /**
-     * Sets the value of field recordId
-     * Column: record_id 
+     * Sets the value of the field "recordId"
+     * Column: record_id
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $recordId
      * @return void
@@ -112,7 +112,7 @@ interface DataAbstractInterface extends ModelInterface
     public function setRecordId(mixed $recordId): void;
     
     /**
-     * Returns the value of field columnId
+     * Returns the value of the field "columnId"
      * Column: column_id
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
@@ -120,8 +120,8 @@ interface DataAbstractInterface extends ModelInterface
     public function getColumnId(): mixed;
     
     /**
-     * Sets the value of field columnId
-     * Column: column_id 
+     * Sets the value of the field "columnId"
+     * Column: column_id
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $columnId
      * @return void
@@ -129,7 +129,7 @@ interface DataAbstractInterface extends ModelInterface
     public function setColumnId(mixed $columnId): void;
     
     /**
-     * Returns the value of field value
+     * Returns the value of the field "value"
      * Column: value
      * Attributes: Type(23)
      * @return mixed
@@ -137,8 +137,8 @@ interface DataAbstractInterface extends ModelInterface
     public function getValue(): mixed;
     
     /**
-     * Sets the value of field value
-     * Column: value 
+     * Sets the value of the field "value"
+     * Column: value
      * Attributes: Type(23)
      * @param mixed $value
      * @return void
@@ -146,7 +146,7 @@ interface DataAbstractInterface extends ModelInterface
     public function setValue(mixed $value): void;
     
     /**
-     * Returns the value of field deleted
+     * Returns the value of the field "deleted"
      * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
@@ -154,8 +154,8 @@ interface DataAbstractInterface extends ModelInterface
     public function getDeleted(): mixed;
     
     /**
-     * Sets the value of field deleted
-     * Column: deleted 
+     * Sets the value of the field "deleted"
+     * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @param mixed $deleted
      * @return void
@@ -163,7 +163,7 @@ interface DataAbstractInterface extends ModelInterface
     public function setDeleted(mixed $deleted): void;
     
     /**
-     * Returns the value of field createdAt
+     * Returns the value of the field "createdAt"
      * Column: created_at
      * Attributes: NotNull | Type(4)
      * @return mixed
@@ -171,8 +171,8 @@ interface DataAbstractInterface extends ModelInterface
     public function getCreatedAt(): mixed;
     
     /**
-     * Sets the value of field createdAt
-     * Column: created_at 
+     * Sets the value of the field "createdAt"
+     * Column: created_at
      * Attributes: NotNull | Type(4)
      * @param mixed $createdAt
      * @return void
@@ -180,7 +180,7 @@ interface DataAbstractInterface extends ModelInterface
     public function setCreatedAt(mixed $createdAt): void;
     
     /**
-     * Returns the value of field createdBy
+     * Returns the value of the field "createdBy"
      * Column: created_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
@@ -188,8 +188,8 @@ interface DataAbstractInterface extends ModelInterface
     public function getCreatedBy(): mixed;
     
     /**
-     * Sets the value of field createdBy
-     * Column: created_by 
+     * Sets the value of the field "createdBy"
+     * Column: created_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $createdBy
      * @return void
@@ -197,7 +197,7 @@ interface DataAbstractInterface extends ModelInterface
     public function setCreatedBy(mixed $createdBy): void;
     
     /**
-     * Returns the value of field updatedAt
+     * Returns the value of the field "updatedAt"
      * Column: updated_at
      * Attributes: Type(4)
      * @return mixed
@@ -205,8 +205,8 @@ interface DataAbstractInterface extends ModelInterface
     public function getUpdatedAt(): mixed;
     
     /**
-     * Sets the value of field updatedAt
-     * Column: updated_at 
+     * Sets the value of the field "updatedAt"
+     * Column: updated_at
      * Attributes: Type(4)
      * @param mixed $updatedAt
      * @return void
@@ -214,7 +214,7 @@ interface DataAbstractInterface extends ModelInterface
     public function setUpdatedAt(mixed $updatedAt): void;
     
     /**
-     * Returns the value of field updatedBy
+     * Returns the value of the field "updatedBy"
      * Column: updated_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
@@ -222,8 +222,8 @@ interface DataAbstractInterface extends ModelInterface
     public function getUpdatedBy(): mixed;
     
     /**
-     * Sets the value of field updatedBy
-     * Column: updated_by 
+     * Sets the value of the field "updatedBy"
+     * Column: updated_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $updatedBy
      * @return void
@@ -231,7 +231,7 @@ interface DataAbstractInterface extends ModelInterface
     public function setUpdatedBy(mixed $updatedBy): void;
     
     /**
-     * Returns the value of field deletedAt
+     * Returns the value of the field "deletedAt"
      * Column: deleted_at
      * Attributes: Type(4)
      * @return mixed
@@ -239,8 +239,8 @@ interface DataAbstractInterface extends ModelInterface
     public function getDeletedAt(): mixed;
     
     /**
-     * Sets the value of field deletedAt
-     * Column: deleted_at 
+     * Sets the value of the field "deletedAt"
+     * Column: deleted_at
      * Attributes: Type(4)
      * @param mixed $deletedAt
      * @return void
@@ -248,7 +248,7 @@ interface DataAbstractInterface extends ModelInterface
     public function setDeletedAt(mixed $deletedAt): void;
     
     /**
-     * Returns the value of field deletedBy
+     * Returns the value of the field "deletedBy"
      * Column: deleted_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
@@ -256,8 +256,8 @@ interface DataAbstractInterface extends ModelInterface
     public function getDeletedBy(): mixed;
     
     /**
-     * Sets the value of field deletedBy
-     * Column: deleted_by 
+     * Sets the value of the field "deletedBy"
+     * Column: deleted_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $deletedBy
      * @return void

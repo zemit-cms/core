@@ -53,7 +53,7 @@ trait Attribute
      *
      * @param string $attribute The name of the attribute.
      * @param mixed $value The value to be set for the attribute.
-     * 
+     *
      * @return void
      */
     public function setAttribute(string $attribute, mixed $value): void

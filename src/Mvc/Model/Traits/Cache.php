@@ -23,10 +23,11 @@ use Zemit\Support\Models;
 /**
  * Flush Cache on changes
  *
- * @todo set cache keys
- * @todo improve to delete only necessary keys
- * @todo improve whiteList system
- * @todo precache system
+ * @todo improve model cache trait
+ * - set cache keys
+ * - improve to delete only necessary keys
+ * - improve whiteList system
+ * - precache system
  */
 trait Cache
 {

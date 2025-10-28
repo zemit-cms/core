@@ -32,7 +32,7 @@ use Zemit\Mvc\ModelInterface;
 interface EmailFileAbstractInterface extends ModelInterface
 {
     /**
-     * Returns the value of field id
+     * Returns the value of the field "id"
      * Column: id
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
@@ -40,8 +40,8 @@ interface EmailFileAbstractInterface extends ModelInterface
     public function getId(): mixed;
     
     /**
-     * Sets the value of field id
-     * Column: id 
+     * Sets the value of the field "id"
+     * Column: id
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @param mixed $id
      * @return void
@@ -49,7 +49,7 @@ interface EmailFileAbstractInterface extends ModelInterface
     public function setId(mixed $id): void;
     
     /**
-     * Returns the value of field uuid
+     * Returns the value of the field "uuid"
      * Column: uuid
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
@@ -57,8 +57,8 @@ interface EmailFileAbstractInterface extends ModelInterface
     public function getUuid(): mixed;
     
     /**
-     * Sets the value of field uuid
-     * Column: uuid 
+     * Sets the value of the field "uuid"
+     * Column: uuid
      * Attributes: NotNull | Size(36) | Type(5)
      * @param mixed $uuid
      * @return void
@@ -66,7 +66,7 @@ interface EmailFileAbstractInterface extends ModelInterface
     public function setUuid(mixed $uuid): void;
     
     /**
-     * Returns the value of field emailId
+     * Returns the value of the field "emailId"
      * Column: email_id
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
@@ -74,8 +74,8 @@ interface EmailFileAbstractInterface extends ModelInterface
     public function getEmailId(): mixed;
     
     /**
-     * Sets the value of field emailId
-     * Column: email_id 
+     * Sets the value of the field "emailId"
+     * Column: email_id
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $emailId
      * @return void
@@ -83,7 +83,7 @@ interface EmailFileAbstractInterface extends ModelInterface
     public function setEmailId(mixed $emailId): void;
     
     /**
-     * Returns the value of field fileId
+     * Returns the value of the field "fileId"
      * Column: file_id
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
@@ -91,8 +91,8 @@ interface EmailFileAbstractInterface extends ModelInterface
     public function getFileId(): mixed;
     
     /**
-     * Sets the value of field fileId
-     * Column: file_id 
+     * Sets the value of the field "fileId"
+     * Column: file_id
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $fileId
      * @return void
@@ -100,7 +100,7 @@ interface EmailFileAbstractInterface extends ModelInterface
     public function setFileId(mixed $fileId): void;
     
     /**
-     * Returns the value of field deleted
+     * Returns the value of the field "deleted"
      * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
@@ -108,8 +108,8 @@ interface EmailFileAbstractInterface extends ModelInterface
     public function getDeleted(): mixed;
     
     /**
-     * Sets the value of field deleted
-     * Column: deleted 
+     * Sets the value of the field "deleted"
+     * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @param mixed $deleted
      * @return void
@@ -117,7 +117,7 @@ interface EmailFileAbstractInterface extends ModelInterface
     public function setDeleted(mixed $deleted): void;
     
     /**
-     * Returns the value of field createdAt
+     * Returns the value of the field "createdAt"
      * Column: created_at
      * Attributes: NotNull | Type(4)
      * @return mixed
@@ -125,8 +125,8 @@ interface EmailFileAbstractInterface extends ModelInterface
     public function getCreatedAt(): mixed;
     
     /**
-     * Sets the value of field createdAt
-     * Column: created_at 
+     * Sets the value of the field "createdAt"
+     * Column: created_at
      * Attributes: NotNull | Type(4)
      * @param mixed $createdAt
      * @return void
@@ -134,7 +134,7 @@ interface EmailFileAbstractInterface extends ModelInterface
     public function setCreatedAt(mixed $createdAt): void;
     
     /**
-     * Returns the value of field createdBy
+     * Returns the value of the field "createdBy"
      * Column: created_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
@@ -142,8 +142,8 @@ interface EmailFileAbstractInterface extends ModelInterface
     public function getCreatedBy(): mixed;
     
     /**
-     * Sets the value of field createdBy
-     * Column: created_by 
+     * Sets the value of the field "createdBy"
+     * Column: created_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $createdBy
      * @return void

@@ -23,7 +23,7 @@ use Zemit\Models\Abstracts\Interfaces\PhalconMigrationsAbstractInterface;
  *
  * This class defines a PhalconMigrations abstract model that extends the AbstractModel class and implements the PhalconMigrationsAbstractInterface.
  * It provides properties and methods for managing PhalconMigrations data.
- * 
+ *
  * 
  */
 abstract class PhalconMigrationsAbstract extends \Zemit\Models\AbstractModel implements PhalconMigrationsAbstractInterface
@@ -50,75 +50,69 @@ abstract class PhalconMigrationsAbstract extends \Zemit\Models\AbstractModel imp
     public mixed $endTime = 0;
     
     /**
-     * Returns the value of field version
+     * Returns the value of the field "version"
      * Column: version
      * Attributes: First | Primary | NotNull | Size(255) | Type(2)
      * @return mixed
      */
-    #[\Override]
     public function getVersion(): mixed
     {
         return $this->version;
     }
     
     /**
-     * Sets the value of field version
-     * Column: version 
+     * Sets the value of the field "version"
+     * Column: version
      * Attributes: First | Primary | NotNull | Size(255) | Type(2)
      * @param mixed $version
      * @return void
      */
-    #[\Override]
     public function setVersion(mixed $version): void
     {
         $this->version = $version;
     }
     
     /**
-     * Returns the value of field startTime
+     * Returns the value of the field "startTime"
      * Column: start_time
      * Attributes: NotNull | Type(17)
      * @return mixed
      */
-    #[\Override]
     public function getStartTime(): mixed
     {
         return $this->startTime;
     }
     
     /**
-     * Sets the value of field startTime
-     * Column: start_time 
+     * Sets the value of the field "startTime"
+     * Column: start_time
      * Attributes: NotNull | Type(17)
      * @param mixed $startTime
      * @return void
      */
-    #[\Override]
     public function setStartTime(mixed $startTime): void
     {
         $this->startTime = $startTime;
     }
     
     /**
-     * Returns the value of field endTime
+     * Returns the value of the field "endTime"
      * Column: end_time
      * Attributes: NotNull | Type(17)
      * @return mixed
      */
-    #[\Override]
     public function getEndTime(): mixed
     {
         return $this->endTime;
     }
     
     /**
-     * Sets the value of field endTime
-     * Column: end_time 
+     * Sets the value of the field "endTime"
+     * Column: end_time
      * Attributes: NotNull | Type(17)
      * @param mixed $endTime
      * @return void
      */
-    #[\Override]
     public function setEndTime(mixed $endTime): void
     {
         $this->endTime = $endTime;
@@ -151,7 +145,7 @@ abstract class PhalconMigrationsAbstract extends \Zemit\Models\AbstractModel imp
     /**
      * Returns an array that maps the column names of the database
      * table to the corresponding property names of the model.
-     * 
+     *
      * @returns array The array mapping the column names to the property names
      */
     public function columnMap(): array

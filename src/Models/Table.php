@@ -24,7 +24,6 @@ use Zemit\Models\Interfaces\TableInterface;
  */
 class Table extends TableAbstract implements TableInterface
 {
-    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

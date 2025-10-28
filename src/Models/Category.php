@@ -24,7 +24,6 @@ use Zemit\Models\Interfaces\CategoryInterface;
  */
 class Category extends CategoryAbstract implements CategoryInterface
 {
-    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

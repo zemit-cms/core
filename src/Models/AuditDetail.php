@@ -24,7 +24,6 @@ use Zemit\Models\Interfaces\AuditDetailInterface;
  */
 class AuditDetail extends AuditDetailAbstract implements AuditDetailInterface
 {
-    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

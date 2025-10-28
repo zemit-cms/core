@@ -26,7 +26,7 @@ use Zemit\Models\Abstracts\Interfaces\GroupFeatureAbstractInterface;
  *
  * This class defines a GroupFeature abstract model that extends the AbstractModel class and implements the GroupFeatureAbstractInterface.
  * It provides properties and methods for managing GroupFeature data.
- * 
+ *
  * @property Group $groupentity
  * @property Group $GroupEntity
  * @method Group getGroupEntity(?array $params = null)
@@ -98,200 +98,184 @@ abstract class GroupFeatureAbstract extends \Zemit\Models\AbstractModel implemen
     public mixed $createdBy = null;
     
     /**
-     * Returns the value of field id
+     * Returns the value of the field "id"
      * Column: id
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
-    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
     }
     
     /**
-     * Sets the value of field id
-     * Column: id 
+     * Sets the value of the field "id"
+     * Column: id
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @param mixed $id
      * @return void
      */
-    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
     }
     
     /**
-     * Returns the value of field uuid
+     * Returns the value of the field "uuid"
      * Column: uuid
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
-    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
     }
     
     /**
-     * Sets the value of field uuid
-     * Column: uuid 
+     * Sets the value of the field "uuid"
+     * Column: uuid
      * Attributes: NotNull | Size(36) | Type(5)
      * @param mixed $uuid
      * @return void
      */
-    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
     }
     
     /**
-     * Returns the value of field groupId
+     * Returns the value of the field "groupId"
      * Column: group_id
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
-    #[\Override]
     public function getGroupId(): mixed
     {
         return $this->groupId;
     }
     
     /**
-     * Sets the value of field groupId
-     * Column: group_id 
+     * Sets the value of the field "groupId"
+     * Column: group_id
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $groupId
      * @return void
      */
-    #[\Override]
     public function setGroupId(mixed $groupId): void
     {
         $this->groupId = $groupId;
     }
     
     /**
-     * Returns the value of field featureId
+     * Returns the value of the field "featureId"
      * Column: feature_id
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
-    #[\Override]
     public function getFeatureId(): mixed
     {
         return $this->featureId;
     }
     
     /**
-     * Sets the value of field featureId
-     * Column: feature_id 
+     * Sets the value of the field "featureId"
+     * Column: feature_id
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $featureId
      * @return void
      */
-    #[\Override]
     public function setFeatureId(mixed $featureId): void
     {
         $this->featureId = $featureId;
     }
     
     /**
-     * Returns the value of field position
+     * Returns the value of the field "position"
      * Column: position
      * Attributes: NotNull | Numeric | Unsigned | Size(1)
      * @return mixed
      */
-    #[\Override]
     public function getPosition(): mixed
     {
         return $this->position;
     }
     
     /**
-     * Sets the value of field position
-     * Column: position 
+     * Sets the value of the field "position"
+     * Column: position
      * Attributes: NotNull | Numeric | Unsigned | Size(1)
      * @param mixed $position
      * @return void
      */
-    #[\Override]
     public function setPosition(mixed $position): void
     {
         $this->position = $position;
     }
     
     /**
-     * Returns the value of field deleted
+     * Returns the value of the field "deleted"
      * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
-    #[\Override]
     public function getDeleted(): mixed
     {
         return $this->deleted;
     }
     
     /**
-     * Sets the value of field deleted
-     * Column: deleted 
+     * Sets the value of the field "deleted"
+     * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @param mixed $deleted
      * @return void
      */
-    #[\Override]
     public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
     }
     
     /**
-     * Returns the value of field createdAt
+     * Returns the value of the field "createdAt"
      * Column: created_at
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
-    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
     }
     
     /**
-     * Sets the value of field createdAt
-     * Column: created_at 
+     * Sets the value of the field "createdAt"
+     * Column: created_at
      * Attributes: NotNull | Type(4)
      * @param mixed $createdAt
      * @return void
      */
-    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
     
     /**
-     * Returns the value of field createdBy
+     * Returns the value of the field "createdBy"
      * Column: created_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
-    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
     }
     
     /**
-     * Sets the value of field createdBy
-     * Column: created_by 
+     * Sets the value of the field "createdBy"
+     * Column: created_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $createdBy
      * @return void
      */
-    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
@@ -335,7 +319,7 @@ abstract class GroupFeatureAbstract extends \Zemit\Models\AbstractModel implemen
     /**
      * Returns an array that maps the column names of the database
      * table to the corresponding property names of the model.
-     * 
+     *
      * @returns array The array mapping the column names to the property names
      */
     public function columnMap(): array

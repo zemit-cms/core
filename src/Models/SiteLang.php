@@ -24,7 +24,6 @@ use Zemit\Models\Interfaces\SiteLangInterface;
  */
 class SiteLang extends SiteLangAbstract implements SiteLangInterface
 {
-    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

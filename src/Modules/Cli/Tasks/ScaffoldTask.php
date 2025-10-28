@@ -326,7 +326,7 @@ use {$this->getAbstractsInterfacesNamespace()}\\{$definitions['abstractInterface
  *
  * This class defines a {$definitions['model']['name']} abstract model that extends the AbstractModel class and implements the {$definitions['abstractInterface']['name']}.
  * It provides properties and methods for managing {$definitions['model']['name']} data.
- * 
+ *
 {$relationships['injectableItems']}
  */
 abstract class {$definitions['abstract']['name']} extends {$modelsExtendBaseName} implements {$definitions['abstractInterface']['name']}
@@ -830,7 +830,7 @@ PHP;
     
     /**
      * Returns the documentation comment for the `getColumnMap` method.
-     * 
+     *
      * @return string The documentation comment for the `getColumnMap` method.
      */
     public function getColumnMapComment(): string
@@ -844,7 +844,7 @@ PHP;
     /**
      * Returns an array that maps the column names of the database
      * table to the corresponding property names of the model.
-     * 
+     *
      * @returns array The array mapping the column names to the property names
      */
 PHP;
@@ -1020,7 +1020,7 @@ PHP;
             return <<<PHP
 
     /**
-     * Returns the value of field {$definitions['name']}
+     * Returns the value of the field "{$definitions['name']}"
      * Column: {$definitions['columnName']}
      * Attributes: {$this->getColumnAttributes($column)}
      * @return {$propertyType}
@@ -1032,8 +1032,8 @@ PHP;
             return <<<PHP
 
     /**
-     * Sets the value of field {$definitions['name']}
-     * Column: {$definitions['columnName']} 
+     * Sets the value of the field "{$definitions['name']}"
+     * Column: {$definitions['columnName']}
      * Attributes: {$this->getColumnAttributes($column)}
      * @param {$propertyType} \${$definitions['name']}
      * @return void

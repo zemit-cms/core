@@ -24,7 +24,6 @@ use Zemit\Models\Interfaces\UserGroupInterface;
  */
 class UserGroup extends UserGroupAbstract implements UserGroupInterface
 {
-    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

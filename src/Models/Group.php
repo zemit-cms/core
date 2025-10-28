@@ -24,7 +24,6 @@ use Zemit\Models\Interfaces\GroupInterface;
  */
 class Group extends GroupAbstract implements GroupInterface
 {
-    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

@@ -32,7 +32,7 @@ use Zemit\Support\HelperFactory;
  *
  * This trait provides a common interface for classes that are injectable
  * and depend on a dependency injection container.
- * 
+ *
  * @property Loader $loader
  * @property View $view
  * @property Router $router

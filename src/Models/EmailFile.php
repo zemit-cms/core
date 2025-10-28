@@ -24,7 +24,6 @@ use Zemit\Models\Interfaces\EmailFileInterface;
  */
 class EmailFile extends EmailFileAbstract implements EmailFileInterface
 {
-    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

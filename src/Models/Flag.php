@@ -24,7 +24,6 @@ use Zemit\Models\Interfaces\FlagInterface;
  */
 class Flag extends FlagAbstract implements FlagInterface
 {
-    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

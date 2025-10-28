@@ -40,7 +40,7 @@ use Zemit\Mvc\ModelInterface;
 interface ProfileAbstractInterface extends ModelInterface
 {
     /**
-     * Returns the value of field id
+     * Returns the value of the field "id"
      * Column: id
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
@@ -48,8 +48,8 @@ interface ProfileAbstractInterface extends ModelInterface
     public function getId(): mixed;
     
     /**
-     * Sets the value of field id
-     * Column: id 
+     * Sets the value of the field "id"
+     * Column: id
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @param mixed $id
      * @return void
@@ -57,7 +57,7 @@ interface ProfileAbstractInterface extends ModelInterface
     public function setId(mixed $id): void;
     
     /**
-     * Returns the value of field uuid
+     * Returns the value of the field "uuid"
      * Column: uuid
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
@@ -65,8 +65,8 @@ interface ProfileAbstractInterface extends ModelInterface
     public function getUuid(): mixed;
     
     /**
-     * Sets the value of field uuid
-     * Column: uuid 
+     * Sets the value of the field "uuid"
+     * Column: uuid
      * Attributes: NotNull | Size(36) | Type(5)
      * @param mixed $uuid
      * @return void
@@ -74,7 +74,7 @@ interface ProfileAbstractInterface extends ModelInterface
     public function setUuid(mixed $uuid): void;
     
     /**
-     * Returns the value of field userId
+     * Returns the value of the field "userId"
      * Column: user_id
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
@@ -82,8 +82,8 @@ interface ProfileAbstractInterface extends ModelInterface
     public function getUserId(): mixed;
     
     /**
-     * Sets the value of field userId
-     * Column: user_id 
+     * Sets the value of the field "userId"
+     * Column: user_id
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $userId
      * @return void
@@ -91,7 +91,7 @@ interface ProfileAbstractInterface extends ModelInterface
     public function setUserId(mixed $userId): void;
     
     /**
-     * Returns the value of field firstName
+     * Returns the value of the field "firstName"
      * Column: first_name
      * Attributes: Size(100) | Type(2)
      * @return mixed
@@ -99,8 +99,8 @@ interface ProfileAbstractInterface extends ModelInterface
     public function getFirstName(): mixed;
     
     /**
-     * Sets the value of field firstName
-     * Column: first_name 
+     * Sets the value of the field "firstName"
+     * Column: first_name
      * Attributes: Size(100) | Type(2)
      * @param mixed $firstName
      * @return void
@@ -108,7 +108,7 @@ interface ProfileAbstractInterface extends ModelInterface
     public function setFirstName(mixed $firstName): void;
     
     /**
-     * Returns the value of field lastName
+     * Returns the value of the field "lastName"
      * Column: last_name
      * Attributes: Size(100) | Type(2)
      * @return mixed
@@ -116,8 +116,8 @@ interface ProfileAbstractInterface extends ModelInterface
     public function getLastName(): mixed;
     
     /**
-     * Sets the value of field lastName
-     * Column: last_name 
+     * Sets the value of the field "lastName"
+     * Column: last_name
      * Attributes: Size(100) | Type(2)
      * @param mixed $lastName
      * @return void
@@ -125,7 +125,7 @@ interface ProfileAbstractInterface extends ModelInterface
     public function setLastName(mixed $lastName): void;
     
     /**
-     * Returns the value of field avatarFileId
+     * Returns the value of the field "avatarFileId"
      * Column: avatar_file_id
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
@@ -133,8 +133,8 @@ interface ProfileAbstractInterface extends ModelInterface
     public function getAvatarFileId(): mixed;
     
     /**
-     * Sets the value of field avatarFileId
-     * Column: avatar_file_id 
+     * Sets the value of the field "avatarFileId"
+     * Column: avatar_file_id
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $avatarFileId
      * @return void
@@ -142,7 +142,7 @@ interface ProfileAbstractInterface extends ModelInterface
     public function setAvatarFileId(mixed $avatarFileId): void;
     
     /**
-     * Returns the value of field deleted
+     * Returns the value of the field "deleted"
      * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
@@ -150,8 +150,8 @@ interface ProfileAbstractInterface extends ModelInterface
     public function getDeleted(): mixed;
     
     /**
-     * Sets the value of field deleted
-     * Column: deleted 
+     * Sets the value of the field "deleted"
+     * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @param mixed $deleted
      * @return void
@@ -159,7 +159,7 @@ interface ProfileAbstractInterface extends ModelInterface
     public function setDeleted(mixed $deleted): void;
     
     /**
-     * Returns the value of field createdAt
+     * Returns the value of the field "createdAt"
      * Column: created_at
      * Attributes: NotNull | Type(4)
      * @return mixed
@@ -167,8 +167,8 @@ interface ProfileAbstractInterface extends ModelInterface
     public function getCreatedAt(): mixed;
     
     /**
-     * Sets the value of field createdAt
-     * Column: created_at 
+     * Sets the value of the field "createdAt"
+     * Column: created_at
      * Attributes: NotNull | Type(4)
      * @param mixed $createdAt
      * @return void
@@ -176,7 +176,7 @@ interface ProfileAbstractInterface extends ModelInterface
     public function setCreatedAt(mixed $createdAt): void;
     
     /**
-     * Returns the value of field createdBy
+     * Returns the value of the field "createdBy"
      * Column: created_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
@@ -184,8 +184,8 @@ interface ProfileAbstractInterface extends ModelInterface
     public function getCreatedBy(): mixed;
     
     /**
-     * Sets the value of field createdBy
-     * Column: created_by 
+     * Sets the value of the field "createdBy"
+     * Column: created_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $createdBy
      * @return void
@@ -193,7 +193,7 @@ interface ProfileAbstractInterface extends ModelInterface
     public function setCreatedBy(mixed $createdBy): void;
     
     /**
-     * Returns the value of field updatedAt
+     * Returns the value of the field "updatedAt"
      * Column: updated_at
      * Attributes: Type(4)
      * @return mixed
@@ -201,8 +201,8 @@ interface ProfileAbstractInterface extends ModelInterface
     public function getUpdatedAt(): mixed;
     
     /**
-     * Sets the value of field updatedAt
-     * Column: updated_at 
+     * Sets the value of the field "updatedAt"
+     * Column: updated_at
      * Attributes: Type(4)
      * @param mixed $updatedAt
      * @return void
@@ -210,7 +210,7 @@ interface ProfileAbstractInterface extends ModelInterface
     public function setUpdatedAt(mixed $updatedAt): void;
     
     /**
-     * Returns the value of field updatedBy
+     * Returns the value of the field "updatedBy"
      * Column: updated_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
@@ -218,8 +218,8 @@ interface ProfileAbstractInterface extends ModelInterface
     public function getUpdatedBy(): mixed;
     
     /**
-     * Sets the value of field updatedBy
-     * Column: updated_by 
+     * Sets the value of the field "updatedBy"
+     * Column: updated_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $updatedBy
      * @return void
@@ -227,7 +227,7 @@ interface ProfileAbstractInterface extends ModelInterface
     public function setUpdatedBy(mixed $updatedBy): void;
     
     /**
-     * Returns the value of field deletedAt
+     * Returns the value of the field "deletedAt"
      * Column: deleted_at
      * Attributes: Type(4)
      * @return mixed
@@ -235,8 +235,8 @@ interface ProfileAbstractInterface extends ModelInterface
     public function getDeletedAt(): mixed;
     
     /**
-     * Sets the value of field deletedAt
-     * Column: deleted_at 
+     * Sets the value of the field "deletedAt"
+     * Column: deleted_at
      * Attributes: Type(4)
      * @param mixed $deletedAt
      * @return void
@@ -244,7 +244,7 @@ interface ProfileAbstractInterface extends ModelInterface
     public function setDeletedAt(mixed $deletedAt): void;
     
     /**
-     * Returns the value of field deletedBy
+     * Returns the value of the field "deletedBy"
      * Column: deleted_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
@@ -252,8 +252,8 @@ interface ProfileAbstractInterface extends ModelInterface
     public function getDeletedBy(): mixed;
     
     /**
-     * Sets the value of field deletedBy
-     * Column: deleted_by 
+     * Sets the value of the field "deletedBy"
+     * Column: deleted_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $deletedBy
      * @return void

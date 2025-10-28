@@ -24,7 +24,6 @@ use Zemit\Models\Interfaces\LangInterface;
  */
 class Lang extends LangAbstract implements LangInterface
 {
-    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

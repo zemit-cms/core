@@ -28,7 +28,7 @@ use Zemit\Mvc\ModelInterface;
 interface AuditDetailAbstractInterface extends ModelInterface
 {
     /**
-     * Returns the value of field id
+     * Returns the value of the field "id"
      * Column: id
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
@@ -36,8 +36,8 @@ interface AuditDetailAbstractInterface extends ModelInterface
     public function getId(): mixed;
     
     /**
-     * Sets the value of field id
-     * Column: id 
+     * Sets the value of the field "id"
+     * Column: id
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @param mixed $id
      * @return void
@@ -45,7 +45,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
     public function setId(mixed $id): void;
     
     /**
-     * Returns the value of field uuid
+     * Returns the value of the field "uuid"
      * Column: uuid
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
@@ -53,8 +53,8 @@ interface AuditDetailAbstractInterface extends ModelInterface
     public function getUuid(): mixed;
     
     /**
-     * Sets the value of field uuid
-     * Column: uuid 
+     * Sets the value of the field "uuid"
+     * Column: uuid
      * Attributes: NotNull | Size(36) | Type(5)
      * @param mixed $uuid
      * @return void
@@ -62,7 +62,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
     public function setUuid(mixed $uuid): void;
     
     /**
-     * Returns the value of field auditId
+     * Returns the value of the field "auditId"
      * Column: audit_id
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
@@ -70,8 +70,8 @@ interface AuditDetailAbstractInterface extends ModelInterface
     public function getAuditId(): mixed;
     
     /**
-     * Sets the value of field auditId
-     * Column: audit_id 
+     * Sets the value of the field "auditId"
+     * Column: audit_id
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $auditId
      * @return void
@@ -79,7 +79,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
     public function setAuditId(mixed $auditId): void;
     
     /**
-     * Returns the value of field column
+     * Returns the value of the field "column"
      * Column: column
      * Attributes: NotNull | Size(60) | Type(2)
      * @return mixed
@@ -87,8 +87,8 @@ interface AuditDetailAbstractInterface extends ModelInterface
     public function getColumn(): mixed;
     
     /**
-     * Sets the value of field column
-     * Column: column 
+     * Sets the value of the field "column"
+     * Column: column
      * Attributes: NotNull | Size(60) | Type(2)
      * @param mixed $column
      * @return void
@@ -96,7 +96,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
     public function setColumn(mixed $column): void;
     
     /**
-     * Returns the value of field before
+     * Returns the value of the field "before"
      * Column: before
      * Attributes: Type(23)
      * @return mixed
@@ -104,8 +104,8 @@ interface AuditDetailAbstractInterface extends ModelInterface
     public function getBefore(): mixed;
     
     /**
-     * Sets the value of field before
-     * Column: before 
+     * Sets the value of the field "before"
+     * Column: before
      * Attributes: Type(23)
      * @param mixed $before
      * @return void
@@ -113,7 +113,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
     public function setBefore(mixed $before): void;
     
     /**
-     * Returns the value of field after
+     * Returns the value of the field "after"
      * Column: after
      * Attributes: Type(23)
      * @return mixed
@@ -121,8 +121,8 @@ interface AuditDetailAbstractInterface extends ModelInterface
     public function getAfter(): mixed;
     
     /**
-     * Sets the value of field after
-     * Column: after 
+     * Sets the value of the field "after"
+     * Column: after
      * Attributes: Type(23)
      * @param mixed $after
      * @return void
@@ -130,7 +130,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
     public function setAfter(mixed $after): void;
     
     /**
-     * Returns the value of field deleted
+     * Returns the value of the field "deleted"
      * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
@@ -138,8 +138,8 @@ interface AuditDetailAbstractInterface extends ModelInterface
     public function getDeleted(): mixed;
     
     /**
-     * Sets the value of field deleted
-     * Column: deleted 
+     * Sets the value of the field "deleted"
+     * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @param mixed $deleted
      * @return void
@@ -147,7 +147,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
     public function setDeleted(mixed $deleted): void;
     
     /**
-     * Returns the value of field createdAt
+     * Returns the value of the field "createdAt"
      * Column: created_at
      * Attributes: NotNull | Type(4)
      * @return mixed
@@ -155,8 +155,8 @@ interface AuditDetailAbstractInterface extends ModelInterface
     public function getCreatedAt(): mixed;
     
     /**
-     * Sets the value of field createdAt
-     * Column: created_at 
+     * Sets the value of the field "createdAt"
+     * Column: created_at
      * Attributes: NotNull | Type(4)
      * @param mixed $createdAt
      * @return void
@@ -164,7 +164,7 @@ interface AuditDetailAbstractInterface extends ModelInterface
     public function setCreatedAt(mixed $createdAt): void;
     
     /**
-     * Returns the value of field createdBy
+     * Returns the value of the field "createdBy"
      * Column: created_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
@@ -172,8 +172,8 @@ interface AuditDetailAbstractInterface extends ModelInterface
     public function getCreatedBy(): mixed;
     
     /**
-     * Sets the value of field createdBy
-     * Column: created_by 
+     * Sets the value of the field "createdBy"
+     * Column: created_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $createdBy
      * @return void

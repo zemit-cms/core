@@ -28,7 +28,7 @@ use Zemit\Mvc\ModelInterface;
 interface SessionAbstractInterface extends ModelInterface
 {
     /**
-     * Returns the value of field id
+     * Returns the value of the field "id"
      * Column: id
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
@@ -36,8 +36,8 @@ interface SessionAbstractInterface extends ModelInterface
     public function getId(): mixed;
     
     /**
-     * Sets the value of field id
-     * Column: id 
+     * Sets the value of the field "id"
+     * Column: id
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @param mixed $id
      * @return void
@@ -45,7 +45,7 @@ interface SessionAbstractInterface extends ModelInterface
     public function setId(mixed $id): void;
     
     /**
-     * Returns the value of field uuid
+     * Returns the value of the field "uuid"
      * Column: uuid
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
@@ -53,8 +53,8 @@ interface SessionAbstractInterface extends ModelInterface
     public function getUuid(): mixed;
     
     /**
-     * Sets the value of field uuid
-     * Column: uuid 
+     * Sets the value of the field "uuid"
+     * Column: uuid
      * Attributes: NotNull | Size(36) | Type(5)
      * @param mixed $uuid
      * @return void
@@ -62,7 +62,7 @@ interface SessionAbstractInterface extends ModelInterface
     public function setUuid(mixed $uuid): void;
     
     /**
-     * Returns the value of field userId
+     * Returns the value of the field "userId"
      * Column: user_id
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
@@ -70,8 +70,8 @@ interface SessionAbstractInterface extends ModelInterface
     public function getUserId(): mixed;
     
     /**
-     * Sets the value of field userId
-     * Column: user_id 
+     * Sets the value of the field "userId"
+     * Column: user_id
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $userId
      * @return void
@@ -79,7 +79,7 @@ interface SessionAbstractInterface extends ModelInterface
     public function setUserId(mixed $userId): void;
     
     /**
-     * Returns the value of field asUserId
+     * Returns the value of the field "asUserId"
      * Column: as_user_id
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
@@ -87,8 +87,8 @@ interface SessionAbstractInterface extends ModelInterface
     public function getAsUserId(): mixed;
     
     /**
-     * Sets the value of field asUserId
-     * Column: as_user_id 
+     * Sets the value of the field "asUserId"
+     * Column: as_user_id
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $asUserId
      * @return void
@@ -96,7 +96,7 @@ interface SessionAbstractInterface extends ModelInterface
     public function setAsUserId(mixed $asUserId): void;
     
     /**
-     * Returns the value of field token
+     * Returns the value of the field "token"
      * Column: token
      * Attributes: NotNull | Size(128) | Type(2)
      * @return mixed
@@ -104,8 +104,8 @@ interface SessionAbstractInterface extends ModelInterface
     public function getToken(): mixed;
     
     /**
-     * Sets the value of field token
-     * Column: token 
+     * Sets the value of the field "token"
+     * Column: token
      * Attributes: NotNull | Size(128) | Type(2)
      * @param mixed $token
      * @return void
@@ -113,7 +113,7 @@ interface SessionAbstractInterface extends ModelInterface
     public function setToken(mixed $token): void;
     
     /**
-     * Returns the value of field jwt
+     * Returns the value of the field "jwt"
      * Column: jwt
      * Attributes: Type(6)
      * @return mixed
@@ -121,8 +121,8 @@ interface SessionAbstractInterface extends ModelInterface
     public function getJwt(): mixed;
     
     /**
-     * Sets the value of field jwt
-     * Column: jwt 
+     * Sets the value of the field "jwt"
+     * Column: jwt
      * Attributes: Type(6)
      * @param mixed $jwt
      * @return void
@@ -130,7 +130,7 @@ interface SessionAbstractInterface extends ModelInterface
     public function setJwt(mixed $jwt): void;
     
     /**
-     * Returns the value of field meta
+     * Returns the value of the field "meta"
      * Column: meta
      * Attributes: Type(24)
      * @return mixed
@@ -138,8 +138,8 @@ interface SessionAbstractInterface extends ModelInterface
     public function getMeta(): mixed;
     
     /**
-     * Sets the value of field meta
-     * Column: meta 
+     * Sets the value of the field "meta"
+     * Column: meta
      * Attributes: Type(24)
      * @param mixed $meta
      * @return void
@@ -147,7 +147,7 @@ interface SessionAbstractInterface extends ModelInterface
     public function setMeta(mixed $meta): void;
     
     /**
-     * Returns the value of field expiresAt
+     * Returns the value of the field "expiresAt"
      * Column: expires_at
      * Attributes: NotNull | Type(4)
      * @return mixed
@@ -155,8 +155,8 @@ interface SessionAbstractInterface extends ModelInterface
     public function getExpiresAt(): mixed;
     
     /**
-     * Sets the value of field expiresAt
-     * Column: expires_at 
+     * Sets the value of the field "expiresAt"
+     * Column: expires_at
      * Attributes: NotNull | Type(4)
      * @param mixed $expiresAt
      * @return void
@@ -164,7 +164,7 @@ interface SessionAbstractInterface extends ModelInterface
     public function setExpiresAt(mixed $expiresAt): void;
     
     /**
-     * Returns the value of field createdAt
+     * Returns the value of the field "createdAt"
      * Column: created_at
      * Attributes: NotNull | Type(4)
      * @return mixed
@@ -172,8 +172,8 @@ interface SessionAbstractInterface extends ModelInterface
     public function getCreatedAt(): mixed;
     
     /**
-     * Sets the value of field createdAt
-     * Column: created_at 
+     * Sets the value of the field "createdAt"
+     * Column: created_at
      * Attributes: NotNull | Type(4)
      * @param mixed $createdAt
      * @return void

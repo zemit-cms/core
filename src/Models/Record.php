@@ -24,7 +24,6 @@ use Zemit\Models\Interfaces\RecordInterface;
  */
 class Record extends RecordAbstract implements RecordInterface
 {
-    #[\Override]
     public function initialize(): void
     {
         parent::initialize();

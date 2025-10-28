@@ -24,7 +24,7 @@ use Zemit\Models\Abstracts\Interfaces\SessionAbstractInterface;
  *
  * This class defines a Session abstract model that extends the AbstractModel class and implements the SessionAbstractInterface.
  * It provides properties and methods for managing Session data.
- * 
+ *
  * @property User $userentity
  * @property User $UserEntity
  * @method User getUserEntity(?array $params = null)
@@ -99,225 +99,207 @@ abstract class SessionAbstract extends \Zemit\Models\AbstractModel implements Se
     public mixed $createdAt = 'current_timestamp()';
     
     /**
-     * Returns the value of field id
+     * Returns the value of the field "id"
      * Column: id
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
-    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
     }
     
     /**
-     * Sets the value of field id
-     * Column: id 
+     * Sets the value of the field "id"
+     * Column: id
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @param mixed $id
      * @return void
      */
-    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
     }
     
     /**
-     * Returns the value of field uuid
+     * Returns the value of the field "uuid"
      * Column: uuid
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
-    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
     }
     
     /**
-     * Sets the value of field uuid
-     * Column: uuid 
+     * Sets the value of the field "uuid"
+     * Column: uuid
      * Attributes: NotNull | Size(36) | Type(5)
      * @param mixed $uuid
      * @return void
      */
-    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
     }
     
     /**
-     * Returns the value of field userId
+     * Returns the value of the field "userId"
      * Column: user_id
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
-    #[\Override]
     public function getUserId(): mixed
     {
         return $this->userId;
     }
     
     /**
-     * Sets the value of field userId
-     * Column: user_id 
+     * Sets the value of the field "userId"
+     * Column: user_id
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $userId
      * @return void
      */
-    #[\Override]
     public function setUserId(mixed $userId): void
     {
         $this->userId = $userId;
     }
     
     /**
-     * Returns the value of field asUserId
+     * Returns the value of the field "asUserId"
      * Column: as_user_id
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
-    #[\Override]
     public function getAsUserId(): mixed
     {
         return $this->asUserId;
     }
     
     /**
-     * Sets the value of field asUserId
-     * Column: as_user_id 
+     * Sets the value of the field "asUserId"
+     * Column: as_user_id
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $asUserId
      * @return void
      */
-    #[\Override]
     public function setAsUserId(mixed $asUserId): void
     {
         $this->asUserId = $asUserId;
     }
     
     /**
-     * Returns the value of field token
+     * Returns the value of the field "token"
      * Column: token
      * Attributes: NotNull | Size(128) | Type(2)
      * @return mixed
      */
-    #[\Override]
     public function getToken(): mixed
     {
         return $this->token;
     }
     
     /**
-     * Sets the value of field token
-     * Column: token 
+     * Sets the value of the field "token"
+     * Column: token
      * Attributes: NotNull | Size(128) | Type(2)
      * @param mixed $token
      * @return void
      */
-    #[\Override]
     public function setToken(mixed $token): void
     {
         $this->token = $token;
     }
     
     /**
-     * Returns the value of field jwt
+     * Returns the value of the field "jwt"
      * Column: jwt
      * Attributes: Type(6)
      * @return mixed
      */
-    #[\Override]
     public function getJwt(): mixed
     {
         return $this->jwt;
     }
     
     /**
-     * Sets the value of field jwt
-     * Column: jwt 
+     * Sets the value of the field "jwt"
+     * Column: jwt
      * Attributes: Type(6)
      * @param mixed $jwt
      * @return void
      */
-    #[\Override]
     public function setJwt(mixed $jwt): void
     {
         $this->jwt = $jwt;
     }
     
     /**
-     * Returns the value of field meta
+     * Returns the value of the field "meta"
      * Column: meta
      * Attributes: Type(24)
      * @return mixed
      */
-    #[\Override]
     public function getMeta(): mixed
     {
         return $this->meta;
     }
     
     /**
-     * Sets the value of field meta
-     * Column: meta 
+     * Sets the value of the field "meta"
+     * Column: meta
      * Attributes: Type(24)
      * @param mixed $meta
      * @return void
      */
-    #[\Override]
     public function setMeta(mixed $meta): void
     {
         $this->meta = $meta;
     }
     
     /**
-     * Returns the value of field expiresAt
+     * Returns the value of the field "expiresAt"
      * Column: expires_at
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
-    #[\Override]
     public function getExpiresAt(): mixed
     {
         return $this->expiresAt;
     }
     
     /**
-     * Sets the value of field expiresAt
-     * Column: expires_at 
+     * Sets the value of the field "expiresAt"
+     * Column: expires_at
      * Attributes: NotNull | Type(4)
      * @param mixed $expiresAt
      * @return void
      */
-    #[\Override]
     public function setExpiresAt(mixed $expiresAt): void
     {
         $this->expiresAt = $expiresAt;
     }
     
     /**
-     * Returns the value of field createdAt
+     * Returns the value of the field "createdAt"
      * Column: created_at
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
-    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
     }
     
     /**
-     * Sets the value of field createdAt
-     * Column: created_at 
+     * Sets the value of the field "createdAt"
+     * Column: created_at
      * Attributes: NotNull | Type(4)
      * @param mixed $createdAt
      * @return void
      */
-    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
@@ -358,7 +340,7 @@ abstract class SessionAbstract extends \Zemit\Models\AbstractModel implements Se
     /**
      * Returns an array that maps the column names of the database
      * table to the corresponding property names of the model.
-     * 
+     *
      * @returns array The array mapping the column names to the property names
      */
     public function columnMap(): array

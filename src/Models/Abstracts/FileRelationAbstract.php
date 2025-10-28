@@ -25,7 +25,7 @@ use Zemit\Models\Abstracts\Interfaces\FileRelationAbstractInterface;
  *
  * This class defines a FileRelation abstract model that extends the AbstractModel class and implements the FileRelationAbstractInterface.
  * It provides properties and methods for managing FileRelation data.
- * 
+ *
  * @property File $fileentity
  * @property File $FileEntity
  * @method File getFileEntity(?array $params = null)
@@ -93,200 +93,184 @@ abstract class FileRelationAbstract extends \Zemit\Models\AbstractModel implemen
     public mixed $createdBy = null;
     
     /**
-     * Returns the value of field id
+     * Returns the value of the field "id"
      * Column: id
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
-    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
     }
     
     /**
-     * Sets the value of field id
-     * Column: id 
+     * Sets the value of the field "id"
+     * Column: id
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @param mixed $id
      * @return void
      */
-    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
     }
     
     /**
-     * Returns the value of field uuid
+     * Returns the value of the field "uuid"
      * Column: uuid
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
-    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
     }
     
     /**
-     * Sets the value of field uuid
-     * Column: uuid 
+     * Sets the value of the field "uuid"
+     * Column: uuid
      * Attributes: NotNull | Size(36) | Type(5)
      * @param mixed $uuid
      * @return void
      */
-    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
     }
     
     /**
-     * Returns the value of field fileId
+     * Returns the value of the field "fileId"
      * Column: file_id
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
-    #[\Override]
     public function getFileId(): mixed
     {
         return $this->fileId;
     }
     
     /**
-     * Sets the value of field fileId
-     * Column: file_id 
+     * Sets the value of the field "fileId"
+     * Column: file_id
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $fileId
      * @return void
      */
-    #[\Override]
     public function setFileId(mixed $fileId): void
     {
         $this->fileId = $fileId;
     }
     
     /**
-     * Returns the value of field relationTable
+     * Returns the value of the field "relationTable"
      * Column: relation_table
      * Attributes: NotNull | Size(60) | Type(2)
      * @return mixed
      */
-    #[\Override]
     public function getRelationTable(): mixed
     {
         return $this->relationTable;
     }
     
     /**
-     * Sets the value of field relationTable
-     * Column: relation_table 
+     * Sets the value of the field "relationTable"
+     * Column: relation_table
      * Attributes: NotNull | Size(60) | Type(2)
      * @param mixed $relationTable
      * @return void
      */
-    #[\Override]
     public function setRelationTable(mixed $relationTable): void
     {
         $this->relationTable = $relationTable;
     }
     
     /**
-     * Returns the value of field relationId
+     * Returns the value of the field "relationId"
      * Column: relation_id
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
-    #[\Override]
     public function getRelationId(): mixed
     {
         return $this->relationId;
     }
     
     /**
-     * Sets the value of field relationId
-     * Column: relation_id 
+     * Sets the value of the field "relationId"
+     * Column: relation_id
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $relationId
      * @return void
      */
-    #[\Override]
     public function setRelationId(mixed $relationId): void
     {
         $this->relationId = $relationId;
     }
     
     /**
-     * Returns the value of field deleted
+     * Returns the value of the field "deleted"
      * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
-    #[\Override]
     public function getDeleted(): mixed
     {
         return $this->deleted;
     }
     
     /**
-     * Sets the value of field deleted
-     * Column: deleted 
+     * Sets the value of the field "deleted"
+     * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @param mixed $deleted
      * @return void
      */
-    #[\Override]
     public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
     }
     
     /**
-     * Returns the value of field createdAt
+     * Returns the value of the field "createdAt"
      * Column: created_at
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
-    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
     }
     
     /**
-     * Sets the value of field createdAt
-     * Column: created_at 
+     * Sets the value of the field "createdAt"
+     * Column: created_at
      * Attributes: NotNull | Type(4)
      * @param mixed $createdAt
      * @return void
      */
-    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
     
     /**
-     * Returns the value of field createdBy
+     * Returns the value of the field "createdBy"
      * Column: created_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
-    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
     }
     
     /**
-     * Sets the value of field createdBy
-     * Column: created_by 
+     * Sets the value of the field "createdBy"
+     * Column: created_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $createdBy
      * @return void
      */
-    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
@@ -328,7 +312,7 @@ abstract class FileRelationAbstract extends \Zemit\Models\AbstractModel implemen
     /**
      * Returns an array that maps the column names of the database
      * table to the corresponding property names of the model.
-     * 
+     *
      * @returns array The array mapping the column names to the property names
      */
     public function columnMap(): array

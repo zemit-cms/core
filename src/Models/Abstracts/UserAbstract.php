@@ -35,7 +35,7 @@ use Zemit\Models\Abstracts\Interfaces\UserAbstractInterface;
  *
  * This class defines a User abstract model that extends the AbstractModel class and implements the UserAbstractInterface.
  * It provides properties and methods for managing User data.
- * 
+ *
  * @property Oauth2[] $oauth2list
  * @property Oauth2[] $Oauth2List
  * @method Oauth2[] getOauth2List(?array $params = null)
@@ -179,300 +179,276 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
     public mixed $deletedBy = null;
     
     /**
-     * Returns the value of field id
+     * Returns the value of the field "id"
      * Column: id
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @return mixed
      */
-    #[\Override]
     public function getId(): mixed
     {
         return $this->id;
     }
     
     /**
-     * Sets the value of field id
-     * Column: id 
+     * Sets the value of the field "id"
+     * Column: id
      * Attributes: First | Primary | NotNull | Numeric | Unsigned | AutoIncrement | Size(1) | Type(14)
      * @param mixed $id
      * @return void
      */
-    #[\Override]
     public function setId(mixed $id): void
     {
         $this->id = $id;
     }
     
     /**
-     * Returns the value of field uuid
+     * Returns the value of the field "uuid"
      * Column: uuid
      * Attributes: NotNull | Size(36) | Type(5)
      * @return mixed
      */
-    #[\Override]
     public function getUuid(): mixed
     {
         return $this->uuid;
     }
     
     /**
-     * Sets the value of field uuid
-     * Column: uuid 
+     * Sets the value of the field "uuid"
+     * Column: uuid
      * Attributes: NotNull | Size(36) | Type(5)
      * @param mixed $uuid
      * @return void
      */
-    #[\Override]
     public function setUuid(mixed $uuid): void
     {
         $this->uuid = $uuid;
     }
     
     /**
-     * Returns the value of field email
+     * Returns the value of the field "email"
      * Column: email
      * Attributes: NotNull | Size(255) | Type(2)
      * @return mixed
      */
-    #[\Override]
     public function getEmail(): mixed
     {
         return $this->email;
     }
     
     /**
-     * Sets the value of field email
-     * Column: email 
+     * Sets the value of the field "email"
+     * Column: email
      * Attributes: NotNull | Size(255) | Type(2)
      * @param mixed $email
      * @return void
      */
-    #[\Override]
     public function setEmail(mixed $email): void
     {
         $this->email = $email;
     }
     
     /**
-     * Returns the value of field password
+     * Returns the value of the field "password"
      * Column: password
      * Attributes: Size(255) | Type(2)
      * @return mixed
      */
-    #[\Override]
     public function getPassword(): mixed
     {
         return $this->password;
     }
     
     /**
-     * Sets the value of field password
-     * Column: password 
+     * Sets the value of the field "password"
+     * Column: password
      * Attributes: Size(255) | Type(2)
      * @param mixed $password
      * @return void
      */
-    #[\Override]
     public function setPassword(mixed $password): void
     {
         $this->password = $password;
     }
     
     /**
-     * Returns the value of field resetToken
+     * Returns the value of the field "resetToken"
      * Column: reset_token
      * Attributes: Size(255) | Type(2)
      * @return mixed
      */
-    #[\Override]
     public function getResetToken(): mixed
     {
         return $this->resetToken;
     }
     
     /**
-     * Sets the value of field resetToken
-     * Column: reset_token 
+     * Sets the value of the field "resetToken"
+     * Column: reset_token
      * Attributes: Size(255) | Type(2)
      * @param mixed $resetToken
      * @return void
      */
-    #[\Override]
     public function setResetToken(mixed $resetToken): void
     {
         $this->resetToken = $resetToken;
     }
     
     /**
-     * Returns the value of field deleted
+     * Returns the value of the field "deleted"
      * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @return mixed
      */
-    #[\Override]
     public function getDeleted(): mixed
     {
         return $this->deleted;
     }
     
     /**
-     * Sets the value of field deleted
-     * Column: deleted 
+     * Sets the value of the field "deleted"
+     * Column: deleted
      * Attributes: NotNull | Numeric | Unsigned | Size(1) | Type(26)
      * @param mixed $deleted
      * @return void
      */
-    #[\Override]
     public function setDeleted(mixed $deleted): void
     {
         $this->deleted = $deleted;
     }
     
     /**
-     * Returns the value of field createdAt
+     * Returns the value of the field "createdAt"
      * Column: created_at
      * Attributes: NotNull | Type(4)
      * @return mixed
      */
-    #[\Override]
     public function getCreatedAt(): mixed
     {
         return $this->createdAt;
     }
     
     /**
-     * Sets the value of field createdAt
-     * Column: created_at 
+     * Sets the value of the field "createdAt"
+     * Column: created_at
      * Attributes: NotNull | Type(4)
      * @param mixed $createdAt
      * @return void
      */
-    #[\Override]
     public function setCreatedAt(mixed $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
     
     /**
-     * Returns the value of field createdBy
+     * Returns the value of the field "createdBy"
      * Column: created_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
-    #[\Override]
     public function getCreatedBy(): mixed
     {
         return $this->createdBy;
     }
     
     /**
-     * Sets the value of field createdBy
-     * Column: created_by 
+     * Sets the value of the field "createdBy"
+     * Column: created_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $createdBy
      * @return void
      */
-    #[\Override]
     public function setCreatedBy(mixed $createdBy): void
     {
         $this->createdBy = $createdBy;
     }
     
     /**
-     * Returns the value of field updatedAt
+     * Returns the value of the field "updatedAt"
      * Column: updated_at
      * Attributes: Type(4)
      * @return mixed
      */
-    #[\Override]
     public function getUpdatedAt(): mixed
     {
         return $this->updatedAt;
     }
     
     /**
-     * Sets the value of field updatedAt
-     * Column: updated_at 
+     * Sets the value of the field "updatedAt"
+     * Column: updated_at
      * Attributes: Type(4)
      * @param mixed $updatedAt
      * @return void
      */
-    #[\Override]
     public function setUpdatedAt(mixed $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
     
     /**
-     * Returns the value of field updatedBy
+     * Returns the value of the field "updatedBy"
      * Column: updated_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
-    #[\Override]
     public function getUpdatedBy(): mixed
     {
         return $this->updatedBy;
     }
     
     /**
-     * Sets the value of field updatedBy
-     * Column: updated_by 
+     * Sets the value of the field "updatedBy"
+     * Column: updated_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $updatedBy
      * @return void
      */
-    #[\Override]
     public function setUpdatedBy(mixed $updatedBy): void
     {
         $this->updatedBy = $updatedBy;
     }
     
     /**
-     * Returns the value of field deletedAt
+     * Returns the value of the field "deletedAt"
      * Column: deleted_at
      * Attributes: Type(4)
      * @return mixed
      */
-    #[\Override]
     public function getDeletedAt(): mixed
     {
         return $this->deletedAt;
     }
     
     /**
-     * Sets the value of field deletedAt
-     * Column: deleted_at 
+     * Sets the value of the field "deletedAt"
+     * Column: deleted_at
      * Attributes: Type(4)
      * @param mixed $deletedAt
      * @return void
      */
-    #[\Override]
     public function setDeletedAt(mixed $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
     }
     
     /**
-     * Returns the value of field deletedBy
+     * Returns the value of the field "deletedBy"
      * Column: deleted_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @return mixed
      */
-    #[\Override]
     public function getDeletedBy(): mixed
     {
         return $this->deletedBy;
     }
     
     /**
-     * Sets the value of field deletedBy
-     * Column: deleted_by 
+     * Sets the value of the field "deletedBy"
+     * Column: deleted_by
      * Attributes: Numeric | Unsigned | Size(1) | Type(14)
      * @param mixed $deletedBy
      * @return void
      */
-    #[\Override]
     public function setDeletedBy(mixed $deletedBy): void
     {
         $this->deletedBy = $deletedBy;
@@ -574,7 +550,7 @@ abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserA
     /**
      * Returns an array that maps the column names of the database
      * table to the corresponding property names of the model.
-     * 
+     *
      * @returns array The array mapping the column names to the property names
      */
     public function columnMap(): array
