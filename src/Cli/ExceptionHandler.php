@@ -15,19 +15,16 @@ namespace Zemit\Cli;
 
 class ExceptionHandler
 {
-    /**
-     * @var resource
-     */
-    private mixed $outputStream;
+    public function __construct(
+        private string|\Exception|\Throwable $e,
+        private readonly mixed $outputStream = STDERR,
+    ) {}
     
-    /**
-     * @param string|\Exception|\Throwable $e
-     * @param resource $outputStream
-     */
-    public function __construct(string|\Exception|\Throwable $e, mixed $outputStream = STDERR)
+    public function write(): void
     {
-        $this->outputStream = $outputStream;
-        $message = is_string($e) ? $e : (string) $e;
-        fwrite($this->outputStream, $message . PHP_EOL);
+        fwrite(
+            $this->outputStream,
+            (is_string($this->e) ? $this->e : (string) $this->e) . PHP_EOL
+        );
     }
 }
