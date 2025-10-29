@@ -29,26 +29,77 @@ class ServiceProvider extends AbstractServiceProvider
             
             $config = $di->get('config');
             assert($config instanceof ConfigInterface);
-            $options = $config->pathToArray('crypt', []);
+            $options = $config->pathToArray('crypt') ?? [];
             
-            $cipher ??= $options['cipher'] ?? 'aes-256-cfb';
+            $cipher ??= $options['cipher'] ?? 'aes-256-gcm';
             $useSigning ??= $options['useSigning'] ?? true;
+            $hash = $options['hashAlgorithm'] ?? 'sha256';
+            $key = $options['key'] ?? ($_ENV['APP_CRYPT_KEY'] ?? null);
+            $padScheme = $options['padScheme'] ?? Crypt::PADDING_DEFAULT;
+            $padFactoryClass = $options['padFactory'] ?? Crypt\PadFactory::class;
             
-            $hash = $options['hash'] ?? 'sha256';
-            $key = $options['key'] ?? 'T4\xb1\x8d\xa9\x98\x05\\x8c\xbe\x1d\x07&[\x99\x18\xa4~Lc1\xbeW\xb3';
-            $paddingScheme = $options['paddingScheme'] ?? Crypt::PADDING_DEFAULT;
-            $padFactoryClass = $options['padFactory'] ?? \Phalcon\Encryption\Crypt\PadFactory::class;
             $authData = $options['authData'] ?? '';
             $authTag = $options['authTag'] ?? '';
             $authTagLength = $options['authTagLength'] ?? 16;
             
             $padFactory = new $padFactoryClass();
-            assert($padFactory instanceof \Phalcon\Encryption\Crypt\PadFactory);
+            assert($padFactory instanceof Crypt\PadFactory);
             
+            // -----------------------------------------------------------------
+            // Validate key
+            // -----------------------------------------------------------------
+            if (empty($key) || strlen($key) < 32) {
+                throw new \RuntimeException('Invalid encryption key: must be at least 32 bytes for AES-256 ciphers.');
+            }
+            
+            // -----------------------------------------------------------------
+            // Validate cipher existence
+            // -----------------------------------------------------------------
+            $availableCiphers = openssl_get_cipher_methods(true);
+            if (!in_array(strtolower($cipher), $availableCiphers, true)) {
+                throw new \RuntimeException(sprintf(
+                    'Invalid cipher "%s": not supported by the current OpenSSL build.',
+                    $cipher
+                ));
+            }
+            
+            // -----------------------------------------------------------------
+            // Validate cipher mode vs signing
+            // -----------------------------------------------------------------
+            $lowerCipher = strtolower($cipher);
+            
+            $isAEAD = str_ends_with($lowerCipher, '-gcm') || str_ends_with($lowerCipher, '-ccm');
+            $isStreamMode = str_ends_with($lowerCipher, '-cfb')
+                || str_ends_with($lowerCipher, '-ofb')
+                || str_ends_with($lowerCipher, '-ctr');
+            
+            // AEAD handles authentication internally
+            if ($isAEAD && $useSigning) {
+                throw new \RuntimeException(sprintf(
+                    'Invalid configuration: cipher "%s" is AEAD (auth built-in). Disable "useSigning".',
+                    $cipher
+                ));
+            }
+            
+            // Stream modes cannot be safely signed via Phalcon’s HMAC path
+            if ($isStreamMode && $useSigning) {
+                throw new \RuntimeException(sprintf(
+                    'Invalid configuration: cipher "%s" does not support signing (stream mode). Disable "useSigning" or use CBC/GCM instead.',
+                    $cipher
+                ));
+            }
+            
+            // -----------------------------------------------------------------
+            // Build Crypt instance
+            // -----------------------------------------------------------------
             $crypt = new Crypt($cipher, $useSigning, $padFactory);
-            $crypt->setHashAlgorithm($hash);
-            $crypt->setPadding($paddingScheme);
             $crypt->setKey($key);
+            $crypt->setPadding($padScheme);
+            
+            if ($useSigning) {
+                $crypt->setHashAlgorithm($hash);
+            }
+            
             $crypt->setAuthData($authData);
             $crypt->setAuthTag($authTag);
             $crypt->setAuthTagLength($authTagLength);
