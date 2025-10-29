@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Everything" type="CompoundRunConfigurationType">
+    <toRun name="phpcbf" type="ShConfigurationType" />
+    <toRun name="phpcs" type="ShConfigurationType" />
+    <toRun name="phpstan" type="ShConfigurationType" />
+    <toRun name="phpunit" type="ShConfigurationType" />
+    <toRun name="psalm" type="ShConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>
