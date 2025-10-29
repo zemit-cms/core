@@ -27,7 +27,7 @@ trait Hash
      * @param string $string The string to be hashed
      * @param string|null $salt (optional) The salt value to be appended to the string before hashing
      * @param string|null $workFactor (optional) The work factor to determine the hashing cost
-     * 
+     *
      * @return string The salted hash value of the input string
      */
     public function hash(string $string, ?string $salt = null, ?string $workFactor = null): string

@@ -70,9 +70,9 @@ trait Expose
      * Export items with expose definition
      *
      * @param iterable $items The items to be exported
-     * @param array|null $expose The expose definition for the items. 
+     * @param array|null $expose The expose definition for the items.
      *                           If not provided, the default $this->getExportExpose() definition will be used.
-     * 
+     *
      * @return array The exported items
      */
     public function exportExpose(iterable $items, ?array $expose = null): array

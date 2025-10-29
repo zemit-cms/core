@@ -41,10 +41,8 @@ trait Save
     
     /**
      * Saves the entity and returns the result as an array.
-     * @todo handle dynamic and/or composed primary keys
-     * @todo handle multiple entities
-     * @todo segregate create vs update vs save
-     * 
+     * @todo handle dynamic and/or composed primary keys, handle multiple entities, segregate create vs update vs save
+     *
      * @return array The result of the save operation, including the saved status, messages,
      *               and optionally the saved entity data if the save was successful.
      */

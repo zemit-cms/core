@@ -24,7 +24,6 @@ use Zemit\Models\Abstracts\Interfaces\PhalconMigrationsAbstractInterface;
  * This class defines a PhalconMigrations abstract model that extends the AbstractModel class and implements the PhalconMigrationsAbstractInterface.
  * It provides properties and methods for managing PhalconMigrations data.
  *
- * 
  */
 abstract class PhalconMigrationsAbstract extends \Zemit\Models\AbstractModel implements PhalconMigrationsAbstractInterface
 {

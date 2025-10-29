@@ -108,7 +108,7 @@ trait Fractal
      * Set the transformer for the class.
      *
      * @param TransformerAbstract|null $transformer The transformer to be set. If null, the transformer will be unset.
-     * 
+     *
      * @return void
      */
     public function setTransformer(?TransformerAbstract $transformer = null): void

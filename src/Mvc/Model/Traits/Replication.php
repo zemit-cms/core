@@ -103,10 +103,10 @@ trait Replication
     /**
      * Dynamically selects a shard
      * - Prefer to read on the write master during the replica delay
-     * 
+     *
      * Possible parameters which can be added if required
      * ?array $intermediate = null, array $bindParams = [], array $bindTypes = []
-     * 
+     *
      * @return AdapterInterface
      */
     public function selectReadConnection(): AdapterInterface

@@ -64,7 +64,7 @@ trait Validate
      * @param Validation $validator The validation object to add the validation to
      * @param array|string $field The name of the field to validate
      * @param bool $allowEmpty Whether to allow empty values. Default is false.
-     * 
+     *
      * @return Validation The updated validation object
      */
     public function addNotEmptyValidation(Validation $validator, array|string $field, bool $allowEmpty = false): Validation
@@ -131,7 +131,7 @@ trait Validate
      * @param Validation $validator The validation object to add rules to
      * @param array|string $field The name of the field to validate (default is 'id')
      * @param bool $allowEmpty Whether empty values are allowed or not (default is true)
-     * 
+     *
      * @return Validation The updated validation object
      */
     public function addUnsignedBigIntValidation(Validation $validator, array|string $field = 'id', bool $allowEmpty = true): Validation
@@ -163,7 +163,7 @@ trait Validate
      * @param int $min The minimum value allowed for the field
      * @param int $max The maximum value allowed for the field
      * @param bool $allowEmpty Specifies whether the field can be empty
-     * 
+     *
      * @return Validation The modified validation object with the number validations added
      */
     public function addNumberValidation(Validation $validator, array|string $field, int $min, int $max, bool $allowEmpty = true): Validation
@@ -275,7 +275,7 @@ trait Validate
      * @param array $domain The array of allowed values for the field
      * @param bool $allowEmpty Whether to allow empty values for the field (default: true)
      * @param bool $strict Whether to use strict comparison for checking inclusion (default: true)
-     * 
+     *
      * @return Validation The updated validator object
      */
     public function addInclusionValidation(Validation $validator, array|string $field, array $domain = [], bool $allowEmpty = true, bool $strict = true): Validation
@@ -298,7 +298,7 @@ trait Validate
      * @param Validation $validator The validation object to add the validation rules to
      * @param string|array $field The field(s) to apply the uniqueness validation to
      * @param bool $allowEmpty Whether to allow empty values for the field(s)
-     * 
+     *
      * @return Validation The modified validation object
      */
     public function addUniquenessValidation(Validation $validator, string|array $field, bool $allowEmpty = true): Validation
@@ -319,7 +319,7 @@ trait Validate
      * @param Validation $validator The validator object
      * @param array|string $field The field name to add the validation to
      * @param bool $allowEmpty Whether to allow empty values for the field (default: true)
-     * 
+     *
      * @return Validation The modified validator object
      */
     public function addEmailValidation(Validation $validator, array|string $field, bool $allowEmpty = true): Validation
@@ -343,7 +343,7 @@ trait Validate
      * @param array|string $field The name of the date field to validate
      * @param bool $allowEmpty Whether to allow empty values for the date field (default: true)
      * @param string $format The expected format of the date field (default: Column::DATE_FORMAT)
-     * 
+     *
      * @return Validation The updated validation object
      */
     public function addDateValidation(Validation $validator, array|string $field, bool $allowEmpty = true, string $format = Column::DATE_FORMAT): Validation
@@ -368,7 +368,7 @@ trait Validate
      * @param array|string $field The name of the field to validate
      * @param bool $allowEmpty Specifies if the field is allowed to be empty (default: true)
      * @param string $format The format of the datetime (default: Column::DATETIME_FORMAT)
-     * 
+     *
      * @return Validation The updated validation object
      */
     public function addDateTimeValidation(Validation $validator, array|string $field, bool $allowEmpty = true, string $format = Column::DATETIME_FORMAT): Validation
@@ -377,7 +377,7 @@ trait Validate
         
         $validator->add($field, new Date([
             'format' => $format,
-            'message' => $this->_('invalid-date-format'),
+            'message' => $this->_('invalid-datetime-format'),
             'allowEmpty' => true,
         ]));
         
@@ -394,7 +394,7 @@ trait Validate
      * @param bool $allowEmpty Whether to allow an empty value for the field
      * @param int $depth The maximum depth of the JSON string (default: 512)
      * @param int $flags JSON flags to be used (default: 0)
-     * 
+     *
      * @return Validation The updated validator object
      */
     public function addJsonValidation(Validation $validator, array|string $field, bool $allowEmpty = true, int $depth = 512, int $flags = 0): Validation
@@ -419,7 +419,7 @@ trait Validate
      * @param Validation $validator The validation object
      * @param array|string $field The name of the field to validate
      * @param bool $allowEmpty Whether empty values are allowed (default: true)
-     * 
+     *
      * @return Validation The modified validation object
      */
     public function addColorValidation(Validation $validator, array|string $field, bool $allowEmpty = true): Validation
@@ -440,7 +440,7 @@ trait Validate
      *
      * @param Validation $validator The validation object to add validation rules to
      * @param string $field The name of the field to add validations for (default: 'id')
-     * 
+     *
      * @return Validation The updated validation object
      */
     public function addIdValidation(Validation $validator, string $field = 'id'): Validation
@@ -577,18 +577,15 @@ trait Validate
             ]));
         }
         
-        if (property_exists($this, $dateField)) {
-            // if the $userIdField is filled
-            if (!empty($this->readAttribute($userIdField))) {
-                $this->addPresenceValidation($validator, $dateField, false);
-                
-                // Must be a valid date format
-                $validator->add($dateField, new Date([
-                    'format' => Column::DATETIME_FORMAT,
-                    'message' => $this->_('invalid-date-format'),
-                    'allowEmpty' => true,
-                ]));
-            }
+        if (property_exists($this, $dateField) && !empty($this->readAttribute($userIdField))) {
+            $this->addPresenceValidation($validator, $dateField, false);
+            
+            // Must be a valid date format
+            $validator->add($dateField, new Date([
+                'format' => Column::DATETIME_FORMAT,
+                'message' => $this->_('invalid-date-format'),
+                'allowEmpty' => true,
+            ]));
         }
         
         return $validator;

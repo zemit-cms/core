@@ -31,7 +31,7 @@ trait FindAction
     /**
      * Find and expose the resultset.
      * @link findAction()
-     * 
+     *
      * @deprecated use {@link findAction()}
      * @return ResponseInterface The HTTP response that indicates the success of retrieving all records.
      * @throws \Exception
@@ -44,7 +44,7 @@ trait FindAction
     /**
      * Find with relationships and expose the resultset.
      * @link findWithAction()
-     * 
+     *
      * @deprecated use {@link findWithAction()}
      * @return ResponseInterface The HTTP response that contains the resultset with the relationships.
      * @throws \Exception

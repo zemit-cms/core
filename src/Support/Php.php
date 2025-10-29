@@ -33,7 +33,7 @@ class Php
     /**
      * Trust the forwarded protocol from the reverse proxy server.
      * If trusted and HTTP_X_FORWARDED_PROTO is https force $_SERVER['https'] to 'on'
-     * 
+     *
      * @return void
      */
     public static function trustForwardedProto(): void

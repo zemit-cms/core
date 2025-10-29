@@ -29,7 +29,7 @@ class RecursiveMap
      * Applies a callback function to each element of the given array recursively and returns a new array.
      *
      * @param array $collection The array to be processed.
-     * 
+     *
      * @param callable $callback The callback function to be applied to each array element.
      *                           The callback function should accept one argument, which is the current array element,
      *                           and can return a modified value for that element.
