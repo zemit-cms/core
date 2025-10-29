@@ -71,6 +71,6 @@ class Application extends \Phalcon\Mvc\Application
             return $response->getContent();
         }
         
-        return $response;
+        return $response ?? '';
     }
 }
