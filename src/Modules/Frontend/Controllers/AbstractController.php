@@ -21,7 +21,7 @@ abstract class AbstractController extends Controller
     /**
      * @return void
      */
-    public function initialize()
+    public function initialize(): void
     {
         Tag::setAttr('html', ['lang' => $this->dispatcher->getParam('language', 'string', 'en')]);
         Tag::setTitle($this->config->path('core.name') ?: 'Zemit');

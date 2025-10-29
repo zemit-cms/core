@@ -29,8 +29,6 @@ use Zemit\Support\Helper;
  */
 trait DescribesTrait
 {
-    // @todo abstract injectable here
-    
     protected array $cachedColumns = [];
     protected array $cachedIndexes = [];
     protected array $cachedReferences = [];

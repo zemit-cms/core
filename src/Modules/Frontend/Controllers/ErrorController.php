@@ -26,7 +26,7 @@ class ErrorController extends AbstractController
      * @return void
      */
     #[\Override]
-    public function initialize()
+    public function initialize(): void
     {
         $this->view->pick('error/index');
         parent::initialize();

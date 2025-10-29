@@ -15,7 +15,4 @@ namespace Zemit\Modules\Admin;
 
 class Controller extends \Zemit\Mvc\Controller
 {
-    public function initialize(): void
-    {
-    }
 }

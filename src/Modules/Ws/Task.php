@@ -15,7 +15,4 @@ namespace Zemit\Modules\Ws;
 
 class Task extends \Zemit\Ws\Task
 {
-    public function initialize(): void
-    {
-    }
 }

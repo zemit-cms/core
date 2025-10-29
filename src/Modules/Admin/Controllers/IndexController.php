@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Zemit\Modules\Admin\Controllers;
 
-use Zemit\Modules\Admin\Controller;
+use Zemit\Tag;
 
-class IndexController extends Controller
+class IndexController extends AbstractController
 {
     public function indexAction(): void
     {
+        Tag::appendTitle(' - Admin');
     }
 }

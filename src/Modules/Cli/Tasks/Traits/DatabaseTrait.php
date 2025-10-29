@@ -32,7 +32,6 @@ trait DatabaseTrait
     
     /**
      * Default action
-     * @throws CliException
      */
     public function mainAction(): ?array
     {

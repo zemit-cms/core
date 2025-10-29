@@ -1,24 +1,15 @@
-<?php
-$path = '/admin/';
-$frontend = $this->config->app->dir->public . $path . 'index.html';
-
-// loading app
-if (file_exists($frontend)) {
-
-//    require_once $frontend;
-    echo str_replace(
-        ['href="./', 'src="./', 'href="assets/'],
-        ['href="' . $path, 'src="' . $path, 'href="' . $path . 'assets/'],
-        file_get_contents($frontend)
-    );
-}
-
-// front-end not found
-else {
-    
-    /** @var \Phalcon\Http\Response $response */
-    $response = $this->response;
-    $response->setStatusCode(404, 'Page not found');
-    
-    return $response;
-}
+<?= $this->tag->getDoctype() ?>
+<html<?= $this->tag->getTagParams('html'); ?>>
+<head>
+  <?= $this->tag->renderTitle(); ?>
+  <?= $this->tag->meta(); ?>
+  <?= $this->tag->css('head'); ?>
+</head>
+<body<?= $this->tag->getTagParams('body'); ?>>
+<div class="container">
+  <div class="box text-center">
+    <?= $this->getContent(); ?>
+  </div>
+</div>
+</body>
+</html>
