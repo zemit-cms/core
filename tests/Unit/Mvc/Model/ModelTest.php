@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Zemit\Tests\Unit\Mvc\Model;
 
 use Phalcon\Db\Column;
+use Zemit\Models\Audit;
+use Zemit\Models\AuditDetail;
 use Zemit\Models\Role;
 use Zemit\Models\User;
 use Zemit\Models\UserRole;
@@ -29,6 +31,8 @@ class ModelTest extends AbstractUnit
         $db->execute('TRUNCATE TABLE ' . $db->escapeIdentifier(new UserRole()->getSource()));
         $db->execute('TRUNCATE TABLE ' . $db->escapeIdentifier(new Role()->getSource()));
         $db->execute('SET FOREIGN_KEY_CHECKS=1;');
+        $this->addModelsPermissions([Audit::class => ['*']]);
+        $this->addModelsPermissions([AuditDetail::class => ['*']]);
         $this->addModelsPermissions([User::class => ['*']]);
         $this->addModelsPermissions([UserRole::class => ['*']]);
         $this->addModelsPermissions([Role::class => ['*']]);
