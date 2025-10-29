@@ -27,6 +27,7 @@ use Zemit\Bootstrap\Permissions\WorkspaceConfig;
 use Zemit\Locale;
 use Zemit\Models;
 use Zemit\Modules\Frontend;
+use Zemit\Modules\Admin;
 use Zemit\Modules\Api;
 use Zemit\Modules\Cli;
 use Zemit\Mvc\Controller\Behavior;
@@ -1341,6 +1342,9 @@ class Config extends \Zemit\Config\Config
                 ],
             ],
             
+            /**
+             * OpenAI
+             */
             'openai' => [
                 'secretKey' => Env::get('OPENAI_SECRET_KEY'),
                 'organizationId' => Env::get('OPENAI_ORGANIZATION_ID'),
@@ -1360,6 +1364,9 @@ class Config extends \Zemit\Config\Config
                 'attachmentFilenameMode' => Env::get('IMAP_ATTACHMENT_FILENAME_MODE', false), // Attachment filename mode (optional; false = random filename; true = original filename)
             ],
             
+            /**
+             * ClamAV
+             */
             'clamav' => [
                 'address' => Env::get('CLAMAV_ADDRESS', 'unix:///run/clamd.scan/clamd.sock'),
                 'timeout' => Env::get('CLAMAV_TIMEOUT', 30),
@@ -1391,192 +1398,6 @@ class Config extends \Zemit\Config\Config
                  * Feature permissions
                  */
                 'features' => [
-                    
-                    'test' => [
-                        'components' => [
-                            Api\Controllers\TestController::class => ['*'],
-                        ],
-                    ],
-                    
-                    'base' => [
-                        'components' => [
-                            Api\Controllers\AuthController::class => ['get', 'refresh'],
-                            Models\Audit::class => ['create'],
-                            Models\AuditDetail::class => ['create'],
-                            Models\Session::class => ['*'],
-                        ],
-                    ],
-                    
-                    'login' => [
-                        'components' => [
-                            Api\Controllers\AuthController::class => ['login'],
-                            Models\User::class => ['find'],
-                        ],
-                    ],
-                    
-                    'logout' => [
-                        'components' => [
-                            Api\Controllers\AuthController::class => ['logout'],
-                        ],
-                    ],
-                    
-                    'register' => [
-                        'components' => [
-                            Api\Controllers\AuthController::class => ['register'],
-                            Models\User::class => ['find', 'create'],
-                        ],
-                    ],
-                    
-                    'cron' => [
-                        'components' => [
-                            Cli\Tasks\CronTask::class => ['*'],
-                        ],
-                    ],
-                    
-                    'manageRoleList' => [
-                        'components' => [
-                            Api\Controllers\RoleController::class => ['*'],
-                            Models\Role::class => ['*'],
-                            Models\UserRole::class => ['*'],
-                        ],
-                        'behaviors' => [
-                            Api\Controllers\RoleController::class => [
-                                Behavior\Skip\SkipIdentityCondition::class,
-                                Behavior\Skip\SkipSoftDeleteCondition::class,
-                            ],
-                        ],
-                    ],
-                    
-                    'manageGroupList' => [
-                        'components' => [
-                            Api\Controllers\GroupController::class => ['*'],
-                            Models\Group::class => ['*'],
-                        ],
-                        'behaviors' => [
-                            Api\Controllers\GroupController::class => [
-                                Behavior\Skip\SkipIdentityCondition::class,
-                                Behavior\Skip\SkipSoftDeleteCondition::class,
-                            ],
-                        ],
-                    ],
-                    
-                    'manageTypeList' => [
-                        'components' => [
-                            Api\Controllers\TypeController::class => ['*'],
-                            Models\Group::class => ['*'],
-                        ],
-                        'behaviors' => [
-                            Api\Controllers\TypeController::class => [
-                                Behavior\Skip\SkipIdentityCondition::class,
-                                Behavior\Skip\SkipSoftDeleteCondition::class,
-                            ],
-                        ],
-                    ],
-                    
-                    'manageLangList' => [
-                        'components' => [
-                            Api\Controllers\LangController::class => ['*'],
-                            Models\Lang::class => ['*'],
-                        ],
-                        'behaviors' => [
-                            Api\Controllers\LangController::class => [
-                                Behavior\Skip\SkipIdentityCondition::class,
-                                Behavior\Skip\SkipSoftDeleteCondition::class,
-                            ],
-                        ],
-                    ],
-                    
-                    'manageUserList' => [
-                        'components' => [
-                            Api\Controllers\UserController::class => ['*'],
-                            Models\User::class => ['*'],
-                        ],
-                        'behaviors' => [
-                            Api\Controllers\UserController::class => [
-                                Behavior\Skip\SkipIdentityCondition::class,
-                                Behavior\Skip\SkipSoftDeleteCondition::class,
-                            ],
-                        ],
-                    ],
-                    
-                    'manageTemplateList' => [
-                        'components' => [
-                            Api\Controllers\TemplateController::class => ['*'],
-                            Models\Template::class => ['*'],
-                        ],
-                        'behaviors' => [
-                            Api\Controllers\TemplateController::class => [
-                                Behavior\Skip\SkipIdentityCondition::class,
-                                Behavior\Skip\SkipSoftDeleteCondition::class,
-                            ],
-                        ],
-                    ],
-                    
-                    'manageAuditList' => [
-                        'components' => [
-                            Api\Controllers\AuditController::class => ['*'],
-                            Models\Audit::class => ['*'],
-                        ],
-                        'behaviors' => [
-                            Api\Controllers\AuditController::class => [
-                                Behavior\Skip\SkipIdentityCondition::class,
-                                Behavior\Skip\SkipSoftDeleteCondition::class,
-                            ],
-                        ],
-                    ],
-                    
-                    'manageWorkspaceList' => [
-                        'components' => [
-                            Api\Controllers\WorkspaceController::class => ['*'],
-                            Models\Workspace::class => ['*'],
-                            Models\WorkspaceLang::class => ['*'],
-                        ],
-                        'behaviors' => [
-                            Api\Controllers\WorkspaceController::class => [
-                                Behavior\Skip\SkipIdentityCondition::class,
-                                Behavior\Skip\SkipSoftDeleteCondition::class,
-                            ],
-                        ],
-                    ],
-                    
-                    'managePageList' => [
-                        'components' => [
-                            Api\Controllers\PageController::class => ['*'],
-                            Models\Page::class => ['*'],
-                        ],
-                        'behaviors' => [
-                            Api\Controllers\PageController::class => [
-                                Behavior\Skip\SkipIdentityCondition::class,
-                                Behavior\Skip\SkipSoftDeleteCondition::class,
-                            ],
-                        ],
-                    ],
-                    
-                    'managePostList' => [
-                        'components' => [
-                            Api\Controllers\PostController::class => ['*'],
-                            Models\Post::class => ['*'],
-                        ],
-                        'behaviors' => [
-                            Api\Controllers\PostController::class => [
-                                Behavior\Skip\SkipIdentityCondition::class,
-                                Behavior\Skip\SkipSoftDeleteCondition::class,
-                            ],
-                        ],
-                    ],
-                    
-                    'managePhalconMigrationsList' => [
-                        'components' => [
-                            Api\Controllers\PhalconMigrationsController::class => ['*'],
-                            Models\PhalconMigrations::class => ['*'],
-                        ],
-                        'behaviors' => [
-                            Api\Controllers\PhalconMigrationsController::class => [
-                                Behavior\Skip\SkipIdentityCondition::class,
-                                Behavior\Skip\SkipSoftDeleteCondition::class,
-                            ],
-                        ],
-                    ],
                 ],
                 
                 /**
@@ -1596,85 +1417,40 @@ class Config extends \Zemit\Config\Config
                             Cli\Tasks\HelpTask::class => ['*'],
                             Cli\Tasks\ScaffoldTask::class => ['*'],
                             Cli\Tasks\TsScaffoldTask::class => ['*'],
-                            Cli\Tasks\TestTask::class => ['*'],
                             Cli\Tasks\UserTask::class => ['*'],
                         ],
                     ],
                     
                     // WebSocket (WS)
                     'ws' => [
-                        'components' => [
-                            Cli\Tasks\ErrorTask::class => ['*'],
-                        ],
                     ],
                     
-                    // Everyone with or without role
+                    // Everyone with or without a role
                     'everyone' => [
-                        'features' => [
-                            'base',
-                        ],
                         'components' => [
-                            Frontend\Controllers\IndexController::class => ['*'],
+                            Frontend\Controllers\IndexController::class => ['index'],
+                            Admin\Controllers\IndexController::class => ['index'],
                         ],
                     ],
                     
-                    // Everyone without role
+                    // Everyone without a role
                     'guest' => [
-                        'features' => [
-                            'login',
-                            'logout',
-                            'register',
-                        ],
                     ],
                     
                     // User
                     'user' => [
-                        'features' => [
-                            'logout',
-                        ],
                     ],
                     
                     // Admin
                     'admin' => [
-                        'features' => [
-                            'manageUserList',
-                            'manageLangList',
-                            'manageWorkspaceList',
-                            'managePageList',
-                            'managePostList',
-                            'manageTemplateList',
-                            'managePhalconMigrationsList',
-                        ],
-                        'inherit' => [
-                            'user',
-                        ],
-                        'behaviors' => [
-                        ],
                     ],
                     
                     // Dev
                     'dev' => [
-                        'features' => [
-                            'manageRoleList',
-                            'manageGroupList',
-                            'manageTypeList',
-                            'manageAuditList',
-                        ],
-                        'inherit' => [
-                            'user',
-                            'admin',
-                        ],
                     ],
                 ],
             ],
         ], $data);
-        
-        $data = $this->internalMergeAppend($data, new WorkspaceConfig()->toArray());
-        $data = $this->internalMergeAppend($data, new TemplateConfig()->toArray());
-        $data = $this->internalMergeAppend($data, new TableConfig()->toArray());
-        $data = $this->internalMergeAppend($data, new ColumnConfig()->toArray());
-        $data = $this->internalMergeAppend($data, new RecordConfig()->toArray());
-        $data = $this->internalMergeAppend($data, new DynamicConfig()->toArray());
         
         parent::__construct($data, $insensitive);
     }
