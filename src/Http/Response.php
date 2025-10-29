@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Zemit\Http;
 
-use Zemit\Http\ResponseInterface;
-
 /**
  * Represents an HTTP response.
  * {@inheritDoc}

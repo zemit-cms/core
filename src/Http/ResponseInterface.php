@@ -18,4 +18,5 @@ namespace Zemit\Http;
  */
 interface ResponseInterface extends \Phalcon\Http\ResponseInterface
 {
+    public function getReasonPhrase(): string|null;
 }
