@@ -35,7 +35,6 @@ abstract class AbstractTask extends Task
     
     public Server $server;
     
-    #[\Override]
     public function initialize(): void
     {
         $this->initializeOpen();
