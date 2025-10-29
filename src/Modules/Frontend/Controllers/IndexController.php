@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace Zemit\Modules\Frontend\Controllers;
 
+use Zemit\Tag;
+
 class IndexController extends AbstractController
 {
     public function indexAction(): void
     {
+        Tag::appendTitle(' - Home');
     }
 }

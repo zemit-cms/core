@@ -24,13 +24,7 @@ abstract class AbstractController extends Controller
     public function initialize()
     {
         Tag::setAttr('html', ['lang' => $this->dispatcher->getParam('language', 'string', 'en')]);
-        Tag::setTitle($this->config->path('core.name', 'Zemit Frontend'));
-        
-        $this->assets->collection('head')
-            ->addCss('/head.css', true, true, [], null, true)
-            ->addJs('/head.js', true, true, [], null, true);
-
-        $this->assets->collection('footer')
-            ->addJs('/footer.js', true, true, [], null, true);
+        Tag::setTitle($this->config->path('core.name') ?: 'Zemit');
+        $this->assets->collection('head')->addCss('/style.css', true, true, [], null, true);
     }
 }

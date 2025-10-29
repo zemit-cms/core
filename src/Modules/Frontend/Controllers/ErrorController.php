@@ -15,6 +15,7 @@ namespace Zemit\Modules\Frontend\Controllers;
 
 use Zemit\Mvc\Controller\Traits\Actions\ErrorActions;
 use Zemit\Mvc\Controller\Traits\StatusCode;
+use Zemit\Tag;
 
 class ErrorController extends AbstractController
 {
@@ -29,5 +30,11 @@ class ErrorController extends AbstractController
     {
         $this->view->pick('error/index');
         parent::initialize();
+    }
+    
+    public function afterExecuteRoute(): void
+    {
+        $title = $this->response->getReasonPhrase() ?: 'Error';
+        Tag::appendTitle(' - ' . $title);
     }
 }

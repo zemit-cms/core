@@ -1,17 +1,15 @@
 <?= $this->tag->getDoctype() ?>
-<html<?= $this->tag->getTagParams('html');?>>
-    <head>
-        <?= @$this->tag->renderTitle();?>
-        <?= $this->tag->meta();?>
-        <?= $this->tag->css('head');?>
-        <?= $this->tag->js('head');?>
-        <?= $this->partial('layout/head');?>
-    </head>
-    <body<?= $this->tag->getTagParams('body');?>>
-        <?= $this->partial('layout/header');?>
-        <?= $this->getContent();?>
-        <?= $this->partial('layout/footer');?>
-        <?= $this->tag->css('footer');?>
-        <?= $this->tag->js('footer');?>
-    </body>
+<html<?= $this->tag->getTagParams('html'); ?>>
+<head>
+  <?= $this->tag->renderTitle(); ?>
+  <?= $this->tag->meta(); ?>
+  <?= $this->tag->css('head');?>
+</head>
+<body<?= $this->tag->getTagParams('body'); ?>>
+<div class="container">
+  <div class="box text-center">
+    <?= $this->getContent(); ?>
+  </div>
+</div>
+</body>
 </html>
