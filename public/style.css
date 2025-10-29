@@ -1,0 +1,27 @@
+html {
+    font-size: 18px;
+}
+
+h1 {
+    font-size: 4rem;
+}
+
+p {
+    font-size: 1rem;
+}
+
+.container {
+    position: relative;
+    min-height: 100vh;
+}
+
+.box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.text-center {
+    text-align: center;
+}
