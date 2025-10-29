@@ -75,7 +75,7 @@ trait DispatcherTrait
             'action' => $this->getActionName(),
             'params' => $this->getParams(),
         ];
-        if (array_any($parts, fn($current, $part) => isset($forward[$part]) && $current !== $forward[$part])) {
+        if (array_any($parts, fn(array|string|null $current, string $part): bool => isset($forward[$part]) && $current !== $forward[$part])) {
             return true;
         }
         
