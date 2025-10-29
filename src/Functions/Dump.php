@@ -46,7 +46,7 @@ if (!function_exists('exit_500')) {
     function exit_500(): void
     {
         if (!in_array(\PHP_SAPI, ['cli', 'phpdbg'], true) && !headers_sent()) {
-            header('500 Internal Server Error');
+            http_response_code(500);
         }
         exit(1);
     }
