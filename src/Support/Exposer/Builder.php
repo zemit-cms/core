@@ -127,17 +127,34 @@ class Builder implements BuilderInterface
         $this->protected = $protected;
     }
     
+    /**
+     * Retrieves the full key constructed from the context and the key.
+     *
+     * The full key is determined based on the following conditions:
+     * - If the key is empty, the context is returned.
+     * - If the context is empty, the key is returned.
+     * - If both are present, the result is a concatenation of context and key separated by a dot.
+     *
+     * @return string|null The constructed full key or null if both key and context are null.
+     */
     #[\Override]
     public function getFullKey(): ?string
     {
         $key = $this->getKey();
         $context = $this->getContextKey();
         
-        if ($key === null || $key === '') {
-            return $context ?: null;
+        // If $key is empty, just return the context
+        if (empty($key)) {
+            return $context;
         }
         
-        return $context ? "{$context}.{$key}" : $key;
+        // If $key is not empty but $context is empty, return just the key
+        if (empty($context)) {
+            return $key;
+        }
+        
+        // Both present: "context.key"
+        return $context . '.' . $key;
     }
     
     /**
