@@ -21,6 +21,7 @@ use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractQuery;
 use Zemit\Mvc\Controller\Traits\Abstracts\Query\Fields\AbstractSearchFields;
+use Zemit\Support\Helper\Arr\FlattenKeys;
 
 /**
  * This trait provides methods for managing search conditions.
@@ -109,19 +110,16 @@ trait SearchConditions
      * @param array $searchFields The fields to search within. Can be nested arrays representing relationships.
      * @param array &$bind The reference array to hold values for the search bind parameters.
      * @param array &$bindTypes The reference array to hold the bind types for the search parameters.
-     * @param string $prefix An optional prefix used for appending to field names in nested structures.
      * @return array The generated sub-query as an array of conditional statements.
      */
-    public function generateSearchSubQuery(string $searchTerm, array $searchFields, array &$bind, array &$bindTypes, string $prefix = ''): array
+    public function generateSearchSubQuery(string $searchTerm, array $searchFields, array &$bind, array &$bindTypes): array
     {
         $subQuery = [];
         
-        foreach ($searchFields as $key => $searchField) {
-            if (is_array($searchField)) {
-                return array_merge(
-                    $subQuery,
-                    $this->generateSearchSubQuery($searchTerm, $searchField, $bind, $bindTypes, $prefix . $key . '.')
-                );
+        $flattenSearchFields = FlattenKeys::process($searchFields);
+        foreach ($flattenSearchFields as $searchField => $enabled) {
+            if (!$enabled) {
+                continue;
             }
             
             $field = $this->appendModelName($searchField);

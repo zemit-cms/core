@@ -69,6 +69,7 @@ trait FilterConditions
         }
         
         $allowedFilters ??= $this->getFilterFields()?->toArray();
+        $flattenAllowedFilters = FlattenKeys::process($allowedFilters);
         
         $query = [];
         $bind = [];
@@ -104,7 +105,7 @@ trait FilterConditions
             ]);
             
             // allowed field
-            if (!$this->isFilterAllowed($field, $allowedFilters ?? null)) {
+            if (!$this->isFilterAllowed($field, $flattenAllowedFilters)) {
                 throw new \Exception(sprintf('Unauthorized filter field: "%s"', $field), 403);
             }
             
@@ -384,8 +385,11 @@ trait FilterConditions
             return false;
         }
         
-        $flat = FlattenKeys::process($allowedFilters);
-        return in_array($field, $allowedFilters, true) || !empty($flat[$field]);
+        if (in_array($field, $allowedFilters, true)) {
+            return true;
+        }
+        
+        return $allowedFilters[$field] ?? false;
     }
     
     /**
