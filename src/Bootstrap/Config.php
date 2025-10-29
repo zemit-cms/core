@@ -952,11 +952,11 @@ class Config extends \Zemit\Config\Config
              * Default crypt settings
              */
             'crypt' => [
-                'paddingFactory' => Env::get('CRYPT_PAD_FACTORY', \Phalcon\Encryption\Crypt\PadFactory::class),
-                'paddingScheme' => Env::get('CRYPT_PADDING_SCHEME', \Phalcon\Encryption\Crypt::PADDING_DEFAULT),
+                'padFactory' => Env::get('CRYPT_PAD_FACTORY', \Phalcon\Encryption\Crypt\PadFactory::class),
+                'padScheme' => Env::get('CRYPT_PAD_SCHEME', \Phalcon\Encryption\Crypt::PADDING_DEFAULT),
                 'hashAlgorithm' => Env::get('CRYPT_HASH_ALGORITHM', 'sha256'),
-                'useSigning' => Env::get('CRYPT_USE_SIGNING', true),
-                'cipher' => Env::get('CRYPT_CIPHER', 'aes-256-cfb'),
+                'useSigning' => Env::get('CRYPT_USE_SIGNING', false),
+                'cipher' => Env::get('CRYPT_CIPHER', 'aes-256-gcm'),
                 'key' => Env::get('CRYPT_KEY', 'T4\xb1\x8d\xa9\x98\x05\\x8c\xbe\x1d\x07&[\x99\x18\xa4~Lc1\xbeW\xb3'),
                 'authData' => Env::get('CRYPT_AUTH_DATA', ''),
                 'authTag' => Env::get('CRYPT_AUTH_TAG', ''),
@@ -1614,8 +1614,7 @@ class Config extends \Zemit\Config\Config
                             'base',
                         ],
                         'components' => [
-                            Api\Controllers\ClamavController::class => ['*'],
-                            Frontend\Controllers\CheckController::class => ['*'],
+                            Frontend\Controllers\IndexController::class => ['*'],
                         ],
                     ],
                     
@@ -1670,12 +1669,12 @@ class Config extends \Zemit\Config\Config
             ],
         ], $data);
         
-        $data = $this->internalMergeAppend($data, (new WorkspaceConfig())->toArray());
-        $data = $this->internalMergeAppend($data, (new TemplateConfig())->toArray());
-        $data = $this->internalMergeAppend($data, (new TableConfig())->toArray());
-        $data = $this->internalMergeAppend($data, (new ColumnConfig())->toArray());
-        $data = $this->internalMergeAppend($data, (new RecordConfig())->toArray());
-        $data = $this->internalMergeAppend($data, (new DynamicConfig())->toArray());
+        $data = $this->internalMergeAppend($data, new WorkspaceConfig()->toArray());
+        $data = $this->internalMergeAppend($data, new TemplateConfig()->toArray());
+        $data = $this->internalMergeAppend($data, new TableConfig()->toArray());
+        $data = $this->internalMergeAppend($data, new ColumnConfig()->toArray());
+        $data = $this->internalMergeAppend($data, new RecordConfig()->toArray());
+        $data = $this->internalMergeAppend($data, new DynamicConfig()->toArray());
         
         parent::__construct($data, $insensitive);
     }
