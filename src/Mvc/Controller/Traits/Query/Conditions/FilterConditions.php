@@ -69,7 +69,7 @@ trait FilterConditions
         }
         
         $allowedFilters ??= $this->getFilterFields()?->toArray();
-        $flattenAllowedFilters = FlattenKeys::process($allowedFilters);
+        $flattenAllowedFilters = FlattenKeys::process($allowedFilters ?? []);
         
         $query = [];
         $bind = [];

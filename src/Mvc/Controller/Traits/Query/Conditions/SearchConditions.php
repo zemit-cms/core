@@ -116,7 +116,7 @@ trait SearchConditions
     {
         $subQuery = [];
         
-        $flattenSearchFields = FlattenKeys::process($searchFields);
+        $flattenSearchFields = FlattenKeys::process($searchFields) ?? [];
         foreach ($flattenSearchFields as $searchField => $enabled) {
             if (!$enabled) {
                 continue;
