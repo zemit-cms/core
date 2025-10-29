@@ -13,13 +13,6 @@ declare(strict_types=1);
 
 namespace Zemit\Modules\Oauth2\Controllers;
 
-use League\OAuth2\Client\Grant\RefreshToken;
-use League\OAuth2\Client\Provider\Google;
-use League\OAuth2\Client\Provider\ResourceOwnerInterface;
-use League\OAuth2\Client\Token\AccessToken;
-use League\OAuth2\Client\Token\AccessTokenInterface;
-use Phalcon\Http\ResponseInterface;
-
 class GoogleController extends AbstractController
 {
     public string $providerName = self::PROVIDER_GOOGLE;

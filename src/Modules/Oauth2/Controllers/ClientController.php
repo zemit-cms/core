@@ -13,13 +13,6 @@ declare(strict_types=1);
 
 namespace Zemit\Modules\Oauth2\Controllers;
 
-use League\OAuth2\Client\Grant\RefreshToken;
-use League\OAuth2\Client\Provider\GenericProvider;
-use League\OAuth2\Client\Provider\ResourceOwnerInterface;
-use League\OAuth2\Client\Token\AccessToken;
-use League\OAuth2\Client\Token\AccessTokenInterface;
-use Phalcon\Http\ResponseInterface;
-
 class ClientController extends AbstractController
 {
     public string $providerName = self::PROVIDER_CLIENT;
