@@ -15,7 +15,7 @@ namespace Zemit\Tests\Unit\Functions;
 
 use Zemit\Tests\Unit\AbstractUnit;
 
-class JsonValidate extends AbstractUnit
+class JsonValidateTest extends AbstractUnit
 {
     protected function setUp(): void
     {
