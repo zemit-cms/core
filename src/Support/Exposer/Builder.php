@@ -131,8 +131,13 @@ class Builder implements BuilderInterface
     public function getFullKey(): ?string
     {
         $key = $this->getKey();
-        $keyContext = $this->getContextKey();
-        return $keyContext . (empty($key) ? null : (empty($keyContext) ? $key : '.' . $key));
+        $context = $this->getContextKey();
+        
+        if ($key === null || $key === '') {
+            return $context ?: null;
+        }
+        
+        return $context ? "{$context}.{$key}" : $key;
     }
     
     /**
