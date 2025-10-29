@@ -8,4 +8,4 @@
 # file that was distributed with this source code.
 #
 
-phpstan "$@"
+phpstan "$@" --memory-limit=1G
