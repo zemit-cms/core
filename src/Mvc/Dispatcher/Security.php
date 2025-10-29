@@ -41,7 +41,6 @@ class Security extends Injectable
     public function checkAcl(Event $event, ?AbstractDispatcher $dispatcher = null): bool
     {
         $dispatcher ??= $this->dispatcher;
-        assert($dispatcher instanceof AbstractDispatcher);
         
         $componentNames = ['components'];
         
