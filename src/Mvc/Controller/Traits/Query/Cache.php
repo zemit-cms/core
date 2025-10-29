@@ -100,10 +100,14 @@ trait Cache
             $this->getModelName(),
             $this->getCacheLifetime(),
             $this->identity->getUserId(),
-            md5(json_encode($this->getParams()) ?: ''),
         ]);
-        $cacheKey = '_' . implode('-', $cacheKeys) . '_';
-        $this->setCacheKey($cacheKey);
+        
+        $jsonParams = json_encode($this->getParams(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        if (!empty($jsonParams)) {
+            $cacheKeys[] = hash('xxh3', $jsonParams);
+        }
+        
+        $this->setCacheKey('_' . implode('-', $cacheKeys) . '_');
     }
     
     /**
