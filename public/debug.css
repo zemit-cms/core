@@ -18,7 +18,7 @@ html, body {
     padding: 0;
     background: var(--bg-main);
     color: var(--text-main);
-    font-family: var(--sans);
+    font-family: var(--sans), serif;
     font-size: 15px;
     line-height: 1.4;
     display: flex;
@@ -76,7 +76,7 @@ a:hover {
 }
 
 .error-main .error-file {
-    font-family: var(--mono);
+    font-family: var(--mono), serif;
     font-size: .8rem;
     color: var(--text-dim);
     display: block;
@@ -241,7 +241,7 @@ a:hover {
 .error-number {
     width: 40px;
     color: var(--text-dim);
-    font-family: var(--mono);
+    font-family: var(--mono), serif;
     font-size: .75rem;
     padding-right: 8px;
 }
@@ -254,7 +254,7 @@ a:hover {
 
 .error-file {
     color: var(--text-dim);
-    font-family: var(--mono);
+    font-family: var(--mono), serif;
     font-size: .75rem;
     margin-top: 4px;
     word-break: break-all;
@@ -273,7 +273,7 @@ pre.prettyprint {
     background: var(--bg-code); /* black block */
     color: var(--text-invert); /* white text by default */
     border: 1px solid var(--border);
-    font-family: var(--mono);
+    font-family: var(--mono), serif;
     font-size: .75rem;
     line-height: 1.4;
     padding: 12px 16px;
@@ -322,13 +322,6 @@ pre.prettyprint .code-line {
     scroll-margin-top: 40px;
 }
 
-/* highlighted line */
-pre.prettyprint .code-line.hl {
-    /*background: white;*/
-    /*color: black;*/
-}
-
-
 /* page/global scrollbar:
    black track, white thumb */
 body::-webkit-scrollbar {
@@ -349,8 +342,6 @@ pre.prettyprint .code-line {
     flex-direction: row;
     align-items: flex-start;
     white-space: pre;
-    /*color: white;*/
-    /*background: black;*/
     scroll-margin-top: 40px; /* so when we scrollTo() highlight it's not glued to top edge */
 }
 
@@ -408,7 +399,7 @@ body :not(pre) mark {
     position: fixed;
     bottom: 12px;
     right: 12px;
-    font-family: var(--mono);
+    font-family: var(--mono), serif;
     font-size: 0.8rem;
     color: var(--text-dim);
     background: var(--bg-panel);
@@ -439,7 +430,7 @@ body :not(pre) mark {
     margin: 4px 0 12px auto;
     padding: 4px 8px;
     font-size: 0.75rem;
-    font-family: var(--mono);
+    font-family: var(--mono), serif;
     background: black;
     color: white;
     border: 1px solid white;
