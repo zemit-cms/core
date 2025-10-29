@@ -58,11 +58,7 @@ trait DispatcherTrait
     {
         $forward = $this->unsetForwardNullParts($forward);
         
-        if (!$preventCycle) {
-            parent::forward($forward);
-        }
-        
-        elseif ($this->canForward($forward)) {
+        if (!$preventCycle || $this->canForward($forward)) {
             parent::forward($forward);
         }
     }
@@ -79,10 +75,8 @@ trait DispatcherTrait
             'action' => $this->getActionName(),
             'params' => $this->getParams(),
         ];
-        foreach ($parts as $part => $current) {
-            if (isset($forward[$part]) && $current !== $forward[$part]) {
-                return true;
-            }
+        if (array_any($parts, fn($current, $part) => isset($forward[$part]) && $current !== $forward[$part])) {
+            return true;
         }
         
         return $this->canForwardHandler($forward);
