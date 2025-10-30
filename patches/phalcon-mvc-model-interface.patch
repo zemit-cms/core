@@ -1,3 +1,5 @@
+diff --git a/src/Mvc/ModelInterface.php b/src/Mvc/ModelInterface.php
+index d434196..89e9ade 100644
 --- a/src/Mvc/ModelInterface.php
 +++ b/src/Mvc/ModelInterface.php
 @@ -51,9 +51,9 @@ interface ModelInterface
@@ -9,7 +11,7 @@
       */
 -    public static function average(array $parameters = []): ResultsetInterface|float;
 +    public static function average(array $parameters = []): ResultsetInterface|float|false;
-
+ 
      /**
       * Assigns values to a model from an array returning a new model
 @@ -94,9 +94,9 @@ interface ModelInterface
@@ -21,7 +23,7 @@
       */
 -    public static function count($parameters = null): ResultsetInterface|int;
 +    public static function count(mixed $parameters = null): ResultsetInterface|int|false;
-
+ 
      /**
       * Inserts a model instance. If the instance already exists in the
 @@ -120,7 +120,7 @@ interface ModelInterface
@@ -30,7 +32,7 @@
       */
 -    public static function find($parameters = null);
 +    public static function find(mixed $parameters = null);
-
+ 
      /**
       * Allows to query the first record that match the specified conditions
 @@ -132,7 +132,7 @@ interface ModelInterface
@@ -39,7 +41,7 @@
       */
 -    public static function findFirst($parameters = null): mixed;
 +    public static function findFirst(mixed $parameters = null): mixed;
-
+ 
      /**
       * Fires an event, implicitly calls behaviors and listeners in the events
 @@ -239,18 +239,18 @@ interface ModelInterface
@@ -51,7 +53,7 @@
       */
 -    public static function maximum($parameters = null): mixed;
 +    public static function maximum(mixed $parameters = null): ResultsetInterface|float|false;
-
+ 
      /**
       * Allows to get the minimum value of a column that match the specified
       * conditions
@@ -62,7 +64,7 @@
       */
 -    public static function minimum($parameters = null): mixed;
 +    public static function minimum(mixed $parameters = null): ResultsetInterface|float|false;
-
+ 
      /**
       * Create a criteria for a specific model
 @@ -338,9 +338,9 @@ interface ModelInterface
@@ -74,6 +76,6 @@
       */
 -    public static function sum($parameters = null): ResultsetInterface|float;
 +    public static function sum(mixed $parameters = null): ResultsetInterface|float|false;
-
+ 
      /**
       * Check whether validation process has generated any messages

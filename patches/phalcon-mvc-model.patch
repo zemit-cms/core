@@ -1,0 +1,82 @@
+diff --git a/src/Mvc/Model.php b/src/Mvc/Model.php
+index 4874508..480f7f4 100644
+--- a/src/Mvc/Model.php
++++ b/src/Mvc/Model.php
+@@ -412,9 +412,9 @@ abstract class Model extends AbstractInjectionAware implements \Phalcon\Mvc\Enti
+      * ```
+      *
+      * @param array $parameters
+-     * @return float | ResultsetInterface
++     * @return ResultsetInterface|float|false
+      */
+-    public static function average(array $parameters = []): ResultsetInterface|float
++    public static function average(array $parameters = []): ResultsetInterface|float|false
+     {
+     }
+ 
+@@ -508,9 +508,9 @@ abstract class Model extends AbstractInjectionAware implements \Phalcon\Mvc\Enti
+      * ```
+      *
+      * @param array|string|null $parameters
+-     * @return int|ResultsetInterface
++     * @return ResultsetInterface|int|false
+      */
+-    public static function count($parameters = null): ResultsetInterface|int
++    public static function count(mixed $parameters = null): ResultsetInterface|int|false
+     {
+     }
+ 
+@@ -764,7 +764,7 @@ abstract class Model extends AbstractInjectionAware implements \Phalcon\Mvc\Enti
+      * ]
+      * @return T[]|\Phalcon\Mvc\Model\Resultset<int, T>
+      */
+-    public static function find($parameters = null)
++    public static function find(mixed $parameters = null)
+     {
+     }
+ 
+@@ -854,7 +854,7 @@ abstract class Model extends AbstractInjectionAware implements \Phalcon\Mvc\Enti
+      *
+      * @return T|\Phalcon\Mvc\ModelInterface|\Phalcon\Mvc\Model\Row|null
+      */
+-    public static function findFirst($parameters = null): mixed
++    public static function findFirst(mixed $parameters = null): mixed
+     {
+     }
+ 
+@@ -1199,9 +1199,9 @@ abstract class Model extends AbstractInjectionAware implements \Phalcon\Mvc\Enti
+      * ```
+      *
+      * @param array $parameters
+-     * @return mixed
++     * @return ResultsetInterface|float|false
+      */
+-    public static function maximum($parameters = null): mixed
++    public static function maximum(mixed $parameters = null): ResultsetInterface|float|false
+     {
+     }
+ 
+@@ -1231,9 +1231,9 @@ abstract class Model extends AbstractInjectionAware implements \Phalcon\Mvc\Enti
+      * ```
+      *
+      * @param array $parameters
+-     * @return mixed
++     * @return ResultsetInterface|float|false
+      */
+-    public static function minimum($parameters = null): mixed
++    public static function minimum(mixed $parameters = null): ResultsetInterface|float|false
+     {
+     }
+ 
+@@ -1502,9 +1502,9 @@ abstract class Model extends AbstractInjectionAware implements \Phalcon\Mvc\Enti
+      * ```
+      *
+      * @param array $parameters
+-     * @return double | ResultsetInterface
++     * @return ResultsetInterface|float|false
+      */
+-    public static function sum($parameters = null): ResultsetInterface|float
++    public static function sum(mixed $parameters = null): ResultsetInterface|float|false
+     {
+     }
+ 
