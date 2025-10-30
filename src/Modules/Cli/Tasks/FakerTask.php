@@ -87,7 +87,7 @@ DOC;
         $tableList = [];
         $table = Table::findFirst('deleted = 0');
 //        foreach (Table::find() as $table) {
-        if ($table) {
+        if ($table instanceof Table) {
             $tableList[$table->getUuid()] = [];
             
             $columnList = Column::find('tableId = ' . (int)$table->getId());
