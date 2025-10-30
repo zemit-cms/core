@@ -59,7 +59,7 @@ trait Oauth2
                 'providerUuid' => Column::BIND_PARAM_STR,
             ],
         ]);
-        if (!$oauth2) {
+        if (!($oauth2 instanceof \Zemit\Models\Oauth2)) {
             $oauth2 = new \Zemit\Models\Oauth2();
             $oauth2->setProvider($provider);
             $oauth2->setProviderUuid($providerUuid);
