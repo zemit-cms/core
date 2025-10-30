@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zemit\Tests\Unit\Mvc\Model;
 
 use Phalcon\Db\Column;
+use Phalcon\Mvc\Model\Resultset\Simple;
 use Zemit\Models\Audit;
 use Zemit\Models\AuditDetail;
 use Zemit\Models\Role;
@@ -410,5 +411,158 @@ class ModelTest extends AbstractUnit
                 ],
             ],
         ]);
+    }
+    
+    public function testFindResultset(): void
+    {
+        $this->prepareTests();
+        
+        $user1 = new User();
+        $user1->setEmail('user1@test.com');
+        $user1->save();
+        
+        $user2 = new User();
+        $user2->setEmail('user2@test.com');
+        $user2->save();
+        
+        $find = User::find();
+        
+        $this->assertInstanceOf(Simple::class, $find);
+        $this->assertEquals(2, $find->count());
+        
+        $first = $find->getFirst();
+        $this->assertInstanceOf(User::class, $first);
+        ;
+        $this->assertEquals('user1@test.com', $first->getEmail());
+        ;
+        
+        $last = $find->getLast();
+        $this->assertInstanceOf(User::class, $last);
+        ;
+        $this->assertEquals('user2@test.com', $last->getEmail());
+    }
+    
+    public function testFindFirst(): void
+    {
+        $this->prepareTests();
+        
+        $user1 = new User();
+        $user1->setEmail('user1@test.com');
+        $user1->save();
+        
+        $user2 = new User();
+        $user2->setEmail('user2@test.com');
+        $user2->save();
+        
+        $findFirst = User::findFirst();
+        $this->assertInstanceOf(User::class, $findFirst);
+        $this->assertEquals('user1@test.com', $findFirst->getEmail());
+        
+        $findLast = User::findFirst(['order' => 'id DESC']);
+        $this->assertInstanceOf(User::class, $findLast);
+        $this->assertEquals('user2@test.com', $findLast->getEmail());
+    }
+    
+    public function testCount(): void
+    {
+        $this->prepareTests();
+        
+        // Create test users with different values
+        $user1 = new User();
+        $user1->setEmail('user1@test.com');
+        $user1->save();
+        
+        $user2 = new User();
+        $user2->setEmail('user2@test.com');
+        $user2->save();
+        
+        // Test count
+        $sum = User::count();
+        
+        $this->assertEquals(2, $sum);
+    }
+    
+    public function testSumAggregation(): void
+    {
+        $this->prepareTests();
+        
+        // Create test users with different values
+        $user1 = new User();
+        $user1->setEmail('user1@test.com');
+        $user1->save();
+        
+        $user2 = new User();
+        $user2->setEmail('user2@test.com');
+        $user2->save();
+        
+        // Test sum aggregation
+        $sum = User::sum([
+            'column' => 'id',
+        ]);
+        
+        $this->assertEquals(3, $sum);
+    }
+    
+    public function testAverageAggregation(): void
+    {
+        $this->prepareTests();
+        
+        // Create test users with different values
+        $user1 = new User();
+        $user1->setEmail('user1@test.com');
+        $user1->save();
+        
+        $user2 = new User();
+        $user2->setEmail('user2@test.com');
+        $user2->save();
+        
+        // Test average aggregation
+        $average = User::average([
+            'column' => 'id',
+        ]);
+        
+        $this->assertEquals(1.5, $average);
+    }
+    
+    public function testMinAggregation(): void
+    {
+        $this->prepareTests();
+        
+        // Create test users with different values
+        $user1 = new User();
+        $user1->setEmail('user1@test.com');
+        $user1->save();
+        
+        $user2 = new User();
+        $user2->setEmail('user2@test.com');
+        $user2->save();
+        
+        // Test min aggregation
+        $min = User::minimum([
+            'column' => 'id',
+        ]);
+        
+        $this->assertEquals(1, $min);
+    }
+    
+    public function testMaxAggregation(): void
+    {
+        $this->prepareTests();
+        
+        // Create test users with different values
+        $user1 = new User();
+        $user1->setEmail('user1@test.com');
+        $user1->save();
+        
+        $user2 = new User();
+        $user2->setEmail('user2@test.com');
+        $user2->save();
+        
+        // Test max aggregation
+        $max = User::maximum([
+            'column' => 'id',
+        ]);
+        
+        $this->assertEquals(2, $max);
     }
 }
