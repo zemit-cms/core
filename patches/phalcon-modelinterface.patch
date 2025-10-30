@@ -1,5 +1,3 @@
-diff --git a/src/Mvc/ModelInterface.php b/src/Mvc/ModelInterface.php
-index d434196..a60b08e 100644
 --- a/src/Mvc/ModelInterface.php
 +++ b/src/Mvc/ModelInterface.php
 @@ -51,9 +51,9 @@ interface ModelInterface
