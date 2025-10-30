@@ -154,7 +154,8 @@
   "extra": {
     "patches": {
       "phalcon/ide-stubs": {
-        "Remove :mixed from EntityInterface": "patches/phalcon-entityinterface.patch"
+        "Remove :mixed from EntityInterface": "patches/phalcon-entityinterface.patch",
+        "Fix method signature in ModelInterface": "patches/phalcon-modelinterface.patch"
       }
     }
   },
