@@ -152,9 +152,6 @@
     }
   },
   "extra": {
-    "composer-patches": {
-      "forceSeparatePatches": true
-    },
     "patches": {
       "phalcon/ide-stubs": {
         "Model": "patches/phalcon-mvc-model.patch",
