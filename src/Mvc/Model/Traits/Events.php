@@ -31,32 +31,26 @@ trait Events
      * Retrieves records from the database that match the specified conditions.
      *
      * @see \Phalcon\Mvc\Model::find()
-     * @param mixed $parameters Optional conditions to filter the retrieved records. Can include arrays, strings, or other query parameters.
-     * @return Resultset|Simple|array Returns the result set as an array, a Resultset object, or a Simple object depending on the query execution.
+     * @param array|int|null|string $parameters Optional conditions to filter the retrieved records. Can include arrays, strings, or other query parameters.
+     * @return Resultset|array Returns the result set as an array, a Resultset object, or a Simple object depending on the query execution.
      */
-    public static function find(mixed $parameters = null): Resultset|Simple|array
+    #[\Override]
+    public static function find(mixed $parameters = null): Resultset|array
     {
-        $ret = self::fireEventCancelCall(__FUNCTION__, func_get_args());
-        
-        if ($ret !== false) {
-            return $ret;
-        }
-        
-        $instance = self::loadInstance();
-        $columnMap = $instance->getModelsMetaData()->getColumnMap($instance);
-        return new Simple($columnMap, $instance, false);
+        return self::fireEventCancelCall(__FUNCTION__, fn(): mixed => parent::find($parameters)) ?: [];
     }
     
     /**
      * Finds the first record that matches the given parameters.
      *
      * @see \Phalcon\Mvc\Model::findFirst()
-     * @param array|string|int|null $parameters Optional parameters to filter the query.
-     * @return static|null|false The first matching record, or null if no record is found or false if the operation is canceled.
+     * @param array|int|null|string $parameters Optional parameters to filter the query.
+     * @return ModelInterface|Row|false|null The first matching record, or null if no record is found or false if the operation is canceled.
      */
-    public static function findFirst(mixed $parameters = null): mixed
+    #[\Override]
+    public static function findFirst(mixed $parameters = null): ModelInterface|Row|false|null
     {
-        return self::fireEventCancelCall(__FUNCTION__, func_get_args());
+        return self::fireEventCancelCall(__FUNCTION__, fn(): mixed => parent::findFirst($parameters));
     }
     
     /**
@@ -66,12 +60,19 @@ trait Events
      * The "beforeCount" event can cancel the operation by returning false.
      *
      * @see \Phalcon\Mvc\Model::count()
-     * @param array|string|int|null $parameters Optional parameters to filter the count operation.
+     * @param array|null|string $parameters Optional parameters to filter the count operation.
      * @return ResultsetInterface|int|false The count result or a ResultsetInterface, depending on the implementation.
      */
+    #[\Override]
     public static function count(mixed $parameters = null): ResultsetInterface|int|false
     {
-        return self::fireEventCancelCall(__FUNCTION__, func_get_args());
+        $count = self::fireEventCancelCall(__FUNCTION__, fn(): mixed => parent::count($parameters));
+        
+        if (is_string($count)) {
+            return (int)$count;
+        }
+        
+        return $count;
     }
     
     /**
@@ -80,12 +81,19 @@ trait Events
      * If the "beforeSum" event cancels the operation, this method returns false.
      *
      * @see \Phalcon\Mvc\Model::sum()
-     * @param mixed $parameters Optional parameters to customize the sum operation.
+     * @param array $parameters Optional parameters to customize the sum operation.
      * @return ResultsetInterface|float|false Returns the sum result as a float, a result set interface, or false if the operation is canceled.
      */
-    public static function sum(mixed $parameters = null): ResultsetInterface|float|false
+    #[\Override]
+    public static function sum(mixed $parameters = []): ResultsetInterface|float|false
     {
-        return self::fireEventCancelCall(__FUNCTION__, func_get_args());
+        $sum = self::fireEventCancelCall(__FUNCTION__, fn(): mixed => parent::sum($parameters));
+        
+        if (is_string($sum)) {
+            return floatval($sum);
+        }
+        
+        return $sum;
     }
     
     /**
@@ -98,37 +106,80 @@ trait Events
      *
      * If the "beforeAverage" event cancels the operation, false is returned.
      * @see \Phalcon\Mvc\Model::average()
-     * @param array<int, mixed> $parameters Parameters to define the criteria for calculating the average.
+     * @param array $parameters Parameters to define the criteria for calculating the average.
      * @return ResultsetInterface|float|false The calculated average or a ResultsetInterface, depending on the implementation.
      */
+    #[\Override]
     public static function average(array $parameters = []): ResultsetInterface|float|false
     {
-        return self::fireEventCancelCall(__FUNCTION__, func_get_args());
+        $average = self::fireEventCancelCall(__FUNCTION__, fn(): mixed => parent::average($parameters));
+        
+        if (is_string($average)) {
+            return (float)$average;
+        }
+        
+        return $average;
     }
     
     /**
-     * Wraps core static model calls (find, findFirst, count, sum, average)
-     * with beforeX/afterX cancellable events.
+     * Calculates the minimum value of a specified column in the database according to the given conditions.
      *
-     * Example (beforeX/afterX events):
-     * - beforeAverage()
-     * - beforeSum()
-     * - beforeCount()
-     * - beforeFind()
-     * - beforeFindFirst()
-     * - afterAverage()
-     * - afterSum()
-     * - afterCount()
-     * - afterFind()
-     * - afterFindFirst()
+     * @param array $parameters Parameters to customize the query, such as conditions, column selection, or groupings.
+     * @return ResultsetInterface|float|false Returns the minimum value as a float, a ResultsetInterface object, or false if no matching records are found or the operation fails.
+     */
+    #[\Override]
+    public static function minimum(mixed $parameters = []): ResultsetInterface|float|false
+    {
+        $minimum = self::fireEventCancelCall(__FUNCTION__, fn(): mixed => parent::minimum($parameters));
+        
+        if (is_string($minimum)) {
+            return (float)$minimum;
+        }
+        
+        return $minimum;
+    }
+    
+    /**
+     * Calculates the maximum value of a specified column in the database based on the given conditions.
      *
-     * Returns false if the "beforeX" event cancels the operation.
+     * @param array $parameters Parameters to customize the query, such as conditions, column selection, or groupings.
+     * @return ResultsetInterface|float|false Returns the computed maximum value as a float, a ResultsetInterface object for detailed results, or false on failure.
+     */
+    #[\Override]
+    public static function maximum(mixed $parameters = []): ResultsetInterface|float|false
+    {
+        $maximum = self::fireEventCancelCall(__FUNCTION__, fn(): mixed => parent::maximum($parameters));
+        
+        if (is_string($maximum)) {
+            return (float)$maximum;
+        }
+        
+        return $maximum;
+    }
+    
+    /**
+     *  Wraps core static model calls (find, findFirst, count, sum, average, minimum, maximum)
+     *  with beforeX/afterX cancellable events.
+     *
+     *  Example (beforeX/afterX events):
+     *  - beforeAverage()
+     *  - beforeSum()
+     *  - beforeCount()
+     *  - beforeFind()
+     *  - beforeFindFirst()
+     *  - afterAverage()
+     *  - afterSum()
+     *  - afterCount()
+     *  - afterFind()
+     *  - afterFindFirst()
+     *
+     *  Returns false if the "beforeX" event cancels the operation.
      *
      * @param string $method
-     * @param array<int, mixed> $arguments
+     * @param callable $callable
      * @return mixed
      */
-    public static function fireEventCancelCall(string $method, array $arguments = []): mixed
+    public static function fireEventCancelCall(string $method, callable $callable): mixed
     {
         $instance = self::loadInstance();
         $event = ucfirst(Helper::camelize($method));
@@ -137,7 +188,7 @@ trait Events
             return false;
         }
         
-        $ret = parent::$method(...$arguments);
+        $ret = $callable();
         
         $instance->fireEvent('after' . $event);
         

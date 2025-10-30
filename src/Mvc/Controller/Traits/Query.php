@@ -14,6 +14,9 @@ declare(strict_types=1);
 namespace Zemit\Mvc\Controller\Traits;
 
 use Phalcon\Filter\Exception;
+use Phalcon\Mvc\Model\Resultset;
+use Phalcon\Mvc\Model\Row;
+use Phalcon\Mvc\ModelInterface;
 use Phalcon\Support\Collection;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
@@ -234,9 +237,9 @@ trait Query
      *                         If not provided, the default criteria from `getFind()` method
      *                         will be used. Defaults to `null`.
      *
-     * @return ResultsetInterface The result of the find operation.
+     * @return Resultset|array The result of the find operation.
      */
-    public function find(?array $find = null)
+    public function find(?array $find = null): Resultset|array
     {
         $find ??= $this->prepareFind();
         return $this->loadModel()::find($find);
@@ -265,14 +268,16 @@ trait Query
     /**
      * Find the first record in the database using the specified criteria.
      *
+     * Note: We intentionally removed the Row from the return type to simplify usages.
+     * If you need to access the Row, use a query builder instead.
+     *
      * @param array|null $find Optional. An array of criteria to determine the record to find.
      *                         If not provided, the default criteria from `getFind()` method
      *                         will be used to find the first record. Defaults to `null`.
      *
-     * // @todo \Phalcon\Mvc\ModelInterface|\Phalcon\Mvc\Model\Row|null
-     * @return mixed The result of the find operation, which is the first record that matches the criteria.
+     * @return ModelInterface|false|null The result of the find operation, which is the first record that matches the criteria.
      */
-    public function findFirst(?array $find = null): mixed
+    public function findFirst(?array $find = null): ModelInterface|false|null
     {
         $find ??= $this->prepareFind();
         return $this->loadModel()::findFirst($find);
@@ -288,9 +293,9 @@ trait Query
      *                         If not provided, the default criteria from `getFind()` method
      *                         will be used. Defaults to `null`.
      *
-     * @return mixed The result of the find operation for the first record.
+     * @return ?ModelInterface The result of the find operation for the first record.
      */
-    public function findFirstWith(?array $with = null, ?array $find = null): mixed
+    public function findFirstWith(?array $with = null, ?array $find = null): ?ModelInterface
     {
         $find ??= $this->prepareFind();
         $with ??= $this->getWith()?->toArray() ?? [];
@@ -303,9 +308,9 @@ trait Query
      * Calculates the average value based on a given set of criteria.
      *
      * @param array|null $find The criteria to filter the records by (optional).
-     * @return float|ResultsetInterface The average value or a result set containing the average value.
+     * @return ResultsetInterface|float|false The average value or a result set containing the average value.
      */
-    public function average(?array $find = null): float|ResultsetInterface
+    public function average(?array $find = null): ResultsetInterface|float|false
     {
         $find ??= $this->prepareFind();
         return $this->loadModel()::average($this->getCalculationFind($find));

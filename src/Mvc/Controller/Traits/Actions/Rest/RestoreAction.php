@@ -43,7 +43,6 @@ trait RestoreAction
         }
         
         assert($entity instanceof SoftDeleteInterface);
-        assert($entity instanceof ModelInterface);
         $restored = $entity->restore();
         
         $this->view->setVars([

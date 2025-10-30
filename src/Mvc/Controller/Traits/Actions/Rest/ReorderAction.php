@@ -50,7 +50,6 @@ trait ReorderAction
         $position = $this->getParam('position', [Filter::FILTER_INT]);
         
         assert($entity instanceof PositionInterface);
-        assert($entity instanceof ModelInterface);
         $reordered = $entity->reorder($position);
         
         $this->view->setVars([

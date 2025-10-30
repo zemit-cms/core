@@ -26,7 +26,7 @@ use Phalcon\Mvc\Model\Resultset\Simple;
  */
 trait FindIn
 {
-    public static function findInById(array $idList = []): array|Resultset|Simple
+    public static function findInById(array $idList = []): array|Resultset|false
     {
         $castInt = function (string|int $id): int {
             return (int)$id;

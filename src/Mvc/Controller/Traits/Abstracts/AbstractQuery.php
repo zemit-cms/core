@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zemit\Mvc\Controller\Traits\Abstracts;
 
 use Phalcon\Mvc\Model\ResultsetInterface;
+use Phalcon\Mvc\ModelInterface;
 use Phalcon\Support\Collection;
 
 trait AbstractQuery
@@ -28,19 +29,19 @@ trait AbstractQuery
     
     abstract public function findWith(?array $with = null, ?array $find = null): array;
     
-    abstract public function findFirst(?array $find = null): mixed;
+    abstract public function findFirst(?array $find = null): ModelInterface|false|null;
     
-    abstract public function findFirstWith(?array $with = null, ?array $find = null): mixed;
+    abstract public function findFirstWith(?array $with = null, ?array $find = null): ?ModelInterface;
     
-    abstract public function average(?array $find = null): float|ResultsetInterface;
+    abstract public function average(?array $find = null): ResultsetInterface|float|false;
     
-    abstract public function count(?array $find = null): int|ResultsetInterface;
+    abstract public function count(?array $find = null): ResultsetInterface|int|false;
     
-    abstract public function sum(?array $find = null): float|ResultsetInterface;
+    abstract public function sum(?array $find = null): ResultsetInterface|float|false;
     
-    abstract public function maximum(?array $find = null): float|ResultsetInterface;
+    abstract public function maximum(?array $find = null): ResultsetInterface|float|false;
     
-    abstract public function minimum(?array $find = null): float|ResultsetInterface;
+    abstract public function minimum(?array $find = null): ResultsetInterface|float|false;
     
     abstract protected function getCalculationFind(?array $find = null): array;
     

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zemit\Mvc\Model\Traits;
 
 use JetBrains\PhpStorm\Deprecated;
+use Phalcon\Mvc\Model\Resultset;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\ModelInterface;
 use Zemit\Mvc\Model\EagerLoading\Loader;
@@ -50,7 +51,7 @@ trait EagerLoad
         $parameters = static::getParametersFromArguments($arguments);
         $list = static::find($parameters);
         
-        if ($list instanceof ResultsetInterface && $list->count()) {
+        if ($list instanceof Resultset && $list->count()) {
             return Loader::fromResultset($list, ...$arguments);
         }
         

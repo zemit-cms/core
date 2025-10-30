@@ -64,7 +64,7 @@ trait FindAction
      */
     public function findAction(): ResponseInterface
     {
-        $this->view->setVar('data', $this->listExpose($this->find()->toArray()));
+        $this->view->setVar('data', $this->listExpose($this->find()));
         return $this->setRestResponse(true);
     }
     
