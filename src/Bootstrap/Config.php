@@ -98,7 +98,7 @@ class Config extends \Zemit\Config\Config
              */
             'phalcon' => [
                 'name' => 'Phalcon Framework',
-                'version' => (new PhalconVersion())->get(),
+                'version' => new PhalconVersion()->get(),
             ],
             
             /**
@@ -485,7 +485,7 @@ class Config extends \Zemit\Config\Config
                 Provider\Oauth2Client\ServiceProvider::class => Env::get('PROVIDER_OAUTH_2_FACEBOOK', Provider\Oauth2Client\ServiceProvider::class),
                 Provider\Oauth2Facebook\ServiceProvider::class => Env::get('PROVIDER_OAUTH_2_FACEBOOK', Provider\Oauth2Facebook\ServiceProvider::class),
                 Provider\Oauth2Google\ServiceProvider::class => Env::get('PROVIDER_OAUTH_2_GOOGLE', Provider\Oauth2Google\ServiceProvider::class),
-    
+                
                 // Mailing
                 Provider\Mailer\ServiceProvider::class => Env::get('PROVIDER_MAILER', Provider\Mailer\ServiceProvider::class),
                 Provider\Imap\ServiceProvider::class => Env::get('PROVIDER_IMAP', Provider\Imap\ServiceProvider::class),
@@ -948,7 +948,7 @@ class Config extends \Zemit\Config\Config
                     'passphrase' => Env::get('SECURITY_JWT_PASSPHRASE', 'Tf0PHY/^yDdJs*~)?x#xCNj_N[jW/`c*'),
                 ],
             ],
-    
+            
             /**
              * Default crypt settings
              */
@@ -1101,7 +1101,7 @@ class Config extends \Zemit\Config\Config
                         'charset' => Env::get('DATABASE_CHARSET', 'utf8'),
                         'options' => [
                             \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . Env::get('DATABASE_CHARSET', 'utf8') .
-                            ', sql_mode = \'' . Env::get('DATABASE_SQL_MODE', 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION') . '\'' .
+                                ', sql_mode = \'' . Env::get('DATABASE_SQL_MODE', 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION') . '\'' .
                                 ', block_encryption_mode = \'' . Env::get('DATABASE_BLOCK_ENCRYPTION_MODE', 'aes-256-cbc') . '\'',
                             \PDO::ATTR_EMULATE_PREPARES => Env::get('DATABASE_EMULATE_PREPARES', false), // https://stackoverflow.com/questions/10113562/pdo-mysql-use-pdoattr-emulate-prepares-or-not
                             \PDO::ATTR_STRINGIFY_FETCHES => Env::get('DATABASE_STRINGIFY_FETCHES', false),
