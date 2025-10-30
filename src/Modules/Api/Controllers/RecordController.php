@@ -61,7 +61,7 @@ class RecordController extends Controller
             'uuid = :uuid:',
             'bind' => ['uuid' => $this->getSource()],
         ]);
-        if ($table) {
+        if ($table instanceof Table) {
             $columns = $table->getColumnList();
             foreach ($columns as $column) {
                 $this->columnMap->set($column->getUuid(), $column->getUuid());
