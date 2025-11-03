@@ -12,7 +12,7 @@
 rm -rf ./docs/
 mkdir ./docs/
 
-phpDocumentor -c phpdoc.xml "$@"
+phpdoc -c phpdoc.xml "$@"
 
 # Add Missing Native Classes
 touch ./docs/classes/RuntimeException.md
@@ -43,6 +43,9 @@ decode_html_entities() {
 }
 export -f decode_html_entities
 find ./docs/ -type f -name "*.md" -exec bash -c 'decode_html_entities "$0"' {} \;
+
+# delete this invalid utf8 line
+sed -i '/^public __invoke(string \$string, string \$invalidUtf8Regex = .*/d' ./docs/classes/Zemit/Support/Helper/Str/SanitizeUTF8.md
 
 # Generate Menu for Mkdoc
 ./bin/generate-docs-menu.sh

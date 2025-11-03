@@ -33,16 +33,16 @@ while IFS= read -r line; do
 
         # Write the section header to the mkdoc menu file
         echo "      - $section_name:" >> "$mkdocs_menu_file"
-    elif [[ $line =~ \[\`(.*)\`\]\((.*)\) ]]; then
+    elif [[ $line =~ \[\`(.*)\`\]\((.*)\.md\) ]]; then
         # Extract the link text and URL from the table
         link_text="${BASH_REMATCH[1]}"
         url="${BASH_REMATCH[2]}"
-        
+
         # Replace ": ./" with ": api/" in the URL
         url=${url/.\//api/}
 
         # Write the link to the mkdoc menu file
-        echo "          - $link_text: $url" >> "$mkdocs_menu_file"
+        echo "          - $link_text: $url.md" >> "$mkdocs_menu_file"
     fi
 done < "$home_md_file"
 
