@@ -1,35 +1,86 @@
 # .github/dependabot.yml
+# Dependabot configuration for Zemit Core
+# Restricts PRs to the "master" branch only
+
 version: 2
+
 updates:
-  - package-ecosystem: "composer" # Targeting PHP Composer
-    directory: "/" # Assuming your composer.json is in the root directory
+  # ──────────────────────────────────────────────
+  # 1. PHP Composer dependencies
+  # ──────────────────────────────────────────────
+  - package-ecosystem: "composer"
+    directory: "/"
+    target-branch: "master"
     schedule:
-      interval: "daily" # Check for updates daily
-
-    # Limit the number of open pull requests to avoid overwhelming your repository
+      interval: "daily"
+      time: "06:00"
     open-pull-requests-limit: 10
-
-    # Use labels to help organize pull requests created by Dependabot
     labels:
       - "dependencies"
       - "php"
-
-    # Assign reviewers to pull requests for dependencies
-    # You can specify GitHub usernames, team names, or email addresses
     reviewers:
-      - "jturbide" # Replace with actual GitHub usernames or team names
-
-    # Configure commit message options
+      - "jturbide"
     commit-message:
-      prefix: "chore" # Prefix like "chore", "fix", "feat"
-      include: "scope" # Include the scope of the dependency in the commit message
+      prefix: "chore"
+      include: "scope"
+    versioning-strategy: "increase-if-necessary"
+    rebase-strategy: "auto"
+    pull-request-branch-name:
+      separator: "-"
+    ignore:
+      - dependency-name: "php"
+      - dependency-name: "ext-*"
+    allow:
+      - dependency-type: "direct"
+      - dependency-type: "all"
 
-    # You can ignore certain dependencies, either permanently or specific versions
-    # ignore:
-    #   - dependency-name: "example-package"
-    #     versions: ["1.0.x", "1.x.x"]
+  # ──────────────────────────────────────────────
+  # 2. GitHub Actions (CI/CD workflows)
+  # ──────────────────────────────────────────────
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    target-branch: "master"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "05:00"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "ci"
+    reviewers:
+      - "jturbide"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    rebase-strategy: "auto"
 
-    # Allow only specific versions or dependency names
-    # allow:
-    #   - dependency-name: "other-package"
-    #     versions: ["2.3.x"]
+  # ──────────────────────────────────────────────
+  # 3. (Optional) Frontend / NPM dependencies
+  # ──────────────────────────────────────────────
+  # - package-ecosystem: "npm"
+  #   directory: "/"
+  #   target-branch: "master"
+  #   schedule:
+  #     interval: "weekly"
+  #   open-pull-requests-limit: 5
+  #   labels:
+  #     - "dependencies"
+  #     - "frontend"
+  #   reviewers:
+  #     - "jturbide"
+  #   commit-message:
+  #     prefix: "chore"
+  #     include: "scope"
+  #   rebase-strategy: "auto"
+
+# ──────────────────────────────────────────────
+# Notes:
+# - Dependabot will ONLY create pull requests against "master"
+# - It will completely ignore feature, staging, and release branches
+# - You can still manually merge from master to other branches later
+# - Make sure your labels exist:
+#     dependencies (#0366d6)
+#     php (#4F5D95)
+#     ci (#6a737d)
+#     frontend (#28a745, optional)
