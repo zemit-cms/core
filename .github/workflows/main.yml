@@ -231,8 +231,7 @@ jobs:
                  --no-cache \
                  --stats \
                  --show-info=false \
-                 --threads=4 \
-                 --output-file=psalm-results.sarif
+                 --threads=4 > psalm-results.sarif
 
       - name: Upload Psalm report to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
