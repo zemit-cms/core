@@ -23,7 +23,7 @@ class SanitizeUTF8
      * converting it to UTF-8, and removing invalid UTF-8 characters.
      *
      * @param string $string The input string to be sanitized.
-     * @param string $invalidUtf8Regex A regular expression pattern to identify invalid UTF-8 characters. Default: '[^\x20-\x7E\xA0-\xFF]'.
+     * @param string $invalidUtf8Regex A regular expression pattern to identify invalid UTF-8 characters. Default: '[^\\x20-\\x7E\\xA0-\\xFF]'.
      * @return string The sanitized string in UTF-8 encoding, with invalid characters removed.
      */
     public function __invoke(string $string, string $invalidUtf8Regex = '[^\x20-\x7E\xA0-\xFF]'): string

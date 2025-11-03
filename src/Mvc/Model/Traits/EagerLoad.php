@@ -26,9 +26,9 @@ trait EagerLoad
     abstract public static function findFirst($parameters = null);
     
     /**
-     * <code>
-     * <?php
+     * Example:
      *
+     * ```php
      * $limit = 100;
      * $offset = max(0, $this->request->getQuery('page', 'int') - 1) * $limit;
      *
@@ -41,8 +41,7 @@ trait EagerLoad
      *         foreach ($robot->parts as $part) { ... }
      *     }
      * }
-     *
-     * </code>
+     * ```
      *
      * @param array ...$arguments
      */
@@ -169,8 +168,9 @@ trait EagerLoad
     }
     
     /**
-     * <code>
+     * Example:
      *
+     * ```php
      * $manufacturer = Manufacturer::findFirstById(51);
      *
      * $manufacturer->load('Robots.Parts');
@@ -178,8 +178,7 @@ trait EagerLoad
      * foreach ($manufacturer->robots as $robot) {
      *    foreach ($robot->parts as $part) { ... }
      * }
-     *
-     * </code>
+     * ```
      *
      * @param array ...$arguments
      * @return ?ModelInterface

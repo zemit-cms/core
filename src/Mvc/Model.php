@@ -37,7 +37,7 @@ use Phalcon\Events\Manager as EventsManager;
  * - onValidationFails
  * - prepareSave
  * - validation
- * @link https://docs.phalcon.io/5.6/db-models/#events
+ * @link https://docs.phalcon.io/5.9/db-models/#events
  *
  * {@inheritdoc} \Phalcon\Mvc\Model
  * @package Zemit\Mvc

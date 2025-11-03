@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zemit;
 
 use AssertionError;
+use Phalcon\Assets\Exception;
 use Phalcon\Di\Di;
 use Phalcon\Tag as PhalconTag;
 use Phalcon\Html\Escaper;
@@ -29,7 +30,7 @@ use Zemit\Assets\Manager;
 class Tag extends PhalconTag
 {
     /**
-     * Represents an array that stores meta information.
+     * Represents an array that stores meta-information.
      * @var array $meta
      */
     protected static array $meta = [];
@@ -54,7 +55,7 @@ class Tag extends PhalconTag
     
     /**
      * Retrieves the instance of the Assets Manager.
-     * 
+     *
      * @return Manager The instance of the Assets Manager
      */
     public static function getAssetsManager(): Manager
@@ -76,11 +77,9 @@ class Tag extends PhalconTag
      * Retrieves the configured escaper instance.
      *
      * @param array $params The parameters used to retrieve the escaper instance.
-     *                     The params should be an associative array with optional keys to configure the escaper.
+     *                      The params should be an associative array with optional keys to configure the escaper.
      * @return EscaperInterface|null The configured escaper instance, or null if no escaper is found.
-     *
      * @throws AssertionError If the retrieved escaper instance is not an instance of Escaper.
-     *
      * @see PhalconTag::getEscaper()
      */
     #[\Override]
@@ -95,15 +94,12 @@ class Tag extends PhalconTag
      * Retrieves the escaper service.
      *
      * @return EscaperInterface The instance of the escaper service.
-     * 
      * @throws AssertionError If the retrieved escaper instance is not an instance of Escaper.
-     * 
      * @see PhalconTag::getEscaperService()
      */
     #[\Override]
     public static function getEscaperService(): EscaperInterface
     {
-//        $escaper = PhalconTag::getEscaperService();
         $escaper = Di::getDefault()->get('escaper');
         assert($escaper instanceof Escaper);
         return $escaper;
@@ -124,14 +120,20 @@ class Tag extends PhalconTag
     /**
      * Implode the elements of an array using sprintf and optional glue.
      *
-     * Usage example:
-     * <div <?php Tag::implodeSprintf(['class' => 'class1 class2', 'id' => 'my-id', 'test' => ['test1', 'test2']], '%2$s="%1$s"', ' ');?>></div>
-     * <div class="class1 class2" id="my-id" test="{['test1', 'test2']}"></div>
-     * 
+     * Example:
+     * ```php
+     * Tag::implodeSprintf(['class' => 'class1 class2', 'id' => 'my-id', 'test' => ['test1', 'test2']], '%2$s="%1$s"', ' ');
+     * ```
+     *
+     * Result:
+     * ```HTML
+     * class="class1 class2" id="my-id" test="{['test1', 'test2']}"
+     * ```
+     *
      * @param array $array The input array.
      * @param string $format The format string to be used with sprintf. Default is '%s'.
      * @param string|null $glue The glue string to be used between array elements. Default is null.
-     * @return string The resulting string after implode. If the input array is empty, an empty string is returned.
+     * @return string The resulting string after implodes. If the input array is empty, an empty string is returned.
      */
     public static function implodeSprintf(array $array, string $format = '%s', ?string $glue = null): string
     {
@@ -192,7 +194,7 @@ class Tag extends PhalconTag
                     }
                 }
                 // other object escaper
-                elseif (is_object($value)) {
+                else if (is_object($value)) {
                     $value = $escaper->json(json_encode($value));
                 }
                 // default escaper
@@ -208,15 +210,28 @@ class Tag extends PhalconTag
     /**
      * Retrieves the HTML representation of a specified tag, along with optional parameters and content.
      *
-     * Use example:
+     * Example 1:
+     *
+     * ```php
      * Tag::get('div', ['class' => 'class1 class2'], ['content1', 'content2']);
+     * ```
+     *
+     * ```HTML
      * <div class="class1 class2">content1</div>
      * <div class="class1 class2">content2</div>
+     * ```
      *
+     * Example 2:
+     * ```php
      * Tag::get('div', ['class' => 'class1 class2'], ['content1', 'content2'], ' ');
-     * <div class="class1 class2">content1 content2</div>
+     * ```
      *
-     * More complex use example
+     * ```HTML
+     * <div class="class1 class2">content1 content2</div>
+     * ```
+     *
+     * Example 3:
+     * ```php
      * Tag::get('footer', ['class' => 'my-footer-class'], [
      *      Tag::get('ul', ['class' => 'my-ul-class'], [
      *          Tag::get('li', ['class'] => 'my-li-class', ['content1', 'content2']),
@@ -226,6 +241,9 @@ class Tag extends PhalconTag
      *          Tag::get('li', ['class'] => 'my-li-class-3', ['content5', 'content6']),
      *      ], ''
      * ], ' ');
+     * ```
+     *
+     * ```HTML
      * <footer class="my-footer-class">
      *      <ul class="my-ul-class">
      *          <li class="my-li-class">content1</li>
@@ -237,7 +255,8 @@ class Tag extends PhalconTag
      *          <li class="my-li-class-3">content5 content6</li>
      *      </ul>
      * </div>
-     * 
+     * ```
+     *
      * @param string $tag The tag name.
      * @param array $params The optional parameters for the tag.
      * @param array $html The optional HTML content within the tag.
@@ -291,10 +310,8 @@ class Tag extends PhalconTag
      * Retrieves the tag parameters based on the given tag name, additional parameters, format string, and glue string.
      *
      * @param string $tag The name of the tag to retrieve the parameters for.
-     * @param array $params (Optional) Additional parameters to merge with the tag attributes. The parameters should be provided as an associative array with keys representing the parameter
-     * names.
-     * @param string $format (Optional) The format string to use when formatting the tag parameters. The format string should contain two placeholders: %1$s for the parameter value and %
-     *2$s for the parameter name.
+     * @param array $params (Optional) Additional parameters to merge with the tag attributes. The parameters should be provided as an associative array with keys representing the parameter names.
+     * @param string $format (Optional) The format string to use when formatting the tag parameters. The format string should contain two placeholders: %1$s for the parameter value and %2$s for the parameter name.
      * @param string|null $glue (Optional) The glue string to use when joining the formatted tag parameters. If null, the default glue string will be used.
      * @return string The formatted tag parameters joined by the glue string.
      */
@@ -307,10 +324,8 @@ class Tag extends PhalconTag
      * Returns a formatted string containing tag parameters for the specified tag.
      *
      * @param string $tag The tag to be used.
-     * @param array $params The parameters to be added to the tag. The parameters should be provided as an associative array with keys representing the parameter names and values representing
-     * the parameter values.
-     * @param string $format The format string used to concatenate each parameter. The format string should contain two placeholders ('%1$s' and '%2$s') that will be replaced with the parameter
-     * value and name, respectively. The default format is ' %2$s="%1$s"'.
+     * @param array $params The parameters to be added to the tag. The parameters should be provided as an associative array with keys representing the parameter names and values representing the parameter values.
+     * @param string $format The format string used to concatenate each parameter. The format string should contain two placeholders ('%1$s' and '%2$s') that will be replaced with the parameter value and name, respectively. The default format is ' %2$s="%1$s"'.
      * @param string|null $glue The glue used to concatenate multiple parameters. If null, the default PHP glue will be used.
      * @return void
      */
@@ -323,15 +338,17 @@ class Tag extends PhalconTag
      * Will sprintf an array_map of the array and then implode it with a ' ' glue
      * - Escape attrs and values during the process
      *
-     * Use example:
+     * Example:
+     * ```php
      * Tag::getParams(['class' => 'class1 class2', 'id' => 'my-id'])
-     * class="class1 class2" id="my-id"
+     * ```
      *
-     * Tag::getParams(['class' => 'class1 class2', 'id' => 'my-id'])
+     * Result:
+     * ```HTML
      * class="class1 class2" id="my-id"
+     * ```
      *
      * @param array $params Array to implode & sprintf
-     *
      * @return string Return the imploded sprintf "%2$s="%1$s" from an array
      */
     public static function getParams(array $params = [], string $format = ' %2$s="%1$s"', ?string $glue = null): string
@@ -346,10 +363,8 @@ class Tag extends PhalconTag
     /**
      * Prints the formatted parameters to the output.
      *
-     * @param array $params An array containing the parameters to be formatted. The parameters should be provided as an associative array with keys representing the parameter names
-     * and values representing the parameter values.
-     * @param string $format The format string used to format each parameter. The format string should contain two placeholders: %1$s representing the parameter value and %2$s representing
-     * the parameter name.
+     * @param array $params An array containing the parameters to be formatted. The parameters should be provided as an associative array with keys representing the parameter names and values representing the parameter values.
+     * @param string $format The format string used to format each parameter. The format string should contain two placeholders: %1$s representing the parameter value and %2$s representing the parameter name.
      * @param null|string $glue (optional) The string used to glue multiple formatted parameters together. If not provided, the default glue value will be used.
      * @return void
      */
@@ -427,20 +442,27 @@ class Tag extends PhalconTag
      * Set the meta charset value
      * Specifies the character encoding for the HTML document.
      *
-     * Use example:
+     * Example:
+     * ```php
      * Tag::setMetaCharset('UTF-8');
      * Tag::meta('charset', 'UTF-8');
+     * ```
+     *
+     * Result:
+     * ```HTML
      * <meta charset="UTF-8">
+     * ```
      *
      * Common values:
      *      UTF-8 - Character encoding for Unicode
      *      ISO-8859-1 - Character encoding for the Latin alphabet
      * In theory, any character encoding can be used, but no browser understands all of them. The more widely a character encoding is used, the better the chance that a browser will understand it.
+     *
      * To view all available character encodings, look at IANA character sets.
-     * http://www.iana.org/assignments/character-sets/character-sets.xhtml
+     * - @link http://www.iana.org/assignments/character-sets/character-sets.xhtml
      *
      * For more information about the charset values, please visit this documentation below
-     * https://www.w3schools.com/tags/att_meta_charset.asp
+     * - @link https://www.w3schools.com/tags/att_meta_charset.asp
      */
     public static function setMetaCharset(string $charset = 'UTF-8'): void
     {
@@ -449,13 +471,13 @@ class Tag extends PhalconTag
     }
     
     /**
-     * Sets the value of a meta property.
+     * Sets the value of a meta-property.
      *
-     * This method sets the specified meta property with the given content. If there is
-     * already a meta property with the same name, it will be removed before adding the new one.
+     * This method sets the specified meta-property with the given content. If there is
+     * already a meta-property with the same name, it will be removed before adding the new one.
      *
-     * @param string $property The name of the meta property to set.
-     * @param string|null $content The content to set for the meta property. It can be null if the property doesn't require content.
+     * @param string $property The name of the meta-property to set.
+     * @param string|null $content The content to set for the meta-property. It can be null if the property doesn't require content.
      * @return void
      */
     public static function setMetaProperty(string $property, ?string $content = null): void
@@ -465,11 +487,9 @@ class Tag extends PhalconTag
     }
     
     /**
-     * Set the meta name attribute with the given value.
-     *
-     * @param string $name The name of the meta tag.
-     * @param string|null $content The content of the meta tag. Optional, defaults to null.
-     *
+     * Set the meta-name attribute with the given value.
+     * @param string $name The name of the meta-tag.
+     * @param string|null $content The content of the meta-tag. Optional, defaults to null.
      * @return void
      */
     public static function setMetaName(string $name, ?string $content = null): void
@@ -481,10 +501,9 @@ class Tag extends PhalconTag
     /**
      * Add meta
      *
-     * @param string $attr The attribute of the meta tag
+     * @param string $attr The attribute of the meta-tag
      * @param string $value The value of the attribute
-     * @param string|null $content (optional) The content of the meta tag
-     *
+     * @param string|null $content (optional) The content of the meta-tag
      * @return void
      */
     public static function addMeta(string $attr, string $value, ?string $content = null): void
@@ -499,7 +518,7 @@ class Tag extends PhalconTag
     /**
      * Add raw meta
      *
-     * @param array $meta The meta data to be added
+     * @param array $meta The meta-data to be added
      * @return void
      */
     public static function addRawMeta(array $meta): void
@@ -509,18 +528,23 @@ class Tag extends PhalconTag
     
     /**
      * Add a new link tag
+     * For more information about the attr, values, and other options please visite the w3schools documentation below
+     * - https://www.w3schools.com/tags/tag_link.asp
      *
-     * Use example:
+     * Example:
+     * ```php
      * Tag::addLink('rel', 'alternate', ['type' => 'application/atom+xml', 'title' => 'Zemit CMS', 'href' => '/blog/news/atom"']);
-     * <link rel="alternate" type="application/atom+xml" title="Zemit CMS News" href="/blog/news/atom">
+     * ```
      *
-     * For more information about the attr, values and other options please visite the w3schools documentation below
-     * https://www.w3schools.com/tags/tag_link.asp
+     * Result:
+     * ```HTML
+     * <link rel="alternate" type="application/atom+xml" title="Zemit CMS News" href="/blog/news/atom">
+     * ```
      *
      * @param string $attr Link tag attr
      * @param string $value Link tag attr value
      * @param array $options Link tag attrs and values
-     *
+     * @return void
      */
     public static function addLink(string $attr, string $value, array $options = []): void
     {
@@ -539,12 +563,11 @@ class Tag extends PhalconTag
     }
     
     /**
-     * Removes meta tags from the existing list of meta tags based on the specified attribute, value, and content.
+     * Removes meta-tags from the existing list of meta-tags based on the specified attribute, value, and content.
      *
-     * @param string $attr The attribute of the meta tags to be removed.
-     * @param string|null $value The value of the attribute. If null, all meta tags with the specified attribute will be removed.
-     * @param string|null $content The content of the meta tags. If null, all meta tags with the specified attribute and value will be removed.
-     *
+     * @param string $attr The attribute of the meta-tags to be removed.
+     * @param string|null $value The value of the attribute. If null, all meta-tags with the specified attribute will be removed.
+     * @param string|null $content The content of the meta-tags. If null, all meta-tags with the specified attribute and value will be removed.
      * @return void
      */
     public static function removeMeta(string $attr, ?string $value = null, ?string $content = null): void
@@ -564,10 +587,10 @@ class Tag extends PhalconTag
     }
     
     /**
-     * Retrieves the concatenated string representation of the meta values.
+     * Retrieves the concatenated string representation of the meta-values.
      *
-     * @param string|null $glue The optional glue string used to concatenate the meta values. Default is null.
-     * @return string|null The concatenated string representation of the meta values, or null if there are no meta values.
+     * @param string|null $glue The optional glue string used to concatenate the meta-values. Default is null.
+     * @return string|null The concatenated string representation of the meta-values, or null if there are no meta-values.
      */
     public static function getMeta(?string $glue = null): ?string
     {
@@ -579,9 +602,9 @@ class Tag extends PhalconTag
     }
     
     /**
-     * Prints the meta information using the specified glue.
+     * Prints the meta-information using the specified glue.
      *
-     * @param string|null $glue The glue to be used for concatenating the meta information. If not provided, the default value is null.
+     * @param string|null $glue The glue to be used for concatenating the meta-information. If not provided, the default value is null.
      * @return void
      */
     public static function meta(?string $glue = null): void
@@ -620,6 +643,7 @@ class Tag extends PhalconTag
      *
      * @param string|null $collection (optional) The name of the collection. If not specified, all collections will be included.
      * @return string|null The CSS markup for the specified collection or all collections. Returns null if no CSS is found.
+     * @throws Exception
      */
     public static function getCss(?string $collection = null): ?string
     {
@@ -647,6 +671,7 @@ class Tag extends PhalconTag
      *
      * @param string|null $collection Optional. The name of the asset collection. If not provided, JavaScript code from all asset collections will be retrieved.
      * @return string|null The generated JavaScript code, or null if no JavaScript code is found for the specified collection(s).
+     * @throws Exception
      */
     public static function getJs(?string $collection = null): ?string
     {
@@ -661,6 +686,7 @@ class Tag extends PhalconTag
      * @param string|null $collection The name of the collection to retrieve the JavaScript from. If null, all collections will be included.
      *
      * @return void
+     * @throws Exception
      */
     public static function js(?string $collection = null): void
     {
