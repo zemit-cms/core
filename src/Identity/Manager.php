@@ -101,7 +101,7 @@ class Manager extends Injectable implements ManagerInterface, OptionsInterface
             $loginForbiddenMessage = new Message('Login Forbidden', ['email', 'password'], 'LoginForbidden', 403);
             
             if (!isset($user)) {
-                // user not found, login failed
+                // user isn't found, login failed
                 $validation->appendMessage($loginFailedMessage);
             }
             else if (empty($user->getPassword())) {
