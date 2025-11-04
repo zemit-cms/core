@@ -31,14 +31,15 @@ trait Params
     /**
      * Retrieve a specific parameter value by key.
      *
+     * @param string $key
+     * @param array|string|null $filters
+     * @param mixed|null $default
+     * @param array|null $params
+     * @return mixed
      * @throws Exception
      */
-    public function getParam(
-        string $key,
-        array|string|null $filters = null,
-        mixed $default = null,
-        ?array $params = null
-    ): mixed {
+    public function getParam(string $key, array|string|null $filters = null, mixed $default = null, ?array $params = null): mixed
+    {
         $params ??= $this->getAllParams();
         
         if (array_key_exists($key, $params)) {
@@ -50,6 +51,11 @@ trait Params
     
     /**
      * Check if a given key exists in the parameter array.
+     *
+     * @param string $key
+     * @param array|null $params
+     * @param bool $cached
+     * @return bool
      */
     public function hasParam(string $key, ?array $params = null, bool $cached = true): bool
     {
@@ -61,9 +67,9 @@ trait Params
      * Retrieve specific or all request parameters.
      *
      * Usage examples:
-     * - getParams() → all params
-     * - getParams(['email', 'password']) → only those keys
-     * - getParams(['email' => 'trim|email', 'id' => 'int']) → filtered subset
+     * - getParams() -> all params
+     * - getParams(['email', 'password']) -> only those keys
+     * - getParams(['email' => [Filter::TRIM], 'password']) -> filtered subset
      *
      * @param array|null $fields Keys or key=>filters to extract.
      * @param bool $cached Whether to reuse cached raw parameters.
@@ -72,7 +78,7 @@ trait Params
      * @return array<string, mixed>
      * @throws Exception
      */
-    public function getParams(?array $fields = null, bool $cached = true, bool $deep = true) : array
+    public function getParams(?array $fields = null, bool $cached = true, bool $deep = true): array
     {
         // return all parameters if no specific parameters are requested
         if (is_null($fields)) {
@@ -167,6 +173,9 @@ trait Params
     /**
      * Recursively sanitize nested arrays.
      *
+     * @param mixed $value
+     * @param array|string $filters
+     * @return mixed
      * @throws Exception
      */
     private function deepSanitize(mixed $value, array|string $filters): mixed
