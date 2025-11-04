@@ -7,8 +7,8 @@ declare(strict_types=1);
  *
  * (c) Zemit Team <contact@zemit.com>
  *
- * For the full copyright and license information, please view the LICENSE.txt
- * file that was distributed with this source code.
+ * For full copyright and license information,
+ * please view the LICENSE.txt file distributed with this source code.
  */
 
 namespace Zemit\Mvc\Controller\Traits;
@@ -20,97 +20,233 @@ use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
 trait Params
 {
     use AbstractParams;
-    
     use AbstractInjectable;
     
-    protected ?array $params = null;
+    /** @var array<string, mixed>|null Cached raw request parameters */
+    protected ?array $rawParams = null;
+    
+    /** @var array<string, array|string> Default filters applied to params */
+    protected array $defaultFilters = [];
     
     /**
-     * Get a specific parameter value by key.
+     * Retrieve a specific parameter value by key.
      *
-     * @param string $key The key of the parameter.
-     * @param array|string|null $filters Optional. The filters to apply to the parameter value. Defaults to null.
-     * @param mixed $default Optional. The default value if the parameter does not exist. Defaults to null.
-     * @param array|null $params Optional. The array of parameters to search from. Defaults to null.
-     *
-     * @return mixed The value of the specified parameter, after applying the filters if provided. If the parameter does not exist,
-     *               then the default value is returned if provided. If both the parameter and the default value are missing,
-     *               then the value from the dispatcher's parameter is returned.
      * @throws Exception
      */
-    public function getParam(string $key, array|string|null $filters = null, mixed $default = null, ?array $params = null): mixed
-    {
-        $params ??= $this->getParams();
-        return isset($params[$key])
-            ? $this->filter->sanitize($params[$key], $filters ?? [])
-            : $this->dispatcher->getParam($key, $filters ?? [], $default);
-    }
-
-    /**
-     * Checks if a specific key exists in the given array of parameters or in the default parameters.
-     *
-     * @param string $key The key to check for in the parameters.
-     * @param array|null $params The array of parameters to search in. If null, the default parameters will be used.
-     * @return bool Returns true if the key exists in the parameters, false otherwise.
-     */
-    public function hasParam(string $key, ?array $params = null): bool
-    {
-        $params ??= $this->getParams();
-        return isset($params[$key]);
+    public function getParam(
+        string $key,
+        array|string|null $filters = null,
+        mixed $default = null,
+        ?array $params = null
+    ): mixed {
+        $params ??= $this->getAllParams();
+        
+        if (array_key_exists($key, $params)) {
+            return $this->filter->sanitize($params[$key], $filters ?? []);
+        }
+        
+        return $this->dispatcher->getParam($key, $filters ?? [], $default);
     }
     
     /**
-     * Retrieves parameters from the request, optionally applying filters and caching results.
-     *
-     * @param array|null $filters An array of filters to apply to the request parameters.
-     *                             Each filter should include 'name', 'filters', and 'scope'.
-     * @param bool $cached Whether to use cached parameters if they're available. Defaults to true.
-     * @return array The combined and filtered request parameters, excluding the _url parameter.
+     * Check if a given key exists in the parameter array.
      */
-    public function getParams(?array $filters = null, bool $cached = true): array
+    public function hasParam(string $key, ?array $params = null, bool $cached = true): bool
     {
-        if (isset($this->params) && $cached) {
-            return $this->params;
+        $params ??= $this->getRawParams($cached);
+        return array_key_exists($key, $params);
+    }
+    
+    /**
+     * Retrieve specific or all request parameters.
+     *
+     * Usage examples:
+     * - getParams() → all params
+     * - getParams(['email', 'password']) → only those keys
+     * - getParams(['email' => 'trim|email', 'id' => 'int']) → filtered subset
+     *
+     * @param array|null $fields Keys or key=>filters to extract.
+     * @param bool $cached Whether to reuse cached raw parameters.
+     * @param bool $deep Whether to apply deep sanitization.
+     *
+     * @return array<string, mixed>
+     * @throws Exception
+     */
+    public function getParams(?array $fields = null, bool $cached = true, bool $deep = true) : array
+    {
+        // return all parameters if no specific parameters are requested
+        if (is_null($fields)) {
+            return $this->getAllParams(null, $cached, $deep);
         }
         
-        if (!empty($filters)) {
-            foreach ($filters as $filter) {
-                $this->request->setParameterFilters($filter['name'], $filter['filters'], $filter['scope']);
+        // prepare filters from the params array
+        $filters = array_filter($fields, function ($key) {
+            return !is_int($key);
+        }, ARRAY_FILTER_USE_KEY);
+        
+        $allParams = $this->getAllParams($filters, $cached, $deep);
+        
+        // build the result subset
+        $params = [];
+        foreach ($fields as $key => $value) {
+            $name = is_int($key) ? $value : $key;
+            $params[$name] = $allParams[$name] ?? null;
+        }
+        
+        return $params;
+    }
+    
+    /**
+     * Retrieve all request parameters, optionally applying filters and caching results.
+     *
+     * @param array|null $filters Temporary filters to apply.
+     * @param bool $cached Whether to reuse previously loaded parameters.
+     * @param bool $deep Whether to apply filters recursively.
+     *
+     * @return array<string, mixed>
+     * @throws Exception
+     */
+    public function getAllParams(?array $filters = null, bool $cached = true, bool $deep = true): array
+    {
+        // Merge default + persistent + temporary filters
+        $mergedFilters = array_merge($this->getDefaultFilters(), $filters ?? []);
+        
+        if ($cached && isset($this->rawParams)) {
+            return $this->applyFilters($this->rawParams, $mergedFilters, $deep);
+        }
+        
+        $this->rawParams = $this->collectRequestParams();
+        
+        return $this->applyFilters($this->rawParams, $mergedFilters, $deep);
+    }
+    
+    /**
+     * Collect parameters based on the HTTP method.
+     *
+     * @return array<string, mixed>
+     */
+    private function collectRequestParams(): array
+    {
+        $params = match (true) {
+            $this->request->isPost() || $this->request->isPatch() => array_merge(
+                $this->request->getPost(),
+                $this->request->getPatch()
+            ),
+            $this->request->isPut() => $this->request->getPut(),
+            default => $this->request->getQuery(),
+        };
+        
+        unset($params['_url']); // remove Phalcon's default _url param
+        
+        return $params;
+    }
+    
+    /**
+     * Apply filters to parameters (recursively if $deep is true).
+     *
+     * @param array<string, mixed> $params
+     * @param array<string, array|string> $filters
+     * @param bool $deep
+     *
+     * @return array<string, mixed>
+     * @throws Exception
+     */
+    public function applyFilters(array $params, array $filters, bool $deep = true): array
+    {
+        foreach ($filters as $key => $sanitizers) {
+            if (array_key_exists($key, $params)) {
+                $params[$key] = $deep
+                    ? $this->deepSanitize($params[$key], (array)$sanitizers)
+                    : $this->filter->sanitize($params[$key], (array)$sanitizers);
             }
         }
         
-        if ($this->request->isGet()) {
-            $params = $this->request->getFilteredQuery();
-        }
-        else if ($this->request->isPost()) {
-            $params = array_merge_recursive(
-                $this->request->getFilteredPost(),
-                $this->request->getFilteredPatch()
-            );
-        }
-        else if ($this->request->isPatch()) {
-            $params = $this->request->getFilteredPatch();
-        }
-        else if ($this->request->isPut()) {
-            $params = $this->request->getFilteredPut();
-        }
-        else {
-            $params = [];
-        }
-
-//        $params = array_merge_recursive(
-//            $this->request->getFilteredQuery(), // $_GET
-////            $this->request->getFilteredPatch(), // $_PATCH
-//            $this->request->getFilteredPut(), // $_PUT
-//            $this->request->getFilteredPost(), // $_POST
-//        );
-        
-        // remove default phalcon _url param
-        if (isset($params['_url'])) {
-            unset($params['_url']);
-        }
-        
-        $this->params = $params;
         return $params;
+    }
+    
+    /**
+     * Recursively sanitize nested arrays.
+     *
+     * @throws Exception
+     */
+    private function deepSanitize(mixed $value, array|string $filters): mixed
+    {
+        if (is_array($value)) {
+            foreach ($value as $k => $v) {
+                $value[$k] = $this->deepSanitize($v, $filters);
+            }
+            return $value;
+        }
+        
+        return $this->filter->sanitize($value, $filters);
+    }
+    
+    /**
+     * Sets default filters, replacing any previously defined.
+     *
+     * @param array<string, array|string> $filters
+     */
+    public function setDefaultFilters(array $filters): static
+    {
+        $this->defaultFilters = $filters;
+        return $this;
+    }
+    
+    /**
+     * Adds or merges new default filters to existing ones.
+     *
+     * @param array<string, array|string> $filters
+     */
+    public function addDefaultFilters(array $filters): static
+    {
+        $this->defaultFilters = array_merge($this->defaultFilters, $filters);
+        return $this;
+    }
+    
+    /**
+     * Remove one or many default filters by key.
+     *
+     * @param string|array<int, string> $keys
+     */
+    public function removeFilters(string|array $keys): static
+    {
+        foreach ((array)$keys as $key) {
+            unset($this->defaultFilters[$key]);
+        }
+        return $this;
+    }
+    
+    /**
+     * Clears all default filters.
+     */
+    public function clearDefaultFilters(): static
+    {
+        $this->defaultFilters = [];
+        return $this;
+    }
+    
+    /**
+     * Get currently active default filters.
+     *
+     * @return array<string, array|string>
+     */
+    public function getDefaultFilters(): array
+    {
+        return $this->defaultFilters;
+    }
+    
+    /**
+     * Retrieves the raw parameters from the request. If caching is enabled, it returns the cached parameters.
+     *
+     * @param bool $cached Determines whether to use cached parameters. Defaults to true.
+     * @return array<string, mixed> The raw request parameters.
+     */
+    public function getRawParams(bool $cached = true): array
+    {
+        if ($cached && isset($this->rawParams)) {
+            return $this->rawParams;
+        }
+        
+        return $this->rawParams = $this->collectRequestParams();
     }
 }
