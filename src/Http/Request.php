@@ -138,6 +138,7 @@ class Request extends \Phalcon\Http\Request implements RequestInterface
             'scheme' => $this->getScheme(),
             'isAjax' => $this->isAjax(),
             'isGet' => $this->isGet(),
+            'isPost' => $this->isPost(),
             'isDelete' => $this->isDelete(),
             'isHead' => $this->isHead(),
             'isPatch' => $this->isPatch(),
