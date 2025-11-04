@@ -73,6 +73,7 @@ class RequestTest extends AbstractUnit
             'isConnect' => false,
             'isTrace' => false,
             'isPut' => false,
+            'isPost' => false,
             'isPurge' => false,
             'isOptions' => false,
             'isSoap' => false,
