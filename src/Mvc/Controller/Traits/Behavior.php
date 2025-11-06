@@ -38,7 +38,7 @@ trait Behavior
         
         foreach ($roleList as $role => $rolePermission) {
             // do not attach other roles behaviors
-            if (!$this->identity->hasRole([$role])) {
+            if ($role !== 'everyone' && !$this->identity->hasRole([$role])) {
                 continue;
             }
             

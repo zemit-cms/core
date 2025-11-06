@@ -111,7 +111,17 @@ trait Role
             $roleIndexList = array_filter(array_unique(array_diff($roleIndexList, $processedRoleIndexList)));
         }
         
-        // Return the list of inherited role list (recursively)
+        // append a guest role if no roles were detected
+        if (empty($roleList) && empty($inheritedRoleList)) {
+            $inheritedRoleList []= 'guest';
+        }
+        
+        // always append everyone a role
+        if (!in_array('everyone', $roleIndexList) && !in_array('everyone', $inheritedRoleList)) {
+            $inheritedRoleList []= 'everyone';
+        }
+        
+        // Return the list of an inherited role list (recursively)
         return array_values(array_filter(array_unique($inheritedRoleList)));
     }
 }
