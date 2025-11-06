@@ -33,7 +33,7 @@ trait Group
         $group = $this->getParam('group', [
             Filter::FILTER_STRING,
             Filter::FILTER_TRIM
-        ], $this->defaultGroup());
+        ], $this->defaultGroup() ?? '');
         
         if (!isset($group)) {
             $this->setGroup(null);
@@ -68,7 +68,8 @@ trait Group
     
     public function defaultGroup(): array|string|null
     {
-        // @todo use primary keys from model meta data instead
-        return 'id';
+        return (isset($this->joins) && count($this->joins) > 0) ?
+            $this->modelsMetadata->getPrimaryKeyAttributes($this->loadModel())
+            : null;
     }
 }
