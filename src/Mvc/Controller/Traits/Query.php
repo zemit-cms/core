@@ -322,10 +322,10 @@ trait Query
      *
      * @param array|null $find An array of find criteria to filter the results. If null, the default criteria will be applied.
      *
-     * @return int|ResultsetInterface The total count of items that match the specified criteria.
+     * @return ResultsetInterface|int|false The total count of items that match the specified criteria.
      * @throws \Exception
      */
-    public function count(?array $find = null): int|ResultsetInterface
+    public function count(?array $find = null): ResultsetInterface|int|false
     {
         $find ??= $this->prepareFind();
         return $this->loadModel()::count($this->getCalculationFind($find));
@@ -337,9 +337,9 @@ trait Query
      * @param array|null $find Optional: The criteria to find the maximum value from.
      *                         Default: null (will retrieve the `find` from $this->getFind())
      *
-     * @return float|ResultsetInterface The calculated sum of values.
+     * @return ResultsetInterface|float|false The calculated sum of values.
      */
-    public function sum(?array $find = null): float|ResultsetInterface
+    public function sum(?array $find = null): ResultsetInterface|float|false
     {
         $find ??= $this->prepareFind();
         return $this->loadModel()::sum($this->getCalculationFind($find));
@@ -351,10 +351,9 @@ trait Query
      * @param array|null $find Optional: The criteria to find the maximum value from.
      *                         Default: null (will retrieve the `find` from $this->getFind())
      *
-     * @return float|ResultsetInterface The maximum value from the dataset
-     *                                  or a `ResultsetInterface` that represents the grouped maximum values.
+     * @return ResultsetInterface|float|false The maximum value from the dataset or a `ResultsetInterface` that represents the grouped maximum values.
      */
-    public function maximum(?array $find = null): float|ResultsetInterface
+    public function maximum(?array $find = null): ResultsetInterface|float|false
     {
         $find ??= $this->prepareFind();
         return $this->loadModel()::maximum($this->getCalculationFind($find));
@@ -366,10 +365,9 @@ trait Query
      * @param array|null $find Optional: The criteria to find the minimum value from.
      *                         Default: null (will retrieve the `find` from $this->getFind())
      *
-     * @return float|ResultsetInterface The minimum value from the dataset
-     *                                  or a `ResultsetInterface` that represents the grouped minimum values.
+     * @return ResultsetInterface|float|false The minimum value from the dataset or a `ResultsetInterface` that represents the grouped minimum values.
      */
-    public function minimum(?array $find = null): float|ResultsetInterface
+    public function minimum(?array $find = null): ResultsetInterface|float|false
     {
         $find ??= $this->prepareFind();
         return $this->loadModel()::minimum($this->getCalculationFind($find));
