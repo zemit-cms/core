@@ -590,7 +590,7 @@ trait Relationship
                         ]);
                         
                         // delete missing related
-                        if (!$nodeEntityToDeleteResultset->delete()) {
+                        if ($nodeEntityToDeleteResultset instanceof Model\Resultset && $nodeEntityToDeleteResultset->count() && !$nodeEntityToDeleteResultset->delete()) {
                             $this->appendMessagesFromResultset($nodeEntityToDeleteResultset, $lowerCaseAlias);
                             $this->appendMessage(new Message('Unable to delete node entity `' . $intermediateModelClass . '`', $lowerCaseAlias, 'Bad Request', 400));
                             $connection->rollback($nesting);
