@@ -264,6 +264,7 @@ class Config extends \Zemit\Config\Config
                         'OPENAI_ORGANIZATION_ID',
                         'IMAP_LOGIN',
                         'IMAP_PASSWORD',
+                        'REDIS_AUTH',
                     ]),
                 ],
             ],

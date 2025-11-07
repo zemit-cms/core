@@ -113,12 +113,12 @@ trait Role
         
         // append a guest role if no roles were detected
         if (empty($roleList) && empty($inheritedRoleList)) {
-            $inheritedRoleList []= 'guest';
+            $inheritedRoleList [] = 'guest';
         }
         
         // always append everyone a role
         if (!in_array('everyone', $roleIndexList) && !in_array('everyone', $inheritedRoleList)) {
-            $inheritedRoleList []= 'everyone';
+            $inheritedRoleList [] = 'everyone';
         }
         
         // Return the list of an inherited role list (recursively)

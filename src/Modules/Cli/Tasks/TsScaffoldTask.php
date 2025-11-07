@@ -29,13 +29,13 @@ Usage:
 
 Options:
   --force                       Overwrite existing files
-  --path=<directory>            Directory path to generate new files
+  --directory=<directory>       Directory path to generate new files
   --table=<table>               Comma seperated list of table to generate
 
 
 DOC;
     
-    public string $path = '../sdk/src/';
+    public string $path = './sdk/';
     public string $servicesPath = 'services/';
     public string $modelsPath = 'models/';
     public string $abstractsPath = 'abstracts/';

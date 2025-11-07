@@ -153,7 +153,7 @@ DOC;
             $relationships = $this->getRelationshipItems($table, $columns, $tables);
             
             // Controller
-//            $savePath = $this->getAbstractsDirectory($definitions['controller']['file']);
+//            $savePath = $this->getControllersDirectory($definitions['controller']['file']);
 //            if (!file_exists($savePath) || $force) {
 //                $this->saveFile($savePath, $this->createControllerOutput($definitions, $columns, $relationships), $force);
 //                $ret [] = 'Controller API `' . $definitions['controller']['file'] . '` created';
