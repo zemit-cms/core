@@ -98,7 +98,6 @@ trait IdentityConditions
      */
     public function getIdentityColumns(): array
     {
-        // @todo get primary keys from the model
-        return ['id', 'uuid'];
+        return $this->modelsMetadata->getPrimaryKeyAttributes($this->loadModel());
     }
 }

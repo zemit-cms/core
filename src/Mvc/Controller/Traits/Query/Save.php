@@ -53,7 +53,7 @@ trait Save
         $mapFields = $this->getMapFields()?->toArray();
         
         // @todo find what we should do here to handle: 1. dynamic and/or composed primary keys
-        if (isset($post['id'])) {
+        if (isset($post['id']) || isset($post['uuid'])) {
             $model = $this->findFirst();
             if (!isset($model)) {
                 return [
@@ -62,6 +62,7 @@ trait Save
                 ];
             }
             unset($post['id']);
+            unset($post['uuid']);
         }
         
         $model ??= $this->loadModel();
@@ -76,7 +77,7 @@ trait Save
                 'saved' => false,
                 'messages' => $model->getMessages(),
             ];
-        } 
+        }
         $saved = $model->save();
         $this->eventsManager->fire('rest:afterSave', $this, [&$model], false);
         
