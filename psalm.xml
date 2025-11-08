@@ -54,16 +54,5 @@
                 <referencedFunction name="Redis::connect" />
             </errorLevel>
         </InvalidArgument>
-
-        <!-- False positive -->
-        <UndefinedClass>
-            <errorLevel type="suppress">
-                <referencedClass name="Swoole\Http\Request" />
-                <referencedClass name="Swoole\Http\Response" />
-                <referencedClass name="Swoole\WebSocket\Server" />
-                <referencedClass name="Swoole\WebSocket\Frame" />
-                <referencedClass name="Swoole\Coroutine" />
-            </errorLevel>
-        </UndefinedClass>
     </issueHandlers>
 </psalm>
