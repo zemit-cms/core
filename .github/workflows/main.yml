@@ -221,7 +221,7 @@ jobs:
           custom-cache-suffix: phalcon-kit-composer
 
       - name: Clear Psalm Cache
-        run: rm -rf ~/.cache/psalm
+        run: rm -rf ~/.cache/psalm psalm-results.sarif
 
       - name: Run Psalm Security Scan
         run: |
