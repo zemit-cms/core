@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Mvc\Model\Traits;
+namespace PhalconKit\Mvc\Model\Traits;
 
 use Phalcon\Mvc\ModelInterface;
-use Zemit\Mvc\Model\Traits\Abstracts\AbstractEntity;
-use Zemit\Mvc\Model\Traits\Abstracts\AbstractMetaData;
-use Zemit\Support\Helper;
+use PhalconKit\Mvc\Model\Traits\Abstracts\AbstractEntity;
+use PhalconKit\Mvc\Model\Traits\Abstracts\AbstractMetaData;
+use PhalconKit\Support\Helper;
 
 /**
  * This trait provides methods to get and set attributes in a model using the get/set methods

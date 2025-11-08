@@ -3,18 +3,18 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Support;
+namespace PhalconKit\Support;
 
 /**
- * This class allows to get the installed version of the zemit core
+ * This class allows to get the installed version of the core
  */
 class Version extends \Phalcon\Support\Version
 {

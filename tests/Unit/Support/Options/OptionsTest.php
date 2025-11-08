@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Support\Options;
+namespace PhalconKit\Tests\Unit\Support\Options;
 
-use Zemit\Support\Options\Options;
-use Zemit\Support\Options\OptionsInterface;
-use Zemit\Tests\Unit\AbstractUnit;
+use PhalconKit\Support\Options\Options;
+use PhalconKit\Support\Options\OptionsInterface;
+use PhalconKit\Tests\Unit\AbstractUnit;
 
 class OptionsTest extends AbstractUnit
 {

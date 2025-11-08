@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Locales;
+namespace PhalconKit\Tests\Unit\Locales;
 
 use Phalcon\Translate\InterpolatorFactory;
-use Zemit\Locales\Fr;
-use Zemit\Tests\Unit\AbstractUnit;
+use PhalconKit\Locales\Fr;
+use PhalconKit\Tests\Unit\AbstractUnit;
 
 class FrTest extends AbstractUnit
 {
@@ -28,9 +28,9 @@ class FrTest extends AbstractUnit
         
         $fr = new Fr($interpolationFactory, $options);
         
-        $zemitLink = '<a href="https://www.zemit.com/fr/">Zemit</a>';
+        $phalconKitLink = '<a href="https://github.com/phalcon-kit/">Phalcon Kit</a>';
         $this->assertEquals('value', $fr->t('new'));
         $this->assertEquals('non-existing-key', $fr->t('non-existing-key'));
-        $this->assertEquals("Propulsé par $zemitLink.", $fr->t('powered-by', ['zemit' => $zemitLink]));
+        $this->assertEquals("Propulsé par $phalconKitLink.", $fr->t('powered-by', ['phalcon-kit' => $phalconKitLink]));
     }
 }

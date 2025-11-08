@@ -117,7 +117,7 @@ class SessionMigration_100 extends Migration
                 new Reference(
                     'fk_session_as_user_id',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['as_user_id'],
                         'referencedColumns' => ['id'],
@@ -128,7 +128,7 @@ class SessionMigration_100 extends Migration
                 new Reference(
                     'fk_session_user_id',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['user_id'],
                         'referencedColumns' => ['id'],

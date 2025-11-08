@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,19 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Models;
+namespace PhalconKit\Tests\Unit\Models;
 
-use Zemit\Models\Abstracts\MenuAbstract;
-use Zemit\Models\Abstracts\Interfaces\MenuAbstractInterface;
-use Zemit\Models\Menu;
-use Zemit\Models\Interfaces\MenuInterface;
+use PhalconKit\Models\Abstracts\MenuAbstract;
+use PhalconKit\Models\Abstracts\Interfaces\MenuAbstractInterface;
+use PhalconKit\Models\Menu;
+use PhalconKit\Models\Interfaces\MenuInterface;
 
 /**
  * Class MenuTest
  *
  * This class contains unit tests for the User class.
  */
-class MenuTest extends \Zemit\Tests\Unit\AbstractUnit
+class MenuTest extends \PhalconKit\Tests\Unit\AbstractUnit
 {
     public MenuInterface $menu;
     
@@ -42,9 +42,9 @@ class MenuTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertInstanceOf(MenuAbstract::class, $this->menu);
         $this->assertInstanceOf(MenuAbstractInterface::class, $this->menu);
         
-        // Zemit
-        $this->assertInstanceOf(\Zemit\Mvc\ModelInterface::class, $this->menu);
-        $this->assertInstanceOf(\Zemit\Mvc\Model::class, $this->menu);
+        // Phalcon Kit
+        $this->assertInstanceOf(\PhalconKit\Mvc\ModelInterface::class, $this->menu);
+        $this->assertInstanceOf(\PhalconKit\Mvc\Model::class, $this->menu);
         
         // Phalcon
         $this->assertInstanceOf(\Phalcon\Mvc\ModelInterface::class, $this->menu);

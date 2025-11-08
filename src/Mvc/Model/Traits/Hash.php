@@ -3,19 +3,19 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Model\Traits;
+namespace PhalconKit\Mvc\Model\Traits;
 
-use Zemit\Config\ConfigInterface;
-use Zemit\Encryption\Security as SecurityService;
-use Zemit\Mvc\Model\Traits\Abstracts\AbstractInjectable;
+use PhalconKit\Config\ConfigInterface;
+use PhalconKit\Encryption\Security as SecurityService;
+use PhalconKit\Mvc\Model\Traits\Abstracts\AbstractInjectable;
 
 trait Hash
 {

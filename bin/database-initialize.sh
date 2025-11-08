@@ -1,16 +1,16 @@
 #!/bin/bash
 #
-# This file is part of the Zemit Framework.
+# This file is part of the Phalcon Kit.
 #
-# (c) Zemit Team <contact@zemit.com>
+# (c) Phalcon Kit Team
 #
 # For the full copyright and license information, please view the LICENSE.txt
 # file that was distributed with this source code.
 #
 
-php ./zemit cli database drop
-php ./zemit cli database truncate
-php ./zemit cli database fix-engine
-php ./zemit cli database insert
-php ./zemit cli database analyze
-php ./zemit cli database optimize
+php ./phalcon-kit cli database drop
+php ./phalcon-kit cli database truncate
+php ./phalcon-kit cli database fix-engine
+php ./phalcon-kit cli database insert
+php ./phalcon-kit cli database analyze
+php ./phalcon-kit cli database optimize

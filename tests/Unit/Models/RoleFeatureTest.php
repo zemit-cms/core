@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,19 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Models;
+namespace PhalconKit\Tests\Unit\Models;
 
-use Zemit\Models\Abstracts\RoleFeatureAbstract;
-use Zemit\Models\Abstracts\Interfaces\RoleFeatureAbstractInterface;
-use Zemit\Models\RoleFeature;
-use Zemit\Models\Interfaces\RoleFeatureInterface;
+use PhalconKit\Models\Abstracts\RoleFeatureAbstract;
+use PhalconKit\Models\Abstracts\Interfaces\RoleFeatureAbstractInterface;
+use PhalconKit\Models\RoleFeature;
+use PhalconKit\Models\Interfaces\RoleFeatureInterface;
 
 /**
  * Class RoleFeatureTest
  *
  * This class contains unit tests for the User class.
  */
-class RoleFeatureTest extends \Zemit\Tests\Unit\AbstractUnit
+class RoleFeatureTest extends \PhalconKit\Tests\Unit\AbstractUnit
 {
     public RoleFeatureInterface $roleFeature;
     
@@ -42,9 +42,9 @@ class RoleFeatureTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertInstanceOf(RoleFeatureAbstract::class, $this->roleFeature);
         $this->assertInstanceOf(RoleFeatureAbstractInterface::class, $this->roleFeature);
         
-        // Zemit
-        $this->assertInstanceOf(\Zemit\Mvc\ModelInterface::class, $this->roleFeature);
-        $this->assertInstanceOf(\Zemit\Mvc\Model::class, $this->roleFeature);
+        // Phalcon Kit
+        $this->assertInstanceOf(\PhalconKit\Mvc\ModelInterface::class, $this->roleFeature);
+        $this->assertInstanceOf(\PhalconKit\Mvc\Model::class, $this->roleFeature);
         
         // Phalcon
         $this->assertInstanceOf(\Phalcon\Mvc\ModelInterface::class, $this->roleFeature);

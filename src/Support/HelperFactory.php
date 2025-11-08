@@ -3,23 +3,23 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Support;
+namespace PhalconKit\Support;
 
-use Zemit\Support\Helper\Arr\FlattenKeys;
-use Zemit\Support\Helper\Arr\RecursiveMap;
-use Zemit\Support\Helper\Arr\RecursiveStrReplace;
-use Zemit\Support\Helper\Str\NormalizeLineBreaks;
-use Zemit\Support\Helper\Str\RemoveNonPrintable;
-use Zemit\Support\Helper\Str\SanitizeUTF8;
-use Zemit\Support\Helper\Str\Slugify;
+use PhalconKit\Support\Helper\Arr\FlattenKeys;
+use PhalconKit\Support\Helper\Arr\RecursiveMap;
+use PhalconKit\Support\Helper\Arr\RecursiveStrReplace;
+use PhalconKit\Support\Helper\Str\NormalizeLineBreaks;
+use PhalconKit\Support\Helper\Str\RemoveNonPrintable;
+use PhalconKit\Support\Helper\Str\SanitizeUTF8;
+use PhalconKit\Support\Helper\Str\Slugify;
 
 /**
  * HelperFactory Class

@@ -3,15 +3,15 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Support;
+namespace PhalconKit\Support;
 
 use Dotenv\Dotenv;
 
@@ -20,7 +20,7 @@ use Dotenv\Dotenv;
  * It allows for easy access to environment variables and provides methods for setting and getting values.
  * It also initializes a Dotenv instance and loads .env files based on specified configurations.
  *
- * @package Zemit\Support
+ * @package PhalconKit\Support
  */
 class Env
 {

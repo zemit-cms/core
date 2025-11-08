@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Filter;
+namespace PhalconKit\Tests\Unit\Filter;
 
-use Zemit\Filter\Filter;
-use Zemit\Filter\FilterFactory;
-use Zemit\Tests\Unit\AbstractUnit;
+use PhalconKit\Filter\Filter;
+use PhalconKit\Filter\FilterFactory;
+use PhalconKit\Tests\Unit\AbstractUnit;
 
 class FilterFactoryTest extends AbstractUnit
 {
@@ -30,11 +30,11 @@ class FilterFactoryTest extends AbstractUnit
     public function testNewInstance(): void
     {
         $filterFactory = new FilterFactory();
-        $this->assertInstanceOf(\Zemit\Filter\FilterFactory::class, $filterFactory);
+        $this->assertInstanceOf(\PhalconKit\Filter\FilterFactory::class, $filterFactory);
         $this->assertInstanceOf(\Phalcon\Filter\FilterFactory::class, $filterFactory);
         
         $filter = $filterFactory->newInstance();
-        $this->assertInstanceOf(\Zemit\Filter\Filter::class, $filter);
+        $this->assertInstanceOf(\PhalconKit\Filter\Filter::class, $filter);
         $this->assertInstanceOf(\Phalcon\Filter\Filter::class, $filter);
     }
 }

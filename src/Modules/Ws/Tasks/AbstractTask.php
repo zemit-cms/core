@@ -3,21 +3,21 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Ws\Tasks;
+namespace PhalconKit\Modules\Ws\Tasks;
 
 use Swoole\WebSocket\Server;
 use Swoole\Http\Request;
 use Swoole\Http\Response;
 use Swoole\WebSocket\Frame;
-use Zemit\Modules\Ws\Task;
+use PhalconKit\Modules\Ws\Task;
 
 abstract class AbstractTask extends Task
 {

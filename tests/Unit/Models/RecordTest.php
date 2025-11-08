@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,19 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Models;
+namespace PhalconKit\Tests\Unit\Models;
 
-use Zemit\Models\Abstracts\RecordAbstract;
-use Zemit\Models\Abstracts\Interfaces\RecordAbstractInterface;
-use Zemit\Models\Record;
-use Zemit\Models\Interfaces\RecordInterface;
+use PhalconKit\Models\Abstracts\RecordAbstract;
+use PhalconKit\Models\Abstracts\Interfaces\RecordAbstractInterface;
+use PhalconKit\Models\Record;
+use PhalconKit\Models\Interfaces\RecordInterface;
 
 /**
  * Class RecordTest
  *
  * This class contains unit tests for the User class.
  */
-class RecordTest extends \Zemit\Tests\Unit\AbstractUnit
+class RecordTest extends \PhalconKit\Tests\Unit\AbstractUnit
 {
     public RecordInterface $record;
     
@@ -42,9 +42,9 @@ class RecordTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertInstanceOf(RecordAbstract::class, $this->record);
         $this->assertInstanceOf(RecordAbstractInterface::class, $this->record);
         
-        // Zemit
-        $this->assertInstanceOf(\Zemit\Mvc\ModelInterface::class, $this->record);
-        $this->assertInstanceOf(\Zemit\Mvc\Model::class, $this->record);
+        // Phalcon Kit
+        $this->assertInstanceOf(\PhalconKit\Mvc\ModelInterface::class, $this->record);
+        $this->assertInstanceOf(\PhalconKit\Mvc\Model::class, $this->record);
         
         // Phalcon
         $this->assertInstanceOf(\Phalcon\Mvc\ModelInterface::class, $this->record);

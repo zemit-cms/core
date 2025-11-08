@@ -3,21 +3,21 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Controller;
+namespace PhalconKit\Mvc\Controller;
 
-use Zemit\Mvc\Controller\Traits\Actions\RestActions;
-use Zemit\Mvc\Controller\Traits\Export;
-use Zemit\Mvc\Controller\Traits\Expose;
-use Zemit\Mvc\Controller\Traits\Model;
-use Zemit\Mvc\Controller\Traits\Query;
+use PhalconKit\Mvc\Controller\Traits\Actions\RestActions;
+use PhalconKit\Mvc\Controller\Traits\Export;
+use PhalconKit\Mvc\Controller\Traits\Expose;
+use PhalconKit\Mvc\Controller\Traits\Model;
+use PhalconKit\Mvc\Controller\Traits\Query;
 
 class Restful extends Rest
 {

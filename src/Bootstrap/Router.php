@@ -3,26 +3,26 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Bootstrap;
+namespace PhalconKit\Bootstrap;
 
-use Zemit\Config\ConfigInterface;
+use PhalconKit\Config\ConfigInterface;
 
 /**
- * Zemit Router
+ * Phalcon Kit Router
  * {@inheritDoc}
  */
-class Router extends \Zemit\Mvc\Router
+class Router extends \PhalconKit\Mvc\Router
 {
     public array $defaults = [
-        'namespace' => \Zemit\Modules\Frontend\Controller::class,
+        'namespace' => \PhalconKit\Modules\Frontend\Controller::class,
         'module' => 'frontend',
         'controller' => 'index',
         'action' => 'index',

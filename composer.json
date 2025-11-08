@@ -1,30 +1,20 @@
 {
-  "name": "zemit-cms/core",
+  "name": "phalcon-kit/core",
   "type": "library",
-  "description": "Zemit CMS Core",
+  "description": "Build high-performance PHP applications faster with Phalcon Kit — a modular developer toolkit that extends the Phalcon framework.",
   "keywords": [
+    "php",
     "framework",
+    "php-framework",
     "phalcon",
-    "cms",
-    "core",
-    "zemit",
-    "zemit-cms",
-    "zemit cms",
-    "zemit cms core"
+    "phalcon-php",
+    "phalcon-kit",
+    "phalcon-kit-core",
+    "phalcon-toolkit"
   ],
-  "homepage": "https://www.zemit.com",
+  "homepage": "https://github.com/phalcon-kit",
   "license": "BSD-3-Clause",
   "authors": [
-    {
-      "name": "Zemit Team",
-      "email": "contact@zemit.com",
-      "homepage": "https://www.zemit.com/"
-    },
-    {
-      "name": "Nuagerie Team",
-      "email": "contact@nuagerie.com",
-      "homepage": "https://www.nuagerie.com/"
-    },
     {
       "name": "Julien Turbide",
       "email": "contact@jturbide.com",
@@ -32,7 +22,7 @@
     },
     {
       "name": "Contributors",
-      "homepage": "https://github.com/zemit-cms/core/graphs/contributors"
+      "homepage": "https://github.com/phalcon-kit/core/graphs/contributors"
     }
   ],
   "funding": [
@@ -42,13 +32,13 @@
     }
   ],
   "support": {
-    "issues": "https://github.com/zemit-cms/core/issues",
-    "source": "https://github.com/zemit-cms/core"
+    "issues": "https://github.com/phalcon-kit/core/issues",
+    "source": "https://github.com/phalcon-kit/core"
   },
   "config": {
     "optimize-autoloader": true,
     "apcu-autoloader": true,
-    "apcu-autoloader-prefix": "zemit-core-",
+    "apcu-autoloader-prefix": "phalcon-kit-",
     "preferred-install": "dist",
     "sort-packages": true,
     "allow-plugins": {
@@ -138,7 +128,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Zemit\\": "src/"
+      "PhalconKit\\": "src/"
     },
     "files": [
       "src/Functions/Dump.php",
@@ -148,7 +138,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Zemit\\Tests\\Unit\\": "tests/Unit"
+      "PhalconKit\\Tests\\Unit\\": "tests/Unit"
     }
   },
   "extra": {
@@ -179,7 +169,7 @@
     ]
   },
   "bin": [
-    "zemit"
+    "phalcon-kit"
   ],
   "scripts": {
     "docker": "docker-compose up",

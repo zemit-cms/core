@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,19 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Models;
+namespace PhalconKit\Tests\Unit\Models;
 
-use Zemit\Models\Abstracts\EmailAbstract;
-use Zemit\Models\Abstracts\Interfaces\EmailAbstractInterface;
-use Zemit\Models\Email;
-use Zemit\Models\Interfaces\EmailInterface;
+use PhalconKit\Models\Abstracts\EmailAbstract;
+use PhalconKit\Models\Abstracts\Interfaces\EmailAbstractInterface;
+use PhalconKit\Models\Email;
+use PhalconKit\Models\Interfaces\EmailInterface;
 
 /**
  * Class EmailTest
  *
  * This class contains unit tests for the User class.
  */
-class EmailTest extends \Zemit\Tests\Unit\AbstractUnit
+class EmailTest extends \PhalconKit\Tests\Unit\AbstractUnit
 {
     public EmailInterface $email;
     
@@ -42,9 +42,9 @@ class EmailTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertInstanceOf(EmailAbstract::class, $this->email);
         $this->assertInstanceOf(EmailAbstractInterface::class, $this->email);
         
-        // Zemit
-        $this->assertInstanceOf(\Zemit\Mvc\ModelInterface::class, $this->email);
-        $this->assertInstanceOf(\Zemit\Mvc\Model::class, $this->email);
+        // Phalcon Kit
+        $this->assertInstanceOf(\PhalconKit\Mvc\ModelInterface::class, $this->email);
+        $this->assertInstanceOf(\PhalconKit\Mvc\Model::class, $this->email);
         
         // Phalcon
         $this->assertInstanceOf(\Phalcon\Mvc\ModelInterface::class, $this->email);

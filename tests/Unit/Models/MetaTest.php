@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,19 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Models;
+namespace PhalconKit\Tests\Unit\Models;
 
-use Zemit\Models\Abstracts\MetaAbstract;
-use Zemit\Models\Abstracts\Interfaces\MetaAbstractInterface;
-use Zemit\Models\Meta;
-use Zemit\Models\Interfaces\MetaInterface;
+use PhalconKit\Models\Abstracts\MetaAbstract;
+use PhalconKit\Models\Abstracts\Interfaces\MetaAbstractInterface;
+use PhalconKit\Models\Meta;
+use PhalconKit\Models\Interfaces\MetaInterface;
 
 /**
  * Class MetaTest
  *
  * This class contains unit tests for the User class.
  */
-class MetaTest extends \Zemit\Tests\Unit\AbstractUnit
+class MetaTest extends \PhalconKit\Tests\Unit\AbstractUnit
 {
     public MetaInterface $meta;
     
@@ -42,9 +42,9 @@ class MetaTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertInstanceOf(MetaAbstract::class, $this->meta);
         $this->assertInstanceOf(MetaAbstractInterface::class, $this->meta);
         
-        // Zemit
-        $this->assertInstanceOf(\Zemit\Mvc\ModelInterface::class, $this->meta);
-        $this->assertInstanceOf(\Zemit\Mvc\Model::class, $this->meta);
+        // Phalcon Kit
+        $this->assertInstanceOf(\PhalconKit\Mvc\ModelInterface::class, $this->meta);
+        $this->assertInstanceOf(\PhalconKit\Mvc\Model::class, $this->meta);
         
         // Phalcon
         $this->assertInstanceOf(\Phalcon\Mvc\ModelInterface::class, $this->meta);

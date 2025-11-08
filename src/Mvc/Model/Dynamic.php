@@ -3,20 +3,20 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Model;
+namespace PhalconKit\Mvc\Model;
 
 use Phalcon\Cache\Adapter\Apcu;
 use Phalcon\Mvc\Model\MetaData;
-use Zemit\Mvc\Model;
-use Zemit\Support\Utils;
+use PhalconKit\Mvc\Model;
+use PhalconKit\Support\Utils;
 
 /**
  * @todo, fix phalcon models meta data instead of just resetting it

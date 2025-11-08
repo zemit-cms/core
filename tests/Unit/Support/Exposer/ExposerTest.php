@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Support\Exposer;
+namespace PhalconKit\Tests\Unit\Support\Exposer;
 
-use Zemit\Support\Exposer\Builder;
-use Zemit\Support\Exposer\Exposer;
-use Zemit\Tests\Unit\AbstractUnit;
+use PhalconKit\Support\Exposer\Builder;
+use PhalconKit\Support\Exposer\Exposer;
+use PhalconKit\Tests\Unit\AbstractUnit;
 
 class ExposerTest extends AbstractUnit
 {

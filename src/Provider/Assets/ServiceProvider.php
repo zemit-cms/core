@@ -3,21 +3,21 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Provider\Assets;
+namespace PhalconKit\Provider\Assets;
 
 use Phalcon\Di\DiInterface;
 use Phalcon\Html\Escaper\EscaperInterface;
-use Zemit\Html\TagFactory;
-use Zemit\Assets\Manager;
-use Zemit\Provider\AbstractServiceProvider;
+use PhalconKit\Html\TagFactory;
+use PhalconKit\Assets\Manager;
+use PhalconKit\Provider\AbstractServiceProvider;
 
 class ServiceProvider extends AbstractServiceProvider
 {

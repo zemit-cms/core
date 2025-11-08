@@ -3,23 +3,23 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Controller;
+namespace PhalconKit\Mvc\Controller;
 
-use Zemit\Mvc\Controller\Traits\Behavior;
-use Zemit\Mvc\Controller\Traits\Debug;
-use Zemit\Mvc\Controller\Traits\Fractal;
-use Zemit\Mvc\Controller\Traits\Params;
-use Zemit\Mvc\Controller\Traits\RestResponse;
+use PhalconKit\Mvc\Controller\Traits\Behavior;
+use PhalconKit\Mvc\Controller\Traits\Debug;
+use PhalconKit\Mvc\Controller\Traits\Fractal;
+use PhalconKit\Mvc\Controller\Traits\Params;
+use PhalconKit\Mvc\Controller\Traits\RestResponse;
 
-class Rest extends \Zemit\Mvc\Controller implements RestInterface
+class Rest extends \PhalconKit\Mvc\Controller implements RestInterface
 {
     use Behavior;
     use Debug;

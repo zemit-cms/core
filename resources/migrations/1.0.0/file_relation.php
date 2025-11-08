@@ -115,7 +115,7 @@ class FileRelationMigration_100 extends Migration
                 new Reference(
                     'fk_file_relation_created_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['created_by'],
                         'referencedColumns' => ['id'],
@@ -126,7 +126,7 @@ class FileRelationMigration_100 extends Migration
                 new Reference(
                     'fk_file_relation_file_id',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'file',
                         'columns' => ['file_id'],
                         'referencedColumns' => ['id'],

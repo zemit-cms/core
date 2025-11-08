@@ -162,7 +162,7 @@ class DataMigration_100 extends Migration
                 new Reference(
                     'fk_data_column_id',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'column',
                         'columns' => ['column_id'],
                         'referencedColumns' => ['id'],
@@ -173,7 +173,7 @@ class DataMigration_100 extends Migration
                 new Reference(
                     'fk_data_created_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['created_by'],
                         'referencedColumns' => ['id'],
@@ -184,7 +184,7 @@ class DataMigration_100 extends Migration
                 new Reference(
                     'fk_data_deleted_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['deleted_by'],
                         'referencedColumns' => ['id'],
@@ -195,7 +195,7 @@ class DataMigration_100 extends Migration
                 new Reference(
                     'fk_data_record_id',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'record',
                         'columns' => ['record_id'],
                         'referencedColumns' => ['id'],
@@ -206,7 +206,7 @@ class DataMigration_100 extends Migration
                 new Reference(
                     'fk_data_table_id',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'table',
                         'columns' => ['table_id'],
                         'referencedColumns' => ['id'],
@@ -217,7 +217,7 @@ class DataMigration_100 extends Migration
                 new Reference(
                     'fk_data_updated_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['updated_by'],
                         'referencedColumns' => ['id'],

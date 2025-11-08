@@ -3,23 +3,23 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Controller\Traits\Query;
+namespace PhalconKit\Mvc\Controller\Traits\Query;
 
 use Phalcon\Support\Collection;
-use Zemit\Mvc\Controller\Traits\Abstracts\Query\AbstractConditions;
-use Zemit\Mvc\Controller\Traits\Query\Conditions\FilterConditions;
-use Zemit\Mvc\Controller\Traits\Query\Conditions\IdentityConditions;
-use Zemit\Mvc\Controller\Traits\Query\Conditions\PermissionConditions;
-use Zemit\Mvc\Controller\Traits\Query\Conditions\SearchConditions;
-use Zemit\Mvc\Controller\Traits\Query\Conditions\SoftDeleteConditions;
+use PhalconKit\Mvc\Controller\Traits\Abstracts\Query\AbstractConditions;
+use PhalconKit\Mvc\Controller\Traits\Query\Conditions\FilterConditions;
+use PhalconKit\Mvc\Controller\Traits\Query\Conditions\IdentityConditions;
+use PhalconKit\Mvc\Controller\Traits\Query\Conditions\PermissionConditions;
+use PhalconKit\Mvc\Controller\Traits\Query\Conditions\SearchConditions;
+use PhalconKit\Mvc\Controller\Traits\Query\Conditions\SoftDeleteConditions;
 
 trait Conditions
 {

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,19 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Models;
+namespace PhalconKit\Tests\Unit\Models;
 
-use Zemit\Models\Abstracts\Oauth2Abstract;
-use Zemit\Models\Abstracts\Interfaces\Oauth2AbstractInterface;
-use Zemit\Models\Oauth2;
-use Zemit\Models\Interfaces\Oauth2Interface;
+use PhalconKit\Models\Abstracts\Oauth2Abstract;
+use PhalconKit\Models\Abstracts\Interfaces\Oauth2AbstractInterface;
+use PhalconKit\Models\Oauth2;
+use PhalconKit\Models\Interfaces\Oauth2Interface;
 
 /**
  * Class Oauth2Test
  *
  * This class contains unit tests for the User class.
  */
-class Oauth2Test extends \Zemit\Tests\Unit\AbstractUnit
+class Oauth2Test extends \PhalconKit\Tests\Unit\AbstractUnit
 {
     public Oauth2Interface $oauth2;
     
@@ -42,9 +42,9 @@ class Oauth2Test extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertInstanceOf(Oauth2Abstract::class, $this->oauth2);
         $this->assertInstanceOf(Oauth2AbstractInterface::class, $this->oauth2);
         
-        // Zemit
-        $this->assertInstanceOf(\Zemit\Mvc\ModelInterface::class, $this->oauth2);
-        $this->assertInstanceOf(\Zemit\Mvc\Model::class, $this->oauth2);
+        // Phalcon Kit
+        $this->assertInstanceOf(\PhalconKit\Mvc\ModelInterface::class, $this->oauth2);
+        $this->assertInstanceOf(\PhalconKit\Mvc\Model::class, $this->oauth2);
         
         // Phalcon
         $this->assertInstanceOf(\Phalcon\Mvc\ModelInterface::class, $this->oauth2);

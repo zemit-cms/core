@@ -115,7 +115,7 @@ class GroupRoleMigration_100 extends Migration
                 new Reference(
                     'fk_group_role_created_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['created_by'],
                         'referencedColumns' => ['id'],
@@ -126,7 +126,7 @@ class GroupRoleMigration_100 extends Migration
                 new Reference(
                     'fk_group_role_group_id',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'group',
                         'columns' => ['group_id'],
                         'referencedColumns' => ['id'],
@@ -137,7 +137,7 @@ class GroupRoleMigration_100 extends Migration
                 new Reference(
                     'fk_group_role_role_id',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'role',
                         'columns' => ['role_id'],
                         'referencedColumns' => ['id'],

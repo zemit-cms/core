@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Support;
+namespace PhalconKit\Tests\Unit\Support;
 
 use Phalcon\Support\Version as PhalconVersion;
-use Zemit\Support\Version as ZemitVersion;
-use Zemit\Tests\Unit\AbstractUnit;
+use PhalconKit\Support\Version as PhalconKitVersion;
+use PhalconKit\Tests\Unit\AbstractUnit;
 
 /**
  * Class VersionTest
@@ -28,10 +28,10 @@ class VersionTest extends AbstractUnit
      */
     public function testVersion(): void
     {
-        $version = new ZemitVersion();
+        $version = new PhalconKitVersion();
         $phalconVersion = new PhalconVersion();
         
-        // Config must match Zemit Core version
+        // Config must match Phalcon Kit version
         $this->assertNotEmpty($this->bootstrap->config->path('core.version'));
         $this->assertEquals($this->bootstrap->config->path('core.version'), $version->get());
         

@@ -3,19 +3,19 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Db\Events;
+namespace PhalconKit\Db\Events;
 
 use Phalcon\Db\Adapter\AbstractAdapter;
 use Phalcon\Events\EventInterface;
-use Zemit\Di\Injectable;
+use PhalconKit\Di\Injectable;
 
 /**
  * Class Profiler

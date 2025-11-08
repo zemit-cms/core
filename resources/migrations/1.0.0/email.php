@@ -244,7 +244,7 @@ class EmailMigration_100 extends Migration
                 new Reference(
                     'fk_email_created_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['created_by'],
                         'referencedColumns' => ['id'],
@@ -255,7 +255,7 @@ class EmailMigration_100 extends Migration
                 new Reference(
                     'fk_email_deleted_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['deleted_by'],
                         'referencedColumns' => ['id'],
@@ -266,7 +266,7 @@ class EmailMigration_100 extends Migration
                 new Reference(
                     'fk_email_template_id',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'template',
                         'columns' => ['template_id'],
                         'referencedColumns' => ['id'],
@@ -277,7 +277,7 @@ class EmailMigration_100 extends Migration
                 new Reference(
                     'fk_email_updated_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['updated_by'],
                         'referencedColumns' => ['id'],

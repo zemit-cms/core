@@ -157,7 +157,7 @@ class PostMigration_100 extends Migration
                 new Reference(
                     'fk_post_created_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['created_by'],
                         'referencedColumns' => ['id'],
@@ -168,7 +168,7 @@ class PostMigration_100 extends Migration
                 new Reference(
                     'fk_post_deleted_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['deleted_by'],
                         'referencedColumns' => ['id'],
@@ -179,7 +179,7 @@ class PostMigration_100 extends Migration
                 new Reference(
                     'fk_post_page_id',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'page',
                         'columns' => ['page_id'],
                         'referencedColumns' => ['id'],
@@ -190,7 +190,7 @@ class PostMigration_100 extends Migration
                 new Reference(
                     'fk_post_updated_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['updated_by'],
                         'referencedColumns' => ['id'],

@@ -115,7 +115,7 @@ class GroupFeatureMigration_100 extends Migration
                 new Reference(
                     'fk_group_feature_created_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['created_by'],
                         'referencedColumns' => ['id'],
@@ -126,7 +126,7 @@ class GroupFeatureMigration_100 extends Migration
                 new Reference(
                     'fk_group_feature_feature_id',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'feature',
                         'columns' => ['feature_id'],
                         'referencedColumns' => ['id'],
@@ -137,7 +137,7 @@ class GroupFeatureMigration_100 extends Migration
                 new Reference(
                     'fk_group_feature_group_id',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'group',
                         'columns' => ['group_id'],
                         'referencedColumns' => ['id'],

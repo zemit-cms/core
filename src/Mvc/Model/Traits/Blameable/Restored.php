@@ -3,24 +3,24 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Model\Traits\Blameable;
+namespace PhalconKit\Mvc\Model\Traits\Blameable;
 
-use Zemit\Db\Column;
-use Zemit\Mvc\Model\Behavior\Transformable;
-use Zemit\Mvc\Model\Traits\Abstracts\AbstractBehavior;
-use Zemit\Mvc\Model\Traits\Abstracts\AbstractBlameable;
-use Zemit\Mvc\Model\Traits\Identity;
-use Zemit\Mvc\Model\Traits\Options;
-use Zemit\Mvc\Model\Traits\Snapshot;
-use Zemit\Mvc\Model\Traits\SoftDelete;
+use PhalconKit\Db\Column;
+use PhalconKit\Mvc\Model\Behavior\Transformable;
+use PhalconKit\Mvc\Model\Traits\Abstracts\AbstractBehavior;
+use PhalconKit\Mvc\Model\Traits\Abstracts\AbstractBlameable;
+use PhalconKit\Mvc\Model\Traits\Identity;
+use PhalconKit\Mvc\Model\Traits\Options;
+use PhalconKit\Mvc\Model\Traits\Snapshot;
+use PhalconKit\Mvc\Model\Traits\SoftDelete;
 
 trait Restored
 {

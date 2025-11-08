@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Mvc;
+namespace PhalconKit\Tests\Unit\Mvc;
 
-use Zemit\Tests\Unit\AbstractUnit;
+use PhalconKit\Tests\Unit\AbstractUnit;
 use Phalcon\Mvc\Router\RouteInterface;
 
 class RouterTest extends AbstractUnit
 {
-    public \Zemit\Mvc\Router $router;
+    public \PhalconKit\Mvc\Router $router;
     
     protected function setUp(): void
     {
@@ -28,10 +28,10 @@ class RouterTest extends AbstractUnit
     
     public function testRouterFromDi(): void
     {
-        $this->assertInstanceOf(\Zemit\Router\RouterInterface::class, $this->router);
+        $this->assertInstanceOf(\PhalconKit\Router\RouterInterface::class, $this->router);
         $this->assertInstanceOf(\Phalcon\Mvc\Router::class, $this->router);
         $this->assertInstanceOf(\Phalcon\Mvc\RouterInterface::class, $this->router);
-        $this->assertInstanceOf(\Zemit\Mvc\Router::class, $this->router);
+        $this->assertInstanceOf(\PhalconKit\Mvc\Router::class, $this->router);
     }
     
     public function testToArray(): void

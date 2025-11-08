@@ -3,31 +3,31 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Controller\Traits\Actions;
+namespace PhalconKit\Mvc\Controller\Traits\Actions;
 
-use Zemit\Mvc\Controller\Traits\Actions\Rest\AverageAction;
-use Zemit\Mvc\Controller\Traits\Actions\Rest\CountAction;
-use Zemit\Mvc\Controller\Traits\Actions\Rest\DeleteAction;
-use Zemit\Mvc\Controller\Traits\Actions\Rest\DistinctAction;
-use Zemit\Mvc\Controller\Traits\Actions\Rest\ExportAction;
-use Zemit\Mvc\Controller\Traits\Actions\Rest\FindAction;
-use Zemit\Mvc\Controller\Traits\Actions\Rest\FindFirstAction;
-use Zemit\Mvc\Controller\Traits\Actions\Rest\IndexAction;
-use Zemit\Mvc\Controller\Traits\Actions\Rest\MaximumAction;
-use Zemit\Mvc\Controller\Traits\Actions\Rest\MinimumAction;
-use Zemit\Mvc\Controller\Traits\Actions\Rest\NewAction;
-use Zemit\Mvc\Controller\Traits\Actions\Rest\ReorderAction;
-use Zemit\Mvc\Controller\Traits\Actions\Rest\RestoreAction;
-use Zemit\Mvc\Controller\Traits\Actions\Rest\SaveAction;
-use Zemit\Mvc\Controller\Traits\Actions\Rest\SumAction;
+use PhalconKit\Mvc\Controller\Traits\Actions\Rest\AverageAction;
+use PhalconKit\Mvc\Controller\Traits\Actions\Rest\CountAction;
+use PhalconKit\Mvc\Controller\Traits\Actions\Rest\DeleteAction;
+use PhalconKit\Mvc\Controller\Traits\Actions\Rest\DistinctAction;
+use PhalconKit\Mvc\Controller\Traits\Actions\Rest\ExportAction;
+use PhalconKit\Mvc\Controller\Traits\Actions\Rest\FindAction;
+use PhalconKit\Mvc\Controller\Traits\Actions\Rest\FindFirstAction;
+use PhalconKit\Mvc\Controller\Traits\Actions\Rest\IndexAction;
+use PhalconKit\Mvc\Controller\Traits\Actions\Rest\MaximumAction;
+use PhalconKit\Mvc\Controller\Traits\Actions\Rest\MinimumAction;
+use PhalconKit\Mvc\Controller\Traits\Actions\Rest\NewAction;
+use PhalconKit\Mvc\Controller\Traits\Actions\Rest\ReorderAction;
+use PhalconKit\Mvc\Controller\Traits\Actions\Rest\RestoreAction;
+use PhalconKit\Mvc\Controller\Traits\Actions\Rest\SaveAction;
+use PhalconKit\Mvc\Controller\Traits\Actions\Rest\SumAction;
 
 trait RestActions
 {

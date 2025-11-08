@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,19 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Models;
+namespace PhalconKit\Tests\Unit\Models;
 
-use Zemit\Models\Abstracts\LangAbstract;
-use Zemit\Models\Abstracts\Interfaces\LangAbstractInterface;
-use Zemit\Models\Lang;
-use Zemit\Models\Interfaces\LangInterface;
+use PhalconKit\Models\Abstracts\LangAbstract;
+use PhalconKit\Models\Abstracts\Interfaces\LangAbstractInterface;
+use PhalconKit\Models\Lang;
+use PhalconKit\Models\Interfaces\LangInterface;
 
 /**
  * Class LangTest
  *
  * This class contains unit tests for the User class.
  */
-class LangTest extends \Zemit\Tests\Unit\AbstractUnit
+class LangTest extends \PhalconKit\Tests\Unit\AbstractUnit
 {
     public LangInterface $lang;
     
@@ -42,9 +42,9 @@ class LangTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertInstanceOf(LangAbstract::class, $this->lang);
         $this->assertInstanceOf(LangAbstractInterface::class, $this->lang);
         
-        // Zemit
-        $this->assertInstanceOf(\Zemit\Mvc\ModelInterface::class, $this->lang);
-        $this->assertInstanceOf(\Zemit\Mvc\Model::class, $this->lang);
+        // Phalcon Kit
+        $this->assertInstanceOf(\PhalconKit\Mvc\ModelInterface::class, $this->lang);
+        $this->assertInstanceOf(\PhalconKit\Mvc\Model::class, $this->lang);
         
         // Phalcon
         $this->assertInstanceOf(\Phalcon\Mvc\ModelInterface::class, $this->lang);

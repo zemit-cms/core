@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Models\Abstracts;
+namespace PhalconKit\Models\Abstracts;
 
 use Phalcon\Db\RawValue;
-use Zemit\Filter\Validation;
-use Zemit\Models\AbstractModel;
-use Zemit\Models\User;
-use Zemit\Models\Abstracts\Interfaces\SessionAbstractInterface;
+use PhalconKit\Filter\Validation;
+use PhalconKit\Models\AbstractModel;
+use PhalconKit\Models\User;
+use PhalconKit\Models\Abstracts\Interfaces\SessionAbstractInterface;
 
 /**
  * Class SessionAbstract
@@ -33,7 +33,7 @@ use Zemit\Models\Abstracts\Interfaces\SessionAbstractInterface;
  * @property User $AsUserEntity
  * @method User getAsUserEntity(?array $params = null)
  */
-abstract class SessionAbstract extends \Zemit\Models\AbstractModel implements SessionAbstractInterface
+abstract class SessionAbstract extends \PhalconKit\Models\AbstractModel implements SessionAbstractInterface
 {
     /**
      * Column: id

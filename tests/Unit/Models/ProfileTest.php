@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,19 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Models;
+namespace PhalconKit\Tests\Unit\Models;
 
-use Zemit\Models\Abstracts\ProfileAbstract;
-use Zemit\Models\Abstracts\Interfaces\ProfileAbstractInterface;
-use Zemit\Models\Profile;
-use Zemit\Models\Interfaces\ProfileInterface;
+use PhalconKit\Models\Abstracts\ProfileAbstract;
+use PhalconKit\Models\Abstracts\Interfaces\ProfileAbstractInterface;
+use PhalconKit\Models\Profile;
+use PhalconKit\Models\Interfaces\ProfileInterface;
 
 /**
  * Class ProfileTest
  *
  * This class contains unit tests for the User class.
  */
-class ProfileTest extends \Zemit\Tests\Unit\AbstractUnit
+class ProfileTest extends \PhalconKit\Tests\Unit\AbstractUnit
 {
     public ProfileInterface $profile;
     
@@ -42,9 +42,9 @@ class ProfileTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertInstanceOf(ProfileAbstract::class, $this->profile);
         $this->assertInstanceOf(ProfileAbstractInterface::class, $this->profile);
         
-        // Zemit
-        $this->assertInstanceOf(\Zemit\Mvc\ModelInterface::class, $this->profile);
-        $this->assertInstanceOf(\Zemit\Mvc\Model::class, $this->profile);
+        // Phalcon Kit
+        $this->assertInstanceOf(\PhalconKit\Mvc\ModelInterface::class, $this->profile);
+        $this->assertInstanceOf(\PhalconKit\Mvc\Model::class, $this->profile);
         
         // Phalcon
         $this->assertInstanceOf(\Phalcon\Mvc\ModelInterface::class, $this->profile);

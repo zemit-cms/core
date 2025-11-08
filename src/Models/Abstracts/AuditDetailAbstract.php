@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Models\Abstracts;
+namespace PhalconKit\Models\Abstracts;
 
 use Phalcon\Db\RawValue;
-use Zemit\Filter\Validation;
-use Zemit\Models\AbstractModel;
-use Zemit\Models\Audit;
-use Zemit\Models\User;
-use Zemit\Models\Abstracts\Interfaces\AuditDetailAbstractInterface;
+use PhalconKit\Filter\Validation;
+use PhalconKit\Models\AbstractModel;
+use PhalconKit\Models\Audit;
+use PhalconKit\Models\User;
+use PhalconKit\Models\Abstracts\Interfaces\AuditDetailAbstractInterface;
 
 /**
  * Class AuditDetailAbstract
@@ -34,7 +34,7 @@ use Zemit\Models\Abstracts\Interfaces\AuditDetailAbstractInterface;
  * @property User $CreatedByEntity
  * @method User getCreatedByEntity(?array $params = null)
  */
-abstract class AuditDetailAbstract extends \Zemit\Models\AbstractModel implements AuditDetailAbstractInterface
+abstract class AuditDetailAbstract extends \PhalconKit\Models\AbstractModel implements AuditDetailAbstractInterface
 {
     /**
      * Column: id

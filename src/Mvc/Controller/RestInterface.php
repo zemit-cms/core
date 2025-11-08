@@ -3,21 +3,21 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Controller;
+namespace PhalconKit\Mvc\Controller;
 
-use Zemit\Mvc\Controller\Traits\Interfaces\BehaviorInterface;
-use Zemit\Mvc\Controller\Traits\Interfaces\DebugInterface;
-use Zemit\Mvc\Controller\Traits\Interfaces\FractalInterface;
-use Zemit\Mvc\Controller\Traits\Interfaces\ParamsInterface;
-use Zemit\Mvc\Controller\Traits\Interfaces\RestResponseInterface;
+use PhalconKit\Mvc\Controller\Traits\Interfaces\BehaviorInterface;
+use PhalconKit\Mvc\Controller\Traits\Interfaces\DebugInterface;
+use PhalconKit\Mvc\Controller\Traits\Interfaces\FractalInterface;
+use PhalconKit\Mvc\Controller\Traits\Interfaces\ParamsInterface;
+use PhalconKit\Mvc\Controller\Traits\Interfaces\RestResponseInterface;
 
 interface RestInterface extends
     DebugInterface,

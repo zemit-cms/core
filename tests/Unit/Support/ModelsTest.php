@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,10 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Support;
+namespace PhalconKit\Tests\Unit\Support;
 
-use Zemit\Support\Models;
-use Zemit\Tests\Unit\AbstractUnit;
+use PhalconKit\Support\Models;
+use PhalconKit\Tests\Unit\AbstractUnit;
 
 class ModelsTest extends AbstractUnit
 {
@@ -33,40 +33,40 @@ class ModelsTest extends AbstractUnit
         
         // load all instances
         $instances = [
-            \Zemit\Models\Backup::class => $this->models->getBackup(),
-            \Zemit\Models\Audit::class => $this->models->getAudit(),
-            \Zemit\Models\AuditDetail::class => $this->models->getAuditDetail(),
-            \Zemit\Models\Log::class => $this->models->getLog(),
-            \Zemit\Models\Email::class => $this->models->getEmail(),
-            \Zemit\Models\Job::class => $this->models->getJob(),
-            \Zemit\Models\File::class => $this->models->getFile(),
-            \Zemit\Models\Session::class => $this->models->getSession(),
-            \Zemit\Models\Flag::class => $this->models->getFlag(),
-            \Zemit\Models\Setting::class => $this->models->getSetting(),
-            \Zemit\Models\Lang::class => $this->models->getLang(),
-            \Zemit\Models\Translate::class => $this->models->getTranslate(),
-            \Zemit\Models\Workspace::class => $this->models->getWorkspace(),
-            \Zemit\Models\WorkspaceLang::class => $this->models->getWorkspaceLang(),
-            \Zemit\Models\Page::class => $this->models->getPage(),
-            \Zemit\Models\Post::class => $this->models->getPost(),
-            \Zemit\Models\Template::class => $this->models->getTemplate(),
-            \Zemit\Models\Table::class => $this->models->getTable(),
-            \Zemit\Models\Profile::class => $this->models->getProfile(),
-            \Zemit\Models\Oauth2::class => $this->models->getOauth2(),
-            \Zemit\Models\User::class => $this->models->getUser(),
-            \Zemit\Models\UserType::class => $this->models->getUserType(),
-            \Zemit\Models\UserGroup::class => $this->models->getUserGroup(),
-            \Zemit\Models\UserRole::class => $this->models->getUserRole(),
-            \Zemit\Models\UserFeature::class => $this->models->getUserFeature(),
-            \Zemit\Models\Role::class => $this->models->getRole(),
-            \Zemit\Models\RoleRole::class => $this->models->getRoleRole(),
-            \Zemit\Models\RoleFeature::class => $this->models->getRoleFeature(),
-            \Zemit\Models\Group::class => $this->models->getGroup(),
-            \Zemit\Models\GroupRole::class => $this->models->getGroupRole(),
-            \Zemit\Models\GroupType::class => $this->models->getGroupType(),
-            \Zemit\Models\GroupFeature::class => $this->models->getGroupFeature(),
-            \Zemit\Models\Type::class => $this->models->getType(),
-            \Zemit\Models\Feature::class => $this->models->getFeature(),
+            \PhalconKit\Models\Backup::class => $this->models->getBackup(),
+            \PhalconKit\Models\Audit::class => $this->models->getAudit(),
+            \PhalconKit\Models\AuditDetail::class => $this->models->getAuditDetail(),
+            \PhalconKit\Models\Log::class => $this->models->getLog(),
+            \PhalconKit\Models\Email::class => $this->models->getEmail(),
+            \PhalconKit\Models\Job::class => $this->models->getJob(),
+            \PhalconKit\Models\File::class => $this->models->getFile(),
+            \PhalconKit\Models\Session::class => $this->models->getSession(),
+            \PhalconKit\Models\Flag::class => $this->models->getFlag(),
+            \PhalconKit\Models\Setting::class => $this->models->getSetting(),
+            \PhalconKit\Models\Lang::class => $this->models->getLang(),
+            \PhalconKit\Models\Translate::class => $this->models->getTranslate(),
+            \PhalconKit\Models\Workspace::class => $this->models->getWorkspace(),
+            \PhalconKit\Models\WorkspaceLang::class => $this->models->getWorkspaceLang(),
+            \PhalconKit\Models\Page::class => $this->models->getPage(),
+            \PhalconKit\Models\Post::class => $this->models->getPost(),
+            \PhalconKit\Models\Template::class => $this->models->getTemplate(),
+            \PhalconKit\Models\Table::class => $this->models->getTable(),
+            \PhalconKit\Models\Profile::class => $this->models->getProfile(),
+            \PhalconKit\Models\Oauth2::class => $this->models->getOauth2(),
+            \PhalconKit\Models\User::class => $this->models->getUser(),
+            \PhalconKit\Models\UserType::class => $this->models->getUserType(),
+            \PhalconKit\Models\UserGroup::class => $this->models->getUserGroup(),
+            \PhalconKit\Models\UserRole::class => $this->models->getUserRole(),
+            \PhalconKit\Models\UserFeature::class => $this->models->getUserFeature(),
+            \PhalconKit\Models\Role::class => $this->models->getRole(),
+            \PhalconKit\Models\RoleRole::class => $this->models->getRoleRole(),
+            \PhalconKit\Models\RoleFeature::class => $this->models->getRoleFeature(),
+            \PhalconKit\Models\Group::class => $this->models->getGroup(),
+            \PhalconKit\Models\GroupRole::class => $this->models->getGroupRole(),
+            \PhalconKit\Models\GroupType::class => $this->models->getGroupType(),
+            \PhalconKit\Models\GroupFeature::class => $this->models->getGroupFeature(),
+            \PhalconKit\Models\Type::class => $this->models->getType(),
+            \PhalconKit\Models\Feature::class => $this->models->getFeature(),
         ];
         
         // check instance types
@@ -79,8 +79,8 @@ class ModelsTest extends AbstractUnit
         $this->assertSame($instances, $this->models->getInstances());
         
         // test unset instance
-        $this->models->unsetInstance(\Zemit\Models\Backup::class);
-        unset($instances[\Zemit\Models\Backup::class]);
+        $this->models->unsetInstance(\PhalconKit\Models\Backup::class);
+        unset($instances[\PhalconKit\Models\Backup::class]);
         $this->assertSame($instances, $this->models->getInstances());
     }
 }

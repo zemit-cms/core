@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,16 +11,16 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Db;
+namespace PhalconKit\Tests\Unit\Db;
 
 use Phalcon\Db\Column;
-use Zemit\Bootstrap;
-use Zemit\Db\Adapter\Pdo\Mysql;
-use Zemit\Tests\Unit\AbstractUnit;
+use PhalconKit\Bootstrap;
+use PhalconKit\Db\Adapter\Pdo\Mysql;
+use PhalconKit\Tests\Unit\AbstractUnit;
 
 class ProfilerTest extends AbstractUnit
 {
-    public \Zemit\Db\Profiler $profiler;
+    public \PhalconKit\Db\Profiler $profiler;
     
     protected string $mode = Bootstrap::MODE_CLI;
     
@@ -33,7 +33,7 @@ class ProfilerTest extends AbstractUnit
     public function testProfilerFromDi(): void
     {
         $this->assertInstanceOf(\Phalcon\Db\Profiler::class, $this->profiler);
-        $this->assertInstanceOf(\Zemit\Db\Profiler::class, $this->profiler);
+        $this->assertInstanceOf(\PhalconKit\Db\Profiler::class, $this->profiler);
     }
     
     public function testProfilerToArray(): void

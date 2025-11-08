@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,19 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Models;
+namespace PhalconKit\Tests\Unit\Models;
 
-use Zemit\Models\Abstracts\ValidatorAbstract;
-use Zemit\Models\Abstracts\Interfaces\ValidatorAbstractInterface;
-use Zemit\Models\Validator;
-use Zemit\Models\Interfaces\ValidatorInterface;
+use PhalconKit\Models\Abstracts\ValidatorAbstract;
+use PhalconKit\Models\Abstracts\Interfaces\ValidatorAbstractInterface;
+use PhalconKit\Models\Validator;
+use PhalconKit\Models\Interfaces\ValidatorInterface;
 
 /**
  * Class ValidatorTest
  *
  * This class contains unit tests for the User class.
  */
-class ValidatorTest extends \Zemit\Tests\Unit\AbstractUnit
+class ValidatorTest extends \PhalconKit\Tests\Unit\AbstractUnit
 {
     public ValidatorInterface $validator;
     
@@ -42,9 +42,9 @@ class ValidatorTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertInstanceOf(ValidatorAbstract::class, $this->validator);
         $this->assertInstanceOf(ValidatorAbstractInterface::class, $this->validator);
         
-        // Zemit
-        $this->assertInstanceOf(\Zemit\Mvc\ModelInterface::class, $this->validator);
-        $this->assertInstanceOf(\Zemit\Mvc\Model::class, $this->validator);
+        // Phalcon Kit
+        $this->assertInstanceOf(\PhalconKit\Mvc\ModelInterface::class, $this->validator);
+        $this->assertInstanceOf(\PhalconKit\Mvc\Model::class, $this->validator);
         
         // Phalcon
         $this->assertInstanceOf(\Phalcon\Mvc\ModelInterface::class, $this->validator);

@@ -3,29 +3,29 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Identity;
+namespace PhalconKit\Identity;
 
 use Phalcon\Encryption\Security\Exception;
-use Zemit\Di\Injectable;
-use Zemit\Filter\Validation;
-use Zemit\Identity\Traits\Acl;
-use Zemit\Identity\Traits\Impersonation;
-use Zemit\Identity\Traits\Jwt;
-use Zemit\Identity\Traits\Oauth2;
-use Zemit\Identity\Traits\Role;
-use Zemit\Identity\Traits\Session;
-use Zemit\Identity\Traits\User;
-use Zemit\Mvc\ModelInterface;
-use Zemit\Support\Options\Options;
-use Zemit\Support\Options\OptionsInterface;
+use PhalconKit\Di\Injectable;
+use PhalconKit\Filter\Validation;
+use PhalconKit\Identity\Traits\Acl;
+use PhalconKit\Identity\Traits\Impersonation;
+use PhalconKit\Identity\Traits\Jwt;
+use PhalconKit\Identity\Traits\Oauth2;
+use PhalconKit\Identity\Traits\Role;
+use PhalconKit\Identity\Traits\Session;
+use PhalconKit\Identity\Traits\User;
+use PhalconKit\Mvc\ModelInterface;
+use PhalconKit\Support\Options\Options;
+use PhalconKit\Support\Options\OptionsInterface;
 use Phalcon\Filter\Validation\Validator\Confirmation;
 use Phalcon\Filter\Validation\Validator\Email;
 use Phalcon\Filter\Validation\Validator\PresenceOf;

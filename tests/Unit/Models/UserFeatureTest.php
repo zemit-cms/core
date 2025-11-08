@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,19 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Models;
+namespace PhalconKit\Tests\Unit\Models;
 
-use Zemit\Models\Abstracts\UserFeatureAbstract;
-use Zemit\Models\Abstracts\Interfaces\UserFeatureAbstractInterface;
-use Zemit\Models\UserFeature;
-use Zemit\Models\Interfaces\UserFeatureInterface;
+use PhalconKit\Models\Abstracts\UserFeatureAbstract;
+use PhalconKit\Models\Abstracts\Interfaces\UserFeatureAbstractInterface;
+use PhalconKit\Models\UserFeature;
+use PhalconKit\Models\Interfaces\UserFeatureInterface;
 
 /**
  * Class UserFeatureTest
  *
  * This class contains unit tests for the User class.
  */
-class UserFeatureTest extends \Zemit\Tests\Unit\AbstractUnit
+class UserFeatureTest extends \PhalconKit\Tests\Unit\AbstractUnit
 {
     public UserFeatureInterface $userFeature;
     
@@ -42,9 +42,9 @@ class UserFeatureTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertInstanceOf(UserFeatureAbstract::class, $this->userFeature);
         $this->assertInstanceOf(UserFeatureAbstractInterface::class, $this->userFeature);
         
-        // Zemit
-        $this->assertInstanceOf(\Zemit\Mvc\ModelInterface::class, $this->userFeature);
-        $this->assertInstanceOf(\Zemit\Mvc\Model::class, $this->userFeature);
+        // Phalcon Kit
+        $this->assertInstanceOf(\PhalconKit\Mvc\ModelInterface::class, $this->userFeature);
+        $this->assertInstanceOf(\PhalconKit\Mvc\Model::class, $this->userFeature);
         
         // Phalcon
         $this->assertInstanceOf(\Phalcon\Mvc\ModelInterface::class, $this->userFeature);

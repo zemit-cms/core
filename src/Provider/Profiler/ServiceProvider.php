@@ -3,19 +3,19 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Provider\Profiler;
+namespace PhalconKit\Provider\Profiler;
 
 use Phalcon\Di\DiInterface;
-use Zemit\Db\Profiler;
-use Zemit\Provider\AbstractServiceProvider;
+use PhalconKit\Db\Profiler;
+use PhalconKit\Provider\AbstractServiceProvider;
 
 class ServiceProvider extends AbstractServiceProvider
 {

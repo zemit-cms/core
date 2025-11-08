@@ -3,15 +3,15 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit;
+namespace PhalconKit;
 
 use Phalcon\Application\AbstractApplication;
 use Phalcon\Di\Di;
@@ -20,20 +20,20 @@ use Phalcon\Di\FactoryDefault;
 use Phalcon\Di\ServiceProviderInterface;
 use Phalcon\Events;
 use Phalcon\Http\ResponseInterface;
-use Zemit\Support\Helper;
-use Zemit\Config\ConfigInterface;
-use Zemit\Cli\Console;
-use Zemit\Events\EventsAwareTrait;
-use Zemit\Mvc\Application;
-use Zemit\Provider\Config\ServiceProvider as ConfigServiceProvider;
-use Zemit\Provider\Router\ServiceProvider as RouterServiceProvider;
-use Zemit\Router\RouterInterface;
-use Zemit\Support\Php;
-use Zemit\Ws\WebSocket;
+use PhalconKit\Support\Helper;
+use PhalconKit\Config\ConfigInterface;
+use PhalconKit\Cli\Console;
+use PhalconKit\Events\EventsAwareTrait;
+use PhalconKit\Mvc\Application;
+use PhalconKit\Provider\Config\ServiceProvider as ConfigServiceProvider;
+use PhalconKit\Provider\Router\ServiceProvider as RouterServiceProvider;
+use PhalconKit\Router\RouterInterface;
+use PhalconKit\Support\Php;
+use PhalconKit\Ws\WebSocket;
 use Docopt;
 
 /**
- * Zemit Core's Bootstrap for the MVC Application & CLI Console mode
+ * Phalcon Kit's Bootstrap for the MVC Application & CLI Console mode
  */
 class Bootstrap
 {
@@ -56,13 +56,13 @@ class Bootstrap
     public ?ResponseInterface $response = null;
     
     public string $cliDoc = <<<DOC
-Zemit CLI
+Phalcon Kit CLI
 
 Usage:
-  zemit <module> <task> [<action>] [--help | --quiet | --verbose] [--debug] [--format=<format>] [<params>...]
-  zemit (-h | --help)
-  zemit (-v | --version)
-  zemit (-i | --info)
+  phalcon-kit <module> <task> [<action>] [--help | --quiet | --verbose] [--debug] [--format=<format>] [<params>...]
+  phalcon-kit (-h | --help)
+  phalcon-kit (-v | --version)
+  phalcon-kit (-i | --info)
 
 Options:
   -h --help               show this help message

@@ -1,11 +1,11 @@
-# This file is part of the Zemit Framework.
+# This file is part of the Phalcon Kit.
 #
-# (c) Zemit Team <contact@zemit.com>
+# (c) Phalcon Kit Team
 #
 # For the full copyright and license information, please view the LICENSE.txt
 # file that was distributed with this source code.
 
-name: Zemit CI
+name: Phalcon Kit CI
 
 on:
   schedule:
@@ -74,7 +74,7 @@ jobs:
         with:
           dependency-versions: ${{ matrix.dependencies }}
           composer-options: ${{ matrix.composer-options }}
-          custom-cache-suffix: zemit-composer
+          custom-cache-suffix: phalcon-kit-composer
   
   # PHP CODE SNIFFER
   code-sniffer:
@@ -118,7 +118,7 @@ jobs:
         with:
           dependency-versions: ${{ matrix.dependencies }}
           composer-options: ${{ matrix.composer-options }}
-          custom-cache-suffix: zemit-composer
+          custom-cache-suffix: phalcon-kit-composer
 
       - name: PHP Code Sniffer
         run: phpcs --standard=phpcs.xml -q --report=checkstyle | cs2pr --graceful-warnings
@@ -165,7 +165,7 @@ jobs:
         with:
           dependency-versions: ${{ matrix.dependencies }}
           composer-options: ${{ matrix.composer-options }}
-          custom-cache-suffix: zemit-composer
+          custom-cache-suffix: phalcon-kit-composer
 
       - name: PHP Stan
         run: phpstan
@@ -218,7 +218,7 @@ jobs:
         with:
           dependency-versions: ${{ matrix.dependencies }}
           composer-options: ${{ matrix.composer-options }}
-          custom-cache-suffix: zemit-composer
+          custom-cache-suffix: phalcon-kit-composer
 
       - name: Clear Psalm Cache
         run: rm -rf ~/.cache/psalm
@@ -254,7 +254,7 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-          MYSQL_DATABASE: zemit_core
+          MYSQL_DATABASE: phalcon_kit
         ports:
           - 3306:3306
         options: >-
@@ -307,7 +307,7 @@ jobs:
         with:
           dependency-versions: ${{ matrix.dependencies }}
           composer-options: ${{ matrix.composer-options }}
-          custom-cache-suffix: zemit-composer
+          custom-cache-suffix: phalcon-kit-composer
 
       - name: Install Phalcon DevTools
         run: |
@@ -318,7 +318,7 @@ jobs:
 
       - name: Set permissions and environment
         run: |
-          chmod +x ./bin/* ./vendor/bin/* ./zemit
+          chmod +x ./bin/* ./vendor/bin/* ./phalcon-kit
           mkdir .phalcon
           touch .env
           cp .env.github .env

@@ -3,15 +3,15 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Translate\Adapter;
+namespace PhalconKit\Translate\Adapter;
 
 use JetBrains\PhpStorm\Deprecated;
 use Phalcon\Translate\Adapter\AbstractAdapter;
@@ -53,7 +53,7 @@ use Phalcon\Translate\InterpolatorFactory;
  * ```
  *
  * @implements \ArrayAccess<string, mixed>
- * @package Zemit\Translate\Adapter
+ * @package PhalconKit\Translate\Adapter
  */
 class NestedNativeArray extends AbstractAdapter implements \ArrayAccess
 {
@@ -76,7 +76,7 @@ class NestedNativeArray extends AbstractAdapter implements \ArrayAccess
     protected string $delimiter = '.';
     
     /**
-     * Zemit\Translate\Adapter\NestedNativeArray constructor
+     * PhalconKit\Translate\Adapter\NestedNativeArray constructor
      *
      * @param InterpolatorFactory $interpolator
      * @param array $options [
@@ -98,11 +98,11 @@ class NestedNativeArray extends AbstractAdapter implements \ArrayAccess
      *
      * @param string $index The translation index to check
      * @return bool True if a translation exists for the index, false otherwise
-     * @deprecated since Zemit 1.0, use {@see self::has()} instead
+     * @deprecated since Phalcon Kit 1.0, use {@see self::has()} instead
      * @see has()
      */
     #[Deprecated(
-        reason: 'since Zemit 1.0, use has() instead',
+        reason: 'since Phalcon Kit 1.0, use has() instead',
         replacement: '%class%->has(%parametersList%)'
     )]
     public function exists(string $index): bool

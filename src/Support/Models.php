@@ -3,88 +3,88 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Support;
+namespace PhalconKit\Support;
 
-use Zemit\Mvc\Model;
-use Zemit\Di\Injectable;
-use Zemit\Models\Backup;
-use Zemit\Models\Interfaces\BackupInterface;
-use Zemit\Models\Audit;
-use Zemit\Models\Interfaces\AuditInterface;
-use Zemit\Models\AuditDetail;
-use Zemit\Models\Interfaces\AuditDetailInterface;
-use Zemit\Models\Feature;
-use Zemit\Models\Interfaces\FeatureInterface;
-use Zemit\Models\Log;
-use Zemit\Models\Interfaces\LogInterface;
-use Zemit\Models\Email;
-use Zemit\Models\Interfaces\EmailInterface;
-use Zemit\Models\Job;
-use Zemit\Models\Interfaces\JobInterface;
-use Zemit\Models\File;
-use Zemit\Models\Interfaces\FileInterface;
-use Zemit\Models\Session;
-use Zemit\Models\Interfaces\SessionInterface;
-use Zemit\Models\Flag;
-use Zemit\Models\Interfaces\FlagInterface;
-use Zemit\Models\Setting;
-use Zemit\Models\Interfaces\SettingInterface;
-use Zemit\Models\Lang;
-use Zemit\Models\Interfaces\LangInterface;
-use Zemit\Models\Translate;
-use Zemit\Models\Interfaces\TranslateInterface;
-use Zemit\Models\Workspace;
-use Zemit\Models\Interfaces\WorkspaceInterface;
-use Zemit\Models\WorkspaceLang;
-use Zemit\Models\Interfaces\WorkspaceLangInterface;
-use Zemit\Models\Page;
-use Zemit\Models\Interfaces\PageInterface;
-use Zemit\Models\Post;
-use Zemit\Models\Interfaces\PostInterface;
-use Zemit\Models\Template;
-use Zemit\Models\Interfaces\TemplateInterface;
-use Zemit\Models\Table;
-use Zemit\Models\Interfaces\TableInterface;
-use Zemit\Models\Field;
-use Zemit\Models\Interfaces\FieldInterface;
-use Zemit\Models\Profile;
-use Zemit\Models\Interfaces\ProfileInterface;
-use Zemit\Models\Oauth2;
-use Zemit\Models\Interfaces\Oauth2Interface;
-use Zemit\Models\User;
-use Zemit\Models\Interfaces\UserInterface;
-use Zemit\Models\UserType;
-use Zemit\Models\Interfaces\UserTypeInterface;
-use Zemit\Models\UserGroup;
-use Zemit\Models\Interfaces\UserGroupInterface;
-use Zemit\Models\UserRole;
-use Zemit\Models\Interfaces\UserRoleInterface;
-use Zemit\Models\UserFeature;
-use Zemit\Models\Interfaces\UserFeatureInterface;
-use Zemit\Models\Role;
-use Zemit\Models\Interfaces\RoleInterface;
-use Zemit\Models\RoleRole;
-use Zemit\Models\Interfaces\RoleRoleInterface;
-use Zemit\Models\RoleFeature;
-use Zemit\Models\Interfaces\RoleFeatureInterface;
-use Zemit\Models\Group;
-use Zemit\Models\Interfaces\GroupInterface;
-use Zemit\Models\GroupRole;
-use Zemit\Models\Interfaces\GroupRoleInterface;
-use Zemit\Models\GroupType;
-use Zemit\Models\Interfaces\GroupTypeInterface;
-use Zemit\Models\GroupFeature;
-use Zemit\Models\Interfaces\GroupFeatureInterface;
-use Zemit\Models\Type;
-use Zemit\Models\Interfaces\TypeInterface;
+use PhalconKit\Mvc\Model;
+use PhalconKit\Di\Injectable;
+use PhalconKit\Models\Backup;
+use PhalconKit\Models\Interfaces\BackupInterface;
+use PhalconKit\Models\Audit;
+use PhalconKit\Models\Interfaces\AuditInterface;
+use PhalconKit\Models\AuditDetail;
+use PhalconKit\Models\Interfaces\AuditDetailInterface;
+use PhalconKit\Models\Feature;
+use PhalconKit\Models\Interfaces\FeatureInterface;
+use PhalconKit\Models\Log;
+use PhalconKit\Models\Interfaces\LogInterface;
+use PhalconKit\Models\Email;
+use PhalconKit\Models\Interfaces\EmailInterface;
+use PhalconKit\Models\Job;
+use PhalconKit\Models\Interfaces\JobInterface;
+use PhalconKit\Models\File;
+use PhalconKit\Models\Interfaces\FileInterface;
+use PhalconKit\Models\Session;
+use PhalconKit\Models\Interfaces\SessionInterface;
+use PhalconKit\Models\Flag;
+use PhalconKit\Models\Interfaces\FlagInterface;
+use PhalconKit\Models\Setting;
+use PhalconKit\Models\Interfaces\SettingInterface;
+use PhalconKit\Models\Lang;
+use PhalconKit\Models\Interfaces\LangInterface;
+use PhalconKit\Models\Translate;
+use PhalconKit\Models\Interfaces\TranslateInterface;
+use PhalconKit\Models\Workspace;
+use PhalconKit\Models\Interfaces\WorkspaceInterface;
+use PhalconKit\Models\WorkspaceLang;
+use PhalconKit\Models\Interfaces\WorkspaceLangInterface;
+use PhalconKit\Models\Page;
+use PhalconKit\Models\Interfaces\PageInterface;
+use PhalconKit\Models\Post;
+use PhalconKit\Models\Interfaces\PostInterface;
+use PhalconKit\Models\Template;
+use PhalconKit\Models\Interfaces\TemplateInterface;
+use PhalconKit\Models\Table;
+use PhalconKit\Models\Interfaces\TableInterface;
+use PhalconKit\Models\Field;
+use PhalconKit\Models\Interfaces\FieldInterface;
+use PhalconKit\Models\Profile;
+use PhalconKit\Models\Interfaces\ProfileInterface;
+use PhalconKit\Models\Oauth2;
+use PhalconKit\Models\Interfaces\Oauth2Interface;
+use PhalconKit\Models\User;
+use PhalconKit\Models\Interfaces\UserInterface;
+use PhalconKit\Models\UserType;
+use PhalconKit\Models\Interfaces\UserTypeInterface;
+use PhalconKit\Models\UserGroup;
+use PhalconKit\Models\Interfaces\UserGroupInterface;
+use PhalconKit\Models\UserRole;
+use PhalconKit\Models\Interfaces\UserRoleInterface;
+use PhalconKit\Models\UserFeature;
+use PhalconKit\Models\Interfaces\UserFeatureInterface;
+use PhalconKit\Models\Role;
+use PhalconKit\Models\Interfaces\RoleInterface;
+use PhalconKit\Models\RoleRole;
+use PhalconKit\Models\Interfaces\RoleRoleInterface;
+use PhalconKit\Models\RoleFeature;
+use PhalconKit\Models\Interfaces\RoleFeatureInterface;
+use PhalconKit\Models\Group;
+use PhalconKit\Models\Interfaces\GroupInterface;
+use PhalconKit\Models\GroupRole;
+use PhalconKit\Models\Interfaces\GroupRoleInterface;
+use PhalconKit\Models\GroupType;
+use PhalconKit\Models\Interfaces\GroupTypeInterface;
+use PhalconKit\Models\GroupFeature;
+use PhalconKit\Models\Interfaces\GroupFeatureInterface;
+use PhalconKit\Models\Type;
+use PhalconKit\Models\Interfaces\TypeInterface;
 
 /**
  * Allow to get mapped classes without using magic methods
@@ -149,7 +149,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\BackupInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\BackupInterface
      */
     public function getBackup(): BackupInterface
     {
@@ -159,7 +159,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\AuditInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\AuditInterface
      */
     public function getAudit(): AuditInterface
     {
@@ -169,7 +169,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\AuditDetailInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\AuditDetailInterface
      */
     public function getAuditDetail(): AuditDetailInterface
     {
@@ -179,7 +179,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\LogInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\LogInterface
      */
     public function getLog(): LogInterface
     {
@@ -189,7 +189,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\EmailInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\EmailInterface
      */
     public function getEmail(): EmailInterface
     {
@@ -199,7 +199,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\JobInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\JobInterface
      */
     public function getJob(): JobInterface
     {
@@ -209,7 +209,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\FileInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\FileInterface
      */
     public function getFile(): FileInterface
     {
@@ -219,7 +219,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\SessionInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\SessionInterface
      */
     public function getSession(): SessionInterface
     {
@@ -229,7 +229,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\FlagInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\FlagInterface
      */
     public function getFlag(): FlagInterface
     {
@@ -239,7 +239,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\SettingInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\SettingInterface
      */
     public function getSetting(): SettingInterface
     {
@@ -249,7 +249,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\LangInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\LangInterface
      */
     public function getLang(): LangInterface
     {
@@ -259,7 +259,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\TranslateInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\TranslateInterface
      */
     public function getTranslate(): TranslateInterface
     {
@@ -269,7 +269,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\WorkspaceInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\WorkspaceInterface
      */
     public function getWorkspace(): WorkspaceInterface
     {
@@ -279,7 +279,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\WorkspaceInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\WorkspaceInterface
      */
     public function getWorkspaceLang(): WorkspaceLangInterface
     {
@@ -289,7 +289,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\PageInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\PageInterface
      */
     public function getPage(): PageInterface
     {
@@ -299,7 +299,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\PostInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\PostInterface
      */
     public function getPost(): PostInterface
     {
@@ -309,7 +309,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\TemplateInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\TemplateInterface
      */
     public function getTemplate(): TemplateInterface
     {
@@ -319,7 +319,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\TableInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\TableInterface
      */
     public function getTable(): TableInterface
     {
@@ -329,7 +329,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\ProfileInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\ProfileInterface
      */
     public function getProfile(): ProfileInterface
     {
@@ -339,7 +339,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\UserInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\UserInterface
      */
     public function getOauth2(): Oauth2Interface
     {
@@ -349,7 +349,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\UserInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\UserInterface
      */
     public function getUser(): UserInterface
     {
@@ -359,7 +359,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\UserTypeInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\UserTypeInterface
      */
     public function getUserType(): UserTypeInterface
     {
@@ -369,7 +369,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\UserGroupInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\UserGroupInterface
      */
     public function getUserGroup(): UserGroupInterface
     {
@@ -379,7 +379,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\UserRoleInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\UserRoleInterface
      */
     public function getUserRole(): UserRoleInterface
     {
@@ -389,7 +389,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\UserFeatureInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\UserFeatureInterface
      */
     public function getUserFeature(): UserFeatureInterface
     {
@@ -399,7 +399,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\RoleInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\RoleInterface
      */
     public function getRole(): RoleInterface
     {
@@ -409,7 +409,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\RoleRoleInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\RoleRoleInterface
      */
     public function getRoleRole(): RoleRoleInterface
     {
@@ -419,7 +419,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\RoleFeatureInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\RoleFeatureInterface
      */
     public function getRoleFeature(): RoleFeatureInterface
     {
@@ -429,7 +429,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\GroupInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\GroupInterface
      */
     public function getGroup(): GroupInterface
     {
@@ -439,7 +439,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\GroupRoleInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\GroupRoleInterface
      */
     public function getGroupRole(): GroupRoleInterface
     {
@@ -449,7 +449,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\GroupTypeInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\GroupTypeInterface
      */
     public function getGroupType(): GroupTypeInterface
     {
@@ -459,7 +459,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\GroupFeatureInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\GroupFeatureInterface
      */
     public function getGroupFeature(): GroupFeatureInterface
     {
@@ -469,7 +469,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\TypeInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\TypeInterface
      */
     public function getType(): TypeInterface
     {
@@ -479,7 +479,7 @@ class Models extends Injectable
     }
     
     /**
-     * Return an instance of \Zemit\Models\Interfaces\FeatureInterface
+     * Return an instance of \PhalconKit\Models\Interfaces\FeatureInterface
      */
     public function getFeature(): FeatureInterface
     {

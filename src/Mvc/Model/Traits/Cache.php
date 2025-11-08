@@ -3,22 +3,22 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Model\Traits;
+namespace PhalconKit\Mvc\Model\Traits;
 
 use Phalcon\Mvc\Model;
 use Phalcon\Mvc\ModelInterface;
-use Zemit\Mvc\Model\Behavior\Action;
-use Zemit\Mvc\Model\Traits\Abstracts\AbstractBehavior;
-use Zemit\Mvc\Model\Traits\Abstracts\AbstractModelsCache;
-use Zemit\Support\Models;
+use PhalconKit\Mvc\Model\Behavior\Action;
+use PhalconKit\Mvc\Model\Traits\Abstracts\AbstractBehavior;
+use PhalconKit\Mvc\Model\Traits\Abstracts\AbstractModelsCache;
+use PhalconKit\Support\Models;
 
 /**
  * Flush Cache on changes

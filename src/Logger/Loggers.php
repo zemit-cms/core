@@ -3,15 +3,15 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Logger;
+namespace PhalconKit\Logger;
 
 use Phalcon\Logger\Adapter\AdapterInterface;
 use Phalcon\Logger\Adapter\Noop;
@@ -22,7 +22,7 @@ use Phalcon\Logger\Formatter\FormatterInterface;
 use Phalcon\Logger\Formatter\Line;
 use Phalcon\Logger\Logger;
 use Phalcon\Logger\LoggerInterface;
-use Zemit\Support\Options\Options;
+use PhalconKit\Support\Options\Options;
 
 class Loggers
 {

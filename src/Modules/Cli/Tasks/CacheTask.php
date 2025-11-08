@@ -3,27 +3,27 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Cli\Tasks;
+namespace PhalconKit\Modules\Cli\Tasks;
 
 use Phalcon\Cache\Exception\InvalidArgumentException;
-use Zemit\Modules\Cli\Task;
+use PhalconKit\Modules\Cli\Task;
 
 class CacheTask extends Task
 {
     public string $cliDoc = <<<DOC
 Usage:
-  zemit cli cache clear
-  zemit cli cache has <key>
-  zemit cli cache delete <key>
-  zemit cli cache delete-multiple [<key>...]
+  phalcon-kit cli cache clear
+  phalcon-kit cli cache has <key>
+  phalcon-kit cli cache delete <key>
+  phalcon-kit cli cache delete-multiple [<key>...]
 
 DOC;
     

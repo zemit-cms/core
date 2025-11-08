@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,19 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Models;
+namespace PhalconKit\Tests\Unit\Models;
 
-use Zemit\Models\Abstracts\UserGroupAbstract;
-use Zemit\Models\Abstracts\Interfaces\UserGroupAbstractInterface;
-use Zemit\Models\UserGroup;
-use Zemit\Models\Interfaces\UserGroupInterface;
+use PhalconKit\Models\Abstracts\UserGroupAbstract;
+use PhalconKit\Models\Abstracts\Interfaces\UserGroupAbstractInterface;
+use PhalconKit\Models\UserGroup;
+use PhalconKit\Models\Interfaces\UserGroupInterface;
 
 /**
  * Class UserGroupTest
  *
  * This class contains unit tests for the User class.
  */
-class UserGroupTest extends \Zemit\Tests\Unit\AbstractUnit
+class UserGroupTest extends \PhalconKit\Tests\Unit\AbstractUnit
 {
     public UserGroupInterface $userGroup;
     
@@ -42,9 +42,9 @@ class UserGroupTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertInstanceOf(UserGroupAbstract::class, $this->userGroup);
         $this->assertInstanceOf(UserGroupAbstractInterface::class, $this->userGroup);
         
-        // Zemit
-        $this->assertInstanceOf(\Zemit\Mvc\ModelInterface::class, $this->userGroup);
-        $this->assertInstanceOf(\Zemit\Mvc\Model::class, $this->userGroup);
+        // Phalcon Kit
+        $this->assertInstanceOf(\PhalconKit\Mvc\ModelInterface::class, $this->userGroup);
+        $this->assertInstanceOf(\PhalconKit\Mvc\Model::class, $this->userGroup);
         
         // Phalcon
         $this->assertInstanceOf(\Phalcon\Mvc\ModelInterface::class, $this->userGroup);

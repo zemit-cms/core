@@ -3,15 +3,15 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc;
+namespace PhalconKit\Mvc;
 
 use Phalcon\Events\Manager as EventsManager;
 
@@ -40,7 +40,7 @@ use Phalcon\Events\Manager as EventsManager;
  * @link https://docs.phalcon.io/5.9/db-models/#events
  *
  * {@inheritdoc} \Phalcon\Mvc\Model
- * @package Zemit\Mvc
+ * @package PhalconKit\Mvc
  */
 class Model extends \Phalcon\Mvc\Model implements ModelInterface
 {
@@ -76,8 +76,8 @@ class Model extends \Phalcon\Mvc\Model implements ModelInterface
      * with an empty array, it seems that the dirtyRelated default value is not set at all.
      * This is why we are redefining it here, so we can make the static code analyzers happy.
      *
-     * Fatal error: Phalcon\Mvc\Model and Zemit\Mvc\Model\Traits\Relationship
-     * define the same property ($dirtyRelated) in the composition of Zemit\Mvc\Model.
+     * Fatal error: Phalcon\Mvc\Model and PhalconKit\Mvc\Model\Traits\Relationship
+     * define the same property ($dirtyRelated) in the composition of PhalconKit\Mvc\Model.
      * However, the definition differs and is considered incompatible.
      * @var array
      */

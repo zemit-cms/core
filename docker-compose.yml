@@ -14,14 +14,14 @@ services:
       - db
       - redis
     networks:
-      - zemit-network
+      - phalcon-kit-network
 
   apache:
     image: httpd:alpine
     volumes:
       - ./:/var/www/html
       - ../admin/dist/:/var/www/html/public/admin/
-      - ./docker/apache/conf/zemit-httpd.conf:/usr/local/apache2/conf/zemit-httpd.conf
+      - ./docker/apache/conf/phalcon-kit-httpd.conf:/usr/local/apache2/conf/phalcon-kit-httpd.conf
     command: >
       /bin/sh -c "
       apk update &&
@@ -30,7 +30,7 @@ services:
       -keyout /usr/local/apache2/conf/server.key
       -out /usr/local/apache2/conf/server.crt 
       -subj '/C=US/ST=State/L=City/O=Organization/CN=localhost' &&
-      echo 'Include /usr/local/apache2/conf/zemit-httpd.conf' >> /usr/local/apache2/conf/httpd.conf &&
+      echo 'Include /usr/local/apache2/conf/phalcon-kit-httpd.conf' >> /usr/local/apache2/conf/httpd.conf &&
       httpd-foreground"
     ports:
       - "80:80"
@@ -39,7 +39,7 @@ services:
 #      - ssl-generator
       - php-fpm
     networks:
-      - zemit-network
+      - phalcon-kit-network
 
   db:
     image: mysql:8.0
@@ -52,15 +52,15 @@ services:
       - dbdata:/var/lib/mysql
       - ./docker/mysql/init-scripts:/docker-entrypoint-initdb.d
     networks:
-        - zemit-network
+        - phalcon-kit-network
 
   redis:
     image: redis:alpine
     networks:
-      - zemit-network
+      - phalcon-kit-network
 
 networks:
-  zemit-network:
+  phalcon-kit-network:
     driver: bridge
 
 volumes:

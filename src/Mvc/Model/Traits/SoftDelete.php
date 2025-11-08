@@ -3,23 +3,23 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Model\Traits;
+namespace PhalconKit\Mvc\Model\Traits;
 
-use Zemit\Mvc\Model\Behavior\SoftDelete as SoftDeleteBehavior;
-use Zemit\Mvc\Model\Traits\Abstracts\AbstractBehavior;
-use Zemit\Mvc\Model\Traits\Abstracts\AbstractEntity;
-use Zemit\Mvc\Model\Traits\Abstracts\AbstractEventsManager;
-use Zemit\Mvc\Model\Traits\Abstracts\AbstractModelsManager;
-use Zemit\Mvc\Model\Traits\Abstracts\AbstractOptions;
-use Zemit\Mvc\Model\Traits\Abstracts\AbstractSave;
+use PhalconKit\Mvc\Model\Behavior\SoftDelete as SoftDeleteBehavior;
+use PhalconKit\Mvc\Model\Traits\Abstracts\AbstractBehavior;
+use PhalconKit\Mvc\Model\Traits\Abstracts\AbstractEntity;
+use PhalconKit\Mvc\Model\Traits\Abstracts\AbstractEventsManager;
+use PhalconKit\Mvc\Model\Traits\Abstracts\AbstractModelsManager;
+use PhalconKit\Mvc\Model\Traits\Abstracts\AbstractOptions;
+use PhalconKit\Mvc\Model\Traits\Abstracts\AbstractSave;
 
 /**
  * This trait provides soft delete functionality to a model class.
@@ -74,7 +74,7 @@ trait SoftDelete
     
     /**
      * Disable the soft delete for the current instance
-     * Note: Zemit SoftDelete behavior must be attached
+     * Note: SoftDelete behavior must be attached
      */
     public function disableSoftDelete(): void
     {
@@ -83,7 +83,7 @@ trait SoftDelete
     
     /**
      * Enable the soft delete for the current instance
-     * Note: Zemit SoftDelete behavior must be attached
+     * Note: SoftDelete behavior must be attached
      */
     public function enableSoftDelete(): void
     {

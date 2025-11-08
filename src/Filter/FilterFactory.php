@@ -3,21 +3,21 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Filter;
+namespace PhalconKit\Filter;
 
 use Phalcon\Filter\FilterInterface;
-use Zemit\Filter\Sanitize\IPv4;
-use Zemit\Filter\Sanitize\IPv6;
-use Zemit\Filter\Sanitize\Json;
-use Zemit\Filter\Sanitize\Md5;
+use PhalconKit\Filter\Sanitize\IPv4;
+use PhalconKit\Filter\Sanitize\IPv6;
+use PhalconKit\Filter\Sanitize\Json;
+use PhalconKit\Filter\Sanitize\Md5;
 
 class FilterFactory extends \Phalcon\Filter\FilterFactory
 {

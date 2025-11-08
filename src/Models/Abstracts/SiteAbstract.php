@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,19 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Models\Abstracts;
+namespace PhalconKit\Models\Abstracts;
 
 use Phalcon\Db\RawValue;
-use Zemit\Filter\Validation;
-use Zemit\Models\AbstractModel;
-use Zemit\Models\Category;
-use Zemit\Models\Flag;
-use Zemit\Models\Page;
-use Zemit\Models\SiteLang;
-use Zemit\Models\Lang;
-use Zemit\Models\Workspace;
-use Zemit\Models\User;
-use Zemit\Models\Abstracts\Interfaces\SiteAbstractInterface;
+use PhalconKit\Filter\Validation;
+use PhalconKit\Models\AbstractModel;
+use PhalconKit\Models\Category;
+use PhalconKit\Models\Flag;
+use PhalconKit\Models\Page;
+use PhalconKit\Models\SiteLang;
+use PhalconKit\Models\Lang;
+use PhalconKit\Models\Workspace;
+use PhalconKit\Models\User;
+use PhalconKit\Models\Abstracts\Interfaces\SiteAbstractInterface;
 
 /**
  * Class SiteAbstract
@@ -67,7 +67,7 @@ use Zemit\Models\Abstracts\Interfaces\SiteAbstractInterface;
  * @property User $DeletedByEntity
  * @method User getDeletedByEntity(?array $params = null)
  */
-abstract class SiteAbstract extends \Zemit\Models\AbstractModel implements SiteAbstractInterface
+abstract class SiteAbstract extends \PhalconKit\Models\AbstractModel implements SiteAbstractInterface
 {
     /**
      * Column: id

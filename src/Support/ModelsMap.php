@@ -3,56 +3,56 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Support;
+namespace PhalconKit\Support;
 
 use Phalcon\Di\DiInterface;
-use Zemit\Bootstrap\Config;
-use Zemit\Models\Backup;
-use Zemit\Models\Audit;
-use Zemit\Models\AuditDetail;
-use Zemit\Models\Log;
-use Zemit\Models\Email;
-use Zemit\Models\Job;
-use Zemit\Models\File;
-use Zemit\Models\Oauth2;
-use Zemit\Models\Session;
-use Zemit\Models\Flag;
-use Zemit\Models\Setting;
-use Zemit\Models\Lang;
-use Zemit\Models\Translate;
-use Zemit\Models\TranslateField;
-use Zemit\Models\TranslateTable;
-use Zemit\Models\Workspace;
-use Zemit\Models\WorkspaceLang;
-use Zemit\Models\Page;
-use Zemit\Models\Post;
-use Zemit\Models\Template;
-use Zemit\Models\Table;
-use Zemit\Models\Field;
-use Zemit\Models\Profile;
-use Zemit\Models\User;
-use Zemit\Models\UserType;
-use Zemit\Models\UserGroup;
-use Zemit\Models\UserRole;
-use Zemit\Models\UserFeature;
-use Zemit\Models\Role;
-use Zemit\Models\RoleRole;
-use Zemit\Models\RoleFeature;
-use Zemit\Models\Group;
-use Zemit\Models\GroupRole;
-use Zemit\Models\GroupType;
-use Zemit\Models\GroupFeature;
-use Zemit\Models\Type;
-use Zemit\Models\Feature;
-use Zemit\Mvc\ModelInterface;
+use PhalconKit\Bootstrap\Config;
+use PhalconKit\Models\Backup;
+use PhalconKit\Models\Audit;
+use PhalconKit\Models\AuditDetail;
+use PhalconKit\Models\Log;
+use PhalconKit\Models\Email;
+use PhalconKit\Models\Job;
+use PhalconKit\Models\File;
+use PhalconKit\Models\Oauth2;
+use PhalconKit\Models\Session;
+use PhalconKit\Models\Flag;
+use PhalconKit\Models\Setting;
+use PhalconKit\Models\Lang;
+use PhalconKit\Models\Translate;
+use PhalconKit\Models\TranslateField;
+use PhalconKit\Models\TranslateTable;
+use PhalconKit\Models\Workspace;
+use PhalconKit\Models\WorkspaceLang;
+use PhalconKit\Models\Page;
+use PhalconKit\Models\Post;
+use PhalconKit\Models\Template;
+use PhalconKit\Models\Table;
+use PhalconKit\Models\Field;
+use PhalconKit\Models\Profile;
+use PhalconKit\Models\User;
+use PhalconKit\Models\UserType;
+use PhalconKit\Models\UserGroup;
+use PhalconKit\Models\UserRole;
+use PhalconKit\Models\UserFeature;
+use PhalconKit\Models\Role;
+use PhalconKit\Models\RoleRole;
+use PhalconKit\Models\RoleFeature;
+use PhalconKit\Models\Group;
+use PhalconKit\Models\GroupRole;
+use PhalconKit\Models\GroupType;
+use PhalconKit\Models\GroupFeature;
+use PhalconKit\Models\Type;
+use PhalconKit\Models\Feature;
+use PhalconKit\Mvc\ModelInterface;
 
 /**
  * Allow to get mapped classes without using magic methods
@@ -116,7 +116,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\Backup::class
+     * Return the mapped class name of \PhalconKit\Models\Backup::class
      */
     public function getBackupClass(): string
     {
@@ -124,7 +124,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\Audit::class
+     * Return the mapped class name of \PhalconKit\Models\Audit::class
      */
     public function getAuditClass(): string
     {
@@ -132,7 +132,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\AuditDetail::class
+     * Return the mapped class name of \PhalconKit\Models\AuditDetail::class
      */
     public function getAuditDetailClass(): string
     {
@@ -140,7 +140,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\Log::class
+     * Return the mapped class name of \PhalconKit\Models\Log::class
      */
     public function getLogClass(): string
     {
@@ -148,7 +148,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\Email::class
+     * Return the mapped class name of \PhalconKit\Models\Email::class
      */
     public function getEmailClass(): string
     {
@@ -156,7 +156,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\Job::class
+     * Return the mapped class name of \PhalconKit\Models\Job::class
      */
     public function getJobClass(): string
     {
@@ -164,7 +164,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\File::class
+     * Return the mapped class name of \PhalconKit\Models\File::class
      */
     public function getFileClass(): string
     {
@@ -172,7 +172,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\Session::class
+     * Return the mapped class name of \PhalconKit\Models\Session::class
      */
     public function getSessionClass(): string
     {
@@ -180,7 +180,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\Flag::class
+     * Return the mapped class name of \PhalconKit\Models\Flag::class
      */
     public function getFlagClass(): string
     {
@@ -188,7 +188,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\Setting::class
+     * Return the mapped class name of \PhalconKit\Models\Setting::class
      */
     public function getSettingClass(): string
     {
@@ -196,7 +196,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\Lang::class
+     * Return the mapped class name of \PhalconKit\Models\Lang::class
      */
     public function getLangClass(): string
     {
@@ -204,7 +204,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\Translate::class
+     * Return the mapped class name of \PhalconKit\Models\Translate::class
      */
     public function getTranslateClass(): string
     {
@@ -212,7 +212,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\Workspace::class
+     * Return the mapped class name of \PhalconKit\Models\Workspace::class
      */
     public function getWorkspaceClass(): string
     {
@@ -220,7 +220,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\WorkspaceLang::class
+     * Return the mapped class name of \PhalconKit\Models\WorkspaceLang::class
      */
     public function getWorkspaceLangClass(): string
     {
@@ -228,7 +228,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\Page::class
+     * Return the mapped class name of \PhalconKit\Models\Page::class
      */
     public function getPageClass(): string
     {
@@ -236,7 +236,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\Post::class
+     * Return the mapped class name of \PhalconKit\Models\Post::class
      */
     public function getPostClass(): string
     {
@@ -244,7 +244,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\Template::class
+     * Return the mapped class name of \PhalconKit\Models\Template::class
      */
     public function getTemplateClass(): string
     {
@@ -252,7 +252,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\Table::class
+     * Return the mapped class name of \PhalconKit\Models\Table::class
      */
     public function getTableClass(): string
     {
@@ -260,7 +260,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\Profile::class
+     * Return the mapped class name of \PhalconKit\Models\Profile::class
      */
     public function getProfileClass(): string
     {
@@ -268,7 +268,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\Oauth2::class
+     * Return the mapped class name of \PhalconKit\Models\Oauth2::class
      */
     public function getOauth2Class(): string
     {
@@ -276,7 +276,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\User::class
+     * Return the mapped class name of \PhalconKit\Models\User::class
      */
     public function getUserClass(): string
     {
@@ -284,7 +284,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\UserType::class
+     * Return the mapped class name of \PhalconKit\Models\UserType::class
      */
     public function getUserTypeClass(): string
     {
@@ -292,7 +292,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\UserGroup::class
+     * Return the mapped class name of \PhalconKit\Models\UserGroup::class
      */
     public function getUserGroupClass(): string
     {
@@ -300,7 +300,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\UserRole::class
+     * Return the mapped class name of \PhalconKit\Models\UserRole::class
      */
     public function getUserRoleClass(): string
     {
@@ -308,7 +308,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\UserFeature::class
+     * Return the mapped class name of \PhalconKit\Models\UserFeature::class
      */
     public function getUserFeatureClass(): string
     {
@@ -316,7 +316,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\Role::class
+     * Return the mapped class name of \PhalconKit\Models\Role::class
      */
     public function getRoleClass(): string
     {
@@ -324,7 +324,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\RoleRole::class
+     * Return the mapped class name of \PhalconKit\Models\RoleRole::class
      */
     public function getRoleRoleClass(): string
     {
@@ -332,7 +332,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\RoleFeature::class
+     * Return the mapped class name of \PhalconKit\Models\RoleFeature::class
      */
     public function getRoleFeatureClass(): string
     {
@@ -340,7 +340,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\Group::class
+     * Return the mapped class name of \PhalconKit\Models\Group::class
      */
     public function getGroupClass(): string
     {
@@ -348,7 +348,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\GroupRole::class
+     * Return the mapped class name of \PhalconKit\Models\GroupRole::class
      */
     public function getGroupRoleClass(): string
     {
@@ -356,7 +356,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\GroupType::class
+     * Return the mapped class name of \PhalconKit\Models\GroupType::class
      */
     public function getGroupTypeClass(): string
     {
@@ -364,7 +364,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\GroupFeature::class
+     * Return the mapped class name of \PhalconKit\Models\GroupFeature::class
      */
     public function getGroupFeatureClass(): string
     {
@@ -372,7 +372,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\Type::class
+     * Return the mapped class name of \PhalconKit\Models\Type::class
      */
     public function getTypeClass(): string
     {
@@ -380,7 +380,7 @@ trait ModelsMap
     }
     
     /**
-     * Return the mapped class name of \Zemit\Models\Feature::class
+     * Return the mapped class name of \PhalconKit\Models\Feature::class
      */
     public function getFeatureClass(): string
     {

@@ -3,15 +3,15 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Controller\Traits;
+namespace PhalconKit\Mvc\Controller\Traits;
 
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
@@ -19,10 +19,10 @@ use League\Fractal\Serializer\SerializerAbstract;
 use League\Fractal\TransformerAbstract;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\ModelInterface;
-use Zemit\Fractal\Manager;
-use Zemit\Fractal\ModelTransformer;
-use Zemit\Fractal\Serializer\RawArraySerializer;
-use Zemit\Mvc\Controller\Traits\Abstracts\AbstractFractal;
+use PhalconKit\Fractal\Manager;
+use PhalconKit\Fractal\ModelTransformer;
+use PhalconKit\Fractal\Serializer\RawArraySerializer;
+use PhalconKit\Mvc\Controller\Traits\Abstracts\AbstractFractal;
 
 /**
  * This trait provides methods for working with Fractal, a library for transforming data structures.

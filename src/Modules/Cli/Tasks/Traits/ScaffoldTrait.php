@@ -1,18 +1,18 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Cli\Tasks\Traits;
+namespace PhalconKit\Modules\Cli\Tasks\Traits;
 
-use Zemit\Cli\Dispatcher;
-use Zemit\Support\Helper;
+use PhalconKit\Cli\Dispatcher;
+use PhalconKit\Support\Helper;
 
 /**
  * Trait DescribesTrait
@@ -24,7 +24,7 @@ use Zemit\Support\Helper;
 trait ScaffoldTrait
 {
     // Paths & directories
-    protected ?string $namespace = 'Zemit';
+    protected ?string $namespace = 'PhalconKit';
     
     protected string $directory = './';
     protected string $srcDirectory = 'src/';
@@ -36,19 +36,19 @@ trait ScaffoldTrait
     protected string $interfacesDirectory = 'Interfaces/';
     protected string $controllersDirectory = 'Controllers/';
     
-    protected string $modelsExtend = '\\Zemit\\Models\\AbstractModel';
-    protected string $interfacesExtend = '\\Zemit\\Mvc\\ModelInterface';
-    protected string $testsExtend = '\\Zemit\\Tests\\Unit\\AbstractUnit';
-    protected string $controllersExtend = '\\Zemit\\Modules\\Api\\Controllers\\ControllerAbstract';
+    protected string $modelsExtend = '\\PhalconKit\\Models\\AbstractModel';
+    protected string $interfacesExtend = '\\PhalconKit\\Mvc\\ModelInterface';
+    protected string $testsExtend = '\\PhalconKit\\Tests\\Unit\\AbstractUnit';
+    protected string $controllersExtend = '\\PhalconKit\\Modules\\Api\\Controllers\\ControllerAbstract';
     
     protected ?array $whitelistedTables = null;
     protected ?array $excludedTables = null;
     
     public string $licenseStamp = <<<PHP
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.

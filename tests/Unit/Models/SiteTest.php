@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,19 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Models;
+namespace PhalconKit\Tests\Unit\Models;
 
-use Zemit\Models\Abstracts\SiteAbstract;
-use Zemit\Models\Abstracts\Interfaces\SiteAbstractInterface;
-use Zemit\Models\Site;
-use Zemit\Models\Interfaces\SiteInterface;
+use PhalconKit\Models\Abstracts\SiteAbstract;
+use PhalconKit\Models\Abstracts\Interfaces\SiteAbstractInterface;
+use PhalconKit\Models\Site;
+use PhalconKit\Models\Interfaces\SiteInterface;
 
 /**
  * Class SiteTest
  *
  * This class contains unit tests for the User class.
  */
-class SiteTest extends \Zemit\Tests\Unit\AbstractUnit
+class SiteTest extends \PhalconKit\Tests\Unit\AbstractUnit
 {
     public SiteInterface $site;
     
@@ -42,9 +42,9 @@ class SiteTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertInstanceOf(SiteAbstract::class, $this->site);
         $this->assertInstanceOf(SiteAbstractInterface::class, $this->site);
         
-        // Zemit
-        $this->assertInstanceOf(\Zemit\Mvc\ModelInterface::class, $this->site);
-        $this->assertInstanceOf(\Zemit\Mvc\Model::class, $this->site);
+        // Phalcon Kit
+        $this->assertInstanceOf(\PhalconKit\Mvc\ModelInterface::class, $this->site);
+        $this->assertInstanceOf(\PhalconKit\Mvc\Model::class, $this->site);
         
         // Phalcon
         $this->assertInstanceOf(\Phalcon\Mvc\ModelInterface::class, $this->site);

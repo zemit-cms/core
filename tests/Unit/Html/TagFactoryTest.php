@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Html;
+namespace PhalconKit\Tests\Unit\Html;
 
-use Zemit\Tests\Unit\AbstractUnit;
+use PhalconKit\Tests\Unit\AbstractUnit;
 
 class TagFactoryTest extends AbstractUnit
 {
-//    public \Zemit\Html\TagFactory $tag;
-    public \Zemit\Tag $tag;
+//    public \PhalconKit\Html\TagFactory $tag;
+    public \PhalconKit\Tag $tag;
     
     protected function setUp(): void
     {
@@ -28,8 +28,8 @@ class TagFactoryTest extends AbstractUnit
     
     public function testTagFactoryFromDi(): void
     {
-        $this->assertInstanceOf(\Zemit\Tag::class, $this->tag);
+        $this->assertInstanceOf(\PhalconKit\Tag::class, $this->tag);
 //        $this->assertInstanceOf(\Phalcon\Html\TagFactory::class, $this->tag); // @todo after switching from tag to TagFactory
-//        $this->assertInstanceOf(\Zemit\Html\TagFactory::class, $this->tag); // @todo after switching from tag to TagFactory
+//        $this->assertInstanceOf(\PhalconKit\Html\TagFactory::class, $this->tag); // @todo after switching from tag to TagFactory
     }
 }

@@ -3,21 +3,21 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Identity\Traits;
+namespace PhalconKit\Identity\Traits;
 
 use Phalcon\Filter\Validation\Validator\Numericality;
 use Phalcon\Filter\Validation\Validator\PresenceOf;
 use Phalcon\Messages\Message;
-use Zemit\Filter\Validation;
-use Zemit\Identity\Traits\Abstracts\AbstractRole;
+use PhalconKit\Filter\Validation;
+use PhalconKit\Identity\Traits\Abstracts\AbstractRole;
 
 trait Impersonation
 {

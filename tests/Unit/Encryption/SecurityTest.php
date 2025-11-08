@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Encryption;
+namespace PhalconKit\Tests\Unit\Encryption;
 
 use Phalcon\Encryption\Security;
-use Zemit\Tests\Unit\AbstractUnit;
+use PhalconKit\Tests\Unit\AbstractUnit;
 
 class SecurityTest extends AbstractUnit
 {
-    protected \Zemit\Encryption\Security $security;
+    protected \PhalconKit\Encryption\Security $security;
     
     protected function setUp(): void
     {
@@ -28,7 +28,7 @@ class SecurityTest extends AbstractUnit
     
     public function testSecurityFromDi(): void
     {
-        $this->assertInstanceOf(\Zemit\Encryption\Security::class, $this->security);
+        $this->assertInstanceOf(\PhalconKit\Encryption\Security::class, $this->security);
         $this->assertInstanceOf(\Phalcon\Encryption\Security::class, $this->security);
     }
     
@@ -66,7 +66,7 @@ class SecurityTest extends AbstractUnit
     public function testHashMethodWithSimpleString(): void
     {
         // Arrange
-        $security = new \Zemit\Encryption\Security();
+        $security = new \PhalconKit\Encryption\Security();
         $testString = 'test';
         
         // Act
@@ -103,7 +103,7 @@ class SecurityTest extends AbstractUnit
         ]);
         
         $this->di->set('config', $config);
-        $security = new \Zemit\Encryption\Security();
+        $security = new \PhalconKit\Encryption\Security();
         
         $testString = 'test';
         
@@ -119,7 +119,7 @@ class SecurityTest extends AbstractUnit
         $config['security']['argon2']['memoryCost'] = 2048;
         $config['security']['argon2']['timeCost'] = 3;
         $this->di->set('config', $config);
-        $security = new \Zemit\Encryption\Security();
+        $security = new \PhalconKit\Encryption\Security();
 
         $newHash = $security->hash($testString);
 

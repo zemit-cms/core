@@ -3,30 +3,30 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Cli\Tasks;
+namespace PhalconKit\Modules\Cli\Tasks;
 
 use Phalcon\Dispatcher\Exception;
-use Zemit\Modules\Cli\Task;
+use PhalconKit\Modules\Cli\Task;
 
 class HelpTask extends Task
 {
     public string $cliDoc = <<<DOC
 Usage:
-  zemit cli help cache
-  zemit cli help cron
-  zemit cli help database
-  zemit cli help data-life-cycle
-  zemit cli help scaffold
-  zemit cli help test
-  zemit cli help user
+  phalcon-kit cli help cache
+  phalcon-kit cli help cron
+  phalcon-kit cli help database
+  phalcon-kit cli help data-life-cycle
+  phalcon-kit cli help scaffold
+  phalcon-kit cli help test
+  phalcon-kit cli help user
 
 DOC;
     

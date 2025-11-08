@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,19 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Models;
+namespace PhalconKit\Tests\Unit\Models;
 
-use Zemit\Models\Abstracts\TemplateAbstract;
-use Zemit\Models\Abstracts\Interfaces\TemplateAbstractInterface;
-use Zemit\Models\Template;
-use Zemit\Models\Interfaces\TemplateInterface;
+use PhalconKit\Models\Abstracts\TemplateAbstract;
+use PhalconKit\Models\Abstracts\Interfaces\TemplateAbstractInterface;
+use PhalconKit\Models\Template;
+use PhalconKit\Models\Interfaces\TemplateInterface;
 
 /**
  * Class TemplateTest
  *
  * This class contains unit tests for the User class.
  */
-class TemplateTest extends \Zemit\Tests\Unit\AbstractUnit
+class TemplateTest extends \PhalconKit\Tests\Unit\AbstractUnit
 {
     public TemplateInterface $template;
     
@@ -42,9 +42,9 @@ class TemplateTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertInstanceOf(TemplateAbstract::class, $this->template);
         $this->assertInstanceOf(TemplateAbstractInterface::class, $this->template);
         
-        // Zemit
-        $this->assertInstanceOf(\Zemit\Mvc\ModelInterface::class, $this->template);
-        $this->assertInstanceOf(\Zemit\Mvc\Model::class, $this->template);
+        // Phalcon Kit
+        $this->assertInstanceOf(\PhalconKit\Mvc\ModelInterface::class, $this->template);
+        $this->assertInstanceOf(\PhalconKit\Mvc\Model::class, $this->template);
         
         // Phalcon
         $this->assertInstanceOf(\Phalcon\Mvc\ModelInterface::class, $this->template);

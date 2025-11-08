@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,19 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Models;
+namespace PhalconKit\Tests\Unit\Models;
 
-use Zemit\Models\Abstracts\FileAbstract;
-use Zemit\Models\Abstracts\Interfaces\FileAbstractInterface;
-use Zemit\Models\File;
-use Zemit\Models\Interfaces\FileInterface;
+use PhalconKit\Models\Abstracts\FileAbstract;
+use PhalconKit\Models\Abstracts\Interfaces\FileAbstractInterface;
+use PhalconKit\Models\File;
+use PhalconKit\Models\Interfaces\FileInterface;
 
 /**
  * Class FileTest
  *
  * This class contains unit tests for the User class.
  */
-class FileTest extends \Zemit\Tests\Unit\AbstractUnit
+class FileTest extends \PhalconKit\Tests\Unit\AbstractUnit
 {
     public FileInterface $file;
     
@@ -42,9 +42,9 @@ class FileTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertInstanceOf(FileAbstract::class, $this->file);
         $this->assertInstanceOf(FileAbstractInterface::class, $this->file);
         
-        // Zemit
-        $this->assertInstanceOf(\Zemit\Mvc\ModelInterface::class, $this->file);
-        $this->assertInstanceOf(\Zemit\Mvc\Model::class, $this->file);
+        // Phalcon Kit
+        $this->assertInstanceOf(\PhalconKit\Mvc\ModelInterface::class, $this->file);
+        $this->assertInstanceOf(\PhalconKit\Mvc\Model::class, $this->file);
         
         // Phalcon
         $this->assertInstanceOf(\Phalcon\Mvc\ModelInterface::class, $this->file);

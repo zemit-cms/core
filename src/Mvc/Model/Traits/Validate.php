@@ -3,21 +3,21 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Model\Traits;
+namespace PhalconKit\Mvc\Model\Traits;
 
 use Phalcon\Db\RawValue;
-use Zemit\Db\Column;
-use Zemit\Filter\Validation;
-use Zemit\Filter\Validation\Validator\Color as ColorValidator;
-use Zemit\Filter\Validation\Validator\Json as JsonValidator;
+use PhalconKit\Db\Column;
+use PhalconKit\Filter\Validation;
+use PhalconKit\Filter\Validation\Validator\Color as ColorValidator;
+use PhalconKit\Filter\Validation\Validator\Json as JsonValidator;
 use Phalcon\Filter\Validation\Validator\Between;
 use Phalcon\Filter\Validation\Validator\Date;
 use Phalcon\Filter\Validation\Validator\Email;
@@ -27,9 +27,9 @@ use Phalcon\Filter\Validation\Validator\PresenceOf;
 use Phalcon\Filter\Validation\Validator\StringLength\Max;
 use Phalcon\Filter\Validation\Validator\StringLength\Min;
 use Phalcon\Filter\Validation\Validator\Uniqueness;
-use Zemit\Mvc\Model\Traits\Abstracts\AbstractEntity;
-use Zemit\Mvc\Model\Traits\Abstracts\AbstractLocale;
-use Zemit\Mvc\Model\Traits\Abstracts\AbstractMetaData;
+use PhalconKit\Mvc\Model\Traits\Abstracts\AbstractEntity;
+use PhalconKit\Mvc\Model\Traits\Abstracts\AbstractLocale;
+use PhalconKit\Mvc\Model\Traits\Abstracts\AbstractMetaData;
 
 trait Validate
 {

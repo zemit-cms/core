@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Events;
+namespace PhalconKit\Tests\Unit\Events;
 
 use Phalcon\Events\Event;
 use Phalcon\Events\EventInterface;
 use Phalcon\Events\Manager;
 use Phalcon\Events\ManagerInterface;
-use Zemit\Events\EventsAwareTrait;
-use Zemit\Tests\Unit\AbstractUnit;
+use PhalconKit\Events\EventsAwareTrait;
+use PhalconKit\Tests\Unit\AbstractUnit;
 
 class EventsAwareTraitTest extends AbstractUnit
 {

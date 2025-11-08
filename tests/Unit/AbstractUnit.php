@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,17 +11,17 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit;
+namespace PhalconKit\Tests\Unit;
 
 use Phalcon\Autoload\Loader;
 use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Di\DiInterface;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
-use Zemit\Bootstrap;
-use Zemit\Bootstrap\Config;
-use Zemit\Exception;
-use Zemit\Support\Env;
+use PhalconKit\Bootstrap;
+use PhalconKit\Bootstrap\Config;
+use PhalconKit\Exception;
+use PhalconKit\Support\Env;
 
 /**
  * Class AbstractUnitTest
@@ -51,7 +51,7 @@ abstract class AbstractUnit extends TestCase
     }
     
     /**
-     * Zemit Setup
+     * Phalcon Kit Setup
      * @throws Exception
      */
     protected function setUp(): void
@@ -62,7 +62,7 @@ abstract class AbstractUnit extends TestCase
         
         $loader = new Loader();
         $loader->setFiles([$rootDir . '/vendor/autoload.php']);
-        $loader->setNamespaces(['Zemit' => $rootDir . '/src']);
+        $loader->setNamespaces(['PhalconKit' => $rootDir . '/src']);
         $loader->setFileCheckingCallback(null);
         $loader->register();
         

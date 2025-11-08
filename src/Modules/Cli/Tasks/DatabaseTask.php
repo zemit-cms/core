@@ -3,21 +3,21 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Cli\Tasks;
+namespace PhalconKit\Modules\Cli\Tasks;
 
 use Phalcon\Config\Exception;
-use Zemit\Bootstrap\Deployment;
-use Zemit\Modules\Cli\Task;
-use Zemit\Modules\Cli\Tasks\Traits\DatabaseTrait;
-use Zemit\Support\Utils;
+use PhalconKit\Bootstrap\Deployment;
+use PhalconKit\Modules\Cli\Task;
+use PhalconKit\Modules\Cli\Tasks\Traits\DatabaseTrait;
+use PhalconKit\Support\Utils;
 
 class DatabaseTask extends Task
 {
@@ -25,13 +25,13 @@ class DatabaseTask extends Task
     
     public string $cliDoc = <<<DOC
 Usage:
-  zemit cli database main
-  zemit cli database drop
-  zemit cli database truncate
-  zemit cli database fix-engine
-  zemit cli database optimize
-  zemit cli database analyze
-  zemit cli database insert
+  phalcon-kit cli database main
+  phalcon-kit cli database drop
+  phalcon-kit cli database truncate
+  phalcon-kit cli database fix-engine
+  phalcon-kit cli database optimize
+  phalcon-kit cli database analyze
+  phalcon-kit cli database insert
 
 Options:
   main:         truncate, drop, fix-engine, insert, optimize, analyze

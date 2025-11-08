@@ -3,18 +3,18 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Model\Traits;
+namespace PhalconKit\Mvc\Model\Traits;
 
-use Zemit\Support\Options\Manager;
-use Zemit\Support\Options\ManagerInterface;
+use PhalconKit\Support\Options\Manager;
+use PhalconKit\Support\Options\ManagerInterface;
 
 /**
  * The Options trait provides methods for managing options using an options manager.

@@ -3,40 +3,40 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Bootstrap;
+namespace PhalconKit\Bootstrap;
 
 use PDO;
 use Phalcon\Config\Config as PhalconConfig;
 use Phalcon\Db\Column;
 use Phalcon\Encryption\Security;
 use Phalcon\Support\Version as PhalconVersion;
-use Zemit\Bootstrap\Permissions\ColumnConfig;
-use Zemit\Bootstrap\Permissions\DynamicConfig;
-use Zemit\Bootstrap\Permissions\RecordConfig;
-use Zemit\Bootstrap\Permissions\TableConfig;
-use Zemit\Bootstrap\Permissions\TemplateConfig;
-use Zemit\Bootstrap\Permissions\WorkspaceConfig;
-use Zemit\Locale;
-use Zemit\Models;
-use Zemit\Modules\Frontend;
-use Zemit\Modules\Admin;
-use Zemit\Modules\Api;
-use Zemit\Modules\Cli;
-use Zemit\Mvc\Controller\Behavior;
-use Zemit\Provider;
-use Zemit\Support\Env;
-use Zemit\Support\Version;
+use PhalconKit\Bootstrap\Permissions\ColumnConfig;
+use PhalconKit\Bootstrap\Permissions\DynamicConfig;
+use PhalconKit\Bootstrap\Permissions\RecordConfig;
+use PhalconKit\Bootstrap\Permissions\TableConfig;
+use PhalconKit\Bootstrap\Permissions\TemplateConfig;
+use PhalconKit\Bootstrap\Permissions\WorkspaceConfig;
+use PhalconKit\Locale;
+use PhalconKit\Models;
+use PhalconKit\Modules\Frontend;
+use PhalconKit\Modules\Admin;
+use PhalconKit\Modules\Api;
+use PhalconKit\Modules\Cli;
+use PhalconKit\Mvc\Controller\Behavior;
+use PhalconKit\Provider;
+use PhalconKit\Support\Env;
+use PhalconKit\Support\Version;
 
 /**
- * Global Zemit Configuration
+ * Global Phalcon Kit Configuration
  *
  * @property PhalconConfig $phalcon
  * @property PhalconConfig $core
@@ -69,7 +69,7 @@ use Zemit\Support\Version;
  * @property PhalconConfig $client
  * @property PhalconConfig $permissions
  */
-class Config extends \Zemit\Config\Config
+class Config extends \PhalconKit\Config\Config
 {
     public function defineConst(): void
     {
@@ -105,28 +105,28 @@ class Config extends \Zemit\Config\Config
              * Core settings
              */
             'core' => [
-                'name' => 'Zemit Core',
+                'name' => 'Phalcon Kit',
                 'version' => new Version()->get(),
-                'package' => 'zemit-cms',
+                'package' => 'phalcon-kit',
                 'modules' => [
-                    'zemit-' . \Zemit\Mvc\Module::NAME_FRONTEND => [
-                        'className' => \Zemit\Modules\Frontend\Module::class,
+                    'phalcon-kit-' . \PhalconKit\Mvc\Module::NAME_FRONTEND => [
+                        'className' => \PhalconKit\Modules\Frontend\Module::class,
                         'path' => CORE_PATH . 'Modules/Frontend/Module.php',
                     ],
-                    'zemit-' . \Zemit\Mvc\Module::NAME_ADMIN => [
-                        'className' => \Zemit\Modules\Admin\Module::class,
+                    'phalcon-kit-' . \PhalconKit\Mvc\Module::NAME_ADMIN => [
+                        'className' => \PhalconKit\Modules\Admin\Module::class,
                         'path' => CORE_PATH . 'Modules/Admin/Module.php',
                     ],
-                    'zemit-' . \Zemit\Mvc\Module::NAME_API => [
-                        'className' => \Zemit\Modules\Api\Module::class,
+                    'phalcon-kit-' . \PhalconKit\Mvc\Module::NAME_API => [
+                        'className' => \PhalconKit\Modules\Api\Module::class,
                         'path' => CORE_PATH . 'Modules/Api/Module.php',
                     ],
-                    'zemit-' . \Zemit\Mvc\Module::NAME_OAUTH2 => [
-                        'className' => \Zemit\Modules\Oauth2\Module::class,
+                    'phalcon-kit-' . \PhalconKit\Mvc\Module::NAME_OAUTH2 => [
+                        'className' => \PhalconKit\Modules\Oauth2\Module::class,
                         'path' => CORE_PATH . 'Modules/Oauth2/Module.php',
                     ],
-                    'zemit-' . \Zemit\Cli\Module::NAME_CLI => [
-                        'className' => \Zemit\Modules\Cli\Module::class,
+                    'phalcon-kit-' . \PhalconKit\Cli\Module::NAME_CLI => [
+                        'className' => \PhalconKit\Modules\Cli\Module::class,
                         'path' => CORE_PATH . 'Modules/Cli/Module.php',
                     ],
                 ],
@@ -141,8 +141,8 @@ class Config extends \Zemit\Config\Config
              * Application configuration
              */
             'app' => [
-                'name' => Env::get('APP_NAME', 'Zemit'), // Name of your application
-                'namespace' => Env::get('APP_NAMESPACE', 'Zemit'), // Namespace of your application
+                'name' => Env::get('APP_NAME', 'Phalcon Kit'), // Name of your application
+                'namespace' => Env::get('APP_NAMESPACE', 'Phalcon Kit'), // Namespace of your application
                 'version' => Env::get('APP_VERSION', date('Ymd')), // allow to set and force a specific version
                 'maintenance' => Env::get('APP_MAINTENANCE', false), // Set true to force the maintenance page
                 'env' => Env::get('APP_ENV', 'prod'), // Set the current environment
@@ -306,7 +306,7 @@ class Config extends \Zemit\Config\Config
                 'authorizationHeader' => Env::get('IDENTITY_AUTHORIZATION_HEADER', 'X-Authorization'),
                 'adapter' => Env::get('IDENTITY_ADAPTER', 'session'), // session | database | redis
                 'mode' => Env::get('IDENTITY_SESSION_MODE', 'jwt'), // jwt | string
-                'sessionKey' => Env::get('IDENTITY_SESSION_KEY', 'zemit-identity'),
+                'sessionKey' => Env::get('IDENTITY_SESSION_KEY', 'phalcon-kit-identity'),
                 'sessionFallback' => Env::get('IDENTITY_SESSION_FALLBACK', false),
                 'token' => [
                     'expiration' => $this->getDateTime(Env::get('IDENTITY_TOKEN_EXPIRATION', '+1 day'), $now)->getTimestamp(),
@@ -327,40 +327,40 @@ class Config extends \Zemit\Config\Config
              *
              */
             'models' => [
-                \Zemit\Models\Backup::class => Env::get('MODEL_BACKUP', \Zemit\Models\Backup::class),
-                \Zemit\Models\Audit::class => Env::get('MODEL_AUDIT', \Zemit\Models\Audit::class),
-                \Zemit\Models\AuditDetail::class => Env::get('MODEL_AUDIT_DETAIL', \Zemit\Models\AuditDetail::class),
-                \Zemit\Models\Log::class => Env::get('MODEL_LOG', \Zemit\Models\Log::class),
-                \Zemit\Models\Email::class => Env::get('MODEL_EMAIL', \Zemit\Models\Email::class),
-                \Zemit\Models\Job::class => Env::get('MODEL_JOB', \Zemit\Models\Job::class),
-                \Zemit\Models\File::class => Env::get('MODEL_FILE', \Zemit\Models\File::class),
-                \Zemit\Models\Session::class => Env::get('MODEL_SESSION', \Zemit\Models\Session::class),
-                \Zemit\Models\Flag::class => Env::get('MODEL_FLAG', \Zemit\Models\Flag::class),
-                \Zemit\Models\Setting::class => Env::get('MODEL_SETTING', \Zemit\Models\Setting::class),
-                \Zemit\Models\Lang::class => Env::get('MODEL_LANG', \Zemit\Models\Lang::class),
-                \Zemit\Models\Translate::class => Env::get('MODEL_TRANSLATE', \Zemit\Models\Translate::class),
-                \Zemit\Models\Workspace::class => Env::get('MODEL_WORKSPACE', \Zemit\Models\Workspace::class),
-                \Zemit\Models\WorkspaceLang::class => Env::get('MODEL_WORKSPACE_LANG', \Zemit\Models\WorkspaceLang::class),
-                \Zemit\Models\Page::class => Env::get('MODEL_PAGE', \Zemit\Models\Page::class),
-                \Zemit\Models\Post::class => Env::get('MODEL_POST', \Zemit\Models\Post::class),
-                \Zemit\Models\Template::class => Env::get('MODEL_TEMPLATE', \Zemit\Models\Template::class),
-                \Zemit\Models\Table::class => Env::get('MODEL_TABLE', \Zemit\Models\Table::class),
-                \Zemit\Models\Oauth2::class => Env::get('MODEL_OAUTH_2', \Zemit\Models\Oauth2::class),
-                \Zemit\Models\Profile::class => Env::get('MODEL_PROFILE', \Zemit\Models\Profile::class),
-                \Zemit\Models\User::class => Env::get('MODEL_USER', \Zemit\Models\User::class),
-                \Zemit\Models\UserType::class => Env::get('MODEL_USER_TYPE', \Zemit\Models\UserType::class),
-                \Zemit\Models\UserGroup::class => Env::get('MODEL_USER_GROUP', \Zemit\Models\UserGroup::class),
-                \Zemit\Models\UserRole::class => Env::get('MODEL_USER_ROLE', \Zemit\Models\UserRole::class),
-                \Zemit\Models\UserFeature::class => Env::get('MODEL_USER_FEATURE', \Zemit\Models\UserFeature::class),
-                \Zemit\Models\Role::class => Env::get('MODEL_ROLE', \Zemit\Models\Role::class),
-                \Zemit\Models\RoleRole::class => Env::get('MODEL_ROLE_ROLE', \Zemit\Models\RoleRole::class),
-                \Zemit\Models\RoleFeature::class => Env::get('MODEL_ROLE_FEATURE', \Zemit\Models\RoleFeature::class),
-                \Zemit\Models\Group::class => Env::get('MODEL_GROUP', \Zemit\Models\Group::class),
-                \Zemit\Models\GroupRole::class => Env::get('MODEL_GROUP_ROLE', \Zemit\Models\GroupRole::class),
-                \Zemit\Models\GroupType::class => Env::get('MODEL_GROUP_TYPE', \Zemit\Models\GroupType::class),
-                \Zemit\Models\GroupFeature::class => Env::get('MODEL_GROUP_FEATURE', \Zemit\Models\GroupFeature::class),
-                \Zemit\Models\Type::class => Env::get('MODEL_TYPE', \Zemit\Models\Type::class),
-                \Zemit\Models\Feature::class => Env::get('MODEL_FEATURE', \Zemit\Models\Feature::class),
+                \PhalconKit\Models\Backup::class => Env::get('MODEL_BACKUP', \PhalconKit\Models\Backup::class),
+                \PhalconKit\Models\Audit::class => Env::get('MODEL_AUDIT', \PhalconKit\Models\Audit::class),
+                \PhalconKit\Models\AuditDetail::class => Env::get('MODEL_AUDIT_DETAIL', \PhalconKit\Models\AuditDetail::class),
+                \PhalconKit\Models\Log::class => Env::get('MODEL_LOG', \PhalconKit\Models\Log::class),
+                \PhalconKit\Models\Email::class => Env::get('MODEL_EMAIL', \PhalconKit\Models\Email::class),
+                \PhalconKit\Models\Job::class => Env::get('MODEL_JOB', \PhalconKit\Models\Job::class),
+                \PhalconKit\Models\File::class => Env::get('MODEL_FILE', \PhalconKit\Models\File::class),
+                \PhalconKit\Models\Session::class => Env::get('MODEL_SESSION', \PhalconKit\Models\Session::class),
+                \PhalconKit\Models\Flag::class => Env::get('MODEL_FLAG', \PhalconKit\Models\Flag::class),
+                \PhalconKit\Models\Setting::class => Env::get('MODEL_SETTING', \PhalconKit\Models\Setting::class),
+                \PhalconKit\Models\Lang::class => Env::get('MODEL_LANG', \PhalconKit\Models\Lang::class),
+                \PhalconKit\Models\Translate::class => Env::get('MODEL_TRANSLATE', \PhalconKit\Models\Translate::class),
+                \PhalconKit\Models\Workspace::class => Env::get('MODEL_WORKSPACE', \PhalconKit\Models\Workspace::class),
+                \PhalconKit\Models\WorkspaceLang::class => Env::get('MODEL_WORKSPACE_LANG', \PhalconKit\Models\WorkspaceLang::class),
+                \PhalconKit\Models\Page::class => Env::get('MODEL_PAGE', \PhalconKit\Models\Page::class),
+                \PhalconKit\Models\Post::class => Env::get('MODEL_POST', \PhalconKit\Models\Post::class),
+                \PhalconKit\Models\Template::class => Env::get('MODEL_TEMPLATE', \PhalconKit\Models\Template::class),
+                \PhalconKit\Models\Table::class => Env::get('MODEL_TABLE', \PhalconKit\Models\Table::class),
+                \PhalconKit\Models\Oauth2::class => Env::get('MODEL_OAUTH_2', \PhalconKit\Models\Oauth2::class),
+                \PhalconKit\Models\Profile::class => Env::get('MODEL_PROFILE', \PhalconKit\Models\Profile::class),
+                \PhalconKit\Models\User::class => Env::get('MODEL_USER', \PhalconKit\Models\User::class),
+                \PhalconKit\Models\UserType::class => Env::get('MODEL_USER_TYPE', \PhalconKit\Models\UserType::class),
+                \PhalconKit\Models\UserGroup::class => Env::get('MODEL_USER_GROUP', \PhalconKit\Models\UserGroup::class),
+                \PhalconKit\Models\UserRole::class => Env::get('MODEL_USER_ROLE', \PhalconKit\Models\UserRole::class),
+                \PhalconKit\Models\UserFeature::class => Env::get('MODEL_USER_FEATURE', \PhalconKit\Models\UserFeature::class),
+                \PhalconKit\Models\Role::class => Env::get('MODEL_ROLE', \PhalconKit\Models\Role::class),
+                \PhalconKit\Models\RoleRole::class => Env::get('MODEL_ROLE_ROLE', \PhalconKit\Models\RoleRole::class),
+                \PhalconKit\Models\RoleFeature::class => Env::get('MODEL_ROLE_FEATURE', \PhalconKit\Models\RoleFeature::class),
+                \PhalconKit\Models\Group::class => Env::get('MODEL_GROUP', \PhalconKit\Models\Group::class),
+                \PhalconKit\Models\GroupRole::class => Env::get('MODEL_GROUP_ROLE', \PhalconKit\Models\GroupRole::class),
+                \PhalconKit\Models\GroupType::class => Env::get('MODEL_GROUP_TYPE', \PhalconKit\Models\GroupType::class),
+                \PhalconKit\Models\GroupFeature::class => Env::get('MODEL_GROUP_FEATURE', \PhalconKit\Models\GroupFeature::class),
+                \PhalconKit\Models\Type::class => Env::get('MODEL_TYPE', \PhalconKit\Models\Type::class),
+                \PhalconKit\Models\Feature::class => Env::get('MODEL_FEATURE', \PhalconKit\Models\Feature::class),
             ],
             
             'dataLifeCycle' => [
@@ -658,24 +658,24 @@ class Config extends \Zemit\Config\Config
              * Default modules
              */
             'modules' => [
-                \Zemit\Mvc\Module::NAME_FRONTEND => [
-                    'className' => \Zemit\Modules\Frontend\Module::class,
+                \PhalconKit\Mvc\Module::NAME_FRONTEND => [
+                    'className' => \PhalconKit\Modules\Frontend\Module::class,
                     'path' => CORE_PATH . 'Modules/Frontend/Module.php',
                 ],
-                \Zemit\Mvc\Module::NAME_ADMIN => [
-                    'className' => \Zemit\Modules\Admin\Module::class,
+                \PhalconKit\Mvc\Module::NAME_ADMIN => [
+                    'className' => \PhalconKit\Modules\Admin\Module::class,
                     'path' => CORE_PATH . 'Modules/Admin/Module.php',
                 ],
-                \Zemit\Mvc\Module::NAME_API => [
-                    'className' => \Zemit\Modules\Api\Module::class,
+                \PhalconKit\Mvc\Module::NAME_API => [
+                    'className' => \PhalconKit\Modules\Api\Module::class,
                     'path' => CORE_PATH . 'Modules/Api/Module.php',
                 ],
-                \Zemit\Mvc\Module::NAME_OAUTH2 => [
-                    'className' => \Zemit\Modules\Oauth2\Module::class,
+                \PhalconKit\Mvc\Module::NAME_OAUTH2 => [
+                    'className' => \PhalconKit\Modules\Oauth2\Module::class,
                     'path' => CORE_PATH . 'Modules/Oauth2/Module.php',
                 ],
-                \Zemit\Cli\Module::NAME_CLI => [
-                    'className' => \Zemit\Modules\Cli\Module::class,
+                \PhalconKit\Cli\Module::NAME_CLI => [
+                    'className' => \PhalconKit\Modules\Cli\Module::class,
                     'path' => CORE_PATH . 'Modules/Cli/Module.php',
                 ],
             ],
@@ -686,19 +686,19 @@ class Config extends \Zemit\Config\Config
             'router' => [
                 'hostnames' => [],
                 'defaults' => [
-                    'namespace' => Env::get('ROUTER_DEFAULT_NAMESPACE', 'Zemit\\Modules\\Frontend\\Controllers'),
+                    'namespace' => Env::get('ROUTER_DEFAULT_NAMESPACE', 'PhalconKit\\Modules\\Frontend\\Controllers'),
                     'module' => Env::get('ROUTER_DEFAULT_MODULE', 'frontend'),
                     'controller' => Env::get('ROUTER_DEFAULT_CONTROLLER', 'index'),
                     'action' => Env::get('ROUTER_DEFAULT_ACTION', 'index'),
                 ],
                 'cli' => [
-                    'namespace' => Env::get('ROUTER_CLI_DEFAULT_NAMESPACE', 'Zemit\\Modules\\Cli\\Tasks'),
+                    'namespace' => Env::get('ROUTER_CLI_DEFAULT_NAMESPACE', 'PhalconKit\\Modules\\Cli\\Tasks'),
                     'module' => Env::get('ROUTER_CLI_DEFAULT_MODULE', 'cli'),
                     'task' => Env::get('ROUTER_CLI_DEFAULT_TASK', 'help'),
                     'action' => Env::get('ROUTER_CLI_DEFAULT_ACTION', 'main'),
                 ],
                 'ws' => [
-                    'namespace' => Env::get('ROUTER_WS_DEFAULT_NAMESPACE', 'Zemit\\Modules\\Ws\\Tasks'),
+                    'namespace' => Env::get('ROUTER_WS_DEFAULT_NAMESPACE', 'PhalconKit\\Modules\\Ws\\Tasks'),
                     'module' => Env::get('ROUTER_WS_DEFAULT_MODULE', 'ws'),
                     'task' => Env::get('ROUTER_WS_DEFAULT_TASK', 'main'),
                     'action' => Env::get('ROUTER_WS_DEFAULT_ACTION', 'listen'),
@@ -802,7 +802,7 @@ class Config extends \Zemit\Config\Config
             'locale' => [
                 'default' => Env::get('LOCALE_DEFAULT', 'en'),
                 'allowed' => explode(',', Env::get('LOCALE_ALLOWED', 'en')),
-                'sessionKey' => Env::get('LOCALE_SESSION_KEY', 'zemit-locale'),
+                'sessionKey' => Env::get('LOCALE_SESSION_KEY', 'phalcon-kit-locale'),
                 'mode' => Env::get('LOCALE_MODE', Locale::MODE_DEFAULT),
             ],
             
@@ -854,8 +854,8 @@ class Config extends \Zemit\Config\Config
                     ],
                 ],
                 'default' => [
-                    'prefix' => Env::get('SESSION_PREFIX', Env::get('GLOBAL_PREFIX', 'zemit_') . 'session_'),
-                    'uniqueId' => Env::get('SESSION_UNIQUE_ID', Env::get('GLOBAL_PREFIX', 'zemit_')),
+                    'prefix' => Env::get('SESSION_PREFIX', Env::get('GLOBAL_PREFIX', 'phalcon_kit_') . 'session_'),
+                    'uniqueId' => Env::get('SESSION_UNIQUE_ID', Env::get('GLOBAL_PREFIX', 'phalcon_kit_')),
                     'lifetime' => Env::get('SESSION_LIFETIME', 3600),
                 ],
                 'ini' => [
@@ -886,7 +886,7 @@ class Config extends \Zemit\Config\Config
                     'session.sid_bits_per_character' => Env::get('SESSION_SID_BITS_PER_CHARACTER', '4'),
                     'session.upload_progress.enabled' => Env::get('SESSION_UPLOAD_PROGRESS_ENABLED', '1'),
                     'session.upload_progress.cleanup' => Env::get('SESSION_UPLOAD_PROGRESS_CLEANUP', '1'),
-                    'session.upload_progress.prefix' => Env::get('SESSION_UPLOAD_PROGRESS_PREFIX', Env::get('GLOBAL_PREFIX', 'zemit_') . 'upload_progress_'),
+                    'session.upload_progress.prefix' => Env::get('SESSION_UPLOAD_PROGRESS_PREFIX', Env::get('GLOBAL_PREFIX', 'phalcon_kit_') . 'upload_progress_'),
                     'session.upload_progress.name' => Env::get('SESSION_UPLOAD_PROGRESS_NAME', 'PHP_SESSION_UPLOAD_PROGRESS'),
                     'session.upload_progress.freq' => Env::get('SESSION_UPLOAD_PROGRESS_FREQ', '1%'),
                     'session.upload_progress.min_freq' => Env::get('SESSION_UPLOAD_PROGRESS_MIN_FREQ', '1'),
@@ -942,10 +942,10 @@ class Config extends \Zemit\Config\Config
                     'expiration' => $this->getDateTime(Env::get('SECURITY_JWT_EXPIRATION', '+1 day'), $now)->getTimestamp(),
                     'notBefore' => $this->getDateTime(Env::get('SECURITY_JWT_NOT_BEFORE', '-1 minute'), $now)->getTimestamp(),
                     'issuedAt' => $this->getDateTime(Env::get('SECURITY_JWT_ISSUED_AT', 'now'), $now)->getTimestamp(),
-                    'issuer' => Env::get('SECURITY_JWT_ISSUER', 'ZEMIT_CORE_DEFAULT_ISSUER'),
-                    'audience' => Env::get('SECURITY_JWT_AUDIENCE', 'ZEMIT_CORE_DEFAULT_AUDIENCE'),
-                    'id' => Env::get('SECURITY_JWT_ID', 'ZEMIT_CORE_DEFAULT_ID'),
-                    'subject' => Env::get('SECURITY_JWT_SUBJECT', 'ZEMIT_CORE_DEFAULT_SUBJECT'),
+                    'issuer' => Env::get('SECURITY_JWT_ISSUER', 'PHALCON_KIT_DEFAULT_ISSUER'),
+                    'audience' => Env::get('SECURITY_JWT_AUDIENCE', 'PHALCON_KIT_DEFAULT_AUDIENCE'),
+                    'id' => Env::get('SECURITY_JWT_ID', 'PHALCON_KIT_DEFAULT_ID'),
+                    'subject' => Env::get('SECURITY_JWT_SUBJECT', 'PHALCON_KIT_DEFAULT_SUBJECT'),
                     'passphrase' => Env::get('SECURITY_JWT_PASSPHRASE', 'Tf0PHY/^yDdJs*~)?x#xCNj_N[jW/`c*'),
                 ],
             ],
@@ -1006,7 +1006,7 @@ class Config extends \Zemit\Config\Config
                     ],
                 ],
                 'default' => [
-                    'prefix' => Env::get('CACHE_PREFIX', Env::get('GLOBAL_PREFIX', 'zemit_') . 'cache_'),
+                    'prefix' => Env::get('CACHE_PREFIX', Env::get('GLOBAL_PREFIX', 'phalcon_kit_') . 'cache_'),
                     'lifetime' => Env::get('CACHE_LIFETIME', 86400),
                     'defaultSerializer' => Env::get('CACHE_DEFAULT_SERIALIZER', 'Php'),
                 ],
@@ -1054,7 +1054,7 @@ class Config extends \Zemit\Config\Config
                 ],
                 'default' => [
                     'lifetime' => Env::get('METADATA_LIFETIME', 172800),
-                    'prefix' => Env::get('METADATA_PREFIX', Env::get('GLOBAL_PREFIX', 'zemit_') . 'metadata_'),
+                    'prefix' => Env::get('METADATA_PREFIX', Env::get('GLOBAL_PREFIX', 'phalcon_kit_') . 'metadata_'),
                 ],
             ],
             
@@ -1079,7 +1079,7 @@ class Config extends \Zemit\Config\Config
                     ],
                 ],
                 'default' => [
-                    'prefix' => Env::get('ANNOTATIONS_PREFIX', Env::get('GLOBAL_PREFIX', 'zemit_') . 'annotations_'),
+                    'prefix' => Env::get('ANNOTATIONS_PREFIX', Env::get('GLOBAL_PREFIX', 'phalcon_kit_') . 'annotations_'),
                     'lifetime' => Env::get('ANNOTATIONS_LIFETIME', 86400),
                 ],
             ],
@@ -1092,8 +1092,8 @@ class Config extends \Zemit\Config\Config
                 'drivers' => [
                     
                     'mysql' => [
-                        'adapter' => Env::get('DATABASE_MYSQL_ADAPTER', \Zemit\Db\Adapter\Pdo\Mysql::class),
-                        'dialectClass' => Env::get('DATABASE_MYSQL_DIALECT', \Zemit\Db\Dialect\Mysql::class),
+                        'adapter' => Env::get('DATABASE_MYSQL_ADAPTER', \PhalconKit\Db\Adapter\Pdo\Mysql::class),
+                        'dialectClass' => Env::get('DATABASE_MYSQL_DIALECT', \PhalconKit\Db\Dialect\Mysql::class),
                         'host' => Env::get('DATABASE_HOST', 'localhost'),
                         'port' => Env::get('DATABASE_PORT', 3306),
                         'dbname' => Env::get('DATABASE_DBNAME', ''),
@@ -1169,11 +1169,11 @@ class Config extends \Zemit\Config\Config
                     'baseUri' => Env::get('MAILER_BASE_URI', null),
                 ],
                 'from' => [
-                    'email' => Env::get('MAILER_FROM_EMAIL', 'zemit@localhost'),
-                    'name' => Env::get('MAILER_FROM_NAME', 'Zemit'),
+                    'email' => Env::get('MAILER_FROM_EMAIL', 'no-reply@localhost'),
+                    'name' => Env::get('MAILER_FROM_NAME', 'Phalcon Kit'),
                 ],
-                'returnPath' => Env::get('MAILER_RETURN_PATH', Env::get('MAILER_FROM_EMAIL', 'zemit@localhost')),
-                'replyTo' => Env::get('MAILER_REPLY_TO', Env::get('MAILER_FROM_EMAIL', 'zemit@localhost')),
+                'returnPath' => Env::get('MAILER_RETURN_PATH', Env::get('MAILER_FROM_EMAIL', '')),
+                'replyTo' => Env::get('MAILER_REPLY_TO', Env::get('MAILER_FROM_EMAIL', '')),
                 'readReceiptTo' => Env::get('MAILER_READ_RECEIPT_TO', ''),
                 'priority' => Env::get('MAILER_PRIORITY', 3),
                 'to' => [...explode(',', Env::get('MAILER_TO_EMAIL', ''))],

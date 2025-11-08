@@ -3,15 +3,15 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit;
+namespace PhalconKit;
 
 use AssertionError;
 use Phalcon\Assets\Exception;
@@ -19,10 +19,10 @@ use Phalcon\Di\Di;
 use Phalcon\Tag as PhalconTag;
 use Phalcon\Html\Escaper;
 use Phalcon\Html\Escaper\EscaperInterface;
-use Zemit\Assets\Manager;
+use PhalconKit\Assets\Manager;
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
  * Represents a class that extends the Phalcon\Tag class and provides additional functionality.
  * @see PhalconTag
@@ -155,7 +155,7 @@ class Tag extends PhalconTag
     public static function escapeParam(mixed $value = null, ?string $attr = null, string $glue = ' '): array
     {
         $escaper = self::getEscaperService();
-        assert($escaper instanceof \Zemit\Html\Escaper);
+        assert($escaper instanceof \PhalconKit\Html\Escaper);
         
         if (!isset($value)) {
             return [$value, $attr];
@@ -533,12 +533,12 @@ class Tag extends PhalconTag
      *
      * Example:
      * ```php
-     * Tag::addLink('rel', 'alternate', ['type' => 'application/atom+xml', 'title' => 'Zemit CMS', 'href' => '/blog/news/atom"']);
+     * Tag::addLink('rel', 'alternate', ['type' => 'application/atom+xml', 'title' => 'Phalcon Kit', 'href' => '/blog/news/atom"']);
      * ```
      *
      * Result:
      * ```HTML
-     * <link rel="alternate" type="application/atom+xml" title="Zemit CMS News" href="/blog/news/atom">
+     * <link rel="alternate" type="application/atom+xml" title="Phalcon Kit News" href="/blog/news/atom">
      * ```
      *
      * @param string $attr Link tag attr

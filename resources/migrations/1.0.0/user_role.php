@@ -153,7 +153,7 @@ class UserRoleMigration_100 extends Migration
                 new Reference(
                     'fk_user_role_created_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['created_by'],
                         'referencedColumns' => ['id'],
@@ -164,7 +164,7 @@ class UserRoleMigration_100 extends Migration
                 new Reference(
                     'fk_user_role_deleted_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['deleted_by'],
                         'referencedColumns' => ['id'],
@@ -175,7 +175,7 @@ class UserRoleMigration_100 extends Migration
                 new Reference(
                     'fk_user_role_role_id',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'role',
                         'columns' => ['role_id'],
                         'referencedColumns' => ['id'],
@@ -186,7 +186,7 @@ class UserRoleMigration_100 extends Migration
                 new Reference(
                     'fk_user_role_updated_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['updated_by'],
                         'referencedColumns' => ['id'],
@@ -197,7 +197,7 @@ class UserRoleMigration_100 extends Migration
                 new Reference(
                     'fk_user_role_user_id',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['user_id'],
                         'referencedColumns' => ['id'],

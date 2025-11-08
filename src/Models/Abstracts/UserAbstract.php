@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,24 +11,24 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Models\Abstracts;
+namespace PhalconKit\Models\Abstracts;
 
 use Phalcon\Db\RawValue;
-use Zemit\Filter\Validation;
-use Zemit\Models\AbstractModel;
-use Zemit\Models\Oauth2;
-use Zemit\Models\Profile;
-use Zemit\Models\Session;
-use Zemit\Models\UserFeature;
-use Zemit\Models\Feature;
-use Zemit\Models\UserGroup;
-use Zemit\Models\Group;
-use Zemit\Models\UserRole;
-use Zemit\Models\Role;
-use Zemit\Models\UserType;
-use Zemit\Models\Type;
-use Zemit\Models\User;
-use Zemit\Models\Abstracts\Interfaces\UserAbstractInterface;
+use PhalconKit\Filter\Validation;
+use PhalconKit\Models\AbstractModel;
+use PhalconKit\Models\Oauth2;
+use PhalconKit\Models\Profile;
+use PhalconKit\Models\Session;
+use PhalconKit\Models\UserFeature;
+use PhalconKit\Models\Feature;
+use PhalconKit\Models\UserGroup;
+use PhalconKit\Models\Group;
+use PhalconKit\Models\UserRole;
+use PhalconKit\Models\Role;
+use PhalconKit\Models\UserType;
+use PhalconKit\Models\Type;
+use PhalconKit\Models\User;
+use PhalconKit\Models\Abstracts\Interfaces\UserAbstractInterface;
 
 /**
  * Class UserAbstract
@@ -92,7 +92,7 @@ use Zemit\Models\Abstracts\Interfaces\UserAbstractInterface;
  * @property User $DeletedByEntity
  * @method User getDeletedByEntity(?array $params = null)
  */
-abstract class UserAbstract extends \Zemit\Models\AbstractModel implements UserAbstractInterface
+abstract class UserAbstract extends \PhalconKit\Models\AbstractModel implements UserAbstractInterface
 {
     /**
      * Column: id

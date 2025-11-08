@@ -3,25 +3,25 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Identity\Traits;
+namespace PhalconKit\Identity\Traits;
 
-use Zemit\Di\AbstractInjectable;
-use Zemit\Identity\Traits\Abstracts\AbstractJwt;
+use PhalconKit\Di\AbstractInjectable;
+use PhalconKit\Identity\Traits\Abstracts\AbstractJwt;
 
 trait Session
 {
     use AbstractInjectable;
     use AbstractJwt;
     
-    public const string SESSION_KEY = 'zemit-identity';
+    public const string SESSION_KEY = 'phalcon-kit-identity';
     public const string REFRESH_SUFFIX = '-refresh';
     
     /**

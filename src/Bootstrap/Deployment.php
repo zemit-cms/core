@@ -3,34 +3,34 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Bootstrap;
+namespace PhalconKit\Bootstrap;
 
 use Phalcon\Config\Config as PhalconConfig;
-use Zemit\Models\Lang;
-use Zemit\Models\Role;
-use Zemit\Models\Setting;
-use Zemit\Models\Template;
-use Zemit\Models\User;
-use Zemit\Models\UserRole;
-use Zemit\Models\Workspace;
+use PhalconKit\Models\Lang;
+use PhalconKit\Models\Role;
+use PhalconKit\Models\Setting;
+use PhalconKit\Models\Template;
+use PhalconKit\Models\User;
+use PhalconKit\Models\UserRole;
+use PhalconKit\Models\Workspace;
 
 /**
- * Zemit Deployment Configuration
+ * Phalcon Kit Deployment Configuration
  *
  * @property PhalconConfig $drop
  * @property PhalconConfig $truncate
  * @property PhalconConfig $engine
  * @property PhalconConfig $insert
  */
-class Deployment extends \Zemit\Config\Config
+class Deployment extends \PhalconKit\Config\Config
 {
     public function __construct(array $data = [], bool $insensitive = true)
     {
@@ -136,7 +136,7 @@ class Deployment extends \Zemit\Config\Config
                     ['key' => 'everyone', 'label' => 'Everyone'],
                 ],
                 User::class => [
-                    ['username' => 'dev', 'email' => 'dev@zemit.com', 'firstName' => 'Developer', 'lastName' => 'Zemit', 'rolelist' => [1]],
+                    ['username' => 'dev', 'email' => 'dev@localhost', 'firstName' => 'Developer', 'lastName' => 'Phalcon Kit', 'rolelist' => [1]],
                 ],
                 Lang::class => [
                     ['label' => 'Francais', 'code' => 'fr'],
@@ -144,7 +144,6 @@ class Deployment extends \Zemit\Config\Config
                     ['label' => 'Spanish', 'code' => 'sp'],
                 ],
                 Workspace::class => [
-//                    ['name' => 'Zemit CMS', 'title' => 'Zemit CMS', 'description' => ''],
                 ],
                 Template::class => [
                 ],

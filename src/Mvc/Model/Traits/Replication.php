@@ -3,21 +3,21 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Model\Traits;
+namespace PhalconKit\Mvc\Model\Traits;
 
 use Phalcon\Config\ConfigInterface;
 use Phalcon\Db\Adapter\AdapterInterface;
 use Phalcon\Events\ManagerInterface;
-use Zemit\Mvc\Model\Traits\Abstracts\AbstractEventsManager;
-use Zemit\Mvc\Model\Traits\Abstracts\AbstractInjectable;
+use PhalconKit\Mvc\Model\Traits\Abstracts\AbstractEventsManager;
+use PhalconKit\Mvc\Model\Traits\Abstracts\AbstractInjectable;
 
 /**
  * Replica Lag Workaround

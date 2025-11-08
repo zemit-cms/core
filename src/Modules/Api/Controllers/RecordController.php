@@ -3,22 +3,22 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Api\Controllers;
+namespace PhalconKit\Modules\Api\Controllers;
 
 use Phalcon\Mvc\Model\MetaData;
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Support\Collection;
-use Zemit\Models\Table;
-use Zemit\Modules\Api\Controller;
-use Zemit\Mvc\Model\Dynamic;
+use PhalconKit\Models\Table;
+use PhalconKit\Modules\Api\Controller;
+use PhalconKit\Mvc\Model\Dynamic;
 
 class RecordController extends Controller
 {
@@ -102,8 +102,8 @@ class RecordController extends Controller
         if (!isset($this->modelName)) {
 //            $source = $this->getSource();
 //            $sourceClass = '_' . md5($source);
-//            $sourceFullClass = '\\Zemit\\Models\\' . $sourceClass;
-//            eval('namespace Zemit\Models; class ' . $sourceClass . ' extends \\' . Dynamic::class . ' {}');
+//            $sourceFullClass = '\\PhalconKit\\Models\\' . $sourceClass;
+//            eval('namespace PhalconKit\Models; class ' . $sourceClass . ' extends \\' . Dynamic::class . ' {}');
 //            $this->modelName = $sourceFullClass;
             $this->modelName = Dynamic::class;
         }

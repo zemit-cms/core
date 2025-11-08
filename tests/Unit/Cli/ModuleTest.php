@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Cli;
+namespace PhalconKit\Tests\Unit\Cli;
 
-use Zemit\Bootstrap;
-use Zemit\Cli\Module;
-use Zemit\Tests\Unit\AbstractUnit;
+use PhalconKit\Bootstrap;
+use PhalconKit\Cli\Module;
+use PhalconKit\Tests\Unit\AbstractUnit;
 
 class ModuleTest extends AbstractUnit
 {
-    public \Zemit\Cli\Module $module;
+    public \PhalconKit\Cli\Module $module;
     
     protected string $mode = Bootstrap::MODE_CLI;
     
@@ -40,37 +40,37 @@ class ModuleTest extends AbstractUnit
     public function testRegisterServices(): void
     {
         $this->module->registerServices($this->di);
-        $this->assertEquals('Zemit\\Cli\\Tasks', $this->module->dispatcher->getDefaultNamespace());
-        $this->assertEquals('Zemit\\Cli\\Tasks', $this->module->dispatcher->getNamespaceName());
+        $this->assertEquals('PhalconKit\\Cli\\Tasks', $this->module->dispatcher->getDefaultNamespace());
+        $this->assertEquals('PhalconKit\\Cli\\Tasks', $this->module->dispatcher->getNamespaceName());
     }
     
     public function testGetNamespaces(): void
     {
         $namespaces = $this->module->getNamespaces();
-        $this->assertArrayHasKey('Zemit\\Cli\\Tasks', $namespaces);
-        $this->assertArrayHasKey('Zemit\\Cli\\Models', $namespaces);
-        $this->assertArrayHasKey('Zemit\\Models', $namespaces);
+        $this->assertArrayHasKey('PhalconKit\\Cli\\Tasks', $namespaces);
+        $this->assertArrayHasKey('PhalconKit\\Cli\\Models', $namespaces);
+        $this->assertArrayHasKey('PhalconKit\\Models', $namespaces);
         
-        $this->assertIsString($namespaces['Zemit\\Cli\\Tasks']);
-        $this->assertIsString($namespaces['Zemit\\Cli\\Models']);
-        $this->assertIsString($namespaces['Zemit\\Models']);
+        $this->assertIsString($namespaces['PhalconKit\\Cli\\Tasks']);
+        $this->assertIsString($namespaces['PhalconKit\\Cli\\Models']);
+        $this->assertIsString($namespaces['PhalconKit\\Models']);
         
         // do this for real module testing
-//        $this->assertFileExists($namespaces['Zemit\\Cli\\Tasks']);
-//        $this->assertFileExists($namespaces['Zemit\\Cli\\Models']);
-//        $this->assertFileExists($namespaces['Zemit\\Models']);
+//        $this->assertFileExists($namespaces['PhalconKit\\Cli\\Tasks']);
+//        $this->assertFileExists($namespaces['PhalconKit\\Cli\\Models']);
+//        $this->assertFileExists($namespaces['PhalconKit\\Models']);
     }
     
     public function testGetNamespace(): void
     {
         $namespace = $this->module->getNamespace();
-        $this->assertEquals('Zemit\\Cli', $namespace);
+        $this->assertEquals('PhalconKit\\Cli', $namespace);
     }
     
     public function testGetDefaultNamespace(): void
     {
         $defaultNamespace = $this->module->getDefaultNamespace();
-        $this->assertEquals('Zemit\\Cli\\Tasks', $defaultNamespace);
+        $this->assertEquals('PhalconKit\\Cli\\Tasks', $defaultNamespace);
     }
     
     public function testGetDirname(): void
@@ -91,15 +91,15 @@ class ModuleTest extends AbstractUnit
         $this->assertInstanceOf(\Phalcon\Cli\Router::class, $this->module->router);
         $this->assertInstanceOf(\Phalcon\Cli\Dispatcher::class, $this->module->dispatcher);
         
-        // Zemit Instances
-        $this->assertInstanceOf(\Zemit\Config\Config::class, $this->module->config);
-        $this->assertInstanceOf(\Zemit\Cli\Router::class, $this->module->router);
-        $this->assertInstanceOf(\Zemit\Cli\Dispatcher::class, $this->module->dispatcher);
+        // Phalcon Kit Instances
+        $this->assertInstanceOf(\PhalconKit\Config\Config::class, $this->module->config);
+        $this->assertInstanceOf(\PhalconKit\Cli\Router::class, $this->module->router);
+        $this->assertInstanceOf(\PhalconKit\Cli\Dispatcher::class, $this->module->dispatcher);
         
         // Interfaces
-        $this->assertInstanceOf(\Zemit\Router\RouterInterface::class, $this->module->router);
+        $this->assertInstanceOf(\PhalconKit\Router\RouterInterface::class, $this->module->router);
 //        $this->assertInstanceOf(\Phalcon\Cli\RouterInterface::class, $this->module->router);
-        $this->assertInstanceOf(\Zemit\Dispatcher\DispatcherInterface::class, $this->module->dispatcher);
+        $this->assertInstanceOf(\PhalconKit\Dispatcher\DispatcherInterface::class, $this->module->dispatcher);
         $this->assertInstanceOf(\Phalcon\Cli\DispatcherInterface::class, $this->module->dispatcher);
     }
     

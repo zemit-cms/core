@@ -3,18 +3,18 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Frontend\Controllers;
+namespace PhalconKit\Modules\Frontend\Controllers;
 
-use Zemit\Modules\Frontend\Controller;
-use Zemit\Tag;
+use PhalconKit\Modules\Frontend\Controller;
+use PhalconKit\Tag;
 
 abstract class AbstractController extends Controller
 {
@@ -24,7 +24,7 @@ abstract class AbstractController extends Controller
     public function initialize(): void
     {
         Tag::setAttr('html', ['lang' => $this->dispatcher->getParam('language', 'string', 'en')]);
-        Tag::setTitle($this->config->path('core.name') ?: 'Zemit');
+        Tag::setTitle($this->config->path('core.name') ?: 'Phalcon Kit');
         $this->assets->collection('head')->addCss('/style.css', true, true, [], null, true);
     }
 }

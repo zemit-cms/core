@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,19 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Models;
+namespace PhalconKit\Tests\Unit\Models;
 
-use Zemit\Models\Abstracts\ColumnAbstract;
-use Zemit\Models\Abstracts\Interfaces\ColumnAbstractInterface;
-use Zemit\Models\Column;
-use Zemit\Models\Interfaces\ColumnInterface;
+use PhalconKit\Models\Abstracts\ColumnAbstract;
+use PhalconKit\Models\Abstracts\Interfaces\ColumnAbstractInterface;
+use PhalconKit\Models\Column;
+use PhalconKit\Models\Interfaces\ColumnInterface;
 
 /**
  * Class ColumnTest
  *
  * This class contains unit tests for the User class.
  */
-class ColumnTest extends \Zemit\Tests\Unit\AbstractUnit
+class ColumnTest extends \PhalconKit\Tests\Unit\AbstractUnit
 {
     public ColumnInterface $column;
     
@@ -42,9 +42,9 @@ class ColumnTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertInstanceOf(ColumnAbstract::class, $this->column);
         $this->assertInstanceOf(ColumnAbstractInterface::class, $this->column);
         
-        // Zemit
-        $this->assertInstanceOf(\Zemit\Mvc\ModelInterface::class, $this->column);
-        $this->assertInstanceOf(\Zemit\Mvc\Model::class, $this->column);
+        // Phalcon Kit
+        $this->assertInstanceOf(\PhalconKit\Mvc\ModelInterface::class, $this->column);
+        $this->assertInstanceOf(\PhalconKit\Mvc\Model::class, $this->column);
         
         // Phalcon
         $this->assertInstanceOf(\Phalcon\Mvc\ModelInterface::class, $this->column);

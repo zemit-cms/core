@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Support;
+namespace PhalconKit\Tests\Unit\Support;
 
-use Zemit\Support\Debug;
-use Zemit\Support\Version as ZemitVersion;
+use PhalconKit\Support\Debug;
+use PhalconKit\Support\Version as PhalconKitVersion;
 use Phalcon\Support\Version as PhalconVersion;
-use Zemit\Tests\Unit\AbstractUnit;
+use PhalconKit\Tests\Unit\AbstractUnit;
 
 /**
  * Class VersionTest
@@ -44,12 +44,12 @@ class DebugTest extends AbstractUnit
         
         $result = $debug->getVersion();
         
-        $zemitVersion = new ZemitVersion();
+        $phalconKitVersion = new PhalconKitVersion();
         $phalconVersion = new PhalconVersion();
         
-        $this->assertStringContainsString($zemitVersion->get(), $result);
+        $this->assertStringContainsString($phalconKitVersion->get(), $result);
         $this->assertStringContainsString($phalconVersion->get(), $result);
-        $this->assertStringContainsString('Zemit Core', $result);
+        $this->assertStringContainsString('Phalcon Kit', $result);
         $this->assertStringContainsString('Phalcon Framework', $result);
     }
 }

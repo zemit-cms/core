@@ -3,46 +3,46 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Di;
+namespace PhalconKit\Di;
 
 /**
- * @property \Zemit\Acl\AclInterface|\Zemit\Acl\Acl $acl
- * @property \Zemit\Assets\Manager $assets
- * @property \Zemit\Bootstrap $bootstrap
- * @property \Zemit\Bootstrap\Config $config
- * @property \Zemit\Cache\Cache $cache
- * @property \Zemit\Cli\Console $console
- * @property \Zemit\Support\Debug $debug
- * @property \Zemit\Dispatcher\AbstractDispatcher $dispatcher
- * @property \Zemit\Support\Env $env
- * @property \Zemit\Html\Escaper $escaper
- * @property \Zemit\Filter\Filter $filter
- * @property \Zemit\Support\HelperFactory $helper
- * @property \Zemit\Identity\Manager $identity
- * @property \Zemit\Locale $locale
- * @property \Zemit\Logger\Loggers $loggers
- * @property \Zemit\Support\Models $models
- * @property \Zemit\Mvc\Application $application
- * @property \Zemit\Mvc\Model\ManagerInterface $modelsManager
- * @property \Zemit\Db\Profiler $profiler
- * @property \Zemit\Http\RequestInterface $request
- * @property \Zemit\Http\ResponseInterface $response
- * @property \Zemit\Mvc\Router $router
- * @property \Zemit\Encryption\Security $security
- * @property \Zemit\Tag $tag
- * @property \Zemit\Support\Utils $utils
- * @property \Zemit\Support\Version $version
- * @property \Zemit\Mvc\Url $url
- * @property \Zemit\Mvc\View $view
- * @property \Zemit\Provider\Jwt\Jwt $jwt
+ * @property \PhalconKit\Acl\AclInterface|\PhalconKit\Acl\Acl $acl
+ * @property \PhalconKit\Assets\Manager $assets
+ * @property \PhalconKit\Bootstrap $bootstrap
+ * @property \PhalconKit\Bootstrap\Config $config
+ * @property \PhalconKit\Cache\Cache $cache
+ * @property \PhalconKit\Cli\Console $console
+ * @property \PhalconKit\Support\Debug $debug
+ * @property \PhalconKit\Dispatcher\AbstractDispatcher $dispatcher
+ * @property \PhalconKit\Support\Env $env
+ * @property \PhalconKit\Html\Escaper $escaper
+ * @property \PhalconKit\Filter\Filter $filter
+ * @property \PhalconKit\Support\HelperFactory $helper
+ * @property \PhalconKit\Identity\Manager $identity
+ * @property \PhalconKit\Locale $locale
+ * @property \PhalconKit\Logger\Loggers $loggers
+ * @property \PhalconKit\Support\Models $models
+ * @property \PhalconKit\Mvc\Application $application
+ * @property \PhalconKit\Mvc\Model\ManagerInterface $modelsManager
+ * @property \PhalconKit\Db\Profiler $profiler
+ * @property \PhalconKit\Http\RequestInterface $request
+ * @property \PhalconKit\Http\ResponseInterface $response
+ * @property \PhalconKit\Mvc\Router $router
+ * @property \PhalconKit\Encryption\Security $security
+ * @property \PhalconKit\Tag $tag
+ * @property \PhalconKit\Support\Utils $utils
+ * @property \PhalconKit\Support\Version $version
+ * @property \PhalconKit\Mvc\Url $url
+ * @property \PhalconKit\Mvc\View $view
+ * @property \PhalconKit\Provider\Jwt\Jwt $jwt
  *
  * @property \Phalcon\Annotations\Adapter\AdapterInterface $annotations
  * @property \Phalcon\Http\Response\Cookies $cookies

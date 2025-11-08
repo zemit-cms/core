@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Translate;
+namespace PhalconKit\Tests\Unit\Translate;
 
 use Phalcon\Translate\Adapter\AdapterInterface;
 use Phalcon\Translate\InterpolatorFactory;
-use Zemit\Tests\Unit\AbstractUnit;
-use Zemit\Translate\Adapter\NestedNativeArray;
+use PhalconKit\Tests\Unit\AbstractUnit;
+use PhalconKit\Translate\Adapter\NestedNativeArray;
 
 class TranslateTest extends AbstractUnit
 {
@@ -44,7 +44,7 @@ class TranslateTest extends AbstractUnit
     
 //    public function testExistingKey(): void
 //    {
-//        $key = 'Zemit';
+//        $key = 'PhalconKit';
 //        $this->assertTrue($this->translate->has($key));
 //        $this->assertTrue($this->translate->exists($key));
 //        $this->assertNotEquals($key, $this->translate->query($key));

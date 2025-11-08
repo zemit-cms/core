@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<ruleset name="Zemit">
+<ruleset name="Phalcon Kit">
     <description>
-        Zemit Coding Standards — PSR-12 foundation with pragmatic whitespace,
+        Phalcon Kit Coding Standards — PSR-12 foundation with pragmatic whitespace,
         modern PHP 8.4 syntax support, and framework-friendly flexibility.
     </description>
 

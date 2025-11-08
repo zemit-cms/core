@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,18 +11,18 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Models\Abstracts;
+namespace PhalconKit\Models\Abstracts;
 
 use Phalcon\Db\RawValue;
-use Zemit\Filter\Validation;
-use Zemit\Models\AbstractModel;
-use Zemit\Models\SiteLang;
-use Zemit\Models\Site;
-use Zemit\Models\Translate;
-use Zemit\Models\WorkspaceLang;
-use Zemit\Models\Workspace;
-use Zemit\Models\User;
-use Zemit\Models\Abstracts\Interfaces\LangAbstractInterface;
+use PhalconKit\Filter\Validation;
+use PhalconKit\Models\AbstractModel;
+use PhalconKit\Models\SiteLang;
+use PhalconKit\Models\Site;
+use PhalconKit\Models\Translate;
+use PhalconKit\Models\WorkspaceLang;
+use PhalconKit\Models\Workspace;
+use PhalconKit\Models\User;
+use PhalconKit\Models\Abstracts\Interfaces\LangAbstractInterface;
 
 /**
  * Class LangAbstract
@@ -62,7 +62,7 @@ use Zemit\Models\Abstracts\Interfaces\LangAbstractInterface;
  * @property User $DeletedByEntity
  * @method User getDeletedByEntity(?array $params = null)
  */
-abstract class LangAbstract extends \Zemit\Models\AbstractModel implements LangAbstractInterface
+abstract class LangAbstract extends \PhalconKit\Models\AbstractModel implements LangAbstractInterface
 {
     /**
      * Column: id

@@ -115,7 +115,7 @@ class RoleRoleMigration_100 extends Migration
                 new Reference(
                     'fk_role_role_child_id',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'role',
                         'columns' => ['child_id'],
                         'referencedColumns' => ['id'],
@@ -126,7 +126,7 @@ class RoleRoleMigration_100 extends Migration
                 new Reference(
                     'fk_role_role_created_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['created_by'],
                         'referencedColumns' => ['id'],
@@ -137,7 +137,7 @@ class RoleRoleMigration_100 extends Migration
                 new Reference(
                     'fk_role_role_parent_id',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'role',
                         'columns' => ['parent_id'],
                         'referencedColumns' => ['id'],

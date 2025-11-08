@@ -3,21 +3,21 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Controller\Traits\Actions;
+namespace PhalconKit\Mvc\Controller\Traits\Actions;
 
 use Phalcon\Filter\Exception;
 use Phalcon\Filter\Filter;
-use Zemit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
-use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
-use Zemit\Mvc\Controller\Traits\StatusCode;
+use PhalconKit\Mvc\Controller\Traits\Abstracts\AbstractInjectable;
+use PhalconKit\Mvc\Controller\Traits\Abstracts\AbstractParams;
+use PhalconKit\Mvc\Controller\Traits\StatusCode;
 
 trait AuthActions
 {

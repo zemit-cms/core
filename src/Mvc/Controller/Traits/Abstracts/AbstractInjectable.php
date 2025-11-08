@@ -3,29 +3,29 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Controller\Traits\Abstracts;
+namespace PhalconKit\Mvc\Controller\Traits\Abstracts;
 
 use Phalcon\Autoload\Loader;
 use Phalcon\Di\DiInterface;
 use Phalcon\Events\Manager as EventsManager;
 use Phalcon\Http\Response;
-use Zemit\Acl\Acl;
-use Zemit\Filter\Filter;
-use Zemit\Http\Request;
-use Zemit\Identity\Manager as Identity;
-use Zemit\Mvc\Dispatcher;
-use Zemit\Mvc\Model\Manager as ModelsManager;
-use Zemit\Mvc\Router;
-use Zemit\Mvc\View;
-use Zemit\Support\HelperFactory;
+use PhalconKit\Acl\Acl;
+use PhalconKit\Filter\Filter;
+use PhalconKit\Http\Request;
+use PhalconKit\Identity\Manager as Identity;
+use PhalconKit\Mvc\Dispatcher;
+use PhalconKit\Mvc\Model\Manager as ModelsManager;
+use PhalconKit\Mvc\Router;
+use PhalconKit\Mvc\View;
+use PhalconKit\Support\HelperFactory;
 
 /**
  * Trait AbstractInjectable

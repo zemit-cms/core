@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,19 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Models;
+namespace PhalconKit\Tests\Unit\Models;
 
-use Zemit\Models\Abstracts\PostAbstract;
-use Zemit\Models\Abstracts\Interfaces\PostAbstractInterface;
-use Zemit\Models\Post;
-use Zemit\Models\Interfaces\PostInterface;
+use PhalconKit\Models\Abstracts\PostAbstract;
+use PhalconKit\Models\Abstracts\Interfaces\PostAbstractInterface;
+use PhalconKit\Models\Post;
+use PhalconKit\Models\Interfaces\PostInterface;
 
 /**
  * Class PostTest
  *
  * This class contains unit tests for the User class.
  */
-class PostTest extends \Zemit\Tests\Unit\AbstractUnit
+class PostTest extends \PhalconKit\Tests\Unit\AbstractUnit
 {
     public PostInterface $post;
     
@@ -42,9 +42,9 @@ class PostTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertInstanceOf(PostAbstract::class, $this->post);
         $this->assertInstanceOf(PostAbstractInterface::class, $this->post);
         
-        // Zemit
-        $this->assertInstanceOf(\Zemit\Mvc\ModelInterface::class, $this->post);
-        $this->assertInstanceOf(\Zemit\Mvc\Model::class, $this->post);
+        // Phalcon Kit
+        $this->assertInstanceOf(\PhalconKit\Mvc\ModelInterface::class, $this->post);
+        $this->assertInstanceOf(\PhalconKit\Mvc\Model::class, $this->post);
         
         // Phalcon
         $this->assertInstanceOf(\Phalcon\Mvc\ModelInterface::class, $this->post);

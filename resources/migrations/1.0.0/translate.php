@@ -171,7 +171,7 @@ class TranslateMigration_100 extends Migration
                 new Reference(
                     'fk_translate_created_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['created_by'],
                         'referencedColumns' => ['id'],
@@ -182,7 +182,7 @@ class TranslateMigration_100 extends Migration
                 new Reference(
                     'fk_translate_deleted_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['deleted_by'],
                         'referencedColumns' => ['id'],
@@ -193,7 +193,7 @@ class TranslateMigration_100 extends Migration
                 new Reference(
                     'fk_translate_lang_id',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'lang',
                         'columns' => ['lang_id'],
                         'referencedColumns' => ['id'],
@@ -204,7 +204,7 @@ class TranslateMigration_100 extends Migration
                 new Reference(
                     'fk_translate_updated_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['updated_by'],
                         'referencedColumns' => ['id'],

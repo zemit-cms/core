@@ -3,20 +3,20 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Provider\Locale;
+namespace PhalconKit\Provider\Locale;
 
 use Phalcon\Di\DiInterface;
-use Zemit\Provider\AbstractServiceProvider;
-use Zemit\Config\ConfigInterface;
-use Zemit\Locale;
+use PhalconKit\Provider\AbstractServiceProvider;
+use PhalconKit\Config\ConfigInterface;
+use PhalconKit\Locale;
 
 class ServiceProvider extends AbstractServiceProvider
 {
@@ -25,7 +25,7 @@ class ServiceProvider extends AbstractServiceProvider
      */
     public array $defaultOptions = [
         'default' => 'en',
-        'sessionKey' => 'zemit-locale',
+        'sessionKey' => 'phalcon-kit-locale',
         'mode' => Locale::MODE_DEFAULT,
         'allowed' => ['en'],
     ];

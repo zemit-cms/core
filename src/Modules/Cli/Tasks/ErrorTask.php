@@ -3,21 +3,21 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Cli\Tasks;
+namespace PhalconKit\Modules\Cli\Tasks;
 
 use Phalcon\Http\ResponseInterface;
-use Zemit\Exception\CliException;
-use Zemit\Http\StatusCode;
-use Zemit\Modules\Cli\Task;
-use Zemit\Mvc\Controller\Traits\Actions\ErrorActions;
+use PhalconKit\Exception\CliException;
+use PhalconKit\Http\StatusCode;
+use PhalconKit\Modules\Cli\Task;
+use PhalconKit\Mvc\Controller\Traits\Actions\ErrorActions;
 
 class ErrorTask extends Task
 {

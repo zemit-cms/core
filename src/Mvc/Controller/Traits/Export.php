@@ -3,15 +3,15 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Controller\Traits;
+namespace PhalconKit\Mvc\Controller\Traits;
 
 use Exception;
 use League\Csv\Bom;
@@ -22,10 +22,10 @@ use League\Csv\Writer;
 use Phalcon\Http\ResponseInterface;
 use Shuchkin\SimpleXLSXGen;
 use Spatie\ArrayToXml\ArrayToXml;
-use Zemit\Support\Helper;
-use Zemit\Support\Slug;
-use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
-use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
+use PhalconKit\Support\Helper;
+use PhalconKit\Support\Slug;
+use PhalconKit\Mvc\Controller\Traits\Abstracts\AbstractModel;
+use PhalconKit\Mvc\Controller\Traits\Abstracts\AbstractParams;
 
 /**
  * Provides some utility methods to export data

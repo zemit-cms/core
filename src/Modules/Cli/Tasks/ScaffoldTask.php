@@ -1,23 +1,23 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Cli\Tasks;
+namespace PhalconKit\Modules\Cli\Tasks;
 
 use Phalcon\Db\Column;
 use Phalcon\Db\ColumnInterface;
-use Zemit\Modules\Cli\Task;
-use Zemit\Modules\Cli\Tasks\Traits\DescribesTrait;
-use Zemit\Modules\Cli\Tasks\Traits\ScaffoldTrait;
-use Zemit\Support\Helper;
-use Zemit\Support\Slug;
+use PhalconKit\Modules\Cli\Task;
+use PhalconKit\Modules\Cli\Tasks\Traits\DescribesTrait;
+use PhalconKit\Modules\Cli\Tasks\Traits\ScaffoldTrait;
+use PhalconKit\Support\Helper;
+use PhalconKit\Support\Slug;
 
 class ScaffoldTask extends Task
 {
@@ -26,7 +26,7 @@ class ScaffoldTask extends Task
     
     public string $cliDoc = <<<DOC
 Usage:
-  zemit cli scaffold <action> [--force] [--directory=<directory>] [--namespace=<namespace>]
+  phalcon-kit cli scaffold <action> [--force] [--directory=<directory>] [--namespace=<namespace>]
                               [--table=<table>] [--exclude=<exclude>] [--license=<license>]
                               [--src-dir=<src-dir>] [--controllers-dir=<controllers-dir>]
                               [--interfaces-dir=<interfaces-dir>] [--abstracts-dir=<abstracts-dir>]
@@ -60,10 +60,10 @@ Options:
   --enums-dir=<enums-dir>                     Set your own enums directory (Default: "Enums")
   --tests-dir=<tests-dir>                     Set your own tests directory (Default: "Tests")
 
-  --models-extend=<models-extend>             Extend models with this base class (Default: "\Zemit\Models\ModelAbstract")
-  --interfaces-extend=<interface-extend>      Extend models interfaces with this base interface (Default: "\Zemit\Models\ModelInterface")
-  --controllers-extend=<controllers-extends>  Extend controllers with this base class (Default: "\Zemit\Mvc\Controller\Rest")
-  --tests-extend=<tests-extends>              Extend tests with this base class (Default: "\Zemit\Tests\Unit\AbstractUnit")
+  --models-extend=<models-extend>             Extend models with this base class (Default: "\PhalconKit\Models\ModelAbstract")
+  --interfaces-extend=<interface-extend>      Extend models interfaces with this base interface (Default: "\PhalconKit\Models\ModelInterface")
+  --controllers-extend=<controllers-extends>  Extend controllers with this base class (Default: "\PhalconKit\Mvc\Controller\Rest")
+  --tests-extend=<tests-extends>              Extend tests with this base class (Default: "\PhalconKit\Tests\Unit\AbstractUnit")
 
   --no-controllers                            Do not generate controllers
   --no-interfaces                             Do not generate interfaces
@@ -223,7 +223,7 @@ DOC;
 namespace {$this->getAbstractsInterfacesNamespace()};
 
 use Phalcon\Db\RawValue;
-use Zemit\Modules\Api\Controller\ControllerAbstract;
+use PhalconKit\Modules\Api\Controller\ControllerAbstract;
 
 /**
 {$relationships['interfaceInjectableItems']}
@@ -278,7 +278,7 @@ PHP;
 namespace {$this->getAbstractsInterfacesNamespace()};
 
 use Phalcon\Db\RawValue;
-use Zemit\Mvc\ModelInterface;
+use PhalconKit\Mvc\ModelInterface;
 
 /**
 {$relationships['interfaceInjectableItems']}
@@ -316,7 +316,7 @@ PHP;
 namespace {$this->getAbstractsNamespace()};
 
 use Phalcon\Db\RawValue;
-use Zemit\Filter\Validation;
+use PhalconKit\Filter\Validation;
 use {$modelsExtend};
 {$relationships['useItems']}
 use {$this->getAbstractsInterfacesNamespace()}\\{$definitions['abstractInterface']['name']};
@@ -442,7 +442,7 @@ use {$this->getModelsInterfacesNamespace()}\\{$definitions['modelInterface']['na
  *
  * This class contains unit tests for the User class.
  */
-class {$definitions['modelTest']['name']} extends \Zemit\Tests\Unit\AbstractUnit
+class {$definitions['modelTest']['name']} extends \PhalconKit\Tests\Unit\AbstractUnit
 {
     public {$definitions['modelInterface']['name']} \${$property};
     
@@ -461,9 +461,9 @@ class {$definitions['modelTest']['name']} extends \Zemit\Tests\Unit\AbstractUnit
         \$this->assertInstanceOf({$definitions['abstract']['name']}::class, \$this->{$property});
         \$this->assertInstanceOf({$definitions['abstractInterface']['name']}::class, \$this->{$property});
         
-        // Zemit
-        \$this->assertInstanceOf(\Zemit\Mvc\ModelInterface::class, \$this->{$property});
-        \$this->assertInstanceOf(\Zemit\Mvc\Model::class, \$this->{$property});
+        // Phalcon Kit
+        \$this->assertInstanceOf(\PhalconKit\Mvc\ModelInterface::class, \$this->{$property});
+        \$this->assertInstanceOf(\PhalconKit\Mvc\Model::class, \$this->{$property});
         
         // Phalcon
         \$this->assertInstanceOf(\Phalcon\Mvc\ModelInterface::class, \$this->{$property});

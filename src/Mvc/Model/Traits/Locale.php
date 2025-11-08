@@ -3,20 +3,20 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Model\Traits;
+namespace PhalconKit\Mvc\Model\Traits;
 
 use Phalcon\Mvc\Model\Exception;
 use Phalcon\Translate\Adapter\AbstractAdapter;
-use Zemit\Mvc\Model\Traits\Abstracts\AbstractEntity;
-use Zemit\Mvc\Model\Traits\Abstracts\AbstractInjectable;
+use PhalconKit\Mvc\Model\Traits\Abstracts\AbstractEntity;
+use PhalconKit\Mvc\Model\Traits\Abstracts\AbstractInjectable;
 
 /**
  * This trait provides functionality to handle localization in models.
@@ -53,7 +53,7 @@ trait Locale
     public function __call(string $method, array $arguments): mixed
     {
         $locale = $this->getDI()->get('locale');
-        assert($locale instanceof \Zemit\Locale);
+        assert($locale instanceof \PhalconKit\Locale);
         
         $lang = $locale->getLocale();
         
@@ -79,7 +79,7 @@ trait Locale
     public function __set(string $property, mixed $value): void
     {
         $locale = $this->getDI()->get('locale');
-        assert($locale instanceof \Zemit\Locale);
+        assert($locale instanceof \PhalconKit\Locale);
         
         $lang = $locale->getLocale();
         
@@ -105,7 +105,7 @@ trait Locale
     public function __get(string $property): mixed
     {
         $locale = $this->getDI()->get('locale');
-        assert($locale instanceof \Zemit\Locale);
+        assert($locale instanceof \PhalconKit\Locale);
         
         $lang = $locale->getLocale();
         

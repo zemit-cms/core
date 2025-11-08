@@ -3,23 +3,23 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Model\Interfaces;
+namespace PhalconKit\Mvc\Model\Interfaces;
 
 use Phalcon\Mvc\Model\Relation;
-use Zemit\Mvc\Model\Behavior\Blameable;
-use Zemit\Mvc\Model\Interfaces\Blameable\BlameAtInterface;
-use Zemit\Mvc\Model\Interfaces\Blameable\CreatedInterface;
-use Zemit\Mvc\Model\Interfaces\Blameable\DeletedInterface;
-use Zemit\Mvc\Model\Interfaces\Blameable\RestoredInterface;
-use Zemit\Mvc\Model\Interfaces\Blameable\UpdatedInterface;
+use PhalconKit\Mvc\Model\Behavior\Blameable;
+use PhalconKit\Mvc\Model\Interfaces\Blameable\BlameAtInterface;
+use PhalconKit\Mvc\Model\Interfaces\Blameable\CreatedInterface;
+use PhalconKit\Mvc\Model\Interfaces\Blameable\DeletedInterface;
+use PhalconKit\Mvc\Model\Interfaces\Blameable\RestoredInterface;
+use PhalconKit\Mvc\Model\Interfaces\Blameable\UpdatedInterface;
 
 interface BlameableInterface extends
     BlameAtInterface,

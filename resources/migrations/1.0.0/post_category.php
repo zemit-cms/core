@@ -142,7 +142,7 @@ class PostCategoryMigration_100 extends Migration
                 new Reference(
                     'fk_post_category_category_id',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'category',
                         'columns' => ['category_id'],
                         'referencedColumns' => ['id'],
@@ -153,7 +153,7 @@ class PostCategoryMigration_100 extends Migration
                 new Reference(
                     'fk_post_category_created_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['created_by'],
                         'referencedColumns' => ['id'],
@@ -164,7 +164,7 @@ class PostCategoryMigration_100 extends Migration
                 new Reference(
                     'fk_post_category_deleted_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['deleted_by'],
                         'referencedColumns' => ['id'],
@@ -175,7 +175,7 @@ class PostCategoryMigration_100 extends Migration
                 new Reference(
                     'fk_post_category_post_id',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'post',
                         'columns' => ['post_id'],
                         'referencedColumns' => ['id'],
@@ -186,7 +186,7 @@ class PostCategoryMigration_100 extends Migration
                 new Reference(
                     'fk_post_category_updated_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['updated_by'],
                         'referencedColumns' => ['id'],

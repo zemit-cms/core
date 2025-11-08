@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Dispatcher;
+namespace PhalconKit\Tests\Unit\Dispatcher;
 
-use Zemit\Bootstrap;
-use Zemit\Dispatcher\AbstractDispatcher;
-use Zemit\Dispatcher\DispatcherInterface;
-use Zemit\Tests\Unit\AbstractUnit;
+use PhalconKit\Bootstrap;
+use PhalconKit\Dispatcher\AbstractDispatcher;
+use PhalconKit\Dispatcher\DispatcherInterface;
+use PhalconKit\Tests\Unit\AbstractUnit;
 
 class DispatcherTest extends AbstractUnit
 {
@@ -29,30 +29,30 @@ class DispatcherTest extends AbstractUnit
     protected function setUp(): void
     {
         $this->dispatcher = new AbstractDispatcher();
-        $this->mvcDispatcher = new \Zemit\Mvc\Dispatcher();
-        $this->cliDispatcher = new \Zemit\Cli\Dispatcher();
+        $this->mvcDispatcher = new \PhalconKit\Mvc\Dispatcher();
+        $this->cliDispatcher = new \PhalconKit\Cli\Dispatcher();
     }
     
     public function testDispatcherInstance(): void
     {
         // Abstract
-        $this->assertInstanceOf(\Zemit\Dispatcher\AbstractDispatcher::class, $this->dispatcher);
-        $this->assertInstanceOf(\Zemit\Dispatcher\DispatcherInterface::class, $this->dispatcher);
+        $this->assertInstanceOf(\PhalconKit\Dispatcher\AbstractDispatcher::class, $this->dispatcher);
+        $this->assertInstanceOf(\PhalconKit\Dispatcher\DispatcherInterface::class, $this->dispatcher);
         
         $this->assertInstanceOf(\Phalcon\Dispatcher\AbstractDispatcher::class, $this->dispatcher);
         $this->assertInstanceOf(\Phalcon\Dispatcher\DispatcherInterface::class, $this->dispatcher);
         
         // MVC
-        $this->assertInstanceOf(\Zemit\Mvc\Dispatcher::class, $this->mvcDispatcher);
-        $this->assertInstanceOf(\Zemit\Dispatcher\DispatcherInterface::class, $this->mvcDispatcher);
+        $this->assertInstanceOf(\PhalconKit\Mvc\Dispatcher::class, $this->mvcDispatcher);
+        $this->assertInstanceOf(\PhalconKit\Dispatcher\DispatcherInterface::class, $this->mvcDispatcher);
         
         $this->assertInstanceOf(\Phalcon\Dispatcher\AbstractDispatcher::class, $this->mvcDispatcher);
         $this->assertInstanceOf(\Phalcon\Dispatcher\DispatcherInterface::class, $this->mvcDispatcher);
         $this->assertInstanceOf(\Phalcon\Mvc\DispatcherInterface::class, $this->mvcDispatcher);
         
         // CLI
-        $this->assertInstanceOf(\Zemit\Cli\Dispatcher::class, $this->cliDispatcher);
-        $this->assertInstanceOf(\Zemit\Dispatcher\DispatcherInterface::class, $this->cliDispatcher);
+        $this->assertInstanceOf(\PhalconKit\Cli\Dispatcher::class, $this->cliDispatcher);
+        $this->assertInstanceOf(\PhalconKit\Dispatcher\DispatcherInterface::class, $this->cliDispatcher);
         
         $this->assertInstanceOf(\Phalcon\Dispatcher\AbstractDispatcher::class, $this->cliDispatcher);
         $this->assertInstanceOf(\Phalcon\Dispatcher\DispatcherInterface::class, $this->cliDispatcher);

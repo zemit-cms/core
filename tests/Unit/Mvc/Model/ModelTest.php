@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,16 +11,16 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Mvc\Model;
+namespace PhalconKit\Tests\Unit\Mvc\Model;
 
 use Phalcon\Db\Column;
 use Phalcon\Mvc\Model\Resultset\Simple;
-use Zemit\Models\Audit;
-use Zemit\Models\AuditDetail;
-use Zemit\Models\Role;
-use Zemit\Models\User;
-use Zemit\Models\UserRole;
-use Zemit\Tests\Unit\AbstractUnit;
+use PhalconKit\Models\Audit;
+use PhalconKit\Models\AuditDetail;
+use PhalconKit\Models\Role;
+use PhalconKit\Models\User;
+use PhalconKit\Models\UserRole;
+use PhalconKit\Tests\Unit\AbstractUnit;
 
 class ModelTest extends AbstractUnit
 {

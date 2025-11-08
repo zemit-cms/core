@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Cli;
+namespace PhalconKit\Tests\Unit\Cli;
 
-use Zemit\Bootstrap;
-use Zemit\Cli\Router;
-use Zemit\Tests\Unit\AbstractUnit;
+use PhalconKit\Bootstrap;
+use PhalconKit\Cli\Router;
+use PhalconKit\Tests\Unit\AbstractUnit;
 
 class RouterTest extends AbstractUnit
 {
-    public \Zemit\Cli\Router $router;
+    public \PhalconKit\Cli\Router $router;
     
     protected string $mode = Bootstrap::MODE_CLI;
     
@@ -31,10 +31,10 @@ class RouterTest extends AbstractUnit
     
     public function testRouterFromDi(): void
     {
-        $this->assertInstanceOf(\Zemit\Router\RouterInterface::class, $this->router);
+        $this->assertInstanceOf(\PhalconKit\Router\RouterInterface::class, $this->router);
 //        $this->assertInstanceOf(\Phalcon\Cli\RouterInterface::class, $this->router); // this interface is not used - https://github.com/phalcon/cphalcon/issues/16551
         $this->assertInstanceOf(\Phalcon\Cli\Router::class, $this->router);
-        $this->assertInstanceOf(\Zemit\Cli\Router::class, $this->router);
+        $this->assertInstanceOf(\PhalconKit\Cli\Router::class, $this->router);
     }
     
     public function testToArray(): void

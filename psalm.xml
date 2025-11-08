@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <!--
-  ~ This file is part of the Zemit Framework.
+  ~ This file is part of the Phalcon Kit.
   ~
-  ~ (c) Zemit Team <contact@zemit.com>
+  ~ (c) Phalcon Kit Team
   ~
   ~ For the full copyright and license information, please view the LICENSE.txt
   ~ file that was distributed with this source code.
@@ -54,5 +54,16 @@
                 <referencedFunction name="Redis::connect" />
             </errorLevel>
         </InvalidArgument>
+
+        <!-- False positive -->
+        <UndefinedClass>
+            <errorLevel type="suppress">
+                <referencedClass name="Swoole\Http\Request" />
+                <referencedClass name="Swoole\Http\Response" />
+                <referencedClass name="Swoole\WebSocket\Server" />
+                <referencedClass name="Swoole\WebSocket\Frame" />
+                <referencedClass name="Swoole\Coroutine" />
+            </errorLevel>
+        </UndefinedClass>
     </issueHandlers>
 </psalm>

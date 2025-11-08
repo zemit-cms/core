@@ -3,26 +3,26 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Cli;
+namespace PhalconKit\Modules\Cli;
 
 use Phalcon\Cli\Dispatcher;
-use Zemit\Exception\CliException;
-use Zemit\Support\Helper;
-use Zemit\Support\Utils;
+use PhalconKit\Exception\CliException;
+use PhalconKit\Support\Helper;
+use PhalconKit\Support\Utils;
 
-class Task extends \Zemit\Cli\Task
+class Task extends \PhalconKit\Cli\Task
 {
     public string $cliDoc = <<<DOC
 Usage:
-  zemit cli <task> <action> [<params> ...]
+  phalcon-kit cli <task> <action> [<params> ...]
 
 Options:
   task: build,cache,cron,errors,help,scaffold

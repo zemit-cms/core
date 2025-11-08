@@ -3,29 +3,29 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Model\Behavior;
+namespace PhalconKit\Mvc\Model\Behavior;
 
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Mvc\ModelInterface;
-use Zemit\Models\User;
-use Zemit\Models\Audit;
-use Zemit\Models\AuditDetail;
-use Zemit\Models\Interfaces\AuditDetailInterface;
-use Zemit\Models\Interfaces\AuditInterface;
-use Zemit\Mvc\Model;
-use Zemit\Mvc\Model\Behavior\Traits\SkippableTrait;
-use Zemit\Support\Helper;
+use PhalconKit\Models\User;
+use PhalconKit\Models\Audit;
+use PhalconKit\Models\AuditDetail;
+use PhalconKit\Models\Interfaces\AuditDetailInterface;
+use PhalconKit\Models\Interfaces\AuditInterface;
+use PhalconKit\Mvc\Model;
+use PhalconKit\Mvc\Model\Behavior\Traits\SkippableTrait;
+use PhalconKit\Support\Helper;
 
 /**
- * Zemit\Mvc\Model\Traits\Behavior\Blameable
+ * PhalconKit\Mvc\Model\Traits\Behavior\Blameable
  *
  * Allows to automatically update a model’s attribute saving the datetime when a
  * record is created or updated

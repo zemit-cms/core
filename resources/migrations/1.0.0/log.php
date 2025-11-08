@@ -108,7 +108,7 @@ class LogMigration_100 extends Migration
                 new Reference(
                     'fk_log_created_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['created_by'],
                         'referencedColumns' => ['id'],

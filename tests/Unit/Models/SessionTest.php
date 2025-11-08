@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,19 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Models;
+namespace PhalconKit\Tests\Unit\Models;
 
-use Zemit\Models\Abstracts\SessionAbstract;
-use Zemit\Models\Abstracts\Interfaces\SessionAbstractInterface;
-use Zemit\Models\Session;
-use Zemit\Models\Interfaces\SessionInterface;
+use PhalconKit\Models\Abstracts\SessionAbstract;
+use PhalconKit\Models\Abstracts\Interfaces\SessionAbstractInterface;
+use PhalconKit\Models\Session;
+use PhalconKit\Models\Interfaces\SessionInterface;
 
 /**
  * Class SessionTest
  *
  * This class contains unit tests for the User class.
  */
-class SessionTest extends \Zemit\Tests\Unit\AbstractUnit
+class SessionTest extends \PhalconKit\Tests\Unit\AbstractUnit
 {
     public SessionInterface $session;
     
@@ -42,9 +42,9 @@ class SessionTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertInstanceOf(SessionAbstract::class, $this->session);
         $this->assertInstanceOf(SessionAbstractInterface::class, $this->session);
         
-        // Zemit
-        $this->assertInstanceOf(\Zemit\Mvc\ModelInterface::class, $this->session);
-        $this->assertInstanceOf(\Zemit\Mvc\Model::class, $this->session);
+        // Phalcon Kit
+        $this->assertInstanceOf(\PhalconKit\Mvc\ModelInterface::class, $this->session);
+        $this->assertInstanceOf(\PhalconKit\Mvc\Model::class, $this->session);
         
         // Phalcon
         $this->assertInstanceOf(\Phalcon\Mvc\ModelInterface::class, $this->session);

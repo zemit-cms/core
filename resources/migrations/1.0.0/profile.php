@@ -159,7 +159,7 @@ class ProfileMigration_100 extends Migration
                 new Reference(
                     'fk_profile_created_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['created_by'],
                         'referencedColumns' => ['id'],
@@ -170,7 +170,7 @@ class ProfileMigration_100 extends Migration
                 new Reference(
                     'fk_profile_deleted_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['deleted_by'],
                         'referencedColumns' => ['id'],
@@ -181,7 +181,7 @@ class ProfileMigration_100 extends Migration
                 new Reference(
                     'fk_profile_updated_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['updated_by'],
                         'referencedColumns' => ['id'],
@@ -192,7 +192,7 @@ class ProfileMigration_100 extends Migration
                 new Reference(
                     'fk_profile_user_id',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['user_id'],
                         'referencedColumns' => ['id'],

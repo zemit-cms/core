@@ -3,21 +3,21 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Model\Traits;
+namespace PhalconKit\Mvc\Model\Traits;
 
 use JetBrains\PhpStorm\Deprecated;
 use Phalcon\Mvc\Model\Resultset;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\ModelInterface;
-use Zemit\Mvc\Model\EagerLoading\Loader;
+use PhalconKit\Mvc\Model\EagerLoading\Loader;
 
 trait EagerLoad
 {
@@ -82,7 +82,7 @@ trait EagerLoad
      * @return array
      */
     #[Deprecated(
-        reason: 'since Zemit 1.0, use findWith() instead',
+        reason: 'since Phalcon Kit 1.0, use findWith() instead',
         replacement: '%class%::findWith(%parametersList%)'
     )]
     public static function with(array ...$arguments): array
@@ -97,7 +97,7 @@ trait EagerLoad
      * @return ?ModelInterface
      */
     #[Deprecated(
-        reason: 'since Zemit 1.0, use findFirstWith() instead',
+        reason: 'since Phalcon Kit 1.0, use findFirstWith() instead',
         replacement: '%class%::findFirstWith(%parametersList%)'
     )]
     public static function firstWith(array ...$arguments): ?ModelInterface

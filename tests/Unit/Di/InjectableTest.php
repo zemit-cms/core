@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,18 +11,18 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Di;
+namespace PhalconKit\Tests\Unit\Di;
 
-use Zemit\Tests\Unit\AbstractUnit;
+use PhalconKit\Tests\Unit\AbstractUnit;
 
 class InjectableTest extends AbstractUnit
 {
-    public \Zemit\Di\Injectable $injectable;
+    public \PhalconKit\Di\Injectable $injectable;
     
     protected function setUp(): void
     {
         parent::setUp();
-        $this->injectable = new \Zemit\Di\Injectable();
+        $this->injectable = new \PhalconKit\Di\Injectable();
         $this->injectable->setDI($this->di);
     }
     

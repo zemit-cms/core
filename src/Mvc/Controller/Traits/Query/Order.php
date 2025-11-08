@@ -3,22 +3,22 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Controller\Traits\Query;
+namespace PhalconKit\Mvc\Controller\Traits\Query;
 
 use Exception;
 use Phalcon\Support\Collection;
 use Phalcon\Filter\Filter;
-use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
-use Zemit\Mvc\Controller\Traits\Abstracts\AbstractParams;
-use Zemit\Mvc\Controller\Traits\Abstracts\Query\AbstractOrder;
+use PhalconKit\Mvc\Controller\Traits\Abstracts\AbstractModel;
+use PhalconKit\Mvc\Controller\Traits\Abstracts\AbstractParams;
+use PhalconKit\Mvc\Controller\Traits\Abstracts\Query\AbstractOrder;
 
 /**
  * The Order trait sets and retrieves the order parameter for the query.

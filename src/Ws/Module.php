@@ -3,21 +3,21 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Ws;
+namespace PhalconKit\Ws;
 
 use Phalcon\Autoload\Loader;
 use Phalcon\Di\DiInterface;
 use Phalcon\Mvc\ModuleDefinitionInterface;
-use Zemit\Bootstrap\Config;
-use Zemit\Support\Utils;
+use PhalconKit\Bootstrap\Config;
+use PhalconKit\Support\Utils;
 
 class Module implements ModuleDefinitionInterface
 {
@@ -53,7 +53,7 @@ class Module implements ModuleDefinitionInterface
         $this->getServices($container);
         
         assert($this->dispatcher instanceof DispatcherInterface);
-        assert($this->router instanceof \Zemit\Router\RouterInterface);
+        assert($this->router instanceof \PhalconKit\Router\RouterInterface);
         
         // dispatcher settings
         $defaultNamespace = $this->getDefaultNamespace();
@@ -83,9 +83,9 @@ class Module implements ModuleDefinitionInterface
         $namespaces[$namespace . '\\Tasks'] = $dirname . '/Tasks/';
         $namespaces[$namespace . '\\Models'] = $dirname . '/Models/';
     
-        // add zemit core models
+        // add phalcon kit core models
         $corePath = dirname(__DIR__);
-        $namespaces['Zemit\\Models'] = $corePath . '/Models/';
+        $namespaces['PhalconKit\\Models'] = $corePath . '/Models/';
         
         return $namespaces;
     }

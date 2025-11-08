@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-# This file is part of the Zemit Framework.
+# This file is part of the Phalcon Kit.
 #
-# (c) Zemit Team <contact@zemit.com>
+# (c) Phalcon Kit Team
 #
 # For the full copyright and license information, please view the LICENSE.txt
 # file that was distributed with this source code.
@@ -11,9 +11,9 @@
 # License text
 LICENSE_TEXT=$(cat <<'EOF'
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -25,7 +25,7 @@ EOF
 process_path() {
     local path="$1"
     find "$path" -type f -name "*.php" | while IFS= read -r file; do
-        if ! grep -qF "This file is part of the Zemit Framework." "$file"; then
+        if ! grep -qF "This file is part of the Phalcon Kit." "$file"; then
             awk -v lic="$LICENSE_TEXT" '
             /<?php/ { print; print ""; print lic; lic_inserted=1; next }
             { print }

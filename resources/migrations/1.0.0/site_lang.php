@@ -104,7 +104,7 @@ class SiteLangMigration_100 extends Migration
                 new Reference(
                     'fk_site_lang_created_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['created_by'],
                         'referencedColumns' => ['id'],
@@ -115,7 +115,7 @@ class SiteLangMigration_100 extends Migration
                 new Reference(
                     'fk_site_lang_lang_id',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'lang',
                         'columns' => ['lang_id'],
                         'referencedColumns' => ['id'],
@@ -126,7 +126,7 @@ class SiteLangMigration_100 extends Migration
                 new Reference(
                     'fk_site_lang_site_id',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'site',
                         'columns' => ['site_id'],
                         'referencedColumns' => ['id'],

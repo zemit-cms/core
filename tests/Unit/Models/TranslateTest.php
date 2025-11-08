@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,19 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Models;
+namespace PhalconKit\Tests\Unit\Models;
 
-use Zemit\Models\Abstracts\TranslateAbstract;
-use Zemit\Models\Abstracts\Interfaces\TranslateAbstractInterface;
-use Zemit\Models\Translate;
-use Zemit\Models\Interfaces\TranslateInterface;
+use PhalconKit\Models\Abstracts\TranslateAbstract;
+use PhalconKit\Models\Abstracts\Interfaces\TranslateAbstractInterface;
+use PhalconKit\Models\Translate;
+use PhalconKit\Models\Interfaces\TranslateInterface;
 
 /**
  * Class TranslateTest
  *
  * This class contains unit tests for the User class.
  */
-class TranslateTest extends \Zemit\Tests\Unit\AbstractUnit
+class TranslateTest extends \PhalconKit\Tests\Unit\AbstractUnit
 {
     public TranslateInterface $translate;
     
@@ -42,9 +42,9 @@ class TranslateTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertInstanceOf(TranslateAbstract::class, $this->translate);
         $this->assertInstanceOf(TranslateAbstractInterface::class, $this->translate);
         
-        // Zemit
-        $this->assertInstanceOf(\Zemit\Mvc\ModelInterface::class, $this->translate);
-        $this->assertInstanceOf(\Zemit\Mvc\Model::class, $this->translate);
+        // Phalcon Kit
+        $this->assertInstanceOf(\PhalconKit\Mvc\ModelInterface::class, $this->translate);
+        $this->assertInstanceOf(\PhalconKit\Mvc\Model::class, $this->translate);
         
         // Phalcon
         $this->assertInstanceOf(\Phalcon\Mvc\ModelInterface::class, $this->translate);

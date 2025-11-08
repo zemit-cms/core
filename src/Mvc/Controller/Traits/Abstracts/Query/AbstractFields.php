@@ -3,21 +3,21 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Controller\Traits\Abstracts\Query;
+namespace PhalconKit\Mvc\Controller\Traits\Abstracts\Query;
 
-use Zemit\Mvc\Controller\Traits\Abstracts\Query\Fields\AbstractExposeFields;
-use Zemit\Mvc\Controller\Traits\Abstracts\Query\Fields\AbstractFilterFields;
-use Zemit\Mvc\Controller\Traits\Abstracts\Query\Fields\AbstractMapFields;
-use Zemit\Mvc\Controller\Traits\Abstracts\Query\Fields\AbstractSaveFields;
-use Zemit\Mvc\Controller\Traits\Abstracts\Query\Fields\AbstractSearchFields;
+use PhalconKit\Mvc\Controller\Traits\Abstracts\Query\Fields\AbstractExposeFields;
+use PhalconKit\Mvc\Controller\Traits\Abstracts\Query\Fields\AbstractFilterFields;
+use PhalconKit\Mvc\Controller\Traits\Abstracts\Query\Fields\AbstractMapFields;
+use PhalconKit\Mvc\Controller\Traits\Abstracts\Query\Fields\AbstractSaveFields;
+use PhalconKit\Mvc\Controller\Traits\Abstracts\Query\Fields\AbstractSearchFields;
 
 trait AbstractFields
 {

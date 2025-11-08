@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Support;
+namespace PhalconKit\Tests\Unit\Support;
 
-use Zemit\Support\Helper;
-use Zemit\Support\HelperFactory;
-use Zemit\Support\Utils;
-use Zemit\Tests\Unit\AbstractUnit;
+use PhalconKit\Support\Helper;
+use PhalconKit\Support\HelperFactory;
+use PhalconKit\Support\Utils;
+use PhalconKit\Tests\Unit\AbstractUnit;
 
 /**
  * Class UtilsTest
@@ -166,7 +166,7 @@ class UtilsTest extends AbstractUnit
         $this->assertEquals(__NAMESPACE__, $namespace);
         
         $namespace = Utils::getNamespace(new Utils());
-        $this->assertEquals('Zemit\\Support', $namespace);
+        $this->assertEquals('PhalconKit\\Support', $namespace);
     }
     
     public function testGetDirname(): void
@@ -203,9 +203,9 @@ class UtilsTest extends AbstractUnit
     {
         $name = Utils::getName($this);
         $this->assertIsString($name);
-        $this->assertEquals('Zemit\Tests\Unit\Support\UtilsTest', $name);
+        $this->assertEquals('PhalconKit\Tests\Unit\Support\UtilsTest', $name);
         
         $name = Utils::getName(new Utils());
-        $this->assertEquals('Zemit\Support\Utils', $name);
+        $this->assertEquals('PhalconKit\Support\Utils', $name);
     }
 }

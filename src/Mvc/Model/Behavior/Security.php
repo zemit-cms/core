@@ -3,24 +3,24 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Model\Behavior;
+namespace PhalconKit\Mvc\Model\Behavior;
 
 use Phalcon\Di\Di;
 use Phalcon\Messages\Message;
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Acl\Adapter\AdapterInterface;
-use Zemit\Mvc\Model\Behavior\Traits\ProgressTrait;
-use Zemit\Mvc\Model\Behavior\Traits\SkippableTrait;
-use Zemit\Identity\Manager as Identity;
+use PhalconKit\Mvc\Model\Behavior\Traits\ProgressTrait;
+use PhalconKit\Mvc\Model\Behavior\Traits\SkippableTrait;
+use PhalconKit\Identity\Manager as Identity;
 
 /**
  * The Security class provides methods for access control and permission checking.
@@ -54,7 +54,7 @@ class Security extends Behavior
     {
         if (is_null(self::$acl)) {
             $acl = Di::getDefault()->get('acl');
-            assert($acl instanceof \Zemit\Acl\Acl);
+            assert($acl instanceof \PhalconKit\Acl\Acl);
             self::setAcl($acl->get(['models', 'components']));
         }
         assert(self::$acl instanceof AdapterInterface);

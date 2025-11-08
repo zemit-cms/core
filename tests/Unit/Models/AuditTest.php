@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,19 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Models;
+namespace PhalconKit\Tests\Unit\Models;
 
-use Zemit\Models\Abstracts\AuditAbstract;
-use Zemit\Models\Abstracts\Interfaces\AuditAbstractInterface;
-use Zemit\Models\Audit;
-use Zemit\Models\Interfaces\AuditInterface;
+use PhalconKit\Models\Abstracts\AuditAbstract;
+use PhalconKit\Models\Abstracts\Interfaces\AuditAbstractInterface;
+use PhalconKit\Models\Audit;
+use PhalconKit\Models\Interfaces\AuditInterface;
 
 /**
  * Class AuditTest
  *
  * This class contains unit tests for the User class.
  */
-class AuditTest extends \Zemit\Tests\Unit\AbstractUnit
+class AuditTest extends \PhalconKit\Tests\Unit\AbstractUnit
 {
     public AuditInterface $audit;
     
@@ -42,9 +42,9 @@ class AuditTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertInstanceOf(AuditAbstract::class, $this->audit);
         $this->assertInstanceOf(AuditAbstractInterface::class, $this->audit);
         
-        // Zemit
-        $this->assertInstanceOf(\Zemit\Mvc\ModelInterface::class, $this->audit);
-        $this->assertInstanceOf(\Zemit\Mvc\Model::class, $this->audit);
+        // Phalcon Kit
+        $this->assertInstanceOf(\PhalconKit\Mvc\ModelInterface::class, $this->audit);
+        $this->assertInstanceOf(\PhalconKit\Mvc\Model::class, $this->audit);
         
         // Phalcon
         $this->assertInstanceOf(\Phalcon\Mvc\ModelInterface::class, $this->audit);

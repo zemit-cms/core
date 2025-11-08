@@ -118,7 +118,7 @@ class AuditDetailMigration_100 extends Migration
                 new Reference(
                     'fk_audit_detail_audit_id',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'audit',
                         'columns' => ['audit_id'],
                         'referencedColumns' => ['id'],
@@ -129,7 +129,7 @@ class AuditDetailMigration_100 extends Migration
                 new Reference(
                     'fk_audit_detail_created_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['created_by'],
                         'referencedColumns' => ['id'],

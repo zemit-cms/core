@@ -1,12 +1,12 @@
 # Security Policy
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=zemit-cms_core&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=zemit-cms_core)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=zemit-cms_core&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=zemit-cms_core)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=zemit-cms_core&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=zemit-cms_core)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=phalcon-kit_core&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=phalcon-kit_core)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=phalcon-kit_core&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=phalcon-kit_core)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=phalcon-kit_core&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=phalcon-kit_core)
 
 ## Supported Versions
 
-The following table lists the versions of **Zemit Core** that currently receive security updates and patches.
+The following table lists the versions of **Phalcon Kit Core** that currently receive security updates and patches.
 
 | Version | Supported          | Notes                                                 |
 | ------- | ------------------ | ----------------------------------------------------- |
@@ -22,8 +22,8 @@ We take security seriously and appreciate responsible disclosures.
 
 If you discover a potential security issue, please follow these steps:
 
-1. **Do not disclose publicly.** Instead, contact the Zemit Core maintainers privately.
-2. **Report via GitHub:** [Open a new issue](https://github.com/zemit-cms/core/issues/new) and add the `security` label.
+1. **Do not disclose publicly.** Instead, contact the Phalcon Kit Core maintainers privately.
+2. **Report via GitHub:** [Open a new issue](https://github.com/phalcon-kit/core/issues/new) and add the `security` label.
 3. Include as much detail as possible, such as:
 
     * Description of the vulnerability
@@ -31,15 +31,13 @@ If you discover a potential security issue, please follow these steps:
     * Potential impact and severity
     * Environment (OS, PHP version, configuration)
 
-If you prefer a private disclosure channel, you may also email the maintainers directly at: `contact@zemit.com` (PGP key coming soon).
-
-We aim to respond to all reports within **48 hours**, triage issues within **5 business days**, and provide patches or mitigations as soon as possible.
+We aim to respond to all reports and provide patches or mitigations as soon as possible.
 
 ---
 
 ## Security Practices
 
-Zemit Core follows a defense-in-depth philosophy with a focus on:
+Phalcon Kit Core follows a defense-in-depth philosophy with a focus on:
 
 * **Static Analysis & Code Quality:** Enforced via PHPStan, Psalm, and Qodana CI checks for type safety and secure patterns.
 * **Automated Testing:** PHPUnit test suites with code coverage integrated into CI/CD pipelines.
@@ -55,7 +53,7 @@ Zemit Core follows a defense-in-depth philosophy with a focus on:
 
 ## Secure Development Toolchain
 
-Zemit Core integrates multiple security and quality tools:
+Phalcon Kit Core integrates multiple security and quality tools:
 
 | Tool                                | Purpose                                                                  |
 | ----------------------------------- | ------------------------------------------------------------------------ |
@@ -67,7 +65,7 @@ Zemit Core integrates multiple security and quality tools:
 | **Composer Audit**                  | Dependency vulnerability scanning.                                       |
 | **Phalcon IDE Stubs & Scaffolding** | Secure, consistent framework scaffolding with IDE support.               |
 
-These tools are part of the **Zemit CI pipeline**, ensuring every commit is automatically scanned and tested before release.
+These tools are part of the **Phalcon Kit CI pipeline**, ensuring every commit is automatically scanned and tested before release.
 
 ---
 
@@ -88,7 +86,7 @@ All contributors must:
 * [OWASP Cheat Sheet Series](https://cheatsheetseries.owasp.org/index.html)
 * [OWASP Top 10](https://owasp.org/www-project-top-ten/)
 * [PHP Security Best Practices](https://phptherightway.com/#security)
-* [SonarCloud Project Dashboard](https://sonarcloud.io/summary/new_code?id=zemit-cms_core)
+* [SonarCloud Project Dashboard](https://sonarcloud.io/summary/new_code?id=phalcon-kit_core)
 * [PHPStan Documentation](https://phpstan.org/)
 * [Psalm Documentation](https://psalm.dev/)
 * [Qodana for PHP](https://www.jetbrains.com/qodana/)
@@ -96,4 +94,4 @@ All contributors must:
 
 ---
 
-*© Zemit — Security is a shared responsibility. Thank you for helping keep our ecosystem safe.*
+*© Phalcon Kit — Security is a shared responsibility. Thank you for helping keep our ecosystem safe.*

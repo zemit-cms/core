@@ -3,22 +3,22 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Provider\Router;
+namespace PhalconKit\Provider\Router;
 
 use Phalcon\Di\DiInterface;
-use Zemit\Bootstrap;
-use Zemit\Bootstrap\Router;
-use Zemit\Cli\Router as CliRouter;
-use Zemit\Ws\Router as WsRouter;
-use Zemit\Provider\AbstractServiceProvider;
+use PhalconKit\Bootstrap;
+use PhalconKit\Bootstrap\Router;
+use PhalconKit\Cli\Router as CliRouter;
+use PhalconKit\Ws\Router as WsRouter;
+use PhalconKit\Provider\AbstractServiceProvider;
 
 class ServiceProvider extends AbstractServiceProvider
 {

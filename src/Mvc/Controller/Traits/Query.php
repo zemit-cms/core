@@ -3,15 +3,15 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Controller\Traits;
+namespace PhalconKit\Mvc\Controller\Traits;
 
 use Phalcon\Filter\Exception;
 use Phalcon\Mvc\Model\Resultset;
@@ -19,23 +19,23 @@ use Phalcon\Mvc\Model\Row;
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Support\Collection;
 use Phalcon\Mvc\Model\ResultsetInterface;
-use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
-use Zemit\Mvc\Controller\Traits\Abstracts\AbstractQuery;
-use Zemit\Mvc\Controller\Traits\Query\Bind;
-use Zemit\Mvc\Controller\Traits\Query\Cache;
-use Zemit\Mvc\Controller\Traits\Query\Column;
-use Zemit\Mvc\Controller\Traits\Query\Conditions;
-use Zemit\Mvc\Controller\Traits\Query\Distinct;
-use Zemit\Mvc\Controller\Traits\Query\Fields;
-use Zemit\Mvc\Controller\Traits\Query\Group;
-use Zemit\Mvc\Controller\Traits\Query\Having;
-use Zemit\Mvc\Controller\Traits\Query\Joins;
-use Zemit\Mvc\Controller\Traits\Query\Limit;
-use Zemit\Mvc\Controller\Traits\Query\Offset;
-use Zemit\Mvc\Controller\Traits\Query\Order;
-use Zemit\Mvc\Controller\Traits\Query\Save;
-use Zemit\Mvc\Controller\Traits\Query\With;
-use Zemit\Mvc\Model\Interfaces\EagerLoadInterface;
+use PhalconKit\Mvc\Controller\Traits\Abstracts\AbstractModel;
+use PhalconKit\Mvc\Controller\Traits\Abstracts\AbstractQuery;
+use PhalconKit\Mvc\Controller\Traits\Query\Bind;
+use PhalconKit\Mvc\Controller\Traits\Query\Cache;
+use PhalconKit\Mvc\Controller\Traits\Query\Column;
+use PhalconKit\Mvc\Controller\Traits\Query\Conditions;
+use PhalconKit\Mvc\Controller\Traits\Query\Distinct;
+use PhalconKit\Mvc\Controller\Traits\Query\Fields;
+use PhalconKit\Mvc\Controller\Traits\Query\Group;
+use PhalconKit\Mvc\Controller\Traits\Query\Having;
+use PhalconKit\Mvc\Controller\Traits\Query\Joins;
+use PhalconKit\Mvc\Controller\Traits\Query\Limit;
+use PhalconKit\Mvc\Controller\Traits\Query\Offset;
+use PhalconKit\Mvc\Controller\Traits\Query\Order;
+use PhalconKit\Mvc\Controller\Traits\Query\Save;
+use PhalconKit\Mvc\Controller\Traits\Query\With;
+use PhalconKit\Mvc\Model\Interfaces\EagerLoadInterface;
 
 /**
  * Class Query

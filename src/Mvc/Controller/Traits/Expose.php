@@ -3,20 +3,20 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Controller\Traits;
+namespace PhalconKit\Mvc\Controller\Traits;
 
-use Zemit\Mvc\Controller\Traits\Abstracts\AbstractExpose;
-use Zemit\Mvc\Controller\Traits\Abstracts\Query\Fields\AbstractExposeFields;
-use Zemit\Mvc\Model\Interfaces\ExposeInterface;
-use Zemit\Support\Exposer\Exposer;
+use PhalconKit\Mvc\Controller\Traits\Abstracts\AbstractExpose;
+use PhalconKit\Mvc\Controller\Traits\Abstracts\Query\Fields\AbstractExposeFields;
+use PhalconKit\Mvc\Model\Interfaces\ExposeInterface;
+use PhalconKit\Support\Exposer\Exposer;
 
 trait Expose
 {

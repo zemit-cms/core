@@ -3,38 +3,38 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Support;
+namespace PhalconKit\Support;
 
-use Zemit\Support\Version as ZemitVersion;
+use PhalconKit\Support\Version as PhalconKitVersion;
 use Phalcon\Support\Version as PhalconVersion;
 
 /**
- * Provides debug capabilities to Zemit applications
+ * Provides debug capabilities to Phalcon Kit applications
  */
 class Debug extends \Phalcon\Support\Debug
 {
     /**
-     * Returns the version information for Zemit and Phalcon Framework.
+     * Returns the version information for Phalcon Kit and Phalcon Framework.
      *
      * @return string The version information as HTML string.
      */
     #[\Override]
     public function getVersion(): string
     {
-        $zemit = new ZemitVersion();
+        $phalconKit = new PhalconKitVersion();
         $phalcon = new PhalconVersion();
         
         return sprintf(
-            '<div class="version">Zemit Core <a href="https://docs.zemit.com/" target="_new">%s</a> | Phalcon Framework <a href="https://docs.phalcon.io/%d.%d/en/" target="_new">%s</a></div>',
-            $zemit->get(),
+            '<div class="version">Phalcon Kit <a href="https://github.com/phalcon-kit/core" target="_new">%s</a> | Phalcon Framework <a href="https://docs.phalcon.io/%d.%d/en/" target="_new">%s</a></div>',
+            $phalconKit->get(),
             $phalcon->getPart(PhalconVersion::VERSION_MAJOR),
             $phalcon->getPart(PhalconVersion::VERSION_MEDIUM),
             $phalcon->get()
@@ -64,14 +64,14 @@ class Debug extends \Phalcon\Support\Debug
             $html
         );
         
-        // --- Add Zemit class links inside <span class="error-class"> ---
+        // --- Add Phalcon Kit class links inside <span class="error-class"> ---
         assert(is_string($html));
         $html = preg_replace_callback(
-            '#(<span[^>]*class="error-class"[^>]*>)(Zemit\\\\[A-Za-z0-9_\\\\]+)(</span>)#',
+            '#(<span[^>]*class="error-class"[^>]*>)(PhalconKit\\\\[A-Za-z0-9_\\\\]+)(</span>)#',
             static function (array $m): string {
                 $class = $m[2];
                 $path = str_replace('\\', '/', $class);
-                $url = "https://docs.zemit.com/api/classes/{$path}/";
+                $url = "https://github.com/phalcon-kit/docs/tree/main/docs/api/classes/{$path}/";
                 return $m[1] .
                     sprintf(
                         '<a target="_new" href="%s">%s</a>',
@@ -83,14 +83,14 @@ class Debug extends \Phalcon\Support\Debug
             $html
         );
         
-        // --- Add Zemit class links outside spans ---
+        // --- Add Phalcon Kit class links outside spans ---
         assert(is_string($html));
         $html = preg_replace_callback(
-            '#(?<!href=")(Zemit\\\\[A-Za-z0-9_\\\\]+)#',
+            '#(?<!href=")(PhalconKit\\\\[A-Za-z0-9_\\\\]+)#',
             static function (array $m): string {
                 $class = $m[1];
                 $path = str_replace('\\', '/', $class);
-                $url = "https://docs.zemit.com/api/classes/{$path}/";
+                $url = "https://github.com/phalcon-kit/docs/tree/main/docs/api/classes/{$path}/";
                 return sprintf(
                     '<a target="_new" href="%s">%s</a>',
                     htmlspecialchars($url, ENT_QUOTES),

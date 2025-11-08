@@ -5,7 +5,7 @@
         xmlns="https://www.phpdoc.org"
         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/phpDocumentor/phpDocumentor/master/data/xsd/phpdoc.xsd"
 >
-    <title>Zemit Project Documentation</title>
+    <title>Phalcon Kit Documentation</title>
     
     <paths>
         <output>docs</output>

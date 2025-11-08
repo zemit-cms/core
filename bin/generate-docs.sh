@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-# This file is part of the Zemit Framework.
+# This file is part of the Phalcon Kit.
 #
-# (c) Zemit Team <contact@zemit.com>
+# (c) Phalcon Kit Team
 #
 # For the full copyright and license information, please view the LICENSE.txt
 # file that was distributed with this source code.
@@ -45,7 +45,7 @@ export -f decode_html_entities
 find ./docs/ -type f -name "*.md" -exec bash -c 'decode_html_entities "$0"' {} \;
 
 # delete this invalid utf8 line
-sed -i '/^public __invoke(string \$string, string \$invalidUtf8Regex = .*/d' ./docs/classes/Zemit/Support/Helper/Str/SanitizeUTF8.md
+sed -i '/^public __invoke(string \$string, string \$invalidUtf8Regex = .*/d' ./docs/classes/PhalconKit/Support/Helper/Str/SanitizeUTF8.md
 
 # Generate Menu for Mkdoc
 ./bin/generate-docs-menu.sh

@@ -1,5 +1,5 @@
 # .github/dependabot.yml
-# Dependabot configuration for Zemit Core
+# Dependabot configuration for Phalcon Kit
 # Restricts PRs to the "master" branch only
 
 version: 2

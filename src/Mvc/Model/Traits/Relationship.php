@@ -3,15 +3,15 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Model\Traits;
+namespace PhalconKit\Mvc\Model\Traits;
 
 use Exception;
 use Phalcon\Db\Adapter\AdapterInterface;
@@ -25,11 +25,11 @@ use Phalcon\Mvc\Model\RelationInterface;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Support\Collection\CollectionInterface;
-use Zemit\Mvc\Model\Interfaces\RelationshipInterface;
-use Zemit\Mvc\Model\Interfaces\SoftDeleteInterface;
-use Zemit\Mvc\Model\Traits\Abstracts\AbstractEntity;
-use Zemit\Mvc\Model\Traits\Abstracts\AbstractMetaData;
-use Zemit\Mvc\Model\Traits\Abstracts\AbstractModelsManager;
+use PhalconKit\Mvc\Model\Interfaces\RelationshipInterface;
+use PhalconKit\Mvc\Model\Interfaces\SoftDeleteInterface;
+use PhalconKit\Mvc\Model\Traits\Abstracts\AbstractEntity;
+use PhalconKit\Mvc\Model\Traits\Abstracts\AbstractMetaData;
+use PhalconKit\Mvc\Model\Traits\Abstracts\AbstractModelsManager;
 
 /**
  * Allow to automagically save relationship

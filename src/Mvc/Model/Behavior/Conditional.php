@@ -3,22 +3,22 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Model\Behavior;
+namespace PhalconKit\Mvc\Model\Behavior;
 
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Mvc\ModelInterface;
-use Zemit\Mvc\Model\Behavior\Traits\SkippableTrait;
+use PhalconKit\Mvc\Model\Behavior\Traits\SkippableTrait;
 
 /**
- * Zemit\Mvc\Model\Traits\Behavior\Conditional
+ * PhalconKit\Mvc\Model\Traits\Behavior\Conditional
  *
  * Allows to automatically update a model’s attribute saving the datetime when a
  * record is created or updated

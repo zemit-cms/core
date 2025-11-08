@@ -3,26 +3,26 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Modules\Cli\Tasks;
+namespace PhalconKit\Modules\Cli\Tasks;
 
 use Phalcon\Mvc\Model\Resultset;
-use Zemit\Modules\Cli\Task;
-use Zemit\Mvc\Model;
-use Zemit\Support\Utils;
+use PhalconKit\Modules\Cli\Task;
+use PhalconKit\Mvc\Model;
+use PhalconKit\Support\Utils;
 
 class DataLifeCycleTask extends Task
 {
     public string $cliDoc = <<<DOC
 Usage:
-  zemit cli data-life-cycle <action> [<params> ...]
+  phalcon-kit cli data-life-cycle <action> [<params> ...]
 
 Options:
   task: cache

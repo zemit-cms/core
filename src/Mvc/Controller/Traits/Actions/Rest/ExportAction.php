@@ -3,23 +3,23 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Mvc\Controller\Traits\Actions\Rest;
+namespace PhalconKit\Mvc\Controller\Traits\Actions\Rest;
 
 use Exception;
 use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\Model\Resultset;
-use Zemit\Mvc\Controller\Traits\Abstracts\AbstractExport;
-use Zemit\Mvc\Controller\Traits\Abstracts\AbstractExpose;
-use Zemit\Mvc\Controller\Traits\Abstracts\AbstractModel;
-use Zemit\Mvc\Controller\Traits\Abstracts\AbstractQuery;
+use PhalconKit\Mvc\Controller\Traits\Abstracts\AbstractExport;
+use PhalconKit\Mvc\Controller\Traits\Abstracts\AbstractExpose;
+use PhalconKit\Mvc\Controller\Traits\Abstracts\AbstractModel;
+use PhalconKit\Mvc\Controller\Traits\Abstracts\AbstractQuery;
 
 trait ExportAction
 {

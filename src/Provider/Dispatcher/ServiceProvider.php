@@ -3,29 +3,29 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Provider\Dispatcher;
+namespace PhalconKit\Provider\Dispatcher;
 
 use Phalcon\Di\DiInterface;
-use Zemit\Bootstrap;
-use Zemit\Config\ConfigInterface;
-use Zemit\Cli\Dispatcher as CliDispatcher;
-use Zemit\Ws\Dispatcher as WsDispatcher;
-use Zemit\Mvc\Dispatcher as MvcDispatcher;
-use Zemit\Mvc\Dispatcher\Camelize;
-use Zemit\Mvc\Dispatcher\Preflight;
-use Zemit\Mvc\Dispatcher\Error;
-use Zemit\Mvc\Dispatcher\Rest;
-use Zemit\Mvc\Dispatcher\Security;
-use Zemit\Mvc\Dispatcher\Maintenance;
-use Zemit\Provider\AbstractServiceProvider;
+use PhalconKit\Bootstrap;
+use PhalconKit\Config\ConfigInterface;
+use PhalconKit\Cli\Dispatcher as CliDispatcher;
+use PhalconKit\Ws\Dispatcher as WsDispatcher;
+use PhalconKit\Mvc\Dispatcher as MvcDispatcher;
+use PhalconKit\Mvc\Dispatcher\Camelize;
+use PhalconKit\Mvc\Dispatcher\Preflight;
+use PhalconKit\Mvc\Dispatcher\Error;
+use PhalconKit\Mvc\Dispatcher\Rest;
+use PhalconKit\Mvc\Dispatcher\Security;
+use PhalconKit\Mvc\Dispatcher\Maintenance;
+use PhalconKit\Provider\AbstractServiceProvider;
 
 class ServiceProvider extends AbstractServiceProvider
 {

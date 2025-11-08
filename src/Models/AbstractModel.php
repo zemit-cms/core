@@ -3,19 +3,19 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Models;
+namespace PhalconKit\Models;
 
-use Zemit\Db\Column;
+use PhalconKit\Db\Column;
 
-abstract class AbstractModel extends \Zemit\Mvc\Model
+abstract class AbstractModel extends \PhalconKit\Mvc\Model
 {
     public const int YES = Column::YES;
     public const int NO = Column::NO;

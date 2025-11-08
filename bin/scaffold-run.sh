@@ -1,11 +1,11 @@
 #!/bin/bash
 #
-# This file is part of the Zemit Framework.
+# This file is part of the Phalcon Kit.
 #
-# (c) Zemit Team <contact@zemit.com>
+# (c) Phalcon Kit Team
 #
 # For the full copyright and license information, please view the LICENSE.txt
 # file that was distributed with this source code.
 #
 
-./zemit cli scaffold run --namespace=Zemit "$@"
+./phalcon-kit cli scaffold run --namespace=PhalconKit "$@"

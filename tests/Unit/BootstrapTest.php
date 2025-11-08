@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,16 +11,16 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit;
+namespace PhalconKit\Tests\Unit;
 
 use Phalcon\Application\AbstractApplication;
 use Phalcon\Di\DiInterface;
 use Phalcon\Mvc\RouterInterface as MvcRouterInterface;
-use Zemit\Bootstrap;
-use Zemit\Config\ConfigInterface;
-use Zemit\Bootstrap\Config;
-use Zemit\Mvc\Router as MvcRouter;
-use Zemit\Cli\Router as CliRouter;
+use PhalconKit\Bootstrap;
+use PhalconKit\Config\ConfigInterface;
+use PhalconKit\Bootstrap\Config;
+use PhalconKit\Mvc\Router as MvcRouter;
+use PhalconKit\Cli\Router as CliRouter;
 
 /**
  * Class BootstrapTest
@@ -116,7 +116,7 @@ class BootstrapTest extends AbstractUnit
         $bootstrap = new Bootstrap(Bootstrap::MODE_CLI);
         
         $_SERVER['argv'] = [
-            './zemit',
+            './phalcon-kit',
             'module',
             'task',
         ];
@@ -127,7 +127,7 @@ class BootstrapTest extends AbstractUnit
         $this->assertEquals('task', $args['task']);
         
         $_SERVER['argv'] = [
-            './zemit',
+            './phalcon-kit',
             'module',
             'task',
             'action',

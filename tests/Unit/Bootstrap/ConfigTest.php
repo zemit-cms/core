@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,10 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Bootstrap;
+namespace PhalconKit\Tests\Unit\Bootstrap;
 
-use Zemit\Tests\Unit\AbstractUnit;
-use Zemit\Bootstrap\Config;
+use PhalconKit\Tests\Unit\AbstractUnit;
+use PhalconKit\Bootstrap\Config;
 
 class ConfigTest extends AbstractUnit
 {
@@ -100,11 +100,11 @@ class ConfigTest extends AbstractUnit
     
     public function testGetModelClass(): void
     {
-        $config = new \Zemit\Bootstrap\Config();
+        $config = new \PhalconKit\Bootstrap\Config();
         $modelsMap = $config->get('models')->toArray();
         
         $models = $this->di->get('models');
-        assert($models instanceof \Zemit\Support\Models);
+        assert($models instanceof \PhalconKit\Support\Models);
         
         foreach ($modelsMap as $from => $to) {
             // Should be itself by default

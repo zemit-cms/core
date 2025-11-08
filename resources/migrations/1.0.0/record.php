@@ -131,7 +131,7 @@ class RecordMigration_100 extends Migration
                 new Reference(
                     'fk_record_created_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['created_by'],
                         'referencedColumns' => ['id'],
@@ -142,7 +142,7 @@ class RecordMigration_100 extends Migration
                 new Reference(
                     'fk_record_deleted_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['deleted_by'],
                         'referencedColumns' => ['id'],
@@ -153,7 +153,7 @@ class RecordMigration_100 extends Migration
                 new Reference(
                     'fk_record_table_id',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'table',
                         'columns' => ['table_id'],
                         'referencedColumns' => ['id'],
@@ -164,7 +164,7 @@ class RecordMigration_100 extends Migration
                 new Reference(
                     'fk_record_updated_by',
                     [
-                        'referencedSchema' => 'zemit_core',
+                        'referencedSchema' => 'phalcon_kit',
                         'referencedTable' => 'user',
                         'columns' => ['updated_by'],
                         'referencedColumns' => ['id'],

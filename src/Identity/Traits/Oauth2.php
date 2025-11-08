@@ -3,23 +3,23 @@
 declare(strict_types=1);
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace Zemit\Identity\Traits;
+namespace PhalconKit\Identity\Traits;
 
 use Phalcon\Db\Column;
 use Phalcon\Filter\Exception;
 use Phalcon\Filter\Validation\Validator\PresenceOf;
 use Phalcon\Messages\Message;
-use Zemit\Filter\Validation;
-use Zemit\Identity\Traits\Abstracts\AbstractSession;
-use Zemit\Identity\Traits\Abstracts\AbstractUser;
+use PhalconKit\Filter\Validation;
+use PhalconKit\Identity\Traits\Abstracts\AbstractSession;
+use PhalconKit\Identity\Traits\Abstracts\AbstractUser;
 
 trait Oauth2
 {
@@ -48,7 +48,7 @@ trait Oauth2
         $loggedInUser = null;
         
         // retrieve and prepare oauth2 entity
-        $oauth2 = \Zemit\Models\Oauth2::findFirst([
+        $oauth2 = \PhalconKit\Models\Oauth2::findFirst([
             'provider = :provider: and provider_uuid = :providerUuid:',
             'bind' => [
                 'provider' => $this->filter->sanitize($provider, 'string'),
@@ -59,8 +59,8 @@ trait Oauth2
                 'providerUuid' => Column::BIND_PARAM_STR,
             ],
         ]);
-        if (!($oauth2 instanceof \Zemit\Models\Oauth2)) {
-            $oauth2 = new \Zemit\Models\Oauth2();
+        if (!($oauth2 instanceof \PhalconKit\Models\Oauth2)) {
+            $oauth2 = new \PhalconKit\Models\Oauth2();
             $oauth2->setProvider($provider);
             $oauth2->setProviderUuid($providerUuid);
         }

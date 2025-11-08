@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This file is part of the Zemit Framework.
+ * This file is part of the Phalcon Kit.
  *
- * (c) Zemit Team <contact@zemit.com>
+ * (c) Phalcon Kit Team
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
@@ -11,19 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Zemit\Tests\Unit\Models;
+namespace PhalconKit\Tests\Unit\Models;
 
-use Zemit\Models\Abstracts\TableAbstract;
-use Zemit\Models\Abstracts\Interfaces\TableAbstractInterface;
-use Zemit\Models\Table;
-use Zemit\Models\Interfaces\TableInterface;
+use PhalconKit\Models\Abstracts\TableAbstract;
+use PhalconKit\Models\Abstracts\Interfaces\TableAbstractInterface;
+use PhalconKit\Models\Table;
+use PhalconKit\Models\Interfaces\TableInterface;
 
 /**
  * Class TableTest
  *
  * This class contains unit tests for the User class.
  */
-class TableTest extends \Zemit\Tests\Unit\AbstractUnit
+class TableTest extends \PhalconKit\Tests\Unit\AbstractUnit
 {
     public TableInterface $table;
     
@@ -42,9 +42,9 @@ class TableTest extends \Zemit\Tests\Unit\AbstractUnit
         $this->assertInstanceOf(TableAbstract::class, $this->table);
         $this->assertInstanceOf(TableAbstractInterface::class, $this->table);
         
-        // Zemit
-        $this->assertInstanceOf(\Zemit\Mvc\ModelInterface::class, $this->table);
-        $this->assertInstanceOf(\Zemit\Mvc\Model::class, $this->table);
+        // Phalcon Kit
+        $this->assertInstanceOf(\PhalconKit\Mvc\ModelInterface::class, $this->table);
+        $this->assertInstanceOf(\PhalconKit\Mvc\Model::class, $this->table);
         
         // Phalcon
         $this->assertInstanceOf(\Phalcon\Mvc\ModelInterface::class, $this->table);

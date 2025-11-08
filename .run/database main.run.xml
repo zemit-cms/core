@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="database main" type="PhpLocalRunConfigurationType" factoryName="PHP Console" path="$PROJECT_DIR$/zemit" scriptParameters="cli database main">
+  <configuration default="false" name="database main" type="PhpLocalRunConfigurationType" factoryName="PHP Console" path="$PROJECT_DIR$/phalcon-kit" scriptParameters="cli database main">
     <CommandLine workingDirectory="$PROJECT_DIR$/" />
     <method v="2" />
   </configuration>
