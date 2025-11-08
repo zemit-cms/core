@@ -1,16 +1,13 @@
 # Phalcon Kit Core
-[![Phalcon Kit CI](https://github.com/phalcon-kit/core/actions/workflows/main.yml/badge.svg)](https://github.com/phalcon-kit/core/actions/workflows/main.yml)
-[![Total Downloads](http://poser.pugx.org/phalcon-kit/core/downloads)](https://packagist.org/packages/phalcon-kit/core)
-[![PHP Version Require](http://poser.pugx.org/phalcon-kit/core/require/php)](https://packagist.org/packages/phalcon-kit/core)
-
+[![CI](https://github.com/phalcon-kit/core/actions/workflows/main.yml/badge.svg)](https://github.com/phalcon-kit/core/actions/workflows/main.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=phalcon-kit_core&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=phalcon-kit_core)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=phalcon-kit_core&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=phalcon-kit_core)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=phalcon-kit_core&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=phalcon-kit_core)
 
-[![Latest Stable Version](http://poser.pugx.org/phalcon-kit/core/v)](https://packagist.org/packages/phalcon-kit/core)
-[![Latest Unstable Version](http://poser.pugx.org/phalcon-kit/core/v/unstable)](https://packagist.org/packages/phalcon-kit/core)
-[![License](http://poser.pugx.org/phalcon-kit/core/license)](https://packagist.org/packages/phalcon-kit/core)
+![Version](https://img.shields.io/packagist/v/phalcon-kit/core)
+![PHP](https://img.shields.io/packagist/dependency-v/phalcon-kit/core/php)
+![Downloads](https://img.shields.io/packagist/dt/phalcon-kit/core)
+![License](https://img.shields.io/packagist/l/phalcon-kit/core)
 
+> Previously known as Zemit CMS — now Phalcon Kit, rebuilt and rebranded for the future. 
 
 Welcome to [Phalcon Kit Core](https://github.com/phalcon-kit/core), an innovative enhancement for the [Phalcon PHP Framework](https://phalcon.io) designed to supercharge your web development process. Phalcon Kit Core is not just an add-on; it's a comprehensive toolset that transforms the way you build and manage web applications.
 
