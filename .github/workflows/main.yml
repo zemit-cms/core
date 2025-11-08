@@ -228,7 +228,7 @@ jobs:
 
       - name: Run Psalm Security Scan
         run: |
-          vendor/bin/psalm --output-format=github --no-progress --no-cache --threads=4
+          psalm --output-format=github --no-progress --no-cache --threads=4
 
 #      - name: Run Psalm Security Scan
 #        run: |
