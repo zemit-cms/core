@@ -13,6 +13,7 @@ namespace PhalconKit\Modules\Cli\Tasks;
 
 use Phalcon\Db\Column;
 use Phalcon\Db\ColumnInterface;
+use Phalcon\Db\IndexInterface;
 use PhalconKit\Modules\Cli\Task;
 use PhalconKit\Modules\Cli\Tasks\Traits\DescribesTrait;
 use PhalconKit\Modules\Cli\Tasks\Traits\ScaffoldTrait;
@@ -149,6 +150,8 @@ DOC;
             }
             
             $columns = $this->describeColumns($table);
+            $indexes = $this->describeIndexes($table);
+            $references = $this->describeReferences($table);
             $definitions = $this->getDefinitionsAction($table);
             $relationships = $this->getRelationshipItems($table, $columns, $tables);
             
@@ -162,7 +165,7 @@ DOC;
             // Abstract
             $savePath = $this->getAbstractsDirectory($definitions['abstract']['file']);
             if (!file_exists($savePath) || $force) {
-                $this->saveFile($savePath, $this->createAbstractOutput($definitions, $columns, $relationships), $force);
+                $this->saveFile($savePath, $this->createAbstractOutput($definitions, $columns, $relationships, $indexes), $force);
                 $ret [] = 'Abstract Model `' . $definitions['abstract']['file'] . '` created at `' . $savePath . '`';
             }
             
@@ -300,12 +303,12 @@ PHP;
      *
      * @return string The abstract output as a string.
      */
-    public function createAbstractOutput(array $definitions, array $columns, array $relationships): string
+    public function createAbstractOutput(array $definitions, array $columns, array $relationships, array $indexes): string
     {
         $propertyItems = $this->getPropertyItems($columns);
         $getSetMethods = $this->getGetSetMethods($columns);
         $columnMapMethod = $this->getColumnMapMethod($columns);
-        $validationItems = $this->getValidationItems($columns);
+        $validationItems = $this->getValidationItems($columns, $indexes);
         $modelsExtend = $this->getModelsExtend();
         $modelsExtendBaseName = basename($modelsExtend);
         
@@ -502,16 +505,36 @@ PHP;
      * Generates a string containing validation items for each column in the provided array.
      *
      * @param array $columns An array of ColumnInterface objects.
+     * @param array $indexes An array of IndexInterface objects.
      *
      * @return string The generated validation items string.
      */
-    public function getValidationItems(array $columns): string
+    public function getValidationItems(array $columns, array $indexes): string
     {
         if ($this->isNoValidations()) {
             return '';
         }
         
         $validationItems = [];
+        
+        foreach ($indexes as $index) {
+            assert($index instanceof IndexInterface);
+            $indexType = $index->getType();
+            $indexName = $index->getName();
+            $indexColumns = $index->getColumns();
+            
+            if ($indexType === 'UNIQUE' || $indexType === 'PRIMARY') {
+                $propertiesName = [];
+                foreach ($indexColumns as $indexColumn) {
+                    $propertiesName [] = $this->getPropertyName($indexColumn);
+                }
+                $propertyName = "'" . implode("', '", $propertiesName) . "'";
+                $validationItems [] = <<<PHP
+        \$this->addUniquenessValidation(\$validator, [{$propertyName}], true); // $indexName
+PHP;
+            }
+        }
+        
         foreach ($columns as $column) {
             assert($column instanceof ColumnInterface);
             $columnType = $column->getType();
