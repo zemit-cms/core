@@ -143,7 +143,7 @@ trait Model
      * Loads a model by its name using the modelsManager.
      *
      * @param string|null $modelName The name of the model to load. Default is null and will use $this->getModelName().
-     * 
+     *
      * @return ModelInterface The loaded model.
      */
     public function loadModel(?string $modelName = null): ModelInterface
@@ -178,5 +178,22 @@ trait Model
         }
         
         return $field;
+    }
+    
+    /**
+     * Retrieves the primary key attributes for a given model.
+     *
+     * @param string|null $modelName The name of the model to retrieve primary key attributes for. Default is null and will use $this->getModelName().
+     *
+     * @return array An array of primary key attributes for the model. Returns an empty array if no model name is specified.
+     */
+    public function getPrimaryKeyAttributes(?string $modelName = null): array
+    {
+        $modelName ??= $this->getModelName() ?? '';
+        if (empty($modelName)) {
+            return [];
+        }
+        
+        return $this->modelsMetadata->getPrimaryKeyAttributes($this->loadModel($modelName));
     }
 }

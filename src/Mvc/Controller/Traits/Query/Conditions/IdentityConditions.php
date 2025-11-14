@@ -98,6 +98,6 @@ trait IdentityConditions
      */
     public function getIdentityColumns(): array
     {
-        return $this->modelsMetadata->getPrimaryKeyAttributes($this->loadModel());
+        return $this->getPrimaryKeyAttributes();
     }
 }

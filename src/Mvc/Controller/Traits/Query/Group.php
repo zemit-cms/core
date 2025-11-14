@@ -69,7 +69,7 @@ trait Group
     public function defaultGroup(): array|string|null
     {
         return (isset($this->joins) && count($this->joins) > 0) ?
-            $this->modelsMetadata->getPrimaryKeyAttributes($this->loadModel())
+            $this->getPrimaryKeyAttributes()
             : null;
     }
 }
