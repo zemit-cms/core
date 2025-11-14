@@ -79,45 +79,58 @@ trait Query
         $this->initializeCacheConfig();
         $this->eventsManager->fire('rest:afterInitializeCacheConfig', $this);
         
+        // FIELDS (expose, filter, map, save, search)
         $this->initializeFields();
         $this->eventsManager->fire('rest:afterInitializeFields', $this);
         
-        $this->initializeBind();
-        $this->eventsManager->fire('rest:afterInitializeBind', $this);
-        
-        $this->initializeBindTypes();
-        $this->eventsManager->fire('rest:afterInitializeBindTypes', $this);
-        
-        $this->initializeConditions();
-        $this->eventsManager->fire('rest:afterInitializeConditions', $this);
-        
-        $this->initializeDistinct();
-        $this->eventsManager->fire('rest:afterInitializeDistinct', $this);
-        
-        $this->initializeGroup();
-        $this->eventsManager->fire('rest:afterInitializeGroup', $this);
-        
-        $this->initializeHaving();
-        $this->eventsManager->fire('rest:afterInitializeHaving', $this);
-        
+        // JOINS
         $this->initializeJoins();
         $this->eventsManager->fire('rest:afterInitializeJoins', $this);
         
-        $this->initializeLimit();
-        $this->eventsManager->fire('rest:afterInitializeLimit', $this);
+        // WHERE
+        $this->initializeConditions();
+        $this->eventsManager->fire('rest:afterInitializeConditions', $this);
         
-        $this->initializeOffset();
-        $this->eventsManager->fire('rest:afterInitializeOffset', $this);
+        // SELECT-level modifier
+        $this->initializeDistinct();
+        $this->eventsManager->fire('rest:afterInitializeDistinct', $this);
         
+        // GROUP BY
+        $this->initializeGroup();
+        $this->eventsManager->fire('rest:afterInitializeGroup', $this);
+        
+        // HAVING
+        $this->initializeHaving();
+        $this->eventsManager->fire('rest:afterInitializeHaving', $this);
+        
+        // ORDER
         $this->initializeOrder();
         $this->eventsManager->fire('rest:afterInitializeOrder', $this);
         
+        // LIMIT
+        $this->initializeLimit();
+        $this->eventsManager->fire('rest:afterInitializeLimit', $this);
+        
+        // OFFSET
+        $this->initializeOffset();
+        $this->eventsManager->fire('rest:afterInitializeOffset', $this);
+
 //        $this->initializeSave();
 //        $this->eventsManager->fire('rest:afterInitializeSave', $this);
         
+        // Eager-loading, post-query shaping
         $this->initializeWith();
         $this->eventsManager->fire('rest:afterInitializeWith', $this);
         
+        // BIND
+        $this->initializeBind();
+        $this->eventsManager->fire('rest:afterInitializeBind', $this);
+        
+        // TYPES
+        $this->initializeBindTypes();
+        $this->eventsManager->fire('rest:afterInitializeBindTypes', $this);
+        
+        // Final assembly/execution wrapper
         $this->initializeFind();
         $this->eventsManager->fire('rest:afterInitializeFind', $this);
         
