@@ -36,6 +36,7 @@ use PhalconKit\Mvc\Controller\Traits\Query\Order;
 use PhalconKit\Mvc\Controller\Traits\Query\Save;
 use PhalconKit\Mvc\Controller\Traits\Query\With;
 use PhalconKit\Mvc\Model\Interfaces\EagerLoadInterface;
+use PhalconKit\Support\Helper;
 
 /**
  * Class Query
@@ -210,7 +211,7 @@ trait Query
         
         foreach (['group', 'order'] as $keyToJoin) {
             if (isset($build[$keyToJoin]) && is_array($build[$keyToJoin])) {
-                $build[$keyToJoin] = implode(', ', $build[$keyToJoin]);
+                $build[$keyToJoin] = implode(', ', Helper::flatten($build[$keyToJoin]));
             }
         }
         
