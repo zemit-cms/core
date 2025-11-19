@@ -208,8 +208,10 @@ trait Query
             }
         }
         
-        if (isset($build['group']) && is_array($build['group'])) {
-            $build['group'] = implode(', ', $build['group']);
+        foreach (['group', 'order'] as $keyToJoin) {
+            if (isset($build[$keyToJoin]) && is_array($build[$keyToJoin])) {
+                $build[$keyToJoin] = implode(', ', $build[$keyToJoin]);
+            }
         }
         
         return $this->mergeConditions(array_filter($ignoreKey ? array_values($build) : $build));
